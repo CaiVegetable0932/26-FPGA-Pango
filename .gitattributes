@@ -1,0 +1,33 @@
+# Normalize text in Git, while preserving binary files automatically.
+* text=auto
+.gitattributes text eol=lf
+.gitignore text eol=lf
+*.md text eol=lf
+*.v text eol=lf
+*.vh text eol=lf
+*.sv text eol=lf
+*.svh text eol=lf
+*.vhd text eol=lf
+*.vhdl text eol=lf
+*.tcl text eol=lf
+*.sdc text eol=lf
+*.fdc text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.pdf binary
+*.xlsx binary
+*.docx binary
+*.png binary
+*.jpg binary
+*.zip binary
+*.rar binary
+*.exe binary
+*.bit binary
+*.bin binary
+*.sbit binary
