@@ -1,6 +1,6 @@
 # 项目规划文档
 
-本目录仅保存需求、方案、开发计划和验收设计。实现代码、工程、构建结果与实测报告直接写入 [fpga/](../fpga/README.md) 或 [mcu/](../mcu/README.md)，不放在 output/。
+本目录仅保存需求、方案、开发计划和验收设计。实现代码、工程、构建结果与实测报告直接写入 [fpga/](../fpga/README.md)、[mcu/](../mcu/README.md) 或 [host/](../host/README.md)，不放在 output/。
 
 当前方案：PG2L100H（盘古100Kmini），官方建议双目OV5640 DVP模组启用一路；稳定1080p30必须达到，更换真实60fps输入源后进一步实现1080p60。
 
