@@ -17,4 +17,4 @@ $local = Invoke-GitChecked rev-parse HEAD
 $remoteRef = Invoke-GitChecked ls-remote --exit-code origin "refs/heads/$branch"
 if (($remoteRef -split '\s+')[0] -ne $local) { throw 'Remote verification failed.' }
 Write-Host "Cloud backup verified: $branch $local"
-Write-Host 'Ignored vendor files, local configuration and other branches are not included.'
+Write-Host 'Root reference/ and PDS/ directories and other branches are not included.'
