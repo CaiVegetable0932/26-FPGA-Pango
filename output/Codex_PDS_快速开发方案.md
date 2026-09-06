@@ -1,16 +1,17 @@
 # Codex + PDS 快速开发方案
 
-> 目录规则更新：output/ 仅用于规划。本文旧布局和命令中的 FPGA 实现路径统一归入 fpga/；MCU 固件和板级测试归入 mcu/；PC 上位机、采集数据和测评报告归入 host/。实际落点以 [FPGA 开发区](../fpga/README.md)、[MCU 设备端开发区](../mcu/README.md)、[上位机开发区](../host/README.md) 为准。当前 Git 仅排除根目录 reference/ 和 PDS/，本文早期关于构建产物不入 Git 的描述已被新规则替代。
+更新日期：2026-09-06（本轮为架构与路径同步）
+适用项目：26-FPGA-Pango，PG2L100H（盘古100Kmini）。
+当前视频基线：[OV5640 RAW8千兆网＋结果HDMI](OV5640_RAW8千兆网与HDMI双路回传方案.md)。原图S0网络接收、FPGA处理结果回采、严格同帧证据分别验收。
+环境状态：第2节保留2026-09-05的检查记录，本次未重新运行环境探测、ModelSim或PDS，不能据文档更新声称工具/硬件验证通过。
 
-日期：2026-09-05  
-适用项目：26-FPGA-Pango；沿用现有 PG2L100H（盘古100Kmini）1080p 畸变矫正方案。  
-性质：根据本机检查和本地手册形成的实施方案；本次完成环境探测与最小仿真，尚未建立正式构建脚本或完成 PDS 综合。
+目录遵循[AGENTS.md](../AGENTS.md)：实现与产物分别归fpga/、mcu/、host/；output/只放规划。Git仅排除根reference/和PDS/。安装版官方资料E:\PDS_Pangu\PDS_2022.2-SP6.4\doc始终只读。
 
 ## 1. 建议采用的工作方式
 
 **Codex 负责需求拆分、资料定位、参考模型、RTL、测试和报告分析；ModelSim 负责自动仿真；PDS 通过命令行/Tcl 负责综合、布局布线、时序报告和位流。** PDS 图形界面用于首次核对器件、配置 IP、导出工程脚本，以及下载和片上调试。
 
-当前最先要解决的是 PDS License 环境配置。在此之前，可以继续完成 Python 算法模型、RTL 编写和纯 RTL 仿真。对于现有两个月周期，先用最小工程打通工具链，再逐步复用板卡例程和接入算法。
+按原环境检查记录，开工前先复核 PDS License 环境配置。在此之前，可以继续完成 Python 算法模型、RTL 编写和纯 RTL 仿真。对于现有两个月周期，先用最小工程打通工具链，再逐步复用板卡例程和接入算法。
 
 ```mermaid
 flowchart LR
@@ -23,7 +24,7 @@ flowchart LR
   F --> B
 ```
 
-## 2. 本机实测结论
+## 2. 2026-09-05 本机检查记录
 
 | 项目 | 本次发现 | 对开发流程的影响 |
 |---|---|---|
@@ -56,11 +57,11 @@ ModelSim 首次运行在日志初始化时失败；改用明确工作目录与�
 
 在 PDS 中选择 PG2L100H，并根据实物和匹配资料核实速度等级、封装、晶振、复位、电压和管脚，保存成目标板配置。已有 PG2L200H 例程里的 `FBB676` 是工具配置字段，不应通过字符串替换推断 PG2L100H 的正确封装选项。
 
-建议形成 `config/board.json` 与 `constraints/board.fdc`，记录每项值的资料来源和确认状态。PG2L100H、PG2L200H、PGX-NANO、100Pro+ 的工程分别保留配置，不能混用引脚和 DDR 参数。
+建议形成 `fpga/config/board.json` 与 `fpga/constraints/board.fdc`，记录每项值的资料来源和确认状态。PG2L100H、PG2L200H、PGX-NANO、100Pro+ 的工程分别保留配置，不能混用引脚和 DDR 参数。
 
 ### 3.3 先复制最小例程，再复制复杂例程
 
-首选 reference 中 `2_7_key_led_test` 作为工具链基线；下一步使用 `2_8_uart_test` 建立状态输出，再处理 `2_9_ddr3_test` 和视频例程。
+首选 reference 中 `2_7_key_led_test` 作为工具链基线；下一步使用 `2_8_uart_test` 建立状态输出，再处理 `2_9_ddr3_test`、RAW视频和匹配MINI的RGMII/以太网例程。MAC、UDP与原图DMA需要联合验证，不能只测试网络链路灯。
 
 导入内容包括 RTL、约束、IP 配置及必要生成源码、ROM/寄存器初始化文件、仿真模型。不要只复制顶层 `.v`；也不要依赖资料里已有的编译数据库、历史位流或绝对路径。
 
@@ -72,7 +73,7 @@ ModelSim 首次运行在日志初始化时失败；改用明确工作目录与�
 - Family：目标系列 Logos2；首轮只编译需要的系列。
 - Language：与当前源码一致，首轮优先 Verilog。
 - Library：usim 对应前仿；需要后仿时再编译 vsim 及相应模型。
-- 输出位置：项目 `build/simlib/` 下按 PDS 版本、仿真器版本和系列区分缓存。
+- 输出位置：项目 `fpga/build/simlib/` 下按 PDS 版本、仿真器版本和系列区分缓存。
 
 保存界面生成的 Tcl 命令和库编译脚本，之后由 Codex 重复调用。PLL、FIFO、DDR 等实际设计还要包含各 IP 的专用仿真文件；仅存在 usim 库不证明所有 IP 模型齐全。
 
@@ -82,36 +83,29 @@ ModelSim 首次运行在日志初始化时失败；改用明确工作目录与�
 
 ```text
 26-FPGA-Pango/
-  AGENTS.md                 # Codex 的简短项目约定
-  reference/                # 原始资料及内容索引
-  PDS/                      # 安装包、发行说明等现有资料
-  output/                   # 现有设计方案、计划和本方案
-  config/
-    board.json              # 器件、板卡、时钟、接口与资料依据
-    toolchain.local.json    # 本机程序和 License 路径，不纳入版本控制
-    sources.json            # 实际参与构建的源文件/IP清单
-  rtl/
-    top/                    # 系统集成
-    video/                  # 输入、ISP、时序及输出适配
-    geom/                   # 坐标映射、旋转、畸变与插值
-    memory/                 # 帧管理、缓存、DDR适配
-    control/                # UART、寄存器与统计计数器
-  ip/                       # 固定版本配置、生成文件和依赖说明
-  constraints/              # 目标板引脚及有依据的时序约束
-  sim/
-    tb/                     # 自动判断通过/失败的测试
-    vectors/                # 测试图像、坐标、像素及预期值
-  model/                    # Python 浮点模型与位精确模型
-  scripts/
-    env.ps1
-    doctor.ps1
-    test.ps1
-    build.ps1
-    build.tcl
-    summarize_reports.py
-  build/                    # 仿真库、工作库、PDS中间文件，不入Git
-  reports/                  # 测试、资源、时序及实测结果
-  release/                  # 冻结版本的位流、配置与构建记录
+  AGENTS.md
+  reference/                  # 原始资料，仅本地
+  PDS/                        # 安装资料，仅本地
+  output/                     # 规划与接口文档
+  scripts/backup.ps1           # 仅仓库备份
+  fpga/
+    config/                   # board/toolchain/sources配置，不存License正文
+    rtl/
+      video/                  # RAW接收、ISP、时序与HDMI输出
+      geom/                   # 坐标映射与插值
+      memory/                 # S0/S1/结果/快照池与DDR适配
+      network/                # RGMII、MAC、IPv4/UDP、RAW组包与限流
+      control/                # UART、参数解析与计数
+    ip/
+    constraints/
+    sim/
+    model/                    # 权威浮点与位精确参考
+    scripts/                  # env/doctor/test/build/report入口
+    build/                    # 运行产物，按现有规则受Git管理
+    reports/
+    release/
+  host/                       # PC实现、配置、数据、报告与发布
+  mcu/                        # MCU固件、测试与产物
 ```
 
 PDS 手册物理第 247 页规定了文件与目录命名允许的字符。实际参与构建的路径使用英文、数字和下划线；中文资料可以保留在 reference 中供阅读。IP 文件命名限制更严格，按手册和工具校验执行。
@@ -141,11 +135,11 @@ PDS 手册物理第 247 页规定了文件与目录命名允许的字符。实�
 $pdsExe = 'E:\PDS_Pangu\PDS_2022.2-SP6.4\bin\pds_shell.exe'
 
 # 使用已经核对并复制到英文路径的工程
-& $pdsExe -project 'D:\XDU\concept\26-FPGA-Pango\build\pds\video_top.pds' -run synthesize
+& $pdsExe -project 'D:\XDU\concept\26-FPGA-Pango\fpga\build\pds\video_top.pds' -run synthesize
 
 # 使用可重建工程的完整 Tcl 脚本
-& $pdsExe -file 'D:\XDU\concept\26-FPGA-Pango\scripts\build.tcl' `
-  -work_dir 'D:\XDU\concept\26-FPGA-Pango\build\pds' `
+& $pdsExe -file 'D:\XDU\concept\26-FPGA-Pango\fpga\scripts\build.tcl' `
+  -work_dir 'D:\XDU\concept\26-FPGA-Pango\fpga\build\pds' `
   -project_name video_top
 ```
 
@@ -173,7 +167,7 @@ $pdsExe = 'E:\PDS_Pangu\PDS_2022.2-SP6.4\bin\pds_shell.exe'
 - 仿真须有自动比较和明确 PASS 标记；超时、断言失败、ModelSim Error/Fatal、未到达 PASS 均判失败。
 - 输出目录隔离每次构建；记录起止时间和本次生成文件，防止把原资料的旧位流当成本次结果。
 - 时序验收覆盖 setup 与 hold、各时钟域和未约束路径；不能只看一项 Fmax 或位流是否生成。
-- `reports/latest.md` 面向人阅读，`reports/latest.json` 提供可机读字段；保留原始日志，禁止通过隐藏错误获取 PASS。
+- `fpga/reports/latest.md` 面向人阅读，`fpga/reports/latest.json` 提供可机读字段；保留原始日志，禁止通过隐藏错误获取 PASS。
 - 允许清单只豁免已经分析、有理由的告警；不能将 latch、多驱动、关键位宽截断和缺失约束整体忽略。
 - 成功报告包含源码版本或输入哈希、PDS 版本、板卡配置、IP 版本、测试集合、时序结果与位流哈希。
 
@@ -184,9 +178,9 @@ $pdsExe = 'E:\PDS_Pangu\PDS_2022.2-SP6.4\bin\pds_shell.exe'
 | A：工具链基线 | License、PG2L100H 配置、LED/UART、脚本与报告 | 同一输入可从干净工作目录重建；最小测试和综合通过；上板能观察状态 |
 | B：参考模型与算术模块 | Python 浮点/定点模型；坐标计算、舍入、饱和、双线性插值 | RTL 与位精确模型逐样本一致；另行评估定点模型相对浮点的误差 |
 | C：视频数据通路 | 模拟视频源、行帧标记、FIFO/缓存、DDR适配、输出适配 | 小图、连续帧、停顿和复位测试通过，像素与有效信号保持对齐 |
-| D：真实相机和内存 | 复用对应板卡例程，验证单路 RAW DVP、基本 ISP、DDR读写和帧管理 | 实测尺寸、帧间隔、帧计数、DDR带宽和错误计数，不能只看显示器有图 |
-| E：1080p30 整机 | 接入逆映射、插值、旋转、Gamma及控制 | 按现有设计方案完成真实输入帧率、图像精度、处理吞吐和长稳验收 |
-| F：1080p60 扩展 | 基于独立真实60fps输入源重新评估时序和带宽 | 单独记录输入/处理/输出帧率，保留30fps稳定版本 |
+| D：真实相机和内存 | 复用对应板卡例程，验证单路RAW8 DVP、基本ISP、76MiB帧池、RGMII/UDP与帧管理 | 实测尺寸、帧间隔、帧计数、DDR带宽和错误计数，不能只看显示器有图 |
+| E：1080p30 整机 | 接入逆映射、插值、旋转、Gamma、RAW网络30FPS、结果HDMI30及控制 | 按现有设计方案完成真实输入帧率、图像精度、处理吞吐和长稳验收 |
+| F：1080p60 扩展 | 基于独立真实60fps输入源重新评估时序和带宽；RAW满流超千兆，原图回传须另设计 | 单独记录输入/处理/输出帧率，保留30fps稳定版本 |
 
 1080p30 必达、1080p60 需更换真实视频源等目标来自现有详细设计方案，本次未重新验证摄像头模式或硬件带宽。低分辨率仿真仅用于缩短调试时间，不能代替1080p验收。
 
@@ -200,9 +194,9 @@ DDR PHY、PLL、高速串行输出和已验证 FIFO 优先复用匹配器件的 
 
 ## 7. 给 Codex 的项目约定
 
-后续在根目录建立一份简短 `AGENTS.md`。官方文档说明 Codex 会读取该文件作为项目工作约定；只保留常用规则和入口，完整资料继续放在 reference / output 中。[官方说明](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+根目录已有[AGENTS.md](../AGENTS.md)，后续直接遵循并保持一致，不重新生成另一套项目约定。官方参考资料保持只读，规划和实现分别在规定目录中维护。
 
-建议写入：
+执行时重点核对：
 
 - 当前设计依据是 `output/PG2L100H_1080p畸变矫正详细设计方案.md`，历史50K方案只供追溯。
 - 先用 `reference/内容索引.md` 定位具体资料，按需读取，不每次遍历上万份编译产物。
@@ -249,3 +243,13 @@ DDR PHY、PLL、高速串行输出和已验证 FIFO 优先复用匹配器件的 
 | [reference 内容索引](../reference/内容索引.md) | 后续按接口、文档、工程或模块检索 |
 
 环境证据来自本机 PDS 帮助输出、一次受License阻塞的Tcl调用、ModelSim版本及最小自检仿真、安装目录和工程配置读取。任何尚未运行的正式脚本与性能指标均作为后续实施内容。
+
+## 11. 当前回传架构的专项检查
+
+- 网络64字节头＋最多1400字节载荷、CRC32、乱序/重复/缺块/重传边界与PC接收器共同验证；UART继续原CRC16协议。
+- RAW DDR stride2048与线上stride1920分别定义；SRC/DST行跨度6144，快照导出只保留有效RGB像素。帧池共76MiB，未计掩码等诊断空间。
+- 参数解析测试覆盖K/D字段顺序、负数和定点范围、尺寸/模型不符、实际寄存器回读与帧边界整组生效。
+- PC基础RAW预览不等于S1；连续HDMI帧身份未验证时保持null/unverified，不能由测试脚本推测为已配对。
+- 网络断连、快照限流、输出欠载、独立PC演示和板级能效均需上板证据；报告明确此次是否包含片上调试逻辑。
+
+以上项目按[跨端回传方案](OV5640_RAW8千兆网与HDMI双路回传方案.md)及最新[两个月计划](两个月开发规划表.md)组织。本文环境实测记录保持原日期；文档一致性检查不替代PDS、RTL或硬件测试。
