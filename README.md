@@ -6,6 +6,7 @@
 - [MCU 设备端开发区](mcu/README.md)
 - [上位机开发区](host/README.md)
 - [当前设计与开发计划](output/README.md)
+- [上位机专项规划](output/host/README.md)
 - [Codex + PDS 开发方案](output/Codex_PDS_快速开发方案.md)
 - [参考资料检索索引（仅本地）](reference/内容索引.md)
 - [Git 版本管理指南](docs/版本管理指南.md)
