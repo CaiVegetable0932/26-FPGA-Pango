@@ -1,0 +1,54 @@
+{
+  "passed": false,
+  "stages": {
+    "rtl": {
+      "returncode": 0,
+      "elapsed_seconds": 9.922,
+      "log": "build\\tests_a\\rtl\\simulate.log",
+      "error_lines": [],
+      "passed": true,
+      "checks": 898,
+      "toggles": 23
+    },
+    "synthesis": {
+      "returncode": 0,
+      "elapsed_seconds": 3.813,
+      "log": "build\\tests_a\\synthesis\\simulate.log",
+      "error_lines": [],
+      "passed": true,
+      "checks": 898,
+      "toggles": 23
+    },
+    "route_function": {
+      "returncode": 0,
+      "elapsed_seconds": 4.063,
+      "log": "build\\tests_a\\route_function\\simulate.log",
+      "error_lines": [],
+      "passed": true,
+      "checks": 898,
+      "toggles": 23
+    },
+    "timing_min": {
+      "returncode": 12,
+      "elapsed_seconds": 2.266,
+      "log": "build\\tests_a\\timing_min\\simulate.log",
+      "error_lines": [
+        "# ** Error: (vsim-SDF-3196) Failed to find SDF file \"{D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_a/generate_netlist/flow_smoke_top_sta.sdf}\"."
+      ],
+      "passed": false,
+      "sdf_annotation_requested": true,
+      "timing_warnings": []
+    },
+    "timing_max": {
+      "returncode": 12,
+      "elapsed_seconds": 2.203,
+      "log": "build\\tests_a\\timing_max\\simulate.log",
+      "error_lines": [
+        "# ** Error: (vsim-SDF-3196) Failed to find SDF file \"{D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_a/generate_netlist/flow_smoke_top_sta.sdf}\"."
+      ],
+      "passed": false,
+      "sdf_annotation_requested": true,
+      "timing_warnings": []
+    }
+  }
+}

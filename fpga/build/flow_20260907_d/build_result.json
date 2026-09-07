@@ -1,0 +1,44 @@
+{
+  "returncode": 0,
+  "elapsed_seconds": 101.281,
+  "log": "build\\flow_20260907_d\\console.log",
+  "error_lines": [],
+  "stages": {
+    "compile": true,
+    "synthesize": true,
+    "dev_map": true,
+    "pnr": true,
+    "report_timing": true,
+    "gen_netlist": true,
+    "gen_bit_stream": true,
+    "report_power": true
+  },
+  "artifacts": {
+    "generate_bitstream/flow_smoke_top.sbit": {
+      "bytes": 3791112,
+      "sha256": "82a5ce1ef7075954322f4fa961d2752f2d95db51ceaeff0f4448a9af22cdd8ba"
+    },
+    "synthesize/flow_smoke_top_syn.vm": {
+      "bytes": 7354,
+      "sha256": "1cf60f73d47d67665d54691e75ecfd9eb9fd76d06422684ab34557001c847ad6"
+    },
+    "generate_netlist/flow_smoke_top_sim.v": {
+      "bytes": 12286,
+      "sha256": "fc2314c940f175b9671c3cbd76256d70a82597328911b8886c0b513495271a07"
+    },
+    "generate_netlist/flow_smoke_top_sta.sdf": {
+      "bytes": 13957,
+      "sha256": "4ffe8273b78e3f2e9b6b226e9a736346e6cd4134efc357c291e5ffc50a9f85de"
+    },
+    "report_timing/flow_smoke_top.rtr": {
+      "bytes": 331815,
+      "sha256": "31c654054297339a86567b869c65ff3f59bff46e12778b01ef58f23254e224d0"
+    },
+    "report_power/flow_smoke_top.ppr": {
+      "bytes": 9472,
+      "sha256": "c33531ecf3c33616d0f7ead8cd7190b743c31d4736f247952c591c691db6ba0f"
+    }
+  },
+  "passed": true,
+  "hardware_acceptance": "not_performed"
+}

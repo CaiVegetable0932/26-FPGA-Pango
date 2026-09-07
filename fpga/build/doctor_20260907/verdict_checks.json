@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": [
+    "failed_build_rejected",
+    "critical_warning_rejected",
+    "missing_sdf_rejected",
+    "watchdog_rejected",
+    "missing_timing_rejected",
+    "exact_input_match",
+    "final_limitation_preserved"
+  ]
+}

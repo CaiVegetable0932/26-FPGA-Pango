@@ -1,0 +1,15 @@
+{
+  "scope": "minimum_offline_flow_only",
+  "hardware_programming_performed": false,
+  "hardware_release_approved": false,
+  "tool": "PDS 2022.2-SP6.4 build 146967",
+  "target": "Logos2 PG2L100H -6 FBG676",
+  "bitstream": {
+    "file": "flow_smoke_top.sbit",
+    "bytes": 3791112,
+    "sha256": "4ae994fdf23d80e9cfe1e2aa527e3e72a2bd425dc4242e4853763a4e78651f3f"
+  },
+  "status": "COMPLETED_WITH_LIMITATIONS",
+  "source_build": "fpga/build/flow_20260907_c",
+  "warning": "Not the planned 1080p video implementation; strict SDF timing has model compatibility warnings."
+}

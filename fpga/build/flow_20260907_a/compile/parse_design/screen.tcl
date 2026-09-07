@@ -1,0 +1,1 @@
+.rtl_screen -top_module {flow_smoke_top} -include_path {<D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_a>} -design_files {<D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v|work>}

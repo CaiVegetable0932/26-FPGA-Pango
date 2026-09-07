@@ -1,0 +1,42 @@
+library verilog;
+use verilog.vl_types.all;
+entity V_PREGMUXC is
+    port(
+        CLKIN           : in     vl_logic_vector(69 downto 0);
+        CLKOUT          : out    vl_logic_vector(31 downto 0);
+        CLKOUT_PREGMUXC_L: out    vl_logic_vector(27 downto 0);
+        CLKOUT_PREGMUXC_R: out    vl_logic_vector(27 downto 0);
+        CFG_MUX0        : in     vl_logic_vector(5 downto 0);
+        CFG_MUX1        : in     vl_logic_vector(5 downto 0);
+        CFG_MUX2        : in     vl_logic_vector(5 downto 0);
+        CFG_MUX3        : in     vl_logic_vector(5 downto 0);
+        CFG_MUX4        : in     vl_logic_vector(5 downto 0);
+        CFG_MUX5        : in     vl_logic_vector(5 downto 0);
+        CFG_MUX6        : in     vl_logic_vector(5 downto 0);
+        CFG_MUX7        : in     vl_logic_vector(5 downto 0);
+        CFG_MUX8        : in     vl_logic_vector(5 downto 0);
+        CFG_MUX9        : in     vl_logic_vector(5 downto 0);
+        CFG_MUX10       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX11       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX12       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX13       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX14       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX15       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX16       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX17       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX18       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX19       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX20       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX21       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX22       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX23       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX24       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX25       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX26       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX27       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX28       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX29       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX30       : in     vl_logic_vector(5 downto 0);
+        CFG_MUX31       : in     vl_logic_vector(5 downto 0)
+    );
+end V_PREGMUXC;

@@ -1,0 +1,351 @@
+{
+  "utc": "2026-09-07T10:53:59.293187+00:00",
+  "scope": "PG2L100H minimum offline flow; not the 1080p video system",
+  "status": "COMPLETED_WITH_LIMITATIONS",
+  "builds": [
+    {
+      "returncode": 0,
+      "elapsed_seconds": 101.344,
+      "log": "build\\flow_20260907_c\\console.log",
+      "error_lines": [],
+      "stages": {
+        "compile": true,
+        "synthesize": true,
+        "dev_map": true,
+        "pnr": true,
+        "report_timing": true,
+        "gen_netlist": true,
+        "gen_bit_stream": true,
+        "report_power": true
+      },
+      "artifacts": {
+        "generate_bitstream/flow_smoke_top.sbit": {
+          "bytes": 3791112,
+          "sha256": "4ae994fdf23d80e9cfe1e2aa527e3e72a2bd425dc4242e4853763a4e78651f3f"
+        },
+        "synthesize/flow_smoke_top_syn.vm": {
+          "bytes": 7354,
+          "sha256": "bb31ce474c070677978f60940568bd223e07e5cadc5a39346829bf7dece1ebf4"
+        },
+        "generate_netlist/flow_smoke_top_sim.v": {
+          "bytes": 12286,
+          "sha256": "35931231078393fc0ce0de5b4adc1c6bd7d9f38bc0cd584b84d680bf0a3592fd"
+        },
+        "generate_netlist/flow_smoke_top_sta.sdf": {
+          "bytes": 13957,
+          "sha256": "61821e1141148fa0309e7c314d33a1483f071adee2d6c55df414d9e0491a517b"
+        },
+        "report_timing/flow_smoke_top.rtr": {
+          "bytes": 331815,
+          "sha256": "7b013274f8bb3245e97f31d15caa393d2fca9fc433a3661bdf50d4af15943d5c"
+        },
+        "report_power/flow_smoke_top.ppr": {
+          "bytes": 9472,
+          "sha256": "534d34a5894c40228e4185bc22cdace43eb374fda888448f93300753b5613c7d"
+        }
+      },
+      "passed": true,
+      "hardware_acceptance": "not_performed",
+      "timing": {
+        "passed": true,
+        "corners": {
+          "setup_slow": {
+            "slack_ns": 34.998,
+            "total_negative_slack_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 16
+          },
+          "hold_slow": {
+            "slack_ns": 0.285,
+            "total_negative_slack_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 16
+          },
+          "setup_fast": {
+            "slack_ns": 35.804,
+            "total_negative_slack_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 16
+          },
+          "hold_fast": {
+            "slack_ns": 0.182,
+            "total_negative_slack_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 16
+          }
+        },
+        "clock_mhz": 27,
+        "io_exceptions": [
+          "rstn/key: asynchronous input to synchronizers",
+          "led0: LED without synchronous external receiver"
+        ],
+        "all_io_has_synchronous_delays": false,
+        "report": "build\\flow_20260907_c\\report_timing\\flow_smoke_top.rtr"
+      },
+      "warnings": [
+        "W: Loop was found during constant probe.",
+        "W: Timing-4086: Port 'key' is not constrained, it is treated as combinational input.",
+        "W: Timing-4086: Port 'rstn' is not constrained, it is treated as combinational input.",
+        "W: Timing-4087: Port 'led0' is not constrained, it is treated as combinational output."
+      ],
+      "unreviewed_warnings": [],
+      "warning_review": {
+        "constant_probe": "Small design contains registered counter/LED feedback. Retained warning; three functional netlist tests and four STA checks are required. No combinational feedback exists in the RTL.",
+        "io_delays": "Three explicitly excluded asynchronous/non-synchronous ports; not a waiver for internal timing or other designs."
+      },
+      "resources": {
+        "APM": {
+          "used": 0,
+          "available": 240
+        },
+        "FF": {
+          "used": 10,
+          "available": 133200
+        },
+        "LUT": {
+          "used": 6,
+          "available": 66600
+        },
+        "DRM": {
+          "used": 0,
+          "available": 155
+        }
+      },
+      "artifact_integrity": true,
+      "directory": "fpga/build/flow_20260907_c"
+    },
+    {
+      "returncode": 0,
+      "elapsed_seconds": 101.281,
+      "log": "build\\flow_20260907_d\\console.log",
+      "error_lines": [],
+      "stages": {
+        "compile": true,
+        "synthesize": true,
+        "dev_map": true,
+        "pnr": true,
+        "report_timing": true,
+        "gen_netlist": true,
+        "gen_bit_stream": true,
+        "report_power": true
+      },
+      "artifacts": {
+        "generate_bitstream/flow_smoke_top.sbit": {
+          "bytes": 3791112,
+          "sha256": "82a5ce1ef7075954322f4fa961d2752f2d95db51ceaeff0f4448a9af22cdd8ba"
+        },
+        "synthesize/flow_smoke_top_syn.vm": {
+          "bytes": 7354,
+          "sha256": "1cf60f73d47d67665d54691e75ecfd9eb9fd76d06422684ab34557001c847ad6"
+        },
+        "generate_netlist/flow_smoke_top_sim.v": {
+          "bytes": 12286,
+          "sha256": "fc2314c940f175b9671c3cbd76256d70a82597328911b8886c0b513495271a07"
+        },
+        "generate_netlist/flow_smoke_top_sta.sdf": {
+          "bytes": 13957,
+          "sha256": "4ffe8273b78e3f2e9b6b226e9a736346e6cd4134efc357c291e5ffc50a9f85de"
+        },
+        "report_timing/flow_smoke_top.rtr": {
+          "bytes": 331815,
+          "sha256": "31c654054297339a86567b869c65ff3f59bff46e12778b01ef58f23254e224d0"
+        },
+        "report_power/flow_smoke_top.ppr": {
+          "bytes": 9472,
+          "sha256": "c33531ecf3c33616d0f7ead8cd7190b743c31d4736f247952c591c691db6ba0f"
+        }
+      },
+      "passed": true,
+      "hardware_acceptance": "not_performed",
+      "timing": {
+        "passed": true,
+        "corners": {
+          "setup_slow": {
+            "slack_ns": 34.998,
+            "total_negative_slack_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 16
+          },
+          "hold_slow": {
+            "slack_ns": 0.285,
+            "total_negative_slack_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 16
+          },
+          "setup_fast": {
+            "slack_ns": 35.804,
+            "total_negative_slack_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 16
+          },
+          "hold_fast": {
+            "slack_ns": 0.182,
+            "total_negative_slack_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 16
+          }
+        },
+        "clock_mhz": 27,
+        "io_exceptions": [
+          "rstn/key: asynchronous input to synchronizers",
+          "led0: LED without synchronous external receiver"
+        ],
+        "all_io_has_synchronous_delays": false,
+        "report": "build\\flow_20260907_d\\report_timing\\flow_smoke_top.rtr"
+      },
+      "warnings": [
+        "W: Loop was found during constant probe.",
+        "W: Timing-4086: Port 'key' is not constrained, it is treated as combinational input.",
+        "W: Timing-4086: Port 'rstn' is not constrained, it is treated as combinational input.",
+        "W: Timing-4087: Port 'led0' is not constrained, it is treated as combinational output."
+      ],
+      "unreviewed_warnings": [],
+      "warning_review": {
+        "constant_probe": "Small design contains registered counter/LED feedback. Retained warning; three functional netlist tests and four STA checks are required. No combinational feedback exists in the RTL.",
+        "io_delays": "Three explicitly excluded asynchronous/non-synchronous ports; not a waiver for internal timing or other designs."
+      },
+      "resources": {
+        "APM": {
+          "used": 0,
+          "available": 240
+        },
+        "FF": {
+          "used": 10,
+          "available": 133200
+        },
+        "LUT": {
+          "used": 6,
+          "available": 66600
+        },
+        "DRM": {
+          "used": 0,
+          "available": 155
+        }
+      },
+      "artifact_integrity": true,
+      "directory": "fpga/build/flow_20260907_d"
+    }
+  ],
+  "clean_rebuild_passed": true,
+  "current_design_inputs_match": true,
+  "simulation_inputs_match": true,
+  "simulation": {
+    "passed": false,
+    "stages": {
+      "rtl": {
+        "returncode": 0,
+        "elapsed_seconds": 3.266,
+        "log": "build\\tests_verified\\rtl\\simulate.log",
+        "error_lines": [],
+        "passed": true,
+        "functional_passed": true,
+        "design_sha256": "8082cebd2e57784da8a031035f72b669508b732b80a908a4f93cd7c40fc45157",
+        "testbench_sha256": "601c74249fb38815f44b0575bb6db630d0bf3eefc3008f4f861444db2ee0da8f",
+        "checks": 898,
+        "toggles": 23
+      },
+      "synthesis": {
+        "returncode": 0,
+        "elapsed_seconds": 3.578,
+        "log": "build\\tests_verified\\synthesis\\simulate.log",
+        "error_lines": [],
+        "passed": true,
+        "functional_passed": true,
+        "design_sha256": "bb31ce474c070677978f60940568bd223e07e5cadc5a39346829bf7dece1ebf4",
+        "testbench_sha256": "601c74249fb38815f44b0575bb6db630d0bf3eefc3008f4f861444db2ee0da8f",
+        "checks": 898,
+        "toggles": 23
+      },
+      "route_function": {
+        "returncode": 0,
+        "elapsed_seconds": 3.562,
+        "log": "build\\tests_verified\\route_function\\simulate.log",
+        "error_lines": [],
+        "passed": true,
+        "functional_passed": true,
+        "design_sha256": "35931231078393fc0ce0de5b4adc1c6bd7d9f38bc0cd584b84d680bf0a3592fd",
+        "testbench_sha256": "601c74249fb38815f44b0575bb6db630d0bf3eefc3008f4f861444db2ee0da8f",
+        "checks": 898,
+        "toggles": 23
+      },
+      "timing_min": {
+        "returncode": 0,
+        "elapsed_seconds": 3.657,
+        "log": "build\\tests_verified\\timing_min\\simulate.log",
+        "error_lines": [],
+        "passed": false,
+        "functional_passed": true,
+        "design_sha256": "35931231078393fc0ce0de5b4adc1c6bd7d9f38bc0cd584b84d680bf0a3592fd",
+        "testbench_sha256": "601c74249fb38815f44b0575bb6db630d0bf3eefc3008f4f861444db2ee0da8f",
+        "checks": 898,
+        "toggles": 23,
+        "sdf_annotation_requested": true,
+        "sdf_annotation_completed": true,
+        "sdf_sha256": "61821e1141148fa0309e7c314d33a1483f071adee2d6c55df414d9e0491a517b",
+        "timing_warnings": [
+          "# ** Warning: (vsim-8756) E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/bsim/V_FFSYN.v(73): Instance 'tb_flow_smoke.dut.\\CLMA_63_870/FF0/FF ' - Negative timing check limits detected in simulation with cells modeled without delayed copies of data or reference signals."
+        ]
+      },
+      "timing_max": {
+        "returncode": 0,
+        "elapsed_seconds": 3.625,
+        "log": "build\\tests_verified\\timing_max\\simulate.log",
+        "error_lines": [],
+        "passed": false,
+        "functional_passed": true,
+        "design_sha256": "35931231078393fc0ce0de5b4adc1c6bd7d9f38bc0cd584b84d680bf0a3592fd",
+        "testbench_sha256": "601c74249fb38815f44b0575bb6db630d0bf3eefc3008f4f861444db2ee0da8f",
+        "checks": 898,
+        "toggles": 23,
+        "sdf_annotation_requested": true,
+        "sdf_annotation_completed": true,
+        "sdf_sha256": "61821e1141148fa0309e7c314d33a1483f071adee2d6c55df414d9e0491a517b",
+        "timing_warnings": [
+          "# ** Warning: (vsim-8756) E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/bsim/V_FFSYN.v(73): Instance 'tb_flow_smoke.dut.\\CLMA_63_870/FF0/FF ' - Negative timing check limits detected in simulation with cells modeled without delayed copies of data or reference signals."
+        ]
+      }
+    }
+  },
+  "simulation_libraries": {
+    "passed": true,
+    "directory": "fpga\\build\\simlib_verified",
+    "warnings": [
+      "# ** Warning: (vlib-34) Library already exists at \"adc_e2\".",
+      "# ** Warning: (vlib-34) Library already exists at \"ddc_e2\".",
+      "# ** Warning: (vlib-34) Library already exists at \"dll_e2\".",
+      "# ** Warning: (vlib-34) Library already exists at \"hsstlp_lane\".",
+      "# ** Warning: (vlib-34) Library already exists at \"hsstlp_pll\".",
+      "# ** Warning: (vlib-34) Library already exists at \"iolhr_dft\".",
+      "# ** Warning: (vlib-34) Library already exists at \"ipal_e1\".",
+      "# ** Warning: (vlib-34) Library already exists at \"ipal_e2\".",
+      "# ** Warning: (vlib-34) Library already exists at \"iserdes_e2\".",
+      "# ** Warning: (vlib-34) Library already exists at \"oserdes_e2\".",
+      "# ** Warning: (vlib-34) Library already exists at \"pciegen2\".",
+      "# ** Warning: (vlib-34) Library already exists at \"usim\".",
+      "# ** Warning: (vlib-34) Library already exists at \"vsim\".",
+      "# ** Warning: E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/bsim/V_APM_E4.v(26): (vlog-2263) Redefinition of macro: assert."
+    ]
+  },
+  "host_tests": {
+    "passed": true,
+    "tests_run": 52,
+    "hardware": false
+  },
+  "power": {
+    "kind": "PDS default-activity estimate only",
+    "measured": false
+  },
+  "hardware_programming": "not_performed",
+  "not_implemented": [
+    "FPGA UART status protocol",
+    "RAW8 DVP/ISP/DDR frame pools",
+    "FPGA RGMII/MAC/UDP/HDMI pipeline",
+    "geometry reference model and RTL",
+    "MCU firmware"
+  ],
+  "notes": [
+    "No vendor simulation model was edited; SDF negative-check warnings remain visible.",
+    "The installed ModelSim 10.1c successfully compiled the modelsim10.2c-labelled PDS libraries used here; this does not validate every IP.",
+    "Only licence locator strings in logs are redacted; diagnostic errors and warnings are retained."
+  ]
+}

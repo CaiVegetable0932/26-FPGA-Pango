@@ -1,0 +1,9 @@
+License checkout: fabric_shell from <license_path_redacted>
+Compiling architecture definition.
+E: Flow-0075: The value for option 'language' is not set or is invalid on command 'compile_simlib'.
+E: 
+E: Flow-0163: Failed to parse file "D:\XDU\concept\26-FPGA-Pango\fpga\scripts\simlib.tcl" at line 2. Check if the command options or arguments are valid.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/simlib_2022_2_sp6_4_modelsim_10_1c_logos2/simlib.pds'.
+Executing : compile_simlib -Simulator ModelSim -family Logos2 -language verilog -library all -simulator_exec_path E:/ModelsimSE/win64 -directory D:/XDU/concept/26-FPGA-Pango/fpga/build/simlib_2022_2_sp6_4_modelsim_10_1c_logos2
+E: Flow-0075: The value for option 'language' is not set or is invalid on command 'compile_simlib'.
+W: Failed to execute the script : 

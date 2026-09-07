@@ -1,0 +1,46 @@
+# do run.do 
+# Modifying D:\XDU\concept\26-FPGA-Pango\fpga\build\tests_verified\synthesis\modelsim.ini
+# Modifying D:\XDU\concept\26-FPGA-Pango\fpga\build\tests_verified\synthesis\modelsim.ini
+# Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+# -- Compiling module flow_smoke_top
+# -- Compiling module tb_flow_smoke
+# 
+# Top level modules:
+# 	tb_flow_smoke
+# vsim -L usim -voptargs=+acc -t 1ps work.tb_flow_smoke 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading work.tb_flow_smoke(fast)
+# Loading work.flow_smoke_top(fast)
+# Loading usim.GTP_GRS(fast)
+# Loading usim.GTP_INV(fast)
+# Loading usim.GTP_LUT6D(fast)
+# Loading usim.GTP_LUT5(fast)
+# Loading usim.GTP_LUT5(fast__1)
+# Loading usim.GTP_MUX2LUT6(fast)
+# Loading usim.GTP_LUT6D(fast__1)
+# Loading usim.GTP_LUT5(fast__2)
+# Loading usim.GTP_LUT5(fast__3)
+# Loading usim.GTP_LUT1(fast)
+# Loading usim.GTP_INBUF(fast)
+# Loading usim.GTP_DFF(fast)
+# Loading usim.GTP_DFF_RE(fast)
+# Loading usim.GTP_LUT5(fast__4)
+# Loading usim.GTP_OUTBUF(fast)
+# Loading usim.GTP_DFF(fast__1)
+# Loading usim.GTP_DFF_R(fast)
+# Loading usim.GTP_LUT6D(fast__2)
+# Loading usim.GTP_LUT5(fast__5)
+# Loading usim.GTP_LUT5(fast__6)
+# FLOW_SIM_PASS checks=898 toggles=23
+# ** Note: $finish    : D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_flow_smoke.v(67)
+#    Time: 33704580 ps  Iteration: 1  Instance: /tb_flow_smoke

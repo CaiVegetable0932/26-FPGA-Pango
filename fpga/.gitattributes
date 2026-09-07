@@ -1,0 +1,10 @@
+# Preserve exact input/output bytes for reproducible SHA-256 evidence.
+# -text disables newline conversion only; these files still have normal diffs.
+# This is not an ignore rule: all sources and artifacts remain tracked.
+build/** -text
+release/** -text
+rtl/** -text
+constraints/** -text
+config/** -text
+scripts/** -text
+sim/** -text

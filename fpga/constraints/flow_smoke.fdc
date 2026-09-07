@@ -1,0 +1,26 @@
+# MINI hardware manual V1.3 p.12-14,34-35; key_led_test.fdc cross-check.
+define_attribute {p:clk} {PAP_IO_DIRECTION} {INPUT}
+define_attribute {p:clk} {PAP_IO_LOC} {D18}
+define_attribute {p:clk} {PAP_IO_VCCIO} {3.3}
+define_attribute {p:clk} {PAP_IO_STANDARD} {LVCMOS33}
+define_attribute {p:rstn} {PAP_IO_DIRECTION} {INPUT}
+define_attribute {p:rstn} {PAP_IO_LOC} {C22}
+define_attribute {p:rstn} {PAP_IO_VCCIO} {3.3}
+define_attribute {p:rstn} {PAP_IO_STANDARD} {LVCMOS33}
+define_attribute {p:key} {PAP_IO_DIRECTION} {INPUT}
+define_attribute {p:key} {PAP_IO_LOC} {C23}
+define_attribute {p:key} {PAP_IO_VCCIO} {3.3}
+define_attribute {p:key} {PAP_IO_STANDARD} {LVCMOS33}
+define_attribute {p:led0} {PAP_IO_DIRECTION} {OUTPUT}
+define_attribute {p:led0} {PAP_IO_LOC} {A20}
+define_attribute {p:led0} {PAP_IO_VCCIO} {3.3}
+define_attribute {p:led0} {PAP_IO_STANDARD} {LVCMOS33}
+define_attribute {p:led0} {PAP_IO_DRIVE} {8}
+define_attribute {p:led0} {PAP_IO_SLEW} {SLOW}
+
+create_clock -name clk27 -period 37.037 [get_ports {clk}]
+# Only these asynchronous ports feed the first synchronizer stages.
+# All synchronizer stage-to-stage and functional paths remain timed.
+set_false_path -from [get_ports {rstn key}]
+# LED has no external synchronous receiver and no external setup/hold budget.
+set_false_path -to [get_ports {led0}]

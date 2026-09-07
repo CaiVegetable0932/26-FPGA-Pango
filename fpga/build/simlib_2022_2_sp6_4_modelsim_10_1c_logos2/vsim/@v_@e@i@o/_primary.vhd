@@ -1,0 +1,68 @@
+library verilog;
+use verilog.vl_types.all;
+entity V_EIO is
+    generic(
+        IO_ENABLE       : integer := 1;
+        IP_LOCATION     : string  := "none";
+        IO_PORTS_NAME   : string  := "top";
+        IO_BANK_NUM     : string  := "bank0";
+        IO_BALL_NAME    : string  := "none";
+        IO_NAME         : string  := "none";
+        IO_DIRECTION    : integer := 0;
+        IO_STANDARD     : string  := "lvcmos_18";
+        IO_DRIVE_STRENGTH: integer := 8;
+        IO_SLEW_RATE    : integer := 0;
+        IO_PULL_TYPE    : integer := 0;
+        IO_SCHMITT_TRIGGER_ENABLE: integer := 0;
+        IO_FUNCTION     : integer := 0;
+        IO_OE_SEL       : integer := 0;
+        IO_INPUT_PIPE_ENABLE: integer := 0;
+        IO_INPUT_PIPE_INIT: integer := 0;
+        IO_INPUT_SAMPLE_INV_CLK: integer := 0;
+        IO_INPUT_PIPE_CLK_SEL: integer := 0;
+        IO_OUTPUT_PIPE_ENABLE: integer := 0;
+        IO_OUTPUT_PIPE_INIT: integer := 0;
+        IO_OUTPUT_SAMPLE_INV_CLK: integer := 0;
+        IO_OUTPUT_PIPE_CLK_SEL: integer := 0;
+        IO_OE_PIPE_ENABLE: integer := 0;
+        IO_OE_PIPE_INIT : integer := 0;
+        IO_OE_SAMPLE_INV_CLK: integer := 0;
+        IO_OE_PIPE_CLK_SEL: integer := 0
+    );
+    port(
+        PAD             : inout  vl_logic;
+        CK_DIN          : in     vl_logic;
+        CK_DOUT         : in     vl_logic;
+        DOUT            : in     vl_logic;
+        OE              : in     vl_logic;
+        DIN             : out    vl_logic;
+        CKIN            : out    vl_logic
+    );
+    attribute mti_svvh_generic_type : integer;
+    attribute mti_svvh_generic_type of IO_ENABLE : constant is 1;
+    attribute mti_svvh_generic_type of IP_LOCATION : constant is 1;
+    attribute mti_svvh_generic_type of IO_PORTS_NAME : constant is 1;
+    attribute mti_svvh_generic_type of IO_BANK_NUM : constant is 1;
+    attribute mti_svvh_generic_type of IO_BALL_NAME : constant is 1;
+    attribute mti_svvh_generic_type of IO_NAME : constant is 1;
+    attribute mti_svvh_generic_type of IO_DIRECTION : constant is 1;
+    attribute mti_svvh_generic_type of IO_STANDARD : constant is 1;
+    attribute mti_svvh_generic_type of IO_DRIVE_STRENGTH : constant is 1;
+    attribute mti_svvh_generic_type of IO_SLEW_RATE : constant is 1;
+    attribute mti_svvh_generic_type of IO_PULL_TYPE : constant is 1;
+    attribute mti_svvh_generic_type of IO_SCHMITT_TRIGGER_ENABLE : constant is 1;
+    attribute mti_svvh_generic_type of IO_FUNCTION : constant is 1;
+    attribute mti_svvh_generic_type of IO_OE_SEL : constant is 1;
+    attribute mti_svvh_generic_type of IO_INPUT_PIPE_ENABLE : constant is 1;
+    attribute mti_svvh_generic_type of IO_INPUT_PIPE_INIT : constant is 1;
+    attribute mti_svvh_generic_type of IO_INPUT_SAMPLE_INV_CLK : constant is 1;
+    attribute mti_svvh_generic_type of IO_INPUT_PIPE_CLK_SEL : constant is 1;
+    attribute mti_svvh_generic_type of IO_OUTPUT_PIPE_ENABLE : constant is 1;
+    attribute mti_svvh_generic_type of IO_OUTPUT_PIPE_INIT : constant is 1;
+    attribute mti_svvh_generic_type of IO_OUTPUT_SAMPLE_INV_CLK : constant is 1;
+    attribute mti_svvh_generic_type of IO_OUTPUT_PIPE_CLK_SEL : constant is 1;
+    attribute mti_svvh_generic_type of IO_OE_PIPE_ENABLE : constant is 1;
+    attribute mti_svvh_generic_type of IO_OE_PIPE_INIT : constant is 1;
+    attribute mti_svvh_generic_type of IO_OE_SAMPLE_INV_CLK : constant is 1;
+    attribute mti_svvh_generic_type of IO_OE_PIPE_CLK_SEL : constant is 1;
+end V_EIO;

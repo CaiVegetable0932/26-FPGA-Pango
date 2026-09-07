@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tables>
+    <table id="compile_source_files" title="Design Files Read" column_number="2">
+        <column_headers>
+            <data>File Name</data>
+            <data>File Type</data>
+        </column_headers>
+        <row>
+            <data>D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v</data>
+            <data>Verilog</data>
+        </row>
+    </table>
+    <table id="compile_runtime" title="Compile Runtime &amp; Memory" column_number="7">
+        <column_headers>
+            <data>Cpu Time</data>
+            <data>Process Cpu Time</data>
+            <data>Real Time</data>
+            <data>Peak Memory (MB)</data>
+            <data>Operation System</data>
+            <data>CPU</data>
+            <data>RAM(GB)</data>
+        </column_headers>
+        <row>
+            <data>0h:0m:0s</data>
+            <data>0h:0m:0s</data>
+            <data>0h:0m:4s</data>
+            <data>136</data>
+            <data>WINDOWS 10 x86_64</data>
+            <data>AMD Ryzen 9 8945HS w/ Radeon 780M Graphics</data>
+            <data>31</data>
+        </row>
+    </table>
+    <table id="compile_messages" title="Compile Messages" column_number="1">
+        <column_headers/>
+        <row>
+            <data message="4">Enable Verilog2k features and keywords</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0001: Analyzing file D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0002: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 6)] Analyzing module flow_smoke_top (library work)</data>
+        </row>
+        <row>
+            <data message="4">[D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 12)] Convert attribute name from syn_preserve to PAP_PRESERVE</data>
+        </row>
+        <row>
+            <data message="4">[D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 12)] Convert attribute name from syn_srlstyle to PAP_SRL_STYLE</data>
+        </row>
+        <row>
+            <data message="4">[D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 13)] Convert attribute name from syn_preserve to PAP_PRESERVE</data>
+        </row>
+        <row>
+            <data message="4">[D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 13)] Convert attribute name from syn_srlstyle to PAP_SRL_STYLE</data>
+        </row>
+        <row>
+            <data message="4">[D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 14)] Convert attribute name from syn_preserve to PAP_PRESERVE</data>
+        </row>
+        <row>
+            <data message="4">[D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 14)] Convert attribute name from syn_srlstyle to PAP_SRL_STYLE</data>
+        </row>
+        <row>
+            <data message="4">[D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 15)] Convert attribute name from syn_preserve to PAP_PRESERVE</data>
+        </row>
+        <row>
+            <data message="4">[D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 15)] Convert attribute name from syn_srlstyle to PAP_SRL_STYLE</data>
+        </row>
+        <row>
+            <data message="4">Module &quot;flow_smoke_top&quot; is set as top module.</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0003: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 6)] Elaborating module flow_smoke_top</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+    </table>
+    <general_container id="compile_settings">
+        <table_container>
+            <table id="compile_settings" title="Compile Settings" column_number="2">
+                <column_headers>
+                    <data>Name</data>
+                    <data>Value</data>
+                </column_headers>
+                <row>
+                    <data>Part</data>
+                    <data>PG2L100H-6FBG676</data>
+                </row>
+                <row>
+                    <data>Top Module</data>
+                    <data>flow_smoke_top</data>
+                </row>
+            </table>
+        </table_container>
+        <general_container align="3">
+            <table_container>
+                <data>Verilog</data>
+                <table id="" title="" column_number="2">
+                    <column_headers>
+                        <data>Name</data>
+                        <data>Value</data>
+                    </column_headers>
+                    <row>
+                        <data>SystemVerilog</data>
+                        <data>false</data>
+                    </row>
+                    <row>
+                        <data>Allow Duplicate Modules</data>
+                        <data>false</data>
+                    </row>
+                    <row>
+                        <data>Multiple File Compilation Unit</data>
+                        <data>true</data>
+                    </row>
+                    <row>
+                        <data>Include Path Order: 
+ (Relative to Verilog File)</data>
+                        <data>D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_d	</data>
+                    </row>
+                    <row>
+                        <data>Parameters/Generics</data>
+                        <data></data>
+                    </row>
+                    <row>
+                        <data>Compiler Directives</data>
+                        <data></data>
+                    </row>
+                    <row>
+                        <data>Loop Limit</data>
+                        <data>2000</data>
+                    </row>
+                </table>
+            </table_container>
+            <table_container>
+                <data>Options</data>
+                <table id="" title="" column_number="2">
+                    <column_headers>
+                        <data>Name</data>
+                        <data>Value</data>
+                    </column_headers>
+                    <row>
+                        <data>FSM Compiler</data>
+                        <data>auto</data>
+                    </row>
+                </table>
+            </table_container>
+        </general_container>
+    </general_container>
+</tables>

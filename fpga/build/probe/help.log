@@ -1,0 +1,286 @@
+License checkout: fabric_shell from <license_path_redacted>
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/probe/probe.pds'.
+PROBE_COMMAND set_arch
+Executing : set_arch -help
+H: set_arch : Specify part (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -family string ]
+        Specify FPGA family
+    [ -device string ]
+        Specify device
+    [ -package string ]
+        Specify package
+    [ -speedgrade string ]
+        Specify speedgrade
+    [ -input_db_file string ]
+        Import part information from input DB file
+
+
+Executing : set_arch -help successfully.
+
+PROBE_COMMAND compile_simlib
+Executing : compile_simlib -help
+H: compile_simlib : Compile simulation libraries. (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -Simulator string ]
+        Compile libraries for this simulator.
+    [ -family { string string ... } ]
+        Select family to compile.
+    [ -language string ]
+        Compile libraries for this language.
+    [ -library string ]
+        Select library to compile.
+    -simulator_exec_path string
+        Use simulator executables from this directory.
+    -directory string
+        Select this directory to save compiled libraries.
+
+
+Executing : compile_simlib -help successfully.
+
+PROBE_COMMAND report_timing
+
+
+Executing : report_timing -help
+H: report_timing : Report timing (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -force_to_run  ]
+        Run this Action without Checking the Status.
+    [ -input_db_file file string ]
+        Specify Input Design DB File Name
+    [ -delay_type string ]
+        Path Delay Type (-delay_type)
+    [ -nworst integer_number ]
+        Number of Paths per Endpoint (-nworst)
+    [ -max_path integer_number ]
+        Total Number of Paths (-max_path)
+    [ -input_pins Boolean_value (TRUE/FALSE) ]
+        Show Input Pins (-input_pins)
+    [ -slack_greater_than double_number ]
+        Report Paths with Slack >
+    [ -slack_less_than double_number ]
+        Report Paths with Slack <
+    [ -path_logic_level_gt_than integer_number ]
+        Report Paths with Logic levels >
+    [ -clock_group_limit { string string ... } ]
+        Limit Paths by Clock Group
+    [ -disable_package_delay  ]
+        Disable Package Delay
+    [ -report_io_datasheet  ]
+        Report IO Datasheet
+    [ -report_max_skew  ]
+        Report Max Skew
+    [ -report_exception Boolean_value (TRUE/FALSE) ]
+        Report Exception
+    [ -ignore_db_version  ]
+        Skip DB version check
+    [ -from { string string ... } ]
+        Specify Timing Path From points
+    [ -to { string string ... } ]
+        Specify Timing Path To points
+    [ -through Unknown ]
+        Specify Timing Path through points
+    [ -of_flow string ]
+        Specify the flow which will be run
+
+
+Executing : report_timing -help successfully.
+
+PROBE_COMMAND gen_netlist
+
+
+Executing : gen_netlist -help
+H: gen_netlist : Generate Netlist (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -of_flow string ]
+        Specify the flow which will be run
+    [ -force_to_run  ]
+        Run this action without checking the status
+    [ -input_db_file file string ]
+        Specify the input design DB file name
+    [ -func_sim_only  ]
+        Generate netlist for functional simulation only
+    [ -sdf_annotate Boolean_value (TRUE/FALSE) ]
+        Enable Sdf Annotate
+    [ -process_corner string ]
+        Process Corner
+
+
+Executing : gen_netlist -help successfully.
+
+PROBE_COMMAND report_power
+
+
+Executing : report_power -help
+H: report_power : Report the power information. (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -of_flow string ]
+        Specify the flow which will be run
+    [ -input_db_file file string ]
+        Specify the input design DB file name
+    [ -tempgrade string ]
+        Temp Grade
+    [ -process string ]
+        Process
+    [ -model string ]
+        Power Model
+    [ -custom_junction Boolean_value (TRUE/FALSE) ]
+        Custom Junction Temperature 
+    [ -ambient double_number ]
+        Ambient Temperature
+    [ -junction double_number ]
+        Junction Temperature
+    [ -custom_ja Boolean_value (TRUE/FALSE) ]
+        Custom Effective Theta JA 
+    [ -theta_ja double_number ]
+        Effective Theta JA
+    [ -airflow string ]
+        Airflow (LFM)
+    [ -heatsink string ]
+        Heat-Sink
+    [ -theta_sa double_number ]
+        Effective Theta SA
+    [ -board_thermal string ]
+        Board Thermal Model
+    [ -output_ppr string ]
+        Output power report file
+    [ -output_pps string ]
+        Output fast settings file
+    [ -output_ppf string ]
+        Output PPF file
+    [ -vcd file string ]
+        Specify Input VCD File
+    [ -output_pf double_number ]
+        Output Load (pF)
+    [ -clk_freq double_number ]
+        Default Clock Freq (MHz)
+    [ -togg double_number ]
+        Default Toggle Rate
+    [ -prob double_number ]
+        Default Static Probability
+    [ -io_togg double_number ]
+        Default I/O Toggle Rate
+    [ -io_prob double_number ]
+        Default I/O Enable Probability
+    [ -ram_togg double_number ]
+        Default BRAM Toggle Rate
+    [ -ram_prob double_number ]
+        Default BRAM Enable Probability
+    [ -dsp_togg double_number ]
+        Default APM Toggle Rate
+    [ -dsp_prob double_number ]
+        Default APM Enable Probability
+    [ -hsst_togg double_number ]
+        Default HSST Toggle Rate
+    [ -hsst_prob double_number ]
+        Default HSST Enable Probability
+    [ -vcc double_number ]
+        VCC
+    [ -vccint double_number ]
+        VCC
+    [ -vccio33 double_number ]
+        VCCIO33
+    [ -vccio25 double_number ]
+        VCCIO25
+    [ -vccio18 double_number ]
+        VCCIO18
+    [ -vccio15 double_number ]
+        VCCIO15
+    [ -vccio12 double_number ]
+        VCCIO12
+    [ -vccio11 double_number ]
+        VCCIO11
+    [ -vccio1 double_number ]
+        VCCIO1
+    [ -vccio135 double_number ]
+        VCCIO135
+    [ -vcca_lane double_number ]
+        VCCA_LANE
+    [ -vcca_pll0 double_number ]
+        VCCA_PLL0
+    [ -vcca_pll1 double_number ]
+        VCCA_PLL1
+    [ -hsstavccl double_number ]
+        HSSTAVCCL
+    [ -hsstavcch double_number ]
+        HSSTAVCCH
+    [ -vccaux double_number ]
+        VCCAUX
+    [ -vcc33a double_number ]
+        VCCAUX
+    [ -vccaux_a double_number ]
+        VCCAUX_A
+    [ -vcca_io double_number ]
+        VCCAIO
+    [ -vcc_hp double_number ]
+        VCCHP
+    [ -vcca_io_g0 double_number ]
+        VCCA_IO_G0
+    [ -vcc33 double_number ]
+        VCCAUX
+    [ -vcca double_number ]
+        VCCA
+    [ -vcc_hpio double_number ]
+        VCCHPIO
+    [ -vcca_sensor double_number ]
+        VCCASENSOR
+    [ -vcc_drm double_number ]
+        VCCDRM
+    [ -hsstvcca double_number ]
+        HSSTVCCA
+    [ -vcc_adc double_number ]
+        VCCADC
+    [ -avcc double_number ]
+        HSSTAVCC
+    [ -hsstavcc double_number ]
+        HSSTAVCC
+    [ -avccpll double_number ]
+        HSSTAVCCPLL
+    [ -hsstavccpll double_number ]
+        HSSTAVCCPLL
+    [ -hsstavttpll double_number ]
+        HSSTAVTTPLL
+    [ -vdd33 double_number ]
+        VDD33_Q
+    [ -apowp double_number ]
+        APOWP
+    [ -vdd12_t double_number ]
+        VDD12T
+    [ -vdd11_t double_number ]
+        VDD11T
+    [ -vdd12_r double_number ]
+        VDD12R
+    [ -vdd11_r double_number ]
+        VDD11R
+    [ -vcc_sdram double_number ]
+        VCCSDRAM
+    [ -vcc_pu double_number ]
+        VCC_PU
+    [ -vcca_pu double_number ]
+        VCCA_PU
+    [ -vcca_hpio double_number ]
+        VCCA_HPIO
+    [ -vccio_ddr double_number ]
+        VCCIO_DDR
+    [ -vccio_mio0 double_number ]
+        VCCIO_MIO0
+    [ -vccio_mio1 double_number ]
+        VCCIO_MIO1
+    [ -vcc_mipi double_number ]
+        VCC_MIPI
+    [ -vcca_mipi double_number ]
+        VCCA_MIPI
+    [ -vcc_pll double_number ]
+        VCC_PLL
+
+
+Executing : report_power -help successfully.
+
+PROBE_COMMAND export_project
+invalid command name "export_project"
