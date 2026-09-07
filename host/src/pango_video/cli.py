@@ -29,6 +29,12 @@ def synthetic_pixels(size: int, frame_id: int) -> bytes:
 
 def load_config(path: Path) -> dict:
     data = json.loads(path.read_text(encoding="utf-8"))
+    return validate_config(data)
+
+
+def validate_config(data: dict) -> dict:
+    if not isinstance(data, dict):
+        raise ValueError("configuration must be an object")
     required = {"device_id", "source_mode", "bind_ip", "port", "peer_ip", "peer_port",
                 "stream_epoch", "width", "height", "bayer_code", "receive_buffer_bytes"}
     if set(data) != required:

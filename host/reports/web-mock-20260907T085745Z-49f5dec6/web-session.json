@@ -1,0 +1,169 @@
+{
+  "state": "stopped",
+  "signal": "stopped",
+  "running": false,
+  "config": {
+    "device_id": "MOCK-OV5640",
+    "source_mode": "mock",
+    "bind_ip": "127.0.0.1",
+    "port": 53961,
+    "peer_ip": "127.0.0.1",
+    "peer_port": 53962,
+    "stream_epoch": "1",
+    "width": 1920,
+    "height": 1080,
+    "bayer_code": 1,
+    "receive_buffer_bytes": 8388608
+  },
+  "run_id": "web-mock-20260907T085745Z-49f5dec6",
+  "started_utc": "2026-09-07T08:57:45.994868+00:00",
+  "elapsed_seconds": 1.3589999999967404,
+  "frame": {
+    "run_id": "web-mock-20260907T085745Z-49f5dec6",
+    "source_mode": "mock",
+    "frame_id": "22",
+    "stream_epoch": "1",
+    "descriptor_id": 1,
+    "param_version": 0,
+    "width": 1920,
+    "height": 1080,
+    "row_stride": 1920,
+    "frame_bytes": 2073600,
+    "pixel_format": "RAW8",
+    "bayer_code": 1,
+    "packet_count": 1482,
+    "key": "web-mock-20260907T085745Z-49f5dec6:1:22:1:1",
+    "source_stage": "S0",
+    "transport_complete": true,
+    "measurement_ready": false
+  },
+  "frame_age_ms": 62.0,
+  "complete_fps": 0,
+  "payload_mb_s": 0,
+  "packets_s": 31324.6,
+  "saved_frames": 1,
+  "pending_saves": 0,
+  "error": null,
+  "manual_saves_enqueued": 1,
+  "manual_saves_rejected": 0,
+  "metrics": {
+    "bind": [
+      "127.0.0.1",
+      53961
+    ],
+    "peer": [
+      "127.0.0.1",
+      53962
+    ],
+    "counters": {
+      "datagrams_received": 34739,
+      "udp_payload_bytes_received": 50830296,
+      "live_frames_complete": 23,
+      "preview_frames_replaced": 0
+    },
+    "socket_receive_buffer_requested": 8388608,
+    "socket_receive_buffer_reported": 8388608,
+    "assembly": {
+      "counters": {
+        "datagrams": 34739,
+        "live_frames_observed": 24,
+        "packets_accepted_unique": 34739,
+        "live_frames_complete": 23,
+        "live_bytes_complete": 47692800,
+        "frames_failed_stopped": 1
+      },
+      "active_frames": 0,
+      "buffer_bytes": 0,
+      "stream_epoch": "1",
+      "live_first_id": "0",
+      "live_highwater": "23",
+      "live_unobserved_ids_in_span": 0
+    },
+    "preview_queue": {
+      "frames": 0,
+      "payload_bytes": 0,
+      "max_frames": 2,
+      "max_bytes": 16777216
+    },
+    "archive_queue": {
+      "frames": 0,
+      "payload_bytes": 0,
+      "max_frames": 4,
+      "max_bytes": 16777216
+    },
+    "recent_failures": [
+      {
+        "key": [
+          "1",
+          "23",
+          1,
+          1
+        ],
+        "reason": "stopped",
+        "received_packets": 653,
+        "packet_count": 1482,
+        "missing_ranges": [
+          [
+            653,
+            829
+          ]
+        ]
+      }
+    ]
+  },
+  "history": [
+    {
+      "second": 0.0,
+      "fps": 0.0
+    },
+    {
+      "second": 1.0,
+      "fps": 14.0
+    }
+  ],
+  "events": [
+    {
+      "time": "2026-09-07T08:57:45.994868+00:00",
+      "kind": "info",
+      "message": "已启动本机模拟信号"
+    },
+    {
+      "time": "2026-09-07T08:57:47.257872+00:00",
+      "kind": "success",
+      "message": "源帧 21 原始数据已保存"
+    },
+    {
+      "time": "2026-09-07T08:57:47.352125+00:00",
+      "kind": "info",
+      "message": "采集已停止，运行报告已整理"
+    }
+  ],
+  "hdmi": {
+    "available": false,
+    "source_frame_id": null,
+    "pairing_status": "unverified"
+  },
+  "controls": {
+    "uart_available": false,
+    "snapshot_request_available": false
+  },
+  "hardware_acceptance": "not_performed",
+  "source_sha256": {
+    "src/pango_video/__init__.py": "c0ac5d9ea12c9e8ad01d4c62322ddfd1d048deca9216ee617bae4ae5b40b66b8",
+    "src/pango_video/cli.py": "ee620a61351f7316b9c1f7994e8c6398d93b8865fb0336e09fb42da0d7734a14",
+    "src/pango_video/demo.py": "132d07b13fa2fa7ab5ee0e4201c1d47dc9b257dc0be4850b1c5172d4c0832d19",
+    "src/pango_video/protocol.py": "f77cb210734a5034840cd733fe6ed7cc9e6b4a3f65b0c37e358bbd28b9b1f73c",
+    "src/pango_video/reassembly.py": "2a879b3035ba0266fbdb0f601fb568275f561f32a97ab3b7a9658b9ba60c1fa5",
+    "src/pango_video/receiver.py": "e72c4e279ebadc2ead4daa74725b8e5be42b6183c274573b47ba3d690ea8db56",
+    "src/pango_video/storage.py": "ceaaa37a0ad35a7bbf9d401280d83186b6d5c1345a9470d2642451216b992b96",
+    "src/pango_video/web_server.py": "88defdc100f0b927f4bcfe836f18e19b61d96e54fcc54751569b427723f85cce",
+    "src/pango_video/web_session.py": "2cbbd50cb3d3932a38946c3f41db055d3381bed367f05f57b2efac1fc1c92236",
+    "web/app.css": "919d52d2f55387a4ffa7d21051db5ae34ad7393f819b03d0b455b093f3528fc0",
+    "web/app.js": "825f73b5ec6e768b24dda0197cbde125614dd911fb350e102bd0c2d08f1c5639",
+    "web/favicon.svg": "e9870123a4d77bda9266ac9c238dd542444af757bff26467a1b4a7fe61614a84",
+    "web/index.html": "a259cdd05370e97c094facd4ab0e8aae9c18ad1ccddebf9d26f01a36e6244b59",
+    "web/pixels.js": "24beaac3ccd2ceea729d53572d3014885f2837e9017459e9322bde2f7cd6e03a",
+    "web/preview-worker.js": "4ac7c892bf26f9cad33ad07d61a40c3b1b521b7e923c19216d8075971ad3a72c"
+  },
+  "ended_utc": "2026-09-07T08:57:47.352125+00:00"
+}

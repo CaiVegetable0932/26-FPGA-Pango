@@ -129,17 +129,24 @@ class UDPReceiver:
             else:
                 self.stats["archive_frames_enqueued"] += 1
 
-    def run(self, stop: threading.Event, *, duration: float | None = None):
+    def run(self, stop: threading.Event, *, duration: float | None = None,
+            on_status=None, status_interval: float = 0.25):
         if self.socket is None:
             raise RuntimeError("call open() before run()")
         if duration is not None and duration <= 0:
             raise ValueError("duration must be positive or None")
+        if status_interval <= 0:
+            raise ValueError("status_interval must be positive")
+        next_status = 0.0
         # Holds the largest IPv4 UDP payload plus margin. Reading only 1464 bytes
         # could truncate an oversized datagram into an apparently valid packet.
         buffer = bytearray(65535)
         deadline = None if duration is None else time.monotonic() + duration
         try:
             while not stop.is_set() and (deadline is None or time.monotonic() < deadline):
+                if on_status is not None and time.monotonic() >= next_status:
+                    on_status(self.status())  # Snapshot from the socket/assembler owner.
+                    next_status = time.monotonic() + status_interval
                 try:
                     size, peer = self.socket.recvfrom_into(buffer)
                 except socket.timeout:
@@ -165,7 +172,7 @@ class UDPReceiver:
             self._drain_failures()
 
     def status(self) -> dict:
-        """Read after run() returns; live GUI should request snapshots from its owner."""
+        """Read after run() returns, or inside the owner-thread on_status callback."""
         return {"bind": self.bind, "peer": self.peer, "counters": dict(self.stats),
                 "socket_receive_buffer_requested": self.receive_buffer_bytes,
                 "socket_receive_buffer_reported": self.socket_receive_buffer_reported,

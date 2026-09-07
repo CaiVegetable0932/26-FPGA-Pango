@@ -1,0 +1,141 @@
+{
+  "state": "stopped",
+  "signal": "stopped",
+  "running": false,
+  "config": {
+    "device_id": "MOCK-OV5640",
+    "source_mode": "mock",
+    "bind_ip": "127.0.0.1",
+    "port": 60296,
+    "peer_ip": "127.0.0.1",
+    "peer_port": 60297,
+    "stream_epoch": "1",
+    "width": 1920,
+    "height": 1080,
+    "bayer_code": 1,
+    "receive_buffer_bytes": 8388608
+  },
+  "run_id": "web-mock-20260907T084725Z-0c0a4b19",
+  "started_utc": "2026-09-07T08:47:25.348669+00:00",
+  "elapsed_seconds": 0.625,
+  "frame": {
+    "run_id": "web-mock-20260907T084725Z-0c0a4b19",
+    "source_mode": "mock",
+    "frame_id": "0",
+    "stream_epoch": "1",
+    "descriptor_id": 1,
+    "param_version": 0,
+    "width": 1920,
+    "height": 1080,
+    "row_stride": 1920,
+    "frame_bytes": 2073600,
+    "pixel_format": "RAW8",
+    "bayer_code": 1,
+    "packet_count": 1482,
+    "key": "web-mock-20260907T084725Z-0c0a4b19:1:0:1:1",
+    "source_stage": "S0",
+    "transport_complete": true,
+    "measurement_ready": false
+  },
+  "frame_age_ms": 78.0,
+  "complete_fps": 0,
+  "payload_mb_s": 0,
+  "packets_s": 3752.0,
+  "saved_frames": 0,
+  "pending_saves": 0,
+  "error": null,
+  "metrics": {
+    "bind": [
+      "127.0.0.1",
+      60296
+    ],
+    "peer": [
+      "127.0.0.1",
+      60297
+    ],
+    "counters": {
+      "datagrams_received": 2345,
+      "udp_payload_bytes_received": 3431880,
+      "live_frames_complete": 1,
+      "preview_frames_replaced": 0
+    },
+    "socket_receive_buffer_requested": 8388608,
+    "socket_receive_buffer_reported": 8388608,
+    "assembly": {
+      "counters": {
+        "datagrams": 2345,
+        "live_frames_observed": 2,
+        "packets_accepted_unique": 2345,
+        "live_frames_complete": 1,
+        "live_bytes_complete": 2073600,
+        "frames_failed_stopped": 1
+      },
+      "active_frames": 0,
+      "buffer_bytes": 0,
+      "stream_epoch": "1",
+      "live_first_id": "0",
+      "live_highwater": "1",
+      "live_unobserved_ids_in_span": 0
+    },
+    "preview_queue": {
+      "frames": 0,
+      "payload_bytes": 0,
+      "max_frames": 2,
+      "max_bytes": 16777216
+    },
+    "archive_queue": {
+      "frames": 0,
+      "payload_bytes": 0,
+      "max_frames": 4,
+      "max_bytes": 16777216
+    },
+    "recent_failures": [
+      {
+        "key": [
+          "1",
+          "1",
+          1,
+          1
+        ],
+        "reason": "stopped",
+        "received_packets": 863,
+        "packet_count": 1482,
+        "missing_ranges": [
+          [
+            863,
+            619
+          ]
+        ]
+      }
+    ]
+  },
+  "history": [
+    {
+      "second": 0.0,
+      "fps": 0.0
+    }
+  ],
+  "events": [
+    {
+      "time": "2026-09-07T08:47:25.348669+00:00",
+      "kind": "info",
+      "message": "已启动本机模拟信号"
+    },
+    {
+      "time": "2026-09-07T08:47:25.978770+00:00",
+      "kind": "info",
+      "message": "采集已停止，运行报告已整理"
+    }
+  ],
+  "hdmi": {
+    "available": false,
+    "source_frame_id": null,
+    "pairing_status": "unverified"
+  },
+  "controls": {
+    "uart_available": false,
+    "snapshot_request_available": false
+  },
+  "hardware_acceptance": "not_performed",
+  "ended_utc": "2026-09-07T08:47:25.978770+00:00"
+}
