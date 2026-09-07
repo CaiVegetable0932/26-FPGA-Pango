@@ -45,6 +45,10 @@ git clone https://github.com/CaiVegetable0932/26-FPGA-Pango.git
 用 VS Code 打开克隆后的目录。若需要编辑远程开发分支，从分支列表选择对应分支。安装 PDS、ModelSim，恢复外部资料并配置本机工具路径和 License。克隆不会复制旧电脑的本地 Git 配置，可在新仓库设置：
 
 ```powershell
+git config --local user.name CaiVegetable0932
+git config --local user.email caivegetable0932@163.com
+git config --local user.useConfigOnly true
+git config --local credential.https://github.com.username CaiVegetable0932
 git config pull.ff only
 git config push.default simple
 git config fetch.prune true
@@ -52,7 +56,9 @@ git config core.longpaths true
 git config core.quotepath false
 ```
 
-## GitHub 登录
+## 固定身份与 GitHub 登录
+
+本项目提交作者与提交者均固定为 `CaiVegetable0932 <caivegetable0932@163.com>`；推送使用 `CaiVegetable0932` 登录账户。提交前用 `git var GIT_AUTHOR_IDENT` 和 `git var GIT_COMMITTER_IDENT` 核对实际身份，提交后通过 `git log -1 --format=fuller` 复核。Git 配置不会替代 GitHub 登录。
 
 使用 Git Credential Manager 或 VS Code 的 GitHub 登录提示完成授权。凭据由本机凭据管理器保存，不写入仓库。认证失败时可在终端运行 `git credential-manager github login --username CaiVegetable0932 --force --browser` 重新登录，无需将密码或令牌发给他人。
 

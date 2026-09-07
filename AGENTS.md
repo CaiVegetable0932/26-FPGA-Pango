@@ -26,6 +26,14 @@
 - 真实1080p30、未压缩原始数据、网络完整帧率与FPGA结果帧率分别验收。60FPS需真60源及另行验证的回传能力，不承诺RAW8满流继续走千兆网。
 - 原始证据保存.raw/.rgb及元数据，PNG等只能作为派生可视化。功耗、吞吐和来源证明均需真实测量，不把方案预算列为实测结果。
 
+## 固定提交与推送身份（强制）
+
+- 本项目后续提交固定使用姓名 `CaiVegetable0932` 和邮箱 `caivegetable0932@163.com`；GitHub 推送使用已登录的 `CaiVegetable0932` 账户。除非用户明确修改，不得换用其他身份。
+- 每次提交前核对仓库本地 `user.name`、`user.email`，并通过 `git var GIT_AUTHOR_IDENT` 和 `git var GIT_COMMITTER_IDENT` 检查实际作者和提交者，防止环境变量覆盖。两者均须为上述身份，配置不符时先修正再提交。
+- 本仓库使用 `git config --local user.name CaiVegetable0932`、`git config --local user.email caivegetable0932@163.com` 和 `git config --local user.useConfigOnly true` 固定身份；新克隆或新环境也必须先应用这些本地配置。
+- Git 的姓名和邮箱是提交元数据，不等同于 GitHub 登录凭据。推送前确认凭据管理器使用 `CaiVegetable0932`，本仓库 HTTPS 用户名固定为该账户；凭据失效时重新登录该账户，不能用其他账户代替。
+- 新提交完成后核对作者、提交者及云端分支提交号。已有历史保留原作者，不因更新身份而改写历史或强制推送。
+
 ## 修改前核对与回答前推送（强制）
 
 - 本规则适用于根目录文件及除根目录 `reference/`、`PDS/` 以外的所有内容，包括文档、代码、配置、测试、数据和生成产物。
