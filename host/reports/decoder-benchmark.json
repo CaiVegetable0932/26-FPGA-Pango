@@ -1,0 +1,91 @@
+{
+  "utc": "2026-09-07T07:46:15.831942+00:00",
+  "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "source_mode": "synthetic_prebuilt_datagrams",
+  "hardware_acceptance": "not_performed",
+  "frames_per_iteration": 30,
+  "input_resident_bytes": 65053440,
+  "excludes": [
+    "packet generation",
+    "UDP sockets",
+    "NIC",
+    "disk",
+    "GUI",
+    "FPGA"
+  ],
+  "target_budget_packets_per_second": 44460,
+  "runs": [
+    {
+      "elapsed_seconds": 0.3129036000173073,
+      "packets_per_second": 142088.4898656993,
+      "complete_frames_per_second": 95.87617399844757,
+      "complete_frames": 30,
+      "assembly": {
+        "counters": {
+          "datagrams": 44460,
+          "live_frames_observed": 30,
+          "packets_accepted_unique": 44460,
+          "live_frames_complete": 30,
+          "live_bytes_complete": 62208000
+        },
+        "active_frames": 0,
+        "buffer_bytes": 0,
+        "stream_epoch": 1,
+        "live_first_id": 0,
+        "live_highwater": 29,
+        "live_unobserved_ids_in_span": 0
+      }
+    },
+    {
+      "elapsed_seconds": 0.3096743000205606,
+      "packets_per_second": 143570.19616108958,
+      "complete_frames_per_second": 96.87597581719946,
+      "complete_frames": 30,
+      "assembly": {
+        "counters": {
+          "datagrams": 44460,
+          "live_frames_observed": 30,
+          "packets_accepted_unique": 44460,
+          "live_frames_complete": 30,
+          "live_bytes_complete": 62208000
+        },
+        "active_frames": 0,
+        "buffer_bytes": 0,
+        "stream_epoch": 1,
+        "live_first_id": 0,
+        "live_highwater": 29,
+        "live_unobserved_ids_in_span": 0
+      }
+    },
+    {
+      "elapsed_seconds": 0.305969399982132,
+      "packets_per_second": 145308.64852039574,
+      "complete_frames_per_second": 98.0490205940592,
+      "complete_frames": 30,
+      "assembly": {
+        "counters": {
+          "datagrams": 44460,
+          "live_frames_observed": 30,
+          "packets_accepted_unique": 44460,
+          "live_frames_complete": 30,
+          "live_bytes_complete": 62208000
+        },
+        "active_frames": 0,
+        "buffer_bytes": 0,
+        "stream_epoch": 1,
+        "live_first_id": 0,
+        "live_highwater": 29,
+        "live_unobserved_ids_in_span": 0
+      }
+    }
+  ],
+  "source_sha256": {
+    "cli.py": "fafaf8f8353e3685cd2e3448800d51403748fab90b4988ff68a776cf38dbe8e3",
+    "protocol.py": "f77cb210734a5034840cd733fe6ed7cc9e6b4a3f65b0c37e358bbd28b9b1f73c",
+    "reassembly.py": "2a879b3035ba0266fbdb0f601fb568275f561f32a97ab3b7a9658b9ba60c1fa5",
+    "receiver.py": "bd3ad56cb8d8258984bea337b97ae460e660ad4d84a7ef9bc36530e77f423ed5",
+    "storage.py": "ceaaa37a0ad35a7bbf9d401280d83186b6d5c1345a9470d2642451216b992b96",
+    "__init__.py": "c0ac5d9ea12c9e8ad01d4c62322ddfd1d048deca9216ee617bae4ae5b40b66b8"
+  }
+}

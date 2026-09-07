@@ -1,0 +1,41 @@
+{
+  "utc": "2026-09-07T07:46:23.709418+00:00",
+  "hardware_acceptance": "not_performed",
+  "transport": "two processes over IPv4 loopback",
+  "cases": [
+    {
+      "source_mode": "mock",
+      "config": "D:\\XDU\\concept\\26-FPGA-Pango\\host\\build\\smoke-72808ffd.json",
+      "run_id": "mock-20260907T074616Z-fee8a517",
+      "receiver_report": "D:\\XDU\\concept\\26-FPGA-Pango\\host\\reports\\mock-20260907T074616Z-fee8a517\\receiver.json",
+      "sender_returncode": 0,
+      "receiver_returncode": 0,
+      "sender_output": "{\"source_mode\": \"mock\", \"frames_generated\": 30, \"datagrams_sent\": 44460, \"elapsed_seconds\": 1.0160000000032596, \"requested_fps\": 30.0, \"hardware_acceptance\": \"not_performed\"}\n",
+      "receiver_stderr": "",
+      "sender_stderr": "",
+      "expected_complete_frames": 30,
+      "actual_complete_frames": 30,
+      "drop_index": null,
+      "archive_files": 1,
+      "first_frame_archive_matches": true,
+      "first_frame_sha256": "a24bed72cdea494a1f92dabd52215b1a0f8e06d8225e5f2a18431caf9dcaccce",
+      "passed": true
+    },
+    {
+      "source_mode": "mock",
+      "config": "D:\\XDU\\concept\\26-FPGA-Pango\\host\\build\\smoke-75c39b16.json",
+      "run_id": "mock-20260907T074621Z-13eb6886",
+      "receiver_report": "D:\\XDU\\concept\\26-FPGA-Pango\\host\\reports\\mock-20260907T074621Z-13eb6886\\receiver.json",
+      "sender_returncode": 0,
+      "receiver_returncode": 2,
+      "sender_output": "{\"source_mode\": \"mock\", \"frames_generated\": 2, \"datagrams_sent\": 2962, \"elapsed_seconds\": 0.40700000000651926, \"requested_fps\": 5.0, \"hardware_acceptance\": \"not_performed\"}\n",
+      "receiver_stderr": "",
+      "sender_stderr": "",
+      "expected_complete_frames": 0,
+      "actual_complete_frames": 0,
+      "drop_index": 1,
+      "passed": true
+    }
+  ],
+  "passed": true
+}
