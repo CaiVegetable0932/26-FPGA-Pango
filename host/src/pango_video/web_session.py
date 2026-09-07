@@ -302,6 +302,21 @@ class WebSession:
                     raise SessionError("正在排空归档队列，请稍后再检查")
             return self.status()
 
+    def records(self):
+        from .record_store import inventory
+        with self._operation:
+            active = self._run_id if self._thread and self._thread.is_alive() else None
+            return inventory(self.root, active)
+
+    def delete_records(self, targets):
+        from .record_store import RecordError, delete_records
+        with self._operation:
+            active = self._run_id if self._thread and self._thread.is_alive() else None
+            try:
+                return delete_records(self.root, targets, active)
+            except RecordError as error:
+                raise SessionError(str(error)) from error
+
     def save_current(self):
         with self._operation, self._lock:
             frame = self._frame

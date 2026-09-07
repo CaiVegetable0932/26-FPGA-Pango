@@ -5,7 +5,7 @@
   <title>Pango Vision · 视频采集工作台</title>
   <meta name="description" content="PG2L100H 上位机：RAW8视频接收、源帧预览与原始证据归档。">
   <link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/app.css">
-  <script src="/app.js" defer></script>
+  <script src="/records.js" defer></script><script src="/app.js" defer></script>
 </head>
 <body>
 <svg class="icon-defs" aria-hidden="true"><defs>
@@ -45,7 +45,7 @@
         <div class="metric"><div class="metric-label">校验失败 / 组帧失败</div><div><strong id="metric-errors">— / —</strong></div><small id="error-hint">等待接收数据</small></div>
       </div>
       <div class="capture-layout">
-        <article class="panel primary-viewer">
+        <article class="panel video-panel primary-viewer">
           <div class="panel-heading"><div class="panel-title"><span class="channel-label">S0</span><h2>传感器原始数据</h2></div><div class="segmented" role="group" aria-label="原图预览方式"><button class="selected" data-color="color" aria-pressed="true">基础彩色</button><button data-color="gray" aria-pressed="false">灰度</button></div></div>
           <div class="video-surface" id="video-surface">
             <canvas id="live-canvas" width="960" height="540" aria-label="来自完整RAW8帧的预览画面" hidden></canvas>
@@ -55,20 +55,28 @@
           <div class="video-meta"><span id="frame-identity">尚无完整源帧</span><span id="preview-rate">预览 — FPS</span></div>
           <div class="viewer-footer"><span>PC 基础可视化 · 不等同于 FPGA S1</span><button id="save-current" class="button small secondary" disabled><svg class="icon"><use href="#i-camera"/></svg>保存最新完整原图</button></div>
         </article>
-        <aside class="capture-side">
-          <article class="panel hdmi-panel"><div class="panel-heading"><div class="panel-title"><span class="channel-label muted">S2/S3</span><h2>FPGA 结果</h2></div><span class="muted-label">HDMI</span></div><div class="hdmi-empty"><svg class="icon"><use href="#i-monitor"/></svg><strong>结果通道尚未接入</strong><span>需要独立的 HDMI 采集后端</span></div><div class="unverified"><span class="status-dot"></span>源帧配对未验证</div></article>
-          <article class="panel connection-panel"><div class="panel-heading"><h2>当前连接</h2><span id="transport-pill" class="pill neutral">待启动</span></div><dl class="connection-facts"><div><dt>设备标识</dt><dd id="device-id">—</dd></div><div><dt>接收地址</dt><dd id="bind-address">—</dd></div><div><dt>来源地址</dt><dd id="peer-address">—</dd></div><div><dt>源代次</dt><dd id="epoch">—</dd></div><div><dt>运行时长</dt><dd id="elapsed">00:00</dd></div></dl><div class="control-note"><span class="status-dot"></span>UART 控制尚未接入</div></article>
-        </aside>
+        <article class="panel video-panel hdmi-panel">
+          <div class="panel-heading"><div class="panel-title"><span class="channel-label">S2/S3</span><h2>FPGA 结果</h2></div><span class="pill neutral">HDMI</span></div>
+          <div class="video-surface result-surface" id="result-surface">
+            <div class="video-empty hdmi-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-monitor"/></svg></div><strong>等待 FPGA 结果视频</strong><span>HDMI 采集后端尚未接入</span><div class="signal-guide"><span>S2 / S3</span><span>1920 × 1080</span><span>HDMI</span></div></div>
+            <span class="video-corner">RESULT / FPGA 输出</span>
+          </div>
+          <div class="video-meta"><span>尚无可验证的结果源帧</span><span>预览 — FPS</span></div>
+          <div class="viewer-footer"><span>FPGA 矫正结果 · 独立采集</span><span class="pill neutral">源帧配对未验证</span></div>
+        </article>
       </div>
+      <div class="connection-row"><article class="panel connection-panel"><div class="panel-heading"><h2>当前连接</h2><span id="transport-pill" class="pill neutral">待启动</span></div><dl class="connection-facts"><div><dt>设备标识</dt><dd id="device-id">—</dd></div><div><dt>接收地址</dt><dd id="bind-address">—</dd></div><div><dt>来源地址</dt><dd id="peer-address">—</dd></div><div><dt>源代次</dt><dd id="epoch">—</dd></div><div><dt>运行时长</dt><dd id="elapsed">00:00</dd></div></dl><div class="control-note"><span class="status-dot"></span>UART 控制尚未接入</div></article></div>
       <div class="bottom-layout">
         <article class="panel"><div class="panel-heading"><h2>链路与缓冲</h2><span class="muted-label">实时统计</span></div><div class="flow"><div><span class="flow-number">01</span><strong id="source-node">模拟发送器</strong><small>源帧身份</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">02</span><strong>UDP 接收</strong><small id="packet-total">— 个数据报</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">03</span><strong>完整帧重组</strong><small id="buffer-usage">— MiB 在途</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">04</span><strong>预览 / 归档</strong><small id="saved-total">0 张已保存</small></div></div><div class="counter-strip"><span>重复包 <b id="duplicate-count">0</b></span><span>乱序包 <b id="reorder-count">0</b></span><span>未见源帧 <b id="missing-count">0</b></span><span>旧预览替换 <b id="preview-drops">0</b></span><span>归档拒绝 <b id="archive-drops">0</b></span></div></article>
         <article class="panel events-panel"><div class="panel-heading"><h2>运行事件</h2><span class="muted-label">最近 5 条</span></div><ul id="event-list" class="event-list"><li class="empty-row">启动采集后显示运行事件</li></ul></article>
       </div>
     </section>
     <section id="view-records" class="view" hidden>
-      <div class="page-heading"><div><div class="eyebrow page-kicker">CAPTURE EVIDENCE</div><h1>采集记录</h1><p>原始像素、来源元数据与运行报告。</p></div><button id="refresh-records" class="button secondary">刷新记录</button></div>
-      <article class="panel"><div class="panel-heading"><h2>原始图像</h2><span class="muted-label">最近 100 张 · RAW / RGB + 元数据</span></div><div class="table-wrap"><table><thead><tr><th>来源 / 运行</th><th>源帧</th><th>图像</th><th>保存时间</th><th>原始证据</th></tr></thead><tbody id="archive-table"><tr><td colspan="5" class="empty-row">正在读取归档目录</td></tr></tbody></table></div></article>
-      <article class="panel records-second"><div class="panel-heading"><h2>已结束的运行</h2><span class="muted-label">最近 30 次</span></div><div class="table-wrap"><table><thead><tr><th>运行标识</th><th>来源</th><th>完整帧 / 已保存</th><th>运行时长</th><th>报告</th></tr></thead><tbody id="run-table"><tr><td colspan="5" class="empty-row">正在读取运行报告</td></tr></tbody></table></div></article>
+      <div class="page-heading"><div><div class="eyebrow page-kicker">CAPTURE EVIDENCE</div><h1>采集记录</h1><p>查看全部原始图像、运行记录与生成报告。</p></div><button id="refresh-records" class="button secondary">刷新记录</button></div>
+      <div class="records-toolbar"><div><strong id="records-total">正在读取全部记录</strong><span id="selection-count" aria-live="polite">未选择记录</span></div><div class="record-bulk-actions"><button id="select-all-records" class="button secondary">选择全部可删除记录</button><button id="clear-selection" class="button secondary" disabled>取消选择</button><button id="delete-selected" class="button danger" disabled>删除所选记录</button></div></div>
+      <article class="panel"><div class="panel-heading"><h2>原始图像</h2><span id="archive-count" class="muted-label">全部 RAW / RGB 与元数据</span></div><div class="table-wrap"><table><thead><tr><th class="check-cell"><input type="checkbox" data-select-group="archive" aria-label="选择全部可删除原始图像"></th><th>来源 / 运行</th><th>源帧</th><th>图像 / 状态</th><th>保存时间</th><th>原始证据</th></tr></thead><tbody id="archive-table"><tr><td colspan="6" class="empty-row">正在读取全部图像</td></tr></tbody></table></div></article>
+      <article class="panel records-second"><div class="panel-heading"><h2>全部运行</h2><span id="run-count" class="muted-label">包含未完成的运行</span></div><div class="table-wrap"><table><thead><tr><th class="check-cell"><input type="checkbox" data-select-group="run" aria-label="选择全部可删除运行"></th><th>运行标识 / 状态</th><th>来源</th><th>完整帧 / 写入帧</th><th>运行时长</th><th>运行报告</th></tr></thead><tbody id="run-table"><tr><td colspan="6" class="empty-row">正在读取全部运行</td></tr></tbody></table></div></article>
+      <article class="panel records-second"><div class="panel-heading"><h2>其他生成报告</h2><span id="report-count" class="muted-label">测试、联调与说明记录</span></div><div class="table-wrap"><table><thead><tr><th class="check-cell"><input type="checkbox" data-select-group="report" aria-label="选择全部生成报告"></th><th>报告文件</th><th>类型</th><th>大小</th><th>更新时间</th><th>文件</th></tr></thead><tbody id="report-table"><tr><td colspan="6" class="empty-row">正在读取报告文件</td></tr></tbody></table></div></article>
     </section>
     <section id="view-settings" class="view" hidden>
       <div class="page-heading"><div><div class="eyebrow page-kicker">CONNECTION PROFILE</div><h1>连接设置</h1><p>停止采集后可修改设置，下一次启动时生效。</p></div></div>
@@ -97,4 +105,5 @@
 </div>
 <div id="toast" role="status" class="toast" hidden></div>
 <dialog id="archive-dialog"><div class="panel-heading"><h2 id="archive-title">归档图像</h2><button id="close-dialog" class="button secondary small">关闭</button></div><div class="archive-image"><canvas id="archive-canvas" aria-label="归档原始数据的派生预览"></canvas></div><p id="archive-detail"></p></dialog>
+<dialog id="delete-dialog" aria-labelledby="delete-title"><div class="panel-heading"><h2 id="delete-title">删除所选记录</h2></div><div class="delete-content"><p id="delete-summary"></p><p>删除运行会同时删除该轮原图、元数据、配置、日志和报告；单独删除图像只移除该图像及其元数据。文件将从本机永久删除。</p><ul id="delete-list"></ul><p id="delete-progress" aria-live="polite"></p></div><div class="form-footer"><button id="cancel-delete" class="button secondary">取消</button><button id="confirm-delete" class="button danger">确认删除</button></div></dialog>
 </body></html>

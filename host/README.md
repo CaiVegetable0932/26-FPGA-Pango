@@ -4,10 +4,11 @@
 
 ## Web工作台
 
-项目根目录运行 `python -B host/scripts/web.py`（Ubuntu为 `python3`），打开终端打印的本机地址，默认 http://127.0.0.1:8765。点击“开始模拟”即可走真实UDP链路；采集记录可回看并下载RAW与元数据。
+项目根目录运行 `python -B host/scripts/web.py`（Ubuntu为 `python3`），打开终端打印的本机地址，默认 http://127.0.0.1:8765。点击“开始模拟”即可走真实UDP链路；采集记录显示全部图像、运行与生成报告，可多选删除、回看并下载RAW与元数据。两路视频使用等大的16:9面板与蓝白主题。
 
 - [Web界面与核心接入说明](docs/Web界面与核心接入说明.md)
 - [Web软件验证记录](reports/Web_UI软件验证记录.md)
+- [全量记录、删除与双路对比更新验证](reports/Web_UI记录管理更新验证.md)
 - [界面入口](web/index.html)、[会话适配](src/pango_video/web_session.py)、[HTTP服务](src/pango_video/web_server.py)
 
 ## 已实现的网络接收核心

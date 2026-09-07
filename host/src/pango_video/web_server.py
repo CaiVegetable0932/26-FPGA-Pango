@@ -6,98 +6,18 @@ import json
 from pathlib import Path
 import secrets
 import threading
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import parse_qs, quote, urlsplit
 
 from .cli import HOST_ROOT
 from .web_session import SessionError, WebSession
+from .record_store import safe_child, sample_metadata, archives, runs, report_file
 
 ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.html","text/html; charset=utf-8"),
     "app.css":("app.css","text/css; charset=utf-8"), "app.js":("app.js","text/javascript; charset=utf-8"),
     "pixels.js":("pixels.js","text/javascript; charset=utf-8"),
+    "records.js":("records.js","text/javascript; charset=utf-8"),
     "preview-worker.js":("preview-worker.js","text/javascript; charset=utf-8"),
     "favicon.svg":("favicon.svg","image/svg+xml")}
-
-
-def safe_child(root, relative):
-    if not isinstance(relative, str) or not relative or len(relative)>400:
-        raise ValueError("invalid artifact key")
-    if any(part in ("", ".", "..") for part in relative.replace("\\","/").split("/")):
-        raise ValueError("invalid artifact path")
-    path = (root/relative).resolve()
-    if not path.is_relative_to(root.resolve()):
-        raise ValueError("artifact is outside the data directory")
-    return path
-
-
-def sample_metadata(root, key):
-    folder = safe_child(root/"data", key)
-    path = safe_child(folder,"metadata.json")
-    if path.stat().st_size > 1_000_000:
-        raise ValueError("metadata too large")
-    meta = json.loads(path.read_text(encoding="utf-8"))
-    if meta.get("file") not in ("image.raw","image.rgb") or meta.get("transport_complete") is not True:
-        raise ValueError("sample is not a committed raw image")
-    if meta.get("pixel_format") not in ("RAW8","RGB888"):
-        raise ValueError("unsupported archived format")
-    if meta["pixel_format"]=="RAW8" and meta.get("bayer_code") not in (1,2,3,4):
-        raise ValueError("invalid Bayer layout")
-    for name in ("width","height","row_stride","frame_bytes"):
-        if type(meta.get(name)) is not int or meta[name] <= 0:
-            raise ValueError("invalid archived image dimensions")
-    bpp = 1 if meta["pixel_format"]=="RAW8" else 3
-    if meta["row_stride"] != meta["width"]*bpp or meta["frame_bytes"] != meta["row_stride"]*meta["height"]:
-        raise ValueError("invalid archived stride")
-    pixels = safe_child(folder, meta["file"])
-    if not 0 < pixels.stat().st_size == meta["frame_bytes"] <= 8*1024*1024:
-        raise ValueError("archived length mismatch")
-    meta["frame_id"] = str(meta["frame_id"])
-    meta["stream_epoch"] = str(meta["stream_epoch"])
-    return folder, meta
-
-
-def archives(root, limit=100):
-    data = root/"data"
-    if not data.exists():
-        return []
-    # Only metadata commit markers are indexed; .part files never become records.
-    candidates = sorted(data.glob("*/*/metadata.json"), key=lambda p:p.stat().st_mtime, reverse=True)
-    records = []
-    for p in candidates:
-        key = p.parent.relative_to(data).as_posix()
-        try:
-            _, meta = sample_metadata(root,key)
-            records.append(dict(key=key, run_id=key.split("/")[0], frame_id=meta["frame_id"],
-                source_mode=meta.get("source_mode","unknown"), saved_utc=meta.get("saved_utc"),
-                width=meta["width"], height=meta["height"], frame_bytes=meta["frame_bytes"],
-                pixel_format=meta["pixel_format"], sha256=meta.get("sha256",""),
-                tap="S0" if meta["pixel_format"]=="RAW8" else (meta.get("descriptor") or {}).get("tap","RGB")))
-        except (OSError,ValueError,KeyError,TypeError):
-            continue
-        if len(records)>=limit:
-            break
-    return records
-
-
-def runs(root, limit=30):
-    folder = root/"reports"
-    candidates = list(folder.glob("*/web-session.json"))+list(folder.glob("*/receiver.json"))
-    records = []
-    for path in sorted(candidates, key=lambda p:p.stat().st_mtime, reverse=True)[:limit]:
-        try:
-            safe_child(folder,path.relative_to(folder).as_posix())
-            if path.stat().st_size>2_000_000:
-                continue
-            r = json.loads(path.read_text(encoding="utf-8"))
-            m = r.get("metrics", r.get("receiver",{}))
-            counts = m.get("assembly",{}).get("counters",{})
-            records.append(dict(key=path.relative_to(folder).as_posix(), run_id=r["run_id"],
-                mode=r.get("config",r.get("configuration",{})).get("source_mode",r.get("source_mode","unknown")),
-                frames=counts.get("live_frames_complete",0), saved=r.get("saved_frames",r.get("storage",{}).get("frames_saved",0)),
-                errors=sum(v for k,v in counts.items() if k.startswith(("frames_failed_","packets_rejected_"))),
-                seconds=r.get("elapsed_seconds",r.get("elapsed_receive_seconds",0))))
-        except (OSError,ValueError,KeyError,TypeError):
-            continue
-    return records
 
 
 class LocalServer(ThreadingHTTPServer):
@@ -192,6 +112,12 @@ class Handler(BaseHTTPRequestHandler):
                     return self._send(204)
                 return self._send(200,frame.data,"application/octet-stream",
                     {"X-Frame-Info":json.dumps(info,ensure_ascii=True)})
+            if route == "/api/records":
+                return self._json(200,self.server.session.records())
+            if route == "/api/artifact":
+                path = report_file(self.server.session.root,query.get("key",[""])[0])
+                return self._send(200,path.read_bytes(),"application/octet-stream",
+                    {"Content-Disposition":"attachment; filename*=UTF-8''"+quote(path.name)})
             if route == "/api/archives":
                 return self._json(200,dict(items=archives(self.server.session.root)))
             if route == "/api/runs":
@@ -230,14 +156,20 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(415,dict(error="需要JSON请求"))
             if self.headers.get("Transfer-Encoding"):
                 return self._json(400,dict(error="不支持分块请求体"))
+            route = urlsplit(self.path).path
             size = int(self.headers.get("Content-Length","0"))
-            if not 0 < size <= 16384:
+            maximum = 1024*1024 if route == "/api/records/delete" else 16384
+            if not 0 < size <= maximum:
                 return self._json(413,dict(error="请求体长度不允许"))
             data = json.loads(self.rfile.read(size))
             if not isinstance(data,dict):
                 raise SessionError("请求必须是JSON对象")
             route = urlsplit(self.path).path
             session = self.server.session
+            if route == "/api/records/delete":
+                if set(data) != {"targets"}:
+                    raise SessionError("删除请求仅接受targets字段")
+                return self._json(200,session.delete_records(data["targets"]))
             if route == "/api/start":
                 if set(data)-{"config","archive_every","auto_mock"}:
                     raise SessionError("存在未定义启动字段")

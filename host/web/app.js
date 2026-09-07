@@ -5,15 +5,20 @@
   let status=null, online=false, busy=false, color="color", lastKey="", workerBusy=false;
   let closed=false, archiveKey="", lastPaint=0, previewErrors=0;
   let rendered=0, renderStart=performance.now(), activeView="live", frameTimer=null, statusTimer=null;
+  const recordUI=window.PangoRecords.create({request,previewArchive,toast,getStatus:()=>status,getOnline:()=>online});
+  let recordsLastRefresh=0;
   const archiveWorker=new Worker("/preview-worker.js");
   const worker=new Worker("/preview-worker.js"), title={live:"实时采集",records:"采集记录",settings:"连接设置"};
   function text(id,value){$(id).textContent=value;}
   function toast(message,error=false){$("toast").textContent=message;$("toast").classList.toggle("error",error);$("toast").hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("toast").hidden=true,5000);}
-  async function request(path,data){
+  async function request(path,data,retried=false){
     const opts={cache:"no-store",signal:AbortSignal.timeout(12000)};
     if(data!==undefined){opts.method="POST";opts.headers={"Content-Type":"application/json","X-Pango-Token":api.token};opts.body=JSON.stringify(data);}
     const response=await fetch(path,opts);
     const result=await response.json();
+    if(response.status===403&&data!==undefined&&!retried){
+      const fresh=await request("/api/session");api.token=fresh.token;update(fresh.status);return request(path,data,true);
+    }
     if(!response.ok) throw Error(result.error||"请求失败");
     return result;
   }
@@ -27,6 +32,7 @@
     if(view==="records") refreshRecords();
   }
   function update(state){
+    const sessionChanged=status&&(status.running!==state.running||status.run_id!==state.run_id);
     if(status&&status.run_id!==state.run_id){lastKey="";$("live-canvas").hidden=true;$("video-empty").hidden=false;rendered=0;renderStart=performance.now();}
     status=state;
     const c=state.metrics?.assembly?.counters||{}, rx=state.metrics?.counters||{}, running=state.running;
@@ -54,7 +60,7 @@
     text("source-node",mock?"模拟发送器":"FPGA RAW8");
     text("packet-total",count(rx.datagrams_received)+" 个数据报");
     text("buffer-usage",((state.metrics?.assembly?.buffer_bytes||0)/1048576).toFixed(2)+" MiB 在途");
-    text("saved-total",count(state.saved_frames)+" 张已保存");text("nav-saved",count(state.saved_frames));
+    text("saved-total",count(state.saved_frames)+" 张已写入");
     text("duplicate-count",count(c.packets_duplicate));text("reorder-count",count(c.packets_out_of_order));
     text("missing-count",count(state.metrics?.assembly?.live_unobserved_ids_in_span));
     text("preview-drops",count(rx.preview_frames_replaced));text("archive-drops",count((rx.archive_frames_rejected||0)+(state.manual_saves_rejected||0)));
@@ -71,15 +77,17 @@
     }
     if(!events.children.length){const li=document.createElement("li");li.className="empty-row";li.textContent="启动采集后显示运行事件";events.append(li);}
     $("config-fields").disabled=running;$("apply-config").disabled=running||busy;
+    recordUI.sync();if(sessionChanged)refreshRecords();
   }
   async function init(){
     try{
-      const result=await request("/api/session");api.token=result.token;online=true;$("connection-alert").hidden=true;text("server-health","服务已连接");update(result.status);fillConfig(result.status.config);
+      const result=await request("/api/session");api.token=result.token;online=true;$("connection-alert").hidden=true;text("server-health","服务已连接");update(result.status);fillConfig(result.status.config);refreshRecords();
     }catch(error){offline();}
   }
-  function offline(){online=false;$("connection-alert").hidden=false;text("server-health","服务未连接");$("start").disabled=true;$("stop").disabled=true;$("save-current").disabled=true;if(!$("live-canvas").hidden){$("stale-label").hidden=false;text("stale-label","服务连接已中断");}}
+  function offline(){online=false;recordUI.sync();$("connection-alert").hidden=false;text("server-health","服务未连接");$("start").disabled=true;$("stop").disabled=true;$("save-current").disabled=true;if(!$("live-canvas").hidden){$("stale-label").hidden=false;text("stale-label","服务连接已中断");}}
   async function poll(){
     if(!document.hidden){try{const state=await request("/api/status");if(!online){await init();}else update(state);}catch(error){offline();}}
+    if(online&&activeView==="records"&&!document.hidden&&performance.now()-recordsLastRefresh>3000)refreshRecords();
     if(!closed)statusTimer=setTimeout(poll,500);
   }
   async function framePoll(){
@@ -124,9 +132,6 @@
     settingsHint();
   }
 
-  function cell(row,value,cls=""){const td=document.createElement("td");td.textContent=value;if(cls)td.className=cls;row.append(td);return td;}
-  function emptyTable(id,message){const row=document.createElement("tr"),td=cell(row,message,"empty-row");td.colSpan=5;$(id).replaceChildren(row);}
-  function downloadLink(container,label,path){const a=document.createElement("a");a.textContent=label;a.href=path;a.download="";container.append(a);}
   async function previewArchive(item){
     try{
       archiveKey=item.key;$("archive-canvas").hidden=true;text("archive-title","原始数据回看 · 源帧 "+item.frame_id);
@@ -139,33 +144,7 @@
       archiveWorker.postMessage({buffer,meta,mode:"color",target:"archive"},[buffer]);
     }catch(error){text("archive-detail",error.message);toast(error.message,true);}
   }
-  async function refreshRecords(){
-    $("refresh-records").disabled=true;
-    try{
-      const [images,reports]=await Promise.all([request("/api/archives"),request("/api/runs")]);
-      $("archive-table").replaceChildren();$("run-table").replaceChildren();
-      for(const item of images.items){
-        const row=document.createElement("tr"),source=cell(row,item.source_mode==="mock"?"MOCK · 合成数据":item.source_mode==="hardware_unverified"?"板端 · 未验收":item.source_mode);
-        const run=document.createElement("small");run.className="run-name";run.textContent=item.run_id;source.append(run);
-        cell(row,item.frame_id);cell(row,item.width+" × "+item.height+" "+item.pixel_format);
-        cell(row,item.saved_utc?new Date(item.saved_utc).toLocaleString("zh-CN",{hour12:false}):"—");
-        const actions=cell(row,"","table-actions"),button=document.createElement("button");
-        button.textContent="回看";button.addEventListener("click",()=>previewArchive(item));actions.append(button);
-        downloadLink(actions,item.pixel_format==="RAW8"?"RAW":"RGB","/api/archive/pixels?key="+encodeURIComponent(item.key));
-        downloadLink(actions,"元数据","/api/archive/metadata?key="+encodeURIComponent(item.key));
-        $("archive-table").append(row);
-      }
-      for(const item of reports.items){
-        const row=document.createElement("tr");cell(row,item.run_id,"run-name");
-        cell(row,item.mode==="mock"?"MOCK · 合成数据":item.mode==="hardware_unverified"?"板端 · 未验收":item.mode);
-        cell(row,count(item.frames)+" / "+count(item.saved));cell(row,elapsed(item.seconds));
-        downloadLink(cell(row,"","table-actions"),"下载 JSON","/api/report?key="+encodeURIComponent(item.key));$("run-table").append(row);
-      }
-      if(!images.items.length)emptyTable("archive-table","尚无原始图像。采集时保存一张原图即可在此回看。");
-      if(!reports.items.length)emptyTable("run-table","停止一次采集后，将在此显示运行报告。");
-    }catch(error){emptyTable("archive-table","记录读取失败，请重试。");emptyTable("run-table","运行报告读取失败。");toast(error.message,true);}
-    finally{$("refresh-records").disabled=false;}
-  }
+  async function refreshRecords(){recordsLastRefresh=performance.now();return recordUI.refresh().catch(()=>{});}
   function settingsHint(){
     const mock=$("cfg-mode").value==="mock";
     $("settings-mode").className="pill "+(mock?"mock":"hardware");text("settings-mode",mock?"本机模拟":"板端 · 待验证");
@@ -187,7 +166,6 @@
     try{fillConfig(await request("/api/config",config));update(await request("/api/status"));toast("连接设置已应用，下次采集生效");}
     catch(error){toast(error.message,true);}finally{busy=false;if(status)update(status);}
   });
-  $("refresh-records").addEventListener("click",refreshRecords);
 
   document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>showView(button.dataset.view)));
   document.querySelectorAll("[data-color]").forEach(button=>button.addEventListener("click",()=>{

@@ -264,6 +264,109 @@ class WebTests(unittest.TestCase):
         self.assertTrue(all(tid==owner for tid,_ in calls))
         self.assertTrue(all(not value["counters"] for _,value in calls))
 
+    def test_inventory_has_all_images_runs_and_standalone_reports(self):
+        # Exceeds both former 100-image and 30-run caps.
+        for n in range(111):
+            (self.root/"data"/"many-images"/f"sample-{n}").mkdir(parents=True)
+        for n in range(36):
+            folder=self.root/"reports"/f"old-run-{n}"
+            folder.mkdir(parents=True)
+            (folder/"receiver-config.json").write_text(json.dumps(self.config),encoding="utf-8")
+        (self.root/"reports"/"standalone.json").write_text('{"passed":true}',encoding="utf-8")
+        (self.root/"reports"/"README.md").write_text("Directory documentation",encoding="utf-8")
+        result=self.call("GET","/api/records")[2]
+        self.assertEqual(len(result["archives"]),111)
+        self.assertEqual(len(result["runs"]),37)
+        self.assertEqual([r["key"] for r in result["reports"]],["standalone.json"])
+        self.assertEqual(result["total"],149)
+        self.assertEqual(len(self.call("GET","/api/archives")[2]["items"]),111)
+        self.assertEqual(len(self.call("GET","/api/runs")[2]["items"]),37)
+        self.assertEqual(self.call("GET","/api/artifact?key=standalone.json")[2],{"passed":True})
+        self.assertEqual(self.call("GET","/api/artifact?key=README.md")[0],400)
+
+    def test_delete_image_then_whole_run_and_report(self):
+        state=self.start(archive_every=1)
+        self.send(count=2)
+        until(lambda:self.session.status()["saved_frames"]==2)
+        self.session.stop()
+        folder=self.root/"reports"
+        (folder/"extra.json").write_text('{"test":true}',encoding="utf-8")
+        images=self.call("GET","/api/records")[2]["archives"]
+        result=self.call("POST","/api/records/delete",{"targets":[{"kind":"archive","key":images[0]["key"]}]})
+        self.assertEqual(result[0],200,result)
+        self.assertEqual(result[2]["failed"],[])
+        self.assertFalse((self.root/"data"/images[0]["key"]).exists())
+        self.assertTrue((folder/state["run_id"]/"web-session.json").exists())
+        remaining=self.call("GET","/api/records")[2]["archives"][0]
+        result=self.call("POST","/api/records/delete",{"targets":[
+            {"kind":"archive","key":remaining["key"]},{"kind":"run","key":state["run_id"]},
+            {"kind":"report","key":"extra.json"},{"kind":"report","key":"extra.json"}]})
+        self.assertEqual(len(result[2]["deleted"]),3)
+        self.assertEqual(result[2]["failed"],[])
+        self.assertFalse((self.root/"data"/state["run_id"]).exists())
+        self.assertFalse((folder/state["run_id"]).exists())
+        self.assertFalse((folder/"extra.json").exists())
+        self.assertTrue((self.root/"config/receiver.mock.json").exists())
+        self.assertEqual(self.call("GET","/api/records")[2]["total"],0)
+
+    def test_deletion_validates_entire_batch_and_active_session(self):
+        state=self.start(archive_every=1)
+        self.send()
+        until(lambda:self.session.status()["saved_frames"]==1)
+        (self.root/"reports"/"keep.json").write_text("{}",encoding="utf-8")
+        data=self.call("GET","/api/records")[2]
+        self.assertTrue(data["archives"][0]["protected"])
+        self.assertTrue(next(r for r in data["runs"] if r["run_id"]==state["run_id"])["protected"])
+        result=self.call("POST","/api/records/delete",{"targets":[
+            {"kind":"report","key":"keep.json"},{"kind":"run","key":state["run_id"]}]})
+        self.assertEqual(result[0],409)
+        self.assertTrue((self.root/"reports/keep.json").exists())
+        self.session.stop()
+        result=self.call("POST","/api/records/delete",{"targets":[
+            {"kind":"report","key":"keep.json"},{"kind":"report","key":"../config/receiver.mock.json"}]})
+        self.assertEqual(result[0],409)
+        self.assertTrue((self.root/"reports/keep.json").exists())
+        self.assertEqual(self.call("POST","/api/records/delete",{"targets":[]})[0],409)
+        self.assertEqual(self.call("POST","/api/records/delete",{"targets":[{"kind":"run","key":""}]})[0],409)
+        self.assertEqual(self.call("POST","/api/records/delete",{"targets":[{"kind":"report","key":"keep.json"}]},
+            headers={"X-Pango-Token":"bad"})[0],403)
+        self.assertTrue((self.root/"config/receiver.mock.json").exists())
+
+    def test_delete_reports_partial_failure_and_retry(self):
+        from pango_video.record_store import delete_records
+        (self.root/"reports").mkdir(exist_ok=True)
+        for name in ("blocked.json","free.json"):
+            (self.root/"reports"/name).write_text("{}",encoding="utf-8")
+        original=Path.unlink
+        def unlink(path,*args,**kwargs):
+            if path.name=="blocked.json":
+                raise PermissionError("injected file lock")
+            return original(path,*args,**kwargs)
+        with patch.object(Path,"unlink",unlink):
+            result=delete_records(self.root,[{"kind":"report","key":"blocked.json"},{"kind":"report","key":"free.json"}])
+        self.assertEqual([r["key"] for r in result["deleted"]],["free.json"])
+        self.assertEqual([r["key"] for r in result["failed"]],["blocked.json"])
+        self.assertTrue((self.root/"reports/blocked.json").exists())
+        self.assertFalse((self.root/"reports/free.json").exists())
+        self.assertEqual(delete_records(self.root,[{"kind":"report","key":"blocked.json"}])["failed"],[])
+
+    def test_delete_rejects_linked_descendants_before_removal(self):
+        from pango_video.record_store import RecordError, delete_records
+        run=self.root/"reports/linked-run"
+        run.mkdir(parents=True)
+        sentinel=run/"linked.txt"
+        sentinel.write_text("must remain",encoding="utf-8")
+        original=Path.is_symlink
+        # Inject a link predicate to exercise the platform-neutral guard on Windows
+        # without requiring developer-mode privileges to create symlinks.
+        def is_symlink(path):
+            return path==sentinel or original(path)
+        with patch.object(Path,"is_symlink",is_symlink):
+            with self.assertRaises(RecordError):
+                delete_records(self.root,[{"kind":"run","key":"linked-run"}])
+        self.assertTrue(sentinel.exists())
+        self.assertEqual(sentinel.read_text(encoding="utf-8"),"must remain")
+
 
 if __name__=="__main__":
     unittest.main()
