@@ -3,6 +3,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import hashlib
 import hmac
 import json
+import os
 from pathlib import Path
 import secrets
 import threading
@@ -18,6 +19,13 @@ ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.htm
     "records.js":("records.js","text/javascript; charset=utf-8"),
     "preview-worker.js":("preview-worker.js","text/javascript; charset=utf-8"),
     "favicon.svg":("favicon.svg","image/svg+xml")}
+
+
+def instance_identity():
+    """Identify the application and checkout without exposing a path or token."""
+    workspace = os.path.normcase(str(HOST_ROOT.resolve()))
+    return dict(service="pango-video-web", launcher_api=1,
+                workspace=hashlib.sha256(workspace.encode("utf-8")).hexdigest())
 
 
 class LocalServer(ThreadingHTTPServer):
@@ -99,6 +107,8 @@ class Handler(BaseHTTPRequestHandler):
             if route.lstrip("/") in ASSETS and not route.startswith("//"):
                 filename, kind = ASSETS[route.lstrip("/")]
                 return self._send(200,(HOST_ROOT/"web"/filename).read_bytes(),kind)
+            if route == "/api/health":
+                return self._json(200, instance_identity())
             if route == "/api/session":
                 return self._json(200,dict(token=self.server.token,status=self.server.session.status()))
             if route == "/api/status":

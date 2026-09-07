@@ -105,6 +105,6 @@ Windows单元测试和短本机回环只是软件证据。Ubuntu实机、真实�
 
 ## 本机Web界面
 
-现已提供基于浏览器的S0工作台。在项目根目录运行 `python -B host/scripts/web.py`；Ubuntu24.04改用 `python3 -B host/scripts/web.py`。默认仅监听 http://127.0.0.1:8765，UDP网卡地址在连接设置中独立指定。无需安装Qt、npm或第三方Python包，Node只用于可选的像素测试。启动、保存、回看、API与限制见[Web界面与核心接入说明](Web界面与核心接入说明.md)。
+现已提供基于浏览器的S0工作台。Windows 双击 [start_web.cmd](../scripts/start_web.cmd)；Ubuntu24.04在项目根目录运行 `sh host/scripts/start_web.sh`。两者自动检查 Python、打开本机页面，并复用同目录已运行的服务；参数与退出步骤见[一键启动说明](一键启动说明.md)。也可直接运行 `python -B host/scripts/web.py`（Ubuntu 用 python3）。默认仅监听 http://127.0.0.1:8765，UDP网卡地址在连接设置中独立指定。无需安装Qt、npm或第三方Python包，Node只用于可选的像素测试。启动、保存、回看、API与限制见[Web界面与核心接入说明](Web界面与核心接入说明.md)。
 
 当前已完成Windows软件联调；Ubuntu目标机器、浏览器交互兼容、真实千兆网卡和HDMI仍未验收。关闭页面不会停止后台采集，正常退出请先停止采集再结束服务。

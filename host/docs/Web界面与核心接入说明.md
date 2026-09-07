@@ -4,7 +4,9 @@
 
 ## 1. 启动与操作
 
-在项目根目录执行：
+Windows 可直接双击 [start_web.cmd](../scripts/start_web.cmd)，Ubuntu 在项目根目录执行 `sh host/scripts/start_web.sh`。两者会在服务就绪后自动打开浏览器，重复启动复用同一目录已运行的服务。完整步骤见[一键启动说明](一键启动说明.md)。
+
+也可在项目根目录直接执行：
 
 ~~~powershell
 python -B host/scripts/web.py
@@ -16,7 +18,7 @@ Ubuntu 24.04 使用同一份源码：
 python3 -B host/scripts/web.py
 ~~~
 
-打开终端打印的 http://127.0.0.1:8765。端口占用时可以使用 --port 8766，或 --port 0 由操作系统分配空闲端口。所有文件路径按脚本所在位置解析，启动目录可以改变。HTTP 服务只绑定 127.0.0.1；UDP 接收地址由连接设置独立决定。
+默认自动打开终端打印的 http://127.0.0.1:8765，也可加 --no-browser 后手动访问。端口被其他应用或旧版服务占用时可以使用 --port 8766，或 --port 0 由操作系统分配空闲端口。所有文件路径按脚本所在位置解析，启动目录可以改变。HTTP 服务只绑定 127.0.0.1；UDP 接收地址由连接设置独立决定。
 
 运行依赖为 Python 3.12 与支持 Worker、Canvas、fetch、AbortSignal.timeout 和 dialog 的现代浏览器。运行本版不需要 npm、Node、Qt、OpenCV 或外部 CDN；Node 仅用于可选的前端像素测试。Ubuntu 使用系统 Python 即可执行标准库代码；尚未在 Ubuntu 24.04 目标机器上实际联调。
 
@@ -62,6 +64,7 @@ flowchart LR
 
 - [web_session.py](../src/pango_video/web_session.py)：生命周期、配置校验、最新帧、采集事件、归档与运行报告。生命周期操作串行化，重复启动拒绝，停止可重复执行；重启清空旧帧并更换 run_id。
 - [web_server.py](../src/pango_video/web_server.py)：本机 HTTP API、静态页面、证据查询与下载。
+- [web_launcher.py](../src/pango_video/web_launcher.py)：启动与环境提示、同目录服务复用、就绪后打开浏览器，以及 Ctrl+C / SIGTERM 收尾。
 - [receiver.py](../src/pango_video/receiver.py)：保留原有接收策略，新增可选 on_status 回调，由接收线程生成状态，避免 HTTP 线程遍历正在变化的组帧表。
 - [app.js](../web/app.js)：交互、配置、状态、预览调度和记录操作；[preview-worker.js](../web/preview-worker.js) 与 [pixels.js](../web/pixels.js) 在 Worker 内处理像素，ArrayBuffer 通过 transferable 传递。
 - [demo.py](../src/pango_video/demo.py)：显式 mock 校验图和实际 UDP 发送，包含彩条、棋盘、灰阶及移动标记；只能向回环地址发送。
@@ -73,7 +76,9 @@ flowchart LR
 host/
   web/                              HTML、CSS、JavaScript
   src/pango_video/                  Python 核心与 Web 适配
-  scripts/web.py                    服务入口
+  scripts/start_web.cmd             Windows 双击启动
+  scripts/start_web.sh              Ubuntu/Linux 启动
+  scripts/web.py                    共用服务入口
   scripts/praw_demo.py              交互演示发送器入口
   scripts/web_smoke.py              1080p API/UDP 联调
   data/<run_id>/<帧身份>/image.raw   原始像素
@@ -91,6 +96,7 @@ host/
 
 | 方法与路径 | 输入 | 返回 |
 | --- | --- | --- |
+| GET /api/health | 无 | service、launcher_api、workspace；启动器用目录哈希识别同一项目，不返回路径或 token |
 | GET /api/session | 无 | token、status |
 | GET /api/status | 无 | 状态、配置、完整帧身份、核心计数、短窗口速率、事件、历史、能力标志 |
 | GET /api/frame?after=<key> | 最近显示的身份，可省略 | 完整 RAW8 二进制与 X-Frame-Info；无新帧为 204 |
