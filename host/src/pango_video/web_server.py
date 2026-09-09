@@ -17,6 +17,8 @@ ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.htm
     "app.css":("app.css","text/css; charset=utf-8"), "app.js":("app.js","text/javascript; charset=utf-8"),
     "pixels.js":("pixels.js","text/javascript; charset=utf-8"),
     "records.js":("records.js","text/javascript; charset=utf-8"),
+    "video-input.js":("video-input.js","text/javascript; charset=utf-8"),
+    "video-input-ui.js":("video-input-ui.js","text/javascript; charset=utf-8"),
     "preview-worker.js":("preview-worker.js","text/javascript; charset=utf-8"),
     "favicon.svg":("favicon.svg","image/svg+xml")}
 
@@ -87,7 +89,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Cross-Origin-Resource-Policy","same-origin")
         self.send_header("Content-Security-Policy",
             "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; "
-            "connect-src 'self'; worker-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'")
+            "connect-src 'self'; worker-src 'self'; media-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'none'")
         for key,value in (extra or {}).items():
             self.send_header(key,value)
         self.end_headers()

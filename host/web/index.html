@@ -5,7 +5,7 @@
   <title>Pango Vision · 视频采集工作台</title>
   <meta name="description" content="PG2L100H 上位机：RAW8视频接收、源帧预览与原始证据归档。">
   <link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/app.css">
-  <script src="/records.js" defer></script><script src="/app.js" defer></script>
+  <script src="/records.js" defer></script><script src="/video-input.js" defer></script><script src="/video-input-ui.js" defer></script><script src="/app.js" defer></script>
 </head>
 <body>
 <svg class="icon-defs" aria-hidden="true"><defs>
@@ -56,13 +56,14 @@
           <div class="viewer-footer"><span>PC 基础可视化 · 不等同于 FPGA S1</span><button id="save-current" class="button small secondary" disabled><svg class="icon"><use href="#i-camera"/></svg>保存最新完整原图</button></div>
         </article>
         <article class="panel video-panel hdmi-panel">
-          <div class="panel-heading"><div class="panel-title"><span class="channel-label">S2/S3</span><h2>FPGA 结果</h2></div><span class="pill neutral">HDMI</span></div>
+          <div class="panel-heading"><div class="panel-title"><span class="channel-label">IN</span><h2>采集卡视频输入</h2></div><span id="capture-preview-status" class="pill neutral">未配置</span></div>
           <div class="video-surface result-surface" id="result-surface">
-            <div class="video-empty hdmi-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-monitor"/></svg></div><strong>等待 FPGA 结果视频</strong><span>HDMI 采集后端尚未接入</span><div class="signal-guide"><span>S2 / S3</span><span>1920 × 1080</span><span>HDMI</span></div></div>
-            <span class="video-corner">RESULT / FPGA 输出</span>
+            <video id="capture-video" autoplay muted playsinline aria-label="所选视频采集设备的预览" hidden></video>
+            <div class="video-empty hdmi-empty" id="capture-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-monitor"/></svg></div><strong id="capture-empty-title">选择视频输入设备</strong><span id="capture-empty-detail">在连接设置中选择采集卡，无信号时也可保存配置</span><button class="button small secondary" type="button" data-view="settings">配置视频输入</button></div>
+            <span class="video-corner">采集卡输入 / 信号未验证</span>
           </div>
-          <div class="video-meta"><span>尚无可验证的结果源帧</span><span>预览 — FPS</span></div>
-          <div class="viewer-footer"><span>FPGA 矫正结果 · 独立采集</span><span class="pill neutral">源帧配对未验证</span></div>
+          <div class="video-meta"><span id="capture-preview-device">尚未选择设备</span><span id="capture-format">采集格式 —</span></div>
+          <div class="viewer-footer"><span>源帧配对未验证</span><div class="capture-preview-actions"><button id="capture-preview-open" type="button" class="button small secondary" disabled>打开预览</button><button id="capture-preview-close" type="button" class="button small secondary" disabled>关闭</button></div></div>
         </article>
       </div>
       <div class="connection-row"><article class="panel connection-panel"><div class="panel-heading"><h2>当前连接</h2><span id="transport-pill" class="pill neutral">待启动</span></div><dl class="connection-facts"><div><dt>设备标识</dt><dd id="device-id">—</dd></div><div><dt>接收地址</dt><dd id="bind-address">—</dd></div><div><dt>来源地址</dt><dd id="peer-address">—</dd></div><div><dt>源代次</dt><dd id="epoch">—</dd></div><div><dt>运行时长</dt><dd id="elapsed">00:00</dd></div></dl><div class="control-note"><span class="status-dot"></span>UART 控制尚未接入</div></article></div>
@@ -79,9 +80,20 @@
       <article class="panel records-second"><div class="panel-heading"><h2>其他生成报告</h2><span id="report-count" class="muted-label">测试、联调与说明记录</span></div><div class="table-wrap"><table><thead><tr><th class="check-cell"><input type="checkbox" data-select-group="report" aria-label="选择全部生成报告"></th><th>报告文件</th><th>类型</th><th>大小</th><th>更新时间</th><th>文件</th></tr></thead><tbody id="report-table"><tr><td colspan="6" class="empty-row">正在读取报告文件</td></tr></tbody></table></div></article>
     </section>
     <section id="view-settings" class="view" hidden>
-      <div class="page-heading"><div><div class="eyebrow page-kicker">CONNECTION PROFILE</div><h1>连接设置</h1><p>停止采集后可修改设置，下一次启动时生效。</p></div></div>
+      <div class="page-heading"><div><div class="eyebrow page-kicker">CONNECTION PROFILE</div><h1>连接设置</h1><p>分别配置 RAW8 网络来源与视频采集卡，保存后按需打开。</p></div></div>
+      <article class="panel capture-settings" aria-labelledby="capture-settings-title">
+        <div class="panel-heading"><div><h2 id="capture-settings-title">视频采集卡输入</h2><p>选择 USB 采集卡或摄像头，独立于左侧 RAW8 网络接收。</p></div><span id="capture-settings-status" class="pill neutral">未配置</span></div>
+        <div class="capture-settings-body">
+          <label for="capture-device">输入设备</label>
+          <div class="capture-device-row"><select id="capture-device" aria-describedby="capture-device-note"><option value="">先刷新设备列表</option></select><button id="capture-refresh" type="button" class="button secondary">刷新设备</button><button id="capture-authorize" type="button" class="button secondary">授权显示设备</button></div>
+          <p id="capture-device-note">首次使用需允许浏览器访问摄像头。授权时会短暂打开一个视频设备，读取名称后立即释放。</p>
+          <p id="capture-message" role="status" aria-live="polite">设备配置与输入信号无关；选择采集卡后可先保存，稍后再打开预览。</p>
+          <dl class="capture-facts"><div><dt>已保存的设备</dt><dd id="capture-selected">尚未选择</dd></div><div><dt>输入信号</dt><dd>未验证</dd></div><div><dt>源帧关联</dt><dd>未配对</dd></div></dl>
+        </div>
+        <div class="form-footer"><span>选择仅保存在当前浏览器。保存不会打开设备，关闭页面会释放采集卡。</span><div class="capture-form-actions"><button id="capture-save" type="button" class="button primary" disabled>保存设备选择</button><button id="capture-open" type="button" class="button secondary" disabled>打开预览</button><button id="capture-close" type="button" class="button secondary" disabled>关闭设备</button></div></div>
+      </article>
       <form id="config-form" class="panel settings-panel">
-        <div class="panel-heading"><h2>视频来源</h2><span id="settings-mode" class="pill mock">本机模拟</span></div>
+        <div class="panel-heading"><h2>RAW8 网络来源</h2><span id="settings-mode" class="pill mock">本机模拟</span></div>
         <fieldset id="config-fields"><div class="form-grid">
           <label class="full-row">数据来源<select id="cfg-mode" name="source_mode"><option value="mock">本机模拟 · 合成校验图</option><option value="hardware_unverified">板端数据 · 待实板验证</option></select></label>
           <label>设备标识<input id="cfg-device" name="device_id" required maxlength="128" autocomplete="off"></label>
@@ -98,7 +110,7 @@
         <div class="settings-note" id="settings-note">本机模拟通过实际 UDP / PRAW 编解码链路，不计作硬件验收。</div>
         <div class="form-footer"><span id="settings-lock">配置仅用于本次服务会话，每次运行均保存配置副本。</span><button id="apply-config" type="submit" class="button primary">应用连接设置</button></div>
       </form>
-      <div class="boundary-note"><strong>当前接入范围</strong><p>S0 RAW8 接收、完整帧检查、基础预览和原始证据归档已接入。HDMI、UART参数控制、严格同帧快照请求尚未接入，界面不会推断它们已完成。</p></div>
+      <div class="boundary-note"><strong>当前接入范围</strong><p>S0 RAW8 接收、完整帧检查、基础预览和原始证据归档已接入。视频采集设备可选择并在本机浏览器预览；HDMI 原始数据归档、UART参数控制和严格同帧快照请求尚未接入，源帧配对保持未验证。</p></div>
     </section>
     <footer class="page-footer"><span>Pango Vision / Host Core</span><span id="run-footer">本机服务 · 无云端视频转发</span></footer>
   </main>
