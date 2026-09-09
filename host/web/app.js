@@ -6,6 +6,7 @@
   let closed=false, archiveKey="", lastPaint=0, previewErrors=0;
   let rendered=0, renderStart=performance.now(), activeView="live", frameTimer=null, statusTimer=null;
   const recordUI=window.PangoRecords.create({request,previewArchive,toast,getStatus:()=>status,getOnline:()=>online});
+  const videoInputUI=window.PangoVideoInputUI.create({toast});
   let recordsLastRefresh=0;
   const archiveWorker=new Worker("/preview-worker.js");
   const worker=new Worker("/preview-worker.js"), title={live:"实时采集",records:"采集记录",settings:"连接设置"};
@@ -30,6 +31,7 @@
     document.querySelectorAll(".nav-button").forEach(button=>{const selected=button.dataset.view===view;button.classList.toggle("active",selected);if(selected)button.setAttribute("aria-current","page");else button.removeAttribute("aria-current");});
     text("breadcrumb-view",title[view]);
     if(view==="records") refreshRecords();
+    if(view==="settings") videoInputUI.refresh();
   }
   function update(state){
     const sessionChanged=status&&(status.running!==state.running||status.run_id!==state.run_id);
@@ -200,7 +202,7 @@
       }},{signal:toolLifetime.signal})).catch(error=>console.warn("WebMCP registration unavailable",name,error));}catch(error){console.warn("WebMCP registration unavailable",name,error);}
     }
   }
-  window.addEventListener("pagehide",()=>{closed=true;toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);worker.terminate();archiveWorker.terminate();});
+  window.addEventListener("pagehide",()=>{closed=true;videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);worker.terminate();archiveWorker.terminate();});
 
   window.addEventListener("pageshow",event=>{if(event.persisted)location.reload();});
   init().then(()=>{registerWorkbenchTools();poll();framePoll();});

@@ -125,6 +125,26 @@ class WebTests(unittest.TestCase):
         self.assertEqual(downloaded["hardware_acceptance"],"not_performed")
         self.assertEqual(downloaded["hdmi"]["pairing_status"],"unverified")
 
+    def test_browser_video_input_assets_and_identity_boundary(self):
+        for name in ("video-input.js", "video-input-ui.js"):
+            code, headers, source = self.call("GET", "/"+name, raw=True)
+            self.assertEqual(code, 200)
+            self.assertIn("text/javascript", headers["Content-Type"])
+            self.assertIn(b"create", source)
+            self.assertIn("media-src 'self' blob:", headers["Content-Security-Policy"])
+        code, _, page = self.call("GET", "/", raw=True)
+        self.assertEqual(code, 200)
+        self.assertIn(b'id="capture-device"', page)
+        self.assertIn(b'id="capture-video"', page)
+        state = self.call("GET", "/api/status")[2]
+        self.assertEqual(state["state"], "idle")
+        self.assertFalse(state["hdmi"]["available"])
+        self.assertEqual(state["hdmi"]["available_scope"], "python_raw_capture")
+        self.assertEqual(state["hdmi"]["preview_backend"], "browser_media_devices")
+        self.assertEqual(state["hdmi"]["preview_state"], "not_reported")
+        self.assertIsNone(state["hdmi"]["source_frame_id"])
+        self.assertEqual(state["hdmi"]["pairing_status"], "unverified")
+
     def test_state_machine_config_lock_and_restart_identity(self):
         first = self.start()
         self.assertEqual(self.call("POST","/api/start",{})[0],409)

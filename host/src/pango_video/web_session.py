@@ -367,6 +367,8 @@ class WebSession:
                 saved_frames=self._saved_count, pending_saves=len(self._pending), error=self._error,
                 manual_saves_enqueued=self._manual_enqueued, manual_saves_rejected=self._manual_rejected,
                 metrics=metrics, history=list(self._history), events=list(self._events),
-                hdmi=dict(available=False, source_frame_id=None, pairing_status="unverified"),
+                hdmi=dict(available=False, available_scope="python_raw_capture",
+                    preview_backend="browser_media_devices", preview_state="not_reported",
+                    source_frame_id=None, pairing_status="unverified"),
                 controls=dict(uart_available=False, snapshot_request_available=False),
                 hardware_acceptance="not_performed")
