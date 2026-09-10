@@ -1,30 +1,24 @@
 {
-  "board": "MINI-100HP / PG2L100H",
-  "part_marking_from_manual": "PG2L100H-6IFBG676",
-  "family": "Logos2",
-  "device": "PG2L100H",
-  "speedgrade": "-6",
-  "package": "FBG676",
-  "clock_hz": 27000000,
-  "pins": {
-    "clk": "D18",
-    "rstn": "C22",
-    "key": "C23",
-    "led0": "A20"
+  "board": "MES2L676-100HP-MINI",
+  "device": "PG2L100H-6IFBG676",
+  "reference": "reference/盘古100K200K MINI开发板/1_Demo_document/实验例程说明篇/教程1_盘古MINI系列开发板硬件指导手册_V1.3.pdf",
+  "hardware_verified": false,
+  "ddr_pins": {
+    "mem_a": ["J1","L3","L2","P3","T2","M1","U1","K1","U2","K2","T3","P1","T4","M2","N1"],
+    "mem_ba": ["P4","R2","T5"],
+    "mem_dq": ["G5","J6","F5","L8","G4","K7","F4","J5","H6","F8","H8","D6","G8","E6","H9","G6","C4","D4","A4","E3","C3","F3","B4","D3","F2","D1","G1","A2","E1","A3","G2","C2"],
+    "mem_dm": ["K6","F7","D5","E2"],
+    "mem_dqs": ["J4","H7","B5","C1"],
+    "mem_dqs_n": ["H4","G7","A5","B1"],
+    "mem_cs_n": "N4", "mem_rst_n": "H1", "mem_ck": "U6", "mem_ck_n": "U5",
+    "mem_cke": "R1", "mem_ras_n": "P6", "mem_cas_n": "T7", "mem_we_n": "T8", "mem_odt": "H2"
   },
-  "io_standard": "LVCMOS33",
-  "vccio": 3.3,
-  "verification": "manual_cross_checked; physical_board_revision_unverified",
-  "sources": [
-    "reference/盘古100K200K MINI开发板/1_Demo_document/实验例程说明篇/教程1_盘古MINI系列开发板硬件指导手册_V1.3.pdf: physical pages 6,12-14,34-35",
-    "reference/盘古100K200K MINI开发板/2_Demo/2_7_key_led_test/2_7_key_led_test/source/key_led_test.fdc",
-    "E:/PDS_Pangu/PDS_2022.2-SP6.4/example/PG2L100H_lvds4to1/pnr/lvds4to1.pds: device/package only; no source or old results reused"
-  ],
-  "notes": [
-    "The 200H reference uses FBB676; the installed 100H example and target package database use FBG676.",
-    "Only LED0 is used. The manual and 8-LED example disagree on LED1/LED2, and the manual table is incomplete.",
-    "This is an accelerated offline flow smoke design, not the planned video system or a hardware release."
-  ],
-  "scbv": "High Voltage",
-  "scbv_basis": "Both L4/L5 unused in smoke design; 3.3V supply per board manual p.12; PDS User Guide p.150 and official UG042003 V1.14 table 2-36."
+  "pins": {
+    "clk_27m": "D18", "ref_clk_p": "N3", "ref_clk_n": "N2", "reset_n": "C22", "status_led": "A20",
+    "rgmii_rxc": "D19", "rgmii_rx_ctl": "H16", "rgmii_rxd": ["D16","E16","A19","B19"],
+    "rgmii_txc": "G16", "rgmii_tx_ctl": "D20", "rgmii_txd": ["E20","B21","C21","D21"],
+    "phy_reset_n": "G25", "phy_mdc": "A25", "phy_mdio": "E21",
+    "hdmi_clk_p": "N21", "hdmi_clk_n": "N22",
+    "hdmi_data_p": ["R25","P23","N23"], "hdmi_data_n": ["P25","P24","N24"]
+  }
 }
