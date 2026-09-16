@@ -1,0 +1,73 @@
+{
+  "device": "Hagibis",
+  "requested_size": [
+    1280,
+    720
+  ],
+  "requested_capture_fps": 30,
+  "requested_seconds": 2,
+  "source_frame_id": null,
+  "pairing_status": "unverified",
+  "fpga_video_verified": false,
+  "sensor_fps_measured": null,
+  "source_format": "unknown",
+  "capture_transport": "MJPEG via DirectShow",
+  "lossless_fpga_capture": false,
+  "audio_captured": false,
+  "started_utc": "2026-09-15T12:25:54.545835+00:00",
+  "ffmpeg_sha256": "2ce797a0f88d7f067180338fb227f7b1928ea727bd9a4d7a1d022f7c52af71a3",
+  "status": "captured_unverified",
+  "decoded_format": "RGB24",
+  "decoded_frame_bytes": 2764800,
+  "wall_seconds": 6.282000000006519,
+  "files": {
+    "capture.mkv": {
+      "bytes": 1031016,
+      "sha256": "5714ac240d948ce20d7f424df2310846b3d19d718965bf7db875a8031144d4c1"
+    },
+    "capture.stderr.log": {
+      "bytes": 1155,
+      "sha256": "5d62ac988e3ddf7c3670bc6f520635e04ad6f3949681609c206d624a3179160c"
+    },
+    "capture.stdout.log": {
+      "bytes": 791,
+      "sha256": "373ca364752da6b50e2df7247c2623be2d6fa69f9884458c0681927ce584eb75"
+    },
+    "first_frame.png": {
+      "bytes": 11698,
+      "sha256": "067c957bddd1eec14ac25ec25ca3cdef35771183bd652c27834aa26e2b87f281"
+    },
+    "first_frame.rgb": {
+      "bytes": 2764800,
+      "sha256": "489c5ab9511e0b44b8e194d6ca7ffc83fd70dc5ebe04799392b3fed62852dee8"
+    },
+    "png.stderr.log": {
+      "bytes": 1374,
+      "sha256": "c0a7e08237c7067b76e706ccea5535822751bbb0102d332146aca892299f5239"
+    },
+    "png.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "preview.mp4": {
+      "bytes": 6653,
+      "sha256": "f414cb9236d06eb5764ebda0481e18df0676ba3b3a446888c6efd92edb7f6086"
+    },
+    "preview.stderr.log": {
+      "bytes": 3524,
+      "sha256": "751d2de097d9b50703b129cf37fbf278612b66cfcbab7d179ee3c24dcbdc1af3"
+    },
+    "preview.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "rgb.stderr.log": {
+      "bytes": 1286,
+      "sha256": "cb5d922a39a6e83db20a08155a2f69c0fc39f104a49e7366521d38736ec3e3aa"
+    },
+    "rgb.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

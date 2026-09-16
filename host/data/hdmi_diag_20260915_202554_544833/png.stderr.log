@@ -1,0 +1,16 @@
+[rawvideo @ 0000018cfde98900] Estimating duration from bitrate, this may be inaccurate
+Input #0, rawvideo, from 'D:\XDU\concept\26-FPGA-Pango\host\data\hdmi_diag_20260915_202554_544833\first_frame.rgb':
+  Duration: 00:00:00.04, start: 0.000000, bitrate: 552960 kb/s
+  Stream #0:0: Video: rawvideo (RGB[24] / 0x18424752), rgb24, 1280x720, 552960 kb/s, 25 tbr, 25 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (rawvideo (native) -> png (native))
+Output #0, image2, to 'D:\XDU\concept\26-FPGA-Pango\host\data\hdmi_diag_20260915_202554_544833\first_frame.png':
+  Metadata:
+    encoder         : Lavf61.7.100
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown, progressive), 1280x720, q=2-31, 200 kb/s, 25 fps, 25 tbn
+      Metadata:
+        encoder         : Lavc61.19.100 png
+[image2 @ 0000018cfde914c0] The specified filename 'D:\XDU\concept\26-FPGA-Pango\host\data\hdmi_diag_20260915_202554_544833\first_frame.png' does not contain an image sequence pattern or a pattern is invalid.
+[image2 @ 0000018cfde914c0] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.
+[out#0/image2 @ 0000018cfdea1700] video:11KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=    1 fps=0.0 q=-0.0 Lsize=N/A time=00:00:00.04 bitrate=N/A speed=3.14x    
