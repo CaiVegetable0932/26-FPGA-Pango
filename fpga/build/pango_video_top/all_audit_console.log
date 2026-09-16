@@ -1,0 +1,244 @@
+{
+  "checked_at": "2026-09-10T12:51:46.747478+08:00",
+  "branch": "codex/fpga-pds-project",
+  "target": "PG2L100H-6IFBG676",
+  "pds": "2022.2-SP6.4 build146967",
+  "native_pds_read": true,
+  "ip_count": 15,
+  "constrained_ports": 99,
+  "stages": {
+    "compile": {
+      "artifact": "compile/cmr.db",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 2923
+    },
+    "synthesize": {
+      "artifact": "synthesize/snr.db",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 3864
+    },
+    "dev_map": {
+      "artifact": "device_map/dmr.db",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 31
+    },
+    "pnr": {
+      "artifact": "place_route/prr.db",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 0
+    },
+    "report_timing": {
+      "artifact": "report_timing/rtr.db",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 127
+    },
+    "gen_netlist": {
+      "artifact": "generate_netlist/pango_video_top_sim.v",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 0
+    },
+    "gen_bit_stream": {
+      "artifact": "generate_bitstream/pango_video_top.sbit",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 0
+    },
+    "report_power": {
+      "artifact": "report_power/pango_video_top.ppr",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 0
+    }
+  },
+  "internal_timing_passed": true,
+  "timing_summary": "All Constraints Met.",
+  "clocks": {
+    "ref_clk": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        0.0,
+        4.0
+      ],
+      "kind": "Declared",
+      "clock_loads": 0,
+      "source": "ref_clk_p"
+    },
+    "rst_clk": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        0.0,
+        4.0
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 99,
+      "source": "I_ips_ddr_top/u_ddrphy_top/rst_clk_gpll/u_gpll/gpll_inst/CLKOUT0"
+    },
+    "ddrphy_sysclk": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        0.0,
+        4.0
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 1917,
+      "source": "I_ips_ddr_top/u_ddrphy_top/ddrphy_gpll/u_gpll/gpll_inst/CLKOUT0"
+    },
+    "phy_dq_clk_0": {
+      "period_ns": 1.0,
+      "waveform_ns": [
+        0.0,
+        0.5
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 35,
+      "source": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[0].ddrphy_ppll/u_ppll/ppll_inst/CLKOUTPHY"
+    },
+    "phy_dq_sysclk_0": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        2.0,
+        6.0
+      ],
+      "kind": "Generated (phy_dq_clk_0)",
+      "clock_loads": 35,
+      "source": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[0].u_ddrphy_ioclkdiv/ddrphy_ioclk_div_inst/CLKOUT"
+    },
+    "phy_dq_clk_1": {
+      "period_ns": 1.0,
+      "waveform_ns": [
+        0.0,
+        0.5
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 84,
+      "source": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[1].ddrphy_ppll/u_ppll/ppll_inst/CLKOUTPHY"
+    },
+    "phy_dq_sysclk_1": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        2.0,
+        6.0
+      ],
+      "kind": "Generated (phy_dq_clk_1)",
+      "clock_loads": 84,
+      "source": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[1].u_ddrphy_ioclkdiv/ddrphy_ioclk_div_inst/CLKOUT"
+    },
+    "sys_clk": {
+      "period_ns": 10.0,
+      "waveform_ns": [
+        0.0,
+        5.0
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 14,
+      "source": "u_sys_pll/u_gpll/gpll_inst/CLKOUT0"
+    },
+    "proc_clk": {
+      "period_ns": 6.6667,
+      "waveform_ns": [
+        0.0,
+        3.333
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 540,
+      "source": "u_sys_pll/u_gpll/gpll_inst/CLKOUT1"
+    },
+    "tx_clk": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        0.0,
+        4.0
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 55,
+      "source": "u_sys_pll/u_gpll/gpll_inst/CLKOUT2"
+    },
+    "clk_27m": {
+      "period_ns": 37.037,
+      "waveform_ns": [
+        0.0,
+        18.518
+      ],
+      "kind": "Declared",
+      "clock_loads": 0,
+      "source": "clk_27m"
+    },
+    "serial_clk": {
+      "period_ns": 2.6936,
+      "waveform_ns": [
+        0.0,
+        1.346
+      ],
+      "kind": "Generated (clk_27m)",
+      "clock_loads": 18,
+      "source": "u_video_pll/u_gpll/gpll_inst/CLKOUT1"
+    },
+    "pixel_clk": {
+      "period_ns": 13.468,
+      "waveform_ns": [
+        0.0,
+        5.387
+      ],
+      "kind": "Generated (serial_clk)",
+      "clock_loads": 59,
+      "source": "u_hdmi_pixel_div/iockdiv_inst/CLKOUT"
+    },
+    "rx_clk": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        0.0,
+        4.0
+      ],
+      "kind": "Declared",
+      "clock_loads": 61,
+      "source": "rgmii_rxc"
+    }
+  },
+  "timing_worst": {
+    "setup_slow": {
+      "worst_slack_ns": 1.133,
+      "failing_endpoints": 0
+    },
+    "hold_slow": {
+      "worst_slack_ns": 0.158,
+      "failing_endpoints": 0
+    },
+    "recovery_slow": {
+      "worst_slack_ns": 0.023,
+      "failing_endpoints": 0
+    },
+    "removal_slow": {
+      "worst_slack_ns": 0.194,
+      "failing_endpoints": 0
+    },
+    "setup_fast": {
+      "worst_slack_ns": 2.084,
+      "failing_endpoints": 0
+    },
+    "hold_fast": {
+      "worst_slack_ns": 0.101,
+      "failing_endpoints": 0
+    },
+    "recovery_fast": {
+      "worst_slack_ns": 0.491,
+      "failing_endpoints": 0
+    },
+    "removal_fast": {
+      "worst_slack_ns": 0.126,
+      "failing_endpoints": 0
+    }
+  },
+  "bitstream_sha256": "9f8154ff16ee63f8182761a2a02805f555475d4373e5aae7e9e5c1e76de2bb33",
+  "flow_passed": true,
+  "issues": [],
+  "hardware_tested": false,
+  "programmed": false,
+  "external_io_timing_signed_off": false,
+  "bitstream_approved_for_programming": false
+}

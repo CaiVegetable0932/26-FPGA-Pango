@@ -1,0 +1,116 @@
+##### Written on 2026/09/10 11:08:41 ###############################
+
+
+##### INFO ##################################################
+
+Current device : 
+	PG2L100H-6FBG676
+
+Top Module : 
+	pango_video_top
+
+Constraint File(s) : 
+	D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_native.fdc
+	D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc
+	D:/XDU/concept/26-FPGA-Pango/fpga/constraints/board_pins.fdc
+	D:/XDU/concept/26-FPGA-Pango/fpga/constraints/clocks.fdc
+
+##### SUMMARY ######################################################
+
+Found 0 error(s), 30 critical warning(s), 0 warning(s), out of 815 constraint(s)
+
+
+Inapplicable constraints(except overwritten constraints):
+********************************************
+
+define_attribute {p:mem_dq[1]} {PAP_IO_LOC} {J6}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 121)] | Port mem_dq[1] has been placed at location J6, whose type is share pin.
+
+define_attribute {p:mem_dq[3]} {PAP_IO_LOC} {L8}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 143)] | Port mem_dq[3] has been placed at location L8, whose type is share pin.
+
+define_attribute {p:mem_dq[5]} {PAP_IO_LOC} {K7}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 165)] | Port mem_dq[5] has been placed at location K7, whose type is share pin.
+
+define_attribute {p:mem_dq[7]} {PAP_IO_LOC} {J5}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 187)] | Port mem_dq[7] has been placed at location J5, whose type is share pin.
+
+define_attribute {p:mem_dq[8]} {PAP_IO_LOC} {H6}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 198)] | Port mem_dq[8] has been placed at location H6, whose type is share pin.
+
+define_attribute {p:mem_dq[10]} {PAP_IO_LOC} {H8}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 220)] | Port mem_dq[10] has been placed at location H8, whose type is share pin.
+
+define_attribute {p:mem_dq[11]} {PAP_IO_LOC} {D6}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 231)] | Port mem_dq[11] has been placed at location D6, whose type is share pin.
+
+define_attribute {p:mem_dq[12]} {PAP_IO_LOC} {G8}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 242)] | Port mem_dq[12] has been placed at location G8, whose type is share pin.
+
+define_attribute {p:mem_dq[13]} {PAP_IO_LOC} {E6}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 253)] | Port mem_dq[13] has been placed at location E6, whose type is share pin.
+
+define_attribute {p:mem_dq[15]} {PAP_IO_LOC} {G6}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 275)] | Port mem_dq[15] has been placed at location G6, whose type is share pin.
+
+define_attribute {p:mem_dm[0]} {PAP_IO_LOC} {K6}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 462)] | Port mem_dm[0] has been placed at location K6, whose type is share pin.
+
+define_attribute {p:mem_dqs[0]} {PAP_IO_LOC} {J4}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 486)] | Port mem_dqs[0] has been placed at location J4, whose type is share pin.
+
+define_attribute {p:mem_dqs[1]} {PAP_IO_LOC} {H7}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 497)] | Port mem_dqs[1] has been placed at location H7, whose type is share pin.
+
+define_attribute {p:mem_dqs_n[0]} {PAP_IO_LOC} {H4}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 530)] | Port mem_dqs_n[0] has been placed at location H4, whose type is share pin.
+
+define_attribute {p:mem_dqs_n[1]} {PAP_IO_LOC} {G7}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 541)] | Port mem_dqs_n[1] has been placed at location G7, whose type is share pin.
+
+define_attribute {p:phy_reset_n} {PAP_IO_LOC} {G25}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/board_pins.fdc(line number: 102)] | Port phy_reset_n has been placed at location G25, whose type is share pin.
+
+define_attribute {p:hdmi_data_p[0]} {PAP_IO_LOC} {R25}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/board_pins.fdc(line number: 133)] | Port hdmi_data_p[0] has been placed at location R25, whose type is share pin.
+
+define_attribute {p:hdmi_data_p[1]} {PAP_IO_LOC} {P23}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/board_pins.fdc(line number: 138)] | Port hdmi_data_p[1] has been placed at location P23, whose type is share pin.
+
+define_attribute {p:hdmi_data_p[2]} {PAP_IO_LOC} {N23}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/board_pins.fdc(line number: 143)] | Port hdmi_data_p[2] has been placed at location N23, whose type is share pin.
+
+define_attribute {p:hdmi_data_n[0]} {PAP_IO_LOC} {P25}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/board_pins.fdc(line number: 148)] | Port hdmi_data_n[0] has been placed at location P25, whose type is share pin.
+
+define_attribute {p:hdmi_data_n[1]} {PAP_IO_LOC} {P24}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/board_pins.fdc(line number: 153)] | Port hdmi_data_n[1] has been placed at location P24, whose type is share pin.
+
+define_attribute {p:hdmi_data_n[2]} {PAP_IO_LOC} {N24}
+	C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/constraints/board_pins.fdc(line number: 158)] | Port hdmi_data_n[2] has been placed at location N24, whose type is share pin.
+
+
+Constraints with issues:
+********************************************
+
+
+Issues without commands:
+********************************************
+
+C: ConstraintEditor-2009: p:hdmi_clk_p is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:hdmi_clk_n is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:hdmi_data_p[0] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:hdmi_data_p[1] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:hdmi_data_p[2] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:hdmi_data_n[0] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:hdmi_data_n[1] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:hdmi_data_n[2] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+
+Unconstrained ports:
+********************************************
+
+
+Constraints with matching wildcard expressions:
+********************************************
+
+

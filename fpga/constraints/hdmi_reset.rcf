@@ -1,0 +1,6 @@
+# Native PDS priority routing. No paths are exempted from timing analysis.
+# Names verified in the native post-route netlist; each net drives two IOLs.
+def_route -prior_net {hdmi_lane[0].u_serial/local_reset}
+def_route -prior_net {hdmi_lane[1].u_serial/local_reset}
+def_route -prior_net {hdmi_lane[2].u_serial/local_reset}
+def_route -prior_net {u_hdmi_clock/local_reset}

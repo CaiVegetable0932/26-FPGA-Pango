@@ -1,0 +1,117 @@
+m255
+K3
+13
+cModel Technology
+Z0 dD:\XDU\concept\26-FPGA-Pango\fpga\build\mini_camera_diag\video_sim_20260915_203945_190
+T_opt
+VAUaJkelP`S3fYN2FGmGDX2
+04 13 4 work tb_mini_video fast 0
+=1-207bd2c02996-6aa93c93-288-a164
+o-quiet -auto_acc_if_foreign -work ./work
+n@_opt
+OL;O;10.1c;51
+vsync_vg
+Z1 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+IGhIimWVP<>SNLMkO?N]d53
+Vn;;2?[TZM0WXK=U>AXoHX1
+S1
+Z2 dD:\XDU\concept\26-FPGA-Pango\fpga\build\mini_camera_diag\video_sim_20260915_203945_190
+Z3 w1789392551
+8D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\sync_vg.v
+FD:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\sync_vg.v
+L0 37
+Z4 OL;L;10.1c;51
+r1
+31
+Z5 !s108 1789475985.358000
+Z6 !s107 D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_video.sv|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\hdmi\tmds_encoder.v|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\video_rect_read_data.v|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\timing_gen_xy.v|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\sync_vg.v|
+Z7 !s90 -sv|-work|work|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\sync_vg.v|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\timing_gen_xy.v|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\video_rect_read_data.v|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\hdmi\tmds_encoder.v|D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_video.sv|
+Z8 o-sv -work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!i10b 1
+!s100 2WC@GUmc49@h<zfFXXcWD0
+!s105 sync_vg_v_unit
+!s85 0
+vtb_mini_video
+R1
+IML^9m2P<fN6`QA]DAbb`k0
+Vl;I2fWIf`h_2n21P3cimB1
+S1
+R2
+w1789394541
+8D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_video.sv
+FD:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_video.sv
+L0 5
+R4
+r1
+31
+R5
+R6
+R7
+R8
+!i10b 1
+!s100 ]Xjl8X;hiL_S0X>V^=`_N1
+!s105 tb_mini_video_sv_unit
+!s85 0
+vtiming_gen_xy
+R1
+ID9`lmWG2zaAkfj4d4gzO`0
+VV_aWXP^VYOiS<g8O12Bke1
+S1
+R2
+w1789392509
+8D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\timing_gen_xy.v
+FD:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\timing_gen_xy.v
+L0 3
+R4
+r1
+31
+R5
+R6
+R7
+R8
+!i10b 1
+!s100 2_NzB=WIl:_1>?jjbfz=Y1
+!s105 timing_gen_xy_v_unit
+!s85 0
+vtmds_encoder
+R1
+I?XhW<=m2eHd=KZ5:Ym2dK2
+V]aV[:I6Hh8S^46>QE8aOA2
+S1
+R2
+R3
+8D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\hdmi\tmds_encoder.v
+FD:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\hdmi\tmds_encoder.v
+L0 24
+R4
+r1
+31
+R5
+R6
+R7
+R8
+!i10b 1
+!s100 =?9mah;LmPFF3H_9hSZbA3
+!s105 tmds_encoder_v_unit
+!s85 0
+vvideo_rect_read_data
+R1
+IjYF`1Co26=n;T;:2_Vf=b0
+VE58>i2@>>Ldm2bE<d1@j:0
+S1
+R2
+w1789394569
+8D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\video_rect_read_data.v
+FD:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\video_rect_read_data.v
+L0 3
+R4
+r1
+31
+R5
+R6
+R7
+R8
+!i10b 1
+!s100 3l_9K7MeNP>Y@OMVMBF`h2
+!s105 video_rect_read_data_v_unit
+!s85 0

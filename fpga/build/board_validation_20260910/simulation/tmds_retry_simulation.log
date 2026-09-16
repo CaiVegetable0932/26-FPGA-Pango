@@ -1,0 +1,43 @@
+# vsim -do {onbreak {quit -f -code 1}; run -all; quit -f -code 0} -l tmds_retry_simulation.log -lib ./work_tmds -c tb_tmds_serializer 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Warning: vendor/GTP_OSERDES_E2.v(767): (vopt-2241) Connection width does not match width of port 'ts_ctrl'. The port definition is at: nofile(25).
+# 
+# ** Warning: vendor/GTP_OSERDES_E2.v(767): (vopt-2241) Connection width does not match width of port 'ts_ctrl'. The port definition is at: nofile(25).
+# 
+# ** Warning: D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/tmds_serializer.v(36): (vopt-2685) [TFMPC] - Too few port connections for 'master'.  Expected 20, found 18.
+# 
+# ** Warning: D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/tmds_serializer.v(36): (vopt-2718) [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/tmds_serializer.v(36): (vopt-2718) [TFMPC] - Missing connection for port 'TFB'.
+# 
+# ** Warning: D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/tmds_serializer.v(53): (vopt-2685) [TFMPC] - Too few port connections for 'slave'.  Expected 20, found 18.
+# 
+# ** Warning: D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/tmds_serializer.v(53): (vopt-2718) [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/tmds_serializer.v(53): (vopt-2718) [TFMPC] - Missing connection for port 'TFB'.
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_tmds_serializer(fast)
+# ** Warning: (vsim-3015) vendor/GTP_OSERDES_E2.v(767): [PCDPC] - Port size (2 or 2) does not match connection size (8) for port 'ts_ctrl'.
+# 
+#         Region: /tb_tmds_serializer/u_dut/master/genblk1/xoserdes_e2_iolhr_ol
+# ** Warning: (vsim-3015) vendor/GTP_OSERDES_E2.v(767): [PCDPC] - Port size (2 or 2) does not match connection size (8) for port 'ts_ctrl'.
+# 
+#         Region: /tb_tmds_serializer/u_dut/slave/genblk1/xoserdes_e2_iolhr_ol
+# onbreak {quit -f -code 1} 
+#  Warning: onbreak command for use within macro
+#  run -all 
+# TMDS_RESULT checks=22572 errors=0 symbols=1024 phase=9 period_ns=13.4700 high_ns=5.3880
+# TMDS_PASS
+# ** Note: $finish    : D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_tmds_serializer.sv(93)
+#    Time: 249177519 ps  Iteration: 0  Instance: /tb_tmds_serializer

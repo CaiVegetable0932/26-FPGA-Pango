@@ -1,0 +1,97 @@
+m255
+K3
+13
+cModel Technology
+Z0 dD:\XDU\concept\26-FPGA-Pango\fpga\build\mini_camera_diag\sim_20260914_210759_993
+T_opt
+VXiKUT0<AWV8I9;[:09Em`0
+04 12 4 work tb_mini_sccb fast 0
+=1-207bd2c02996-6aa7f1ba-117-cc88
+o-quiet -auto_acc_if_foreign -work ./work
+n@_opt
+OL;O;10.1c;51
+vdata_init
+Z1 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+IkLbi19D8cD_F;z@BQWhY51
+VLZ0l7IKgXXOL40^EnM0150
+S1
+Z2 dD:\XDU\concept\26-FPGA-Pango\fpga\build\mini_camera_diag\sim_20260914_210759_993
+Z3 w1789391279
+8D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\data_init.v
+FD:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\data_init.v
+L0 5
+Z4 OL;L;10.1c;51
+r1
+31
+Z5 !s108 1789391282.573000
+Z6 !s107 D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_sccb.sv|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\data_init.v|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\SCCB.v|
+Z7 !s90 -sv|-work|work|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\SCCB.v|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\data_init.v|D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_sccb.sv|
+Z8 o-sv -work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!i10b 1
+!s100 U`Bd>3NBE4hXCVn@M_^_S1
+!s105 data_init_v_unit
+!s85 0
+vmini_sccb_slave_model
+R1
+IC`MldH@I[FNGO54>FdR^S0
+VRze@Z^0eFog[lh9<^zF;:0
+Z9 !s105 tb_mini_sccb_sv_unit
+S1
+R2
+R3
+Z10 8D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_sccb.sv
+Z11 FD:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_sccb.sv
+L0 3
+R4
+r1
+31
+R5
+R6
+R7
+R8
+!i10b 1
+!s100 L3KcO:i?z8`17^@Kj=XKO1
+!s85 0
+vSCCB
+R1
+I03<KH42We6P5J:kB8jzU=2
+V`L7ii9UmOGCK`A4Mh<R;S1
+S1
+R2
+w1789391033
+8D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\SCCB.v
+FD:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\SCCB.v
+L0 5
+R4
+r1
+31
+R5
+R6
+R7
+R8
+n@s@c@c@b
+!i10b 1
+!s100 =^H7;oDbDn9;`MS[V82:a2
+!s105 SCCB_v_unit
+!s85 0
+vtb_mini_sccb
+R1
+IBK<hToH>JW=l`ASXQj6QG1
+VMK]zd6Z2RlHL^AS1m:^GI3
+R9
+S1
+R2
+R3
+R10
+R11
+L0 40
+R4
+r1
+31
+R5
+R6
+R7
+R8
+!i10b 1
+!s100 FiV1OS:?=2AhOiDFI8om[2
+!s85 0

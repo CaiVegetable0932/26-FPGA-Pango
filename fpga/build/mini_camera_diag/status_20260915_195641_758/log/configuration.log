@@ -1,0 +1,56 @@
+[Info] [2026-9-15 19:56:44] /***************************Start Configuration***************************/
+[Info] [2026-9-15 19:56:44] Path: E:/PDS_Pangu/PDS_2022.2-SP6.4/bin
+[Info] [2026-9-15 19:56:44] Version: 146967
+[Info] [2026-9-15 19:56:45] Current Path: D:/XDU/concept/26-FPGA-Pango/fpga/build/mini_camera_diag/status_20260915_195641_758
+[Info] [2026-9-15 19:56:45] PDS Dir Path: 
+[Debug] [2026-9-15 19:56:45] begin to check the cfg_connect exec condition.
+[Debug] [2026-9-15 19:56:45] end to check the cfg_connect exec condition.
+[Debug] [2026-9-15 19:56:45] Client Local host name:LAPTOP-B7VM7LU4
+[Debug] [2026-9-15 19:56:45] Client Local Address:26.207.88.92
+[Debug] [2026-9-15 19:56:45] Client Local Address:192.168.31.221
+[Debug] [2026-9-15 19:56:45] Server Address:127.0.0.1, Port:65420
+[Info] [2026-9-15 19:56:45] Connect OK, Server: 127.0.0.1  Port: 65420
+[Debug] [2026-9-15 19:56:45] Finish.
+[Info] [2026-9-15 19:56:45] Connect server succeeded
+[Debug] [2026-9-15 19:56:45] Send RPC:1
+[Debug] [2026-9-15 19:56:45] Send cmd [check version information:40004] OK
+[Debug] [2026-9-15 19:56:45] Send RPC:2
+[Debug] [2026-9-15 19:56:45] Send cmd [get_cable_paras:40010] OK
+[Debug] [2026-9-15 19:56:45] COMMAND[check version information] execute successfully, takes 0.0 secs.
+[Debug] [2026-9-15 19:56:47] COMMAND[get_cable_paras] execute successfully, takes 1.3 secs.
+[Debug] [2026-9-15 19:56:47] cfg_connect succeed.
+[Debug] [2026-9-15 19:56:48] Send RPC:3
+[Debug] [2026-9-15 19:56:48] Send cmd [Open config cable:20001] OK
+[Debug] [2026-9-15 19:56:48] begin the exec of open cable cmd...
+[Debug] [2026-9-15 19:56:48] Begin to deal with chain from server...
+[Debug] [2026-9-15 19:56:48] Begin to set user chain...
+[Debug] [2026-9-15 19:56:48] End to set user chain.
+[Debug] [2026-9-15 19:56:48] end the exec of open cable cmd.
+[Debug] [2026-9-15 19:56:48] COMMAND[Open config cable] execute successfully, takes 0.5 secs.
+[Debug] [2026-9-15 19:56:49] cfg_scan_chain succeed.
+[Debug] [2026-9-15 19:56:49] begin to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-15 19:56:49] end to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-15 19:56:49] Send RPC:4
+[Debug] [2026-9-15 19:56:49] Send cmd [Get device id:20006] OK
+[Debug] [2026-9-15 19:56:50] begin the exec of get device property cmd...
+[Debug] [2026-9-15 19:56:50] Begin to show device id result...
+[Debug] [2026-9-15 19:56:50] End to show device id result...
+[Debug] [2026-9-15 19:56:50] end the exec of get device property cmd.
+[Debug] [2026-9-15 19:56:50] COMMAND[Get device id] execute successfully, takes 0.4 secs.
+[Debug] [2026-9-15 19:56:50] cfg_read_device_property succeed.
+[Debug] [2026-9-15 19:56:51] begin to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-15 19:56:51] end to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-15 19:56:51] Send RPC:5
+[Debug] [2026-9-15 19:56:51] Send cmd [Read status:20005] OK
+[Debug] [2026-9-15 19:56:51] begin the exec of get device property cmd...
+[Debug] [2026-9-15 19:56:51] read status exec:
+[Debug] [2026-9-15 19:56:51] Begin to show read status register result...
+[Debug] [2026-9-15 19:56:51] End to show read status register result.
+[Debug] [2026-9-15 19:56:51] end the exec of get device property cmd.
+[Debug] [2026-9-15 19:56:51] COMMAND[Read status] execute successfully, takes 0.4 secs.
+[Debug] [2026-9-15 19:56:52] cfg_read_device_property succeed.
+[Info] [2026-9-15 19:56:52] Disconnect from Server: 127.0.0.1  Port: 65420
+[Warn] [2026-9-15 19:56:52] Server is disconnected
+[Debug] [2026-9-15 19:56:52] end to connect server
+[Debug] [2026-9-15 19:56:52] cfg_disconnect succeed.
+[Info] [2026-9-15 19:56:53] /***************************End Configration***************************/

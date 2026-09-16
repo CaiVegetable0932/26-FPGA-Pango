@@ -1,6 +1,5 @@
-# Preserve exact input/output bytes for reproducible SHA-256 evidence.
-# -text disables newline conversion only; these files still have normal diffs.
-# This is not an ignore rule: all sources and artifacts remain tracked.
+# Preserve native input/output bytes and the SHA-256 input manifest in Git.
+# These are newline-conversion rules, not ignore rules; all files stay tracked.
 build/** -text
 release/** -text
 rtl/** -text
@@ -8,3 +7,5 @@ constraints/** -text
 config/** -text
 scripts/** -text
 sim/** -text
+ip/** -text
+project/** -text

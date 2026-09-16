@@ -1,0 +1,54 @@
+[Info] [2026-9-15 19:56:42] /***************************Start jtagserver***************************/
+[Info] [2026-9-15 19:56:42] Path: E:/PDS_Pangu/PDS_2022.2-SP6.4/bin
+[Info] [2026-9-15 19:56:42] Version: 146967
+[Debug] [2026-9-15 19:56:45] Add a new user_thread, socket descriptor is 1072 user_thread id is 00000000000118C8
+[Debug] [2026-9-15 19:56:45] After adding, map size is : 1
+[Debug] [2026-9-15 19:56:45] Add a new user_thread, socket descriptor is 980 user_thread id is 00000000000118C8
+[Debug] [2026-9-15 19:56:45] After adding, map size is : 2
+[Debug] [2026-9-15 19:56:45] IP address of connecting client is : ::ffff:127.0.0.1
+[Debug] [2026-9-15 19:56:45] IP address of connecting client is : ::ffff:127.0.0.1
+[Debug] [2026-9-15 19:56:45] Remove the header data from the client, index : 0
+[Debug] [2026-9-15 19:56:45] _total_bytes_size : 160
+[Debug] [2026-9-15 19:56:45] Remove the header data from the client, index : 0
+[Debug] [2026-9-15 19:56:45] _total_bytes_size : 96
+[Debug] [2026-9-15 19:56:45] cmd id :40010cmd name : get_cable_paras
+[Debug] [2026-9-15 19:56:47] cmd operation get_cable_paras releases locker
+[Debug] [2026-9-15 19:56:48] Remove the header data from the client, index : 0
+[Debug] [2026-9-15 19:56:48] _total_bytes_size : 101
+[Debug] [2026-9-15 19:56:48] cmd id :20001cmd name : Open config cable
+[Debug] [2026-9-15 19:56:48] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-15 19:56:48] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:48] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:48] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:48] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:48] cmd operation Open config cable releases locker
+[Debug] [2026-9-15 19:56:49] Remove the header data from the client, index : 0
+[Debug] [2026-9-15 19:56:49] _total_bytes_size : 157
+[Debug] [2026-9-15 19:56:49] cmd id :4e26cmd name : Get device id
+[Debug] [2026-9-15 19:56:49] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-15 19:56:49] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:49] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:49] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:49] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:50] cmd operation Get device id releases locker
+[Debug] [2026-9-15 19:56:51] Remove the header data from the client, index : 0
+[Debug] [2026-9-15 19:56:51] _total_bytes_size : 153
+[Debug] [2026-9-15 19:56:51] cmd id :4e25cmd name : Read status
+[Debug] [2026-9-15 19:56:51] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-15 19:56:51] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:51] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:51] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:51] the idcode from the scanning is: 0x0
+[Debug] [2026-9-15 19:56:51] cmd operation Read status releases locker
+[Debug] [2026-9-15 19:56:52] connection error happens : 1
+[Debug] [2026-9-15 19:56:52] connection error happens : 1
+[Debug] [2026-9-15 19:56:52] connection state changes : 6 , socket description 430
+[Warn] [2026-9-15 19:56:52] socket state is ListeningState
+[Debug] [2026-9-15 19:56:52] connection state changes : 0 , socket description 430
+[Warn] [2026-9-15 19:56:52] socket state is UnconnectedState
+[Debug] [2026-9-15 19:56:52] socket descriptor 430is about to delete
+[Debug] [2026-9-15 19:56:52] connection state changes : 6 , socket description 3d4
+[Warn] [2026-9-15 19:56:52] socket state is ListeningState
+[Debug] [2026-9-15 19:56:52] connection state changes : 0 , socket description 3d4
+[Warn] [2026-9-15 19:56:52] socket state is UnconnectedState
+[Debug] [2026-9-15 19:56:52] socket descriptor 3d4is about to delete

@@ -1,0 +1,150 @@
+Design Summary : Some Constraints Violated.
+
+Setup Summary(Slow Corner):
+****************************************************************************************************
+                                                                          TNS Failing      TNS Total
+ Launch Clock           Capture Clock              WNS(ns)     TNS(ns)      Endpoints      Endpoints
+----------------------------------------------------------------------------------------------------
+ rst_clk                rst_clk                      5.417       0.000              0            419
+ ddrphy_sysclk          ddrphy_sysclk                2.949       0.000              0          16045
+ phy_dq_sysclk_1        ddrphy_sysclk                3.258       0.000              0            260
+ phy_dq_sysclk_0        ddrphy_sysclk                3.936       0.000              0              1
+ pixel_clk              ddrphy_sysclk                4.465       0.000              0             10
+ camera_pclk_budget     ddrphy_sysclk                5.073       0.000              0             10
+ ddrphy_sysclk          phy_dq_sysclk_0              1.288       0.000              0            196
+ ddrphy_sysclk          phy_dq_sysclk_1              1.609       0.000              0            420
+ sys_clk                sys_clk                     33.036       0.000              0            680
+ camera_pclk_budget     camera_pclk_budget           6.395       0.000              0            270
+ sys_clk                camera_pclk_budget           3.694       0.000              0              2
+ ddrphy_sysclk          camera_pclk_budget           3.987       0.000              0             11
+ serial_clk             serial_clk                   1.746       0.000              0              8
+ pixel_clk              pixel_clk                    9.562       0.000              0            756
+ ddrphy_sysclk          pixel_clk                    4.464       0.000              0             11
+====================================================================================================
+
+Hold Summary(Slow Corner):
+****************************************************************************************************
+                                                                          THS Failing      THS Total
+ Launch Clock           Capture Clock              WHS(ns)     THS(ns)      Endpoints      Endpoints
+----------------------------------------------------------------------------------------------------
+ rst_clk                rst_clk                      0.185       0.000              0            419
+ ddrphy_sysclk          ddrphy_sysclk                0.141       0.000              0          16045
+ phy_dq_sysclk_1        ddrphy_sysclk                0.605       0.000              0            260
+ phy_dq_sysclk_0        ddrphy_sysclk                0.890       0.000              0              1
+ ddrphy_sysclk          phy_dq_sysclk_0              0.427       0.000              0            196
+ ddrphy_sysclk          phy_dq_sysclk_1              0.483       0.000              0            420
+ sys_clk                sys_clk                      0.201       0.000              0            680
+ camera_pclk_budget     camera_pclk_budget           0.236       0.000              0            270
+ serial_clk             serial_clk                   0.342       0.000              0              8
+ pixel_clk              pixel_clk                    0.216       0.000              0            756
+====================================================================================================
+
+Recovery Summary(Slow Corner):
+****************************************************************************************************
+                                                                          TNS Failing      TNS Total
+ Launch Clock           Capture Clock              WNS(ns)     TNS(ns)      Endpoints      Endpoints
+----------------------------------------------------------------------------------------------------
+ rst_clk                rst_clk                      5.699       0.000              0             98
+ ddrphy_sysclk          ddrphy_sysclk                3.947       0.000              0           3527
+ sys_clk                sys_clk                     34.477       0.000              0             96
+ camera_pclk_budget     camera_pclk_budget           4.657       0.000              0             85
+ pixel_clk              serial_clk                  -0.202      -0.803              8              8
+ pixel_clk              pixel_clk                    5.333       0.000              0             77
+ sys_clk                pixel_clk                    0.477       0.000              0              2
+====================================================================================================
+
+Removal Summary(Slow Corner):
+****************************************************************************************************
+                                                                          THS Failing      THS Total
+ Launch Clock           Capture Clock              WHS(ns)     THS(ns)      Endpoints      Endpoints
+----------------------------------------------------------------------------------------------------
+ rst_clk                rst_clk                      0.350       0.000              0             98
+ ddrphy_sysclk          ddrphy_sysclk                0.391       0.000              0           3525
+ sys_clk                sys_clk                      0.375       0.000              0             96
+ camera_pclk_budget     camera_pclk_budget           0.463       0.000              0             82
+ pixel_clk              serial_clk                   0.464       0.000              0              8
+ pixel_clk              pixel_clk                    0.389       0.000              0             75
+ sys_clk                pixel_clk                    0.865       0.000              0              2
+====================================================================================================
+
+Minimum Pulse Width Summary(Slow Corner):
+****************************************************************************************************
+                                                                         WPWS Failing     WPWS Total
+ Clock                                            WPWS(ns)    TPWS(ns)      Endpoints      Endpoints
+----------------------------------------------------------------------------------------------------
+====================================================================================================
+
+Setup Summary(Fast Corner):
+****************************************************************************************************
+                                                                          TNS Failing      TNS Total
+ Launch Clock           Capture Clock              WNS(ns)     TNS(ns)      Endpoints      Endpoints
+----------------------------------------------------------------------------------------------------
+ rst_clk                rst_clk                      6.395       0.000              0            419
+ ddrphy_sysclk          ddrphy_sysclk                4.852       0.000              0          16045
+ phy_dq_sysclk_1        ddrphy_sysclk                4.688       0.000              0            260
+ phy_dq_sysclk_0        ddrphy_sysclk                5.197       0.000              0              1
+ pixel_clk              ddrphy_sysclk                5.037       0.000              0             10
+ camera_pclk_budget     ddrphy_sysclk                5.467       0.000              0             10
+ ddrphy_sysclk          phy_dq_sysclk_0              3.550       0.000              0            196
+ ddrphy_sysclk          phy_dq_sysclk_1              3.697       0.000              0            420
+ sys_clk                sys_clk                     34.593       0.000              0            680
+ camera_pclk_budget     camera_pclk_budget           7.814       0.000              0            270
+ sys_clk                camera_pclk_budget           4.568       0.000              0              2
+ ddrphy_sysclk          camera_pclk_budget           4.738       0.000              0             11
+ serial_clk             serial_clk                   2.085       0.000              0              8
+ pixel_clk              pixel_clk                   11.023       0.000              0            756
+ ddrphy_sysclk          pixel_clk                    5.043       0.000              0             11
+====================================================================================================
+
+Hold Summary(Fast Corner):
+****************************************************************************************************
+                                                                          THS Failing      THS Total
+ Launch Clock           Capture Clock              WHS(ns)     THS(ns)      Endpoints      Endpoints
+----------------------------------------------------------------------------------------------------
+ rst_clk                rst_clk                      0.131       0.000              0            419
+ ddrphy_sysclk          ddrphy_sysclk                0.101       0.000              0          16045
+ phy_dq_sysclk_1        ddrphy_sysclk                0.101       0.000              0            260
+ phy_dq_sysclk_0        ddrphy_sysclk                0.352       0.000              0              1
+ ddrphy_sysclk          phy_dq_sysclk_0              0.100       0.000              0            196
+ ddrphy_sysclk          phy_dq_sysclk_1              0.100       0.000              0            420
+ sys_clk                sys_clk                      0.127       0.000              0            680
+ camera_pclk_budget     camera_pclk_budget           0.158       0.000              0            270
+ serial_clk             serial_clk                   0.226       0.000              0              8
+ pixel_clk              pixel_clk                    0.153       0.000              0            756
+====================================================================================================
+
+Recovery Summary(Fast Corner):
+****************************************************************************************************
+                                                                          TNS Failing      TNS Total
+ Launch Clock           Capture Clock              WNS(ns)     TNS(ns)      Endpoints      Endpoints
+----------------------------------------------------------------------------------------------------
+ rst_clk                rst_clk                      6.510       0.000              0             98
+ ddrphy_sysclk          ddrphy_sysclk                4.740       0.000              0           3527
+ sys_clk                sys_clk                     35.458       0.000              0             96
+ camera_pclk_budget     camera_pclk_budget           5.190       0.000              0             85
+ pixel_clk              serial_clk                   0.347       0.000              0              8
+ pixel_clk              pixel_clk                    5.631       0.000              0             77
+ sys_clk                pixel_clk                    1.550       0.000              0              2
+====================================================================================================
+
+Removal Summary(Fast Corner):
+****************************************************************************************************
+                                                                          THS Failing      THS Total
+ Launch Clock           Capture Clock              WHS(ns)     THS(ns)      Endpoints      Endpoints
+----------------------------------------------------------------------------------------------------
+ rst_clk                rst_clk                      0.241       0.000              0             98
+ ddrphy_sysclk          ddrphy_sysclk                0.274       0.000              0           3525
+ sys_clk                sys_clk                      0.255       0.000              0             96
+ camera_pclk_budget     camera_pclk_budget           0.324       0.000              0             82
+ pixel_clk              serial_clk                   0.298       0.000              0              8
+ pixel_clk              pixel_clk                    0.291       0.000              0             75
+ sys_clk                pixel_clk                    0.500       0.000              0              2
+====================================================================================================
+
+Minimum Pulse Width Summary(Fast Corner):
+****************************************************************************************************
+                                                                         WPWS Failing     WPWS Total
+ Clock                                            WPWS(ns)    TPWS(ns)      Endpoints      Endpoints
+----------------------------------------------------------------------------------------------------
+====================================================================================================
+

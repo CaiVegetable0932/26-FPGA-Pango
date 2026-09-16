@@ -1,0 +1,12 @@
+Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+E:\ModelsimSE\win64\vlog.exe -sv -work ./work_board_io -l board_io_compile.log vendor/GTP_GRS.v vendor/GTP_CLKBUFG.v vendor/GTP_IDDR_E1.v vendor/GTP_ODDR_E1.v D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/reset_sync.v D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/rgmii_phy_io.v D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_board_io.sv 
+-- Compiling module GTP_GRS
+-- Compiling module GTP_CLKBUFG
+-- Compiling module GTP_IDDR_E1
+-- Compiling module GTP_ODDR_E1
+-- Compiling module reset_sync
+-- Compiling module rgmii_phy_io
+-- Compiling module tb_board_io
+
+Top level modules:
+	tb_board_io

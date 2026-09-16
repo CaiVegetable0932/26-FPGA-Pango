@@ -1,0 +1,173 @@
+{
+  "time": "2026-09-14T21:33:00.6796490+08:00",
+  "pin_count": 100,
+  "duplicate_pins": 0,
+  "duplicate_ports": 0,
+  "target_ips": [
+    {
+      "path": "fpga/ip/ddr3_controller/ddr3_controller.idf",
+      "device": "PG2L100H",
+      "package": "FBG676",
+      "speedgrade": "-6"
+    },
+    {
+      "path": "fpga/ip/video_pll/video_pll.idf",
+      "device": "PG2L100H",
+      "package": "FBG676",
+      "speedgrade": "-6"
+    },
+    {
+      "path": "fpga/ip/mini_camera_diag/afifo_16i_64o_512/afifo_16i_64o_512.idf",
+      "device": "PG2L100H",
+      "package": "FBG676",
+      "speedgrade": "-6"
+    },
+    {
+      "path": "fpga/ip/mini_camera_diag/afifo_64i_16o_128/afifo_64i_16o_128.idf",
+      "device": "PG2L100H",
+      "package": "FBG676",
+      "speedgrade": "-6"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\cmos_write_req_gen.v",
+      "sha256": "BC24241F489F681120015579F5EE78946799E6EE49B46CEB90BE0EFEC8B48C37"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\sync_vg.v",
+      "sha256": "9DCE6022890F7DE2505AC5249E663B84E2730F7A43ABD0BEFA702D748D226E13"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\timing_gen_xy.v",
+      "sha256": "25EFA1F68002308896B0EEC9E78201113199CC9B53381CF87CC97FA67F922B2D"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\Top.v",
+      "sha256": "BC43497C9498E30DFE548D6CA32278AEB36D676E41D72BB5FD37D347834F346F"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\video_rect_read_data.v",
+      "sha256": "EC773ED871B61BE8BDD2D7F65D88C81FCCC09AED057F24405EB4B877F10C8081"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\video_scale_down.v",
+      "sha256": "BE1BE86AA50A887ECF1E641F51FDB2471B848045ED7B54B71BF27E16797FEB1A"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\camera\\camera_data.v",
+      "sha256": "A6CD9854C16523E11A85B40091B0F7DDF0EF6BAC3DF3F1FB52B7D4AFCF301C36"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\camera\\camera.v",
+      "sha256": "74D5B5661CE0E699E60888404DD781A2394861B79EB01F9B3FA4166121A378C6"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\camera\\data_init.v",
+      "sha256": "F674DAA6312EFCF299D6E53B2A5DE31B94FF0C50312CD26FD3D745B1F01D773E"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\camera\\SCCB.v",
+      "sha256": "596874CFFAF61D3D318A38112F5F62B09378DC7A70C2C72E100BE17E4B4626B9"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\aq_axi_master_256.v",
+      "sha256": "015690058E93C193255009557F985A18F9C6F7B5D6DC184A06C61D2FA5F0A0F1"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\frame_fifo_read.v",
+      "sha256": "56F6C4BD8FB7445A15BE3972345EE59B17672227ACE2008C6D7EF240EC18386A"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\frame_fifo_write.v",
+      "sha256": "97D57695DBDAD751CD08F5F719885C0316E639DB336508FCF726B490E1AD4752"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\frame_read_write.v",
+      "sha256": "D793B6DD2CF25FE95F16B75C49DFD448AA57DD8B815D9F8C4BDB0B7E2091873B"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\mem_read_arbi.v",
+      "sha256": "C163F02A425E4CC71FA57EDB1A5F854DD7B1318012D802A1181B10888DBFD0BC"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\mem_write_arbi.v",
+      "sha256": "22C1ED812BAC410043DCC6A8F8BF0BB9AD0B5BCC3811E9299A70A503807B3EA0"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\iic_dri.v",
+      "sha256": "13568050283D0E82D52E164633AEAC21E9AB343200FB4A2959B6AC0C583BCC66"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\ms7200_ctl.v",
+      "sha256": "501521C4CCEECD48DE5741D3116EB7062C93A70A606A386682E1D8756A494199"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\ms7210_ctl.v",
+      "sha256": "C9B101E58F381DDF3C6D663D0003C18065302659424B8345022161413CCF09AE"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\ms72xx_ctl.v",
+      "sha256": "DF3876BC1A3BF3A7EFE7ADEED56B2F9625AF4AC9BA56074925671F49751CF69A"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\outputserdes.v",
+      "sha256": "E4F2354A07E830555117FFF16F2CEB6E0CB221525B29ACD428FCBFE01AD92D35"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\rgb2tmds.v",
+      "sha256": "65943D6A8843733A6721AA4BFD0EE42FFA9D7CAA44728FD9B49F2DBE7B40709A"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\tmds_encoder.v",
+      "sha256": "CF9EB16EA956E4DC7E1935ED340DFA98A50F568F17159A01387A101633F4BBCA"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\board\\reset_sync.v",
+      "sha256": "DA6A52A5E2BD3F7D8184391E5E9FB355FAAC811DD8FCDDBB3F06A85FA23319F1"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\board\\tmds_serializer.v",
+      "sha256": "C9402D93AEE9876D8D257597CE9B4D2888A3836C7471E0A4B88B57AF5A67F3E4"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\project\\mini_camera_diag\\mini_camera_diag.tcl",
+      "sha256": "C786BDDC8409B51C8591CD3835C68859632002B4C39EFD95353B59CDD231B195"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\constraints\\mini_camera_diag\\board_pins.fdc",
+      "sha256": "2B2060E666A4D8B3E16284EE728960CBDE864D6916F534EABC3F1356005FE4F5"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\constraints\\mini_camera_diag\\clocks.fdc",
+      "sha256": "777C066AC52916BB93C3242CE0AF84F88D6F3EBD7725F1F780F848E61B1B7DC3"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\constraints\\mini_camera_diag\\ddr_native.fdc",
+      "sha256": "5F398F8104CFB13B230D479D8FD1976C9254DA670C6F3593B95F13C06B5D7A41"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\constraints\\ddr_board_pins.fdc",
+      "sha256": "DD1B6F82D3F984747B2D3486247C1EF593C2E2CF52D2592F2DCD531ED0134135"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\ddr3_controller.idf",
+      "sha256": "961608BF2A188D1E4ADAF72BA8A68619B42B44B977637017963BD2836101526B"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\video_pll\\video_pll.idf",
+      "sha256": "7973409BCFA555A3743BFA200FE5CDE5B6952191F89B97754AA1AE286DF32A5A"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_16i_64o_512\\afifo_16i_64o_512.idf",
+      "sha256": "A58A263B327EF9F780375C3BB20591C32E37E6B36F529EB1F567A777543D761E"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_64i_16o_128\\afifo_64i_16o_128.idf",
+      "sha256": "613BF2C44832EBF8225EF2DA5B81403807848917C0E98AF783AC5450FE0DCB56"
+    }
+  ],
+  "static_audit_passed": true,
+  "external_timing_verified": false,
+  "hardware_verified": false
+}

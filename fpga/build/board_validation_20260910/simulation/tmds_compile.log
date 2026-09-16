@@ -1,0 +1,12 @@
+Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+E:\ModelsimSE\win64\vlog.exe -sv -work D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\simulation\work_tmds -l tmds_compile.log vendor/GTP_GRS.v vendor/GTP_IOCLKDIV_E2.v vendor/GTP_OSERDES_E2.v vendor/GTP_OUTBUFDS.v D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/reset_sync.v D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/tmds_serializer.v D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_tmds_serializer.sv 
+-- Compiling module GTP_GRS
+-- Compiling module GTP_IOCLKDIV_E2
+-- Compiling module GTP_OSERDES_E2
+-- Compiling module GTP_OUTBUFDS
+-- Compiling module reset_sync
+-- Compiling module tmds_serializer
+-- Compiling module tb_tmds_serializer
+
+Top level modules:
+	tb_tmds_serializer

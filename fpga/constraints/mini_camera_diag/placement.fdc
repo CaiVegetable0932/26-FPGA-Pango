@@ -1,0 +1,8 @@
+# Purpose: keep per-lane reset-release registers beside their 100H TMDS IOLs.
+# Native UCE PAP_REGION coordinates copied from the existing board integration;
+# only hierarchy names change. Recovery/removal checks remain enabled.
+define_global_attribute {PAP_REGION} {hdmi_reset_d0(3,4,61,63)[CLMA,CLMS];hdmi_reset_d1(3,4,65,67)[CLMA,CLMS];hdmi_reset_d2(3,4,69,71)[CLMA,CLMS];hdmi_reset_ck(3,4,73,75)[CLMA,CLMS];}
+define_attribute {i:rgb2tmds_inst.encoder[0].dataserializer.u_serial.local_reset} {PAP_REGION} {hdmi_reset_d0}
+define_attribute {i:rgb2tmds_inst.encoder[1].dataserializer.u_serial.local_reset} {PAP_REGION} {hdmi_reset_d1}
+define_attribute {i:rgb2tmds_inst.encoder[2].dataserializer.u_serial.local_reset} {PAP_REGION} {hdmi_reset_d2}
+define_attribute {i:rgb2tmds_inst.clockserializer.u_serial.local_reset} {PAP_REGION} {hdmi_reset_ck}

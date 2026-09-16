@@ -1,0 +1,45 @@
+# 125 MHz differential oscillator is also the DDR reference (native FDC).
+create_clock -name clk_27m -period 37.037037 [get_ports clk_27m]
+create_clock -name rx_clk -period 8.000 [get_ports rgmii_rxc]
+create_generated_clock -name sys_clk -source [get_ports ref_clk_p] -multiply_by 4 -divide_by 5 [get_pins {u_sys_pll.u_gpll/CLKOUT0}]
+create_generated_clock -name proc_clk -source [get_ports ref_clk_p] -multiply_by 6 -divide_by 5 [get_pins {u_sys_pll.u_gpll/CLKOUT1}]
+create_generated_clock -name tx_clk -source [get_ports ref_clk_p] -multiply_by 1 -divide_by 1 [get_pins {u_sys_pll.u_gpll/CLKOUT2}]
+create_generated_clock -name serial_clk -source [get_ports clk_27m] -multiply_by 55 -divide_by 4 [get_pins {u_video_pll.u_gpll/CLKOUT1}]
+# Native CLKDIV inference/rename (UCE 2.2.1.2, pp.74-75): infer the real /5
+# period and 40% duty cycle from the instantiated IOCLKDIV_E2 parameters.
+create_generated_clock -name pixel_clk [get_pins {u_hdmi_pixel_div/CLKDIVOUT}]
+# CDC exceptions are deliberately endpoint-specific. Do not mask entire
+# processing/display/Ethernet domains: every other path stays timed.
+# Native FIFO gray pointers cross into wrptr1/rwptr1, then a second stage.
+# 6 ns is below the shortest participating clock period (150 MHz = 6.667 ns).
+# Datapath bounds preserve gray-bus coherence, instead of false-pathing it.
+set_max_delay 6.0 -datapath_only -from [get_cells {u_ip_bank.u_raw_fifo.U_ipm2l_fifo_raw_async_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wptr*}] -to [get_cells {u_ip_bank.u_raw_fifo.U_ipm2l_fifo_raw_async_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*}]
+set_max_delay 6.0 -datapath_only -from [get_cells {u_ip_bank.u_raw_fifo.U_ipm2l_fifo_raw_async_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {u_ip_bank.u_raw_fifo.U_ipm2l_fifo_raw_async_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_max_delay 6.0 -datapath_only -from [get_cells {u_ip_bank.u_packet_fifo.U_ipm2l_fifo_net_tx_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wptr*}] -to [get_cells {u_ip_bank.u_packet_fifo.U_ipm2l_fifo_net_tx_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*}]
+set_max_delay 6.0 -datapath_only -from [get_cells {u_ip_bank.u_packet_fifo.U_ipm2l_fifo_net_tx_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {u_ip_bank.u_packet_fifo.U_ipm2l_fifo_net_tx_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_max_delay 6.0 -datapath_only -from [get_cells {u_ip_bank.u_read_fifo.U_ipm2l_fifo_ddr_read_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wptr*}] -to [get_cells {u_ip_bank.u_read_fifo.U_ipm2l_fifo_ddr_read_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*}]
+set_max_delay 6.0 -datapath_only -from [get_cells {u_ip_bank.u_read_fifo.U_ipm2l_fifo_ddr_read_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {u_ip_bank.u_read_fifo.U_ipm2l_fifo_ddr_read_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_max_delay 6.0 -datapath_only -from [get_cells {u_ip_bank.u_write_fifo.U_ipm2l_fifo_ddr_write_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wptr*}] -to [get_cells {u_ip_bank.u_write_fifo.U_ipm2l_fifo_ddr_write_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*}]
+set_max_delay 6.0 -datapath_only -from [get_cells {u_ip_bank.u_write_fifo.U_ipm2l_fifo_ddr_write_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {u_ip_bank.u_write_fifo.U_ipm2l_fifo_ddr_write_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_max_delay 6.0 -datapath_only -from [get_cells {u_ip_bank.u_display_fifo.U_ipm2l_fifo_display_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wptr*}] -to [get_cells {u_ip_bank.u_display_fifo.U_ipm2l_fifo_display_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*}]
+set_max_delay 6.0 -datapath_only -from [get_cells {u_ip_bank.u_display_fifo.U_ipm2l_fifo_display_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {u_ip_bank.u_display_fifo.U_ipm2l_fifo_display_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+# The six first-stage single-bit status synchronizer registers. RTL register
+# aliases are resolved with get_cells; they do not expose a literal /D pin at
+# the pre-synthesis constraint-import stage in this PDS version.
+set_max_delay 6.0 -datapath_only -to [get_cells {status_meta*}]
+# No deterministic hold relation is assumed at CDC first stages. Setup/data
+# routing remains bounded by the max-delay constraints above; stage two is timed.
+set_false_path -hold -from [get_cells {u_ip_bank.u_raw_fifo.U_ipm2l_fifo_raw_async_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wptr*}] -to [get_cells {u_ip_bank.u_raw_fifo.U_ipm2l_fifo_raw_async_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*}]
+set_false_path -hold -from [get_cells {u_ip_bank.u_raw_fifo.U_ipm2l_fifo_raw_async_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {u_ip_bank.u_raw_fifo.U_ipm2l_fifo_raw_async_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_false_path -hold -from [get_cells {u_ip_bank.u_packet_fifo.U_ipm2l_fifo_net_tx_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wptr*}] -to [get_cells {u_ip_bank.u_packet_fifo.U_ipm2l_fifo_net_tx_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*}]
+set_false_path -hold -from [get_cells {u_ip_bank.u_packet_fifo.U_ipm2l_fifo_net_tx_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {u_ip_bank.u_packet_fifo.U_ipm2l_fifo_net_tx_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_false_path -hold -from [get_cells {u_ip_bank.u_read_fifo.U_ipm2l_fifo_ddr_read_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wptr*}] -to [get_cells {u_ip_bank.u_read_fifo.U_ipm2l_fifo_ddr_read_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*}]
+set_false_path -hold -from [get_cells {u_ip_bank.u_read_fifo.U_ipm2l_fifo_ddr_read_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {u_ip_bank.u_read_fifo.U_ipm2l_fifo_ddr_read_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_false_path -hold -from [get_cells {u_ip_bank.u_write_fifo.U_ipm2l_fifo_ddr_write_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wptr*}] -to [get_cells {u_ip_bank.u_write_fifo.U_ipm2l_fifo_ddr_write_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*}]
+set_false_path -hold -from [get_cells {u_ip_bank.u_write_fifo.U_ipm2l_fifo_ddr_write_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {u_ip_bank.u_write_fifo.U_ipm2l_fifo_ddr_write_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_false_path -hold -from [get_cells {u_ip_bank.u_display_fifo.U_ipm2l_fifo_display_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wptr*}] -to [get_cells {u_ip_bank.u_display_fifo.U_ipm2l_fifo_display_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*}]
+set_false_path -hold -from [get_cells {u_ip_bank.u_display_fifo.U_ipm2l_fifo_display_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {u_ip_bank.u_display_fifo.U_ipm2l_fifo_display_fifo.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_false_path -hold -to [get_cells {status_meta*}]
+set_false_path -from [get_ports reset_n]
+# External RGMII/HDMI timing remains unverified; no invented I/O delays are used.
+# Thus successful internal STA is not sign-off for these board interfaces.

@@ -1,0 +1,16 @@
+cdt_js : Fabric JtagServer (Version 2022.2-SP6.4 build 146967)
+E: Flow-0073: Option '-port65420' is not defined for command 'cdt_js'.
+H: cdt_js : Fabric JtagServer (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -version  ]
+        Print version
+    [ -work_dir string ]
+        Specifying the work directory
+    [ -port string ]
+        Specifying the TCP port number
+    [ -lpt_address string ]
+        Specifying the lpt_address (Hex.)
+
+
+Executing : cdt_js -help successfully.

@@ -1,0 +1,163 @@
+m255
+K3
+13
+cModel Technology
+Z0 dD:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\simulation
+T_opt
+Vo_ThLn23okIB6o^KgaC8k1
+04 11 4 work tb_board_io fast 0
+=1-207bd2c02996-6aa2afaf-1af-18e84
+o-quiet -auto_acc_if_foreign -work ./work_board_io
+n@_opt
+OL;O;10.1c;51
+vGTP_CLKBUFG
+Z1 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+IJ47d`nz^LnHN;l0>n78c>1
+VX0CM;I5L4RJT4gHj1lhK20
+S1
+Z2 dD:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\simulation
+w1706636424
+8vendor/GTP_CLKBUFG.v
+Fvendor/GTP_CLKBUFG.v
+L0 28
+Z3 OL;L;10.1c;51
+r1
+31
+Z4 !s108 1789046699.342000
+Z5 !s107 D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_board_io.sv|D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/rgmii_phy_io.v|D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/reset_sync.v|vendor/GTP_ODDR_E1.v|vendor/GTP_IDDR_E1.v|vendor/GTP_CLKBUFG.v|vendor/GTP_GRS.v|
+Z6 !s90 -sv|-work|./work_board_io|-l|board_io_compile.log|vendor/GTP_GRS.v|vendor/GTP_CLKBUFG.v|vendor/GTP_IDDR_E1.v|vendor/GTP_ODDR_E1.v|D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/reset_sync.v|D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/rgmii_phy_io.v|D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_board_io.sv|
+Z7 o-sv -work ./work_board_io -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+n@g@t@p_@c@l@k@b@u@f@g
+!i10b 1
+!s100 NTI_f39zHDmU^9HNgZKQi0
+!s105 GTP_CLKBUFG_v_unit
+!s85 0
+vGTP_GRS
+R1
+I]J:SOgPAMm>?]KHanLGg@1
+Vm@_cHT130onF>^[S;LhTh1
+S1
+R2
+w1706636426
+8vendor/GTP_GRS.v
+Fvendor/GTP_GRS.v
+L0 29
+R3
+r1
+31
+R4
+R5
+R6
+R7
+n@g@t@p_@g@r@s
+!i10b 1
+!s100 P2WYF;Zm2f`QXEI`@2IYM0
+!s105 GTP_GRS_v_unit
+!s85 0
+vGTP_IDDR_E1
+R1
+IQnoXbMgZ?N6jGZSkemM[53
+VE6HaLhZ4FAglHFOW1coVE2
+S1
+R2
+w1706636428
+8vendor/GTP_IDDR_E1.v
+Fvendor/GTP_IDDR_E1.v
+L0 28
+R3
+r1
+31
+R4
+R5
+R6
+R7
+n@g@t@p_@i@d@d@r_@e1
+!i10b 1
+!s100 ia2GJ8QfE^W=m7_e9mKza3
+!s105 GTP_IDDR_E1_v_unit
+!s85 0
+vGTP_ODDR_E1
+R1
+IBn_`;AHGQPTB[TiRj106D2
+V056H]ENfi]O8gA>_hYcOj0
+S1
+R2
+w1706636430
+8vendor/GTP_ODDR_E1.v
+Fvendor/GTP_ODDR_E1.v
+L0 28
+R3
+r1
+31
+R4
+R5
+R6
+R7
+n@g@t@p_@o@d@d@r_@e1
+!i10b 1
+!s100 INWC<1e9mI9DIOE^1a]Va3
+!s105 GTP_ODDR_E1_v_unit
+!s85 0
+vreset_sync
+R1
+Inb5_8Tj9`b]O:RFd?2=c<3
+V]eb5N[Go`LlQb=Nzl9nTe1
+S1
+R2
+Z8 w1789041730
+8D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/reset_sync.v
+FD:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/reset_sync.v
+L0 6
+R3
+r1
+31
+R4
+R5
+R6
+R7
+!i10b 1
+!s100 4VN2<N:Xb0B4_bTHZBUXD1
+!s105 reset_sync_v_unit
+!s85 0
+vrgmii_phy_io
+R1
+I78F=9z3I^M_ek>lPP1IV;2
+V6?a]DRL:T_Kk6BGWCdR453
+S1
+R2
+R8
+8D:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/rgmii_phy_io.v
+FD:/XDU/concept/26-FPGA-Pango/fpga/rtl/board/rgmii_phy_io.v
+L0 8
+R3
+r1
+31
+R4
+R5
+R6
+R7
+!i10b 1
+!s100 :JfdkQ74`CTUz8`YjKQ9O2
+!s105 rgmii_phy_io_v_unit
+!s85 0
+vtb_board_io
+R1
+I9^<TP4W^GdNaJEGao=?[]0
+V?fD]l8CnIjSV_e1MSgUWg3
+S1
+R2
+w1789046381
+8D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_board_io.sv
+FD:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_board_io.sv
+L0 5
+R3
+r1
+31
+R4
+R5
+R6
+R7
+!i10b 1
+!s100 >6OW=[WBiCC5AnGHa`4a<3
+!s105 tb_board_io_sv_unit
+!s85 0
