@@ -1,0 +1,53 @@
+{
+  "utc": "2026-09-07T08:57:38.166Z",
+  "node": "v24.14.0",
+  "platform": "win32",
+  "tests_run": 9,
+  "passed": true,
+  "browser_ui_qa": "not_performed",
+  "results": [
+    {
+      "name": "RAW8 Bayer layout 1",
+      "passed": true
+    },
+    {
+      "name": "RAW8 Bayer layout 2",
+      "passed": true
+    },
+    {
+      "name": "RAW8 Bayer layout 3",
+      "passed": true
+    },
+    {
+      "name": "RAW8 Bayer layout 4",
+      "passed": true
+    },
+    {
+      "name": "Full-scale small RAW grayscale preserves samples",
+      "passed": true
+    },
+    {
+      "name": "1080p Bayer downscale has independent color cell averages",
+      "passed": true
+    },
+    {
+      "name": "RGB888 order and integer grayscale",
+      "passed": true
+    },
+    {
+      "name": "Corrupt lengths, strides, dimensions, formats, and Bayer are rejected",
+      "passed": true
+    },
+    {
+      "name": "Wider RAW preview remains bounded to 960 columns",
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "web/pixels.js": "24beaac3ccd2ceea729d53572d3014885f2837e9017459e9322bde2f7cd6e03a",
+    "web/preview-worker.js": "4ac7c892bf26f9cad33ad07d61a40c3b1b521b7e923c19216d8075971ad3a72c",
+    "web/app.js": "825f73b5ec6e768b24dda0197cbde125614dd911fb350e102bd0c2d08f1c5639",
+    "web/index.html": "a259cdd05370e97c094facd4ab0e8aae9c18ad1ccddebf9d26f01a36e6244b59",
+    "web/app.css": "919d52d2f55387a4ffa7d21051db5ae34ad7393f819b03d0b455b093f3528fc0"
+  }
+}

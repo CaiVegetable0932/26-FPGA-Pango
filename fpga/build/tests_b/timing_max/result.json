@@ -1,0 +1,13 @@
+{
+  "returncode": 0,
+  "elapsed_seconds": 3.578,
+  "log": "build\\tests_b\\timing_max\\simulate.log",
+  "error_lines": [],
+  "passed": false,
+  "checks": 898,
+  "toggles": 23,
+  "sdf_annotation_requested": true,
+  "timing_warnings": [
+    "# ** Warning: (vsim-8756) E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/bsim/V_FFSYN.v(73): Instance 'tb_flow_smoke.dut.\\CLMA_63_870/FF0/FF ' - Negative timing check limits detected in simulation with cells modeled without delayed copies of data or reference signals."
+  ]
+}

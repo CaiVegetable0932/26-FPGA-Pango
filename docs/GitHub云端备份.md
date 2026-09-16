@@ -4,6 +4,16 @@
 
 本地远程名为 `origin`。备份覆盖已提交并推送的文档、源码、配置和标签；保存文件、Git 提交、推送到云端是三个不同步骤。工作区未提交的修改不会上传。
 
+## 每轮工作的同步要求
+
+依据 [项目工作约定](../AGENTS.md)，每次开始修改前必须获取云端最新状态，并在已纳入当前对应远程分支最新提交的版本上工作。新分支尚未发布时，先核对来源分支（通常为 origin/main）。
+
+完成本轮改动后，助手必须在最终回答前检查、提交、推送当前分支，并核对远程提交号与本地 HEAD 一致；首次推送建立跟踪关系。推送前再次获取远程状态，冲突通过保留双方工作并合并解决，不能强制覆盖。失败时明确说明尚未推送成功及原因。
+
+其他任务原有的未提交文件保持原状，本轮改动单独提交。现有备份脚本要求整个工作区干净；若有明确无关的遗留文件，可只暂存本轮文件后直接执行 Git 推送，并通过远程提交号完成同等校验，不为运行脚本擅自提交或清除遗留文件。
+
+这是助手的持续工作规则；VS Code 不会因保存文件自动提交或推送，手动流程仍按下面步骤执行。
+
 ## VS Code 日常流程
 
 1. 打开整个项目文件夹，在“源代码管理”中检查当前分支。
@@ -35,6 +45,10 @@ git clone https://github.com/CaiVegetable0932/26-FPGA-Pango.git
 用 VS Code 打开克隆后的目录。若需要编辑远程开发分支，从分支列表选择对应分支。安装 PDS、ModelSim，恢复外部资料并配置本机工具路径和 License。克隆不会复制旧电脑的本地 Git 配置，可在新仓库设置：
 
 ```powershell
+git config --local user.name CaiVegetable0932
+git config --local user.email caivegetable0932@163.com
+git config --local user.useConfigOnly true
+git config --local credential.https://github.com.username CaiVegetable0932
 git config pull.ff only
 git config push.default simple
 git config fetch.prune true
@@ -42,7 +56,9 @@ git config core.longpaths true
 git config core.quotepath false
 ```
 
-## GitHub 登录
+## 固定身份与 GitHub 登录
+
+本项目提交作者与提交者均固定为 `CaiVegetable0932 <caivegetable0932@163.com>`；推送使用 `CaiVegetable0932` 登录账户。提交前用 `git var GIT_AUTHOR_IDENT` 和 `git var GIT_COMMITTER_IDENT` 核对实际身份，提交后通过 `git log -1 --format=fuller` 复核。Git 配置不会替代 GitHub 登录。
 
 使用 Git Credential Manager 或 VS Code 的 GitHub 登录提示完成授权。凭据由本机凭据管理器保存，不写入仓库。认证失败时可在终端运行 `git credential-manager github login --username CaiVegetable0932 --force --browser` 重新登录，无需将密码或令牌发给他人。
 

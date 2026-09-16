@@ -1,0 +1,50 @@
+{
+  "utc": "2026-09-07T10:39:10.261463+00:00",
+  "license_configured": true,
+  "pds_exists": true,
+  "modelsim_exists": true,
+  "board": {
+    "board": "MINI-100HP / PG2L100H",
+    "part_marking_from_manual": "PG2L100H-6IFBG676",
+    "family": "Logos2",
+    "device": "PG2L100H",
+    "speedgrade": "-6",
+    "package": "FBG676",
+    "clock_hz": 27000000,
+    "pins": {
+      "clk": "D18",
+      "rstn": "C22",
+      "key": "C23",
+      "led0": "A20"
+    },
+    "io_standard": "LVCMOS33",
+    "vccio": 3.3,
+    "verification": "manual_cross_checked; physical_board_revision_unverified",
+    "sources": [
+      "reference/盘古100K200K MINI开发板/1_Demo_document/实验例程说明篇/教程1_盘古MINI系列开发板硬件指导手册_V1.3.pdf: physical pages 6,12-14,34-35",
+      "reference/盘古100K200K MINI开发板/2_Demo/2_7_key_led_test/2_7_key_led_test/source/key_led_test.fdc",
+      "E:/PDS_Pangu/PDS_2022.2-SP6.4/example/PG2L100H_lvds4to1/pnr/lvds4to1.pds: device/package only; no source or old results reused"
+    ],
+    "notes": [
+      "The 200H reference uses FBB676; the installed 100H example and target package database use FBG676.",
+      "Only LED0 is used. The manual and 8-LED example disagree on LED1/LED2, and the manual table is incomplete.",
+      "This is an accelerated offline flow smoke design, not the planned video system or a hardware release."
+    ]
+  },
+  "pds_version": {
+    "returncode": 0,
+    "elapsed_seconds": 0.218,
+    "log": "build\\doctor_20260907\\pds_version.log",
+    "error_lines": [],
+    "version_matches": true
+  },
+  "modelsim_version": {
+    "returncode": 0,
+    "elapsed_seconds": 0.125,
+    "log": "build\\doctor_20260907\\modelsim_version.log",
+    "error_lines": [],
+    "version_matches": true
+  },
+  "passed": true,
+  "license_functional_check": "requires actual synthesis; variable existence alone is insufficient"
+}

@@ -1,0 +1,77 @@
+{
+  "passed": false,
+  "stages": {
+    "rtl": {
+      "returncode": 0,
+      "elapsed_seconds": 3.266,
+      "log": "build\\tests_verified\\rtl\\simulate.log",
+      "error_lines": [],
+      "passed": true,
+      "functional_passed": true,
+      "design_sha256": "8082cebd2e57784da8a031035f72b669508b732b80a908a4f93cd7c40fc45157",
+      "testbench_sha256": "601c74249fb38815f44b0575bb6db630d0bf3eefc3008f4f861444db2ee0da8f",
+      "checks": 898,
+      "toggles": 23
+    },
+    "synthesis": {
+      "returncode": 0,
+      "elapsed_seconds": 3.578,
+      "log": "build\\tests_verified\\synthesis\\simulate.log",
+      "error_lines": [],
+      "passed": true,
+      "functional_passed": true,
+      "design_sha256": "bb31ce474c070677978f60940568bd223e07e5cadc5a39346829bf7dece1ebf4",
+      "testbench_sha256": "601c74249fb38815f44b0575bb6db630d0bf3eefc3008f4f861444db2ee0da8f",
+      "checks": 898,
+      "toggles": 23
+    },
+    "route_function": {
+      "returncode": 0,
+      "elapsed_seconds": 3.562,
+      "log": "build\\tests_verified\\route_function\\simulate.log",
+      "error_lines": [],
+      "passed": true,
+      "functional_passed": true,
+      "design_sha256": "35931231078393fc0ce0de5b4adc1c6bd7d9f38bc0cd584b84d680bf0a3592fd",
+      "testbench_sha256": "601c74249fb38815f44b0575bb6db630d0bf3eefc3008f4f861444db2ee0da8f",
+      "checks": 898,
+      "toggles": 23
+    },
+    "timing_min": {
+      "returncode": 0,
+      "elapsed_seconds": 3.657,
+      "log": "build\\tests_verified\\timing_min\\simulate.log",
+      "error_lines": [],
+      "passed": false,
+      "functional_passed": true,
+      "design_sha256": "35931231078393fc0ce0de5b4adc1c6bd7d9f38bc0cd584b84d680bf0a3592fd",
+      "testbench_sha256": "601c74249fb38815f44b0575bb6db630d0bf3eefc3008f4f861444db2ee0da8f",
+      "checks": 898,
+      "toggles": 23,
+      "sdf_annotation_requested": true,
+      "sdf_annotation_completed": true,
+      "sdf_sha256": "61821e1141148fa0309e7c314d33a1483f071adee2d6c55df414d9e0491a517b",
+      "timing_warnings": [
+        "# ** Warning: (vsim-8756) E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/bsim/V_FFSYN.v(73): Instance 'tb_flow_smoke.dut.\\CLMA_63_870/FF0/FF ' - Negative timing check limits detected in simulation with cells modeled without delayed copies of data or reference signals."
+      ]
+    },
+    "timing_max": {
+      "returncode": 0,
+      "elapsed_seconds": 3.625,
+      "log": "build\\tests_verified\\timing_max\\simulate.log",
+      "error_lines": [],
+      "passed": false,
+      "functional_passed": true,
+      "design_sha256": "35931231078393fc0ce0de5b4adc1c6bd7d9f38bc0cd584b84d680bf0a3592fd",
+      "testbench_sha256": "601c74249fb38815f44b0575bb6db630d0bf3eefc3008f4f861444db2ee0da8f",
+      "checks": 898,
+      "toggles": 23,
+      "sdf_annotation_requested": true,
+      "sdf_annotation_completed": true,
+      "sdf_sha256": "61821e1141148fa0309e7c314d33a1483f071adee2d6c55df414d9e0491a517b",
+      "timing_warnings": [
+        "# ** Warning: (vsim-8756) E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/bsim/V_FFSYN.v(73): Instance 'tb_flow_smoke.dut.\\CLMA_63_870/FF0/FF ' - Negative timing check limits detected in simulation with cells modeled without delayed copies of data or reference signals."
+      ]
+    }
+  }
+}

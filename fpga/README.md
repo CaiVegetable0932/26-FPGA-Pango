@@ -1,6 +1,6 @@
 # FPGA 开发区
 
-这里直接开发 PG2L100H FPGA 本体相关实现。当前仅建立目录骨架，尚无正式 RTL 工程。
+这里直接开发 PG2L100H FPGA 本体相关实现。现已建立最小离线工具链工程；视频系统 RTL 尚未实现。实际验证结果见[非烧录流程简报](reports/latest.md)。
 
 当前架构为单路 OV5640 RAW8 DVP：一支写 S0 帧池并经板载千兆网发往 PC，另一支经基础 ISP、S1 帧池和硬件矫正生成 RGB888 结果，通过唯一 HDMI 输出。实现依据为[跨端回传方案](../output/OV5640_RAW8千兆网与HDMI双路回传方案.md)。
 
@@ -33,3 +33,32 @@
 5. 基础ISP与定点参考模型归model/；调试信号、无PC演示及功耗测量均保留真实证据。板级功耗不能命名为芯片核心功耗。
 
 60FPS分支须采用真实60源，另行验证完整原图回传；不能把RAW8加协议超过千兆的链路列为已支持。
+
+## 非烧录工具链入口（2026-09-07）
+
+环境配置在 `config/toolchain.json`；可通过 `PDS_ROOT`、`MODELSIM_BIN` 覆盖工具路径。Python 需 3.10 或更高版本，流程本身只使用标准库。若当前终端尚未继承用户的 `PANGO_LICENSE_FILE`，入口只读取用户环境并注入当前子进程，不更改系统环境、不读取许可证正文。
+
+在仓库根目录的 PowerShell 中执行；所有源码路径由脚本位置解析。下面路径参数指定新目录，不会覆盖旧构建。
+
+```powershell
+# 环境检查
+./fpga/scripts/run.ps1 -Action doctor
+# 编译当前安装版的 Logos2 Verilog 前后仿库
+./fpga/scripts/run.ps1 -Action simlib -OutDir ./fpga/build/my_simlib
+# RTL 自检
+./fpga/scripts/run.ps1 -Action test -Stage rtl
+# 完整构建（包括 setup/hold、综合网表、SDF、位流和功耗估算）
+./fpga/scripts/run.ps1 -Action build -OutDir ./fpga/build/my_build
+# 同一输入从另一个空目录复建
+./fpga/scripts/run.ps1 -Action build -OutDir ./fpga/build/my_repeat
+# 五类仿真；SDF 模型告警会使严格检查返回非零，这是当前已记录的限制
+./fpga/scripts/run.ps1 -Action test -Stage all -OutDir ./fpga/build/my_tests -BuildDir ./fpga/build/my_build -SimlibDir ./fpga/build/my_simlib
+# 汇总实际结果，生成 reports/latest.md 和 latest.json
+./fpga/scripts/run.ps1 -Action report -BuildDir ./fpga/build/my_build -RepeatDir ./fpga/build/my_repeat -TestsDir ./fpga/build/my_tests -SimlibDir ./fpga/build/my_simlib
+```
+
+若 `python` 不在 PATH，给入口传 `-Python <python.exe的完整路径>`。等效 Python 入口是 `scripts/flow.py` 和 `scripts/report.py`。没有下载命令，生成的 `.sbit` 仅是工具链诊断产物，不能当作视频系统版本。
+
+仿真对复位、连续计数、按键暂停/恢复和再次复位逐周期比较，超时、异常、缺失 PASS、SDF 回标失败或时序告警均保留为未通过。报告分别呈现功能比较与严格时序结果；PDS 返回 0 也必须同时通过日志与本次产物核验。
+
+本次还运行了已有上位机软件测试，证据位于 `host/reports/pds-offline-20260907-host-tests.json`。后续汇总其它日期的跨端回归前，应更新对应证据输入，不把这份历史结果当作新的测试。

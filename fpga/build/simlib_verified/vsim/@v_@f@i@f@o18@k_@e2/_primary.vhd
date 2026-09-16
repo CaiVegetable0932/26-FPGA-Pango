@@ -1,0 +1,63 @@
+library verilog;
+use verilog.vl_types.all;
+entity V_FIFO18K_E2 is
+    generic(
+        READ_WIDTH      : integer := 9;
+        WRITE_WIDTH     : integer := 9;
+        DI_REG          : integer := 0;
+        RDI_REG         : integer := 0;
+        DO_REG          : integer := 0;
+        CLK_DOMAIN      : string  := "SYNC";
+        RAM_CASCADE     : string  := "NONE";
+        CASCADE_MODE    : string  := "SERIAL";
+        ALMOST_FULL_OFFSET: vl_logic_vector(11 downto 0) := (Hi1, Hi1, Hi1, Hi1, Hi1, Hi1, Hi1, Hi1, Hi1, Hi1, Hi1, Hi1);
+        ALMOST_EMPTY_OFFSET: vl_logic_vector(11 downto 0) := (Hi0, Hi0, Hi0, Hi0, Hi0, Hi0, Hi0, Hi0, Hi0, Hi0, Hi0, Hi0);
+        FWFT            : string  := "FALSE"
+    );
+    port(
+        ALMOST_EMPTY    : out    vl_logic;
+        ALMOST_FULL     : out    vl_logic;
+        EMPTY           : out    vl_logic;
+        FULL            : out    vl_logic;
+        OVER            : out    vl_logic;
+        UNDER           : out    vl_logic;
+        C_EMPTY_O       : out    vl_logic;
+        C_RCE_O         : out    vl_logic;
+        CDO             : out    vl_logic_vector(35 downto 0);
+        DO              : out    vl_logic_vector(35 downto 0);
+        C_RCE_I         : in     vl_logic;
+        C_EMPTY_I       : in     vl_logic;
+        CDI             : in     vl_logic_vector(35 downto 0);
+        DI              : in     vl_logic_vector(35 downto 0);
+        CDISEL          : in     vl_logic;
+        CDOSEL          : in     vl_logic;
+        CDOSELEN        : in     vl_logic;
+        CORISEL         : in     vl_logic;
+        CORISELEN       : in     vl_logic;
+        WCLK            : in     vl_logic;
+        RCLK            : in     vl_logic;
+        WCE             : in     vl_logic;
+        RCE             : in     vl_logic;
+        WE              : in     vl_logic;
+        RE              : in     vl_logic;
+        WCLR            : in     vl_logic;
+        RCLR            : in     vl_logic;
+        WRST_N          : in     vl_logic;
+        RRST_N          : in     vl_logic;
+        DSLEEP          : in     vl_logic;
+        LSLEEP          : in     vl_logic;
+        POWERDOWN       : in     vl_logic
+    );
+    attribute mti_svvh_generic_type : integer;
+    attribute mti_svvh_generic_type of READ_WIDTH : constant is 2;
+    attribute mti_svvh_generic_type of WRITE_WIDTH : constant is 2;
+    attribute mti_svvh_generic_type of DI_REG : constant is 2;
+    attribute mti_svvh_generic_type of RDI_REG : constant is 2;
+    attribute mti_svvh_generic_type of DO_REG : constant is 2;
+    attribute mti_svvh_generic_type of CLK_DOMAIN : constant is 1;
+    attribute mti_svvh_generic_type of RAM_CASCADE : constant is 1;
+    attribute mti_svvh_generic_type of CASCADE_MODE : constant is 1;
+    attribute mti_svvh_generic_type of ALMOST_FULL_OFFSET : constant is 2;
+    attribute mti_svvh_generic_type of ALMOST_EMPTY_OFFSET : constant is 2;
+    attribute mti_svvh_generic_type of FWFT : constant is 1;
+end V_FIFO18K_E2;

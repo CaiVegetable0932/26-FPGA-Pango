@@ -1,0 +1,681 @@
+License checkout: fabric_shell from <license_path_redacted>
+Compiling architecture definition.
+E: Flow-0119: Value "3.3" is not legal for option "Set Configuration Bank Voltage(SCBV)", the legal value lists are " None Low Voltage High Voltage".
+E: Flow-0075: The value for option 'scbv' is not set or is invalid on command 'gen_bit_stream'.
+E: 
+E: Flow-0163: Failed to parse file "D:\XDU\concept\26-FPGA-Pango\fpga\scripts\build.tcl" at line 21. Check if the command options or arguments are valid.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b/flow_smoke.pds'.
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676 successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/constraints/flow_smoke.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/constraints/flow_smoke.fdc successfully.
+Executing : add_simulation D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_flow_smoke.v
+Executing : add_simulation D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_flow_smoke.v successfully.
+
+
+Executing : compile -top_module flow_smoke_top
+
+
+Process "Compile" started.
+Current time: Mon Sep  7 18:39:11 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b/flow_smoke.pds'.
+License checkout: fabric_ads from <license_path_redacted>
+Compiling verification operator library.
+Loading technology operator library.
+Compiling technology operator library.
+Compiling technology operator (valence) library.
+I: Enable Verilog2k features and keywords
+Start rtl-analyze.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b} D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v
+I: Verilog-0001: Analyzing file D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v
+I: Verilog-0002: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 6)] Analyzing module flow_smoke_top (library work)
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 12)] Convert attribute name from syn_preserve to PAP_PRESERVE
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 12)] Convert attribute name from syn_srlstyle to PAP_SRL_STYLE
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 13)] Convert attribute name from syn_preserve to PAP_PRESERVE
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 13)] Convert attribute name from syn_srlstyle to PAP_SRL_STYLE
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 14)] Convert attribute name from syn_preserve to PAP_PRESERVE
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 14)] Convert attribute name from syn_srlstyle to PAP_SRL_STYLE
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 15)] Convert attribute name from syn_preserve to PAP_PRESERVE
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 15)] Convert attribute name from syn_srlstyle to PAP_SRL_STYLE
+Parsing done.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b} D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v successfully.
+I: Module "flow_smoke_top" is set as top module.
+Executing : rtl-analyze successfully. Time elapsed: 1.586s wall, 0.031s user + 0.000s system = 0.031s CPU (2.0%)
+
+Start rtl-elaborate.
+I: Verilog-0003: [D:/XDU/concept/26-FPGA-Pango/fpga/rtl/flow_smoke_top.v(line number: 6)] Elaborating module flow_smoke_top
+Executing : rtl-elaborate successfully. Time elapsed: 0.000s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start rtl-prep.
+Executing : rtl-prep successfully. Time elapsed: 0.000s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start rtl-infer.
+Start DFF-inference.
+Executing : DFF-inference successfully.
+Executing : rtl-infer successfully. Time elapsed: 0.008s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start rtl-control-opt.
+Executing : rtl-control-opt successfully. Time elapsed: 0.000s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start rtl-data-opt.
+Executing : rtl-data-opt successfully. Time elapsed: 0.000s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start FSM inference.
+Executing : FSM inference successfully. Time elapsed: 0.000s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start sdm2adm.
+W: Loop was found during constant probe.
+Executing : sdm2adm successfully. Time elapsed: 0.002s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Saving design to DB.
+Action compile: Real time elapsed is 0h:0m:3s
+Action compile: CPU time elapsed is 0h:0m:0s
+Action compile: Process CPU time elapsed is 0h:0m:0s
+Current time: Mon Sep  7 18:39:14 2026
+Action compile: Peak memory pool usage is 136 MB
+Action from compile to compile: Total Real Time elapsed is 0h:0m:3s
+Action from compile to compile: Total CPU time elapsed is 0h:0m:0s
+Action from compile to compile: Total Process CPU Time elapsed is 0h:0m:0s
+Process "Compile" done.
+Executing : compile -top_module flow_smoke_top successfully.
+FLOW_STAGE_PASS compile
+
+
+Executing : synthesize -ads
+
+
+Process "Synthesize" started.
+Current time: Mon Sep  7 18:39:15 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b/flow_smoke.pds'.
+License checkout: fabric_ads from <license_path_redacted>
+Compiling verification operator library.
+Compiling common defs.
+Loading technology operator library.
+Compiling technology operator library.
+Compiling technology operator (valence) library.
+Reading design from compile DB
+Reading design from compile DB successfully.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 148538
+
+Constraint check start.
+Compiling prim grid devices.
+Building architecture model.
+Loading device packaging model.
+Building architecture floorplan logic view.
+Executing : get_ports clk
+Executing : get_ports clk successfully.
+Executing : create_clock -name clk27 -period 37.037 [get_ports clk]
+Executing : create_clock -name clk27 -period 37.037 [get_ports clk] successfully.
+Executing : get_ports {rstn key}
+Executing : get_ports {rstn key} successfully.
+Executing : set_false_path -from [get_ports {rstn key}]
+Executing : set_false_path -from [get_ports {rstn key}] successfully.
+Executing : get_ports led0
+Executing : get_ports led0 successfully.
+Executing : set_false_path -to [get_ports led0]
+Executing : set_false_path -to [get_ports led0] successfully.
+Constraint check end.
+
+Start pre-mapping.
+Executing : pre-mapping successfully. Time elapsed: 0.078s wall, 0.016s user + 0.016s system = 0.031s CPU (39.8%)
+
+Start mod-gen.
+I: Constant propagation done on N3_sum0 (bmsREDXOR).
+I: Constant propagation done on N3_ab0 (bmsREDAND).
+I: Constant propagation done on N3_bc0 (bmsREDAND).
+I: Constant propagation done on N3_ac0 (bmsREDAND).
+I: Constant propagation done on N3_sum1 (bmsREDXOR).
+I: Constant propagation done on N3_ab1 (bmsREDAND).
+I: Constant propagation done on N3_bc1 (bmsREDAND).
+I: Constant propagation done on N3_sum2 (bmsREDXOR).
+I: Constant propagation done on N3_ab2 (bmsREDAND).
+I: Constant propagation done on N3_bc2 (bmsREDAND).
+Executing : mod-gen successfully. Time elapsed: 0.007s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start logic-optimization.
+Executing : logic-optimization successfully. Time elapsed: 0.010s wall, 0.000s user + 0.016s system = 0.016s CPU (152.0%)
+
+Start tech-mapping phase 1.
+Executing : tech-mapping phase 1 successfully. Time elapsed: 0.001s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start tech-mapping phase 2.
+Executing : tech-mapping phase 2 successfully. Time elapsed: 0.024s wall, 0.062s user + 0.016s system = 0.078s CPU (324.5%)
+
+Start tech-optimization.
+Executing : tech-optimization successfully. Time elapsed: 0.005s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start phys-optimization.
+Executing : phys-optimization successfully. Time elapsed: 0.000s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start restore-hierarchy.
+Executing : restore-hierarchy successfully. Time elapsed: 0.000s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+
+Cell Usage:
+GTP_DFF                       4 uses
+GTP_DFF_R                     5 uses
+GTP_DFF_RE                    1 use
+GTP_GRS                       1 use
+GTP_INV                       1 use
+GTP_LUT1                      1 use
+GTP_LUT5                      1 use
+GTP_LUT6D                     3 uses
+
+I/O ports: 4
+GTP_INBUF                   3 uses
+GTP_OUTBUF                  1 use
+
+Mapping Summary:
+Total LUTs: 5 of 66600 (0.01%)
+	LUTs as dram: 0 of 19900 (0.00%)
+	LUTs as logic: 5
+Total Registers: 10 of 133200 (0.01%)
+Total Latches: 0
+
+DRM36K/FIFO:
+Total DRM = 0.0 of 155 (0.00%)
+
+APMs:
+Total APMs = 0.00 of 240 (0.00%)
+
+Total I/O ports = 4 of 300 (1.33%)
+
+
+Overview of Control Sets:
+
+Number of unique control sets : 3
+
+Histogram:
+**************************************************************
+  Fanout      | Count    | Sync Set/Reset    Async Set/Reset
+--------------------------------------------------------------
+  [0, 2)      | 1        | 1                 0
+  [2, 4)      | 0        | 0                 0
+  [4, 6)      | 2        | 2                 0
+  [6, 8)      | 0        | 0                 0
+  [8, 10)     | 0        | 0                 0
+  [10, 12)    | 0        | 0                 0
+  [12, 14)    | 0        | 0                 0
+  [14, 16)    | 0        | 0                 0
+  [16, Inf)   | 0        | 0                 0
+--------------------------------------------------------------
+  The maximum fanout: 5
+==============================================================
+
+Flip-Flop Distribution:
+************************************************************************
+  Clock Enable    Sync Set/Reset    Async Set/Reset    Total Registers
+------------------------------------------------------------------------
+  NO              NO                NO                 4
+  NO              NO                YES                0
+  NO              YES               NO                 5
+  YES             NO                NO                 0
+  YES             NO                YES                0
+  YES             YES               NO                 1
+========================================================================
+
+Latch Distribution:
+************************************************
+  Gate Enable    Preset/Clear    Total Latches
+************************************************
+  NO             NO              0
+  NO             YES             0
+  YES            NO              0
+  YES            YES             0
+************************************************
+
+Design 'flow_smoke_top' has been successfully synthesized to architecture-specific objects.
+Saving design to DB.
+Saving design to flow_smoke_top_syn.vm
+Constructing timing graph ...
+Timing graph has been constructed successfully
+W: Timing-4087: Port 'led0' is not constrained, it is treated as combinational output.
+W: Timing-4086: Port 'key' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'rstn' is not constrained, it is treated as combinational input.
+Action synthesize: Real time elapsed is 0h:0m:8s
+Action synthesize: CPU time elapsed is 0h:0m:6s
+Action synthesize: Process CPU time elapsed is 0h:0m:6s
+Current time: Mon Sep  7 18:39:22 2026
+Action synthesize: Peak memory pool usage is 308 MB
+Action from compile to synthesize: Total Real Time elapsed is 0h:0m:11s
+Action from compile to synthesize: Total CPU time elapsed is 0h:0m:6s
+Action from compile to synthesize: Total Process CPU Time elapsed is 0h:0m:6s
+Process "Synthesize" done.
+Executing : synthesize -ads successfully.
+FLOW_STAGE_PASS synthesize
+
+
+Executing : dev_map
+
+
+Process "Device Map" started.
+Current time: Mon Sep  7 18:39:22 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b/flow_smoke.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Loading technology operator library.
+Compiling technology operator library.
+Compiling technology operator (valence) library.
+Compiling operator packing rules.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Compiling tech operator impls.
+Building architecture model.
+Loading device packaging model.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 148538
+
+Flattening design 'flow_smoke_top'
+Device mapping started.
+Optimizing circuit logic.
+Checking design netlist.
+Processing tech operator.
+I: The instance clkbufg_0(GTP_CLKBUFG) has been inserted on the net nt_clk in design, driver pin O(instance clk_ibuf) -> load pin CLK(instance key_meta).
+Converting tech operator to gate operator.
+Processing gate operator.
+Device Utilization Summary:
++------------------------------------------------------------------------+
+| Logic Utilization     | Used     | Available     | Utilization(%)     
++------------------------------------------------------------------------+
+| APM                   | 0        | 240           | 0                  
+| FF                    | 10       | 133200        | 1                  
+| LUT                   | 6        | 66600         | 1                  
+| Distributed RAM       | 0        | 19900         | 0                  
+| DRM                   | 0        | 155           | 0                  
+| IO                    | 4        | 300           | 2                  
+| RCKB                  | 0        | 24            | 0                  
+| SCANCHAIN             | 0        | 1             | 0                  
+| USCM                  | 1        | 32            | 4                  
+| CCS                   | 1        | 1             | 100                
+| ADC                   | 0        | 1             | 0                  
+| DDR_PHY               | 0        | 24            | 0                  
+| HSSTLP                | 0        | 2             | 0                  
+| GPLL                  | 0        | 6             | 0                  
+| PPLL                  | 0        | 6             | 0                  
+| DDRPHY_CPD            | 0        | 12            | 0                  
+| HCKB                  | 0        | 96            | 0                  
+| IOCKB                 | 0        | 24            | 0                  
+| MRCKB                 | 0        | 12            | 0                  
+| PCIE                  | 0        | 1             | 0                  
+| DDRPHY_IOCLK_DIV      | 0        | 6             | 0                  
+| ANALOG                | 0        | 1             | 0                  
+| TSERDES               | 0        | 48            | 0                  
+| KEYRAM                | 0        | 1             | 0                  
++------------------------------------------------------------------------+
+
+Device mapping done.
+Total device mapping takes 0.02 sec.
+
+Design 'flow_smoke_top' has been successfully mapped to architecture-specific objects.
+Saving design to DB.
+Action dev_map: Real time elapsed is 0h:0m:10s
+Action dev_map: CPU time elapsed is 0h:0m:8s
+Action dev_map: Process CPU time elapsed is 0h:0m:8s
+Current time: Mon Sep  7 18:39:32 2026
+Action dev_map: Peak memory pool usage is 327 MB
+Action from compile to dev_map: Total Real Time elapsed is 0h:0m:21s
+Action from compile to dev_map: Total CPU time elapsed is 0h:0m:14s
+Action from compile to dev_map: Total Process CPU Time elapsed is 0h:0m:14s
+Process "Device Map" done.
+Executing : dev_map successfully.
+FLOW_STAGE_PASS dev_map
+
+
+Executing : pnr
+
+
+Process "Place & Route" started.
+Current time: Mon Sep  7 18:39:32 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b/flow_smoke.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Building architecture model.
+Loading device packaging model.
+pnr strategy configuration : 
+strategy name : 0
+Building architecture floorplan logic view.
+Constraint check start.
+Executing : def_port {led0} LOC=A20 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=8 SLEW=SLOW
+Executing : def_port {led0} LOC=A20 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=8 SLEW=SLOW successfully
+Executing : def_port {clk} LOC=D18 VCCIO=3.3 IOSTANDARD=LVCMOS33
+Executing : def_port {clk} LOC=D18 VCCIO=3.3 IOSTANDARD=LVCMOS33 successfully
+Executing : def_port {key} LOC=C23 VCCIO=3.3 IOSTANDARD=LVCMOS33
+Executing : def_port {key} LOC=C23 VCCIO=3.3 IOSTANDARD=LVCMOS33 successfully
+Executing : def_port {rstn} LOC=C22 VCCIO=3.3 IOSTANDARD=LVCMOS33
+Executing : def_port {rstn} LOC=C22 VCCIO=3.3 IOSTANDARD=LVCMOS33 successfully
+Constraint check end.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 5993935
+
+I: Column Clock Check open.
+Read Column Clock Map.
+
+Placement started.
+Phase 1 Pre global placement started.
+Mapping instance GRS_INST/grs_ccs to CCS_87_316.
+Phase 1.1 1st GP placement started.
+Design Utilization : 1%.
+First map gop timing takes 0.23 sec
+Worst slack after clock region global placement is 34573
+Wirelength after clock region global placement is 661 and checksum is 188EF32989DA5727.
+1st GP placement takes 2.11 sec.
+
+Phase 1.2 Clock placement started.
+Mapping instance clkbufg_0/gopclkbufg to USCM_215_624.
+Clock placement takes 0.14 sec.
+
+Wirelength after Pre Global Placement is 661 and checksum is 188EF32989DA5727.
+Pre global placement takes 2.64 sec.
+
+Phase 2 Global placement started.
+Phase 2.1 Fixed placement started.
+Placed fixed group with base inst clk_ibuf/opit_1 on IOLHR_16_1080.
+Placed fixed group with base inst key_ibuf/opit_1 on IOLHR_16_984.
+Placed fixed group with base inst led0_obuf/opit_1 on IOLHR_16_1032.
+Placed fixed group with base inst rstn_ibuf/opit_1 on IOLHR_16_990.
+Placed fixed instance GRS_INST/grs_ccs on CCS_87_316.
+Placed fixed instance clkbufg_0/gopclkbufg on USCM_215_624.
+Placed fixed instance BKCL_auto_0 on BKCL_1_952.
+Fixed placement takes 0.02 sec.
+
+Phase 2.2 Process placement started.
+Process placement takes 0.00 sec.
+
+Phase 2.3 IO placement started.
+IO placement takes 0.00 sec.
+
+Phase 2.4 2nd GP placement started.
+Run super clustering :
+	Initial slack 32563.
+	1 iterations finished.
+	Final slack 32563.
+Super clustering done.
+Design Utilization : 1%.
+Worst slack after global placement is 34568
+2nd GP placement takes 0.25 sec.
+
+Wirelength after global placement is 325 and checksum is DFC82CEB467B83D7.
+Global placement takes 0.27 sec.
+
+Phase 3 Post global placement started.
+Packing LUT6D started.
+I: LUT6D pack result: There are 2 LUT6 in collection, pack success:0
+Packing LUT6D takes 0.00 sec.
+Phase 3.1 Macro cell placement started.
+I: Process macros using "Greedy".
+Wirelength after macro cell placement is 325 and checksum is DFC82CEB467B83D7.
+Macro cell placement takes 0.00 sec.
+
+Phase 3.2 3rd GP placement started.
+Run super clustering :
+	Initial slack 32563.
+	1 iterations finished.
+	Final slack 32563.
+Super clustering done.
+Design Utilization : 1%.
+Worst slack after post global placement is 34568
+3rd GP placement takes 0.23 sec.
+
+Wirelength after post global placement is 325 and checksum is DFC82CEB467B83D7.
+Packing LUT6D started.
+I: LUT6D pack result: There are 2 LUT6 in collection, pack success:0
+Packing LUT6D takes 0.00 sec.
+Post global placement takes 0.23 sec.
+
+Phase 4 Legalization started.
+The average distance in LP is 0.312500.
+Wirelength after legalization is 320 and checksum is D0CEC5ACA0E67AFD.
+Legalization takes 0.03 sec.
+
+Phase 5 Timing-driven detailed placement started.
+Phase 5.1 Replication placement started.
+Worst slack before Replication Place is 35162.
+Replication placement takes 0.02 sec.
+
+Wirelength after replication placement is 320 and checksum is D0CEC5ACA0E67AFD.
+Phase 5.2 Swapping placement started.
+Worst slack before detailed placement is 35162, TNS before detailed placement is 0. 
+Worst slack after detailed placement is 35162, TNS after detailed placement is 0. 
+Swapping placement takes 0.00 sec.
+
+Wirelength after detailed placement is 320 and checksum is D0CEC5ACA0E67AFD.
+Timing-driven detailed placement takes 0.02 sec.
+
+Worst slack is 35162, TNS after placement is 0.
+Placement done.
+Total placement takes 3.20 sec.
+Finished placement.
+
+Routing started.
+Building routing graph takes 3.12 sec.
+Worst slack is 35162, TNS before global route is 0.
+Processing design graph takes 0.56 sec.
+Total memory for routing:
+	215.840812 M.
+Total nets for routing : 28.
+Global Routing step 1 processed 0 nets, it takes 0.00 sec.
+Rcf routing step 1 processed 0 nets, it takes 0.00 sec.
+Rcf routing step 2 processed 0 nets, it takes 0.00 sec.
+Rcf routing step 3 processed 0 nets, it takes 0.00 sec.
+Unrouted nets 0 at the end of iteration 0.
+Global Routing step 1 processed 3 nets, it takes 0.02 sec.
+Unrouted nets 2 at the end of iteration 0.
+Unrouted nets 0 at the end of iteration 1.
+Global Routing step 2 processed 6 nets, it takes 0.00 sec.
+Global Routing step 3 processed 0 nets, it takes 0.00 sec.
+Unrouted nets 0 at the end of iteration 0.
+Global Routing step 4 processed 3 nets, it takes 0.02 sec.
+Global routing takes 0.11 sec.
+Total 31 subnets.
+    forward max bucket size 120 , backward 12.
+        Unrouted nets 4 at the end of iteration 0.
+    route iteration 0, CPU time elapsed 0.000000 sec.
+    forward max bucket size 13 , backward 12.
+        Unrouted nets 0 at the end of iteration 1.
+    route iteration 1, CPU time elapsed 0.000000 sec.
+Detailed routing takes 1 iterations
+Detailed routing takes 0.06 sec.
+Start fix hold violation.
+Build tmp routing results takes 0.00 sec.
+Timing analysis takes 0.00 sec.
+No hold violation.
+Hold Violation Fix in router takes 0 iterations.
+Fix hold violation Finished.
+Hold Violation Fix in router takes 0.06 sec.
+
+Dispose routing result:
+    Collect routing result.
+    Delete unused device instances.
+    Annotate routing result.
+    Change LUT configuration.
+    Dispose misc instances.
+    Annotate routing result again.
+Finish routing takes 0.00 sec.
+Used SRB routing arc is 67.
+Cleanup routing takes 0.03 sec.
+Routing done.
+Total routing takes 4.75 sec.
+
+
+Device Utilization Summary :
++------------------------------------------------------------------------------+
+| Logic Utilization           | Used     | Available     | Utilization(%)     
++------------------------------------------------------------------------------+
+| Use of ADC                  | 0        | 1             | 0                  
+| Use of ANALOG               | 0        | 1             | 0                  
+| Use of APM                  | 0        | 240           | 0                  
+| Use of BKCL                 | 1        | 6             | 17                 
+| Use of CCS                  | 1        | 1             | 100                
+| Use of CLMA                 | 1        | 11675         | 1                  
+|   FF                        | 2        | 93400         | 1                  
+|   LUT                       | 0        | 46700         | 0                  
+|   LUT-FF pairs              | 0        | 46700         | 0                  
+| Use of CLMS                 | 4        | 4975          | 1                  
+|   FF                        | 8        | 39800         | 1                  
+|   LUT                       | 6        | 19900         | 1                  
+|   LUT-FF pairs              | 4        | 19900         | 1                  
+|   Distributed RAM           | 0        | 19900         | 0                  
+| Use of DDRPHY_CPD           | 0        | 12            | 0                  
+| Use of DDRPHY_IOCLK_DIV     | 0        | 6             | 0                  
+| Use of DDR_PHY              | 0        | 24            | 0                  
+| Use of DRM                  | 0        | 155           | 0                  
+| Use of GPLL                 | 0        | 6             | 0                  
+| Use of GSEB                 | 0        | 218           | 0                  
+| Use of HARD0                | 2        | 10550         | 1                  
+| Use of HCKB                 | 1        | 96            | 2                  
+|  HCKB dataused              | 0        | 96            | 0                  
+| Use of HCKMUX_TEST          | 0        | 8             | 0                  
+| Use of HSSTLP               | 0        | 2             | 0                  
+| Use of IO                   | 4        | 300           | 2                  
+|   IOBD                      | 2        | 144           | 2                  
+|   IOBS                      | 2        | 156           | 2                  
+| Use of IOCKB                | 0        | 24            | 0                  
+| Use of IOCKMUX_TEST         | 0        | 6             | 0                  
+| Use of IOLHR                | 4        | 300           | 2                  
+| Use of KEYRAM               | 0        | 1             | 0                  
+| Use of MFG_TEST             | 0        | 1             | 0                  
+| Use of MRCKB                | 0        | 12            | 0                  
+| Use of MRCKMUX_TEST         | 0        | 6             | 0                  
+| Use of MRPOSTMUX_TEST       | 0        | 6             | 0                  
+| Use of PCIE                 | 0        | 1             | 0                  
+| Use of PCKMUX_TEST          | 0        | 12            | 0                  
+| Use of PLLMRMUX_TEST        | 0        | 6             | 0                  
+| Use of PLLREFMUX_TEST       | 0        | 6             | 0                  
+| Use of PPLL                 | 0        | 6             | 0                  
+| Use of PREGMUXC_TEST        | 0        | 4             | 0                  
+| Use of PREGMUXLR_TEST       | 0        | 6             | 0                  
+| Use of RCKB                 | 0        | 24            | 0                  
+|  RCKB dataused              | 0        | 24            | 0                  
+| Use of RCKMUX_TEST          | 0        | 6             | 0                  
+| Use of SCANCHAIN            | 0        | 1             | 0                  
+| Use of SCKMUX_TEST          | 0        | 12            | 0                  
+| Use of SFB                  | 0        | 2225          | 0                  
+| Use of SPAD                 | 0        | 8             | 0                  
+| Use of TSERDES              | 0        | 48            | 0                  
+| Use of USCM                 | 1        | 32            | 4                  
+|  USCM dataused              | 0        | 32            | 0                  
+| Use of USCMMUX_TEST         | 0        | 32            | 0                  
++------------------------------------------------------------------------------+
+
+Finished routing.
+Design 'flow_smoke_top' has been placed and routed successfully.
+Saving design to DB.
+Finished placement and routing.
+Action pnr: Real time elapsed is 0h:0m:24s
+Action pnr: CPU time elapsed is 0h:0m:21s
+Action pnr: Process CPU time elapsed is 0h:0m:21s
+Current time: Mon Sep  7 18:39:56 2026
+Action pnr: Peak memory pool usage is 1,109 MB
+Action from compile to pnr: Total Real Time elapsed is 0h:0m:45s
+Action from compile to pnr: Total CPU time elapsed is 0h:0m:35s
+Action from compile to pnr: Total Process CPU Time elapsed is 0h:0m:35s
+Process "Place & Route" done.
+Executing : pnr successfully.
+FLOW_STAGE_PASS pnr
+
+
+Executing : report_timing -delay_type min_max -max_path 100 -report_exception TRUE
+
+
+Process "Report Timing" started.
+Current time: Mon Sep  7 18:39:58 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b/flow_smoke.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Building architecture model.
+Loading device packaging model.
+Reading design from pnr DB.
+Start Report Post-PnR timing.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 5993935
+
+Constructing timing graph ...
+Timing graph has been constructed successfully
+W: Timing-4087: Port 'led0' is not constrained, it is treated as combinational output.
+W: Timing-4086: Port 'key' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'rstn' is not constrained, it is treated as combinational input.
+Report timing is finished successfully.
+Action report_timing: Real time elapsed is 0h:0m:15s
+Action report_timing: CPU time elapsed is 0h:0m:12s
+Action report_timing: Process CPU time elapsed is 0h:0m:12s
+Current time: Mon Sep  7 18:40:12 2026
+Action report_timing: Peak memory pool usage is 1,056 MB
+Action from compile to report_timing: Total Real Time elapsed is 0h:1m:0s
+Action from compile to report_timing: Total CPU time elapsed is 0h:0m:47s
+Action from compile to report_timing: Total Process CPU Time elapsed is 0h:0m:47s
+Process "Report Timing" done.
+Executing : report_timing -delay_type min_max -max_path 100 -report_exception TRUE successfully.
+FLOW_STAGE_PASS report_timing
+
+
+Executing : gen_netlist -sdf_annotate FALSE
+
+
+Process "Generate Netlist" started.
+Current time: Mon Sep  7 18:40:12 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b/flow_smoke.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Building architecture model.
+Loading device packaging model.
+Reading design from DB.
+Start Generate Netlist.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 5993935
+
+Generate Netlist is finished successfully.
+Action gen_netlist: Real time elapsed is 0h:0m:14s
+Action gen_netlist: CPU time elapsed is 0h:0m:12s
+Action gen_netlist: Process CPU time elapsed is 0h:0m:12s
+Current time: Mon Sep  7 18:40:25 2026
+Action gen_netlist: Peak memory pool usage is 1,055 MB
+Action from compile to gen_netlist: Total Real Time elapsed is 0h:1m:14s
+Action from compile to gen_netlist: Total CPU time elapsed is 0h:0m:59s
+Action from compile to gen_netlist: Total Process CPU Time elapsed is 0h:0m:59s
+Process "Generate Netlist" done.
+Executing : gen_netlist -sdf_annotate FALSE successfully.
+FLOW_STAGE_PASS gen_netlist
+
+
+E: Flow-0119: Value "3.3" is not legal for option "Set Configuration Bank Voltage(SCBV)", the legal value lists are " None Low Voltage High Voltage".
+E: Flow-0075: The value for option 'scbv' is not set or is invalid on command 'gen_bit_stream'.
+E: Failed to execute the script : 

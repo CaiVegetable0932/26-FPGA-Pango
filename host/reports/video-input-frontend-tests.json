@@ -1,0 +1,77 @@
+{
+  "utc": "2026-09-09T11:59:06.031Z",
+  "node": "v24.14.0",
+  "tests_run": 15,
+  "passed": true,
+  "test_environment": "Node.js MediaDevices, MediaStreamTrack and DOM fixtures",
+  "browser_ui_qa": "not_performed",
+  "hardware_capture": "not_performed",
+  "signal_validation": "not_performed",
+  "results": [
+    {
+      "name": "Enumerates video devices only without opening hardware",
+      "passed": true
+    },
+    {
+      "name": "Saving and restoring a device works with no input signal and no stream",
+      "passed": true
+    },
+    {
+      "name": "Opening uses exact saved ID and audio false; identity stays unverified",
+      "passed": true
+    },
+    {
+      "name": "Missing device fails without falling back to the built-in camera",
+      "passed": true
+    },
+    {
+      "name": "Permission denial and busy-device errors retain saved configuration",
+      "passed": true
+    },
+    {
+      "name": "Permission enumeration always releases its temporary stream",
+      "passed": true
+    },
+    {
+      "name": "Cancel during a pending device request discards and stops a late stream",
+      "passed": true
+    },
+    {
+      "name": "Cancel permission request or close page releases late authorization tracks",
+      "passed": true
+    },
+    {
+      "name": "Muted and ended tracks update state without claiming a verified signal",
+      "passed": true
+    },
+    {
+      "name": "Device removal stops current tracks and retains the user's exact choice",
+      "passed": true
+    },
+    {
+      "name": "Unexpected device identity and playback failure release tracks",
+      "passed": true
+    },
+    {
+      "name": "Blocked or corrupt browser storage does not prevent current-page configuration",
+      "passed": true
+    },
+    {
+      "name": "Latest enumeration wins and unsupported contexts never request capture",
+      "passed": true
+    },
+    {
+      "name": "Destroyed active adapter releases every track and removes hotplug listeners",
+      "passed": true
+    },
+    {
+      "name": "Device UI separates save from open and keeps unsaved choices from opening another source",
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "web/video-input.js": "2bedbe2af341f44c2194c1961e93369cfdd5ceb8b4cbe98d48830de1105808c1",
+    "web/video-input-ui.js": "7bb4ca313f3bd67417522ad804d9a5ba5ade287e20bb73237db6e81cd308451b",
+    "tests/test_video_input.cjs": "08e745cbee8f3eed7e3547da39009c631e05b20b9695cf38b1a2aac09dd9f02b"
+  }
+}

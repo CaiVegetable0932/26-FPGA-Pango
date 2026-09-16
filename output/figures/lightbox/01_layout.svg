@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1280" viewBox="0 0 2000 1280">
+<rect width="2000" height="1280" fill="#f3f6fa"/>
+<rect x="0" y="0" width="2000" height="134" fill="#17334b" stroke="none" stroke-width="2"/>
+<text x="45" y="61.2" font-family="Microsoft YaHei, sans-serif" font-size="40" font-weight="700" fill="#ffffff">光照黑箱｜结构与灯位</text>
+<text x="47" y="105.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#dae7f0">参考净空 1400W × 1400H × 1100D mm；图卡有效区 1200 × 1200 mm；同一坐标用于装配与记录</text>
+<text x="45" y="1249.6" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="400" fill="#617384">FPGA 可控光照测试装置  /  2026-09-08  /  V1.0  /  规划示意，非加工图或实测结果</text>
+<text x="1840" y="1251.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#617384">图 01</text>
+<rect x="45" y="160" width="930" height="1045" fill="white" stroke="#cdd8e1" stroke-width="2"/>
+<text x="69" y="205.52" font-family="Microsoft YaHei, sans-serif" font-size="29" font-weight="700" fill="#17334b">A  俯视图：去掉顶板</text>
+<text x="69" y="243.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">前方在下，图卡在后；L3为顶灯投影，机械臂另校核</text>
+<rect x="995" y="160" width="960" height="1045" fill="white" stroke="#cdd8e1" stroke-width="2"/>
+<text x="1019" y="205.52" font-family="Microsoft YaHei, sans-serif" font-size="29" font-weight="700" fill="#17334b">B  侧视图：从右侧观察</text>
+<text x="1019" y="243.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">+Y指向图卡，+Z向上；仅画参考位置</text>
+<rect x="136.0" y="362.0" width="728" height="638" fill="#fafcfd" stroke="#263b4d" stroke-width="4"/>
+<rect x="172.39999999999998" y="402.6" width="655" height="18" fill="#dce9ef" stroke="#168a7b" stroke-width="2"/>
+<line x1="188.0" y1="420.0" x2="812.0" y2="420.0" stroke="#168a7b" stroke-width="9"/>
+<text x="190" y="474.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#168a7b">图案面</text>
+<text x="190" y="505.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#168a7b">Y=1000</text>
+<text x="253" y="392.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">背部图卡匣 / 独立固定框</text>
+<polygon points="500.0,710.0 349.72,420.0 650.28,420.0" fill="#e3f1fa" stroke="none" stroke-width="2"/>
+<line x1="500.0" y1="710.0" x2="349.72" y2="420.0" stroke="#328abb" stroke-width="2" stroke-dasharray="9 7"/>
+<line x1="500.0" y1="710.0" x2="650.28" y2="420.0" stroke="#328abb" stroke-width="2" stroke-dasharray="9 7"/>
+<line x1="500.0" y1="710.0" x2="500.0" y2="420.0" stroke="#328abb" stroke-width="2" stroke-dasharray="9 7"/>
+<rect x="328.4" y="547.6" width="343.2" height="324.79999999999995" fill="none" stroke="#9badbb" stroke-width="2" stroke-dasharray="9 7"/>
+<line x1="328.4" y1="547.6" x2="671.5999999999999" y2="547.6" stroke="#9badbb" stroke-width="2" stroke-dasharray="9 7"/>
+<line x1="328.4" y1="872.4" x2="671.5999999999999" y2="872.4" stroke="#9badbb" stroke-width="2" stroke-dasharray="9 7"/>
+<text x="336" y="582.6" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="400" fill="#617384">头部占位包络</text>
+<rect x="422.0" y="652.0" width="156.0" height="115.99999999999999" fill="#e5edf3" stroke="#328abb" stroke-width="2"/>
+<rect x="468.8" y="710.0" width="62.400000000000006" height="52.199999999999996" fill="#17334b" stroke="none" stroke-width="2"/>
+<circle cx="500.0" cy="710.0" r="12" fill="#82c2df" stroke="#328abb" stroke-width="2"/>
+<text x="553" y="686.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#17334b">相机 + IMU</text>
+<text x="555" y="720.6" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="400" fill="#617384">C(0,500,0)</text>
+<line x1="188.0" y1="768.0" x2="500.0" y2="420.0" stroke="#c48a25" stroke-width="3"/>
+<polygon points="500.0,420.0 486.8544981513447,425.67413263389227 495.7893314391026,433.6846728229165" fill="#c48a25" stroke="none" stroke-width="2"/>
+<polygon points="168.0,748.0 160.0,756.0 208.0,788.0 216.0,780.0" fill="#168a7b" stroke="none" stroke-width="2"/>
+<rect x="168.0" y="802.0" width="46" height="34" fill="#168a7b" stroke="none" stroke-width="2"/>
+<text x="174.0" y="824.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="white">L1</text>
+<line x1="812.0" y1="768.0" x2="500.0" y2="420.0" stroke="#c48a25" stroke-width="3"/>
+<polygon points="500.0,420.0 504.2106685608974,433.6846728229165 513.1455018486553,425.67413263389227" fill="#c48a25" stroke="none" stroke-width="2"/>
+<polygon points="792.0,788.0 784.0,780.0 832.0,748.0 840.0,756.0" fill="#168a7b" stroke="none" stroke-width="2"/>
+<rect x="792.0" y="802.0" width="46" height="34" fill="#168a7b" stroke="none" stroke-width="2"/>
+<text x="798.0" y="824.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="white">L2</text>
+<text x="155" y="868.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#168a7b">左中性漫射</text>
+<text x="716" y="868.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#168a7b">右中性漫射</text>
+<line x1="266.0" y1="768.0" x2="734.0" y2="768.0" stroke="#c48a25" stroke-width="5" stroke-dasharray="9 7"/>
+<text x="360" y="809.6" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="700" fill="#c48a25">L3 顶部暖光（投影）</text>
+<circle cx="734.0" cy="623.0" r="16" fill="#d66b4a" stroke="none" stroke-width="2"/>
+<line x1="734.0" y1="623.0" x2="614.4" y2="420.0" stroke="#d66b4a" stroke-width="3"/>
+<polygon points="614.4,420.0 615.8294669149142,434.2462845801692 626.1684853375122,428.1549220021263" fill="#d66b4a" stroke="none" stroke-width="2"/>
+<text x="719" y="555.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#d66b4a">L4 定向灯</text>
+<text x="742" y="587.72" font-family="Microsoft YaHei, sans-serif" font-size="19" font-weight="400" fill="#617384">顶部滑轨</text>
+<rect x="318.0" y="991" width="364.0" height="18" fill="#f3f6fa" stroke="#263b4d" stroke-width="2"/>
+<line x1="318.0" y1="1012" x2="338.0" y2="1025" stroke="#617384" stroke-width="2"/>
+<line x1="338.0" y1="1025" x2="358.0" y2="1012" stroke="#617384" stroke-width="2"/>
+<line x1="363.0" y1="1012" x2="383.0" y2="1025" stroke="#617384" stroke-width="2"/>
+<line x1="383.0" y1="1025" x2="403.0" y2="1012" stroke="#617384" stroke-width="2"/>
+<line x1="408.0" y1="1012" x2="428.0" y2="1025" stroke="#617384" stroke-width="2"/>
+<line x1="428.0" y1="1025" x2="448.0" y2="1012" stroke="#617384" stroke-width="2"/>
+<line x1="453.0" y1="1012" x2="473.0" y2="1025" stroke="#617384" stroke-width="2"/>
+<line x1="473.0" y1="1025" x2="493.0" y2="1012" stroke="#617384" stroke-width="2"/>
+<line x1="498.0" y1="1012" x2="518.0" y2="1025" stroke="#617384" stroke-width="2"/>
+<line x1="518.0" y1="1025" x2="538.0" y2="1012" stroke="#617384" stroke-width="2"/>
+<line x1="543.0" y1="1012" x2="563.0" y2="1025" stroke="#617384" stroke-width="2"/>
+<line x1="563.0" y1="1025" x2="583.0" y2="1012" stroke="#617384" stroke-width="2"/>
+<line x1="588.0" y1="1012" x2="608.0" y2="1025" stroke="#617384" stroke-width="2"/>
+<line x1="608.0" y1="1025" x2="628.0" y2="1012" stroke="#617384" stroke-width="2"/>
+<line x1="633.0" y1="1012" x2="653.0" y2="1025" stroke="#617384" stroke-width="2"/>
+<line x1="653.0" y1="1025" x2="673.0" y2="1012" stroke="#617384" stroke-width="2"/>
+<text x="230" y="1064.12" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#17334b">前运动口 700×600 + 柔性遮光套</text>
+<text x="245" y="1098.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">套接承载件；龙门架、电机驱动在箱外</text>
+<line x1="136" y1="326" x2="864" y2="326" stroke="#617384" stroke-width="2"/>
+<polygon points="864,326 851.0,320.0 851.0,332.0" fill="#617384" stroke="none" stroke-width="2"/>
+<polygon points="136,326 149.0,332.0 149.0,320.0" fill="#617384" stroke="none" stroke-width="2"/>
+<text x="372" y="312.12" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#17334b">净宽 1400</text>
+<line x1="917" y1="362" x2="917" y2="1000" stroke="#617384" stroke-width="2"/>
+<polygon points="917,1000 923.0,987.0 911.0,987.0" fill="#617384" stroke="none" stroke-width="2"/>
+<polygon points="917,362 911.0,375.0 923.0,375.0" fill="#617384" stroke="none" stroke-width="2"/>
+<text x="868" y="1136.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">深1100</text>
+<line x1="188.0" y1="395.0" x2="812.0" y2="395.0" stroke="#168a7b" stroke-width="2"/>
+<rect x="1080.0" y="408.0" width="748" height="672" fill="#fafcfd" stroke="#263b4d" stroke-width="4"/>
+<rect x="1760.0" y="441.6" width="15" height="604.8" fill="#d2e3ed" stroke="#168a7b" stroke-width="2"/>
+<line x1="1760.0" y1="1032.0" x2="1760.0" y2="456.0" stroke="#168a7b" stroke-width="7"/>
+<text x="1640" y="339.24" font-family="Microsoft YaHei, sans-serif" font-size="23" font-weight="700" fill="#168a7b">后抽卡匣</text>
+<text x="1620" y="374.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#168a7b">图案面 Y=1000</text>
+<line x1="1766.8000000000002" y1="552.0" x2="1890" y2="552.0" stroke="#168a7b" stroke-width="3"/>
+<polygon points="1890,552.0 1877.0,546.0 1877.0,558.0" fill="#168a7b" stroke="none" stroke-width="2"/>
+<text x="1842" y="599.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617384">后方</text>
+<text x="1842" y="630.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617384">检修</text>
+<text x="1842" y="661.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#617384">空间</text>
+<rect x="1229.6" y="621.6" width="380.8" height="244.79999999999998" fill="none" stroke="#9badbb" stroke-width="2" stroke-dasharray="9 7"/>
+<line x1="1229.6" y1="621.6" x2="1610.3999999999999" y2="621.6" stroke="#9badbb" stroke-width="2" stroke-dasharray="9 7"/>
+<line x1="1229.6" y1="866.4" x2="1610.3999999999999" y2="866.4" stroke="#9badbb" stroke-width="2" stroke-dasharray="9 7"/>
+<polygon points="1420.0,744.0 1760.0,666.24 1760.0,821.76" fill="#e3f1fa" stroke="none" stroke-width="2"/>
+<line x1="1420.0" y1="744.0" x2="1760.0" y2="666.24" stroke="#328abb" stroke-width="2" stroke-dasharray="9 7"/>
+<line x1="1420.0" y1="744.0" x2="1760.0" y2="821.76" stroke="#328abb" stroke-width="2" stroke-dasharray="9 7"/>
+<rect x="1379.2" y="717.6" width="40.800000000000004" height="43.199999999999996" fill="#17334b" stroke="none" stroke-width="2"/>
+<circle cx="1420.0" cy="744.0" r="12" fill="#82c2df" stroke="#328abb" stroke-width="2"/>
+<text x="1218" y="826.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#17334b">相机 / 云台</text>
+<text x="1218" y="857.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#17334b">随XYZ移动</text>
+<line x1="1420.0" y1="744.0" x2="1760.0" y2="744.0" stroke="#328abb" stroke-width="2" stroke-dasharray="9 7"/>
+<line x1="1420.0" y1="885" x2="1760.0" y2="885" stroke="#328abb" stroke-width="2"/>
+<polygon points="1760.0,885 1747.0,879.0 1747.0,891.0" fill="#328abb" stroke="none" stroke-width="2"/>
+<polygon points="1420.0,885 1433.0,891.0 1433.0,879.0" fill="#328abb" stroke="none" stroke-width="2"/>
+<text x="1450" y="921.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#328abb">名义物距 D=500</text>
+<text x="1380" y="958.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">Y行程 ±100 → D=400～600</text>
+<polygon points="1332.0,436.0 1372.0,476.0 1380.0,468.0 1340.0,428.0" fill="#c48a25" stroke="none" stroke-width="2"/>
+<line x1="1352.0" y1="456.0" x2="1760.0" y2="744.0" stroke="#c48a25" stroke-width="3"/>
+<polygon points="1760.0,744.0 1752.83951696315,731.6013112516289 1745.9193185919662,741.404925610806" fill="#c48a25" stroke="none" stroke-width="2"/>
+<text x="1150" y="511.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#c48a25">L3 暖光 / 顶梁双点固定</text>
+<line x1="1304.4" y1="412.8" x2="1399.6" y2="412.8" stroke="#617384" stroke-width="5"/>
+<line x1="1352.0" y1="412.8" x2="1352.0" y2="441.6" stroke="#617384" stroke-width="3"/>
+<circle cx="1522.0" cy="456.0" r="15" fill="#d66b4a" stroke="none" stroke-width="2"/>
+<line x1="1522.0" y1="456.0" x2="1760.0" y2="638.4" stroke="#d66b4a" stroke-width="3"/>
+<polygon points="1760.0,638.4 1753.3314709345577,625.7299281729206 1746.031972825716,635.2544925912557" fill="#d66b4a" stroke="none" stroke-width="2"/>
+<text x="1520" y="506.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#d66b4a">L4 + 遮光筒</text>
+<text x="1170" y="1038.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">L1/L2在左右侧，侧视重合处省略</text>
+<text x="1090" y="1149.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#17334b">灯壳、支架、软套、拖链均需另做扫掠检查</text>
+<line x1="1897" y1="408.0" x2="1897" y2="1080.0" stroke="#617384" stroke-width="2"/>
+<polygon points="1897,1080.0 1903.0,1067.0 1891.0,1067.0" fill="#617384" stroke="none" stroke-width="2"/>
+<polygon points="1897,408.0 1891.0,421.0 1903.0,421.0" fill="#617384" stroke="none" stroke-width="2"/>
+<text x="1517" y="304.12" font-family="Microsoft YaHei, sans-serif" font-size="24" font-weight="700" fill="#17334b">净高 1400</text>
+</svg>

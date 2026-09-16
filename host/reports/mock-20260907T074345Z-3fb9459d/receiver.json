@@ -1,0 +1,73 @@
+{
+  "run_id": "mock-20260907T074345Z-3fb9459d",
+  "configuration": {
+    "device_id": "MOCK-OV5640",
+    "source_mode": "mock",
+    "bind_ip": "127.0.0.1",
+    "port": 50686,
+    "peer_ip": "127.0.0.1",
+    "peer_port": 50687,
+    "stream_epoch": 1,
+    "width": 1920,
+    "height": 1080,
+    "bayer_code": 1,
+    "receive_buffer_bytes": 8388608
+  },
+  "source_mode": "mock",
+  "hardware_acceptance": "not_performed",
+  "elapsed_receive_seconds": 5.0,
+  "complete_live_fps_in_receive_window": 6.0,
+  "receiver": {
+    "bind": [
+      "127.0.0.1",
+      50686
+    ],
+    "peer": [
+      "127.0.0.1",
+      50687
+    ],
+    "counters": {
+      "datagrams_received": 44460,
+      "udp_payload_bytes_received": 65053440,
+      "live_frames_complete": 30,
+      "preview_frames_replaced": 28,
+      "archive_frames_enqueued": 1
+    },
+    "socket_receive_buffer_requested": 8388608,
+    "socket_receive_buffer_reported": 8388608,
+    "assembly": {
+      "counters": {
+        "datagrams": 44460,
+        "live_frames_observed": 30,
+        "packets_accepted_unique": 44460,
+        "live_frames_complete": 30,
+        "live_bytes_complete": 62208000
+      },
+      "active_frames": 0,
+      "buffer_bytes": 0,
+      "stream_epoch": 1,
+      "live_first_id": 0,
+      "live_highwater": 29,
+      "live_unobserved_ids_in_span": 0
+    },
+    "preview_queue": {
+      "frames": 2,
+      "payload_bytes": 4147200,
+      "max_frames": 2,
+      "max_bytes": 16777216
+    },
+    "archive_queue": {
+      "frames": 0,
+      "payload_bytes": 0,
+      "max_frames": 4,
+      "max_bytes": 16777216
+    },
+    "recent_failures": []
+  },
+  "storage": {
+    "frames_saved": 1,
+    "error": null
+  },
+  "receive_error": null,
+  "notes": "No GUI consumer: preview replacements are expected. Host receive time is not FPGA latency."
+}

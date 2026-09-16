@@ -1,0 +1,237 @@
+//
+// Generated (version 2022.2-SP6.4<build 146967>) at Mon Sep  7 18:39:22 2026
+//
+
+module flow_smoke_top
+(
+    input clk,
+    input key,
+    input rstn,
+    output led0
+);
+	// SDC constraint : (object led0) (id 1002) (to) (26 : D:/XDU/concept/26-FPGA-Pango/fpga/constraints/flow_smoke.fdc)
+	// SDC constraint : (object clk) (id 1000) (clock clk27) (21 : D:/XDU/concept/26-FPGA-Pango/fpga/constraints/flow_smoke.fdc)
+	// SDC constraint : (object key) (id 1001) (from) (24 : D:/XDU/concept/26-FPGA-Pango/fpga/constraints/flow_smoke.fdc)
+	// SDC constraint : (object rstn) (id 1001) (from) (24 : D:/XDU/concept/26-FPGA-Pango/fpga/constraints/flow_smoke.fdc)
+    wire N0;
+    wire [4:0] N3;
+    wire N6_0;
+    wire N7;
+    wire _N10;
+    wire key_meta;
+    wire key_sync;
+    wire nt_clk;
+    wire nt_key;
+    wire nt_led0;
+    wire nt_rstn;
+    wire rst_meta;
+    wire rst_sync;
+    wire [4:0] tick_count;
+
+    GTP_GRS GRS_INST (
+            .GRS_N (1'b1));
+
+    GTP_INV N0_vname (
+            .Z (N0),
+            .I (rst_sync));
+    // defparam N0_vname.orig_name = N0;
+
+    GTP_LUT6D /* N3_ac2 */ #(
+            .INIT(64'b1000000010000000100000001000000001111000011110000111100001111000))
+        N3_ac2 (
+            .Z (_N10),
+            .Z5 (N3[2]),
+            .I0 (tick_count[0]),
+            .I1 (tick_count[1]),
+            .I2 (tick_count[2]),
+            .I3 (),
+            .I4 (),
+            .I5 (1'b1));
+	// LUT = I0&I1&I2 ;
+	// Z5 = (I0&I1&~I2)|(~I1&I2)|(~I0&I2) ;
+
+    GTP_LUT6D /* N3_sum3 */ #(
+            .INIT(64'b0111111110000000011111111000000001111111111111111000000000000000))
+        N3_sum3 (
+            .Z (N3[3]),
+            .Z5 (N3[4]),
+            .I0 (tick_count[0]),
+            .I1 (tick_count[1]),
+            .I2 (tick_count[2]),
+            .I3 (tick_count[3]),
+            .I4 (tick_count[4]),
+            .I5 (1'b1));
+	// LUT = (I0&I1&I2&~I3)|(~I2&I3)|(~I1&I3)|(~I0&I3) ;
+	// Z5 = (I0&I1&I2&I3&~I4)|(~I3&I4)|(~I2&I4)|(~I1&I4)|(~I0&I4) ;
+
+    GTP_LUT1 /* N7 */ #(
+            .INIT(2'b01))
+        N7_vname (
+            .Z (N7),
+            .I0 (nt_led0));
+    // defparam N7_vname.orig_name = N7;
+	// LUT = ~I0 ;
+
+(* PAP_IO_DIRECTION="INPUT", PAP_IO_LOC="D18", PAP_IO_VCCIO="3.3", PAP_IO_STANDARD="LVCMOS33" *)    GTP_INBUF /* clk_ibuf */ #(
+            .IOSTANDARD("DEFAULT"), 
+            .TERM_DDR("ON"))
+        clk_ibuf (
+            .O (nt_clk),
+            .I (clk));
+	// ../../../rtl/flow_smoke_top.v:7
+
+(* PAP_IO_DIRECTION="INPUT", PAP_IO_LOC="C23", PAP_IO_VCCIO="3.3", PAP_IO_STANDARD="LVCMOS33" *)    GTP_INBUF /* key_ibuf */ #(
+            .IOSTANDARD("DEFAULT"), 
+            .TERM_DDR("ON"))
+        key_ibuf (
+            .O (nt_key),
+            .I (key));
+	// ../../../rtl/flow_smoke_top.v:9
+
+(* PAP_PRESERVE="TRUE", PAP_SRL_STYLE="registers" *)    GTP_DFF /* key_meta */ #(
+            .GRS_EN("TRUE"), 
+            .INIT(1'b1))
+        key_meta_vname (
+            .Q (key_meta),
+            .CLK (nt_clk),
+            .D (nt_key));
+    // defparam key_meta_vname.orig_name = key_meta;
+	// ../../../rtl/flow_smoke_top.v:18
+
+(* PAP_PRESERVE="TRUE", PAP_SRL_STYLE="registers" *)    GTP_DFF /* key_sync */ #(
+            .GRS_EN("TRUE"), 
+            .INIT(1'b1))
+        key_sync_vname (
+            .Q (key_sync),
+            .CLK (nt_clk),
+            .D (key_meta));
+    // defparam key_sync_vname.orig_name = key_sync;
+	// ../../../rtl/flow_smoke_top.v:18
+
+    GTP_DFF_RE /* led0 */ #(
+            .GRS_EN("TRUE"), 
+            .INIT(1'b0))
+        led0_vname (
+            .Q (nt_led0),
+            .CE (N6_0),
+            .CLK (nt_clk),
+            .D (N7),
+            .R (N0));
+    // defparam led0_vname.orig_name = led0;
+	// ../../../rtl/flow_smoke_top.v:18
+
+    GTP_LUT5 /* led0_ce_fix */ #(
+            .INIT(32'b11101010101010101010101010101010))
+        led0_ce_fix (
+            .Z (N6_0),
+            .I0 (N0),
+            .I1 (key_sync),
+            .I2 (tick_count[3]),
+            .I3 (tick_count[4]),
+            .I4 (_N10));
+	// LUT = (I0)|(I1&I2&I3&I4) ;
+
+(* PAP_IO_DIRECTION="OUTPUT", PAP_IO_LOC="A20", PAP_IO_VCCIO="3.3", PAP_IO_STANDARD="LVCMOS33", PAP_IO_DRIVE="8", PAP_IO_SLEW="SLOW" *)    GTP_OUTBUF /* led0_obuf */ #(
+            .IOSTANDARD("DEFAULT"), 
+            .SLEW_RATE("SLOW"), 
+            .DRIVE_STRENGTH("8"))
+        led0_obuf (
+            .O (led0),
+            .I (nt_led0));
+	// ../../../rtl/flow_smoke_top.v:10
+
+(* PAP_PRESERVE="TRUE", PAP_SRL_STYLE="registers" *)    GTP_DFF /* rst_meta */ #(
+            .GRS_EN("TRUE"), 
+            .INIT(1'b0))
+        rst_meta_vname (
+            .Q (rst_meta),
+            .CLK (nt_clk),
+            .D (nt_rstn));
+    // defparam rst_meta_vname.orig_name = rst_meta;
+	// ../../../rtl/flow_smoke_top.v:18
+
+(* PAP_PRESERVE="TRUE", PAP_SRL_STYLE="registers" *)    GTP_DFF /* rst_sync */ #(
+            .GRS_EN("TRUE"), 
+            .INIT(1'b0))
+        rst_sync_vname (
+            .Q (rst_sync),
+            .CLK (nt_clk),
+            .D (rst_meta));
+    // defparam rst_sync_vname.orig_name = rst_sync;
+	// ../../../rtl/flow_smoke_top.v:18
+
+(* PAP_IO_DIRECTION="INPUT", PAP_IO_LOC="C22", PAP_IO_VCCIO="3.3", PAP_IO_STANDARD="LVCMOS33" *)    GTP_INBUF /* rstn_ibuf */ #(
+            .IOSTANDARD("DEFAULT"), 
+            .TERM_DDR("ON"))
+        rstn_ibuf (
+            .O (nt_rstn),
+            .I (rstn));
+	// ../../../rtl/flow_smoke_top.v:8
+
+    GTP_DFF_R /* \tick_count[0]  */ #(
+            .GRS_EN("TRUE"), 
+            .INIT(1'b0))
+        \tick_count[0]  (
+            .Q (tick_count[0]),
+            .CLK (nt_clk),
+            .D (N3[0]),
+            .R (N0));
+	// ../../../rtl/flow_smoke_top.v:18
+
+    GTP_DFF_R /* \tick_count[1]  */ #(
+            .GRS_EN("TRUE"), 
+            .INIT(1'b0))
+        \tick_count[1]  (
+            .Q (tick_count[1]),
+            .CLK (nt_clk),
+            .D (N3[1]),
+            .R (N0));
+	// ../../../rtl/flow_smoke_top.v:18
+
+    GTP_DFF_R /* \tick_count[2]  */ #(
+            .GRS_EN("TRUE"), 
+            .INIT(1'b0))
+        \tick_count[2]  (
+            .Q (tick_count[2]),
+            .CLK (nt_clk),
+            .D (N3[2]),
+            .R (N0));
+	// ../../../rtl/flow_smoke_top.v:18
+
+    GTP_DFF_R /* \tick_count[3]  */ #(
+            .GRS_EN("TRUE"), 
+            .INIT(1'b0))
+        \tick_count[3]  (
+            .Q (tick_count[3]),
+            .CLK (nt_clk),
+            .D (N3[3]),
+            .R (N0));
+	// ../../../rtl/flow_smoke_top.v:18
+
+    GTP_LUT6D /* \tick_count[4:0]_inv  */ #(
+            .INIT(64'b0101010101010101010101010101010101100110011001100110011001100110))
+        \tick_count[4:0]_inv  (
+            .Z (N3[0]),
+            .Z5 (N3[1]),
+            .I0 (tick_count[0]),
+            .I1 (tick_count[1]),
+            .I2 (),
+            .I3 (),
+            .I4 (),
+            .I5 (1'b1));
+	// LUT = ~I0 ;
+	// Z5 = I1^I0 ;
+
+    GTP_DFF_R /* \tick_count[4]  */ #(
+            .GRS_EN("TRUE"), 
+            .INIT(1'b0))
+        \tick_count[4]  (
+            .Q (tick_count[4]),
+            .CLK (nt_clk),
+            .D (N3[4]),
+            .R (N0));
+	// ../../../rtl/flow_smoke_top.v:18
+
+
+endmodule
+

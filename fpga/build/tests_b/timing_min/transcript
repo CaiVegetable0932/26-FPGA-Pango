@@ -1,0 +1,45 @@
+# do run.do 
+# Modifying D:\XDU\concept\26-FPGA-Pango\fpga\build\tests_b\timing_min\modelsim.ini
+# Modifying D:\XDU\concept\26-FPGA-Pango\fpga\build\tests_b\timing_min\modelsim.ini
+# Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+# -- Compiling module flow_smoke_top
+# -- Compiling module tb_flow_smoke
+# 
+# Top level modules:
+# 	tb_flow_smoke
+# vsim -L vsim -sdfmin /tb_flow_smoke/dut=D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b/generate_netlist/flow_smoke_top_sta.sdf -t 1ps work.tb_flow_smoke 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading work.tb_flow_smoke(fast)
+# Loading vsim.V_FFSYN(fast)
+# Loading vsim.V_LUT6CARRY(fast)
+# Loading vsim.V_INV(fast)
+# Loading vsim.V_FFSYN(fast__1)
+# Loading vsim.V_LUT6CARRY(fast__1)
+# Loading vsim.V_LUT6CARRY(fast__2)
+# Loading vsim.V_LUT6CARRY(fast__3)
+# Loading vsim.V_LUT6CARRY(fast__4)
+# Loading vsim.V_LUT6CARRY(fast__5)
+# Loading vsim.V_BUF(fast)
+# Loading vsim.V_IBUF(fast)
+# Loading vsim.V_OBUFT(fast)
+# Loading vsim.V_USCM(fast)
+# Loading instances from D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b/generate_netlist/flow_smoke_top_sta.sdf
+# Loading timing data from D:/XDU/concept/26-FPGA-Pango/fpga/build/flow_20260907_b/generate_netlist/flow_smoke_top_sta.sdf
+# ** Warning: (vsim-8756) E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/bsim/V_FFSYN.v(73): Instance 'tb_flow_smoke.dut.\CLMA_63_870/FF0/FF ' - Negative timing check limits detected in simulation with cells modeled without delayed copies of data or reference signals.
+# 
+#         Region: /tb_flow_smoke
+# ** Note: (vsim-3587) SDF Backannotation Successfully Completed.
+#    Time: 0 ps  Iteration: 0  Instance: /tb_flow_smoke File: D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_flow_smoke.v
+# FLOW_SIM_PASS checks=898 toggles=23
+# ** Note: $finish    : D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_flow_smoke.v(67)
+#    Time: 33704580 ps  Iteration: 1  Instance: /tb_flow_smoke

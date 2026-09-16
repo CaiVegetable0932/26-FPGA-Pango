@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1280" viewBox="0 0 2000 1280">
+<rect width="2000" height="1280" fill="#f3f6fa"/>
+<rect x="0" y="0" width="2000" height="134" fill="#17334b" stroke="none" stroke-width="2"/>
+<text x="45" y="61.2" font-family="Microsoft YaHei, sans-serif" font-size="40" font-weight="700" fill="#ffffff">光照场景｜四路硬件，分别校准配方</text>
+<text x="47" y="105.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#dae7f0">颜色仅区分场景，不是照度仿真；500～1000lx等为初始目标，须以图卡面实测值冻结</text>
+<text x="45" y="1249.6" font-family="Microsoft YaHei, sans-serif" font-size="20" font-weight="400" fill="#617384">FPGA 可控光照测试装置  /  2026-09-08  /  V1.0  /  规划示意，非加工图或实测结果</text>
+<text x="1840" y="1251.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#617384">图 04</text>
+<rect x="45" y="170" width="620" height="481" fill="white" stroke="#cdd8e1" stroke-width="2"/>
+<text x="69" y="215.52" font-family="Microsoft YaHei, sans-serif" font-size="29" font-weight="700" fill="#17334b">NORMAL 正常</text>
+<text x="69" y="253.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">L1 + L2</text>
+<rect x="175" y="300" width="360" height="176" fill="#e3f3ee" stroke="#cdd8e1" stroke-width="2"/>
+<line x1="235" y1="300" x2="235" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="295" y1="300" x2="295" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="355" y1="300" x2="355" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="415" y1="300" x2="415" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="475" y1="300" x2="475" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="175" y1="358" x2="535" y2="358" stroke="#8c9eac" stroke-width="1"/>
+<line x1="175" y1="416" x2="535" y2="416" stroke="#8c9eac" stroke-width="1"/>
+<rect x="132" y="342" width="16" height="90" fill="#168a7b" stroke="none" stroke-width="2"/>
+<rect x="563" y="342" width="16" height="90" fill="#168a7b" stroke="none" stroke-width="2"/>
+<text x="72" y="520.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">中心500～1000lx</text>
+<text x="72" y="551.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">九点测图，目标Umin/max≥0.8</text>
+<text x="72" y="611.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#168a7b">双侧漫射</text>
+<rect x="689" y="170" width="620" height="481" fill="white" stroke="#cdd8e1" stroke-width="2"/>
+<text x="713" y="215.52" font-family="Microsoft YaHei, sans-serif" font-size="29" font-weight="700" fill="#17334b">NIGHT 夜间</text>
+<text x="713" y="253.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">L1 + L2 低档 / ND</text>
+<rect x="819" y="300" width="360" height="176" fill="#b3bac5" stroke="#cdd8e1" stroke-width="2"/>
+<line x1="879" y1="300" x2="879" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="939" y1="300" x2="939" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="999" y1="300" x2="999" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1059" y1="300" x2="1059" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1119" y1="300" x2="1119" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="819" y1="358" x2="1179" y2="358" stroke="#8c9eac" stroke-width="1"/>
+<line x1="819" y1="416" x2="1179" y2="416" stroke="#8c9eac" stroke-width="1"/>
+<rect x="776" y="342" width="16" height="90" fill="#168a7b" stroke="none" stroke-width="2"/>
+<rect x="1207" y="342" width="16" height="90" fill="#168a7b" stroke="none" stroke-width="2"/>
+<text x="716" y="520.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">中心5～20lx</text>
+<text x="716" y="551.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">检查漏光、条纹、曝光和真实帧率</text>
+<text x="716" y="611.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#168a7b">低档另标定</text>
+<rect x="1333" y="170" width="620" height="481" fill="white" stroke="#cdd8e1" stroke-width="2"/>
+<text x="1357" y="215.52" font-family="Microsoft YaHei, sans-serif" font-size="29" font-weight="700" fill="#17334b">BRIGHT 强光</text>
+<text x="1357" y="253.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">L1 + L2 高档</text>
+<rect x="1463" y="300" width="360" height="176" fill="#fbf0d5" stroke="#cdd8e1" stroke-width="2"/>
+<line x1="1523" y1="300" x2="1523" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1583" y1="300" x2="1583" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1643" y1="300" x2="1643" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1703" y1="300" x2="1703" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1763" y1="300" x2="1763" y2="476" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1463" y1="358" x2="1823" y2="358" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1463" y1="416" x2="1823" y2="416" stroke="#8c9eac" stroke-width="1"/>
+<rect x="1420" y="342" width="16" height="90" fill="#168a7b" stroke="none" stroke-width="2"/>
+<rect x="1851" y="342" width="16" height="90" fill="#168a7b" stroke="none" stroke-width="2"/>
+<text x="1360" y="520.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">探索中心3000～10000lx</text>
+<text x="1360" y="551.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">功率预算不保证全区强光均匀</text>
+<text x="1360" y="611.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#168a7b">记录实际范围</text>
+<rect x="45" y="676" width="620" height="481" fill="white" stroke="#cdd8e1" stroke-width="2"/>
+<text x="69" y="721.52" font-family="Microsoft YaHei, sans-serif" font-size="29" font-weight="700" fill="#17334b">SIDE 侧光</text>
+<text x="69" y="759.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">L1 或 L2 / 不等电流</text>
+<rect x="175" y="806" width="360" height="176" fill="#e8ebef" stroke="#cdd8e1" stroke-width="2"/>
+<rect x="175" y="806" width="30" height="176" fill="#f0f0f0" stroke="none" stroke-width="2"/>
+<rect x="205" y="806" width="30" height="176" fill="#e8e8e8" stroke="none" stroke-width="2"/>
+<rect x="235" y="806" width="30" height="176" fill="#e0e0e0" stroke="none" stroke-width="2"/>
+<rect x="265" y="806" width="30" height="176" fill="#d8d8d8" stroke="none" stroke-width="2"/>
+<rect x="295" y="806" width="30" height="176" fill="#d0d0d0" stroke="none" stroke-width="2"/>
+<rect x="325" y="806" width="30" height="176" fill="#c8c8c8" stroke="none" stroke-width="2"/>
+<rect x="355" y="806" width="30" height="176" fill="#c0c0c0" stroke="none" stroke-width="2"/>
+<rect x="385" y="806" width="30" height="176" fill="#b8b8b8" stroke="none" stroke-width="2"/>
+<rect x="415" y="806" width="30" height="176" fill="#b0b0b0" stroke="none" stroke-width="2"/>
+<rect x="445" y="806" width="30" height="176" fill="#a8a8a8" stroke="none" stroke-width="2"/>
+<rect x="475" y="806" width="30" height="176" fill="#a0a0a0" stroke="none" stroke-width="2"/>
+<rect x="505" y="806" width="30" height="176" fill="#989898" stroke="none" stroke-width="2"/>
+<line x1="235" y1="806" x2="235" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="295" y1="806" x2="295" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="355" y1="806" x2="355" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="415" y1="806" x2="415" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="475" y1="806" x2="475" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="175" y1="864" x2="535" y2="864" stroke="#8c9eac" stroke-width="1"/>
+<line x1="175" y1="922" x2="535" y2="922" stroke="#8c9eac" stroke-width="1"/>
+<rect x="132" y="848" width="16" height="90" fill="#168a7b" stroke="none" stroke-width="2"/>
+<text x="72" y="1026.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">记录方向、多点照度与亮暗比</text>
+<text x="72" y="1057.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">单侧强度不是固定探头一个读数</text>
+<text x="72" y="1117.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#168a7b">非均匀压力</text>
+<rect x="689" y="676" width="620" height="481" fill="white" stroke="#cdd8e1" stroke-width="2"/>
+<text x="713" y="721.52" font-family="Microsoft YaHei, sans-serif" font-size="29" font-weight="700" fill="#17334b">WARM 暖光</text>
+<text x="713" y="759.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">L3 或已标定混合光</text>
+<rect x="819" y="806" width="360" height="176" fill="#f2d2a5" stroke="#cdd8e1" stroke-width="2"/>
+<line x1="879" y1="806" x2="879" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="939" y1="806" x2="939" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="999" y1="806" x2="999" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1059" y1="806" x2="1059" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1119" y1="806" x2="1119" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="819" y1="864" x2="1179" y2="864" stroke="#8c9eac" stroke-width="1"/>
+<line x1="819" y1="922" x2="1179" y2="922" stroke="#8c9eac" stroke-width="1"/>
+<rect x="896" y="782" width="200" height="13" fill="#c48a25" stroke="none" stroke-width="2"/>
+<text x="716" y="1026.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">光谱和照明方向同时变化</text>
+<text x="716" y="1057.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">不称为单独色温变量实验</text>
+<text x="716" y="1117.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#168a7b">顶光独立建图</text>
+<rect x="1333" y="676" width="620" height="481" fill="white" stroke="#cdd8e1" stroke-width="2"/>
+<text x="1357" y="721.52" font-family="Microsoft YaHei, sans-serif" font-size="29" font-weight="700" fill="#17334b">SPOT 局部强光</text>
+<text x="1357" y="759.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="400" fill="#617384">L4 + 可选低背景</text>
+<rect x="1463" y="806" width="360" height="176" fill="#ccd6df" stroke="#cdd8e1" stroke-width="2"/>
+<circle cx="1718" cy="878" r="53" fill="#fff2b1" stroke="#c48a25" stroke-width="2"/>
+<line x1="1523" y1="806" x2="1523" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1583" y1="806" x2="1583" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1643" y1="806" x2="1643" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1703" y1="806" x2="1703" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1763" y1="806" x2="1763" y2="982" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1463" y1="864" x2="1823" y2="864" stroke="#8c9eac" stroke-width="1"/>
+<line x1="1463" y1="922" x2="1823" y2="922" stroke="#8c9eac" stroke-width="1"/>
+<circle cx="1866" cy="802" r="13" fill="#d66b4a" stroke="none" stroke-width="2"/>
+<line x1="1857" y1="815" x2="1753" y2="862" stroke="#d66b4a" stroke-width="3"/>
+<polygon points="1753,862 1767.3173679477763,862.113908068128 1762.3755102228401,851.1787335278434" fill="#d66b4a" stroke="none" stroke-width="2"/>
+<text x="1360" y="1026.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">记录亮斑中心、大小及局部照度</text>
+<text x="1360" y="1057.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="400" fill="#263b4d">亮斑、反光和镜头眩光分开</text>
+<text x="1360" y="1117.48" font-family="Microsoft YaHei, sans-serif" font-size="21" font-weight="700" fill="#168a7b">定向压力</text>
+<text x="51" y="1211.36" font-family="Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#17334b">共通：正式几何测试锁定曝光与ISP；场景切换记录实际光电边沿；局部测量与全画幅能力分别申报。</text>
+</svg>

@@ -1,0 +1,24 @@
+# do run.do 
+# Modifying D:\XDU\concept\26-FPGA-Pango\fpga\build\tests_a\rtl\modelsim.ini
+# Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+# -- Compiling module flow_smoke_top
+# -- Compiling module tb_flow_smoke
+# 
+# Top level modules:
+# 	tb_flow_smoke
+# vsim -t 1ps work.tb_flow_smoke 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading work.tb_flow_smoke(fast)
+# FLOW_SIM_PASS checks=898 toggles=23
+# ** Note: $finish    : D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_flow_smoke.v(67)
+#    Time: 33704580 ps  Iteration: 1  Instance: /tb_flow_smoke

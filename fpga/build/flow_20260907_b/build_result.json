@@ -1,0 +1,44 @@
+{
+  "returncode": 1,
+  "elapsed_seconds": 76.078,
+  "log": "build\\flow_20260907_b\\console.log",
+  "error_lines": [
+    "E: Flow-0119: Value \"3.3\" is not legal for option \"Set Configuration Bank Voltage(SCBV)\", the legal value lists are \" None Low Voltage High Voltage\".",
+    "E: Flow-0075: The value for option 'scbv' is not set or is invalid on command 'gen_bit_stream'.",
+    "E: ",
+    "E: Flow-0163: Failed to parse file \"D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\scripts\\build.tcl\" at line 21. Check if the command options or arguments are valid.",
+    "E: Flow-0119: Value \"3.3\" is not legal for option \"Set Configuration Bank Voltage(SCBV)\", the legal value lists are \" None Low Voltage High Voltage\".",
+    "E: Flow-0075: The value for option 'scbv' is not set or is invalid on command 'gen_bit_stream'.",
+    "E: Failed to execute the script : "
+  ],
+  "stages": {
+    "compile": true,
+    "synthesize": true,
+    "dev_map": true,
+    "pnr": true,
+    "report_timing": true,
+    "gen_netlist": true,
+    "gen_bit_stream": false,
+    "report_power": false
+  },
+  "artifacts": {
+    "synthesize/flow_smoke_top_syn.vm": {
+      "bytes": 7354,
+      "sha256": "dcaa4d3de8811a397bd1c2e03ec654f7171ff56151156675467d972b0b47d9a9"
+    },
+    "generate_netlist/flow_smoke_top_sim.v": {
+      "bytes": 12286,
+      "sha256": "246809e459b9b85c2cf346a2348e3ede8a6659858d1bdc10c80639b7f1de9716"
+    },
+    "generate_netlist/flow_smoke_top_sta.sdf": {
+      "bytes": 13957,
+      "sha256": "56182d57e66ba5a020d083cf224c93b8435c5007159f782690565581d301d4ed"
+    },
+    "report_timing/flow_smoke_top.rtr": {
+      "bytes": 331815,
+      "sha256": "361d04d25805ed5dcd0638fed8c9617d648f65ae5735e2c69802d517bf9aa9f1"
+    }
+  },
+  "passed": false,
+  "hardware_acceptance": "not_performed"
+}
