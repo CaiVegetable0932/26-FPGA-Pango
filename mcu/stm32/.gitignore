@@ -1,0 +1,17 @@
+# 编译产物
+build/
+cmake-build-debug/
+*.o
+*.elf
+*.hex
+*.bin
+*.map
+
+# IDE 个人配置
+.settings/
+.vscode/
+*.launch
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
