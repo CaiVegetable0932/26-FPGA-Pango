@@ -1,0 +1,52 @@
+Executing : cfg_set_tcl_break -flag true
+Executing : cfg_set_tcl_break -flag true successfully.
+CONFIGURATION_TARGET=VOLATILE_FPGA_CRAM_ONLY
+Executing : cfg_connect -ip 127.0.0.1 -port 65420
+Connecting to server[127.0.0.1 : 65420].
+Connect to server[127.0.0.1 : 65420] successfully.
+COMMAND[check version information] execute successfully, takes 0.4 secs.
+The cable List : 
+Cable index 0:USB Cable II/fffffffffffffffe 
+
+COMMAND[get_cable_paras] execute successfully, takes 1.2 secs.
+Executing : cfg_connect -ip 127.0.0.1 -port 65420 successfully.
+Executing : cfg_scan_chain
+PANGO USB CABLE II cable driver: D2XX DLL
+PG2L100H
+This device configure situation (done bit): 0
+COMMAND[Open config cable] execute successfully, takes 0.4 secs.
+Executing : cfg_scan_chain successfully.
+Executing : cfg_read_device_property -mode 0 -device_index 0
+The ID value is: 0x00602899
+COMMAND[Get device id] execute successfully, takes 0.4 secs.
+Executing : cfg_read_device_property -mode 0 -device_index 0 successfully.
+Executing : cfg_assign_file -file D:/XDU/concept/26-FPGA-Pango/fpga/build/board_validation_20260910/workspace/fpga/build/pango_video_top/generate_bitstream/pango_video_top.sbit -device_index 0
+Executing : cfg_assign_file -file D:/XDU/concept/26-FPGA-Pango/fpga/build/board_validation_20260910/workspace/fpga/build/pango_video_top/generate_bitstream/pango_video_top.sbit -device_index 0 successfully.
+Executing : cfg_set_device_property -device_index 0 -program 3 -readback 3
+Executing : cfg_set_device_property -device_index 0 -program 3 -readback 3 successfully.
+Executing : cfg_program -device_index 0
+The Progress: 0%
+The Progress: ��6%
+The Progress: ����11%
+The Progress: ������15%
+The Progress: ��������20%
+The Progress: ����������25%
+The Progress: ������������30%
+The Progress: ��������������35%
+The Progress: ����������������40%
+The Progress: ������������������45%
+The Progress: ��������������������50%
+The Progress: ����������������������55%
+The Progress: ������������������������60%
+The Progress: ��������������������������65%
+The Progress: ����������������������������70%
+The Progress: ������������������������������75%
+The Progress: ��������������������������������80%
+The Progress: ����������������������������������85%
+The Progress: ������������������������������������90%
+The Progress: ��������������������������������������95%
+The Progress: ����������������������������������������100%
+The done bit is 1
+COMMAND[Program] execute successfully, takes 143.4 secs.
+Executing : cfg_program -device_index 0 successfully.
+Executing : cfg_verify -device_index 0

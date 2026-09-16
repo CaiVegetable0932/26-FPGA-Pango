@@ -1,0 +1,6 @@
+# vsim -do {onbreak {quit -f -code 1}; run -all; quit -f -code 0} -l tmds_simulation.log -lib {D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\simulation\work_tmds} -c tb_tmds_serializer 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Error: (vopt-2253) No module name found in command-line argument "D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\simulation\work_tmds.tb_tmds_serializer"
+# 
+# Error loading design

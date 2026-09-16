@@ -1,0 +1,21 @@
+# vsim -do {onbreak {quit -f -code 1}; run -all; quit -f -code 0} -l board_io_simulation.log -lib ./work_board_io -c tb_board_io 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_board_io(fast)
+# onbreak {quit -f -code 1} 
+#  Warning: onbreak command for use within macro
+#  run -all 
+# BOARD_IO_RESULT checks=6357 errors=0 tx_cases=512 rx_cases=1024
+# BOARD_IO_PASS
+# ** Note: $finish    : D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_board_io.sv(126)
+#    Time: 33533500 ps  Iteration: 0  Instance: /tb_board_io

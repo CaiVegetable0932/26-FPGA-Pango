@@ -1,0 +1,19 @@
+CONFIGURATION_TARGET=VOLATILE_FPGA_CRAM_ONLY
+Executing : cfg_connect -ip 127.0.0.1 -port 65420
+Connecting to server[127.0.0.1 : 65420].
+Connect to server[127.0.0.1 : 65420] successfully.
+COMMAND[check version information] execute successfully, takes 0.5 secs.
+The cable List : 
+Cable index 0:USB Cable II/fffffffffffffffe 
+
+COMMAND[get_cable_paras] execute successfully, takes 1.2 secs.
+Executing : cfg_connect -ip 127.0.0.1 -port 65420 successfully.
+Executing : cfg_read_device_property -mode 0 -device_index 0
+E: Configuration-0010: There is no device in Jtag chain, please check.
+E: Configuration-0009: Operation error :
+ cfg_read_device_property command can't be exec.
+
+Executing : cfg_write_all_report_file -file D:/XDU/concept/26-FPGA-Pango/fpga/build/board_validation_20260910/jtag
+Create file: D:/XDU/concept/26-FPGA-Pango/fpga/build/board_validation_20260910/jtag/AllReport.xlsx
+Create file: D:/XDU/concept/26-FPGA-Pango/fpga/build/board_validation_20260910/jtag/AllReport.csv
+Executing : cfg_write_all_report_file -file D:/XDU/concept/26-FPGA-Pango/fpga/build/board_validation_20260910/jtag successfully.

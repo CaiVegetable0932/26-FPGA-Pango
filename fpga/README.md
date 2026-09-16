@@ -38,7 +38,7 @@
 
 参数入口是 [ip_catalog.json](config/ip_catalog.json) 和 [board.json](config/board.json)。原生生成物归 `ip/`，工程归 `project/`，编译/综合/布局布线/时序/网表/位流/功耗报告归 `build/pango_video_top/`。不要直接改生成的 HDL 或手写 `.pds` 文件结构。
 
-当前所有候选 IP 在 `rtl/memory/ip_integration_bank.v` 和板级顶层中实例化；集成观察逻辑不代表 ISP、帧池 DMA、网络协议或几何算法已经实现。DDR 地址请求保持空闲、网口 PHY 保持复位，HDMI 只包含原语及空白符号。没有运行仿真、板级测试或烧录。外部接口时序、DDR 实物参数、DQS 极性及 PHY 延时配置均须单独签核。
+当前所有候选 IP 在 `rtl/memory/ip_integration_bank.v` 和板级顶层中实例化；集成观察逻辑不代表 ISP、帧池 DMA、网络协议或几何算法已经实现。DDR 地址请求保持空闲、网口 PHY 保持复位，HDMI 只包含原语及空白符号。2026-09-10 已完成原生重构建、复位/RGMII/TMDS 单元仿真和一次 SRAM 临时下载，但下载后出现 `over_temp=1`，回读校验已中止，**暂停再次上板或下载**。详细证据与未验证范围见[首次上板记录](reports/board_validation_20260910.md)。外部接口时序、DDR 实物参数、DQS 极性及 PHY 延时配置仍须单独签核；本工程没有完成完整功能或热稳定性验收。
 
 ## 本轮实现门槛
 

@@ -1,0 +1,381 @@
+{
+  "checked_at": "2026-09-10T21:03:07.080112+08:00",
+  "branch": "codex/fpga-pds-project",
+  "target": "PG2L100H-6IFBG676",
+  "pds": "2022.2-SP6.4 build146967",
+  "native_pds_read": true,
+  "ip_count": 15,
+  "ips": [
+    {
+      "name": "sys_pll",
+      "instances": [
+        "u_sys_pll"
+      ],
+      "source_count": 1,
+      "native_generation_clean": true,
+      "purpose": "125 MHz reference to 100 MHz system, 150 MHz processing, 125 MHz Ethernet"
+    },
+    {
+      "name": "video_pll",
+      "instances": [
+        "u_video_pll"
+      ],
+      "source_count": 1,
+      "native_generation_clean": true,
+      "purpose": "27 MHz reference to 371.25 MHz TMDS; native IOCLKDIV_E2 /5 supplies 74.25 MHz pixel"
+    },
+    {
+      "name": "ddr3_controller",
+      "instances": [
+        "I_ips_ddr_top"
+      ],
+      "source_count": 74,
+      "native_generation_clean": true,
+      "purpose": "32-bit DDR3 controller and PHY, 1000 MT/s candidate profile, 256-bit UI"
+    },
+    {
+      "name": "raw_async_fifo",
+      "instances": [
+        "u_raw_fifo"
+      ],
+      "source_count": 4,
+      "native_generation_clean": true,
+      "purpose": "RAW8 DVP clock-domain input queue"
+    },
+    {
+      "name": "net_tx_fifo",
+      "instances": [
+        "u_packet_fifo"
+      ],
+      "source_count": 4,
+      "native_generation_clean": true,
+      "purpose": "Byte packet queue, processing to Ethernet clock domain"
+    },
+    {
+      "name": "display_fifo",
+      "instances": [
+        "u_display_fifo"
+      ],
+      "source_count": 4,
+      "native_generation_clean": true,
+      "purpose": "RGBX32 display clock crossing queue"
+    },
+    {
+      "name": "ddr_write_fifo",
+      "instances": [
+        "u_write_fifo"
+      ],
+      "source_count": 4,
+      "native_generation_clean": true,
+      "purpose": "32-to-256-bit asynchronous DDR write packer"
+    },
+    {
+      "name": "ddr_read_fifo",
+      "instances": [
+        "u_read_fifo"
+      ],
+      "source_count": 4,
+      "native_generation_clean": true,
+      "purpose": "256-to-32-bit asynchronous DDR read unpacker"
+    },
+    {
+      "name": "isp_line_ram",
+      "instances": [
+        "u_line_ram"
+      ],
+      "source_count": 2,
+      "native_generation_clean": true,
+      "purpose": "2048 x RGBX32 line storage; replicate for ISP windows"
+    },
+    {
+      "name": "tile_cache_ram",
+      "instances": [
+        "u_cache_ram"
+      ],
+      "source_count": 2,
+      "native_generation_clean": true,
+      "purpose": "32768 x 32-bit tile cache data store; 128 x 16 x 16 RGBX slots"
+    },
+    {
+      "name": "parameter_ram",
+      "instances": [
+        "u_parameter_ram"
+      ],
+      "source_count": 2,
+      "native_generation_clean": true,
+      "purpose": "Dual-port coefficient/LUT/control storage"
+    },
+    {
+      "name": "gamma_rom",
+      "instances": [
+        "u_gamma_rom"
+      ],
+      "source_count": 3,
+      "native_generation_clean": true,
+      "purpose": "Identity gamma initialization (two 256-entry pages), not calibrated ISP"
+    },
+    {
+      "name": "geometry_mult",
+      "instances": [
+        "u_geometry_mult"
+      ],
+      "source_count": 5,
+      "native_generation_clean": true,
+      "purpose": "Signed fixed-point 25 x 18 coordinate multiplication"
+    },
+    {
+      "name": "bilinear_multadd",
+      "instances": [
+        "u_bilinear_multadd"
+      ],
+      "source_count": 2,
+      "native_generation_clean": true,
+      "purpose": "Pipelined paired 18 x 9 products for interpolation"
+    },
+    {
+      "name": "statistics_mac",
+      "instances": [
+        "u_statistics_mac"
+      ],
+      "source_count": 2,
+      "native_generation_clean": true,
+      "purpose": "16 x 16 multiply with 48-bit accumulation for statistics"
+    }
+  ],
+  "constrained_ports": 99,
+  "stages": {
+    "compile": {
+      "artifact": "compile/cmr.db",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 2923
+    },
+    "synthesize": {
+      "artifact": "synthesize/snr.db",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 3864
+    },
+    "dev_map": {
+      "artifact": "device_map/dmr.db",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 31
+    },
+    "pnr": {
+      "artifact": "place_route/prr.db",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 0
+    },
+    "report_timing": {
+      "artifact": "report_timing/rtr.db",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 127
+    },
+    "gen_netlist": {
+      "artifact": "generate_netlist/pango_video_top_sim.v",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 0
+    },
+    "gen_bit_stream": {
+      "artifact": "generate_bitstream/pango_video_top.sbit",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 0
+    },
+    "report_power": {
+      "artifact": "report_power/pango_video_top.ppr",
+      "fresh_and_present": true,
+      "native_error_count": 0,
+      "native_warning_count": 0
+    }
+  },
+  "internal_timing_passed": true,
+  "timing_summary": "All Constraints Met.",
+  "clocks": {
+    "ref_clk": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        0.0,
+        4.0
+      ],
+      "kind": "Declared",
+      "clock_loads": 0,
+      "source": "ref_clk_p"
+    },
+    "rst_clk": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        0.0,
+        4.0
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 99,
+      "source": "I_ips_ddr_top/u_ddrphy_top/rst_clk_gpll/u_gpll/gpll_inst/CLKOUT0"
+    },
+    "ddrphy_sysclk": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        0.0,
+        4.0
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 1917,
+      "source": "I_ips_ddr_top/u_ddrphy_top/ddrphy_gpll/u_gpll/gpll_inst/CLKOUT0"
+    },
+    "phy_dq_clk_0": {
+      "period_ns": 1.0,
+      "waveform_ns": [
+        0.0,
+        0.5
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 35,
+      "source": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[0].ddrphy_ppll/u_ppll/ppll_inst/CLKOUTPHY"
+    },
+    "phy_dq_sysclk_0": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        2.0,
+        6.0
+      ],
+      "kind": "Generated (phy_dq_clk_0)",
+      "clock_loads": 35,
+      "source": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[0].u_ddrphy_ioclkdiv/ddrphy_ioclk_div_inst/CLKOUT"
+    },
+    "phy_dq_clk_1": {
+      "period_ns": 1.0,
+      "waveform_ns": [
+        0.0,
+        0.5
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 84,
+      "source": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[1].ddrphy_ppll/u_ppll/ppll_inst/CLKOUTPHY"
+    },
+    "phy_dq_sysclk_1": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        2.0,
+        6.0
+      ],
+      "kind": "Generated (phy_dq_clk_1)",
+      "clock_loads": 84,
+      "source": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[1].u_ddrphy_ioclkdiv/ddrphy_ioclk_div_inst/CLKOUT"
+    },
+    "sys_clk": {
+      "period_ns": 10.0,
+      "waveform_ns": [
+        0.0,
+        5.0
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 14,
+      "source": "u_sys_pll/u_gpll/gpll_inst/CLKOUT0"
+    },
+    "proc_clk": {
+      "period_ns": 6.6667,
+      "waveform_ns": [
+        0.0,
+        3.333
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 540,
+      "source": "u_sys_pll/u_gpll/gpll_inst/CLKOUT1"
+    },
+    "tx_clk": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        0.0,
+        4.0
+      ],
+      "kind": "Generated (ref_clk)",
+      "clock_loads": 55,
+      "source": "u_sys_pll/u_gpll/gpll_inst/CLKOUT2"
+    },
+    "clk_27m": {
+      "period_ns": 37.037,
+      "waveform_ns": [
+        0.0,
+        18.518
+      ],
+      "kind": "Declared",
+      "clock_loads": 0,
+      "source": "clk_27m"
+    },
+    "serial_clk": {
+      "period_ns": 2.6936,
+      "waveform_ns": [
+        0.0,
+        1.346
+      ],
+      "kind": "Generated (clk_27m)",
+      "clock_loads": 18,
+      "source": "u_video_pll/u_gpll/gpll_inst/CLKOUT1"
+    },
+    "pixel_clk": {
+      "period_ns": 13.468,
+      "waveform_ns": [
+        0.0,
+        5.387
+      ],
+      "kind": "Generated (serial_clk)",
+      "clock_loads": 59,
+      "source": "u_hdmi_pixel_div/iockdiv_inst/CLKOUT"
+    },
+    "rx_clk": {
+      "period_ns": 8.0,
+      "waveform_ns": [
+        0.0,
+        4.0
+      ],
+      "kind": "Declared",
+      "clock_loads": 61,
+      "source": "rgmii_rxc"
+    }
+  },
+  "timing_worst": {
+    "setup_slow": {
+      "worst_slack_ns": 1.133,
+      "failing_endpoints": 0
+    },
+    "hold_slow": {
+      "worst_slack_ns": 0.158,
+      "failing_endpoints": 0
+    },
+    "recovery_slow": {
+      "worst_slack_ns": 0.023,
+      "failing_endpoints": 0
+    },
+    "removal_slow": {
+      "worst_slack_ns": 0.194,
+      "failing_endpoints": 0
+    },
+    "setup_fast": {
+      "worst_slack_ns": 2.084,
+      "failing_endpoints": 0
+    },
+    "hold_fast": {
+      "worst_slack_ns": 0.101,
+      "failing_endpoints": 0
+    },
+    "recovery_fast": {
+      "worst_slack_ns": 0.491,
+      "failing_endpoints": 0
+    },
+    "removal_fast": {
+      "worst_slack_ns": 0.126,
+      "failing_endpoints": 0
+    }
+  },
+  "bitstream_sha256": "66d5491f596a0dd94c368073df863efb0bd9a542236b17faa440b6966b9b7d18",
+  "flow_passed": true,
+  "issues": [],
+  "hardware_tested": false,
+  "programmed": false,
+  "external_io_timing_signed_off": false,
+  "bitstream_approved_for_programming": false
+}

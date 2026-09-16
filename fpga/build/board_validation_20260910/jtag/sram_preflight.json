@@ -1,0 +1,14 @@
+{
+  "time": "2026-09-10T21:10:12.2433218+08:00",
+  "target": "PG2L100H",
+  "idcode": "0x00602899",
+  "bitstream_sha256": "66d5491f596a0dd94c368073df863efb0bd9a542236b17faa440b6966b9b7d18",
+  "scope": "user-authorized volatile SRAM configuration and non-DRM readback verification only",
+  "peripherals": "user confirmed JTAG only; no Ethernet/HDMI/OV5640",
+  "native_build_passed": true,
+  "pin_map_checked_against": "MINI Hardware V1.3 pp.13-17",
+  "production_release_approved": false,
+  "external_io_signed_off": false,
+  "ddr_data_tested": false,
+  "flash_write_authorized": false
+}
