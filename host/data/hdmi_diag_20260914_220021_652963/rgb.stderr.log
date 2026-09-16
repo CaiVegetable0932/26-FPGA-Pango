@@ -1,0 +1,19 @@
+Input #0, matroska,webm, from 'D:\XDU\concept\26-FPGA-Pango\host\data\hdmi_diag_20260914_220021_652963\capture.mkv':
+  Metadata:
+    ENCODER         : Lavf61.7.100
+  Duration: 00:00:02.01, start: 0.000000, bitrate: 3666 kb/s
+  Stream #0:0: Video: mjpeg (Baseline), yuvj420p(pc, bt470bg/bt709/unknown), 1280x720 [SAR 1:1 DAR 16:9], 30 fps, 30 tbr, 1k tbn
+      Metadata:
+        DURATION        : 00:00:02.013000000
+Stream mapping:
+  Stream #0:0 -> #0:0 (mjpeg (native) -> rawvideo (native))
+[swscaler @ 000002398278bf80] deprecated pixel format used, make sure you did set range correctly
+Output #0, rawvideo, to 'D:\XDU\concept\26-FPGA-Pango\host\data\hdmi_diag_20260914_220021_652963\first_frame.rgb':
+  Metadata:
+    encoder         : Lavf61.7.100
+  Stream #0:0: Video: rawvideo (RGB[24] / 0x18424752), rgb24(pc, gbr/bt709/unknown, progressive), 1280x720 [SAR 1:1 DAR 16:9], q=2-31, 663552 kb/s, 30 fps, 30 tbn
+      Metadata:
+        DURATION        : 00:00:02.013000000
+        encoder         : Lavc61.19.100 rawvideo
+[out#0/rawvideo @ 00000239824ea9c0] video:2700KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.000000%
+frame=    1 fps=0.0 q=-0.0 Lsize=    2700KiB time=00:00:00.03 bitrate=663558.6kbits/s speed=2.99x    

@@ -1,0 +1,11 @@
+Input #0, dshow, from 'video=Hagibis':
+  Duration: N/A, start: 96443.988983, bitrate: N/A
+  Stream #0:0: Video: mjpeg (Baseline) (MJPG / 0x47504A4D), yuvj420p(pc, bt470bg/bt709/unknown), 1280x720 [SAR 1:1 DAR 16:9], 30 fps, 30 tbr, 10000k tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+Output #0, matroska, to 'D:\XDU\concept\26-FPGA-Pango\host\data\hdmi_diag_20260914_220021_652963\capture.mkv':
+  Metadata:
+    encoder         : Lavf61.7.100
+  Stream #0:0: Video: mjpeg (Baseline) (MJPG / 0x47504A4D), yuvj420p(pc, bt470bg/bt709/unknown), 1280x720 [SAR 1:1 DAR 16:9], q=2-31, 30 fps, 30 tbr, 1k tbn
+frame=   13 fps=0.0 q=-1.0 size=     194KiB time=00:00:00.47 bitrate=3319.8kbits/s speed=0.937x    frame=   26 fps= 25 q=-1.0 size=     256KiB time=00:00:01.01 bitrate=2056.2kbits/s speed=0.993x    frame=   39 fps= 25 q=-1.0 size=     512KiB time=00:00:01.50 bitrate=2784.2kbits/s speed=0.977x    [out#0/matroska @ 000001fd7fa60c40] video:898KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.298097%
+frame=   51 fps= 25 q=-1.0 Lsize=     901KiB time=00:00:02.04 bitrate=3606.4kbits/s speed=0.985x    
