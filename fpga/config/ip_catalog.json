@@ -11,7 +11,7 @@
     {
       "name": "video_pll",
       "model": "ip/module_ip/ipm2l_flex_pll/ipm2l_flex_pll_eval/ipm2l_pll",
-      "purpose": "27 MHz reference to 371.25 MHz TMDS; native IOCLKDIV_E2 /5 supplies 74.25 MHz pixel",
+      "purpose": "27 MHz reference to a 371.25 MHz TMDS serial clock; the 74.25 MHz pixel clock is derived by the PG2L100H native IO clock divider",
       "clocks": {"input_mhz": 27, "vco_mhz": 742.5, "outputs": [1], "dividers": {"1": 2, "7": 27.5}}
     },
     {

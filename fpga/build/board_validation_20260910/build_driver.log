@@ -1,0 +1,48 @@
+SNAPSHOT_VERIFIED files=371 root=D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\sys_pll\sys_pll.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\video_pll\video_pll.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\ddr3_controller\ddr3_controller.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\raw_async_fifo\raw_async_fifo.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\net_tx_fifo\net_tx_fifo.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\display_fifo\display_fifo.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\ddr_write_fifo\ddr_write_fifo.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\ddr_read_fifo\ddr_read_fifo.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\isp_line_ram\isp_line_ram.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\tile_cache_ram\tile_cache_ram.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\parameter_ram\parameter_ram.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\gamma_rom\gamma_rom.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\geometry_mult\geometry_mult.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\bilinear_multadd\bilinear_multadd.idf
+D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\ip\statistics_mac\statistics_mac.idf
+sys_pll: Done: 0 error(s), 0 warning(s)
+video_pll: Done: 0 error(s), 0 warning(s)
+ddr3_controller: Done: 0 error(s), 0 warning(s)
+raw_async_fifo: Done: 0 error(s), 0 warning(s)
+net_tx_fifo: Done: 0 error(s), 0 warning(s)
+display_fifo: Done: 0 error(s), 0 warning(s)
+ddr_write_fifo: Done: 0 error(s), 0 warning(s)
+ddr_read_fifo: Done: 0 error(s), 0 warning(s)
+isp_line_ram: Done: 0 error(s), 0 warning(s)
+tile_cache_ram: Done: 0 error(s), 0 warning(s)
+parameter_ram: Done: 0 error(s), 0 warning(s)
+gamma_rom: Done: 0 error(s), 0 warning(s)
+geometry_mult: Done: 0 error(s), 0 warning(s)
+bilinear_multadd: Done: 0 error(s), 0 warning(s)
+statistics_mac: Done: 0 error(s), 0 warning(s)
+Project implementation directory: fpga/build/pango_video_top
+PDS-native project generated: D:\XDU\concept\26-FPGA-Pango\fpga\build\board_validation_20260910\workspace\fpga\project\pango_video_top\pango_video_top.pds
+Project implementation directory: fpga/build/pango_video_top
+{
+  "started": "2026-09-10T20:58:10.7728496+08:00",
+  "finished": "2026-09-10T21:03:07.1941275+08:00",
+  "stage": "all",
+  "native_exit": 0,
+  "error_count": 0,
+  "audit_exit": 0,
+  "project": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\board_validation_20260910\\workspace\\fpga\\project\\pango_video_top\\pango_video_top.pds",
+  "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\board_validation_20260910\\workspace\\fpga\\build\\pango_video_top",
+  "hardware_tested": false,
+  "programmed": false,
+  "passed": true
+}
+ISOLATED_BUILD_COMPLETED_SOURCE_UNCHANGED

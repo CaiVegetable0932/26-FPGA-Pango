@@ -1,0 +1,21 @@
+# vsim -do {onerror {quit -code 2}; run -all; quit -f} -lib ./work -c tb_mini_sccb 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_mini_sccb(fast)
+# onerror {quit -code 2} 
+#  Warning: onerror command for use within macro
+#  run -all 
+# MINI_SCCB_RESULT checks=1238 manual_cases=6 configuration_writes=244
+# MINI_SCCB_PASS
+# ** Note: $finish    : D:/XDU/concept/26-FPGA-Pango/fpga/sim/tb_mini_sccb.sv(151)
+#    Time: 3171830 ns  Iteration: 1  Instance: /tb_mini_sccb

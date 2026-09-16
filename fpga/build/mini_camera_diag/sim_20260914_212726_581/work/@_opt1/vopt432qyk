@@ -1,0 +1,147 @@
+m255
+K3
+13
+cModel Technology
+Z0 dD:\XDU\concept\26-FPGA-Pango\fpga\build\mini_camera_diag\sim_20260914_212726_581
+T_opt
+V:0F6_ZM@@T]20Pl]K98XK3
+04 12 4 work tb_mini_sccb fast 0
+=1-207bd2c02996-6aa7f641-b0-cf4c
+Z1 o-quiet -auto_acc_if_foreign -work ./work
+n@_opt
+Z2 OL;O;10.1c;51
+Z3 dD:\XDU\concept\26-FPGA-Pango\fpga\build\mini_camera_diag\sim_20260914_212726_581
+T_opt1
+VRZ6l4NfG45@j6n9GUD^f73
+04 11 4 work tb_mini_dvp fast 0
+=1-207bd2c02996-6aa7f645-97-cf88
+R1
+n@_opt1
+R2
+vcamera_data
+Z4 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+IVMm`g6:XR^B=dkaj7nIWj1
+VcJUk<THz;ad8IQEHa2c_R2
+S1
+R3
+w1789392330
+8D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\camera_data.v
+FD:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\camera_data.v
+L0 4
+Z5 OL;L;10.1c;51
+r1
+31
+Z6 !s108 1789392450.655000
+Z7 !s107 D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_dvp.sv|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\camera_data.v|
+Z8 !s90 -sv|-work|work|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\camera_data.v|D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_dvp.sv|
+Z9 o-sv -work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!i10b 1
+!s100 T4W29fm<a7:k@68b@eDa81
+!s105 camera_data_v_unit
+!s85 0
+vdata_init
+R4
+IkLbi19D8cD_F;z@BQWhY51
+VLZ0l7IKgXXOL40^EnM0150
+S1
+R3
+Z10 w1789391279
+8D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\data_init.v
+FD:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\data_init.v
+L0 5
+R5
+r1
+31
+Z11 !s108 1789392446.759000
+Z12 !s107 D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_sccb.sv|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\data_init.v|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\SCCB.v|
+Z13 !s90 -sv|-work|work|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\SCCB.v|D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\data_init.v|D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_sccb.sv|
+R9
+!s100 U`Bd>3NBE4hXCVn@M_^_S1
+!s105 data_init_v_unit
+!i10b 1
+!s85 0
+vmini_sccb_slave_model
+R4
+IC`MldH@I[FNGO54>FdR^S0
+VRze@Z^0eFog[lh9<^zF;:0
+Z14 !s105 tb_mini_sccb_sv_unit
+S1
+R3
+R10
+Z15 8D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_sccb.sv
+Z16 FD:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_sccb.sv
+L0 3
+R5
+r1
+31
+R11
+R12
+R13
+R9
+!s100 L3KcO:i?z8`17^@Kj=XKO1
+!i10b 1
+!s85 0
+vSCCB
+R4
+I03<KH42We6P5J:kB8jzU=2
+V`L7ii9UmOGCK`A4Mh<R;S1
+S1
+R3
+w1789391033
+8D:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\SCCB.v
+FD:\XDU\concept\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\camera\SCCB.v
+L0 5
+R5
+r1
+31
+R11
+R12
+R13
+R9
+n@s@c@c@b
+!s100 =^H7;oDbDn9;`MS[V82:a2
+!s105 SCCB_v_unit
+!i10b 1
+!s85 0
+vtb_mini_dvp
+R4
+I_o::n5nB]^f@XnSBJ6a0G3
+V`I61F@fJ6MJDTPT:kco]b1
+S1
+R3
+w1789392446
+8D:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_dvp.sv
+FD:\XDU\concept\26-FPGA-Pango\fpga\sim\tb_mini_dvp.sv
+L0 4
+R5
+r1
+31
+R6
+R7
+R8
+R9
+!i10b 1
+!s100 5]fCU]Zma`FL^oZJUZYgV0
+!s105 tb_mini_dvp_sv_unit
+!s85 0
+vtb_mini_sccb
+R4
+IBK<hToH>JW=l`ASXQj6QG1
+VMK]zd6Z2RlHL^AS1m:^GI3
+R14
+S1
+R3
+R10
+R15
+R16
+L0 40
+R5
+r1
+31
+R11
+R12
+R13
+R9
+!s100 FiV1OS:?=2AhOiDFI8om[2
+!i10b 1
+!s85 0

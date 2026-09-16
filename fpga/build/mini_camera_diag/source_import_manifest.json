@@ -1,0 +1,212 @@
+{
+  "copied_at": "2026-09-14T21:00:32.2494798+08:00",
+  "source_board": "MINI example originally targets PG2L200H FBB676",
+  "adaptation_target": "PG2L100H FBG676 -6",
+  "files": [
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\cmos_write_req_gen.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\cmos_write_req_gen.v",
+      "sha256": "2659EA5B1FEE3B809DB4301B4B69445F5827634AD75F626CC8F30A2B26F964FB"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\sync_vg.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\sync_vg.v",
+      "sha256": "F86FF00096EEE2D2CBFF122D355ECA5CE09C3E3C1518A50A871885441146CC95"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\timing_gen_xy.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\timing_gen_xy.v",
+      "sha256": "B787F8233EA632A080EB09A38AAB62EBA0760CFBFAA0FC62A600FF5E9BD5106A"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\Top.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\Top.v",
+      "sha256": "9EEFDC49755B3F6A06DA4ADB08FB6C9AE049E4E824DEA96CF45A879923244226"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\video_rect_read_data.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\video_rect_read_data.v",
+      "sha256": "99EF3ED13F0924744ECB1143405C3324DADE6045EEC4CC87413652F5101C6E02"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\video_scale_down.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\video_scale_down.v",
+      "sha256": "BE1BE86AA50A887ECF1E641F51FDB2471B848045ED7B54B71BF27E16797FEB1A"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\camera\\camera_data.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\camera\\camera_data.v",
+      "sha256": "D015925D55BF7F51F51C08B62159BDA459485213C4DD296F333D01B6A2ACDA69"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\camera\\camera.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\camera\\camera.v",
+      "sha256": "82881BC56EAAB7786F2DC953246AB51D18F17A3155BD2BA60661A9904BE31B23"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\camera\\data_init.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\camera\\data_init.v",
+      "sha256": "620E2939A9B4ED08627AB9A3873ECFCC9EF833BB1A34C90522E0F18C2241C455"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\camera\\SCCB.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\camera\\SCCB.v",
+      "sha256": "275A5AAE236DBD9CF991AC6AB0FD1E9703D562846F8933E39B1B405A7002DDF9"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\frame_ddr3\\aq_axi_master_256.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\aq_axi_master_256.v",
+      "sha256": "B7953BDD2751333B2E6FF84215B7276303FD523F79E5DD8F4547087871BFF6B1"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\frame_ddr3\\frame_fifo_read.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\frame_fifo_read.v",
+      "sha256": "0B01E205DFD79F4D9C87888AE80FF363B601172E8DE19A66605A65976D9F8323"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\frame_ddr3\\frame_fifo_write.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\frame_fifo_write.v",
+      "sha256": "4812FF37FCB2BF5FECEAF407E68E92F13E1598F5E2BE3F331BC1AADBD5584F86"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\frame_ddr3\\frame_read_write.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\frame_read_write.v",
+      "sha256": "784CA873CB2F06E53DC56E77045B0038159E72BCBB0521224E434A10A9243BEB"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\frame_ddr3\\mem_read_arbi.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\mem_read_arbi.v",
+      "sha256": "C06C86C433A93016FFE394F77E8938D168DDB9330831A1AFB68C1ECF851A0FA6"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\frame_ddr3\\mem_write_arbi.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\frame_ddr3\\mem_write_arbi.v",
+      "sha256": "EDC18556191A09901A7260F8588E7C48DF9DA18F183EBECA8165C51F2828DE43"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\hdmi\\iic_dri.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\iic_dri.v",
+      "sha256": "5F60BC8BCAC110F0125A278C332065D2594874C465EC961C603662F92C16B13E"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\hdmi\\ms7200_ctl.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\ms7200_ctl.v",
+      "sha256": "501521C4CCEECD48DE5741D3116EB7062C93A70A606A386682E1D8756A494199"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\hdmi\\ms7210_ctl.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\ms7210_ctl.v",
+      "sha256": "C9B101E58F381DDF3C6D663D0003C18065302659424B8345022161413CCF09AE"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\hdmi\\ms72xx_ctl.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\ms72xx_ctl.v",
+      "sha256": "DF3876BC1A3BF3A7EFE7ADEED56B2F9625AF4AC9BA56074925671F49751CF69A"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\hdmi\\outputserdes.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\outputserdes.v",
+      "sha256": "187EBE2182A4B5FC37F54E655E87EB988EB93C1615D6E6092D0F7577F31B70B5"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\hdmi\\rgb2tmds.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\rgb2tmds.v",
+      "sha256": "01651AFDAB93E1D2891AF54259BD137625F63C04FC9AFEB656751301660F2E2C"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\rtl\\hdmi\\tmds_encoder.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\hdmi\\tmds_encoder.v",
+      "sha256": "9BE34A08351082FFCAAFC792BE497469460D01F72C2FC58850683A2B57D2A9D5"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_16i_64o_512\\afifo_16i_64o_512_tb.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_16i_64o_512\\afifo_16i_64o_512_tb.v",
+      "sha256": "E7E4E449CAA9958BA5EAD70F5D64C3B2783D7D30AE0F0E4C6AF0975E1E83F8E5"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_16i_64o_512\\afifo_16i_64o_512_tmpl.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_16i_64o_512\\afifo_16i_64o_512_tmpl.v",
+      "sha256": "2CC717E7D3B9FE892F54A68D394F5D760549E31F156E790A1BD0C6582B472D10"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_16i_64o_512\\afifo_16i_64o_512_tmpl.vhdl",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_16i_64o_512\\afifo_16i_64o_512_tmpl.vhdl",
+      "sha256": "4852C8F509267B6748201EFAEC8161F3BEE504D53BE5F3D02306C6BDDED15462"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_16i_64o_512\\afifo_16i_64o_512.idf",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_16i_64o_512\\afifo_16i_64o_512.idf",
+      "sha256": "33205425FB70E7B8DF49B17B13BA78ECDAAC1A60DA9E1A9A0FAA9116C224256E"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_16i_64o_512\\afifo_16i_64o_512.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_16i_64o_512\\afifo_16i_64o_512.v",
+      "sha256": "F94F2A217531E148BA40664071EEA3EC8E6CC0DAFED93DA310A6928C52D61546"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_16i_64o_512\\generate.log",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_16i_64o_512\\generate.log",
+      "sha256": "60301F0CB99C28E754C64B7584BFA55FB67C8052FB41CF50B71D6463A39A8182"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_16i_64o_512\\rtl\\ipm2l_fifo_ctrl_v1_1_afifo_16i_64o_512.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_16i_64o_512\\rtl\\ipm2l_fifo_ctrl_v1_1_afifo_16i_64o_512.v",
+      "sha256": "7EE63DF3926CAE2C4381192E8438EC732867B63C402010D693694B8CF494E054"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_16i_64o_512\\rtl\\ipm2l_fifo_v1_10_afifo_16i_64o_512.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_16i_64o_512\\rtl\\ipm2l_fifo_v1_10_afifo_16i_64o_512.v",
+      "sha256": "7E4CEBFFE55F254C8FACE5204278207B075FFB67C9DCE30AC54D873A3C165908"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_16i_64o_512\\rtl\\ipm2l_sdpram_v1_10_afifo_16i_64o_512.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_16i_64o_512\\rtl\\ipm2l_sdpram_v1_10_afifo_16i_64o_512.v",
+      "sha256": "959D08E65BA0CA00FD4D4C4470E230F4708B0E666A99299E15ED6F71F8C30681"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_64i_16o_128\\afifo_64i_16o_128_tb.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_64i_16o_128\\afifo_64i_16o_128_tb.v",
+      "sha256": "B6758164E56BB612693E3E34E4788996E7678C00DBC3D8D1774B4151BC3BF137"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_64i_16o_128\\afifo_64i_16o_128_tmpl.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_64i_16o_128\\afifo_64i_16o_128_tmpl.v",
+      "sha256": "284D0855BB4EA0E4B32324ECE47AC7BC105A7137795607E7BF3CDA93597A54CE"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_64i_16o_128\\afifo_64i_16o_128_tmpl.vhdl",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_64i_16o_128\\afifo_64i_16o_128_tmpl.vhdl",
+      "sha256": "5C7F22C69A5395D7D2EC98C0F4DD32C8119D995EDE1EA23B36A755B62A8DB102"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_64i_16o_128\\afifo_64i_16o_128.idf",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_64i_16o_128\\afifo_64i_16o_128.idf",
+      "sha256": "BF35521A7DA141CB1835B09CF10EE0363553603795BD279B61F8DB23032652AD"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_64i_16o_128\\afifo_64i_16o_128.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_64i_16o_128\\afifo_64i_16o_128.v",
+      "sha256": "2B09399AFD5CCE7514ACBDA174DCC14006B214C1A6040E620B0BC36484FE7D09"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_64i_16o_128\\generate.log",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_64i_16o_128\\generate.log",
+      "sha256": "70B93918FDF194DE11F26B8C12875C29F5B4151953A483AC5009A9FDEFBE0C72"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_64i_16o_128\\rtl\\ipm2l_fifo_ctrl_v1_1_afifo_64i_16o_128.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_64i_16o_128\\rtl\\ipm2l_fifo_ctrl_v1_1_afifo_64i_16o_128.v",
+      "sha256": "31979495FC6372EB5DA284627CA9FCBB15B5C23E011956DB3C8C34ABCF01E0F7"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_64i_16o_128\\rtl\\ipm2l_fifo_v1_10_afifo_64i_16o_128.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_64i_16o_128\\rtl\\ipm2l_fifo_v1_10_afifo_64i_16o_128.v",
+      "sha256": "860432362B08B88B5391269052077C629A6FE717DA3FA74170B1E586954BC62C"
+    },
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\2_Demo\\5_1 双目摄像头例程\\ov5640_200k\\prj\\source\\afifo_64i_16o_128\\rtl\\ipm2l_sdpram_v1_10_afifo_64i_16o_128.v",
+      "copied_to": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\ip\\mini_camera_diag\\afifo_64i_16o_128\\rtl\\ipm2l_sdpram_v1_10_afifo_64i_16o_128.v",
+      "sha256": "87F393808538878EFC9DD8734D42DDCAE5E00864315DBD79E6A84B5105763082"
+    }
+  ]
+}
