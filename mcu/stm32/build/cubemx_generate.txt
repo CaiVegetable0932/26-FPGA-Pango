@@ -1,0 +1,5 @@
+config load "C:\Users\ROG\Desktop\stm32\FPGA\FPGA.ioc"
+project path "C:\Users\ROG\Desktop\stm32\FPGA"
+project generate
+config save "C:\Users\ROG\Desktop\stm32\FPGA\FPGA.ioc"
+exit

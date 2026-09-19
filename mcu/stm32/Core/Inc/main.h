@@ -27,7 +27,7 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f1xx_hal.h"
+#include "stm32f4xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -57,6 +57,30 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define D36A_M1_EN_Pin GPIO_PIN_2
+#define D36A_M1_EN_GPIO_Port GPIOC
+#define D36A_M2_EN_Pin GPIO_PIN_3
+#define D36A_M2_EN_GPIO_Port GPIOC
+#define D36A_M2_STEP_Pin GPIO_PIN_1
+#define D36A_M2_STEP_GPIO_Port GPIOA
+#define D36A_M2_DIR_Pin GPIO_PIN_2
+#define D36A_M2_DIR_GPIO_Port GPIOA
+#define D36A_M1_DIR_Pin GPIO_PIN_4
+#define D36A_M1_DIR_GPIO_Port GPIOA
+#define D36A_M1_STEP_Pin GPIO_PIN_5
+#define D36A_M1_STEP_GPIO_Port GPIOA
+#define D36A_M3_STEP_Pin GPIO_PIN_6
+#define D36A_M3_STEP_GPIO_Port GPIOA
+#define D36A_M4_EN_Pin GPIO_PIN_10
+#define D36A_M4_EN_GPIO_Port GPIOB
+#define D36A_M4_DIR_Pin GPIO_PIN_11
+#define D36A_M4_DIR_GPIO_Port GPIOB
+#define D36A_M3_EN_Pin GPIO_PIN_8
+#define D36A_M3_EN_GPIO_Port GPIOG
+#define D36A_M3_DIR_Pin GPIO_PIN_5
+#define D36A_M3_DIR_GPIO_Port GPIOB
+#define D36A_M4_STEP_Pin GPIO_PIN_6
+#define D36A_M4_STEP_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

@@ -18,10 +18,16 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
+#include "usart.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "d36a_motor.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,7 +37,13 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define AXIS_COUNT 3U
+#define MEASURE_RPM 10
+#define MAX_TRAVEL_PULSES (1000000U * D36A_PULSES_PER_REV)
+#define DECIMAL_SCALE 1000000U
+#define COORDINATE_SCALE (100U * DECIMAL_SCALE)
+#define RX_CAPACITY 512U
+#define LINE_CAPACITY 96U
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -40,29 +52,375 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-UART_HandleTypeDef huart3;
-DMA_HandleTypeDef hdma_usart3_rx;
-DMA_HandleTypeDef hdma_usart3_tx;
 
 /* USER CODE BEGIN PV */
-
+typedef enum { AXIS_IDLE, AXIS_MEASURE, AXIS_MEASURE_STOP, AXIS_GO, AXIS_STOP } AxisMode;
+static struct
+{
+  uint32_t limit;
+  int32_t target;
+  uint8_t configured;
+  AxisMode mode;
+} axes[AXIS_COUNT];
+static const uint8_t axis_motor[AXIS_COUNT] = {1U, D36A_GANTRY, 4U};
+/* Logical positive travel: axis 1 DIR low; axes 2 and 3 keep their polarity. */
+static const int16_t axis_direction[AXIS_COUNT] = {-1, 1, 1};
+static uint8_t rx_byte;
+static volatile uint8_t rx_ring[RX_CAPACITY];
+static volatile uint16_t rx_head, rx_tail;
+static volatile uint8_t rx_fault;
+static char command_line[LINE_CAPACITY];
+static uint32_t command_length;
+static uint8_t discard_line;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-static void MX_DMA_Init(void);
-static void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-/* 声明UART3句柄（通常由CubeMX生成，需确保名称为 huart3） */
-extern UART_HandleTypeDef huart3;
-/* 2字节接收缓冲区（用于存储中断接收到的命令） */
-uint8_t uart3_rx_buf[2];
+static HAL_StatusTypeDef axis_control(uint32_t i, int16_t rpm, uint32_t pulses)
+{
+  return D36A_Control(axis_motor[i], (int16_t)(rpm * axis_direction[i]), pulses);
+}
+
+static void stop_all(void)
+{
+  for (uint32_t i = 0; i < AXIS_COUNT; ++i)
+  {
+    if (axis_control(i, 0, 0U) != HAL_OK) Error_Handler();
+    if (axes[i].mode != AXIS_IDLE) axes[i].mode = AXIS_STOP;
+  }
+}
+
+static void reply(const char *format, ...)
+{
+  char output[128];
+  va_list args;
+  va_start(args, format);
+  int length = vsnprintf(output, sizeof(output), format, args);
+  va_end(args);
+  if (length <= 0 || length >= (int)sizeof(output) ||
+      HAL_UART_Transmit(&huart3, (uint8_t *)output, (uint16_t)length, 100U) != HAL_OK)
+  {
+    stop_all();
+  }
+}
+
+static void serial_fault(void)
+{
+  /* Stop a persistent error IRQ from starving the main-loop recovery. */
+  __HAL_UART_DISABLE_IT(&huart3, UART_IT_RXNE);
+  __HAL_UART_DISABLE_IT(&huart3, UART_IT_PE);
+  __HAL_UART_DISABLE_IT(&huart3, UART_IT_ERR);
+  rx_fault = 1U;
+}
+
+static HAL_StatusTypeDef serial_restart(uint8_t discard)
+{
+  uint32_t mask = __get_PRIMASK();
+  __disable_irq();
+  /* No UART DMA is used: abort does not wait here. Clear SR then DR before
+     rearming; HAL_UART_Abort alone leaves the hardware error flags set. */
+  HAL_StatusTypeDef result = HAL_UART_Abort(&huart3);
+  __HAL_UART_CLEAR_OREFLAG(&huart3);
+  HAL_NVIC_ClearPendingIRQ(USART3_IRQn);
+  rx_head = rx_tail = 0U;
+  command_length = 0U;
+  discard_line = discard;
+  rx_fault = 0U;
+  if (result == HAL_OK) result = HAL_UART_Receive_IT(&huart3, &rx_byte, 1U);
+  if (result != HAL_OK) serial_fault();
+  HAL_NVIC_EnableIRQ(USART3_IRQn);
+  __set_PRIMASK(mask);
+  return result;
+}
+
+static D36A_Status axis_status(uint32_t i)
+{
+  D36A_Status status = {0};
+  if (D36A_GetStatus(axis_motor[i], &status) != HAL_OK) Error_Handler();
+  status.position *= axis_direction[i];
+  return status;
+}
+
+static void format_revolutions(int32_t pulses, char *output, size_t size)
+{
+  uint32_t magnitude = (pulses < 0) ? (uint32_t)(-(int64_t)pulses) : (uint32_t)pulses;
+  snprintf(output, size, "%s%lu.%06lu", pulses < 0 ? "-" : "",
+           (unsigned long)(magnitude / D36A_PULSES_PER_REV),
+           (unsigned long)(((uint64_t)(magnitude % D36A_PULSES_PER_REV) * 1000000U) /
+                           D36A_PULSES_PER_REV));
+}
+
+/* Call only after set: limit is nonzero and positions are logical microsteps. */
+static void format_coordinate(uint32_t i, int32_t pulses, char *output, size_t size)
+{
+  uint32_t magnitude = (pulses < 0) ? (uint32_t)(-(int64_t)pulses) : (uint32_t)pulses;
+  uint64_t value = ((uint64_t)magnitude * COORDINATE_SCALE + axes[i].limit / 2U) /
+                   axes[i].limit;
+  snprintf(output, size, "%s%lu.%06lu", pulses < 0 ? "-" : "",
+           (unsigned long)(value / DECIMAL_SCALE),
+           (unsigned long)(value % DECIMAL_SCALE));
+}
+
+/* Parse exact millionths before range checks and microstep rounding. */
+static uint8_t parse_decimal(const char *text, uint64_t *value)
+{
+  uint64_t whole = 0U, fraction = 0U, scale = 1U;
+  const char *p = text;
+  if (*p < '0' || *p > '9') return 0U;
+  while (*p >= '0' && *p <= '9')
+  {
+    whole = whole * 10U + (uint32_t)(*p++ - '0');
+    if (whole > 1000000U) return 0U;
+  }
+  if (*p == '.')
+  {
+    ++p;
+    if (*p < '0' || *p > '9') return 0U;
+    while (*p >= '0' && *p <= '9')
+    {
+      if (scale == DECIMAL_SCALE) return 0U;
+      fraction = fraction * 10U + (uint32_t)(*p++ - '0');
+      scale *= 10U;
+    }
+  }
+  if (*p != '\0' || (whole == 1000000U && fraction != 0U)) return 0U;
+  *value = whole * DECIMAL_SCALE + fraction * (DECIMAL_SCALE / scale);
+  return 1U;
+}
+
+static uint8_t parse_axis(const char *text, uint32_t *index)
+{
+  if (text[0] < '1' || text[0] > '3' || text[1] != '\0') return 0U;
+  *index = (uint32_t)(text[0] - '1');
+  return 1U;
+}
+
+static uint8_t parse_speed(const char *text, int16_t *speed)
+{
+  uint32_t value = 0U;
+  if (*text == '\0') return 0U;
+  while (*text >= '0' && *text <= '9')
+  {
+    value = value * 10U + (uint32_t)(*text++ - '0');
+    if (value > D36A_MAX_RPM) return 0U;
+  }
+  if (*text != '\0' || value == 0U) return 0U;
+  *speed = (int16_t)value;
+  return 1U;
+}
+
+static void motion_poll(void)
+{
+  for (uint32_t i = 0U; i < AXIS_COUNT; ++i)
+  {
+    if (axes[i].mode == AXIS_IDLE) continue;
+    D36A_Status status = axis_status(i);
+    if (status.running) continue;
+    AxisMode finished = axes[i].mode;
+    axes[i].mode = AXIS_IDLE;
+    char position[24];
+    if (finished == AXIS_MEASURE_STOP)
+    {
+      format_revolutions(status.position, position, sizeof(position));
+      reply("measure %lu %s\r\n", (unsigned long)i + 1U, position);
+    }
+    else if (finished == AXIS_GO && status.position == axes[i].target)
+    {
+      format_coordinate(i, status.position, position, sizeof(position));
+      reply("done %lu %s\r\n", (unsigned long)i + 1U, position);
+    }
+    else if (finished == AXIS_STOP)
+    {
+      if (axes[i].configured)
+      {
+        format_coordinate(i, status.position, position, sizeof(position));
+        reply("stopped %lu %s\r\n", (unsigned long)i + 1U, position);
+      }
+      else reply("stopped %lu not_set\r\n", (unsigned long)i + 1U);
+    }
+    else
+      reply("error travel_limit %lu\r\n", (unsigned long)i + 1U);
+  }
+}
+
+static void execute_command(char *line)
+{
+  char *tokens[5];
+  uint32_t count = 0U, i;
+  char *token = strtok(line, " \t");
+  while (token != NULL && count < 5U)
+  {
+    tokens[count++] = token;
+    token = strtok(NULL, " \t");
+  }
+  if (count == 0U) return;
+  if (strcmp(tokens[0], "wake") == 0 && count == 1U)
+  {
+    /* A reconnect cancels motion but must never invent a new physical zero. */
+    stop_all();
+    if (serial_restart(0U) != HAL_OK) { reply("error serial_rx\r\n"); return; }
+    reply("ok wake\r\n");
+    return;
+  }
+  if (strcmp(tokens[0], "state") == 0 && count == 1U)
+  {
+    char position[AXIS_COUNT][24];
+    for (i = 0U; i < AXIS_COUNT; ++i)
+    {
+      if (!axes[i].configured)
+      {
+        reply("error not_set %lu\r\n", (unsigned long)i + 1U);
+        return;
+      }
+      format_coordinate(i, axis_status(i).position, position[i], sizeof(position[i]));
+    }
+    reply("state %s %s %s\r\n", position[0], position[1], position[2]);
+    return;
+  }
+  uint8_t measure = strcmp(tokens[0], "measure") == 0 && count == 3U;
+  uint8_t set = strcmp(tokens[0], "set") == 0 && count == 3U;
+  uint8_t go = strcmp(tokens[0], "go") == 0 && count == 4U;
+  uint8_t stop = strcmp(tokens[0], "stop") == 0 && count == 2U;
+  if (!(measure || set || go || stop)) { reply("error syntax\r\n"); return; }
+  if (!parse_axis(tokens[go ? 2U : 1U], &i)) { reply("error axis\r\n"); return; }
+  D36A_Status status = axis_status(i);
+  unsigned long n = (unsigned long)i + 1U;
+  if (measure && strcmp(tokens[2], "over") == 0)
+  {
+    if (axes[i].mode != AXIS_MEASURE) { reply("error not_measuring %lu\r\n", n); return; }
+    if (axis_control(i, 0, 0U) != HAL_OK) { reply("error driver\r\n"); return; }
+    axes[i].mode = AXIS_MEASURE_STOP;
+    return;
+  }
+  if (stop)
+  {
+    if (axis_control(i, 0, 0U) != HAL_OK) { reply("error driver\r\n"); return; }
+    axes[i].mode = AXIS_STOP;
+    return;
+  }
+  if (axes[i].mode != AXIS_IDLE || status.running) { reply("error busy %lu\r\n", n); return; }
+  if (measure)
+  {
+    if (strcmp(tokens[2], "start") != 0) { reply("error syntax\r\n"); return; }
+    if (status.position != 0) { reply("error not_zero %lu\r\n", n); return; }
+    if (axis_control(i, MEASURE_RPM, MAX_TRAVEL_PULSES) != HAL_OK)
+      { reply("error driver\r\n"); return; }
+    axes[i].configured = 0U;
+    axes[i].mode = AXIS_MEASURE;
+    reply("ok measure %lu start\r\n", n);
+    return;
+  }
+  uint64_t number;
+  if (!parse_decimal(tokens[set ? 2U : 1U], &number)) { reply("error number\r\n"); return; }
+  char coordinate[24];
+  if (set)
+  {
+    uint32_t value = (uint32_t)((number * D36A_PULSES_PER_REV + DECIMAL_SCALE / 2U) /
+                                DECIMAL_SCALE);
+    if (value == 0U || status.position < 0 || value < (uint32_t)status.position)
+      { reply("error range %lu\r\n", n); return; }
+    axes[i].limit = value;
+    axes[i].configured = 1U;
+    format_revolutions((int32_t)value, coordinate, sizeof(coordinate));
+    reply("ok set %lu %s\r\n", n, coordinate);
+    return;
+  }
+  if (!axes[i].configured) { reply("error not_set %lu\r\n", n); return; }
+  int16_t rpm;
+  if (!parse_speed(tokens[3], &rpm)) { reply("error speed\r\n"); return; }
+  if (number > COORDINATE_SCALE) { reply("error range %lu\r\n", n); return; }
+  uint32_t value = (uint32_t)((number * axes[i].limit + COORDINATE_SCALE / 2U) /
+                              COORDINATE_SCALE);
+  format_coordinate(i, (int32_t)value, coordinate, sizeof(coordinate));
+  int32_t distance = (int32_t)value - status.position;
+  if (distance == 0)
+  {
+    reply("ok go %lu %s\r\n", n, coordinate);
+    reply("done %lu %s\r\n", n, coordinate);
+    return;
+  }
+  if (axis_control(i, distance > 0 ? rpm : -rpm,
+                    (uint32_t)(distance > 0 ? distance : -distance)) != HAL_OK)
+    { reply("error driver\r\n"); return; }
+  axes[i].target = (int32_t)value;
+  axes[i].mode = AXIS_GO;
+  reply("ok go %lu %s\r\n", n, coordinate);
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *uart)
+{
+  if (uart != &huart3) return;
+  /* HAL can deliver the final byte before its error callback. Rearming here
+     would erase ErrorCode and could accept a corrupted command. */
+  if (rx_fault || uart->ErrorCode != HAL_UART_ERROR_NONE)
+  {
+    serial_fault();
+    return;
+  }
+  uint16_t next = (uint16_t)((rx_head + 1U) % RX_CAPACITY);
+  if (next == rx_tail)
+  {
+    serial_fault();
+    return;
+  }
+  rx_ring[rx_head] = rx_byte;
+  rx_head = next;
+  if (HAL_UART_Receive_IT(&huart3, &rx_byte, 1U) != HAL_OK) serial_fault();
+}
+
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *uart)
+{
+  if (uart == &huart3) serial_fault();
+}
+
+static void serial_poll(void)
+{
+  /* Recover even if an aborted transfer never delivered an error callback. */
+  if (!rx_fault && (huart3.RxState != HAL_UART_STATE_BUSY_RX ||
+                    __HAL_UART_GET_IT_SOURCE(&huart3, UART_IT_RXNE) == RESET))
+    serial_fault();
+  if (rx_fault)
+  {
+    stop_all();
+    serial_restart(1U);
+    reply("error serial_rx\r\n");
+    return;
+  }
+  /* Bound work per pass so completion reports and receive faults stay responsive. */
+  for (uint32_t budget = 0U; budget < RX_CAPACITY && rx_tail != rx_head && !rx_fault; ++budget)
+  {
+    char ch = (char)rx_ring[rx_tail];
+    rx_tail = (uint16_t)((rx_tail + 1U) % RX_CAPACITY);
+    if (ch == '\r' || ch == '\n')
+    {
+      if (!discard_line)
+      {
+        command_line[command_length] = '\0';
+        motion_poll();
+        execute_command(command_line);
+      }
+      discard_line = 0U;
+      command_length = 0U;
+    }
+    else if (!discard_line)
+    {
+      if ((ch != '\t' && (ch < 32 || ch > 126)) || command_length >= LINE_CAPACITY - 1U)
+      {
+        discard_line = 1U;
+        stop_all();
+        reply("error line\r\n");
+      }
+      else command_line[command_length++] = ch;
+    }
+  }
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -73,7 +431,9 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  /* Saved automatic validation local (restore only with its loop below):
+  uint32_t last_motor_start = 0U, motor_wait_ms = 10000U;
+  */
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -94,10 +454,20 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
+  MX_TIM2_Init();
+  MX_TIM3_Init();
+  MX_TIM4_Init();
+  MX_TIM5_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UART_Receive_IT(&huart3, uart3_rx_buf, 2);
+  /* CubeMX configured the peripherals; now wake the drivers with STEP low. */
+  if (D36A_Control(D36A_GANTRY, 0, 0U) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* A transient receive failure is retried by serial_poll, not a fatal boot error. */
+  serial_restart(0U);
+  reply("ready\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -107,9 +477,23 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    uint8_t test_msg[] = "UART2 is working!\r\n";
-  HAL_UART_Transmit(&huart2, test_msg, sizeof(test_msg)-1, 100);
-    HAL_Delay(1000); // 延时1秒
+    serial_poll();
+    motion_poll();
+    /* Previous automatic validation is archived in build/before_serial_axes/main.c.
+       Do not restore independent motor 2/3 motion on an assembled gantry.
+       For a detached motor bench only: replace the gantry initialization with
+       D36A_Control(1U, 0, 0U), disable serial_poll/motion_poll, restore the local.
+    uint32_t now = HAL_GetTick();
+    if ((uint32_t)(now - last_motor_start) >= motor_wait_ms)
+    {
+      last_motor_start = now;
+      motor_wait_ms = 22000U;
+      for (uint8_t motor = 1U; motor <= D36A_MOTOR_COUNT; ++motor)
+      {
+        if (D36A_Control(motor, 5, D36A_PULSES_PER_REV) != HAL_OK) Error_Handler();
+      }
+    }
+    */
   }
   /* USER CODE END 3 */
 }
@@ -122,6 +506,11 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+  /** Configure the main internal regulator output voltage
+  */
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -150,140 +539,8 @@ void SystemClock_Config(void)
   }
 }
 
-/**
-  * @brief USART3 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USART3_UART_Init(void)
-{
-
-  /* USER CODE BEGIN USART3_Init 0 */
-
-  /* USER CODE END USART3_Init 0 */
-
-  /* USER CODE BEGIN USART3_Init 1 */
-
-  /* USER CODE END USART3_Init 1 */
-  huart3.Instance = USART3;
-  huart3.Init.BaudRate = 9600;
-  huart3.Init.WordLength = UART_WORDLENGTH_8B;
-  huart3.Init.StopBits = UART_STOPBITS_1;
-  huart3.Init.Parity = UART_PARITY_NONE;
-  huart3.Init.Mode = UART_MODE_TX_RX;
-  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart3) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART3_Init 2 */
-
-  /* USER CODE END USART3_Init 2 */
-
-}
-
-/**
-  * Enable DMA controller clock
-  */
-static void MX_DMA_Init(void)
-{
-
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
-
-  /* DMA interrupt init */
-  /* DMA1_Channel2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
-  /* DMA1_Channel3_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
-
-}
-
-/**
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_GPIO_Init(void)
-{
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  /* USER CODE BEGIN MX_GPIO_Init_1 */
-
-  /* USER CODE END MX_GPIO_Init_1 */
-
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10, GPIO_PIN_RESET);
-
-  /*Configure GPIO pins : PA8 PA9 PA10 */
-  GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /* USER CODE BEGIN MX_GPIO_Init_2 */
-
-  /* USER CODE END MX_GPIO_Init_2 */
-}
-
 /* USER CODE BEGIN 4 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-    /* 确认是UART3触发的中断 */
-    if (huart->Instance == USART3)
-    {
-        uint16_t target_pin = 0;
-        GPIO_PinState pin_level = GPIO_PIN_RESET;
-        uint8_t is_cmd_valid = 1; // 命令有效性标志
 
-        /* 1. 解析第0个字节：确定目标引脚 */
-        switch (uart3_rx_buf[0])
-        {
-            case 'R': target_pin = GPIO_PIN_8;  break; // R -> PA8
-            case 'G': target_pin = GPIO_PIN_9;  break; // G -> PA9
-            case 'B': target_pin = GPIO_PIN_10; break; // B -> PA10
-            default:  is_cmd_valid = 0;          break; // 无效引脚命令
-        }
-
-        /* 2. 解析第1个字节：确定电平状态（仅在引脚命令有效时执行） */
-        if (is_cmd_valid)
-        {
-            if (uart3_rx_buf[1] == '1')
-            {
-                pin_level = GPIO_PIN_SET;   // '1' -> 高电平
-            }
-            else if (uart3_rx_buf[1] == '0')
-            {
-                pin_level = GPIO_PIN_RESET; // '0' -> 低电平
-            }
-            else
-            {
-                is_cmd_valid = 0; // 无效电平命令
-            }
-        }
-
-        /* 3. 执行引脚操作并回发结果 */
-        if (is_cmd_valid)
-        {
-            HAL_GPIO_WritePin(GPIOA, target_pin, pin_level); // 设置引脚电平
-            HAL_UART_Transmit(&huart3, (uint8_t *)"OK", 2, 1000); // 回发"OK"
-        }
-        else
-        {
-            HAL_UART_Transmit(&huart3, (uint8_t *)"ERROR", 5, 1000); // 回发"ERROR"
-        }
-
-        /* 4. 【关键】重新开启中断接收，准备下一次命令 */
-        HAL_UART_Receive_IT(&huart3, uart3_rx_buf, 2);
-    }
-}
 /* USER CODE END 4 */
 
 /**
