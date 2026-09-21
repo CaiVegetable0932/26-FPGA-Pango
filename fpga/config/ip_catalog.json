@@ -3,6 +3,13 @@
   "pds": "2022.2-SP6.4 build146967",
   "ips": [
     {
+      "name": "comms_pll",
+      "model": "ip/module_ip/ipm2l_flex_pll/ipm2l_flex_pll_eval/ipm2l_pll",
+      "purpose": "MINI communications: 125 MHz reference, 125 MHz logic and +90 degree RGMII clock; UG041001 V1.5 section 2.4.1",
+      "params": {"STATIC_CPHASE1": 1, "STATIC_PHASE1": 4, "STATIC_CPHASE1_advancedPage": 1, "STATIC_PHASE1_advancedPage": 4},
+      "clocks": {"input_mhz": 125, "vco_mhz": 750, "reset": true, "outputs": [0, 1], "dividers": {"0": 6, "1": 6, "7": 6}}
+    },
+    {
       "name": "sys_pll",
       "model": "ip/module_ip/ipm2l_flex_pll/ipm2l_flex_pll_eval/ipm2l_pll",
       "purpose": "125 MHz reference to 100 MHz system, 150 MHz processing, 125 MHz Ethernet",

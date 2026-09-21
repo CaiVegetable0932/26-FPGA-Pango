@@ -1,0 +1,10 @@
+cfg_shell>Executing : cfg_set_tcl_break -flag true
+Executing : cfg_set_tcl_break -flag true successfully.
+Executing : cfg_gen_sfc -device_name xt25f128 -opcode 11 -sbit_start_address 0 -sbit C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\comms_bringup_20260922_e51d3cc9c9ee\mini_comms_bringup.sbit -sfc C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\comms_bringup_20260922_e51d3cc9c9ee\mini_comms_bringup.sfc
+W: Configuration-4002: Tcl parameter check failed: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\comms_bringup_20260922_e51d3cc9c9ee\mini_comms_bringup.sfc does not exist, now create the file..
+The Start Address of bit file C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\comms_bringup_20260922_e51d3cc9c9ee\mini_comms_bringup.sbit: 0x0
+Executing : cfg_gen_sfc -device_name xt25f128 -opcode 11 -sbit_start_address 0 -sbit C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\comms_bringup_20260922_e51d3cc9c9ee\mini_comms_bringup.sbit -sfc C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\comms_bringup_20260922_e51d3cc9c9ee\mini_comms_bringup.sfc successfully.
+COMMS_SFC_OFFLINE_GENERATED
+Executing : cfg_close
+finishExecuting : cfg_close successfully.
+

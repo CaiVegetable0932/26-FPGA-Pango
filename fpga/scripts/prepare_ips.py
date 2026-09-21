@@ -19,6 +19,11 @@ def configure_pll(values, clock):
                   STATIC_RATIOI="1", STATIC_RATIOM="1",
                   STATIC_RATIOI_advancedPage="1", STATIC_RATIOM_advancedPage="1",
                   RST_INNER_EN="FALSE", RST_INNER_EN_advancedPage="FALSE")
+    # Purpose: board PLLs may expose a real reset input; legacy IPs preserve
+    # their existing no-reset configuration unless explicitly requested.
+    if clock.get("reset", False):
+        for suffix in ("", "_advancedPage", "_basicPage"):
+            values[f"RST_INNER_EN{suffix}"] = "TRUE"
     ratios = {int(k): v for k, v in clock["dividers"].items()}
     for i in range(9):
         enabled = "TRUE" if i in clock["outputs"] else "FALSE"
@@ -56,6 +61,8 @@ def make_pins(spec, values):
                 port(n, "output", int(values[p]) + 1)
     elif model == "ipm2l_pll":
         port("clkin1", "input")
+        # Match the optional native reset port in the generated symbol metadata.
+        if spec["clocks"].get("reset", False): port("rst", "input")
         for i in spec["clocks"]["outputs"]: port(f"clkout{i}", "output")
         port("lock", "output")
     elif model == "ipm2l_sdpram":

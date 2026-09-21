@@ -1,0 +1,63 @@
+Copying E:\ModelsimSE\win64/../modelsim.ini to modelsim.ini
+Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+-- Compiling module GTP_GRS
+-- Compiling module GTP_ODDR_E1
+
+Top level modules:
+	GTP_GRS
+	GTP_ODDR_E1
+Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+-- Compiling module praw_packetizer
+-- Compiling module udp_ipv4_eth_tx
+-- Compiling module video_network_tx
+-- Compiling module pango_rgmii_tx
+-- Compiling module comms_test_source
+-- Compiling module tb_comms_test_source
+
+Top level modules:
+	tb_comms_test_source
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {do run.do} -c -voptargs=+acc -onfinish exit -t 1ps work.tb_comms_test_source 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "comms_test_source(fast)".
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "praw_packetizer(fast)".
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "udp_ipv4_eth_tx(fast)".
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_comms_test_source(fast)
+# Loading work.GTP_GRS(fast)
+# Loading work.comms_test_source(fast)
+# Loading work.video_network_tx(fast)
+# Loading work.praw_packetizer(fast)
+# Loading work.udp_ipv4_eth_tx(fast)
+# Loading work.pango_rgmii_tx(fast)
+# Loading work.GTP_ODDR_E1(fast)
+# do run.do 
+# COMMS_SOURCE_PASS frames=1 packets=1482 pixels=2073600 cycles=2267623
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_comms_test_source.sv(63)
+#    Time: 18155624 ns  Iteration: 1  Instance: /tb_comms_test_source
+{
+  "passed": true,
+  "source": "SYNTHETIC TEST, not camera",
+  "native_rgmii": true,
+  "frames": 1,
+  "ethernet_packets": 1482,
+  "exact_pixels": 2073600,
+  "hardware_tested": false
+}
+COMMS_BOARD_SIM_PASS C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\comms_board_sim\source_20260922_003122_374

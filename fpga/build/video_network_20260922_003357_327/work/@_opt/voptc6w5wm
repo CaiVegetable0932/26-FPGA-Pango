@@ -1,0 +1,96 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\video_network_20260922_003357_327
+T_opt
+VR2aH]>HDKiXfab:N`bDN:0
+04 19 4 work tb_video_network_tx fast 0
+=1-207bd2c02996-6ab15c77-299-2c440
+o-quiet -auto_acc_if_foreign -work work
+n@_opt
+OL;O;10.1c;51
+vpraw_packetizer
+Z1 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+IoUdBz4e]]^HcXoG<TR`:L1
+VY`kC;k4@n]_k@>DniGU6m0
+S1
+Z2 dC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\video_network_20260922_003357_327
+w1790002323
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\praw_packetizer.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\praw_packetizer.v
+L0 6
+Z3 OL;L;10.1c;51
+r1
+31
+Z4 !s108 1790008437.451000
+Z5 !s107 C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_video_network_tx.sv|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\video_network_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\udp_ipv4_eth_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\praw_packetizer.v|
+Z6 !s90 -sv|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\praw_packetizer.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\udp_ipv4_eth_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\video_network_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_video_network_tx.sv|
+Z7 o-sv -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!i10b 1
+!s100 :`zeXV8nb:kK@Ide5853o0
+!s105 praw_packetizer_v_unit
+!s85 0
+vtb_video_network_tx
+R1
+IfYoDQR42RcTMo=7GGfc8C1
+Vi`n8UKfdlRj]dFQSQ<YIH2
+S1
+R2
+w1790001847
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_video_network_tx.sv
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_video_network_tx.sv
+L0 4
+R3
+r1
+31
+R4
+R5
+R6
+R7
+!i10b 1
+!s100 G00heiT0AL5;f3PP62LR51
+!s105 tb_video_network_tx_sv_unit
+!s85 0
+vudp_ipv4_eth_tx
+R1
+IOn_g0`eR7RB@_U9AW]O3E1
+VXJmGP^<ZD=mmV_kXF;8Cg2
+S1
+R2
+w1790007949
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\udp_ipv4_eth_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\udp_ipv4_eth_tx.v
+L0 10
+R3
+r1
+31
+R4
+R5
+R6
+R7
+!i10b 1
+!s100 fn`0Wo2Za>WR`CFh`ZV:61
+!s105 udp_ipv4_eth_tx_v_unit
+!s85 0
+vvideo_network_tx
+R1
+IQS^E7zide5LQXJ=KkS_<X2
+V4fUCP5Ih>nOY2zogKS@_i1
+S1
+R2
+w1790001766
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\video_network_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\network\video_network_tx.v
+L0 6
+R3
+r1
+31
+R4
+R5
+R6
+R7
+!i10b 1
+!s100 G>na;oE5O<[U;d:AOkNB;2
+!s105 video_network_tx_v_unit
+!s85 0

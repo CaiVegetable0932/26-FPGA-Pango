@@ -1,0 +1,25 @@
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {do run.do} -c -onfinish exit -t 1ps -novopt work.tb_rtl8211f_init 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/comms_board_sim/phy_20260922_001011_962/work.tb_rtl8211f_init
+# Loading sv_std.std
+# Loading work.tb_rtl8211f_init
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/comms_board_sim/phy_20260922_001011_962/work.rtl8211f_init
+# Loading work.rtl8211f_init
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/comms_board_sim/phy_20260922_001011_962/work.mdio_clause22
+# Loading work.mdio_clause22
+# do run.do 
+# PHY_INIT_PASS checks=23260 transactions=67 reads=32 writes=35
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_rtl8211f_init.sv(108)
+#    Time: 169324068 ns  Iteration: 2  Instance: /tb_rtl8211f_init

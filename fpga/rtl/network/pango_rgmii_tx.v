@@ -2,17 +2,22 @@
 `default_nettype none
 
 // Purpose: PG2L100H native 1 Gb/s GMII-to-RGMII transmit-only adapter.
-// The caller supplies related 125 MHz clocks: clk125_90 LAGS clk125 by 2 ns.
+// Default: clk125_90 LAGS clk125 by 2 ns and external PHY TXID is disabled.
+// PHY_TXID=1: the forwarding primitive uses clk125 itself; the board wrapper
+// must verify PHY TXID is ENABLED. This avoids independent FPGA clock trees.
 // GMII inputs meet clk125 rising-edge setup/hold; SAME_EDGE sends each sampled
 // byte one full clk125 cycle later in the installed PDS 2022.2-SP6.4 model.
 // reset_n asserts asynchronously and must be released safely for BOTH clocks
 // after the board PLL locks. No PLL, reset synchronizer or PHY setup lives here.
 // Before board sign-off, check RTL8211F TXID/straps/registers and external clock
 // phase together: the 2 ns FPGA shift must not acquire a second PHY TX delay.
-module pango_rgmii_tx (
+// Board wrappers may release the forwarded-clock reset in its own domain;
+// default 0 preserves the original shared-reset subsystem integration contract.
+module pango_rgmii_tx #(parameter SEPARATE_TXC_RESET=0,PHY_TXID=0)(
     input  wire       clk125,
     input  wire       clk125_90,
     input  wire       reset_n,
+    input  wire       txc_reset_n,
     input  wire [7:0] gmii_data,
     input  wire       gmii_en,
     input  wire       gmii_error,
@@ -59,7 +64,7 @@ module pango_rgmii_tx (
         .RS(oddr_reset)
     );
 
-    // Forward the board PLL's shifted clock through the same native output
+    // Forward the selected board clock through the same native output
     // primitive. Constants 1/0 give a centered sampling clock after reset
     // pipeline fill; there is deliberately no numeric IODELAY tap assumption.
     GTP_ODDR_E1 #(
@@ -70,9 +75,9 @@ module pango_rgmii_tx (
         .Q(rgmii_txc),
         .D0(1'b1),
         .D1(1'b0),
-        .CLK(clk125_90),
+        .CLK(PHY_TXID ? clk125 : clk125_90),
         .CE(1'b1),
-        .RS(oddr_reset)
+        .RS(SEPARATE_TXC_RESET ? ~txc_reset_n : oddr_reset)
     );
 endmodule
 

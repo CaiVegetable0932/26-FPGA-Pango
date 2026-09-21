@@ -1,0 +1,27 @@
+# vsim -do {do run.do} -c -voptargs=+acc -onfinish exit -t 1ps work.tb_comms_boot_config 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "mcu_uart_rx(fast)".
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "comms_boot_config(fast)".
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_comms_boot_config(fast)
+# Loading work.comms_boot_config(fast)
+# Loading work.mcu_uart_rx(fast)
+# Loading work.mcu_frame_rx(fast)
+# Loading work.mcu_frame_tx(fast)
+# Loading work.mcu_uart_tx(fast)
+# do run.do 
+# COMMS_BOOT_PASS checks=286 replies=6
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_comms_boot_config.sv(64)
+#    Time: 400408 ns  Iteration: 0  Instance: /tb_comms_boot_config

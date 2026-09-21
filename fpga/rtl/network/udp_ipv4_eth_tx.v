@@ -70,23 +70,33 @@ module udp_ipv4_eth_tx #(
     assign gmii_tx_er = 1'b0;
     assign busy = reset_n && (rx_active || (|bank_full) || tx_state != TX_IDLE);
 
-    // IPv4: IHL=5, DSCP/ECN=0, ID=0, DF=1, offset=0, TTL=64, protocol=17.
-    // Balanced partial sums and end-around carry form the header checksum.
-    // ID zero is used only with atomic (DF, non-fragmented) datagrams.
-    function [15:0] ipv4_checksum;
-        input [15:0] length;
-        input [31:0] source_ip, destination_ip;
-        reg [31:0] sum_a, sum_b, sum_c, sum_all;
-        begin
-            sum_a = 32'h00004500 + {16'd0, length} + 32'h00008011;
-            sum_b = {16'd0, source_ip[31:16]} + {16'd0, source_ip[15:0]};
-            sum_c = {16'd0, destination_ip[31:16]} + {16'd0, destination_ip[15:0]};
-            sum_all = sum_a + sum_b + sum_c;
-            sum_all = {16'd0, sum_all[15:0]} + {16'd0, sum_all[31:16]};
-            sum_all = {16'd0, sum_all[15:0]} + {16'd0, sum_all[31:16]};
-            ipv4_checksum = ~sum_all[15:0];
+    // Purpose: pipeline the IPv4 checksum off the metadata-admission critical
+    // path. Three tagged stages finish before byte 24 of the Ethernet body,
+    // even for a one-byte datagram. A bank cannot be transmitted AND recycled
+    // within this latency. Reset flushes all tags; aborted RX can reuse a bank,
+    // but the newer tagged calculation finishes before its header is emitted.
+    // Constant C52D = 4500 + 4000 + 4011 + 28 (IHL/DF/TTL/protocol/IP+UDP).
+    reg [16:0] checksum_a,checksum_b,checksum_c;
+    reg [18:0] checksum_total;
+    reg [16:0] checksum_fold;
+    reg [2:0] checksum_valid,checksum_bank;
+    always @(posedge clk or negedge reset_n) begin
+        if(!reset_n) begin
+            checksum_a<=0;checksum_b<=0;checksum_c<=0;checksum_total<=0;
+            checksum_fold<=0;checksum_valid<=0;checksum_bank<=0;
+        end else begin
+            checksum_valid<={checksum_valid[1:0],datagram_start && datagram_ready &&
+                              udp_payload_length!=0 && udp_payload_length<=1464};
+            checksum_bank<={checksum_bank[1:0],rx_bank};
+            if(datagram_start && datagram_ready) begin
+                checksum_a<={1'b0,udp_payload_length}+17'h0c52d;
+                checksum_b<={1'b0,src_ip[31:16]}+{1'b0,src_ip[15:0]};
+                checksum_c<={1'b0,dst_ip[31:16]}+{1'b0,dst_ip[15:0]};
+            end
+            checksum_total<={2'b0,checksum_a}+{2'b0,checksum_b}+{2'b0,checksum_c};
+            checksum_fold<={1'b0,checksum_total[15:0]}+checksum_total[18:16];
         end
-    endfunction
+    end
 
     // Reflected Ethernet CRC32 consumes each byte LSB first. Cover only MAC
     // header, IP/UDP, payload and padding, excluding preamble, SFD and FCS.
@@ -217,6 +227,9 @@ module udp_ipv4_eth_tx #(
             gmii_tx_en <= 1'b0;
             gmii_txd <= 8'd0;
 
+            // A completed checksum is published only to its tagged bank.
+            if(checksum_valid[2])
+                bank_ip_checksum[checksum_bank[2]] <= ~(checksum_fold[15:0]+{15'd0,checksum_fold[16]});
             // Snapshot every dynamic field into the selected receive bank.
             if (datagram_start && datagram_ready) begin
                 if (udp_payload_length == 0 || udp_payload_length > 16'd1464)
@@ -236,7 +249,6 @@ module udp_ipv4_eth_tx #(
                     bank_udp_length[rx_bank] <= udp_payload_length + 16'd8;
                     bank_body_length[rx_bank] <= (udp_payload_length < 16'd18)
                                                    ? 16'd60 : udp_payload_length + 16'd42;
-                    bank_ip_checksum[rx_bank] <= ipv4_checksum(udp_payload_length + 16'd28, src_ip, dst_ip);
                 end
             end
             // A transfer on the timeout deadline wins. Aborting advances neither

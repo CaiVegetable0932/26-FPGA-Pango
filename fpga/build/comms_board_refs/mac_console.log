@@ -1,0 +1,40 @@
+Model Technology ModelSim SE-64 vsim 10.1c Simulator 2012.07 Jul 28 2012
+Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+-- Compiling module udp_ipv4_eth_tx
+
+Top level modules:
+	udp_ipv4_eth_tx
+Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+-- Compiling module tb_udp_ipv4_eth_tx
+
+Top level modules:
+	tb_udp_ipv4_eth_tx
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim +SEED=1729 -do {onerror {quit -code 2}; onbreak {quit -code 3}; run -all; quit -f} -l transcript.log -lib ./work -c -wlf simulation.wlf -gRX_TIMEOUT_CYCLES=32 tb_udp_ipv4_eth_tx 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_udp_ipv4_eth_tx(fast)
+# Loading work.udp_ipv4_eth_tx(fast)
+# onerror {quit -code 2} 
+#  Warning: onerror command for use within macro
+#  onbreak {quit -code 3} 
+#  Warning: onbreak command for use within macro
+#  run -all 
+# UDP_ETH_PASS done=47 errors=6 overlap=26753 start_wait=3047 timeout=32 seed=000006c1
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_udp_ipv4_eth_tx.sv(276)
+#    Time: 590358 ns  Iteration: 0  Instance: /tb_udp_ipv4_eth_tx
+ETHERNET_PYTHON_PASS frames=47 IFG=12 UDP_MBps=119.607843 RAW1400_MBps=114.379085
+UDP_ETHERNET_SIM_PASS C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\udp_ethernet\sim_20260922_002800_357

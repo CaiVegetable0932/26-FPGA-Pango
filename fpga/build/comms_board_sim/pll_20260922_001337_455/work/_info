@@ -1,0 +1,123 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\comms_board_sim\pll_20260922_001337_455
+vcomms_pll
+Z1 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+V:diSL40QcNEL6:>XODTTe1
+r1
+31
+I^EE]:fiNikKON3L<2h?^C3
+S1
+Z2 dC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\comms_board_sim\pll_20260922_001337_455
+w1790007217
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\comms_pll\comms_pll.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\comms_pll\comms_pll.v
+L0 18
+Z3 OL;L;10.1c;51
+Z4 !s108 1790007217.789000
+Z5 !s107 C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_comms_pll.sv|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\comms_pll\comms_pll.v|
+Z6 !s90 -sv|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\comms_pll\comms_pll.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_comms_pll.sv|
+Z7 o-sv -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!s85 0
+!i10b 1
+!s100 amIfKH[zcTID=l8J3Z4no2
+!s105 comms_pll_v_unit
+vGTP_GPLL
+V@nc3zQ7PN1f9Nh><34XiZ3
+r1
+!s85 0
+31
+ISdz=AokAiimCeZP:9e0K[0
+R2
+Z8 w1706636426
+8E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_GPLL.v
+FE:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_GPLL.v
+L0 26
+R3
+Z9 !s108 1790007217.643000
+Z10 !s107 E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_ODDR_E1.v|E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_INBUFDS.v|E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_GPLL.v|E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_GRS.v|
+Z11 !s90 E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_GRS.v|E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_GPLL.v|E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_INBUFDS.v|E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_ODDR_E1.v|
+Z12 o-L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+n@g@t@p_@g@p@l@l
+!s100 8jkUooT4_zG<DM8X=K:jS2
+!i10b 1
+vGTP_GRS
+Vm@_cHT130onF>^[S;LhTh1
+r1
+31
+IeKKCm88644b<gYcfAZ?hi3
+R2
+R8
+8E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_GRS.v
+FE:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_GRS.v
+L0 29
+R3
+R9
+R10
+R11
+R12
+n@g@t@p_@g@r@s
+!s85 0
+!s100 7a>IPJXbl3I^j9:e[I4^`3
+!i10b 1
+vGTP_INBUFDS
+ImUEl]b8o;jIj^aG@^11CO0
+VmhfEf_2Dn<n0^@OiEah453
+R2
+w1706636428
+8E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_INBUFDS.v
+FE:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_INBUFDS.v
+L0 28
+R3
+r1
+31
+R9
+R10
+R11
+R12
+n@g@t@p_@i@n@b@u@f@d@s
+!s100 :ok=bV:UCY>`eL]6`6:i?0
+!i10b 1
+!s85 0
+vGTP_ODDR_E1
+IzT^fjM7;]2BW^6BOC5XV[2
+V056H]ENfi]O8gA>_hYcOj0
+R2
+w1706636430
+8E:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_ODDR_E1.v
+FE:\PDS_Pangu\PDS_2022.2-SP6.4\arch\vendor\pango\verilog\simulation\GTP_ODDR_E1.v
+L0 28
+R3
+r1
+31
+R9
+R10
+R11
+R12
+n@g@t@p_@o@d@d@r_@e1
+!s100 g_BJIKhRQUHGUdAcUJ_`H1
+!i10b 1
+!s85 0
+vtb_comms_pll
+R1
+V9LM>@L;`nC8eXL=<1j85:1
+r1
+31
+IUF]]dL?naoCVIS2:Z]1lH1
+S1
+R2
+w1790007216
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_comms_pll.sv
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_comms_pll.sv
+L0 4
+R3
+R4
+R5
+R6
+R7
+!s85 0
+!i10b 1
+!s100 V0UoHiI3YXRE1XW0i@^Cj1
+!s105 tb_comms_pll_sv_unit

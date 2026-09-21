@@ -11,7 +11,9 @@ module mcu_uart_rx #(
     localparam integer DIV = (CLK_HZ + BAUD/2) / BAUD;
     localparam integer HALF = DIV / 2;
     localparam [2:0] IDLE=0, START=1, DATA=2, STOP=3, WAIT_HIGH=4;
-    reg rx_meta, rx_sync;
+    // Preserve both physical CDC stages so first-stage-only board constraints
+    // cannot be invalidated by merging equivalent boot/MCU UART synchronizers.
+    (* syn_preserve=1, ASYNC_REG="TRUE" *) reg rx_meta, rx_sync;
     reg [2:0] state, bit_index;
     reg [31:0] ticks;
     reg [7:0] shift;

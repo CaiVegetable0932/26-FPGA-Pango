@@ -1,0 +1,87 @@
+##### Written on 2026/09/22 00:41:09 ###############################
+
+
+##### INFO ##################################################
+
+Current device : 
+	PG2L100H-6FBG676
+
+Top Module : 
+	mini_comms_bringup
+
+Constraint File(s) : 
+	C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_comms_bringup/pins.fdc
+	C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_comms_bringup/timing.fdc
+
+##### SUMMARY ######################################################
+
+Found 0 error(s), 1 critical warning(s), 0 warning(s), out of 139 constraint(s)
+
+
+Inapplicable constraints(except overwritten constraints):
+********************************************
+
+define_attribute {p:phy_reset_n} {PAP_IO_LOC} {G25}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_comms_bringup/pins.fdc(line number: 60)] | Port phy_reset_n has been placed at location G25, whose type is share pin.
+
+
+Constraints with issues:
+********************************************
+
+
+Issues without commands:
+********************************************
+
+
+Unconstrained ports:
+********************************************
+
+
+Constraints with matching wildcard expressions:
+********************************************
+
+set_max_delay 10.000 -to [get_ports {uart_tx phy_mdc phy_mdio phy_reset_n led[*]}]
+	I: The pattern 'led[*]' in command 'get_ports {uart_tx phy_mdc phy_mdio phy_reset_n led[*]}' match 5 objects below:
+	I: port led[0]
+	I: port led[1]
+	I: port led[2]
+	I: port led[3]
+	I: port led[4]
+
+set_min_delay 0.000 -to [get_ports {uart_tx phy_mdc phy_mdio phy_reset_n led[*]}]
+	I: The pattern 'led[*]' in command 'get_ports {uart_tx phy_mdc phy_mdio phy_reset_n led[*]}' match 5 objects below:
+	I: port led[0]
+	I: port led[1]
+	I: port led[2]
+	I: port led[3]
+	I: port led[4]
+
+set_output_delay -clock PHY_SAMPLE -clock_fall -max 1.450 -add_delay [get_ports {rgmii_tx_ctl rgmii_txd[*]}]
+	I: The pattern 'rgmii_txd[*]' in command 'get_ports {rgmii_tx_ctl rgmii_txd[*]}' match 4 objects below:
+	I: port rgmii_txd[0]
+	I: port rgmii_txd[1]
+	I: port rgmii_txd[2]
+	I: port rgmii_txd[3]
+
+set_output_delay -clock PHY_SAMPLE -clock_fall -min -1.450 -add_delay [get_ports {rgmii_tx_ctl rgmii_txd[*]}]
+	I: The pattern 'rgmii_txd[*]' in command 'get_ports {rgmii_tx_ctl rgmii_txd[*]}' match 4 objects below:
+	I: port rgmii_txd[0]
+	I: port rgmii_txd[1]
+	I: port rgmii_txd[2]
+	I: port rgmii_txd[3]
+
+set_output_delay -clock PHY_SAMPLE -max 1.450 [get_ports {rgmii_tx_ctl rgmii_txd[*]}]
+	I: The pattern 'rgmii_txd[*]' in command 'get_ports {rgmii_tx_ctl rgmii_txd[*]}' match 4 objects below:
+	I: port rgmii_txd[0]
+	I: port rgmii_txd[1]
+	I: port rgmii_txd[2]
+	I: port rgmii_txd[3]
+
+set_output_delay -clock PHY_SAMPLE -min -1.450 [get_ports {rgmii_tx_ctl rgmii_txd[*]}]
+	I: The pattern 'rgmii_txd[*]' in command 'get_ports {rgmii_tx_ctl rgmii_txd[*]}' match 4 objects below:
+	I: port rgmii_txd[0]
+	I: port rgmii_txd[1]
+	I: port rgmii_txd[2]
+	I: port rgmii_txd[3]
+
+

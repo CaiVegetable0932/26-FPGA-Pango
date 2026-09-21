@@ -1,0 +1,29 @@
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {do run.do} -c -onfinish exit -t 1ps -novopt work.tb_comms_pll 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/comms_board_sim/pll_20260922_001337_455/work.tb_comms_pll
+# Loading sv_std.std
+# Loading work.tb_comms_pll
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/comms_board_sim/pll_20260922_001337_455/work.GTP_GRS
+# Loading work.GTP_GRS
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/comms_board_sim/pll_20260922_001337_455/work.comms_pll
+# Loading work.comms_pll
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/comms_board_sim/pll_20260922_001337_455/work.GTP_GPLL
+# Loading work.GTP_GPLL
+# do run.do 
+# ** Error: (vsim-8604) E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/simulation/GTP_GPLL.v(1026): NaN (not a number) resulted from a division operation.
+# 
+# COMMS_PLL_PASS checks=1000 period_ns=8 lag_ns=2 native=GTP_GPLL
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_comms_pll.sv(20)
+#    Time: 8338096 ps  Iteration: 1  Instance: /tb_comms_pll
