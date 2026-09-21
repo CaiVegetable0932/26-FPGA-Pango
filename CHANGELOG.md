@@ -2,6 +2,14 @@
 
 ## 未发布
 
+### 2026-09-21：单路摄像头 HDMI 实景回传
+
+- 盘古100K MINI、PG2L100H-6FBG676，PDS 2022.2-SP6.4；实现OV5640启动读回、严格DVP采集、DDR帧发布及HDMI诊断回传，host保存指定Hagibis采集证据。
+- 以3035=21降低摄像头源时钟后，1280×720 RGB565实景经HDMI到PC；Flash写入/回读/冷启动及用户配合遮挡—放开验证通过，12项RTL回归通过，内部STA满足约束。
+- 固化文件：fpga/build/camera_div2_flash_20260921/Top.sfc；SHA256：317733DFC9A6D083971E2E09B203E403B8939E6163B33BD7EAB32667048CFAAC。对应源码、构建及证据一并提交，资源/时序见同批PDS报告。
+- 证据入口：host/reports/camera_scene_20260921.md、fpga/reports/dvp_clock_margin_candidate_20260921.md。
+- 尚未验收实际摄像头帧率、外部DVP时序、长期完整性、RAW8千兆网及严格同帧测评。over_temp告警仍存在且未屏蔽；UVC启动偶发损坏MJPEG帧记录保留。本次不创建全项目完成标签。
+
 ### 2026-09-06
 
 - 建立 Git 仓库，使用 `main` 主分支。

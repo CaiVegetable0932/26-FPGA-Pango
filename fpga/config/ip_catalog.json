@@ -10,8 +10,9 @@
     },
     {
       "name": "video_pll",
+      "rtl_replacement": {"module": "clk_hdmi", "source": "ip/hdmi_tx_pll/clk_hdmi.v"},
       "model": "ip/module_ip/ipm2l_flex_pll/ipm2l_flex_pll_eval/ipm2l_pll",
-      "purpose": "27 MHz reference to a 371.25 MHz TMDS serial clock; the 74.25 MHz pixel clock is derived by the PG2L100H native IO clock divider",
+      "purpose": "Legacy generated PLL retained for history; active projects use board-vendor clk_hdmi 371.25 MHz output plus native I/O /5 for 74.25 MHz (see rtl_replacement)",
       "clocks": {"input_mhz": 27, "vco_mhz": 742.5, "outputs": [1], "dividers": {"1": 2, "7": 27.5}}
     },
     {

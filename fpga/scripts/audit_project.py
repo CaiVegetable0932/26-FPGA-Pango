@@ -21,6 +21,20 @@ rtl_paths = sorted((root / "rtl").rglob("*.v"))
 rtl = "\n".join(p.read_text(encoding="utf-8") for p in rtl_paths)
 inputs.update(rtl_paths)
 for spec in catalog["ips"]:
+    # A source-backed vendor PLL replaces the legacy generated single-output
+    # IP. Audit its active top-level instantiation and include its source hash.
+    if "rtl_replacement" in spec:
+        replacement = spec["rtl_replacement"]
+        source = root / replacement["source"]
+        top = (root / "rtl/board/pango_video_top.v").read_text(encoding="utf-8")
+        instances = re.findall(r"\b" + re.escape(replacement["module"]) + r"\s+(\w+)\s*\(", top)
+        if not source.is_file() or not instances:
+            issues.append("Active HDMI PLL source or instance missing")
+        else:
+            inputs.add(source)
+        ips.append(dict(name=replacement["module"], instances=instances,
+                        source_count=1, origin="board-vendor RTL", purpose=spec["purpose"]))
+        continue
     path = root / "ip" / spec["name"] / (spec["name"] + ".idf")
     if not path.is_file():
         issues.append(f"Missing IDF: {path}")
@@ -144,10 +158,17 @@ if args.stage == "all":
         if name not in clocks or abs(clocks[name]["period_ns"] - expected_period) > 0.001:
             issues.append(f"Missing or incorrect native clock period: {name}")
     pixel = clocks.get("pixel_clk", {})
+    # The proven PLL supplies one source; main retains its native I/O divider
+    # so serial and parallel IOL clock networks have an explicit shared phase.
     if (pixel.get("kind") != "Generated (serial_clk)" or
         not pixel.get("source", "").startswith("u_hdmi_pixel_div/") or
         not pixel.get("clock_loads", 0)):
         issues.append("Pixel clock is not the loaded native divider child of serial_clk")
+    serial = clocks.get("serial_clk", {})
+    if (serial.get("kind") != "Generated (clk_27m)" or
+        not serial.get("source", "").startswith("u_video_pll/") or
+        not serial.get("source", "").endswith("/CLKOUT1")):
+        issues.append("Serial clock is not the coherent HDMI PLL CLKOUT1")
     if pixel:
         duty = (pixel["waveform_ns"][1] - pixel["waveform_ns"][0]) / pixel["period_ns"]
         if abs(duty - 0.4) > 0.0001:

@@ -1,0 +1,117 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mini_camera_diag\video_sim_20260920_153238_639
+T_opt
+Va0Nec[ZCA<WK6c5lHXCe:1
+04 13 4 work tb_mini_video fast 0
+=1-207bd2c02996-6aaf8c19-2e-23d84
+o-quiet -auto_acc_if_foreign -work ./work
+n@_opt
+OL;O;10.1c;51
+vsync_vg
+Z1 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+IEm;oKPmNNB@MZAI5Rhle[2
+Vn;;2?[TZM0WXK=U>AXoHX1
+S1
+Z2 dC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mini_camera_diag\video_sim_20260920_153238_639
+Z3 w1789882128
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\hdmi\sync_vg.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\hdmi\sync_vg.v
+L0 37
+Z4 OL;L;10.1c;51
+r1
+31
+Z5 !s108 1789889558.780000
+Z6 !s107 C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mini_video.sv|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\hdmi\tmds_encoder.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\video_rect_read_data.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\timing_gen_xy.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\hdmi\sync_vg.v|
+Z7 !s90 -sv|-work|work|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\hdmi\sync_vg.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\timing_gen_xy.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\video_rect_read_data.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\hdmi\tmds_encoder.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mini_video.sv|
+Z8 o-sv -work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!i10b 1
+!s100 fk>=947Qm`nUlQ1]BIi@f0
+!s105 sync_vg_v_unit
+!s85 0
+vtb_mini_video
+R1
+ISVLT7CU0UB=;OPJUkniW@1
+Vl;I2fWIf`h_2n21P3cimB1
+S1
+R2
+R3
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mini_video.sv
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mini_video.sv
+L0 5
+R4
+r1
+31
+R5
+R6
+R7
+R8
+!i10b 1
+!s100 GecdRHd8<^Z4AB?6DX=z51
+!s105 tb_mini_video_sv_unit
+!s85 0
+vtiming_gen_xy
+R1
+IJFo:_]O6LISeLJ?<F5]:m0
+VV_aWXP^VYOiS<g8O12Bke1
+S1
+R2
+R3
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\timing_gen_xy.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\timing_gen_xy.v
+L0 3
+R4
+r1
+31
+R5
+R6
+R7
+R8
+!i10b 1
+!s100 >F1zEV2O6ZHEi@g`cE9ge3
+!s105 timing_gen_xy_v_unit
+!s85 0
+vtmds_encoder
+R1
+I>Lgm56dJBJEKNg1d6]^5Q2
+V]aV[:I6Hh8S^46>QE8aOA2
+S1
+R2
+R3
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\hdmi\tmds_encoder.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\hdmi\tmds_encoder.v
+L0 24
+R4
+r1
+31
+R5
+R6
+R7
+R8
+!i10b 1
+!s100 ^MK:KPmicd5kUR<5]0b6C3
+!s105 tmds_encoder_v_unit
+!s85 0
+vvideo_rect_read_data
+R1
+IY?=O5za0;GjAd:>Ul32?I0
+VE58>i2@>>Ldm2bE<d1@j:0
+S1
+R2
+R3
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\video_rect_read_data.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\mini_camera_diag\vendor\video_rect_read_data.v
+L0 3
+R4
+r1
+31
+R5
+R6
+R7
+R8
+!i10b 1
+!s100 3Pm0@mX2OI_JbnHaMWYRf1
+!s105 video_rect_read_data_v_unit
+!s85 0

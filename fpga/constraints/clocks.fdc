@@ -4,9 +4,9 @@ create_clock -name rx_clk -period 8.000 [get_ports rgmii_rxc]
 create_generated_clock -name sys_clk -source [get_ports ref_clk_p] -multiply_by 4 -divide_by 5 [get_pins {u_sys_pll.u_gpll/CLKOUT0}]
 create_generated_clock -name proc_clk -source [get_ports ref_clk_p] -multiply_by 6 -divide_by 5 [get_pins {u_sys_pll.u_gpll/CLKOUT1}]
 create_generated_clock -name tx_clk -source [get_ports ref_clk_p] -multiply_by 1 -divide_by 1 [get_pins {u_sys_pll.u_gpll/CLKOUT2}]
-create_generated_clock -name serial_clk -source [get_ports clk_27m] -multiply_by 55 -divide_by 4 [get_pins {u_video_pll.u_gpll/CLKOUT1}]
-# Native CLKDIV inference/rename (UCE 2.2.1.2, pp.74-75): infer the real /5
-# period and 40% duty cycle from the instantiated IOCLKDIV_E2 parameters.
+# Preserve native PLL/divider inference (UCE 2.2.1.2). The /5 pixel clock is a
+# real hardware divider child of serial_clk, with native 40% duty cycle.
+create_generated_clock -name serial_clk [get_pins {u_video_pll.u_gpll/CLKOUT1}]
 create_generated_clock -name pixel_clk [get_pins {u_hdmi_pixel_div/CLKDIVOUT}]
 # CDC exceptions are deliberately endpoint-specific. Do not mask entire
 # processing/display/Ethernet domains: every other path stays timed.

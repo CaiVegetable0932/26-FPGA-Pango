@@ -29,9 +29,10 @@ module tb_mini_dvp;
   pixel(16'h07E0);pixel(16'h001F);pixel(16'hFFFF);tick(0,0,0);
   pixel(16'h1234);pixel(16'h5678);pixel(16'h9ABC);pixel(16'hDEF0);
   check(eop,"expected final pixel EOP");tick(0,0,0);
-  // Purpose: an odd byte must not join a byte from the following line.
+  // Purpose: an odd/short row aborts the remaining frame, not just its dangling byte.
   new_frame;tick(0,1,8'hAA);check(!wf_wr_en,"dangling first byte");
-  tick(0,0,0);pixel(16'h1357);
+  tick(0,0,0);tick(0,1,8'h13);tick(0,1,8'h57);
+  check(!wf_wr_en,"short row aborts until next frame");
   // Purpose: VSYNC must discard partial line and row counters.
   new_frame;pixel(16'h2468);check(sop,"new frame re-aligned SOP");
   // Purpose: DDR-ready deassertion stops FIFO writes after the 2FF pipeline.

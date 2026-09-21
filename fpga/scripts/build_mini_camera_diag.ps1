@@ -1,10 +1,10 @@
 # Purpose: isolated native IP/project generation and offline PDS stage execution.
-# No hardware access, bitstream generation, Flash operation or system setting change.
+# Optional gen_bit_stream creates the camera image; hardware download is separate.
 param(
  [string]$PdsHome='E:/PDS_Pangu/PDS_2022.2-SP6.4',
  [string]$LicenseFile='',
  [switch]$GenerateIps,
- [ValidateSet('compile','synthesize','dev_map','pnr','report_timing')]
+ [ValidateSet('compile','synthesize','dev_map','pnr','report_timing','gen_bit_stream')]
  [string]$Stage='compile'
 )
 $ErrorActionPreference='Stop'
@@ -38,7 +38,9 @@ $taskCam=@(
  @('camera_data_0[7]','R21','INPUT'),@('SCL_0','P19','INOUT'),
  @('SDA_0','R20','INOUT'),@('cam_rst_0','T22','OUTPUT'),
  @('cam_led0','A20','OUTPUT'),@('cam_led1','C19','OUTPUT'),
- @('heart_beat_led','C18','OUTPUT')
+ # Purpose: MINI hardware guide V1.3 p35 maps diagnostic LED3/4 to E18/A17.
+ @('heart_beat_led','C18','OUTPUT'),
+ @('capture_seen_led','E18','OUTPUT'),@('display_ready_led','A17','OUTPUT')
 )
 foreach($taskPin in $taskCam) {
  $taskPort=$taskPin[0]
@@ -102,8 +104,9 @@ try {
   Restore-DiagnosticLayout
   # Purpose: native exit is not sufficient; capture error lines and require a
   # fresh native stage report. No result here implies functional/timing sign-off.
-  $taskExt=@{compile='cmr';synthesize='snr';dev_map='dmr';pnr='prr';report_timing='rtr'}[$Stage]
-  $taskDir=@{compile='compile';synthesize='synthesize';dev_map='device_map';pnr='place_route';report_timing='report_timing'}[$Stage]
+  # Purpose: require a fresh camera bitstream when building the hardware target.
+  $taskExt=@{compile='cmr';synthesize='snr';dev_map='dmr';pnr='prr';report_timing='rtr';gen_bit_stream='sbit'}[$Stage]
+  $taskDir=@{compile='compile';synthesize='synthesize';dev_map='device_map';pnr='place_route';report_timing='report_timing';gen_bit_stream='generate_bitstream'}[$Stage]
   $taskReports=@(Get-ChildItem (Join-Path $taskImpl $taskDir) -Filter "*.$taskExt" -ErrorAction SilentlyContinue |
      Where-Object {$_.LastWriteTime -ge $taskStarted})
   $taskErrors=@($taskOut | Select-String '(?m)^E:|Check license failed')
@@ -117,6 +120,7 @@ try {
   if(!$taskResult.native_stage_completed){$taskErrors.Line;throw 'Native stage incomplete; inspect retained evidence'}
   # Purpose: a completed report_timing action is not a timing pass. Abort on
   # violations/unknown summary wording while preserving all native stage evidence.
-  if($Stage -eq 'report_timing'){ & (Join-Path $PSScriptRoot 'audit_mini_camera_timing.ps1') }
+  # Purpose: bitstream generation also requires the native STA audit to pass.
+  if($Stage -in @('report_timing','gen_bit_stream')){ & (Join-Path $PSScriptRoot 'audit_mini_camera_timing.ps1') }
  } finally {Pop-Location}
 } finally {$env:PANGO_LICENSE_FILE=$taskOldLicense}

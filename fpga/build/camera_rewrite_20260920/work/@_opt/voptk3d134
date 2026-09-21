@@ -1,0 +1,322 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango
+T_opt
+VI[D<NPeLKRLJ3olZLc@YH1
+Z1 04 24 4 work tb_dvp_vsync_closes_line fast 0
+=1-207bd2c02996-6aafdb3f-106-29024
+o-quiet -auto_acc_if_foreign -work ./work -g WIDTH=1280 -g HEIGHT=720 -g HREF_BLANK_CYCLES=4
+n@_opt
+Z2 OL;O;10.1c;51
+T_opt1
+V`KVN63ET578ehk0zVH8J?3
+04 23 4 work tb_camera_startup_audit fast 0
+=1-207bd2c02996-6aafc34f-31f-27174
+Z3 o-quiet -auto_acc_if_foreign -work ./work
+n@_opt1
+R2
+Z4 dC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango
+T_opt2
+VUZbDW4bo0ZXOj4Il?UG<H3
+R1
+=1-207bd2c02996-6aafdaae-6b-269b4
+R3
+n@_opt2
+R2
+R4
+vcamera
+IW5CeU@O5;ozlnj<:8YVY[2
+V7PQD;26HXXmQiAK5<TEK@3
+Z5 dC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\camera_rewrite_20260920
+Z6 w1789903683
+8../../rtl/mini_camera_diag/vendor/camera/camera.v
+F../../rtl/mini_camera_diag/vendor/camera/camera.v
+L0 3
+Z7 OL;L;10.1c;51
+r1
+31
+Z8 !s108 1789903692.322000
+Z9 !s107 ../../sim/tb_camera_startup_audit.sv|../../rtl/mini_camera_diag/vendor/camera/camera.v|../../rtl/board/reset_sync.v|
+Z10 !s90 -work|work|../../rtl/board/reset_sync.v|../../rtl/mini_camera_diag/vendor/camera/camera.v|../../sim/tb_camera_startup_audit.sv|
+Z11 o-work work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!s100 U=6UlXJaX[WZZFZkSISHJ3
+!i10b 1
+!s85 0
+vcamera_data
+I`^e9LoF2@[AVWRX8;?NN`2
+VcJUk<THz;ad8IQEHa2c_R2
+R5
+w1789909667
+8../../rtl/mini_camera_diag/vendor/camera/camera_data.v
+F../../rtl/mini_camera_diag/vendor/camera/camera_data.v
+L0 4
+R7
+r1
+31
+R11
+!s100 kS@UPdMV41HhfZc;focPZ1
+!s108 1789909676.018000
+!s107 ../../rtl/mini_camera_diag/vendor/camera/camera_data.v|
+!s90 -work|work|../../rtl/mini_camera_diag/vendor/camera/camera_data.v|
+!i10b 1
+!s85 0
+vdata_init
+I5iLXFYYcOo<iRnD^GNJ<j3
+VLZ0l7IKgXXOL40^EnM0150
+R4
+Z12 w1789882128
+8fpga/rtl/mini_camera_diag/vendor/camera/data_init.v
+Ffpga/rtl/mini_camera_diag/vendor/camera/data_init.v
+L0 5
+R7
+r1
+31
+Z13 !s108 1789902654.882000
+Z14 !s107 fpga/sim/tb_ov5640_verified_startup.sv|fpga/rtl/mini_camera_diag/vendor/camera/data_init.v|fpga/rtl/mini_camera_diag/ov5640_startup.v|fpga/rtl/mini_camera_diag/ov5640_sccb.v|
+Z15 !s90 -work|fpga/build/camera_rewrite_20260920/work|fpga/rtl/mini_camera_diag/ov5640_sccb.v|fpga/rtl/mini_camera_diag/ov5640_startup.v|fpga/rtl/mini_camera_diag/vendor/camera/data_init.v|fpga/sim/tb_ov5640_verified_startup.sv|
+Z16 o-work fpga/build/camera_rewrite_20260920/work -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!s100 gN2Gg2gWFARITb<kzAB_j2
+!i10b 1
+!s85 0
+vmini_dvp_observe
+IYRNGJUIM0`eNe70]EIbD^1
+V38S2d?DUBHbIV=OC>?IPK1
+R5
+w1789898348
+8../../rtl/mini_camera_diag/mini_dvp_observe.v
+F../../rtl/mini_camera_diag/mini_dvp_observe.v
+L0 5
+R7
+r1
+31
+Z17 !s108 1789902766.679000
+Z18 !s107 ../../sim/tb_dvp_boundary.sv|../../sim/tb_camera_warmup_audit.sv|../../sim/tb_mini_dvp.sv|../../rtl/mini_camera_diag/mini_dvp_observe.v|../../rtl/mini_camera_diag/vendor/camera/camera_data.v|
+Z19 !s90 -work|work|../../rtl/mini_camera_diag/vendor/camera/camera_data.v|../../rtl/mini_camera_diag/mini_dvp_observe.v|../../sim/tb_mini_dvp.sv|../../sim/tb_camera_warmup_audit.sv|../../sim/tb_dvp_boundary.sv|
+R11
+!s100 cSB1Y=Y13SK10][G8>]GY3
+!i10b 1
+!s85 0
+vov5640_register_model
+Z20 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+I87C1DGnQRiC3i5JR3_Rfg1
+V2z74V]RM[MDge8CYVgTha0
+Z21 !s105 tb_ov5640_verified_startup_sv_unit
+S1
+R5
+Z22 w1789902965
+Z23 8../../sim/tb_ov5640_verified_startup.sv
+Z24 F../../sim/tb_ov5640_verified_startup.sv
+L0 4
+R7
+r1
+31
+Z25 !s108 1789902970.622000
+Z26 !s107 ../../sim/tb_ov5640_verified_startup.sv|
+Z27 !s90 -work|work|../../sim/tb_ov5640_verified_startup.sv|
+R11
+!s100 HP==CjQMS;nf9Zi0zE^<<3
+!i10b 1
+!s85 0
+vov5640_sccb
+IFIMn6]PIF]=PNYhi7@QRC1
+V<>dY746^EkVb9:TfZnQjC2
+R4
+w1789902436
+8fpga/rtl/mini_camera_diag/ov5640_sccb.v
+Ffpga/rtl/mini_camera_diag/ov5640_sccb.v
+L0 4
+R7
+r1
+31
+R13
+R14
+R15
+R16
+!s100 5EQcLYT9?j1miWfOBNE@m0
+!i10b 1
+!s85 0
+vov5640_startup
+I<BYzR37D<g@B6KEgOI4`D1
+VU`c^5NmdOWW4ZU78e]S150
+R4
+w1789902532
+8fpga/rtl/mini_camera_diag/ov5640_startup.v
+Ffpga/rtl/mini_camera_diag/ov5640_startup.v
+L0 4
+R7
+r1
+31
+R13
+R14
+R15
+R16
+!s100 ^i]RR5`;j4AG^<P@m?IEU1
+!i10b 1
+!s85 0
+vreset_sync
+I^Jlf]kz1^g5O0_BzJaNWG3
+V]eb5N[Go`LlQb=Nzl9nTe1
+R5
+R12
+8../../rtl/board/reset_sync.v
+F../../rtl/board/reset_sync.v
+L0 6
+R7
+r1
+31
+R8
+R9
+R10
+R11
+!s100 YlFdaG1APQiiFEG16S^DA3
+!i10b 1
+!s85 0
+vtb_camera_startup_audit
+R20
+IiL2Mc6[gCW4bYAAB_abaY0
+V4@0P1lhJ>N?F5YXj3XM7W2
+S1
+R5
+R6
+8../../sim/tb_camera_startup_audit.sv
+F../../sim/tb_camera_startup_audit.sv
+L0 4
+R7
+r1
+31
+R8
+R9
+R10
+R11
+!s100 Z[CmWlRoeeBNQMJMbiRhV2
+!s105 tb_camera_startup_audit_sv_unit
+!i10b 1
+!s85 0
+vtb_camera_warmup_audit
+R20
+IP3Hd8kQ>G_271YUkPTEn[1
+VfW9QJ_k_7Ina98SfBGd=P0
+S1
+R5
+w1789888923
+8../../sim/tb_camera_warmup_audit.sv
+F../../sim/tb_camera_warmup_audit.sv
+L0 4
+R7
+r1
+31
+R17
+R18
+R19
+R11
+!s100 e@aejh]d1n5;@n?FSkCHT0
+!s105 tb_camera_warmup_audit_sv_unit
+!i10b 1
+!s85 0
+vtb_dvp_boundary
+R20
+Imlh]=84LkVC6TDY61l7zY3
+VRB[1f:j=DmOCHi;f7bi360
+S1
+R5
+w1789898436
+8../../sim/tb_dvp_boundary.sv
+F../../sim/tb_dvp_boundary.sv
+L0 4
+R7
+r1
+31
+R17
+R18
+R19
+R11
+!s100 3BjlHDkWojjVOi[do7co:2
+!s105 tb_dvp_boundary_sv_unit
+!i10b 1
+!s85 0
+vtb_dvp_vsync_closes_line
+R20
+IS`P9;mo>FE::BCU8XVXBZ2
+V;bL4X2WI@^PGMdn7PZloZ2
+S1
+R5
+w1789909807
+8../../sim/tb_dvp_vsync_closes_line.sv
+F../../sim/tb_dvp_vsync_closes_line.sv
+L0 4
+R7
+r1
+31
+R11
+!s105 tb_dvp_vsync_closes_line_sv_unit
+!s90 -work|work|../../sim/tb_dvp_vsync_closes_line.sv|
+!i10b 1
+!s100 hc^@eN@5z9>?J5mGJhWHi1
+!s85 0
+!s108 1789909816.416000
+!s107 ../../sim/tb_dvp_vsync_closes_line.sv|
+vtb_mini_dvp
+R20
+I8]3gX>;OPWT8G`ejc<PTI2
+V`I61F@fJ6MJDTPT:kco]b1
+S1
+R5
+w1789902745
+8../../sim/tb_mini_dvp.sv
+F../../sim/tb_mini_dvp.sv
+L0 4
+R7
+r1
+31
+R17
+R18
+R19
+R11
+!s100 h_4^=]aK`8WD8YXYg_;Z32
+!s105 tb_mini_dvp_sv_unit
+!i10b 1
+!s85 0
+vtb_ov5640_sccb_read
+R20
+I^h6ieR4<9G1AkHgWJ?0k51
+V@GT8`ccPjfnG9BhT18DC>0
+R21
+S1
+R5
+R22
+R23
+R24
+L0 72
+R7
+r1
+31
+R25
+R26
+R27
+R11
+!s100 F247N][:`_e8kHenGdQbA0
+!i10b 1
+!s85 0
+vtb_ov5640_verified_startup
+R20
+IN?a`ZnJgT8gD5SGJcL4533
+V`fohigW]`NCT3:n4D]=GF3
+R21
+S1
+R5
+R22
+R23
+R24
+L0 121
+R7
+r1
+31
+R25
+R26
+R27
+R11
+!s100 JzkMT7YMOe07Tj_XJ^oNC0
+!i10b 1
+!s85 0

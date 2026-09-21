@@ -12,11 +12,11 @@
         </comment>
         <row>
             <data>Total On Chip Power</data>
-            <data>3.814</data>
+            <data>3.87</data>
         </row>
         <row>
             <data>Static Power</data>
-            <data>0.364</data>
+            <data>0.366</data>
         </row>
         <row>
             <data>External Power</data>
@@ -24,15 +24,15 @@
         </row>
         <row>
             <data>Junction Temperature</data>
-            <data>55.136</data>
+            <data>55.581</data>
         </row>
         <row>
             <data>Thermal Margin</data>
-            <data>44.864</data>
+            <data>44.419</data>
         </row>
         <row>
             <data>Power Margin</data>
-            <data>5.665</data>
+            <data>5.608</data>
         </row>
     </table>
     <table id="report_power_logic_device_summary" title="Logic Device Summary" column_number="3">
@@ -43,18 +43,18 @@
         </column_headers>
         <row>
             <data>Clock</data>
-            <data>0.115</data>
-            <data>3.01%</data>
+            <data>0.154</data>
+            <data>3.98%</data>
         </row>
         <row>
             <data>CLM</data>
-            <data>0.037</data>
-            <data>0.97%</data>
+            <data>0.041</data>
+            <data>1.05%</data>
         </row>
         <row>
             <data>IO</data>
-            <data>2.565</data>
-            <data>67.26%</data>
+            <data>2.575</data>
+            <data>66.52%</data>
         </row>
         <row>
             <data>APM</data>
@@ -64,7 +64,7 @@
         <row>
             <data>DRM</data>
             <data>0.008</data>
-            <data>0.22%</data>
+            <data>0.21%</data>
         </row>
         <row>
             <data>ADC</data>
@@ -73,8 +73,8 @@
         </row>
         <row>
             <data>PLL</data>
-            <data>0.632</data>
-            <data>16.58%</data>
+            <data>0.63</data>
+            <data>16.27%</data>
         </row>
         <row>
             <data>PCIE</data>
@@ -88,8 +88,8 @@
         </row>
         <row>
             <data>Net</data>
-            <data>0.092</data>
-            <data>2.42%</data>
+            <data>0.097</data>
+            <data>2.50%</data>
         </row>
     </table>
     <table id="report_power_power_rail_summary" title="Power Rail Summary" column_number="5">
@@ -103,9 +103,9 @@
         <row>
             <data>vcc</data>
             <data>1</data>
-            <data>2.702</data>
+            <data>2.75</data>
             <data>0</data>
-            <data>2.702</data>
+            <data>2.75</data>
         </row>
         <row>
             <data>vcc_drm</data>
@@ -117,16 +117,16 @@
         <row>
             <data>vcca</data>
             <data>1.8</data>
-            <data>0.479</data>
+            <data>0.478</data>
             <data>0</data>
-            <data>0.862</data>
+            <data>0.86</data>
         </row>
         <row>
             <data>vccio33</data>
             <data>3.3</data>
-            <data>0.013</data>
+            <data>0.016</data>
             <data>0</data>
-            <data>0.043</data>
+            <data>0.053</data>
         </row>
         <row>
             <data>vccio25</data>
@@ -196,10 +196,10 @@
             <data>RAM(GB)</data>
         </column_headers>
         <row>
-            <data>0h:0m:17s</data>
-            <data>0h:0m:17s</data>
-            <data>0h:0m:21s</data>
-            <data>998</data>
+            <data>0h:0m:22s</data>
+            <data>0h:0m:22s</data>
+            <data>0h:0m:26s</data>
+            <data>1,048</data>
             <data>WINDOWS 10 x86_64</data>
             <data>Unknown</data>
             <data>31</data>
@@ -267,7 +267,7 @@
                     </row>
                     <row>
                         <data>Junction Temperature</data>
-                        <data>55.136</data>
+                        <data>55.5813</data>
                     </row>
                     <row>
                         <data>Custom Effective Theta JA </data>

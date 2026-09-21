@@ -1,11 +1,8 @@
-# Native UCE PAP_REGION (xmin,xmax,ymin,ymax), not physical package pins.
-# HDMI IOL clock-load coordinates are x=2, y=61..74 on PG2L100H FBG676.
-# Keep only the per-lane reset release FFs in adjacent CLM logic. Otherwise
-# its recovery path can be long even when normal setup/hold are positive.
-# See PDS UCE User Guide section 2.3.4.7. No DDR native locations are changed.
+# Native UCE PAP_REGION coordinates beside the HDMI IOL pairs. Main's shared
+# native I/O clock tree fixes the parallel/serial phase; local reset routing
+# retains full recovery/removal checks without timing exceptions.
 define_global_attribute {PAP_REGION} {hdmi_reset_d0(3,4,61,63)[CLMA,CLMS];hdmi_reset_d1(3,4,65,67)[CLMA,CLMS];hdmi_reset_d2(3,4,69,71)[CLMA,CLMS];hdmi_reset_ck(3,4,73,75)[CLMA,CLMS];}
-# Local release FFs have fanout two, to the master/slave of just one lane.
-define_attribute {i:hdmi_lane[0].u_serial.local_reset} {PAP_REGION} {hdmi_reset_d0}
-define_attribute {i:hdmi_lane[1].u_serial.local_reset} {PAP_REGION} {hdmi_reset_d1}
-define_attribute {i:hdmi_lane[2].u_serial.local_reset} {PAP_REGION} {hdmi_reset_d2}
-define_attribute {i:u_hdmi_clock.local_reset} {PAP_REGION} {hdmi_reset_ck}
+define_attribute {i:u_hdmi_tx.g_data_lanes[0].u_data_lane.lane_reset} {PAP_REGION} {hdmi_reset_d0}
+define_attribute {i:u_hdmi_tx.g_data_lanes[1].u_data_lane.lane_reset} {PAP_REGION} {hdmi_reset_d1}
+define_attribute {i:u_hdmi_tx.g_data_lanes[2].u_data_lane.lane_reset} {PAP_REGION} {hdmi_reset_d2}
+define_attribute {i:u_hdmi_tx.u_clock_lane.lane_reset} {PAP_REGION} {hdmi_reset_ck}

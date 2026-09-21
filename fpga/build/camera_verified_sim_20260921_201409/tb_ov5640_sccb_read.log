@@ -1,0 +1,25 @@
+# vsim -do {run -all; quit -f} -l tb_ov5640_sccb_read.log -lib ./work -c tb_ov5640_sccb_read 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_ov5640_sccb_read(fast)
+# Loading work.ov5640_sccb(fast)
+# run -all 
+# READ_CASE value=00 time=               80000
+# READ_CASE value=ff time=            28806000
+# READ_CASE value=aa time=            57526000
+# READ_CASE value=55 time=            86246000
+# READ_CASE read-address-NACK time=           114966000
+# READ_CASE stretch time=           127966000 scl=1 sda=1
+# OV5640_SCCB_READ_PASS checks=12
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_ov5640_verified_startup.sv(116)
+#    Time: 129080 ns  Iteration: 1  Instance: /tb_ov5640_sccb_read

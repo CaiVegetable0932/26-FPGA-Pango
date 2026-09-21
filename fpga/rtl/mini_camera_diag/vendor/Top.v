@@ -45,15 +45,16 @@ module Top#(
     output  wire                                tmds_clk_n     ,
 
     output  reg                                 cam_led0       ,
-    output  reg                                 cam_led1       
+    output  reg                                 cam_led1       ,
+    // Purpose: active-high LED3/4 expose the selected diagnostic page's flags.
+    output reg                                  capture_seen_led,
+    output reg                                  display_ready_led
 );
 //=====================================================================================
 //reg define
 //=====================================================================================
 // ENABLE_DDR
 localparam CTRL_ADDR_WIDTH = MEM_ROW_ADDR_WIDTH + MEM_BADDR_WIDTH + MEM_COL_ADDR_WIDTH;//28
-// Purpose: one second of the native 125 MHz DDR user clock.
-localparam TH_1S = 27'd124999999;
 wire  ddr_init_done;
 // No undeclared LCD enable net: this diagnostic has TMDS output only.
 //=====================================================================================
@@ -65,28 +66,19 @@ wire    serial_raw;
 wire    locked0;
 wire    rst_n;
 
-// Purpose: reproduce the PG2L100H native high-speed-output topology: the PLL
-// supplies one 371.25 MHz source, GTP_IOCLKBUF drives the OSERDES I/O clock and
-// GTP_IOCLKDIV_E2 derives the phase-related 74.25 MHz pixel clock. A delayed
-// divider reset follows the official example so the /5 phase starts cleanly.
-reg [7:0] video_clock_start_count;
-wire video_div_reset_n;
-wire video_clock_ready;
+// Purpose: share main's single-source native I/O clocks and the proven vendor
+// PLL; preserve camera/DDR resets and release video only after divider startup.
 wire pixel_reset_n, cam_reset_n, mem_reset_n;
-video_pll u_video_pll(.clkin1(sys_clk), .clkout1(serial_raw), .lock(locked0));
-GTP_IOCLKBUF u_hdmi_serial_clock(.CLKIN(serial_raw), .DI(1'b1), .CLKOUT(pclkx5));
-GTP_IOCLKDIV_E2 #(.DIV_FACTOR("5")) u_hdmi_pixel_clock(
- .CE(1'b1), .CLKIN(serial_raw), .RST_N(video_div_reset_n), .CLKDIVOUT(pclk));
-always @(posedge sys_clk or negedge rst_in)
- if(!rst_in) video_clock_start_count <= 8'h00;
- else if(!locked0) video_clock_start_count <= 8'h00;
- else if(video_clock_start_count != 8'hff)
-  video_clock_start_count <= video_clock_start_count + 1'b1;
-assign video_div_reset_n = locked0 &&
- !((video_clock_start_count >= 8'h4f) && (video_clock_start_count <= 8'h8f));
-assign video_clock_ready = (video_clock_start_count == 8'hff);
+wire hdmi_div_reset_n;
+clk_hdmi u_video_pll(.clkin1(sys_clk), .clkout0(),
+ .clkout1(serial_raw), .lock(locked0));
+GTP_CLKBUFR u_hdmi_serial_clock(.CLKIN(serial_raw), .CLKOUT(pclkx5));
+reset_sync rs_hdmi_div(pclkx5, rst_in && locked0, hdmi_div_reset_n);
+GTP_IOCLKDIV_E2 #(.DIV_FACTOR("5")) u_hdmi_pixel_div(
+ .CLKIN(serial_raw), .RST_N(hdmi_div_reset_n), .CE(1'b1), .CLKDIVOUT(pclk));
+hdmi_tx_powerup_reset u_hdmi_reset(.pixel_clk(pclk),
+ .pll_locked(rst_in && locked0), .reset_n(pixel_reset_n));
 reset_sync rs_sys(sys_clk, rst_in && locked0, rst_n);
-reset_sync rs_pixel(pclk, rst_in && locked0 && video_clock_ready, pixel_reset_n);
 reset_sync rs_camera(camera_clk_0, rst_in && locked0, cam_reset_n);
 reset_sync rs_mem(core_clk, rst_in && ddr_init_done, mem_reset_n);
 
@@ -103,8 +95,28 @@ wire            cam_href_1;
 wire            cam_write_en_1;
 wire    [15:0]  cam_data_1;
 
+// Purpose: observer and capture consume one registered DVP bundle, not independent input paths.
+wire sampled_vsync,sampled_href;
+wire [7:0] sampled_data,capture_status;
+wire [159:0] measure_packet,hdmi_diag_packet;
+// Purpose: count geometry only AFTER verified configuration, independent of abort/warmup.
+mini_dvp_measure u_dvp_measure(.clk(camera_clk_0),.reset_n(cam_reset_n),
+ .cfg_ready(capture_status[1]),.vsync(sampled_vsync),.href(sampled_href),
+ .capture_status(capture_status),.packet(measure_packet));
+mini_diag_snapshot u_diag_snapshot(.src_clk(camera_clk_0),.src_reset_n(cam_reset_n),
+ .dst_clk(pclk),.dst_reset_n(pixel_reset_n),.source(measure_packet),.snapshot(hdmi_diag_packet));
+mini_dvp_input u_dvp_input(.clk(camera_clk_0),.reset_n(cam_reset_n),
+ .vsync(camera_vsync_0),.href(camera_href_0),.data(camera_data_0),
+ .sampled_vsync(sampled_vsync),.sampled_href(sampled_href),.sampled_data(sampled_data));
 wire            cam_init_done_0;
 wire            cam_init_done_1;
+
+// Purpose: latch the first admitted camera pixel after configuration/warmup.
+// This flag on diagnostic page 10 is not a full-frame proof.
+reg pixel_seen;
+always @(posedge camera_clk_0 or negedge cam_reset_n)
+ if (!cam_reset_n) pixel_seen <= 1'b0;
+ else if (cam_write_en_0) pixel_seen <= 1'b1;
 
 camera camera_inst0(
     /*input   wire            */.clk           ( sys_clk             )  ,
@@ -112,9 +124,9 @@ camera camera_inst0(
     /*output  wire            */.SCL           ( SCL_0               )  ,  
     /*output  wire            */.SDA           ( SDA_0               )  ,  
     /*input   wire            */.camera_clk    ( camera_clk_0        )  ,
-    /*input   wire    [7:0]   */.camera_data   ( camera_data_0       )  ,
-    /*input   wire            */.camera_herf   ( camera_href_0       )  ,
-    /*input   wire            */.camera_vsync  ( camera_vsync_0      )  ,
+    /*input   wire    [7:0]   */.camera_data   ( sampled_data        )  ,
+    /*input   wire            */.camera_herf   ( sampled_href        )  ,
+    /*input   wire            */.camera_vsync  ( sampled_vsync       )  ,
     /*input   wire            */.ddr_init      ( ddr_init_done       )  ,
     /*output  wire            */.camera_rstn   ( cam_rst_0           )  ,
     /*output  wire            */.camera_pwnd   ()  ,
@@ -124,19 +136,42 @@ camera camera_inst0(
     /*output  wire            */.vs            ( cam_vsync_0         )  ,
     /*output  wire            */.hs            ( cam_href_0          )  ,
     /*output  wire            */.sop           ()  ,
-    /*output  wire            */.eop           ()  
+    /*output  wire            */.eop           (), .capture_status(capture_status)
 );
 
-// Purpose: CAM1 LED indicates PCLK activity only, not video validity or FPS.
-reg [24:0] cam_cnt_0;
-always @(posedge camera_clk_0 or negedge cam_reset_n) begin
- if (!cam_reset_n) begin cam_cnt_0 <= 0; cam_led0 <= 1; end
- else if (cam_cnt_0 == 25'd23999999) begin cam_cnt_0 <= 0; cam_led0 <= ~cam_led0; end
- else cam_cnt_0 <= cam_cnt_0 + 1'b1;
-end
-// Purpose: active-low LED indicates ACKed configuration, not a sensor-ID check.
+// Purpose: eight two-second pages. LED2:LED1:LED0 is page number, not a heartbeat.
+// Pages 0-3 keep old flag pairs; 4-7 show reset/config, DDR/warm-start,
+// warm-done/frame-start, admitted-frame/bad-line from the actual capture domain.
+// 00: raw VSYNC/HREF edges; 01: 2560-byte line/720-line frame;
+// 10: admitted camera pixel/display-ready; 11: SCCB done/DDR initialized.
+wire [3:0] raw_seen;
+mini_dvp_observe u_raw_observe(.clk(camera_clk_0),.reset_n(cam_reset_n),
+ .vsync(sampled_vsync),.href(sampled_href),.seen(raw_seen));
+(* syn_preserve=1 *) reg [15:0] diagnostic_meta,diagnostic_sync;
+reg [25:0] diagnostic_tick;
+reg [2:0] diagnostic_page;
 always @(posedge sys_clk or negedge rst_n)
- if (!rst_n) cam_led1 <= 1'b1; else cam_led1 <= !cam_init_done_0;
+ if(!rst_n) begin
+  diagnostic_meta<=0;diagnostic_sync<=0;diagnostic_tick<=0;diagnostic_page<=0;
+  cam_led0<=0;cam_led1<=0;heart_beat_led<=0;capture_seen_led<=0;display_ready_led<=0;
+ end else begin
+  // Purpose: each independent sticky/status bit crosses through two registers.
+  diagnostic_meta<={capture_status,ddr_init_done,cam_init_done_0,pool_display_valid,pixel_seen,raw_seen};
+  diagnostic_sync<=diagnostic_meta;
+  if(diagnostic_tick==26'd53999999) begin diagnostic_tick<=0;diagnostic_page<=diagnostic_page+1'b1;end
+  else diagnostic_tick<=diagnostic_tick+1'b1;
+  cam_led0<=diagnostic_page[0];cam_led1<=diagnostic_page[1];heart_beat_led<=diagnostic_page[2];
+  case(diagnostic_page)
+   0: begin capture_seen_led<=diagnostic_sync[0];display_ready_led<=diagnostic_sync[1];end
+   1: begin capture_seen_led<=diagnostic_sync[2];display_ready_led<=diagnostic_sync[3];end
+   2: begin capture_seen_led<=diagnostic_sync[4];display_ready_led<=diagnostic_sync[5];end
+   3: begin capture_seen_led<=diagnostic_sync[6];display_ready_led<=diagnostic_sync[7];end
+   4: begin capture_seen_led<=diagnostic_sync[8];display_ready_led<=diagnostic_sync[9];end
+   5: begin capture_seen_led<=diagnostic_sync[10];display_ready_led<=diagnostic_sync[11];end
+   6: begin capture_seen_led<=diagnostic_sync[12];display_ready_led<=diagnostic_sync[13];end
+   7: begin capture_seen_led<=diagnostic_sync[14];display_ready_led<=diagnostic_sync[15];end
+  endcase
+ end
 //video_scale
 //=====================================================================================
 wire    [15:0]    write_data_0;
@@ -272,26 +307,19 @@ wire    [23:0]  vout_data;
 assign hs_out=hs_out_0;
 assign vs_out=vs_out_0;
 assign de_out=de_out_0;
-// Purpose: do not expose unwritten DDR contents before a complete frame is published.
-assign vout_data=display_valid_sync ?
- {vout_data_0[15:11],3'b0,vout_data_0[10:5],2'b0,vout_data_0[4:0],3'b0} : 24'b0;
-
-rgb2tmds rgb2tmds_inst (
-    /*output  wire            */.tmds_clk_p  ( tmds_clk_p   ) ,
-    /*output  wire            */.tmds_clk_n  ( tmds_clk_n   ) ,
-    /*output  wire    [2:0]   */.tmds_data_p ( tmds_data_p  ) ,
-    /*output  wire    [2:0]   */.tmds_data_n ( tmds_data_n  ) ,
-
-    /*input   wire            */.rstn        ( pixel_reset_n ) , // Encoder/serializer reset domain.
-
-    /*input   wire    [23:0]  */.vid_pdata   ( vout_data    ) ,
-    /*input   wire            */.vid_pvde    ( de_out       ) ,
-    /*input   wire            */.vid_phsync  ( hs_out       ) ,
-    /*input   wire            */.vid_pvsync  ( vs_out       ) ,
- 
-    /*input   wire            */.pixelclk    ( pclk         ) ,
-    /*input   wire            */.serialclk   ( pclkx5       ) 
-);
+// Purpose: preserve the real DDR scanout and its aligned blanking controls.
+// Before a complete camera frame exists, transmit explicitly diagnostic telemetry.
+// This synthetic raster is never advertised as a camera image or a source-ID proof.
+wire [23:0] camera_rgb888;
+hdmi_rgb565_expand u_rgb_expand(.rgb565(vout_data_0), .rgb888(camera_rgb888));
+wire [23:0] diagnostic_rgb;
+mini_diag_raster u_diag_raster(.clk(pclk),.reset_n(pixel_reset_n),
+ .vsync(vs_out),.de(de_out),.packet(hdmi_diag_packet),.rgb(diagnostic_rgb));
+assign vout_data = display_valid_sync ? camera_rgb888 : diagnostic_rgb;
+hdmi_tx_rgb u_hdmi_tx(.pixel_clk(pclk), .serial_clk(pclkx5),
+ .reset_n(pixel_reset_n), .rgb(vout_data), .data_enable(de_out),
+ .hsync(hs_out), .vsync(vs_out), .tmds_clk_p(tmds_clk_p),
+ .tmds_clk_n(tmds_clk_n), .tmds_data_p(tmds_data_p), .tmds_data_n(tmds_data_n));
 
 //=====================================================================================
 //ddr读写模块
@@ -347,6 +375,8 @@ wire core_clk;
 // Purpose: keep in-flight capture, latest completed and displayed slots distinct.
 wire pool_write_req,pool_read_req,dma_write_ack,dma_read_ack,dma_write_finish;
 wire pool_display_valid;
+// Purpose: export display admission on LED4/page 10, not as image proof.
+// Status is exported through diagnostic_sync to the selected LED page above.
 mini_frame_pool u_frame_pool(.clk(core_clk),.reset_n(mem_reset_n),
  .camera_req(write_req_0),.display_req(read_req_0),.camera_ack(write_req_ack_0),
  .display_ack(read_req_ack_0),.dma_write_ack(dma_write_ack),.dma_read_ack(dma_read_ack),
@@ -698,23 +728,7 @@ ddr3_controller I_ips_ddr_top (
 );
 
 //=====================================================================================
-//心跳信号
+// Purpose: LED2 is now driven only by the sys_clk diagnostic page sequencer.
 //=====================================================================================
-reg [26:0] cnt;
-always@(posedge core_clk) begin
-    if (!ddr_init_done)
-        cnt <= 27'd0;
-    else if ( cnt >= TH_1S )
-        cnt <= 27'd0;
-    else
-        cnt <= cnt + 27'd1;
-end
-
-always @(posedge core_clk) begin
-    if (!ddr_init_done)
-        heart_beat_led <= 1'd1;
-    else if ( cnt >= TH_1S )
-        heart_beat_led <= ~heart_beat_led;
-end
 
 endmodule

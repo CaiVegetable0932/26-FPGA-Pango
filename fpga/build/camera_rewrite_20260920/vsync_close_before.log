@@ -1,0 +1,22 @@
+# vsim -do {run -all; quit -f} -l vsync_close_before.log -lib ./work -c tb_dvp_vsync_closes_line 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_dvp_vsync_closes_line(fast)
+# Loading work.camera_data(fast)
+# Loading work.mini_dvp_observe(fast)
+# run -all 
+# VSYNC_CLOSE_RESULT raw=1111 warmup=0 pixels=0
+# ** Fatal: VSYNC_CLOSE_FAIL
+#    Time: 3466 ns  Scope: tb_dvp_vsync_closes_line File: ../../sim/tb_dvp_vsync_closes_line.sv Line: 28
+# ** Note: $finish    : ../../sim/tb_dvp_vsync_closes_line.sv(28)
+#    Time: 3466 ns  Iteration: 0  Instance: /tb_dvp_vsync_closes_line

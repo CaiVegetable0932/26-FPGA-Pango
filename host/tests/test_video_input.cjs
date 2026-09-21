@@ -38,7 +38,8 @@ async function test(name,fn){try{await fn();results.push({name,passed:true});}ca
   });
   await test("Opening uses exact saved ID and audio false; identity stays unverified",async()=>{
     const f=fixture();await f.controller.refresh();f.controller.configure("card");const state=await f.controller.open();
-    assert.deepEqual(f.calls,[{audio:false,video:{deviceId:{exact:"card"}}}]);
+    // Purpose: verify the 720p30 preference never weakens exact device selection.
+    assert.deepEqual(f.calls,[{audio:false,video:{deviceId:{exact:"card"},width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30}}}]);
     assert.equal(state.pending,false);assert.equal(state.status,"open");assert.equal(state.source_frame_id,null);assert.equal(state.pairing_status,"unverified");
     assert.equal(state.signal_validation,"not_performed");assert.equal(f.video.srcObject,f.controller.getStream());
     assert.throws(()=>f.controller.configure("webcam"),/关闭设备/);

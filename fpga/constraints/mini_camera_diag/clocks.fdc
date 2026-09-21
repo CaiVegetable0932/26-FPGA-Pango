@@ -3,10 +3,10 @@
 # delays or whole camera/display-domain false paths are introduced here.
 create_clock -name sys_clk -period 37.037037 [get_ports sys_clk]
 create_clock -name camera_pclk_budget -period 10.000 [get_ports camera_clk_0]
-# Purpose: constrain the single 371.25 MHz PLL source and its native /5 I/O
-# divider output; this matches the PG2L100H high-speed-output clock topology.
-create_generated_clock -name serial_clk -source [get_ports sys_clk] -multiply_by 55 -divide_by 4 [get_pins {u_video_pll.u_gpll/CLKOUT1}]
-create_generated_clock -name pixel_clk -source [get_pins {u_video_pll.u_gpll/CLKOUT1}] -divide_by 5 [get_pins {u_hdmi_pixel_clock/CLKDIVOUT}]
+# Purpose: use the board-proven PLL plus main's native /5 I/O clock topology.
+# Preserve actual PLL/divider edge inference, including 40% pixel duty.
+create_generated_clock -name serial_clk [get_pins {u_video_pll.u_gpll/CLKOUT1}]
+create_generated_clock -name pixel_clk [get_pins {u_hdmi_pixel_div/CLKDIVOUT}]
 # External reset is asynchronous; internal reset release paths remain timed.
 set_false_path -from [get_ports rst_in]
 # TODO: DVP input delays from sensor mode + board/cable skew; HDMI output timing;

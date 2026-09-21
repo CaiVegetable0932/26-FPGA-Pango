@@ -10,6 +10,13 @@ set_false_path -hold -from [get_cells {frame_read_write_inst0.read_buf.U_ipm2l_f
 set_max_delay 6.0 -datapath_only -from [get_cells {frame_read_write_inst0.read_buf.U_ipm2l_fifo_afifo_64i_16o_128.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {frame_read_write_inst0.read_buf.U_ipm2l_fifo_afifo_64i_16o_128.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
 set_false_path -hold -from [get_cells {frame_read_write_inst0.read_buf.U_ipm2l_fifo_afifo_64i_16o_128.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {frame_read_write_inst0.read_buf.U_ipm2l_fifo_afifo_64i_16o_128.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
 # Purpose: synchronize only single-bit requests/status/ACKs; second stages remain timed.
+# Purpose: held-data snapshot handshake. Data is stable until acknowledged and
+# published one destination cycle after the 2FF request; only first stages are bounded.
+set_max_delay 6.0 -datapath_only -to [get_cells {u_diag_snapshot.ack_meta u_diag_snapshot.req_meta u_diag_snapshot.data_meta*}]
+set_false_path -hold -to [get_cells {u_diag_snapshot.ack_meta u_diag_snapshot.req_meta u_diag_snapshot.data_meta*}]
+# Purpose: independent diagnostic flags only; no pixel buses or live counters cross here.
+set_max_delay 6.0 -datapath_only -to [get_cells {diagnostic_meta*}]
+set_false_path -hold -to [get_cells {diagnostic_meta*}]
 set_max_delay 6.0 -datapath_only -to [get_cells {u_frame_pool.camera_meta}]
 set_false_path -hold -to [get_cells {u_frame_pool.camera_meta}]
 set_max_delay 6.0 -datapath_only -to [get_cells {u_frame_pool.display_meta}]

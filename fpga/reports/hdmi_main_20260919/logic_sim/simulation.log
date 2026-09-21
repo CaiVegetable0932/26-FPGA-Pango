@@ -1,0 +1,35 @@
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {onerror {quit -code 2}; run -all; quit -f} -c tb_hdmi_main 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\sim\tb_hdmi_main.sv(25): (vopt-2685) [TFMPC] - Too few port connections for 'tx'.  Expected 11, found 7.
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\sim\tb_hdmi_main.sv(25): (vopt-2718) [TFMPC] - Missing connection for port 'tmds_clk_n'.
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\sim\tb_hdmi_main.sv(25): (vopt-2718) [TFMPC] - Missing connection for port 'tmds_clk_p'.
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\sim\tb_hdmi_main.sv(25): (vopt-2718) [TFMPC] - Missing connection for port 'tmds_data_n'.
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\sim\tb_hdmi_main.sv(25): (vopt-2718) [TFMPC] - Missing connection for port 'tmds_data_p'.
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_hdmi_main(fast)
+# Loading work.hdmi_tx_oserdes(fast)
+# onerror {quit -code 2} 
+#  Warning: onerror command for use within macro
+#  run -all 
+# HDMI_MAIN_PASS rgb565=65536 raster=1650x750 active=1280x720 rgb_checks=2474995
+# ** Note: $finish    : D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/sim/tb_hdmi_main.sv(96)
+#    Time: 24815950 ns  Iteration: 1  Instance: /tb_hdmi_main

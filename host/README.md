@@ -74,6 +74,8 @@ Windows 双击 [start_web.cmd](scripts/start_web.cmd)；Ubuntu 在项目根目�
 
 ## 原图、结果和证据的边界
 
+HDMI 联调入口为 `python host/src/hdmi_diag_capture.py --seconds 3`。采集前即时枚举并强制校验唯一 Hagibis（`VID_1DE1&PID_F105`）物理路径；不回退到电脑 USB Cam。当前联调配置是 HDMI 源 720p60 / UVC 采集 720p30 MJPEG，不代表真实摄像头 60 FPS 或 1080p 系统验收。实现和实测边界见 [HDMI 主线集成报告](../fpga/reports/hdmi_main_integration_20260919.md)。
+
 - 网络接收S0为完整1920×1080 RAW8，62.208MB/s；PC基础去马赛克仅用于原图可视化，不自动等价于FPGA S1。
 - 普通HDMI CaptureFrame保留采集设备序号与时戳；未验证源帧关联时source_frame_id为null、pairing_status为unverified。
 - 正式精度样本由FPGA复制S1和同源S2/S3至独立快照槽，再经限流网络导出。原始文件用.raw/.rgb＋元数据，PNG只作为派生展示。

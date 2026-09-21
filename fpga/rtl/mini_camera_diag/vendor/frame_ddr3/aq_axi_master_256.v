@@ -130,7 +130,10 @@ begin
 		rd_fifo_enable <= 1'b0;
 	else if(wr_state == S_WR_IDLE && WR_START)
 		rd_fifo_enable <= 1'b1;
-	else if(WR_FIFO_RE && (rd_fifo_cnt == RD_LEN[31:5] - 32'd1) )//5
+    // Purpose: stop prefetch after the WRITE transfer's last 32-byte word.
+    // RD_LEN is unrelated and is zero before the first display frame; using it
+    // here consumed 17 FIFO words for a 16-beat write and prevented full capture.
+	else if(WR_FIFO_RE && (rd_fifo_cnt == WR_LEN[31:5] - 32'd1) )
 		rd_fifo_enable <= 1'b0;		
 end
   // Write State

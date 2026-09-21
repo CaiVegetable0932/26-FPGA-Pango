@@ -15,6 +15,23 @@ from pathlib import Path
 HOST = Path(__file__).resolve().parents[1]
 DEVICE = "Hagibis"
 
+
+def verified_device(folder: Path) -> dict:
+    """Enumerate immediately before open; reject webcam/ambiguous USB identities."""
+    evidence = folder / "device_enumeration.json"
+    subprocess.run(["powershell.exe", "-NoProfile", "-File",
+                    str(HOST / "scripts/enumerate_hagibis.ps1"),
+                    "-OutputPath", str(evidence)], check=True, capture_output=True,
+                   timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    devices = json.loads(evidence.read_text(encoding="utf-8-sig"))
+    matches = devices.get("hagibis_matches", [])
+    if not devices.get("unique_hagibis") or len(matches) != 1:
+        raise RuntimeError("Expected one Hagibis capture device")
+    selected = matches[0]
+    if selected.get("FriendlyName") != DEVICE or "vid_1de1&pid_f105" not in selected.get("MonikerDisplayName", "").lower():
+        raise RuntimeError("Capture identity is not the expected Hagibis USB device")
+    return selected
+
 def run(ffmpeg: Path, args: list[str], folder: Path, name: str, timeout: int = 30):
     """Run without a shell/window, retain logs, and terminate only this process on timeout."""
     command = [str(ffmpeg), "-hide_banner", "-nostdin", *args]
@@ -43,9 +60,14 @@ def capture(seconds: int = 2) -> Path:
                 ffmpeg_sha256=hashlib.sha256(ffmpeg.read_bytes()).hexdigest(), status="running")
     started = time.monotonic()
     try:
+        selected = verified_device(folder)
+        # FFmpeg's DirectShow alternative name escapes moniker colons as '_'.
+        # Bind the physical path, not a guessed numeric index or friendly name.
+        device_path = selected["MonikerDisplayName"].replace(":", "_")
+        meta["selected_device"] = selected
         # Preserve the original compressed packets and device timestamps in Matroska.
         run(ffmpeg, ["-f", "dshow", "-rtbufsize", "128M", "-vcodec", "mjpeg",
-             "-framerate", "30", "-video_size", "1280x720", "-i", "video=" + DEVICE,
+             "-framerate", "30", "-video_size", "1280x720", "-i", "video=" + device_path,
              "-t", str(seconds), "-map", "0:v:0", "-an", "-c:v", "copy",
              "-progress", "pipe:1", str(folder / "capture.mkv")], folder, "capture")
         # Retain a decoded RGB plane for inspection; it is not sensor-raw data.

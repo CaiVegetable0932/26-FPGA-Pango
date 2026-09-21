@@ -1,0 +1,104 @@
+Executing : cfg_set_tcl_break -flag true
+Executing : cfg_set_tcl_break -flag true successfully.
+Executing : cfg_connect -ip 127.0.0.1 -port 65420
+Connecting to server[127.0.0.1 : 65420].
+Connect to server[127.0.0.1 : 65420] successfully.
+COMMAND[check version information] execute successfully, takes 0.0 secs.
+The cable List : 
+Cable index 0:USB Cable II/fffffffffffffffe 
+
+COMMAND[get_cable_paras] execute successfully, takes 1.1 secs.
+Executing : cfg_connect -ip 127.0.0.1 -port 65420 successfully.
+Executing : cfg_set_cable_property -index 0 -freq 1Mhz
+COMMAND[set_cable_paras] execute successfully, takes 0.6 secs.
+Executing : cfg_set_cable_property -index 0 -freq 1Mhz successfully.
+Executing : cfg_scan_chain
+PANGO USB CABLE II cable driver: D2XX DLL
+PG2L100H
+This device configure situation (done bit): 1
+COMMAND[Open config cable] execute successfully, takes 0.4 secs.
+Executing : cfg_scan_chain successfully.
+Executing : cfg_read_device_property -mode 0 -device_index 0
+The ID value is: 0x00602899
+COMMAND[Get device id] execute successfully, takes 0.4 secs.
+Executing : cfg_read_device_property -mode 0 -device_index 0 successfully.
+Executing : cfg_jtag_flash_scan_device -device_index 0
+COMMAND[Scan Outer SPI Flash] execute successfully, takes 0.4 secs.
+Executing : cfg_jtag_flash_scan_device -device_index 0 successfully.
+Executing : cfg_jtag_flash_assign_file -file C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\camera_hdmi_telemetry_flash_20260921/Top.sfc -device_index 0
+Executing : cfg_jtag_flash_assign_file -file C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\camera_hdmi_telemetry_flash_20260921/Top.sfc -device_index 0 successfully.
+Executing : cfg_jtag_flash_erase -device_index 0
+The Progress: ��6%
+The Progress: ����11%
+The Progress: ������15%
+The Progress: ��������20%
+The Progress: ����������25%
+The Progress: ������������30%
+The Progress: ��������������36%
+The Progress: ����������������41%
+The Progress: ������������������46%
+The Progress: ��������������������51%
+The Progress: ����������������������55%
+The Progress: ������������������������60%
+The Progress: ��������������������������65%
+The Progress: ����������������������������70%
+The Progress: ������������������������������75%
+The Progress: ��������������������������������80%
+The Progress: ����������������������������������86%
+The Progress: ������������������������������������91%
+The Progress: ��������������������������������������96%
+The Progress: ����������������������������������������101%
+COMMAND[Erase Outer Flash] execute finish, takes 12.8 secs.
+Executing : cfg_jtag_flash_erase -device_index 0 successfully.
+Executing : cfg_jtag_flash_program -device_index 0
+The Progress: ��6%
+The Progress: ����11%
+The Progress: ������15%
+The Progress: ��������20%
+The Progress: ����������25%
+The Progress: ������������30%
+The Progress: ��������������35%
+The Progress: ����������������40%
+The Progress: ������������������45%
+The Progress: ��������������������50%
+The Progress: ����������������������55%
+The Progress: ������������������������60%
+The Progress: ��������������������������65%
+The Progress: ����������������������������70%
+The Progress: ������������������������������75%
+The Progress: ��������������������������������80%
+The Progress: ����������������������������������85%
+The Progress: ������������������������������������90%
+The Progress: ��������������������������������������95%
+The Progress: ����������������������������������������100%
+COMMAND[Program Outer Flash] execute finish, takes 91.3 secs.
+Executing : cfg_jtag_flash_program -device_index 0 successfully.
+Executing : cfg_jtag_flash_verify -device_index 0
+The Progress: ��6%
+The Progress: ����11%
+The Progress: ������15%
+The Progress: ��������20%
+The Progress: ����������25%
+The Progress: ������������30%
+The Progress: ��������������35%
+The Progress: ����������������40%
+The Progress: ������������������45%
+The Progress: ��������������������50%
+The Progress: ����������������������55%
+The Progress: ������������������������60%
+The Progress: ��������������������������65%
+The Progress: ����������������������������70%
+The Progress: ������������������������������75%
+The Progress: ��������������������������������80%
+The Progress: ����������������������������������85%
+The Progress: ������������������������������������90%
+The Progress: ��������������������������������������95%
+The Progress: ����������������������������������������100%
+COMMAND[Verify Outer Flash] execute successfully, takes 31.5 secs.
+Executing : cfg_jtag_flash_verify -device_index 0 successfully.
+Executing : cfg_disconnect
+Server is disconnect
+Executing : cfg_disconnect successfully.
+CAMERA_FLASH_ERASE_PROGRAM_VERIFY_COMPLETED
+Executing : cfg_close
+Executing : cfg_close successfully.

@@ -1,0 +1,290 @@
+[Info] [2026-9-20 14:11:42] /***************************Start jtagserver***************************/
+[Info] [2026-9-20 14:11:42] Path: E:/PDS_Pangu/PDS_2022.2-SP6.4/bin
+[Info] [2026-9-20 14:11:42] Version: 146967
+[Debug] [2026-9-20 14:11:45] Add a new user_thread, socket descriptor is 1220 user_thread id is 000000000002472C
+[Debug] [2026-9-20 14:11:45] After adding, map size is : 1
+[Debug] [2026-9-20 14:11:45] Add a new user_thread, socket descriptor is 1228 user_thread id is 000000000002472C
+[Debug] [2026-9-20 14:11:45] After adding, map size is : 2
+[Debug] [2026-9-20 14:11:45] IP address of connecting client is : ::ffff:127.0.0.1
+[Debug] [2026-9-20 14:11:45] IP address of connecting client is : ::ffff:127.0.0.1IP address of connecting client is : ::ffff:127.0.0.1
+[Debug] [2026-9-20 14:11:45] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:11:45] _total_bytes_size : 160
+[Debug] [2026-9-20 14:11:45] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:11:45] _total_bytes_size : 96
+[Debug] [2026-9-20 14:11:45] cmd id :40010cmd name : get_cable_paras
+[Debug] [2026-9-20 14:11:46] cmd operation get_cable_paras releases locker
+[Debug] [2026-9-20 14:11:48] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:11:48] _total_bytes_size : 332
+[Debug] [2026-9-20 14:11:48] cmd id :40011cmd name : set_cable_paras
+[Debug] [2026-9-20 14:11:48] cmd operation set_cable_paras releases locker
+[Debug] [2026-9-20 14:11:49] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:11:49] _total_bytes_size : 101
+[Debug] [2026-9-20 14:11:49] cmd id :20001cmd name : Open config cable
+[Debug] [2026-9-20 14:11:49] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:11:49] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:49] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:49] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:49] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:50] cmd operation Open config cable releases locker
+[Debug] [2026-9-20 14:11:51] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:11:51] _total_bytes_size : 157
+[Debug] [2026-9-20 14:11:51] cmd id :4e26cmd name : Get device id
+[Debug] [2026-9-20 14:11:51] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:11:51] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:51] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:51] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:51] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:51] cmd operation Get device id releases locker
+[Debug] [2026-9-20 14:11:52] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:11:52] _total_bytes_size : 165
+[Debug] [2026-9-20 14:11:52] cmd id :4f4ccmd name : Scan Outer SPI Flash
+[Debug] [2026-9-20 14:11:52] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:11:52] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:52] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:52] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:52] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:11:52] the value in the status register is :81efca0
+[Debug] [2026-9-20 14:11:52] flash_id is b4018
+[Debug] [2026-9-20 14:11:53] cmd operation Scan Outer SPI Flash releases locker
+[Info] [2026-9-20 14:13:13] /***************************Start jtagserver***************************/
+[Info] [2026-9-20 14:13:13] Path: E:/PDS_Pangu/PDS_2022.2-SP6.4/bin
+[Info] [2026-9-20 14:13:13] Version: 146967
+[Debug] [2026-9-20 14:13:16] Add a new user_thread, socket descriptor is 1172 user_thread id is 0000000000023AE8
+[Debug] [2026-9-20 14:13:16] After adding, map size is : 1
+[Debug] [2026-9-20 14:13:16] Add a new user_thread, socket descriptor is 1128 user_thread id is 0000000000023AE8
+[Debug] [2026-9-20 14:13:16] After adding, map size is : 2
+[Debug] [2026-9-20 14:13:16] IP address of connecting client is : ::ffff:127.0.0.1
+[Debug] [2026-9-20 14:13:16] IP address of connecting client is : ::ffff:127.0.0.1IP address of connecting client is : ::ffff:127.0.0.1
+[Debug] [2026-9-20 14:13:16] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:13:16] _total_bytes_size : 160
+[Debug] [2026-9-20 14:13:16] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:13:16] _total_bytes_size : 96
+[Debug] [2026-9-20 14:13:16] cmd id :40010cmd name : get_cable_paras
+[Debug] [2026-9-20 14:13:17] cmd operation get_cable_paras releases locker
+[Debug] [2026-9-20 14:13:18] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:13:18] _total_bytes_size : 332
+[Debug] [2026-9-20 14:13:18] cmd id :40011cmd name : set_cable_paras
+[Debug] [2026-9-20 14:13:19] cmd operation set_cable_paras releases locker
+[Debug] [2026-9-20 14:13:20] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:13:20] _total_bytes_size : 101
+[Debug] [2026-9-20 14:13:20] cmd id :20001cmd name : Open config cable
+[Debug] [2026-9-20 14:13:20] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:13:20] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:20] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:20] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:20] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:20] cmd operation Open config cable releases locker
+[Debug] [2026-9-20 14:13:21] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:13:21] _total_bytes_size : 157
+[Debug] [2026-9-20 14:13:21] cmd id :4e26cmd name : Get device id
+[Debug] [2026-9-20 14:13:21] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:13:21] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:21] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:21] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:21] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:22] cmd operation Get device id releases locker
+[Debug] [2026-9-20 14:13:23] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:13:23] _total_bytes_size : 165
+[Debug] [2026-9-20 14:13:23] cmd id :4f4ccmd name : Scan Outer SPI Flash
+[Debug] [2026-9-20 14:13:23] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:13:23] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:23] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:23] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:23] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:13:23] the value in the status register is :81efca0
+[Debug] [2026-9-20 14:13:23] flash_id is b4018
+[Debug] [2026-9-20 14:13:23] cmd operation Scan Outer SPI Flash releases locker
+[Info] [2026-9-20 14:15:31] /***************************Start jtagserver***************************/
+[Info] [2026-9-20 14:15:31] Path: D:/XDU/concept/26-FPGA-Pango-test/pds_cfg_runtime/bin
+[Info] [2026-9-20 14:15:31] Version: 146967
+[Debug] [2026-9-20 14:15:34] Add a new user_thread, socket descriptor is 1152 user_thread id is 0000000000023A84
+[Debug] [2026-9-20 14:15:34] After adding, map size is : 1
+[Debug] [2026-9-20 14:15:34] Add a new user_thread, socket descriptor is 1220 user_thread id is 0000000000023A84
+[Debug] [2026-9-20 14:15:34] After adding, map size is : 2
+[Debug] [2026-9-20 14:15:34] IP address of connecting client is : ::ffff:127.0.0.1
+[Debug] [2026-9-20 14:15:34] IP address of connecting client is : ::ffff:127.0.0.1
+[Debug] [2026-9-20 14:15:34] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:15:34] _total_bytes_size : 160
+[Debug] [2026-9-20 14:15:34] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:15:34] _total_bytes_size : 96
+[Debug] [2026-9-20 14:15:34] cmd id :40010cmd name : get_cable_paras
+[Debug] [2026-9-20 14:15:35] cmd operation get_cable_paras releases locker
+[Debug] [2026-9-20 14:15:37] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:15:37] _total_bytes_size : 332
+[Debug] [2026-9-20 14:15:37] cmd id :40011cmd name : set_cable_paras
+[Debug] [2026-9-20 14:15:37] cmd operation set_cable_paras releases locker
+[Debug] [2026-9-20 14:15:38] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:15:38] _total_bytes_size : 101
+[Debug] [2026-9-20 14:15:38] cmd id :20001cmd name : Open config cable
+[Debug] [2026-9-20 14:15:38] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:15:38] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:38] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:38] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:38] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:38] cmd operation Open config cable releases locker
+[Debug] [2026-9-20 14:15:40] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:15:40] _total_bytes_size : 157
+[Debug] [2026-9-20 14:15:40] cmd id :4e26cmd name : Get device id
+[Debug] [2026-9-20 14:15:40] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:15:40] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:40] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:40] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:40] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:40] cmd operation Get device id releases locker
+[Debug] [2026-9-20 14:15:41] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:15:41] _total_bytes_size : 165
+[Debug] [2026-9-20 14:15:41] cmd id :4f4ccmd name : Scan Outer SPI Flash
+[Debug] [2026-9-20 14:15:41] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:15:41] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:41] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:41] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:41] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:41] the value in the status register is :81efca0
+[Debug] [2026-9-20 14:15:41] flash_id is b4018
+[Debug] [2026-9-20 14:15:41] cmd operation Scan Outer SPI Flash releases locker
+[Debug] [2026-9-20 14:15:43] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:15:43] _total_bytes_size : 323
+[Debug] [2026-9-20 14:15:43] cmd id :4f4dcmd name : Program Outer Flash
+[Debug] [2026-9-20 14:15:43] begin to operate flash: cmd id = 4f4d
+[Debug] [2026-9-20 14:15:43] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:15:43] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:43] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:43] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:43] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:15:43] the value in the status register is :81efca0
+[Debug] [2026-9-20 14:15:43] flash_id is b4018
+[Debug] [2026-9-20 14:15:43] The value of GigaDevice status register 1 is 0x
+[Debug] [2026-9-20 14:15:43] The value write to GigaDevice status register 1 is 0x
+[Debug] [2026-9-20 14:15:45] After write the value ,the value of GigaDevice status register 1 is 0x
+[Debug] [2026-9-20 14:15:45] progress bar is 1
+[Debug] [2026-9-20 14:15:51] progress bar is 6
+[Debug] [2026-9-20 14:15:54] progress bar is 10
+[Debug] [2026-9-20 14:15:59] progress bar is 15
+[Debug] [2026-9-20 14:16:03] progress bar is 20
+[Debug] [2026-9-20 14:16:08] progress bar is 25
+[Debug] [2026-9-20 14:16:12] progress bar is 30
+[Debug] [2026-9-20 14:16:16] progress bar is 35
+[Debug] [2026-9-20 14:16:21] progress bar is 40
+[Debug] [2026-9-20 14:16:25] progress bar is 45
+[Debug] [2026-9-20 14:16:30] progress bar is 50
+[Debug] [2026-9-20 14:16:34] progress bar is 55
+[Debug] [2026-9-20 14:16:39] progress bar is 60
+[Debug] [2026-9-20 14:16:43] progress bar is 65
+[Debug] [2026-9-20 14:16:48] progress bar is 70
+[Debug] [2026-9-20 14:16:52] progress bar is 75
+[Debug] [2026-9-20 14:16:56] progress bar is 80
+[Debug] [2026-9-20 14:17:01] progress bar is 85
+[Debug] [2026-9-20 14:17:05] progress bar is 90
+[Debug] [2026-9-20 14:17:10] progress bar is 95
+[Debug] [2026-9-20 14:17:14] progress bar is 100
+[Debug] [2026-9-20 14:17:14] end to operate flash: cmd id = 20301
+[Debug] [2026-9-20 14:17:14] cmd operation Program Outer Flash releases locker
+[Debug] [2026-9-20 14:17:15] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:17:15] _total_bytes_size : 801
+[Debug] [2026-9-20 14:17:15] cmd id :20303cmd name : Verify Outer Flash
+[Debug] [2026-9-20 14:17:15] begin to operate flash: cmd id = 20303
+[Debug] [2026-9-20 14:17:15] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:17:15] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:17:15] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:17:15] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:17:15] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:17:15] the value in the status register is :81efca0
+[Debug] [2026-9-20 14:17:15] flash_id is b4018
+[Debug] [2026-9-20 14:17:15] the value in the status register is :81efca0
+[Debug] [2026-9-20 14:17:15] progress bar is 1
+[Debug] [2026-9-20 14:17:17] progress bar is 6
+[Debug] [2026-9-20 14:17:19] progress bar is 10
+[Debug] [2026-9-20 14:17:20] progress bar is 15
+[Debug] [2026-9-20 14:17:22] progress bar is 20
+[Debug] [2026-9-20 14:17:23] progress bar is 25
+[Debug] [2026-9-20 14:17:25] progress bar is 30
+[Debug] [2026-9-20 14:17:26] progress bar is 35
+[Debug] [2026-9-20 14:17:28] progress bar is 40
+[Debug] [2026-9-20 14:17:30] progress bar is 45
+[Debug] [2026-9-20 14:17:31] progress bar is 50
+[Debug] [2026-9-20 14:17:33] progress bar is 55
+[Debug] [2026-9-20 14:17:34] progress bar is 60
+[Debug] [2026-9-20 14:17:36] progress bar is 65
+[Debug] [2026-9-20 14:17:37] progress bar is 70
+[Debug] [2026-9-20 14:17:39] progress bar is 75
+[Debug] [2026-9-20 14:17:40] progress bar is 80
+[Debug] [2026-9-20 14:17:42] progress bar is 85
+[Debug] [2026-9-20 14:17:44] progress bar is 90
+[Debug] [2026-9-20 14:17:45] progress bar is 95
+[Debug] [2026-9-20 14:17:46] progress bar is 100
+[Debug] [2026-9-20 14:17:47] end to operate flash: cmd id = 20303
+[Debug] [2026-9-20 14:17:47] cmd operation Verify Outer Flash releases locker
+[Info] [2026-9-20 14:18:16] /***************************Start jtagserver***************************/
+[Info] [2026-9-20 14:18:16] Path: D:/XDU/concept/26-FPGA-Pango-test/pds_cfg_runtime/bin
+[Info] [2026-9-20 14:18:16] Version: 146967
+[Debug] [2026-9-20 14:18:19] Add a new user_thread, socket descriptor is 1192 user_thread id is 00000000000239F0
+[Debug] [2026-9-20 14:18:19] After adding, map size is : 1
+[Debug] [2026-9-20 14:18:19] Add a new user_thread, socket descriptor is 1172 user_thread id is 00000000000239F0
+[Debug] [2026-9-20 14:18:19] After adding, map size is : 2
+[Debug] [2026-9-20 14:18:19] IP address of connecting client is : ::ffff:127.0.0.1
+[Debug] [2026-9-20 14:18:19] IP address of connecting client is : ::ffff:127.0.0.1
+[Debug] [2026-9-20 14:18:19] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:18:19] _total_bytes_size : 160
+[Debug] [2026-9-20 14:18:19] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:18:19] _total_bytes_size : 96
+[Debug] [2026-9-20 14:18:19] cmd id :40010cmd name : get_cable_paras
+[Debug] [2026-9-20 14:18:21] cmd operation get_cable_paras releases locker
+[Debug] [2026-9-20 14:18:22] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:18:22] _total_bytes_size : 332
+[Debug] [2026-9-20 14:18:22] cmd id :40011cmd name : set_cable_paras
+[Debug] [2026-9-20 14:18:23] cmd operation set_cable_paras releases locker
+[Debug] [2026-9-20 14:18:23] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:18:23] _total_bytes_size : 101
+[Debug] [2026-9-20 14:18:23] cmd id :20001cmd name : Open config cable
+[Debug] [2026-9-20 14:18:24] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:18:24] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:24] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:24] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:24] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:24] cmd operation Open config cable releases locker
+[Debug] [2026-9-20 14:18:25] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:18:25] _total_bytes_size : 165
+[Debug] [2026-9-20 14:18:25] cmd id :4f4ccmd name : Scan Outer SPI Flash
+[Debug] [2026-9-20 14:18:25] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:18:25] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:25] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:25] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:25] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:25] the value in the status register is :81efca0
+[Debug] [2026-9-20 14:18:25] flash_id is b4018
+[Debug] [2026-9-20 14:18:25] cmd operation Scan Outer SPI Flash releases locker
+[Debug] [2026-9-20 14:18:27] Remove the header data from the client, index : 0
+[Debug] [2026-9-20 14:18:27] _total_bytes_size : 321
+[Debug] [2026-9-20 14:18:27] cmd id :4f4fcmd name : Verify Outer Flash
+[Debug] [2026-9-20 14:18:27] begin to operate flash: cmd id = 4f4f
+[Debug] [2026-9-20 14:18:27] the idcode from the scanning is: 0x50602899
+[Debug] [2026-9-20 14:18:27] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:27] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:27] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:27] the idcode from the scanning is: 0x0
+[Debug] [2026-9-20 14:18:27] the value in the status register is :81efca0
+[Debug] [2026-9-20 14:18:27] flash_id is b4018
+[Debug] [2026-9-20 14:18:27] the value in the status register is :81efca0
+[Debug] [2026-9-20 14:18:27] progress bar is 1
+[Debug] [2026-9-20 14:18:46] progress bar is 6
+[Debug] [2026-9-20 14:18:58] progress bar is 10
+[Debug] [2026-9-20 14:19:14] progress bar is 15
+[Debug] [2026-9-20 14:19:29] progress bar is 20
+[Debug] [2026-9-20 14:19:44] progress bar is 25
+[Debug] [2026-9-20 14:19:59] progress bar is 30
+[Debug] [2026-9-20 14:20:15] progress bar is 35
+[Debug] [2026-9-20 14:20:30] progress bar is 40
+[Debug] [2026-9-20 14:20:45] progress bar is 45
+[Debug] [2026-9-20 14:21:00] progress bar is 50
+[Debug] [2026-9-20 14:21:16] progress bar is 55
+[Debug] [2026-9-20 14:21:31] progress bar is 60
+[Debug] [2026-9-20 14:21:46] progress bar is 65
+[Debug] [2026-9-20 14:22:01] progress bar is 70
+[Debug] [2026-9-20 14:22:17] progress bar is 75
+[Debug] [2026-9-20 14:22:32] progress bar is 80
+[Debug] [2026-9-20 14:22:47] progress bar is 85
+[Debug] [2026-9-20 14:23:02] progress bar is 90
+[Debug] [2026-9-20 14:23:18] progress bar is 95
+[Debug] [2026-9-20 14:23:31] progress bar is 100
+[Debug] [2026-9-20 14:23:31] end to operate flash: cmd id = 20303
+[Debug] [2026-9-20 14:23:31] cmd operation Verify Outer Flash releases locker

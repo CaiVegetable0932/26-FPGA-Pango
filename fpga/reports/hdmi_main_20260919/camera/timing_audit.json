@@ -1,0 +1,532 @@
+{
+  "report": "D:\\XDU\\concept\\26-FPGA-Pango-hdmi-integration\\fpga\\build\\mini_camera_diag\\implementation\\report_timing\\Top.rtr",
+  "sha256": "A833539915489F3FC2ABECBFA92C054E44C2196F199D06BF5F6450E81843276A",
+  "checked_at": "2026-09-19T23:14:54.0251920+08:00",
+  "design_summary": "All Constraints Met.",
+  "constraints_violated": false,
+  "timing_constraints_met": true,
+  "external_timing_verified": false,
+  "release_ready": false,
+  "hardware_tested": false,
+  "programmed": false,
+  "clock_pair_summaries": [
+    {
+      "section": "Setup_Slow",
+      "launch": "rst_clk",
+      "capture": "rst_clk",
+      "slack_ns": 5.153,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "ddrphy_sysclk",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 2.84,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "phy_dq_sysclk_0",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 4.046,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "phy_dq_sysclk_1",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 3.079,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "camera_pclk_budget",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 5.038,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "pixel_clk",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 4.648,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "ddrphy_sysclk",
+      "capture": "phy_dq_sysclk_0",
+      "slack_ns": 1.488,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "ddrphy_sysclk",
+      "capture": "phy_dq_sysclk_1",
+      "slack_ns": 1.446,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "sys_clk",
+      "capture": "sys_clk",
+      "slack_ns": 33.203,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "camera_pclk_budget",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 5.509,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "sys_clk",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 3.793,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "ddrphy_sysclk",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 3.584,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "serial_clk",
+      "capture": "serial_clk",
+      "slack_ns": 1.558,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "pixel_clk",
+      "capture": "pixel_clk",
+      "slack_ns": 8.898,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "ddrphy_sysclk",
+      "capture": "pixel_clk",
+      "slack_ns": 4.616,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "rst_clk",
+      "capture": "rst_clk",
+      "slack_ns": 0.185,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "ddrphy_sysclk",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 0.137,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "phy_dq_sysclk_0",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 0.787,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "phy_dq_sysclk_1",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 0.564,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "ddrphy_sysclk",
+      "capture": "phy_dq_sysclk_0",
+      "slack_ns": 0.445,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "ddrphy_sysclk",
+      "capture": "phy_dq_sysclk_1",
+      "slack_ns": 0.502,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "sys_clk",
+      "capture": "sys_clk",
+      "slack_ns": 0.223,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "camera_pclk_budget",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 0.237,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "serial_clk",
+      "capture": "serial_clk",
+      "slack_ns": 0.341,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "pixel_clk",
+      "capture": "pixel_clk",
+      "slack_ns": 0.244,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Slow",
+      "launch": "rst_clk",
+      "capture": "rst_clk",
+      "slack_ns": 5.461,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Slow",
+      "launch": "ddrphy_sysclk",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 4.358,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Slow",
+      "launch": "sys_clk",
+      "capture": "sys_clk",
+      "slack_ns": 34.528,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Slow",
+      "launch": "camera_pclk_budget",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 4.591,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Slow",
+      "launch": "pixel_clk",
+      "capture": "serial_clk",
+      "slack_ns": 0.028,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Slow",
+      "launch": "pixel_clk",
+      "capture": "pixel_clk",
+      "slack_ns": 2.855,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Slow",
+      "launch": "rst_clk",
+      "capture": "rst_clk",
+      "slack_ns": 0.391,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Slow",
+      "launch": "ddrphy_sysclk",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 0.299,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Slow",
+      "launch": "sys_clk",
+      "capture": "sys_clk",
+      "slack_ns": 0.298,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Slow",
+      "launch": "camera_pclk_budget",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 0.458,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Slow",
+      "launch": "pixel_clk",
+      "capture": "serial_clk",
+      "slack_ns": 0.191,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Slow",
+      "launch": "pixel_clk",
+      "capture": "pixel_clk",
+      "slack_ns": 0.39,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "rst_clk",
+      "capture": "rst_clk",
+      "slack_ns": 6.275,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "ddrphy_sysclk",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 4.751,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "phy_dq_sysclk_0",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 5.181,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "phy_dq_sysclk_1",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 4.539,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "camera_pclk_budget",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 5.436,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "pixel_clk",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 5.162,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "ddrphy_sysclk",
+      "capture": "phy_dq_sysclk_0",
+      "slack_ns": 3.721,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "ddrphy_sysclk",
+      "capture": "phy_dq_sysclk_1",
+      "slack_ns": 3.584,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "sys_clk",
+      "capture": "sys_clk",
+      "slack_ns": 34.758,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "camera_pclk_budget",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 7.131,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "sys_clk",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 4.591,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "ddrphy_sysclk",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 4.506,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "serial_clk",
+      "capture": "serial_clk",
+      "slack_ns": 1.977,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "pixel_clk",
+      "capture": "pixel_clk",
+      "slack_ns": 10.673,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "ddrphy_sysclk",
+      "capture": "pixel_clk",
+      "slack_ns": 5.135,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "rst_clk",
+      "capture": "rst_clk",
+      "slack_ns": 0.132,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "ddrphy_sysclk",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 0.102,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "phy_dq_sysclk_0",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 0.25,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "phy_dq_sysclk_1",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 0.102,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "ddrphy_sysclk",
+      "capture": "phy_dq_sysclk_0",
+      "slack_ns": 0.104,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "ddrphy_sysclk",
+      "capture": "phy_dq_sysclk_1",
+      "slack_ns": 0.133,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "sys_clk",
+      "capture": "sys_clk",
+      "slack_ns": 0.156,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "camera_pclk_budget",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 0.163,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "serial_clk",
+      "capture": "serial_clk",
+      "slack_ns": 0.225,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "pixel_clk",
+      "capture": "pixel_clk",
+      "slack_ns": 0.168,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Fast",
+      "launch": "rst_clk",
+      "capture": "rst_clk",
+      "slack_ns": 6.391,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Fast",
+      "launch": "ddrphy_sysclk",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 4.961,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Fast",
+      "launch": "sys_clk",
+      "capture": "sys_clk",
+      "slack_ns": 35.468,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Fast",
+      "launch": "camera_pclk_budget",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 5.167,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Fast",
+      "launch": "pixel_clk",
+      "capture": "serial_clk",
+      "slack_ns": 0.492,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Recovery_Fast",
+      "launch": "pixel_clk",
+      "capture": "pixel_clk",
+      "slack_ns": 4.154,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Fast",
+      "launch": "rst_clk",
+      "capture": "rst_clk",
+      "slack_ns": 0.269,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Fast",
+      "launch": "ddrphy_sysclk",
+      "capture": "ddrphy_sysclk",
+      "slack_ns": 0.202,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Fast",
+      "launch": "sys_clk",
+      "capture": "sys_clk",
+      "slack_ns": 0.203,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Fast",
+      "launch": "camera_pclk_budget",
+      "capture": "camera_pclk_budget",
+      "slack_ns": 0.32,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Fast",
+      "launch": "pixel_clk",
+      "capture": "serial_clk",
+      "slack_ns": 0.125,
+      "failing_endpoints": 0
+    },
+    {
+      "section": "Removal_Fast",
+      "launch": "pixel_clk",
+      "capture": "pixel_clk",
+      "slack_ns": 0.291,
+      "failing_endpoints": 0
+    }
+  ]
+}

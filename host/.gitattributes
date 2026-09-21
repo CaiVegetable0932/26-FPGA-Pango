@@ -1,3 +1,6 @@
 # Raw evidence must never undergo newline conversion or text merging.
 *.raw binary
 *.rgb binary
+# Keep acquisition evidence byte-exact, including logs/metadata whose SHA256
+# values are recorded during capture. This is not an ignore rule.
+data/hdmi_diag_*/** -text

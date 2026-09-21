@@ -1,0 +1,90 @@
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {run -all; quit -f} -lib ./work -c tb_camera_axi_write_startup 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2685) [TFMPC] - Too few port connections for 'dut'.  Expected 64, found 32.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'DEBUG'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'RD_DONE'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'RD_FIFO_DATA'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'RD_FIFO_WE'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'RD_READY'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'WR_READY'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_RREADY'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARVALID'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARUSER'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARQOS'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARPROT'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARCACHE'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARLOCK'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARBURST'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARSIZE'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARLEN'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARADDR'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_ARID'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_BREADY'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_WUSER'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_WSTRB'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWVALID'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWUSER'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWQOS'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWPROT'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWCACHE'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWLOCK'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWBURST'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWSIZE'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWLEN'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWADDR'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_axi_write_startup.sv(22): (vopt-2718) [TFMPC] - Missing connection for port 'M_AXI_AWID'.
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_camera_axi_write_startup(fast)
+# run -all 
+# AXI_WRITE_COUNTS read_len=0 pops=17 beats=16
+# ** Fatal: AXI_WRITE_FAIL: FIFO overread at startup
+#    Time: 200 ns  Scope: tb_camera_axi_write_startup.burst File: C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_camera_axi_write_startup.sv Line: 37
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_camera_axi_write_startup.sv(37)
+#    Time: 200 ns  Iteration: 1  Instance: /tb_camera_axi_write_startup

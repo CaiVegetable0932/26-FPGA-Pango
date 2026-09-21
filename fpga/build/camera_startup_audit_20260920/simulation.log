@@ -1,0 +1,24 @@
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {onerror {quit -code 2}; run -all; quit -f} -lib ./work -c tb_camera_startup_audit 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_camera_startup_audit(fast)
+# onerror {quit -code 2} 
+#  Warning: onerror command for use within macro
+#  run -all 
+# STARTUP_PASS cycles=10546687 reset_release=327682 first_sccb=1403259 writes=244 time_ns=390628323000
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_camera_startup_audit.sv(47)
+#    Time: 390628322713 ps  Iteration: 0  Instance: /tb_camera_startup_audit

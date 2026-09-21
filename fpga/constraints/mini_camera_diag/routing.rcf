@@ -2,10 +2,8 @@
 # controller flow. PDS packs OSERDES reset logic without guessed hierarchy rules.
 def_route -prior_net {I_ips_ddr_top/u_ddrphy_top/ddrphy_ioclk_gate [0]}
 def_route -prior_net {I_ips_ddr_top/u_ddrphy_top/ddrphy_ioclk_gate [1]}
-# Purpose: route each two-load OSERDES reset net before ordinary fabric nets.
-# Names are taken from this diagnostic's native routed timing report, not inferred
-# from another top-level design; recovery/removal timing remains fully checked.
-def_route -prior_net {rgb2tmds_inst/encoder[0].dataserializer/u_serial/local_reset}
-def_route -prior_net {rgb2tmds_inst/encoder[1].dataserializer/u_serial/local_reset}
-def_route -prior_net {rgb2tmds_inst/encoder[2].dataserializer/u_serial/local_reset}
-def_route -prior_net {rgb2tmds_inst/clockserializer/u_serial/local_reset}
+# Same real shared-transmitter reset net names as the main top.
+def_route -prior_net {u_hdmi_tx/g_data_lanes[0].u_data_lane/lane_reset}
+def_route -prior_net {u_hdmi_tx/g_data_lanes[1].u_data_lane/lane_reset}
+def_route -prior_net {u_hdmi_tx/g_data_lanes[2].u_data_lane/lane_reset}
+def_route -prior_net {u_hdmi_tx/u_clock_lane/lane_reset}

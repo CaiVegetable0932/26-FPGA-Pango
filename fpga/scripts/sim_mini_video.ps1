@@ -4,8 +4,9 @@ $ErrorActionPreference='Stop'
 $taskFpga=Split-Path $PSScriptRoot -Parent
 $taskRun=Join-Path $taskFpga ('build/mini_camera_diag/video_sim_'+(Get-Date -Format 'yyyyMMdd_HHmmss_fff'))
 New-Item -ItemType Directory -Path $taskRun | Out-Null
-$taskSources=@('rtl/mini_camera_diag/vendor/sync_vg.v','rtl/mini_camera_diag/vendor/timing_gen_xy.v',
- 'rtl/mini_camera_diag/vendor/video_rect_read_data.v','rtl/mini_camera_diag/vendor/hdmi/tmds_encoder.v','sim/tb_mini_video.sv') |
+# Exercise the actual shared raster/encoder used by both current PDS projects.
+$taskSources=@('rtl/hdmi/sync_vg.v','rtl/mini_camera_diag/vendor/timing_gen_xy.v',
+ 'rtl/mini_camera_diag/vendor/video_rect_read_data.v','rtl/hdmi/tmds_encoder.v','sim/tb_mini_video.sv') |
  ForEach-Object {Join-Path $taskFpga $_}
 Push-Location $taskRun
 try {

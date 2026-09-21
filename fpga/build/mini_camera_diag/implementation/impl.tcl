@@ -79,3 +79,93 @@ synthesize -ads -selected_syn_tool_opt 2
 dev_map 
 pnr -action_timeout 15 -congest_overlap_limit 20 
 report_timing -max_path 10 
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+compile -top_module {Top} -top_module Top
+synthesize -ads -selected_syn_tool_opt 2 
+dev_map 
+pnr -action_timeout 15 -congest_overlap_limit 20 
+report_timing -max_path 10 
+report_power 
+gen_netlist 
+gen_bit_stream -scbv {High Voltage} 
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+compile -top_module {Top} -top_module Top
+synthesize -ads -selected_syn_tool_opt 2 
+dev_map 
+pnr -action_timeout 15 -congest_overlap_limit 20 
+report_timing -max_path 10 
+report_power 
+gen_netlist 
+gen_bit_stream -scbv {High Voltage} 
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+compile -top_module {Top} -top_module Top
+synthesize -ads -selected_syn_tool_opt 2 
+dev_map 
+pnr -action_timeout 15 -congest_overlap_limit 20 
+report_timing -max_path 10 
+report_power 
+gen_netlist 
+gen_bit_stream -scbv {High Voltage} 
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+compile -top_module {Top} -top_module Top
+synthesize -ads -selected_syn_tool_opt 2 
+dev_map 
+pnr -action_timeout 15 -congest_overlap_limit 20 
+report_timing -max_path 10 
+report_power 
+gen_netlist 
+gen_bit_stream -scbv {High Voltage} 
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+compile -top_module {Top} -top_module Top
+synthesize -ads -selected_syn_tool_opt 2 
+dev_map 
+pnr -action_timeout 15 -congest_overlap_limit 20 
+report_timing -max_path 10 
+report_power 
+gen_netlist 
+gen_bit_stream -scbv {High Voltage} 
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+compile -top_module {Top} -top_module Top
+synthesize -ads -selected_syn_tool_opt 2 
+dev_map 
+pnr -action_timeout 15 -congest_overlap_limit 20 
+report_timing -max_path 10 
+report_power 
+gen_netlist 
+gen_bit_stream -scbv {High Voltage} 
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+compile -top_module {Top} -top_module Top
+synthesize -ads -selected_syn_tool_opt 2 
+dev_map 
+pnr -action_timeout 15 -congest_overlap_limit 20 
+report_timing -max_path 10 
+report_power 
+gen_netlist 
+gen_bit_stream -scbv {High Voltage} 
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+compile -top_module {Top} -top_module Top
+synthesize -ads -selected_syn_tool_opt 2 
+dev_map 
+pnr -action_timeout 15 -congest_overlap_limit 20 
+report_timing -max_path 10 
+report_power 
+gen_netlist 
+gen_bit_stream -scbv {High Voltage} 
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+compile -top_module {Top} -top_module Top
+synthesize -ads -selected_syn_tool_opt 2 
+dev_map 
+pnr -action_timeout 15 -congest_overlap_limit 20 
+report_timing -max_path 10 
+report_power 
+gen_netlist 
+gen_bit_stream -scbv {High Voltage} 
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+compile -top_module {Top} -top_module Top
+synthesize -ads -selected_syn_tool_opt 2 
+dev_map 
+pnr -action_timeout 15 -congest_overlap_limit 20 
+report_timing -max_path 10 
+report_power 
+gen_netlist 
+gen_bit_stream -scbv {High Voltage} 

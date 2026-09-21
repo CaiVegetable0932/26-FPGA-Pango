@@ -1,0 +1,114 @@
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -L usim -L oserdes_e2 -do {onerror {quit -code 2}; run -all; quit -f} -c tb_hdmi_native 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Warning: E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/simulation/GTP_OSERDES_E2.v(767): (vopt-2241) Connection width does not match width of port 'ts_ctrl'. The port definition is at: nofile(25).
+# 
+# ** Warning: E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/simulation/GTP_OSERDES_E2.v(767): (vopt-2241) Connection width does not match width of port 'ts_ctrl'. The port definition is at: nofile(25).
+# 
+# ** Warning: E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/simulation/GTP_OSERDES_E2.v(767): (vopt-2241) Connection width does not match width of port 'ts_ctrl'. The port definition is at: nofile(25).
+# 
+# ** Warning: E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/simulation/GTP_OSERDES_E2.v(767): (vopt-2241) Connection width does not match width of port 'ts_ctrl'. The port definition is at: nofile(25).
+# 
+# ** Warning: E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/simulation/GTP_OSERDES_E2.v(767): (vopt-2241) Connection width does not match width of port 'ts_ctrl'. The port definition is at: nofile(25).
+# 
+# ** Warning: E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/simulation/GTP_OSERDES_E2.v(767): (vopt-2241) Connection width does not match width of port 'ts_ctrl'. The port definition is at: nofile(25).
+# 
+# ** Warning: E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/simulation/GTP_OSERDES_E2.v(767): (vopt-2241) Connection width does not match width of port 'ts_ctrl'. The port definition is at: nofile(25).
+# 
+# ** Warning: E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/simulation/GTP_OSERDES_E2.v(767): (vopt-2241) Connection width does not match width of port 'ts_ctrl'. The port definition is at: nofile(25).
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\rtl\hdmi\hdmi_tx_oserdes.v(56): (vopt-2685) [TFMPC] - Too few port connections for 'u_master'.  Expected 20, found 18.
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\rtl\hdmi\hdmi_tx_oserdes.v(56): (vopt-2718) [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\rtl\hdmi\hdmi_tx_oserdes.v(56): (vopt-2718) [TFMPC] - Missing connection for port 'TFB'.
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\rtl\hdmi\hdmi_tx_oserdes.v(78): (vopt-2685) [TFMPC] - Too few port connections for 'u_slave'.  Expected 20, found 18.
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\rtl\hdmi\hdmi_tx_oserdes.v(78): (vopt-2718) [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: D:\XDU\concept\26-FPGA-Pango-hdmi-integration\fpga\rtl\hdmi\hdmi_tx_oserdes.v(78): (vopt-2718) [TFMPC] - Missing connection for port 'TFB'.
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_hdmi_native(fast)
+# Loading usim.GTP_GRS(fast)
+# Loading usim.GTP_IOCLKDIV_E2(fast)
+# Loading usim.GTP_OUTBUFDS(fast)
+# Loading usim.GTP_OSERDES_E2(fast)
+# Loading usim.GTP_OSERDES_E2(fast__1)
+# ** Warning: (vsim-3017) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Too few port connections. Expected 20, found 18.
+# 
+#         Region: /tb_hdmi_native/u_dut/u_master
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Missing connection for port 'TFB'.
+# 
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: (vsim-3017) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Too few port connections. Expected 20, found 18.
+# 
+#         Region: /tb_hdmi_native/u_dut/u_slave
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Missing connection for port 'TFB'.
+# 
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: (vsim-3017) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Too few port connections. Expected 20, found 18.
+# 
+#         Region: /tb_hdmi_native/u_lane1/u_master
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Missing connection for port 'TFB'.
+# 
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: (vsim-3017) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Too few port connections. Expected 20, found 18.
+# 
+#         Region: /tb_hdmi_native/u_lane1/u_slave
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Missing connection for port 'TFB'.
+# 
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: (vsim-3017) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Too few port connections. Expected 20, found 18.
+# 
+#         Region: /tb_hdmi_native/u_lane2/u_master
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Missing connection for port 'TFB'.
+# 
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: (vsim-3017) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Too few port connections. Expected 20, found 18.
+# 
+#         Region: /tb_hdmi_native/u_lane2/u_slave
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Missing connection for port 'TFB'.
+# 
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: (vsim-3017) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Too few port connections. Expected 20, found 18.
+# 
+#         Region: /tb_hdmi_native/u_clock/u_master
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Missing connection for port 'TFB'.
+# 
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(56): [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# ** Warning: (vsim-3017) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Too few port connections. Expected 20, found 18.
+# 
+#         Region: /tb_hdmi_native/u_clock/u_slave
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Missing connection for port 'TFB'.
+# 
+# ** Warning: (vsim-3722) D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/rtl/hdmi/hdmi_tx_oserdes.v(78): [TFMPC] - Missing connection for port 'TERM_FB'.
+# 
+# onerror {quit -code 2} 
+#  Warning: onerror command for use within macro
+#  run -all 
+# TMDS_RESULT checks=46167 errors=0 symbols=1024 phase=9 period_ns=13.4700 high_ns=5.3880
+# TMDS_PASS
+# ** Note: $finish    : D:/XDU/concept/26-FPGA-Pango-hdmi-integration/fpga/sim/tb_hdmi_native.sv(114)
+#    Time: 249500799 ps  Iteration: 0  Instance: /tb_hdmi_native

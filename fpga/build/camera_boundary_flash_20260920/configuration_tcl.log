@@ -1,0 +1,13 @@
+[2026.09.20 18:07:03] : cfg_set_tcl_break succeed, 0.0
+[2026.09.20 18:07:03] : cfg_gen_sfc succeed, 0.0
+[2026.09.20 18:07:07] : cfg_set_tcl_break succeed, 0.0
+[2026.09.20 18:07:09] : cfg_connect succeed, 2.1
+[2026.09.20 18:07:10] : cfg_set_cable_property succeed, 1.0
+[2026.09.20 18:07:12] : cfg_scan_chain succeed, 1.0
+[2026.09.20 18:07:13] : cfg_read_device_property succeed, 1.0
+[2026.09.20 18:07:15] : cfg_jtag_flash_scan_device succeed, 1.0
+[2026.09.20 18:07:15] : cfg_jtag_flash_assign_file succeed, 0.0
+[2026.09.20 18:07:29] : cfg_jtag_flash_erase succeed, 13.1
+[2026.09.20 18:09:01] : cfg_jtag_flash_program succeed, 91.6
+[2026.09.20 18:09:34] : cfg_jtag_flash_verify succeed, 32.2
+[2026.09.20 18:09:34] : cfg_disconnect succeed, 0.0

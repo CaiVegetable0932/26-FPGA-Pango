@@ -1,0 +1,9 @@
+Executing : cfg_set_tcl_break -flag true
+Executing : cfg_set_tcl_break -flag true successfully.
+Executing : cfg_gen_sfc -device_name xt25f128 -opcode 11 -sbit_start_address 0 -sbit C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mini_camera_diag\implementation\generate_bitstream\Top.sbit -sfc C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\camera_flash_20260920\Top_xt25f128.sfc
+W: Configuration-4002: Tcl parameter check failed: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\camera_flash_20260920\Top_xt25f128.sfc does not exist, now create the file..
+The Start Address of bit file C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mini_camera_diag\implementation\generate_bitstream\Top.sbit: 0x0
+Executing : cfg_gen_sfc -device_name xt25f128 -opcode 11 -sbit_start_address 0 -sbit C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mini_camera_diag\implementation\generate_bitstream\Top.sbit -sfc C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\camera_flash_20260920\Top_xt25f128.sfc successfully.
+CAMERA_SFC_GENERATED
+Executing : cfg_close
+Executing : cfg_close successfully.

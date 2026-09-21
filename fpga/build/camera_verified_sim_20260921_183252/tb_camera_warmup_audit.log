@@ -1,0 +1,28 @@
+# vsim -do {run -all; quit -f} -l tb_camera_warmup_audit.log -lib ./work -c tb_camera_warmup_audit 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_warmup_audit.sv(11): (vopt-2685) [TFMPC] - Too few port connections for 'dut'.  Expected 14, found 13.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_camera_warmup_audit.sv(11): (vopt-2718) [TFMPC] - Missing connection for port 'capture_status'.
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_camera_warmup_audit(fast)
+# Loading work.camera_data(fast)
+# ** Warning: (vsim-3017) C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_camera_warmup_audit.sv(11): [TFMPC] - Too few port connections. Expected 14, found 13.
+# 
+#         Region: /tb_camera_warmup_audit/dut
+# ** Warning: (vsim-3722) C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_camera_warmup_audit.sv(11): [TFMPC] - Missing connection for port 'capture_status'.
+# 
+# run -all 
+# WARMUP_PASS short_frames=12 discarded_complete=10 accepted_pixels=8
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_camera_warmup_audit.sv(36)
+#    Time: 6366 ns  Iteration: 0  Instance: /tb_camera_warmup_audit

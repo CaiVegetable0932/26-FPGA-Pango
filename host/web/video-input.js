@@ -89,7 +89,10 @@
       const chosen={...state.selected},ticket=begin("opening","正在打开所选采集设备；输入信号未验证。");
       let incoming=null;
       try{
-        incoming=await mediaDevices.getUserMedia({audio:false,video:{deviceId:{exact:chosen.deviceId}}});
+        // Purpose: prefer the CAM1 HDMI capture mode while binding the selected
+        // device exactly; report negotiated settings if the driver chooses otherwise.
+        incoming=await mediaDevices.getUserMedia({audio:false,video:{deviceId:{exact:chosen.deviceId},
+          width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30}}});
         if(!current(ticket))throw Error("设备打开已取消");
         const track=incoming.getVideoTracks()[0];
         if(!track||track.readyState==="ended")throw Error("设备没有提供可用的视频轨道；配置仍保留。");

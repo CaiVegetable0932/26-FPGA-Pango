@@ -1,0 +1,27 @@
+# vsim -do {run -all; quit -f} -l dvp_720p.log -lib ./work -c -gWIDTH=1280 -gHEIGHT=720 tb_dvp_boundary 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_dvp_boundary(fast)
+# Loading work.camera_data(fast)
+# Loading work.mini_dvp_observe(fast)
+# run -all 
+# BOUNDARY_COUNTS gap=0 pixels=921600 eop=1 flags=1111
+# BOUNDARY_COUNTS gap=1 pixels=921600 eop=1 flags=1111
+# BOUNDARY_COUNTS gap=2 pixels=921600 eop=1 flags=1111
+# BOUNDARY_COUNTS gap=3 pixels=921600 eop=1 flags=1111
+# BOUNDARY_COUNTS gap=4 pixels=921600 eop=1 flags=1111
+# BOUNDARY_COUNTS gap=5 pixels=921600 eop=1 flags=1111
+# BOUNDARY_COUNTS gap=6 pixels=921600 eop=1 flags=1111
+# DVP_BOUNDARY_PASS
+# ** Note: $finish    : ../../sim/tb_dvp_boundary.sv(37)
+#    Time: 129176186 ns  Iteration: 0  Instance: /tb_dvp_boundary
