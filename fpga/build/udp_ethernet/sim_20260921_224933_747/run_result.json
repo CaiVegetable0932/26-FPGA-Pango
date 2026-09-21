@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "native_exit": 0,
+  "seed": 20260921,
+  "timeout_cycles": 64,
+  "scope": "UDP/IPv4/Ethernet GMII RTL simulation",
+  "hardware_tested": false,
+  "synthesis_tested": false,
+  "timing_closed": false,
+  "source_files": [
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\network\\udp_ipv4_eth_tx.v",
+      "sha256": "700A88BF929784335D517B776D236E1F1AE84074184804739DF348EDEF67FFE4"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\sim\\tb_udp_ipv4_eth_tx.sv",
+      "sha256": "BC54CC71D31C54882A688C3863D1C183224542F8B5B56434CD37EB93EAA5F901"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\sim\\check_ethernet_tx.py",
+      "sha256": "F48E9EA6354BBE8697F3CE6FE83B07906EC4B52CF1E244A85D2903EC8DBDCF5D"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\scripts\\sim_udp_ethernet.ps1",
+      "sha256": "C82FDF66DD64BFAB2323AC1D3CA46EC3712783117941A8E2F968BBEB6A23019D"
+    }
+  ]
+}

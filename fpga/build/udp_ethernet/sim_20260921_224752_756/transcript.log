@@ -1,0 +1,23 @@
+# vsim +SEED=1729 -do {onerror {quit -code 2}; onbreak {quit -code 3}; run -all; quit -f} -l transcript.log -lib ./work -c -wlf simulation.wlf -gRX_TIMEOUT_CYCLES=32 tb_udp_ipv4_eth_tx 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_udp_ipv4_eth_tx(fast)
+# Loading work.udp_ipv4_eth_tx(fast)
+# onerror {quit -code 2} 
+#  Warning: onerror command for use within macro
+#  onbreak {quit -code 3} 
+#  Warning: onbreak command for use within macro
+#  run -all 
+# UDP_ETH_PASS done=44 errors=6 overlap=26752 start_wait=3047 timeout=32 seed=000006c1
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_udp_ipv4_eth_tx.sv(261)
+#    Time: 565022 ns  Iteration: 0  Instance: /tb_udp_ipv4_eth_tx

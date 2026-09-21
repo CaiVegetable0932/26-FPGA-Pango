@@ -1,0 +1,29 @@
+# vsim -L usim -do {onerror {quit -f -code 2}; onbreak {quit -f -code 3}; log -r /*; run -all; quit -f -code 0} -c -onfinish exit -t 1ps -wlf rgmii_tx.wlf work.tb_pango_rgmii_tx 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_pango_rgmii_tx(fast)
+# Loading usim.GTP_GRS(fast)
+# Loading work.pango_rgmii_tx(fast)
+# onerror {quit -f -code 2} 
+#  Warning: onerror command for use within macro
+#  onbreak {quit -f -code 3} 
+#  Warning: onbreak command for use within macro
+#  log -r /* 
+#  run -all 
+# RGMII_TX_SWEEP epoch=0 completed_vectors=1024
+# RGMII_TX_SWEEP epoch=1 completed_vectors=2048
+# RGMII_TX_SWEEP epoch=2 completed_vectors=3072
+# RGMII_TX_RESULT checks=56080 errors=0 vectors=3072 local_resets=4 global_resets=1 txc_rises=3113 txc_falls=3109
+# RGMII_TX_PASS
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_pango_rgmii_tx.sv(232)
+#    Time: 25024200 ps  Iteration: 0  Instance: /tb_pango_rgmii_tx

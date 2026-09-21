@@ -1,0 +1,49 @@
+{
+  "passed": false,
+  "failure": "Native-model identity, counters, or transcript checks failed",
+  "completed_at": "2026-09-21T22:47:47.4912228+08:00",
+  "run_directory": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\rgmii_tx_20260921_224742_473",
+  "simulator": "Model Technology ModelSim SE-64 vsim 10.1c Simulator 2012.07 Jul 28 2012",
+  "pds_root": "E:/PDS_Pangu/PDS_2022.2-SP6.4",
+  "official_models": [
+    {
+      "path": "E:\\PDS_Pangu\\PDS_2022.2-SP6.4\\arch\\vendor\\pango\\verilog\\simulation\\GTP_GRS.v",
+      "sha256": "DAE720BCC467DDB4FF99F2753368934E2649B87F6AC63B8A0D7219699BAC1DEC"
+    },
+    {
+      "path": "E:\\PDS_Pangu\\PDS_2022.2-SP6.4\\arch\\vendor\\pango\\verilog\\simulation\\GTP_ODDR_E1.v",
+      "sha256": "0FACD3433414CA667B27DFB15817151D433468E32440880E3C4855BEDC932705"
+    }
+  ],
+  "official_models_unchanged": true,
+  "sources": [
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\network\\pango_rgmii_tx.v",
+      "sha256": "CEE695B96B718A5FBE1B2F3E931FC40B3016C95FD9A3BA42D2B872B94645EF63"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\sim\\tb_pango_rgmii_tx.sv",
+      "sha256": "CD9FC092F1472566EE954CB225697E1838FF1048D822E4E03E74A2F26E7DA08D"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\scripts\\sim_pango_rgmii_tx.ps1",
+      "sha256": "ABEC9A5791164544A809FC367F819FD98AE6C77D026856BE427B3D844E907175"
+    }
+  ],
+  "summary": {
+    "checks": 56080,
+    "errors": 0,
+    "vectors": 3072,
+    "local_resets": 4,
+    "global_resets": 1,
+    "txc_rises": 3113,
+    "txc_falls": 3109
+  },
+  "scope": "Native GTP functional simulation; 3 x 256 x 4 continuous byte/control cases",
+  "same_edge_latency_cycles": 1,
+  "clock_period_ns": 8,
+  "forwarded_clock_lag_ns": 2,
+  "board_verified": false,
+  "synthesis_run": false,
+  "phy_txid_verified": false
+}

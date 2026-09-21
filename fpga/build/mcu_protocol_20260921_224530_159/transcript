@@ -1,0 +1,22 @@
+# vsim -do {onerror {quit -code 2}; onbreak {quit -code 2}; run -all; quit -f} -c -wlf {C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\mcu_protocol_20260921_224530_159\clock125.wlf} -gFULL=0 -gRX_TIMEOUT_MS=20 -gCLK_HZ=125000000 tb_mcu_protocol 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_mcu_protocol(fast)
+# onerror {quit -code 2} 
+#  Warning: onerror command for use within macro
+#  onbreak {quit -code 2} 
+#  Warning: onbreak command for use within macro
+#  run -all 
+# MCU_PROTOCOL_PASS clk=125000000 baud=115200 timeout_ms=20 full=0 checks=2041 events=3 responses=21
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_mcu_protocol.sv(327)
+#    Time: 146219084783 ps  Iteration: 0  Instance: /tb_mcu_protocol

@@ -1,5 +1,7 @@
 # FPGA 开发区
 
+2026-09-21通信子系统：在`codex/fpga-mcu-praw-protocol`实现MCU UART、PRAW/UDP/IP/MAC和原生RGMII TX；完整离线回归及原生编译/综合记录见[通信离线报告](reports/comms_offline_20260921.md)。独立[工程入口](project/fpga_comms/fpga_comms.pds)不是烧录镜像；综合hold、完整板级约束、RAW帧池读DMA和MCU固件适配尚未完成。现有摄像头HDMI工程保持不变。
+
 这里直接开发 PG2L100H FPGA 本体相关实现。当前已建立 PDS 原生工程和 IP 集成底座，尚非完整摄像头/视频系统；烧录前构建记录见 [工程构建报告](reports/pre_programming_build.md)。
 
 当前架构为单路 OV5640 RAW8 DVP：一支写 S0 帧池并经板载千兆网发往 PC，另一支经基础 ISP、S1 帧池和硬件矫正生成 RGB888 结果，通过唯一 HDMI 输出。实现依据为[跨端回传方案](../output/OV5640_RAW8千兆网与HDMI双路回传方案.md)。

@@ -1,0 +1,31 @@
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -L usim -do {do run.do} -c -onfinish exit -t 1ps -wlf rgmii_tx.wlf -novopt work.tb_pango_rgmii_tx 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/rgmii_tx_20260921_225604_758/work.tb_pango_rgmii_tx
+# Loading sv_std.std
+# Loading work.tb_pango_rgmii_tx
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/rgmii_tx_20260921_225604_758/usim.GTP_GRS
+# Loading usim.GTP_GRS
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/rgmii_tx_20260921_225604_758/work.pango_rgmii_tx
+# Loading work.pango_rgmii_tx
+# Refreshing C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/rgmii_tx_20260921_225604_758/usim.GTP_ODDR_E1
+# Loading usim.GTP_ODDR_E1
+# do run.do 
+# RGMII_TX_SWEEP epoch=0 completed_vectors=1024
+# RGMII_TX_SWEEP epoch=1 completed_vectors=2048
+# RGMII_TX_SWEEP epoch=2 completed_vectors=3072
+# RGMII_TX_RESULT checks=56080 errors=0 vectors=3072 local_resets=4 global_resets=1 txc_rises=3113 txc_falls=3109
+# RGMII_TX_PASS
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_pango_rgmii_tx.sv(232)
+#    Time: 25024200 ps  Iteration: 0  Instance: /tb_pango_rgmii_tx

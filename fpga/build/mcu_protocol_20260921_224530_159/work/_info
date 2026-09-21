@@ -1,0 +1,146 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\mcu_protocol_20260921_224530_159
+T_opt
+V3=zYdEATn:bKVoOS4;_Hf1
+Z1 04 15 4 work tb_mcu_protocol fast 0
+=1-207bd2c02996-6ab1430c-2c3-2cf94
+o-quiet -auto_acc_if_foreign -work work -g FULL=1 -g RX_TIMEOUT_MS=2 -g CLK_HZ=1843200
+n@_opt
+Z2 OL;O;10.1c;51
+Z3 dC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\mcu_protocol_20260921_224530_159
+T_opt1
+V1NWa>B:QmIOZLS<bG7oj`2
+R1
+=1-207bd2c02996-6ab14310-21-2c988
+o-quiet -auto_acc_if_foreign -work work -g FULL=0 -g RX_TIMEOUT_MS=20 -g CLK_HZ=125000000
+n@_opt1
+R2
+vmcu_frame_rx
+Z4 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+IfRGYJo0NV39ZRHQRJCRYU0
+VBUBmnc[mA>K=J^f4zBYFH2
+S1
+R3
+Z5 w1790001236
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v
+L0 5
+Z6 OL;L;10.1c;51
+r1
+31
+Z7 !s108 1790001930.419000
+Z8 !s107 C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v|
+Z9 !s90 -sv|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv|
+Z10 o-sv -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!i10b 1
+!s100 5H?`e:h3hB_I@G=:6fC]X2
+!s105 mcu_frame_rx_v_unit
+!s85 0
+vmcu_frame_tx
+R4
+IV<aIP?[Rj@1P^<X=jUgkC2
+V=KGQLKFJRCU5ENLf1`QXN3
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 Wf1nJmY_innmm>zRNGamo0
+!s105 mcu_frame_tx_v_unit
+!s85 0
+vmcu_protocol
+R4
+IjB4HiC:Aaee0EEkkK2UIJ2
+VVzklZ?S;ml`QNLN_oX>:M1
+S1
+R3
+w1790001366
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 =SoAK_E53>[e@gl2E`iYH2
+!s105 mcu_protocol_v_unit
+!s85 0
+vmcu_uart_rx
+R4
+Io[ZaRno<3I3P<c^n1P>5Z2
+VT]R?JE5`Y[52bS>nlNf`B2
+S1
+R3
+Z11 w1790001141
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 H[3hgM9g>UBceIJVdRFjd0
+!s105 mcu_uart_rx_v_unit
+!s85 0
+vmcu_uart_tx
+R4
+I8[DDMDWMUAW2hG_0M:@b]2
+VQ>b6W=oVoJ3BL4zI[@mi;2
+S1
+R3
+R11
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v
+L0 3
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 5Q6Gb<_[UMmMhYbGo;l1G3
+!s105 mcu_uart_tx_v_unit
+!s85 0
+vtb_mcu_protocol
+R4
+I;XI5ORc`YSk[fV8U4lzCo3
+VKM=E`Tl45U4fd1QbXdEFg0
+S1
+R3
+w1790001815
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 nIn4XR<N3@867aiB8h=Gh1
+!s105 tb_mcu_protocol_sv_unit
+!s85 0

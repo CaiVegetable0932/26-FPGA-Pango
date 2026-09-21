@@ -1,0 +1,18 @@
+# Purpose: constrain the internal subsystem clocks for ADS synthesis. These are
+# abstract integration ports, NOT pin assignments or external I/O timing sign-off.
+# Real board integration must derive both clocks from one PLL and specify PHY
+# setup/hold plus PCB delays after checking whether PHY TXID is enabled.
+create_clock -name comms125 -period 8.000 [get_ports {clk125}]
+create_clock -name comms125_90 -period 8.000 -waveform {2.000 6.000} [get_ports {clk125_90}]
+
+# Purpose: abstract same-FPGA integration budgets (1 ns at each boundary), not
+# invented board delays. They expose descriptor/pixel paths to synthesis timing;
+# unconstrained input ports must not conceal a long width/height divide cone.
+set comms_inputs [get_ports {link_epoch[*] board_time_us[*] link_epoch_valid status_flags[*] network_enable frame_start stream_epoch[*] frame_id[*] param_version[*] descriptor_id[*] width[*] height[*] packet_type[*] bayer_code[*] pixel_valid pixel_last pixel_data[*] src_mac[*] dst_mac[*] src_ip[*] dst_ip[*] src_port[*] dst_port[*]}]
+set_input_delay -clock comms125 -max 1.000 $comms_inputs
+set_input_delay -clock comms125 -min 0.000 $comms_inputs
+set comms_outputs [get_ports {mcu_session_active env_valid env_session_id[*] env_event_seq[*] env_mcu_time_us[*] env_board_time_us[*] env_lux_milli[*] env_angle_mdeg[*] env_measurement_valid[*] mcu_rx_good[*] mcu_rx_errors[*] mcu_tx_overflow[*] frame_ready pixel_ready frame_done frame_error error_code[*] mac_busy mac_done mac_error packets_queued[*] packets_sent[*]}]
+set_output_delay -clock comms125 -max 1.000 $comms_outputs
+set_output_delay -clock comms125 -min 0.000 $comms_outputs
+# UART pins, asynchronous reset and RGMII electrical boundaries intentionally
+# remain unsigned-off. No broad false paths suppress internal timing checks.
