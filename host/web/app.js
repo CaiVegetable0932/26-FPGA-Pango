@@ -2,7 +2,9 @@
 (function(){
   "use strict";
   const $=id=>document.getElementById(id), api={token:null};
-  let status=null, online=false, busy=false, color="color", lastKey="", workerBusy=false;
+  // Purpose: default to source samples while the live camera Bayer phase is
+  // unverified. Color/averaged previews remain explicit, derived alternatives.
+  let status=null, online=false, busy=false, color="raw", lastKey="", workerBusy=false;
   let closed=false, archiveKey="", lastPaint=0, previewErrors=0;
   let rendered=0, renderStart=performance.now(), activeView="live", frameTimer=null, statusTimer=null;
   const recordUI=window.PangoRecords.create({request,previewArchive,toast,getStatus:()=>status,getOnline:()=>online});

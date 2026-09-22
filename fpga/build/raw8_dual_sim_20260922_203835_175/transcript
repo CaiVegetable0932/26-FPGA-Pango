@@ -1,0 +1,18 @@
+# vsim -do {run -all; quit -f} -c tb_raw8_dual_pixels 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_raw8_dual_pixels(fast)
+# run -all 
+# RAW8_DUAL_PIXELS_PASS pixels=2073600 packets=1482 net_cycles=2269248 capture_id=0
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_raw8_dual_pixels.sv(116)
+#    Time: 59888418226 ps  Iteration: 2  Instance: /tb_raw8_dual_pixels

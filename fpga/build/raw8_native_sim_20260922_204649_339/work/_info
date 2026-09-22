@@ -1,0 +1,274 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\raw8_native_sim_20260922_204649_339
+T_opt
+VVPZ1RUSo`4DgX:^Fhli;;0
+Z1 04 20 4 work tb_raw8_native_queue fast 0
+=1-207bd2c02996-6ab278bc-154-2b3b4
+o-quiet -auto_acc_if_foreign -work work -L usim -L vsim -g W=256
+n@_opt
+Z2 OL;O;10.1c;51
+Z3 dC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\raw8_native_sim_20260922_204649_339
+T_opt1
+VoeW9@`=SEh5_VK^c3B^zh2
+R1
+=1-207bd2c02996-6ab278c0-1b1-28838
+o-quiet -auto_acc_if_foreign -work work -L usim -L vsim -g W=288
+n@_opt1
+R2
+vipm2l_fifo_ctrl_v1_1_raw8_capture_cdc
+Z4 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+IZCo=:Uk`SI>h]?z3M;f[U2
+Vg?:^PjlTioaYkTId^VEci2
+S1
+R3
+Z5 w1790081049
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc.v
+L0 18
+Z6 OL;L;10.1c;51
+r1
+31
+Z7 !s108 1790081209.767000
+Z8 !s107 C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_raw8_native_queue.sv|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_native_queue.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\raw8_capture_cdc_Reset_Value.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_fifo_v1_10_raw8_capture_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\raw8_capture_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\raw8_word_cdc_Reset_Value.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_fifo_v1_10_raw8_word_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_word_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\raw8_word_cdc.v|
+Z9 !s90 -sv|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\raw8_word_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_word_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_fifo_v1_10_raw8_word_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\raw8_word_cdc_Reset_Value.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\raw8_capture_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_fifo_v1_10_raw8_capture_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\raw8_capture_cdc_Reset_Value.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_native_queue.v|C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_raw8_native_queue.sv|
+Z10 o-sv -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!i10b 1
+!s100 3hZ>f2iLWXc_4fnnGHWG<3
+!s105 ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc_v_unit
+!s85 0
+vipm2l_fifo_ctrl_v1_1_raw8_word_cdc
+R4
+IcFf9Jz3_TRPi;KU[PiTe]1
+VMRf?dl9ZMbJBQ@edS6cB42
+S1
+R3
+Z11 w1790081048
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_word_cdc.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_word_cdc.v
+L0 18
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 iR5Gb8b^D8CHOak_i[3e02
+!s105 ipm2l_fifo_ctrl_v1_1_raw8_word_cdc_v_unit
+!s85 0
+vipm2l_fifo_v1_10_raw8_capture_cdc
+R4
+IB0[I[Q^1UaRSDDhTi4Mfa0
+Vd[DFzD^zmL=>[QSkeZK8Z3
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_fifo_v1_10_raw8_capture_cdc.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_fifo_v1_10_raw8_capture_cdc.v
+L0 19
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 NkSX8nYd3QhaZ9ab^3jji0
+!s105 ipm2l_fifo_v1_10_raw8_capture_cdc_v_unit
+!s85 0
+vipm2l_fifo_v1_10_raw8_word_cdc
+R4
+I1W^oYj;PFSkQ[@[9WC2G81
+V<JIeb<N:gjMI0eFXzZBDF0
+S1
+R3
+R11
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_fifo_v1_10_raw8_word_cdc.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_fifo_v1_10_raw8_word_cdc.v
+L0 19
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 PCPFHbI@Shi_LmYg^hecI3
+!s105 ipm2l_fifo_v1_10_raw8_word_cdc_v_unit
+!s85 0
+vipm2l_sdpram_v1_10_raw8_capture_cdc
+R4
+IKhG`X[=h=n3@1DJVEP4:Q0
+V^Y:HHGeDan^HMzWihHQ2j2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v
+L0 18
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 5N>8dmd5fTFUnYz@cQeVb0
+!s105 ipm2l_sdpram_v1_10_raw8_capture_cdc_v_unit
+!s85 0
+vipm2l_sdpram_v1_10_raw8_word_cdc
+R4
+IYlK0EF?X<lg;YS_CzEmbC3
+V]AUS7e^G1KidVMcALEBBa3
+S1
+R3
+R11
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v
+L0 18
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 bMeHF5^2dCb@m[e`Mb:jW0
+!s105 ipm2l_sdpram_v1_10_raw8_word_cdc_v_unit
+!s85 0
+vraw8_capture_cdc
+R4
+ICAJNiodo2f1fhiZImb]a[0
+VFg`X]3>7OX87HZZWhd1X=2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\raw8_capture_cdc.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\raw8_capture_cdc.v
+L0 16
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 ;^ii26K;VdeF6eYgPXZzf2
+!s105 raw8_capture_cdc_v_unit
+!s85 0
+Xraw8_capture_cdc_Reset_Value_v_unit
+R4
+IF4A_e@N>D3N=H2flL:JIY1
+VF4A_e@N>D3N=H2flL:JIY1
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\raw8_capture_cdc_Reset_Value.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\raw8_capture_cdc_Reset_Value.v
+L0 2
+R6
+r1
+31
+R7
+R8
+R9
+R10
+nraw8_capture_cdc_@reset_@value_v_unit
+!i10b 1
+!s100 6IRhFH5A1EeYCBQz?OHMS0
+!i103 1
+!s85 0
+vraw8_native_queue
+R4
+I3ka<QaJ271IFHEG_TT35_0
+VK4CYlef^gLEI9AFk8o1bP0
+S1
+R3
+Z12 w1790081150
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_native_queue.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_native_queue.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 S0zJ13:WT0d^O@D4^:On>1
+!s105 raw8_native_queue_v_unit
+!s85 0
+vraw8_word_cdc
+R4
+IE05kM0@Ti5IlAkkM`aheY0
+VIKK]X<0Jil]F>iCLhPfJU3
+S1
+R3
+R11
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\raw8_word_cdc.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\raw8_word_cdc.v
+L0 16
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 Pa2X<3L[ZjN<:B@o5kz_D3
+!s105 raw8_word_cdc_v_unit
+!s85 0
+Xraw8_word_cdc_Reset_Value_v_unit
+R4
+I:oQYIQVHfB3;F^;SkJik51
+V:oQYIQVHfB3;F^;SkJik51
+S1
+R3
+R11
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\raw8_word_cdc_Reset_Value.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\raw8_word_cdc_Reset_Value.v
+L0 2
+R6
+r1
+31
+R7
+R8
+R9
+R10
+nraw8_word_cdc_@reset_@value_v_unit
+!i10b 1
+!s100 Ro9^iTQmDa@1jN0oD:G3d1
+!i103 1
+!s85 0
+vtb_raw8_native_queue
+R4
+IVXP^`Bc5lU]MB]Yl2GHSj3
+VT3`4Wo2S?8B>zG[;@:V4K2
+S1
+R3
+R12
+8C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_raw8_native_queue.sv
+FC:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_raw8_native_queue.sv
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 FP1OAnbQXmGoOFFK69HNR3
+!s105 tb_raw8_native_queue_sv_unit
+!s85 0

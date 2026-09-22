@@ -1,0 +1,4 @@
+# Purpose: component internal 125 MHz clock only. No invented board pin or
+# external I/O delays; this file cannot establish assembled-board timing signoff.
+create_clock -name raw8_network_clk -period 8.000 [get_ports clk]
+set_false_path -from [get_ports reset_n]

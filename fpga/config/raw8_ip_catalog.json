@@ -1,0 +1,17 @@
+{
+  "purpose": "Native 256-bit DDR read and 288-bit capture-record CDC queues for the RAW8 dual-output candidate; no board release implied",
+  "ips": [
+    {
+      "name": "raw8_word_cdc",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_fifo",
+      "purpose": "512 x 256-bit asynchronous read queue, instantiate independently for HDMI and Ethernet",
+      "params": {"FIFO_TYPE": "ASYN_FIFO", "ASYN_FIFO_EN": "true", "SAMEWIDTH_EN": "true", "WR_DEPTH_WIDTH": 9, "RD_DEPTH_WIDTH": 9, "WR_DATA_WIDTH": 256, "RD_DATA_WIDTH": 256, "FULL_WL_EN": "true", "EMPTY_WL_EN": "true", "OUTPUT_REG": "false", "ALMOST_FULL_NUM": 480, "ALMOST_EMPTY_NUM": 16}
+    },
+    {
+      "name": "raw8_capture_cdc",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_fifo",
+      "purpose": "512 x 288-bit queue for typed capture words/end-fences and 17-bit row-strided word offsets",
+      "params": {"FIFO_TYPE": "ASYN_FIFO", "ASYN_FIFO_EN": "true", "SAMEWIDTH_EN": "true", "WR_DEPTH_WIDTH": 9, "RD_DEPTH_WIDTH": 9, "WR_DATA_WIDTH": 288, "RD_DATA_WIDTH": 288, "FULL_WL_EN": "true", "EMPTY_WL_EN": "true", "OUTPUT_REG": "false", "ALMOST_FULL_NUM": 480, "ALMOST_EMPTY_NUM": 16}
+    }
+  ]
+}

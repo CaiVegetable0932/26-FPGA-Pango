@@ -7,9 +7,13 @@
     const rgb=meta.pixel_format==="RGB888", raw=meta.pixel_format==="RAW8";
     if(!rgb&&!raw) throw Error("不支持的像素格式");
     if(input.length!==w*h*(rgb?3:1)||meta.row_stride!==w*(rgb?3:1)) throw Error("图像字节不完整");
-    const color=raw&&mode==="color";
+    // Purpose: raw mode replicates each sensor sample without Bayer averaging,
+    // matching the provisional FPGA HDMI gray path; it is not luminance/ISP S1.
+    if(!["color","gray","raw"].includes(mode)) throw Error("不支持的预览模式");
+    const color=raw&&mode==="color", exactRaw=raw&&mode==="raw";
     if(color&&(w<2||h<2)) throw Error("Bayer预览至少需要一个2×2色块");
-    const step=color?Math.max(2,2*Math.ceil(w/1920)):Math.max(1,Math.ceil(w/960));
+    const step=exactRaw?Math.max(1,Math.ceil(w/1920)):
+      color?Math.max(2,2*Math.ceil(w/1920)):Math.max(1,Math.ceil(w/960));
     const width=Math.floor(w/step), height=Math.max(1,Math.floor(h/step));
     if(!width||!height) throw Error("图像不足以生成预览");
     const output=new Uint8ClampedArray(width*height*4);
@@ -26,9 +30,10 @@
           r=input[source*3];g=input[source*3+1];b=input[source*3+2];
           if(mode==="gray") r=g=b=Math.round((r*77+g*150+b*29)/256);
         }else{
-          // Mean of the Bayer cell for downscaled grayscale; avoids selecting only one color phase.
+          // Average Bayer cells only in the derived gray preview. Explicit RAW
+          // sample mode keeps one original sample, without spatial averaging.
           r=input[source];
-          if(step>=2&&x*step+1<w&&y*step+1<h) r=(r+input[source+1]+input[source+w]+input[source+w+1])>>2;
+          if(!exactRaw&&step>=2&&x*step+1<w&&y*step+1<h) r=(r+input[source+1]+input[source+w]+input[source+w+1])>>2;
           g=b=r;
         }
         output[dest]=r;output[dest+1]=g;output[dest+2]=b;output[dest+3]=255;

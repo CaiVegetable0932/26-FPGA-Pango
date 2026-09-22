@@ -37,6 +37,21 @@ test("Wider RAW preview remains bounded to 960 columns",()=>{
   assert.ok(result.width<=960);
   assert.equal(result.height,1);
 });
+// Purpose: full 1080p RAW mode must retain every byte and pixel position even
+// when Bayer phase is unknown; changing preview must not mutate raw evidence.
+test("1080p RAW sample gray is lossless and phase independent",()=>{
+  const bytes=Uint8Array.from({length:1920*1080},(_,i)=>(i*17+22)&255);
+  const before=crypto.createHash("sha256").update(bytes).digest("hex");
+  const result=renderPixels(bytes.buffer,{width:1920,height:1080,row_stride:1920,pixel_format:"RAW8",bayer_code:0},"raw");
+  assert.equal(result.width,1920);assert.equal(result.height,1080);
+  const rgba=new Uint8Array(result.pixels);
+  for(let i=0;i<bytes.length;i++){
+    assert.equal(rgba[i*4],bytes[i]);assert.equal(rgba[i*4+1],bytes[i]);
+    assert.equal(rgba[i*4+2],bytes[i]);assert.equal(rgba[i*4+3],255);
+  }
+  assert.equal(crypto.createHash("sha256").update(bytes).digest("hex"),before);
+  assert.throws(()=>render([1,2,3,4],{},"unknown"));
+});
 const root=path.resolve(__dirname,".."),hashes={};
 for(const file of ["web/pixels.js","web/preview-worker.js","web/app.js","web/index.html","web/app.css"]){
   hashes[file]=crypto.createHash("sha256").update(fs.readFileSync(path.join(root,file))).digest("hex");

@@ -1,0 +1,64 @@
+##### Written on 2026/09/22 20:50:41 ###############################
+
+
+##### INFO ##################################################
+
+Current device : 
+	PG2L100H-6FBG676
+
+Top Module : 
+	raw8_network_output
+
+Constraint File(s) : 
+	C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/raw8_network_core.fdc
+
+##### SUMMARY ######################################################
+
+Found 0 error(s), 0 critical warning(s), 25 warning(s), out of 2 constraint(s)
+
+
+Inapplicable constraints(except overwritten constraints):
+********************************************
+
+
+Constraints with issues:
+********************************************
+
+
+Issues without commands:
+********************************************
+
+
+Unconstrained ports:
+********************************************
+
+W: ConstraintEditor-4019: Port Bus 'descriptor_id' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'dst_ip' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'dst_mac' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'dst_port' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'error_code' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'frame_id' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'gmii_txd' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'param_version' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'src_ip' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'src_mac' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'src_port' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'stream_epoch' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'word_data' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'clk' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'enable' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'frame_done' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'frame_error' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'frame_ready' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'frame_start' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'gmii_tx_en' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'gmii_tx_er' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'mac_busy' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'reset_n' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'word_ready' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'word_valid' unspecified I/O constraint.
+
+Constraints with matching wildcard expressions:
+********************************************
+
+

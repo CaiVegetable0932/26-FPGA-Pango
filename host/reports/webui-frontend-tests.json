@@ -1,8 +1,8 @@
 {
-  "utc": "2026-09-07T08:57:38.166Z",
+  "utc": "2026-09-22T12:59:15.119Z",
   "node": "v24.14.0",
   "platform": "win32",
-  "tests_run": 9,
+  "tests_run": 10,
   "passed": true,
   "browser_ui_qa": "not_performed",
   "results": [
@@ -41,13 +41,17 @@
     {
       "name": "Wider RAW preview remains bounded to 960 columns",
       "passed": true
+    },
+    {
+      "name": "1080p RAW sample gray is lossless and phase independent",
+      "passed": true
     }
   ],
   "source_sha256": {
-    "web/pixels.js": "24beaac3ccd2ceea729d53572d3014885f2837e9017459e9322bde2f7cd6e03a",
-    "web/preview-worker.js": "4ac7c892bf26f9cad33ad07d61a40c3b1b521b7e923c19216d8075971ad3a72c",
-    "web/app.js": "825f73b5ec6e768b24dda0197cbde125614dd911fb350e102bd0c2d08f1c5639",
-    "web/index.html": "a259cdd05370e97c094facd4ab0e8aae9c18ad1ccddebf9d26f01a36e6244b59",
-    "web/app.css": "919d52d2f55387a4ffa7d21051db5ae34ad7393f819b03d0b455b093f3528fc0"
+    "web/pixels.js": "72ef16190e5a6fbd847ec28249bb5ac5afe546495b2ba134f6b05604d2333304",
+    "web/preview-worker.js": "90101e59e5a9aaec8b314fe2b3196d85f636d122109e36fb41e2c1f720099919",
+    "web/app.js": "2f218d4f8da5b2734ac2a7b6a2676cb8e660de0967c775e66ea9e019ceb4db58",
+    "web/index.html": "ee135a08c3a2aea0f2d4df5382d62a5923b65a5433c908eeab656d641d8eb2d0",
+    "web/app.css": "aff5fbc924c57b257932bdd57559e88f329f12a785e0a1d240e1a93cf28356ec"
   }
 }

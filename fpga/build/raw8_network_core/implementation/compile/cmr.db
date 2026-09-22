@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tables>
+    <table id="compile_source_files" title="Design Files Read" column_number="2">
+        <column_headers>
+            <data>File Name</data>
+            <data>File Type</data>
+        </column_headers>
+        <row>
+            <data>C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/raw8_dual/raw8_network_output.v</data>
+            <data>Verilog</data>
+        </row>
+        <row>
+            <data>C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/raw8_dual/raw8_unpack.v</data>
+            <data>Verilog</data>
+        </row>
+        <row>
+            <data>C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/praw_packetizer.v</data>
+            <data>Verilog</data>
+        </row>
+        <row>
+            <data>C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/udp_ipv4_eth_tx.v</data>
+            <data>Verilog</data>
+        </row>
+        <row>
+            <data>C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/video_network_tx.v</data>
+            <data>Verilog</data>
+        </row>
+    </table>
+    <table id="compile_runtime" title="Compile Runtime &amp; Memory" column_number="7">
+        <column_headers>
+            <data>Cpu Time</data>
+            <data>Process Cpu Time</data>
+            <data>Real Time</data>
+            <data>Peak Memory (MB)</data>
+            <data>Operation System</data>
+            <data>CPU</data>
+            <data>RAM(GB)</data>
+        </column_headers>
+        <row>
+            <data>0h:0m:1s</data>
+            <data>0h:0m:2s</data>
+            <data>0h:0m:5s</data>
+            <data>147</data>
+            <data>WINDOWS 10 x86_64</data>
+            <data>Unknown</data>
+            <data>31</data>
+        </row>
+    </table>
+    <table id="compile_messages" title="Compile Messages" column_number="1">
+        <column_headers/>
+        <row>
+            <data message="4">Enable Verilog2k features and keywords</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0001: Analyzing file C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/raw8_dual/raw8_network_output.v</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/raw8_dual/raw8_network_output.v(line number: 5)] Analyzing module raw8_network_output (library work)</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0001: Analyzing file C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/raw8_dual/raw8_unpack.v</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/raw8_dual/raw8_unpack.v(line number: 4)] Analyzing module raw8_unpack (library work)</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0001: Analyzing file C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/praw_packetizer.v</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/praw_packetizer.v(line number: 6)] Analyzing module praw_packetizer (library work)</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0001: Analyzing file C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/udp_ipv4_eth_tx.v</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/udp_ipv4_eth_tx.v(line number: 10)] Analyzing module udp_ipv4_eth_tx (library work)</data>
+        </row>
+        <row>
+            <data message="4">[C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/udp_ipv4_eth_tx.v(line number: 119)] Convert attribute name from syn_ramstyle to PAP_RAM_STYLE</data>
+        </row>
+        <row>
+            <data message="4">[C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/udp_ipv4_eth_tx.v(line number: 120)] Convert attribute name from syn_ramstyle to PAP_RAM_STYLE</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0001: Analyzing file C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/video_network_tx.v</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/video_network_tx.v(line number: 6)] Analyzing module video_network_tx (library work)</data>
+        </row>
+        <row>
+            <data message="4">Module &quot;raw8_network_output&quot; is set as top module.</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0003: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/raw8_dual/raw8_network_output.v(line number: 5)] Elaborating module raw8_network_output</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0004: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/raw8_dual/raw8_network_output.v(line number: 26)] Elaborating instance u_unpack</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0003: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/raw8_dual/raw8_unpack.v(line number: 4)] Elaborating module raw8_unpack</data>
+        </row>
+        <row>
+            <data message="4">Module instance {raw8_network_output/u_unpack} parameter value:
+    WIDTH = 32'b00000000000000000000011110000000
+    HEIGHT = 32'b00000000000000000000010000111000</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0004: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/raw8_dual/raw8_network_output.v(line number: 30)] Elaborating instance u_network</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0003: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/video_network_tx.v(line number: 6)] Elaborating module video_network_tx</data>
+        </row>
+        <row>
+            <data message="4">Module instance {raw8_network_output/u_network} parameter value:
+    MAX_FRAME_BYTES = 32'b00000000100000000000000000000000
+    INPUT_TIMEOUT = 32'b00000000000100110001001011010000</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0004: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/video_network_tx.v(line number: 48)] Elaborating instance u_praw</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0003: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/praw_packetizer.v(line number: 6)] Elaborating module praw_packetizer</data>
+        </row>
+        <row>
+            <data message="4">Module instance {raw8_network_output/u_network/u_praw} parameter value:
+    MAX_FRAME_BYTES = 32'b00000000100000000000000000000000
+    INPUT_TIMEOUT = 32'b00000000000100110001001011010000</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0004: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/video_network_tx.v(line number: 61)] Elaborating instance u_mac</data>
+        </row>
+        <row>
+            <data message="4">Verilog-0003: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/udp_ipv4_eth_tx.v(line number: 10)] Elaborating module udp_ipv4_eth_tx</data>
+        </row>
+        <row>
+            <data message="4">Module instance {raw8_network_output/u_network/u_mac} parameter value:
+    RX_TIMEOUT_CYCLES = 32'b00000000000000011110100001001000</data>
+        </row>
+        <row>
+            <data message="4">Sdm-0001: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/udp_ipv4_eth_tx.v(line number: 131)] Found Ram payload_bank1, depth=2048, width=8.</data>
+        </row>
+        <row>
+            <data message="4">Sdm-0001: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/udp_ipv4_eth_tx.v(line number: 125)] Found Ram payload_bank0, depth=2048, width=8.</data>
+        </row>
+        <row>
+            <data message="4">Sdm-0001: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/praw_packetizer.v(line number: 97)] Found Ram mem1, depth=2048, width=8.</data>
+        </row>
+        <row>
+            <data message="4">Sdm-0001: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/rtl/network/praw_packetizer.v(line number: 97)] Found Ram mem0, depth=2048, width=8.</data>
+        </row>
+        <row>
+            <data message="4">FSM tx_state_fsm[2:0] inferred.</data>
+        </row>
+        <row>
+            <data message="4">FSM state_fsm[3:0] inferred.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="4">Constant propagation done on N97 (bmsPMUX).</data>
+        </row>
+        <row>
+            <data message="4">Constant propagation done on N121 (bmsPMUX).</data>
+        </row>
+        <row>
+            <data message="4">Constant propagation done on N104 (bmsWIDEMUX).</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="4">Constant propagation done on N389 (bmsWIDEMUX).</data>
+        </row>
+        <row>
+            <data message="4">Constant propagation done on N995 (bmsPMUX).</data>
+        </row>
+        <row>
+            <data message="4">Constant propagation done on N416[0] (bmsWIDEMUX).</data>
+        </row>
+        <row>
+            <data message="4">Constant propagation done on N416[1] (bmsWIDEMUX).</data>
+        </row>
+        <row>
+            <data message="4">Constant propagation done on N593[0] (bmsWIDEMUX).</data>
+        </row>
+        <row>
+            <data message="4">Constant propagation done on N593[1] (bmsWIDEMUX).</data>
+        </row>
+        <row>
+            <data message="4">Constant propagation done on N631_2 (bmsWIDEMUX).</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+        <row>
+            <data message="5">Loop was found during constant probe.</data>
+        </row>
+    </table>
+    <general_container id="compile_settings">
+        <table_container>
+            <table id="compile_settings" title="Compile Settings" column_number="2">
+                <column_headers>
+                    <data>Name</data>
+                    <data>Value</data>
+                </column_headers>
+                <row>
+                    <data>Part</data>
+                    <data>PG2L100H-6FBG676</data>
+                </row>
+                <row>
+                    <data>Top Module</data>
+                    <data>raw8_network_output</data>
+                </row>
+            </table>
+        </table_container>
+        <general_container align="3">
+            <table_container>
+                <data>Verilog</data>
+                <table id="" title="" column_number="2">
+                    <column_headers>
+                        <data>Name</data>
+                        <data>Value</data>
+                    </column_headers>
+                    <row>
+                        <data>SystemVerilog</data>
+                        <data>false</data>
+                    </row>
+                    <row>
+                        <data>Allow Duplicate Modules</data>
+                        <data>false</data>
+                    </row>
+                    <row>
+                        <data>Multiple File Compilation Unit</data>
+                        <data>true</data>
+                    </row>
+                    <row>
+                        <data>Include Path Order: 
+ (Relative to Verilog File)</data>
+                        <data>C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/project/raw8_network_core	</data>
+                    </row>
+                    <row>
+                        <data>Parameters/Generics</data>
+                        <data></data>
+                    </row>
+                    <row>
+                        <data>Compiler Directives</data>
+                        <data></data>
+                    </row>
+                    <row>
+                        <data>Loop Limit</data>
+                        <data>2000</data>
+                    </row>
+                </table>
+            </table_container>
+            <table_container>
+                <data>Options</data>
+                <table id="" title="" column_number="2">
+                    <column_headers>
+                        <data>Name</data>
+                        <data>Value</data>
+                    </column_headers>
+                    <row>
+                        <data>FSM Compiler</data>
+                        <data>auto</data>
+                    </row>
+                </table>
+            </table_container>
+        </general_container>
+    </general_container>
+</tables>

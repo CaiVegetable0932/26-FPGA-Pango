@@ -46,7 +46,8 @@
       </div>
       <div class="capture-layout">
         <article class="panel video-panel primary-viewer">
-          <div class="panel-heading"><div class="panel-title"><span class="channel-label">S0</span><h2>传感器原始数据</h2></div><div class="segmented" role="group" aria-label="原图预览方式"><button class="selected" data-color="color" aria-pressed="true">基础彩色</button><button data-color="gray" aria-pressed="false">灰度</button></div></div>
+          <!-- Purpose: RAW sample gray is the default; it performs no ISP or Bayer phase inference. -->
+          <div class="panel-heading"><div class="panel-title"><span class="channel-label">S0</span><h2>传感器原始数据</h2></div><div class="segmented" role="group" aria-label="原图预览方式"><button class="selected" data-color="raw" aria-pressed="true">RAW 灰阶</button><button data-color="color" aria-pressed="false">基础彩色</button><button data-color="gray" aria-pressed="false">平均灰度</button></div></div>
           <div class="video-surface" id="video-surface">
             <canvas id="live-canvas" width="960" height="540" aria-label="来自完整RAW8帧的预览画面" hidden></canvas>
             <div class="video-empty" id="video-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-camera"/></svg></div><strong>等待原始视频</strong><span>开始本机模拟，或配置板端数据来源</span><div class="signal-guide"><span>RAW8</span><span>1920 × 1080</span><span>PRAW V1</span></div></div>
