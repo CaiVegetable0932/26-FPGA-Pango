@@ -31,7 +31,10 @@ module mcu_protocol #(
     reg observed_epoch_valid;
     wire epoch_change = (link_epoch != observed_epoch) ||
                         (link_epoch_valid != observed_epoch_valid);
-    wire epoch_ready = link_epoch_valid && (link_epoch != 0);
+    // Purpose: predecode the stable epoch's nonzero status. epoch_change flushes
+    // all admission during an update, so no request uses the preceding value.
+    reg epoch_nonzero /* synthesis syn_preserve = 1 */;
+    wire epoch_ready = link_epoch_valid && epoch_nonzero;
     reg [31:0] active_session;
     reg [255:0] last_event_payload;
     assign session_active = (active_session != 0) && epoch_ready && !epoch_change;
@@ -39,14 +42,24 @@ module mcu_protocol #(
     // Changes invalidate parser, queued replies, handshake, and measurement
     // validity together. The top must synchronize/stabilize these input buses.
     always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin observed_epoch <= 0; observed_epoch_valid <= 0; end
-        else begin observed_epoch <= link_epoch; observed_epoch_valid <= link_epoch_valid; end
+        if (!rst_n) begin observed_epoch <= 0; observed_epoch_valid <= 0; epoch_nonzero <= 0; end
+        else begin observed_epoch <= link_epoch; observed_epoch_valid <= link_epoch_valid; epoch_nonzero <= link_epoch != 0; end
     end
 
     wire [7:0] rx_byte, request_command, parse_error;
     wire [15:0] request_seq, request_length;
     wire [255:0] request_payload;
     wire byte_valid, framing_error, frame_done, reply_allowed;
+    // Purpose: payload epoch is stable before the CRC bytes/frame_done. Compare
+    // two registered halves so 64-bit equality is not cascaded with response
+    // decoding, counter increments and inferred reply-memory bypass at 125 MHz.
+    reg [1:0] request_epoch_equal /* synthesis syn_preserve = 1 */;
+    always @(posedge clk or negedge rst_n)
+        if (!rst_n) request_epoch_equal <= 0;
+        else begin
+            request_epoch_equal[0] <= request_payload[31:0] == link_epoch[31:0];
+            request_epoch_equal[1] <= request_payload[63:32] == link_epoch[63:32];
+        end
     // Purpose: break the 256-bit duplicate-event comparison into eight parallel
     // registered 32-bit checks. The parser commits payload bytes BEFORE the two
     // CRC bytes and asserts frame_done afterwards, so these checks are current
@@ -79,9 +92,16 @@ module mcu_protocol #(
     reg [7:0] reply_command_fifo [0:7];
     reg [2:0] write_ptr, read_ptr;
     reg [3:0] queue_count;
+    // Purpose: reserve a response before side effects, then register its entire
+    // snapshot before writing the reply RAM. The pending slot counts toward the
+    // fixed eight-slot capacity; epoch changes flush it with the queue.
+    reg pending_reply;
+    reg [255:0] pending_payload /* synthesis syn_preserve = 1 */;
+    reg [15:0] pending_seq;
+    reg [7:0] pending_command;
     wire tx_ready;
     wire pop = (queue_count != 0) && tx_ready && !epoch_change;
-    wire space_available = (queue_count < 8) || pop;
+    wire space_available = (queue_count + {3'b0,pending_reply} < 8) || pop;
     wire push = frame_done && reply_allowed && space_available && !epoch_change;
     reg [7:0] response_code;
     reg accept_session, accept_event;
@@ -108,7 +128,7 @@ module mcu_protocol #(
                         (request_command != ENVIRONMENT && request_length != 12))
                         response_code = BAD_LENGTH;
                     else if (!epoch_ready) response_code = NOT_READY;
-                    else if (request_payload[63:0] != link_epoch) response_code = BAD_EPOCH;
+                    else if (!(&request_epoch_equal)) response_code = BAD_EPOCH;
                     else if (request_payload[95:64] == 0) response_code = BAD_SESSION;
                     else if (request_command == OPEN) begin
                         if (request_payload[95:64] == active_session) response_code = DUPLICATE;
@@ -163,17 +183,28 @@ module mcu_protocol #(
 
     // Queue memory needs no reset: pointers/count prevent reading stale data.
     always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin pending_reply<=0;pending_payload<=0;pending_seq<=0;pending_command<=0;end
+        else if(epoch_change) pending_reply<=0;
+        else begin
+            pending_reply<=push;
+            if(push) begin
+                pending_payload<=response_payload;pending_seq<=request_seq;
+                pending_command<=(response_code<2)?8'h80:8'h81;
+            end
+        end
+    end
+    always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin write_ptr <= 0; read_ptr <= 0; queue_count <= 0; end
         else if (epoch_change) begin write_ptr <= 0; read_ptr <= 0; queue_count <= 0; end
         else begin
-            if (push) begin
-                reply_payload_fifo[write_ptr] <= response_payload;
-                reply_seq_fifo[write_ptr] <= request_seq;
-                reply_command_fifo[write_ptr] <= (response_code < 2) ? 8'h80 : 8'h81;
+            if (pending_reply) begin
+                reply_payload_fifo[write_ptr] <= pending_payload;
+                reply_seq_fifo[write_ptr] <= pending_seq;
+                reply_command_fifo[write_ptr] <= pending_command;
                 write_ptr <= write_ptr+1'b1;
             end
             if (pop) read_ptr <= read_ptr+1'b1;
-            case ({push,pop})
+            case ({pending_reply,pop})
                 2'b10: queue_count <= queue_count+1'b1;
                 2'b01: queue_count <= queue_count-1'b1;
                 default: begin end

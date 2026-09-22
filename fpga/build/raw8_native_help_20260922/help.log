@@ -1,0 +1,145 @@
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+E: invalid command name "define_attribute"
+E: Flow-0163: Failed to parse file "C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\scripts\query_raw8_native_help.tcl" at line 3. Check if the command options or arguments are valid.
+Analyzing project file 'C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/raw8_native_help_20260922/query_raw8_native_help.pds'.
+
+
+Executing : pnr -help
+H: pnr : Place and route design (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -of_flow string ]
+        Specify the flow which will be run
+    [ -force_to_run  ]
+        Run this action without checking the status.
+    [ -input_db_file file string ]
+        Specify the input design DB file name
+    [ -action_timeout integer_number ]
+        Action Timeout(min)
+    [ -dc_duplication Boolean_value (TRUE/FALSE) ]
+        Design Cells Duplication
+    [ -plc_decongestion integer_number ]
+        Placement Decongestion Mode
+    [ -gplace_seed integer_number ]
+        Global Random Seed(Placement)
+    [ -gplace_times integer_number ]
+        Iterations(Placement)
+    [ -seed_step integer_number ]
+        Random Seed Step(Placement)
+    [ -saved_outcome integer_number ]
+        Save Best Run(Placement)
+    [ -parallel integer_number ]
+        Maximum Number Of Mutil-seed Running In Placement Parallel
+    [ -place_worst_slack integer_number ]
+        Place Worst Slack(ps)
+    [ -groute_seed integer_number ]
+        Global Random Seed(Route)
+    [ -groute_times integer_number ]
+        Iterations(Route)
+    [ -route_seed_step integer_number ]
+        Random Seed Step(Route)
+    [ -route_saved_outcome integer_number ]
+        Save Best Run(Route)
+    [ -route_parallel integer_number ]
+        Maximum Number Of Mutil-seed Running In Route Parallel
+    [ -filter string ]
+        Filter Strategies
+    [ -sort string ]
+        Sort Strategy
+    [ -timeout integer_number ]
+        Timeout(min)
+    [ -report_power Boolean_value (TRUE/FALSE) ]
+        Report Power In Multi-seed Mode
+    [ -generate_bitstream Boolean_value (TRUE/FALSE) ]
+        Generate Bitstream In Multi-seed Mode
+    [ -enable_route_constraint_iterate  ]
+        Enable Route Constraint Iterate
+    [ -route_constraint_iterate_times integer_number ]
+        Route Constraint Iterate Times
+    [ -route_constraint_slack double_number ]
+        Route Constraint Slack Value(ns)
+    [ -route_constraint_max_timing_path integer_number ]
+        Route Constraint Max Timing Path
+    [ -number_of_router_thread integer_number ]
+        Multi-thread routing thread size
+    [ -fast_router Boolean_value (TRUE/FALSE) ]
+        Enable Fast Router
+    [ -share_router_control_signal Boolean_value (TRUE/FALSE) ]
+        Reduce CE/RS signal
+    [ -dump_router_congestion_plot Boolean_value (TRUE/FALSE) ]
+        Dump Router Congestion Plot
+    [ -check_clk_net_route_by_srb Boolean_value (TRUE/FALSE) ]
+        Check Clock Net Routing Path
+    [ -mode string ]
+        Mode
+    [ -optimize_multi_corner_timing  ]
+        Optimize Multi-Corner Timing
+    [ -place_only  ]
+        Place Only
+    [ -fix_hold_violation  ]
+        Optimize Hold Timing
+    [ -fix_hold_violation_iterations integer_number ]
+        Max Optimize Hold Timing Iterations
+    [ -fix_hold_violation_threshold integer_number ]
+        Fix Hold Violation Threshold(ps)
+    [ -fix_hold_violation_in_route Boolean_value (TRUE/FALSE) ]
+        Optimize Hold Timing In Route
+    [ -fix_hold_violation_threshold_for_clock_path_cross_srb integer_number ]
+        Fix Hold Violation Threshold For Clock Path Cross SRB(ps)
+    [ -fix_hold_violation_threshold_for_clk_tree integer_number ]
+        Fix Hold Violation Threshold For Clock Path On Clock Tree(ps)
+    [ -max_hold_violated_paths_num integer_number ]
+        Max Number Of Hold Violated Paths To Fix
+    [ -input_place_db_file file string ]
+        Specify the input design placement DB file name
+    [ -refineplacement_mode string ]
+        RefinePlacement Mode
+    [ -refineplacement_cluster Boolean_value (TRUE/FALSE) ]
+        RefinePlacement Cluster
+    [ -refineplacement_iteration integer_number ]
+        RefinePlacement Iteration
+    [ -plc_initial_method string ]
+        Placement Initial Method
+    [ -early_block_placement string ]
+        Early Block Placement
+    [ -auto_dispose_macro Boolean_value (TRUE/FALSE) ]
+        Auto Dispose Macro Object
+    [ -dispose_drm_prior Boolean_value (TRUE/FALSE) ]
+        Dispose DRM Prior
+    [ -dispose_apm_prior Boolean_value (TRUE/FALSE) ]
+        Dispose APM Prior
+    [ -dispose_dram_prior Boolean_value (TRUE/FALSE) ]
+        Dispose Distribute-RAM Prior
+    [ -dispose_carrychain_prior Boolean_value (TRUE/FALSE) ]
+        Dispose Carry Chain Prior
+    [ -slack_prior_in_global_router Boolean_value (TRUE/FALSE) ]
+        Slack Prior In Global router
+    [ -slack_weight integer_number ]
+        Slack Weight
+    [ -pin_cost_increasing_speed integer_number ]
+        Pin Cost Increasing Speed
+    [ -congest_overlap_limit integer_number ]
+        Max iterations in congest mode
+    [ -max_ctrl_chain_length integer_number ]
+        CE/RS signal series limit
+    [ -report_timing  ]
+        Run timing after route.
+    [ -optimize_gp_recovery  ]
+        Enable Recovery Analysis in GP
+    [ -optimize_dp_recovery  ]
+        Enable Recovery Analysis in DP
+    [ -optimize_rp_recovery  ]
+        Enable Recovery Analysis in RP
+    [ -optimize_routing_recovery Boolean_value (TRUE/FALSE) ]
+        Enable Recovery Analysis in Routing
+    [ -logic_optimize_enable Boolean_value (TRUE/FALSE) ]
+        Placement Logic Optimization
+    [ -logic_optimize_lut6d_combing_strategy integer_number ]
+        LUT6D Packing Strategy
+    [ -strategy string ]
+        Specify the action strategy.
+
+
+Executing : pnr -help successfully.
+E: Failed to execute the script : invalid command name "define_attribute"

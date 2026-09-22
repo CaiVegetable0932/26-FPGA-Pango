@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "packets_per_case": 81,
+  "read_half_period_ns": [
+    3.9,
+    4.1
+  ],
+  "native_fifo_models": true,
+  "hardware_tested": false,
+  "sources": [
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\raw8_capture_cdc.v",
+      "sha256": "C1D5F307492A8EE17799A1969C858D9BE3CDF8FBEF5E2E10B854FB54D05258C6"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc.v",
+      "sha256": "DBEF620B915B068049DB756AE9332C1D99727D2A2BC32C5F3F5DBF5628F0FAC7"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\ipm2l_fifo_v1_10_raw8_capture_cdc.v",
+      "sha256": "8C26495526CE8606900A2FA8D852EBA2E04ACF5E4831DE8922A003975C1B9527"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\ipm2l_sdpram_v1_10_raw8_capture_cdc.v",
+      "sha256": "24C182DF95B055A900224A33C967446732055A06786FE0B571F8089B3DD2B44A"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\raw8_capture_cdc_Reset_Value.v",
+      "sha256": "0469AFE44FEB1B0BFDABB85D1D6EDFF4FAF3D0C04CF8B919E11A0F389B854C75"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_native_queue.v",
+      "sha256": "5624DBD7293CEC56ADB904324EB8A40BA6124B4B2CAB9FAD4FFC496D0D4FB32B"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_gmii_cdc.v",
+      "sha256": "F0AFB76D41851321583F0EFAB9F38204645A34BF264ECF78CE88A38F51F4E874"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\sim\\tb_raw8_gmii_cdc.sv",
+      "sha256": "ED45DA6491ADF72DFA49AE6E3808A81816A497FCE5175D0C5E45D185F6DC10A0"
+    }
+  ]
+}

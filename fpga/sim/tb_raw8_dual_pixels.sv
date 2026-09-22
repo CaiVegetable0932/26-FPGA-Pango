@@ -21,7 +21,7 @@ module tb_raw8_dual_pixels;
  reg [255:0] nw=0,hw=0;reg nv=0,hv=0;
  wire nr,hr,nready,ndone,nerror,nbusy,en,er;
  wire [7:0] txd;
- raw8_network_output network(.clk(netclk),.reset_n(read_reset),.enable(1'b1),
+ raw8_network_output network(.clk(netclk),.reset_n(read_reset),.enable(1'b1),.discard(1'b0),
   .frame_start(nstart),.frame_ready(nready),.stream_epoch(64'h1020304050607080),
   .frame_id(capture_id),.descriptor_id(32'd99),.param_version(32'd7),
   .word_data(nw),.word_valid(nv),.word_ready(nr),

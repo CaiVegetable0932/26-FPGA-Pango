@@ -1,0 +1,31 @@
+Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+-- Compiling module raw8_word_cdc
+-- Compiling module ipm2l_fifo_ctrl_v1_1_raw8_word_cdc
+-- Compiling module ipm2l_fifo_v1_10_raw8_word_cdc
+-- Compiling module ipm2l_sdpram_v1_10_raw8_word_cdc
+-- Compiling module raw8_capture_cdc
+-- Compiling module ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc
+-- Compiling module ipm2l_fifo_v1_10_raw8_capture_cdc
+-- Compiling module ipm2l_sdpram_v1_10_raw8_capture_cdc
+-- Compiling module ov5640_raw8_profile
+-- Compiling module ov5640_raw8_startup
+-- Compiling module raw8_capture_records
+-- Compiling module raw8_capture
+-- Compiling module raw8_dual_core
+-- Compiling module raw8_frame_pool
+-- Compiling module raw8_hdmi_consumer
+-- Compiling module raw8_hdmi_timing
+-- Compiling module raw8_native_queue
+-- Compiling module raw8_network_output
+-- Compiling module raw8_read_arbiter
+-- Compiling module raw8_read_scheduler
+-- Compiling module raw8_unpack
+-- Compiling module raw8_write_engine
+-- Compiling module praw_packetizer
+-- Compiling module udp_ipv4_eth_tx
+-- Compiling module video_network_tx
+-- Compiling module tb_raw8_board_core
+** Error: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_raw8_board_core.sv(9): (vlog-2730) Undefined variable: 'vsync'.
+
+** Error: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\sim\tb_raw8_board_core.sv(9): (vlog-2730) Undefined variable: 'mc'.
+

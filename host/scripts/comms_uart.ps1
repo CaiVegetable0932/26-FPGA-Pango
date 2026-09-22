@@ -1,8 +1,10 @@
 # Purpose: commissioning UART only, bound to the board CP2102 identity.
-# Supports capability probe, explicit TEST boot config, and session/status check.
+# Supports capability probe, explicit TEST/RAW8 boot profiles, and session/status check.
 # No motor, light-control, reset, Flash or OS configuration command is sent.
 param([ValidateSet('Probe','Boot','Inspect')][string]$Action='Probe',
- [string]$Port='COM15',[string]$BootJson='', [Parameter(Mandatory=$true)][string]$Out)
+ [string]$Port='COM15',[string]$BootJson='', [Parameter(Mandatory=$true)][string]$Out,
+ # Purpose: explicit image-profile selection; never silently commission camera with TEST metadata.
+ [ValidateSet('TEST','RAW8')][string]$Profile='TEST')
 $ErrorActionPreference='Stop'
 function Get-Crc16([byte[]]$Data){
  # CCITT-FALSE over version through payload; match FPGA V1 little-endian CRC.
@@ -56,11 +58,13 @@ try {
  $taskSerial.Open()
  if($Action -eq 'Boot'){
   $taskBoot=Get-Content -LiteralPath $BootJson -Raw | ConvertFrom-Json
-  if($taskBoot.source -ne 'SYNTHETIC TEST - NOT CAMERA'){throw 'Explicit TEST metadata required'}
+  $taskSource=if($Profile -eq 'RAW8'){'OV5640 RAW8 - HARDWARE UNVERIFIED'}else{'SYNTHETIC TEST - NOT CAMERA'}
+  $taskCommand=if($Profile -eq 'RAW8'){113}else{112}
+  if($taskBoot.source -ne $taskSource){throw 'Boot metadata/image profile mismatch'}
   [byte[]]$taskWire=[Convert]::FromHexString($taskBoot.command_hex)
-  if($taskWire.Length -ne 42 -or $taskWire[3] -ne 112 -or (Get-Crc16 ([byte[]]$taskWire[2..39])) -ne [BitConverter]::ToUInt16($taskWire,40)){throw 'Malformed boot command'}
+  if($taskWire.Length -ne 42 -or $taskWire[3] -ne $taskCommand -or (Get-Crc16 ([byte[]]$taskWire[2..39])) -ne [BitConverter]::ToUInt16($taskWire,40)){throw 'Malformed boot command'}
   $taskRx=Exchange $taskWire
-  if($taskRx[3] -ne 128 -or $taskRx[8] -ne 0 -or [Text.Encoding]::ASCII.GetString($taskRx,28,4) -ne 'TEST' -or
+  if($taskRx[3] -ne 128 -or $taskRx[8] -ne 0 -or [Text.Encoding]::ASCII.GetString($taskRx,28,4) -ne $Profile -or
      [BitConverter]::ToUInt64($taskRx,12) -ne [BitConverter]::ToUInt64($taskWire,8)){throw 'Boot ACK identity/result mismatch'}
  } else {
   $taskRx=Exchange (New-Request 1 1 ([byte[]]@()))

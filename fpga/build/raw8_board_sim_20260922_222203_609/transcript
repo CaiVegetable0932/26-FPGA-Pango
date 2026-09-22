@@ -1,0 +1,145 @@
+# vsim -L usim -L vsim -do {run -all; quit -f} -c tb_raw8_board_core 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(444): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(445): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(481): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(491): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(503): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(513): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(518): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(519): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(584): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(615): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(620): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(625): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(637): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(652): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(653): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc.v(195): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(444): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(445): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(481): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(491): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(503): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(513): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(518): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(519): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(584): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(615): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(620): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(625): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(637): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(652): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(653): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_word_cdc.v(195): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(444): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(445): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(481): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(491): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(503): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(513): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(518): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(519): (vopt-2576) [BSOB] - Bit-select into 'wr_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(584): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(615): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(620): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(625): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(637): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(652): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(653): (vopt-2576) [BSOB] - Bit-select into 'rd_addr_bus' is out of bounds.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_fifo_ctrl_v1_1_raw8_word_cdc.v(195): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(584): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(445): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(584): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(445): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(584): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_capture_cdc\rtl\ipm2l_sdpram_v1_10_raw8_capture_cdc.v(445): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(444): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\ip\raw8_word_cdc\rtl\ipm2l_sdpram_v1_10_raw8_word_cdc.v(444): (vopt-2249) Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_raw8_board_core(fast)
+# Loading usim.GTP_GRS(fast)
+# Loading usim.GTP_DRM18K_E1(fast)
+# Loading usim.GTP_DRM18K_E1(fast__1)
+# ** Warning: (vsim-8607) C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/ip/raw8_capture_cdc/rtl/ipm2l_sdpram_v1_10_raw8_capture_cdc.v(444): Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: (vsim-8607) C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/ip/raw8_capture_cdc/rtl/ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc.v(195): Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: (vsim-8607) C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/ip/raw8_word_cdc/rtl/ipm2l_sdpram_v1_10_raw8_word_cdc.v(444): Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: (vsim-8607) C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/ip/raw8_word_cdc/rtl/ipm2l_fifo_ctrl_v1_1_raw8_word_cdc.v(195): Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: (vsim-8607) C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/ip/raw8_word_cdc/rtl/ipm2l_sdpram_v1_10_raw8_word_cdc.v(444): Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# ** Warning: (vsim-8607) C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/ip/raw8_word_cdc/rtl/ipm2l_fifo_ctrl_v1_1_raw8_word_cdc.v(195): Non-positive replication multiplier inside concat. Replication will be ignored.
+# 
+# run -all 
+# RAW8_BOARD_CORE_PASS published=2 hdmi_frames=1 network_frames=2 packets=2964
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_raw8_board_core.sv(99)
+#    Time: 84156684 ns  Iteration: 2  Instance: /tb_raw8_board_core

@@ -1,0 +1,114 @@
+{
+  "timing_constraints_met": true,
+  "checked_inputs": 270,
+  "bitstream": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\mini_raw8_dual\\native_20260923_001028_899\\mini_raw8_dual.sbit",
+  "bitstream_sha256": "2197404297e45d3b3386d02fe69464460e6ee849d32e0ff190c1bf39aafb0131",
+  "timing_report": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\mini_raw8_dual\\implementation\\report_timing\\mini_raw8_dual.rtr",
+  "timing_sha256": "536383a9d369e2237ba6ec8ac311d0c5597c0650d6fe8cf0a9a5513be1ad2af4",
+  "simulation": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\raw8_board_sim_20260923_001217_827",
+  "simulation_result": {
+    "passed": true,
+    "pixels_per_frame": 2073600,
+    "frames": 6,
+    "first_frame_id": 0,
+    "late_epoch_boundary_test": false,
+    "udp_packets": 8892,
+    "raw_sha256": [
+      "d0195d3c68e3c022e4c9d4c81922e327f36b5bb37d303e500abffcadf4b23a7b",
+      "e9107830b5b3e3c9f7f00dfb2bd9c26bfdafd3efe564d12573ccd2bf0147b31d",
+      "d355baa3ac79eb27b48b12619dcef913896c6ea91467b4d3810d60582c8e5ae7",
+      "2fcc21eecd78b6bfb4c60f2520fdbd0071f4954740e4670cfcbca5f85abdecb7",
+      "e901c0ad9b3770dd1245401f9eeeac52d28dcda392b4d55a019da4d59713a715",
+      "18134dbcae65e2e826c9bf3363e7970daf8b451ac72c63557963f07d1e809965"
+    ],
+    "source": "DVP simulation stimulus; behavioral HMIC memory",
+    "host_reassembly_verified": true,
+    "native_fifo_models_verified": true,
+    "gmii_packet_cdc_verified": true,
+    "native_ddr_phy_verified": false,
+    "hardware_tested": false,
+    "physical_camera_source_verified": false,
+    "external_timing_verified": false,
+    "hdmi_source_frame_id": null
+  },
+  "clock_simulation": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\raw8_rgmii_clock_20260922_234233_435",
+  "clock_simulation_result": {
+    "passed": true,
+    "vectors": 1024,
+    "local_resets": 4,
+    "native_gtp_models": true,
+    "hardware_tested": false,
+    "sources": [
+      {
+        "path": "E:\\PDS_Pangu\\PDS_2022.2-SP6.4\\arch\\vendor\\pango\\verilog\\simulation\\GTP_GRS.v",
+        "sha256": "DAE720BCC467DDB4FF99F2753368934E2649B87F6AC63B8A0D7219699BAC1DEC"
+      },
+      {
+        "path": "E:\\PDS_Pangu\\PDS_2022.2-SP6.4\\arch\\vendor\\pango\\verilog\\simulation\\GTP_ODDR_E1.v",
+        "sha256": "0FACD3433414CA667B27DFB15817151D433468E32440880E3C4855BEDC932705"
+      },
+      {
+        "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\network\\pango_rgmii_tx.v",
+        "sha256": "F6686BA8113135A8B0710F32D522A8AA28DF01B0F2B1F485B8FB8AECE3B2208E"
+      },
+      {
+        "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\sim\\tb_raw8_rgmii_clock.sv",
+        "sha256": "5022AAA052B7AF0D5506D93BF1A3123A753F7B5F5D0962528B88ECB16528559A"
+      }
+    ]
+  },
+  "bridge_simulation": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\raw8_gmii_cdc_20260923_000952_209",
+  "bridge_simulation_result": {
+    "passed": true,
+    "packets_per_case": 81,
+    "read_half_period_ns": [
+      3.9,
+      4.1
+    ],
+    "native_fifo_models": true,
+    "hardware_tested": false,
+    "sources": [
+      {
+        "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\raw8_capture_cdc.v",
+        "sha256": "C1D5F307492A8EE17799A1969C858D9BE3CDF8FBEF5E2E10B854FB54D05258C6"
+      },
+      {
+        "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc.v",
+        "sha256": "DBEF620B915B068049DB756AE9332C1D99727D2A2BC32C5F3F5DBF5628F0FAC7"
+      },
+      {
+        "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\ipm2l_fifo_v1_10_raw8_capture_cdc.v",
+        "sha256": "8C26495526CE8606900A2FA8D852EBA2E04ACF5E4831DE8922A003975C1B9527"
+      },
+      {
+        "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\ipm2l_sdpram_v1_10_raw8_capture_cdc.v",
+        "sha256": "24C182DF95B055A900224A33C967446732055A06786FE0B571F8089B3DD2B44A"
+      },
+      {
+        "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\raw8_capture_cdc_Reset_Value.v",
+        "sha256": "0469AFE44FEB1B0BFDABB85D1D6EDFF4FAF3D0C04CF8B919E11A0F389B854C75"
+      },
+      {
+        "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_native_queue.v",
+        "sha256": "5624DBD7293CEC56ADB904324EB8A40BA6124B4B2CAB9FAD4FFC496D0D4FB32B"
+      },
+      {
+        "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_gmii_cdc.v",
+        "sha256": "F0AFB76D41851321583F0EFAB9F38204645A34BF264ECF78CE88A38F51F4E874"
+      },
+      {
+        "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\sim\\tb_raw8_gmii_cdc.sv",
+        "sha256": "ED45DA6491ADF72DFA49AE6E3808A81816A497FCE5175D0C5E45D185F6DC10A0"
+      }
+    ]
+  },
+  "image_kind": "1080p RAW8 DVP -> DDR -> PRAW Ethernet + HDMI raw-sample gray candidate",
+  "programmed": false,
+  "hardware_tested": false,
+  "external_dvp_timing_verified": false,
+  "external_hdmi_eye_verified": false,
+  "rgmii_pcb_skew_measured": false,
+  "hdmi_source_frame_id": null,
+  "physical_camera_source_verified": false,
+  "qualification": "First-board candidate; not continuous1080p30/ISP/correction acceptance"
+}

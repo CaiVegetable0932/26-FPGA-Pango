@@ -9,7 +9,7 @@ $taskSources=@(Get-ChildItem (Join-Path $taskFpga 'rtl/raw8_dual') -Filter '*.v'
 $taskSources+=@('rtl/mini_camera_diag/ov5640_sccb.v',
  'rtl/mini_camera_diag/vendor/camera/data_init.v','sim/tb_ov5640_verified_startup.sv',
  'sim/tb_raw8_capture.sv','sim/tb_raw8_startup.sv','sim/tb_raw8_pool.sv',
- 'sim/tb_raw8_read_scheduler.sv','sim/tb_raw8_dual_pixels.sv',
+ 'sim/tb_raw8_read_scheduler.sv','sim/tb_raw8_dual_pixels.sv','sim/tb_raw8_native_contracts.sv',
  'rtl/network/praw_packetizer.v','rtl/network/udp_ipv4_eth_tx.v',
  'rtl/network/video_network_tx.v') | ForEach-Object {Join-Path $taskFpga $_}
 # Purpose: record the exact tested source set and make failures visible even
@@ -26,7 +26,7 @@ try {
  & "$ModelSimHome/vlog.exe" -sv @taskSources 2>&1 | Tee-Object compile.log
  if($LASTEXITCODE){throw 'RAW8 compile failed'}
  # Purpose: component faults precede full-frame concurrent-output simulation.
- foreach($taskCase in @('capture_small','capture_1080','startup','pool','read_scheduler','dual_pixels')){
+ foreach($taskCase in @('capture_small','capture_1080','startup','pool','read_scheduler','native_contracts','dual_pixels')){
   $taskTop=if($taskCase.StartsWith('capture_')){'tb_raw8_capture'}else{"tb_raw8_$taskCase"}
   $taskArgs=@('-c',$taskTop,'-do','run -all; quit -f')
   if($taskCase -eq 'capture_1080'){$taskArgs+=@('-gW=1920','-gH=1080')}

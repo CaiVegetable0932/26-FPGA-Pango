@@ -1,0 +1,73 @@
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+Analyzing project file 'C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/raw8_native_help_20260922/query_raw8_native_help.pds'.
+run_ads
+read
+add_load load remove_load unload
+open_project save_project
+
+
+Executing : gen_netlist -help
+H: gen_netlist : Generate Netlist (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -of_flow string ]
+        Specify the flow which will be run
+    [ -force_to_run  ]
+        Run this action without checking the status
+    [ -input_db_file file string ]
+        Specify the input design DB file name
+    [ -func_sim_only  ]
+        Generate netlist for functional simulation only
+    [ -sdf_annotate Boolean_value (TRUE/FALSE) ]
+        Enable Sdf Annotate
+    [ -process_corner string ]
+        Process Corner
+
+
+Executing : gen_netlist -help successfully.
+Executing : generate_constraint -help
+H: generate_constraint : Generate constraint file from PNR DB (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -device string ]
+        Specify the device arch(IO/APM/DRM).
+    -file string
+        Specify the file name to generate constraint file.
+    [ -logic  ]
+        generate logic constraint file.
+    [ -group  ]
+        generate constraint file with group instance.
+    [ -detail  ]
+        print all instances constraint of group.
+    [ -prim  ]
+        generate constraint file with prim instance.
+    [ -module_inst string ]
+        Specify the constraint start with module_inst.
+       example: generate_constraint -module_inst { inst_name } -device DRM /... -file xxx.pcf. 
+    [ -slack double_number ]
+        Specify the constraint of instance which slack >= user size.
+    [ -less_mode  ]
+        Specify the constraint of instance which slack < user size.
+    [ -only_cons  ]
+        Only the output is constrained.
+    [ -db string ]
+        pnr db file.
+    [ -place_db  ]
+        Specify used the place db of this project.
+    [ -compile_db string ]
+        compile db file.
+    [ -synthesize_db string ]
+        synthesize db file.
+    [ -devmap_db string ]
+        devmap db file.
+    [ -pcf string ]
+        pcf file.
+    [ -design_net string ]
+        Print the region constraints of the design insts which are connect with specify design net
+    [ -design_inst string ]
+        Ergodic the specify design insts collect all design nets on it, print the region constraints of the design insts which are connect with specify design net
+
+
+Executing : generate_constraint -help successfully.
+RAW8_NATIVE_HELP_DONE

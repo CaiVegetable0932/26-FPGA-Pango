@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "pixels_per_frame": 2073600,
+  "frames": 2,
+  "udp_packets": 2964,
+  "raw_sha256": [
+    "d0195d3c68e3c022e4c9d4c81922e327f36b5bb37d303e500abffcadf4b23a7b",
+    "e9107830b5b3e3c9f7f00dfb2bd9c26bfdafd3efe564d12573ccd2bf0147b31d"
+  ],
+  "source": "DVP simulation stimulus; behavioral HMIC memory",
+  "host_reassembly_verified": true,
+  "native_fifo_models_verified": true,
+  "native_ddr_phy_verified": false,
+  "hardware_tested": false,
+  "physical_camera_source_verified": false,
+  "external_timing_verified": false,
+  "hdmi_source_frame_id": null
+}

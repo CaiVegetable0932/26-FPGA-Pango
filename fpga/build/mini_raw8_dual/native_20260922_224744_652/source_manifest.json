@@ -1,0 +1,1046 @@
+[
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\comms_boot_config.v",
+    "sha256": "B082003139E4560648BFADDBF21B981CFC59C2004AE1E126F833C6083D8B820C"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\fpga_comms_top.v",
+    "sha256": "50A5D6980DDCA332CEF4D520593ACD957620F8DA2E5F5397E05137C7DA5033D2"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\mcu_frame_rx.v",
+    "sha256": "030FDE66741E2B3F529DD4C5BACCD3CA6DF65C116507DCAEC29C7F76C5C170B4"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\mcu_frame_tx.v",
+    "sha256": "6E15BBD1B42BB15A43B5592AC78780FB8056CFF36C4237FA97F4274D5A3CD2B3"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\mcu_protocol.v",
+    "sha256": "E9233D80219D330759837B9FA0AFBE3D55FA273E935E1EFBE012DC6AA8748987"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\mcu_uart_rx.v",
+    "sha256": "1AECCF08189E42F8E548A2D16EA2022726038F3D9F01517FAA21CDC0757C6AF9"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\mcu_uart_tx.v",
+    "sha256": "656E4FB1ECF0FDED3A346CFB65A18DA1988D3F17E41E28B6F16625C00481E553"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\network\\comms_test_source.v",
+    "sha256": "C8D7B3574D4E8EB384E5E9665E13B1F918387F06E1B79A8B16455FE963BAA2B9"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\network\\mdio_clause22.v",
+    "sha256": "16F16C78D292429AD946AAF5F2F89FCE9A42AD2485F44FE46DFC485FBA557F90"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\network\\pango_rgmii_tx.v",
+    "sha256": "F6686BA8113135A8B0710F32D522A8AA28DF01B0F2B1F485B8FB8AECE3B2208E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\network\\praw_packetizer.v",
+    "sha256": "F6D258F6E8237EBF839F888603C4553821F85FB78C266211EF58DEF62077B016"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\network\\rtl8211f_init.v",
+    "sha256": "68F0B4B5A7FEFBA6D1D46017BB79464930B378CDA3BB01E42C188619911AD7C4"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\network\\udp_ipv4_eth_tx.v",
+    "sha256": "323E932E87FDDCB892686B7B3FD2ADD23EDB3A74E3B5FFCFA90B5A569030C300"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\network\\video_network_tx.v",
+    "sha256": "0F82BDF043CCA1A5E5C00E8F61BF1F0CE3CC35DF31241B687726B8716142B43C"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\ov5640_raw8_profile.v",
+    "sha256": "ACE83C100AE2EA4A55F1B4CF631006EA1CC4BAF54C218C39333B8A20D9092389"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\ov5640_raw8_startup.v",
+    "sha256": "48334B9FA079B37FB5B7BCAF474CC13094532A9B60BB6D90FCF851ABFA955883"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_capture_records.v",
+    "sha256": "CA3467DD71D3AA0DF9AE90CB2AED0DCBAEE858B0D5DFBC675895F4FE10BE4C64"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_capture.v",
+    "sha256": "527EBBDC5585BE4E7C5971F6E20F48B4EA9BE643F557E1DD4A82C8FBE1FCD32E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_dual_core.v",
+    "sha256": "ABCB1DA2B6F5888164002A3C2D002022E985A025DEB908352B2C93CC0501D958"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_frame_pool.v",
+    "sha256": "6A077D0196EE28FD7093EE7AB09BFFFFD358E25425C911B62F147337F71C9FCD"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_hdmi_consumer.v",
+    "sha256": "FAE8C8D2A5AAC4EBB4D8F0E480E0EF673B42EA74651617FAD398F03B81BB281E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_hdmi_timing.v",
+    "sha256": "5EEA08DD4883332F9179178921488275B58641B8CCA6D9612DE18DF0258D5AFC"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_native_queue.v",
+    "sha256": "5624DBD7293CEC56ADB904324EB8A40BA6124B4B2CAB9FAD4FFC496D0D4FB32B"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_network_output.v",
+    "sha256": "13303C549A2FF8C89AB0E6A6E2118929FE9D0A08DC77FAF8ED46BAC6C49B1C9F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_read_arbiter.v",
+    "sha256": "6C9B5FCB327A94FDF199AEF958F95D482529125409D43D65258B3DE373F48C89"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_read_scheduler.v",
+    "sha256": "8515C55425BC97B3831B91B75037447A1BF99D4B79F74DD7913BB89B6FD9A1CF"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_unpack.v",
+    "sha256": "A3D0E3656255F802D17B5A44E4488242BBEBCABAB5AA2200A1CC22CA45608ECD"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\raw8_write_engine.v",
+    "sha256": "B2998351B1B95E98236D28F1BA980964CA93D47AEC20CC76D7C00508BD3A35B1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\raw8_dual\\README.md",
+    "sha256": "46602A7C138FEE25CA3ED067B66C1B62FE0EB773E0A7F237D9F6165234A4FB0D"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\constraints\\mini_raw8_dual\\cdc.fdc",
+    "sha256": "2E8CF11E8E3016BA6FEED820D2E655E7B66A551EEF0628393709A5D9A357E3EF"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\constraints\\mini_raw8_dual\\pins.fdc",
+    "sha256": "92BD6B477394BA710EAE27F66302E406D72A7DFB290B79074CB73039A1799B98"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\constraints\\mini_raw8_dual\\timing.fdc",
+    "sha256": "7125AB5F8BEA261415887A538F0FF7C7D19EBD51DC42198CFC477932EC6AA85F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\hdmi\\hdmi_720p_diagnostic.v",
+    "sha256": "31D01B40252C2CC0D8483088B79EE0B290364B8EF11C72697F527FCE47B44BA1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\hdmi\\hdmi_rgb565_expand.v",
+    "sha256": "4C7B9F8A5CDCE54A46D49A568ACF6092E0B87D81E8E4BFBF4CA5FE9CD2E5B5F2"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\hdmi\\hdmi_test_pattern.v",
+    "sha256": "9354F09812F73D76143B7FB52B0CBFA3D1332D964DE8961BF0EB484F9859F299"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\hdmi\\hdmi_tx_oserdes.v",
+    "sha256": "B0C0D1E2FF04CF3744198FA6A3D89437E60CF0490A85C69082A93949661FC440"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\hdmi\\hdmi_tx_powerup_reset.v",
+    "sha256": "BFF235490495584582E9211707188D63C1366631318C9825536399A9DF80308D"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\hdmi\\hdmi_tx_rgb.v",
+    "sha256": "0E5D2269BDE34129F547F7F26C72733C3ED9E403F8FF87F7313F1D832698DBB7"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\hdmi\\sync_vg.v",
+    "sha256": "9DCE6022890F7DE2505AC5249E663B84E2730F7A43ABD0BEFA702D748D226E13"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\hdmi\\tmds_encoder.v",
+    "sha256": "CF9EB16EA956E4DC7E1935ED340DFA98A50F568F17159A01387A101633F4BBCA"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\.last_generated",
+    "sha256": "15B2CC48F78ADC65E108EB838502B94E5C563CBBE3066FBD5569B6CD98579288"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\ddr3_controller_ddrphy_top.v",
+    "sha256": "337F15415C551DC0CA48A9E1D629B0AF6BF84B3DCCDEB0AA1362D30BE9402A4E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\ddr3_controller_tmpl.v",
+    "sha256": "BB8B4B8E2C6A996565010E290E4DF207775B8A83383761A7B4A9A06CCC1690AE"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\ddr3_controller_tmpl.vhdl",
+    "sha256": "8112EB948C5E6388FA066C0A2C5BEA8C08C3D8DB1762633EC9BDBEFF6287F6E1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\ddr3_controller.idf",
+    "sha256": "961608BF2A188D1E4ADAF72BA8A68619B42B44B977637017963BD2836101526B"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\ddr3_controller.v",
+    "sha256": "FCF702C5F6953F43ECA4CA8A4E946ED2EAE9F47C89AEA0E828EDE3ED03F51408"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\generate.log",
+    "sha256": "A41704F19361946939BD713130FC49B555525BA5699C586AF04CF9805F76FB15"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\readme.txt",
+    "sha256": "B8E6AEE8D709441F0D176B80495D453E2F70E3E74847A6DC3ABC66D17FDFC00B"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\bench\\ddr2_tb\\ddr2_test_top_tb.v",
+    "sha256": "A1B03B594EDB9F4DED3BA19E5B79FFA085B863BCE8A95F8D09D15E0BF198FF0B"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\bench\\ddr3_tb\\ddr3_test_top_tb.v",
+    "sha256": "129233F740303E35255BC6DC9DEF6694754D6D44BC21136D89A0C78C8C1FC095"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\bench\\lpddr_tb\\lpddr_test_top_tb.v",
+    "sha256": "009BD08C867A33C3676A12039803B25EA114674F893BD1BF8BABB60958D54522"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\bench\\mem\\2048Mb_mobile_ddr_parameters.vh",
+    "sha256": "79050533FE3C031089B4A3342FB697A6F6C48C319AE2F42851F7D7C827CCABEB"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\bench\\mem\\ddr2_parameters.vh",
+    "sha256": "85884841CC62000BA8CD9DF1F61FC1A765F3C6D1F329DF56726966EAB5CEE1A5"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\bench\\mem\\ddr2.v",
+    "sha256": "F60EDE5952F1EDA7335A8C972DB0583044B44BBB207C6AD58D8AAB0A041D907F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\bench\\mem\\ddr3_parameters.vh",
+    "sha256": "690E437BE1AC10E2412908AFA17AB58434AD8AA686100C77A8184B8E1FB016FA"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\bench\\mem\\ddr3.v",
+    "sha256": "4737406FA172B0C68BA052076369C17AD9977C311D0B89434A4325578AB0B87D"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\bench\\mem\\mobile_ddr.v",
+    "sha256": "C5446B454B22527209EF8CA6D2B99784B0E1E37FBD907EED3F438AFE17B0833E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\axi_bist_top_v1_0.v",
+    "sha256": "583F88C5A115BDB6EC81D7217E71BEDBFD250A6F2A7F7CBAB19F2EB7B3648605"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\prbs15_64bit_v1_0.v",
+    "sha256": "0BB5DF486165BF0BE77EB6C6F2D460BEB578918C06DB1C795C5D44EC8CF7BE94"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\prbs31_128bit_v1_0.v",
+    "sha256": "6F792D3091347A3BF00268FD0752E3C049FC80C8790457B6E7DA767E0B2BF6A7"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\test_ddr.v",
+    "sha256": "E5734FB100A75B272C2A91D4BE871DAC1B42F3BBD0BADEB43E756186632751D1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\test_main_ctrl_v1_0.v",
+    "sha256": "1D9A5BA7A6FED34AE09A6F46B0E3F7E2F24C17EF02110ECA1C270C2422769EB0"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\test_rd_ctrl_v1_0.v",
+    "sha256": "D1BC613B0102EFB2E13EEFBC131D62AD4CDE63CE7F3CF6FC781268DE707E9ADE"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\test_wr_ctrl_v1_0.v",
+    "sha256": "A455E81D4EE494006B25B466537E5EB7D9ACFB28D24F4F5531365E1A00145913"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\uart_rd_lock.v",
+    "sha256": "BE38038D97B69A8CA670119354155E9D74BB6D4DD8C184B610201D50F864555A"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\adc\\adc_ctrl.v",
+    "sha256": "AEC7278DB10399F195A3F4DF3624323441596DB1614266B2152F929FA5D0983A"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\adc\\adc.v",
+    "sha256": "D096E3B3A34C142B44EB9EDBB67B0DC07743557D1C2DA1576F20542CD1DA7D34"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\uart_ctrl_32bit\\ips2l_clk_gen_32bit.v",
+    "sha256": "62F78AC1C82CA75F06A5D6242E06488EE3035F2D2ABC6BA19AF44060972F914C"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\uart_ctrl_32bit\\ips2l_cmd_parser_32bit.v",
+    "sha256": "937308C48F9FFE9CCD29DF4B03E68A439B5906807A94FC7C2B6F6773784EEEA1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\uart_ctrl_32bit\\ips2l_seu_rs232_intf.v",
+    "sha256": "B23D375B33A3C1D212E92DDA8CE58704231E7ED7B72A2A9780C942FFBA8316C2"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\uart_ctrl_32bit\\ips2l_seu_uart_rx.v",
+    "sha256": "2679F4D666D200C95B7C13C0A48798B99777AC16B3D9B458CBE026B6CA63D5F2"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\uart_ctrl_32bit\\ips2l_seu_uart_tx.v",
+    "sha256": "82967062EAA2B3F600DE286AD74F4D186D3885793A0CCF1CD1B69B01A5A622E5"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\uart_ctrl_32bit\\ips2l_uart_ctrl_32bit.v",
+    "sha256": "235D9D78DC1BEA4C0106E1D43A7BF57649463D5A1FCA781A907B48CEC736B6A5"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\uart_ctrl_32bit\\ips2l_uart_ctrl_top_32bit.v",
+    "sha256": "3FB1F73B4EBF27B90B3EFAE421D3076AF2EDA5566CFFD4DE9F30B9F63F11DAF9"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\example_design\\rtl\\uart_ctrl_32bit\\ips2l_ver_ctrl_32bit.v",
+    "sha256": "26793896296ED2B35FFDD04F55FF3DB50FADD7B2E69396E247E52E8EC4821EA0"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\pnr\\ddr_test.fdc",
+    "sha256": "B241016CBD6A9F52A4BD23820252CFB13497E57ED4A5DB189DB5325844477F5F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\pnr\\ddr3_controller.pds",
+    "sha256": "D55A26BB3BDE81F98BDD942B7A31E4156461C8FADAB1D941EE1EF74F7C8C72E6"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\pnr\\ddr3_controller.rcf",
+    "sha256": "01A316EAA22FB40512D6D7948533B18296E2CC2860469BBF1AE8DBF0FE872002"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ips2l_rst_sync_v1_3.vp",
+    "sha256": "64B8D83F15F2FF373E6B1040405C42051D8761BD1857DEC719C884C2EB59361A"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ddr3_controller_slice_top_v1_10.v",
+    "sha256": "E11DDD08515517CA49AF4F807D18476523CDF69EA5B3308EB5192052380BB7F2"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_calib_mux_v1_0.vp",
+    "sha256": "676E36319E7CE80B93E3543E255D53708D9FC71606587A6E692EAB1EC82ECAED"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_calib_top_v1_10.vp",
+    "sha256": "04FAF434CEF120B5D712911DFC97C8F498901B0679FBA720B806F596D688BDED"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_control_path_adj_v1_10.vp",
+    "sha256": "8CDD7B9EC01C143882217B038CBF840D77E52EE3037E629E75E10B03FC223A38"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_cpd_ctrl_v1_3.vp",
+    "sha256": "56F52683ADBE720C7D43DA1A9F199F4AB3ADD3F3B5960E3F687F87F60267C161"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_cpd_lock_v1_0.vp",
+    "sha256": "A6696F8E79E2D132A6E76AD4997D5366D6C9CF8F05C60F77FEFF1B47B50D0090"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_data_slice_dqs_gate_cal_v1_10.vp",
+    "sha256": "8764275D4EEB8D1765B3A09ABA527D6D3BF3E46F5E1D17EEFC685D7E0DBE1520"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_data_slice_v1_10.vp",
+    "sha256": "E13E33D97ECBFEA1838C4DD28E7F9F1C57DCB974606179523BE46BBA75344D50"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_data_slice_wrcal_v1_10.vp",
+    "sha256": "B7A9757C252F74C4B57EB0FB74738C57E4EED3E669DDD7FFEECA1ACEDD330B2E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_data_slice_wrlvl_v1_10.vp",
+    "sha256": "871874F4AF0F068571416916898F83EB07052E6E015C5800FFDF65D67620CF7E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_dfi_v1_3.vp",
+    "sha256": "9828A1EF43A864D287A7A317910FE330BFC904F44E8F60C8773AAFA1D8C1534E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_dll_update_ctrl_v1_3.vp",
+    "sha256": "BC4E8F402D2FB98920E050A3C1514D44EC959877217D7865A30B22B7DA73CAC6"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_dqs_gate_coarse_cal_v1_0.vp",
+    "sha256": "950A0010929854894C2C92D9F3F8E9DCE0FEE6985FEE70D4160540A058853EDE"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_dqs_rddata_align_v1_10.vp",
+    "sha256": "C0CAB4287A7A7B6B720977C1C5F9259C5F48F8DA18E9A3CA1173A073B1CCF025"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_dqsi_rdel_cal_v1_3.vp",
+    "sha256": "EF7E57755AB7558B1B518AA73999384368F349EFE7077CF9283E0911E711AC1A"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_drift_ctrl_v1_0.vp",
+    "sha256": "8EA99AC6DECF6FE14C0585B4F121D7A1ACC17290D7A1C68725D984E704E277BC"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_eyecal_v1_5.vp",
+    "sha256": "31977DD34339D163ECBD8B9949AC4B65F0EAA6FBCD9A75D787400AE73F7F51D2"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_gate_update_ctrl_v1_3.vp",
+    "sha256": "CE20EB3B9CBE3B392D8BE0AA1D6787247BC7B2D91AF36A1F734F35C9EB03D642"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_gatecal_v1_10.vp",
+    "sha256": "B6859250CA098E81FF05BCAB08DFE8FFEE77648218E90C040A1DD3838A0671F2"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_gpll_phase_v1_0.vp",
+    "sha256": "EF8EBE3742D23848BD2A1492D4901F886CE49AA98DBC295873B67E4116BA8524"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_info_v1_0.vp",
+    "sha256": "0794201BE97885E7695A16B6C35848655B08C4BF191405D26417126512CE4AA8"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_init_v1_0.vp",
+    "sha256": "817F9F32B2260A4C35AF446E89FF4C2D4B065381B25CB2020C538D22B4A45088"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_main_ctrl_v1_10.vp",
+    "sha256": "39D5024D7364B441340B131D265D0648D8B7C1F92CC417424D7C584413C5F4A6"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_rdcal_v1_10.vp",
+    "sha256": "6B4C7F3C24A4750AC69B4E7882617105C6E31F02DA712AAA87932B8561CCEA2B"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_reset_ctrl_v1_3.vp",
+    "sha256": "17189B59ED5307C4A27EC35485B33AF5C98A89E6EE7F9C5D85AAED9C03A77163"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_rst_clk_phase_adj_v1_0.vp",
+    "sha256": "DD1DBAE71726D968DF475FE7FBB2B7321411FA67786092C0DC2E065EDCF39382"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_rst_debounce_v1_0.vp",
+    "sha256": "BFF7ED95C8D305DFB88E6002C6DE8453A21C72C03A5A0521A76DDD105598DC4D"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_slice_rddata_align_v1_0.vp",
+    "sha256": "BEFB44F07D851524109A6DC8E17C5B8062694AA274ED8DBC4F7326B8FE1C443E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_training_ctrl_v1_0.vp",
+    "sha256": "777E8EE9D8D819FDCF04B39B5A5D6086C52369A7F19F04DBD0D06F7A7D3D6110"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_upcal_v1_0.vp",
+    "sha256": "AFBCA3503DA609F7951AD7FBEF386BD007F403C89F52377211BA521967C94455"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_wdata_path_adj_v1_10.vp",
+    "sha256": "85F625ED4A09964442E8616074EEA9E4757E43B4217589BB9E2F289C9748B272"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_wrcal_v1_7.vp",
+    "sha256": "0A8CB0BB70BD40809260C50BCB85D092C16FEA5D9AB2E4FBBE647CCBD1BFB1B0"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\ddrphy\\ips2l_ddrphy_wrlvl_v1_0.vp",
+    "sha256": "00C086BD729BE3AB8287F6EB786CFB3549C97AA92F8465C608B8FC2477DF3EDC"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_apb_cross_v1_2.vp",
+    "sha256": "62F7D55354A8AFE4D02BC6F6D6DC30FC8E9960D3B21709988B887ACC99D09CF5"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_calib_delay_v1_2.vp",
+    "sha256": "A52E992B9766B6CB22ED23AA01D1CC5AC9B6A429A8E49DE7A13AC51DD70E9784"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_cfg_apb_v1_2.vp",
+    "sha256": "482CB280A614F70209F1D07892FDD773A259D2CA0F23E8F38B85A9FAF00513B9"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_dcd_bm_v1_2.vp",
+    "sha256": "BFBD472DD8B427FE6B003DD510F73DB89F915AC92D31FE8A779C40F9D4E56BEE"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_dcd_rowaddr_v1_2.vp",
+    "sha256": "4AC4721747B13020E1895BE6265E55DF90968F05BEB8056279589039394BB9BE"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_dcd_sm_v1_2.vp",
+    "sha256": "D7E710E3ED4D1807FB0BDD4D84C264817247A4DA41123C72439C555573821F49"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_dcd_top_v1_2.vp",
+    "sha256": "26AB4E142F555602C023F62B19DF52056C6D51DA5052401254066CAE0655DDAA"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_dcp_back_ctrl_v1_2.vp",
+    "sha256": "FE7B340B41D80EC7428CC38329A41864BCF5C209A6310610D09C7BC8579E541F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_dcp_buf_v1_2.vp",
+    "sha256": "DAB35FA172243ECBB5426A8EBCCC2C168368EA0A6EA0558C909B815D781B17D6"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_dcp_out_v1_2.vp",
+    "sha256": "9471082E23170B144DC619F7F7E08C94B8A03378F72DA388F744D6ACB728928B"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_dcp_top_v1_2.vp",
+    "sha256": "21B1F0E3B4660E1078B47000BFE50022346414F5D5E713AC9E522A4F39F76548"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_dfi_v1_2.vp",
+    "sha256": "ABF138D692E634FABE5F569B98D897DFECE8A8AE66CEE1DBA830A56D7E255DF1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_lp_v1_2.vp",
+    "sha256": "7A80CCB1E053E5C9D8F389169359570F256D709FF2E4AD2C51FDA7A7A6A4239D"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_mrs_v1_2.vp",
+    "sha256": "F78133BC021A57CF469773DAAF102817FC37069447E8ACCC80AFA1F4B20B0AD6"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_prefetch_fifo_v1_2.vp",
+    "sha256": "EE3AA91E980FB3DD08231CF1806A28EDF759F4EA8248ADFD44407D607519B9E4"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_rdatapath_v1_2.vp",
+    "sha256": "72DD8ECE021F4EE74FD576C1628C4F7D3606EF632F0E68B9569A288A092A6B0F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_reg_fifo2_v1_2.vp",
+    "sha256": "BC9CFF65E4002A51AF0C20C2F0A9B9F17DACDE5157B58691BBFB1C44348EE08A"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_ui_axi_v1_2a.vp",
+    "sha256": "145B69395412BE2553835F9278CDF1CB1703D3BEEB914ABF7D985E3C69F817FB"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_wdatapath_v1_2.vp",
+    "sha256": "DB648E90FF607CA2F9E2B5CCA048DE417439888D0B906288E0CEC7CF038D9DEE"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_wdp_align_v1_2.vp",
+    "sha256": "1645E9EB7FAC3C9C13CD3E0D7367F132293F9CEC16835CE188C6345993D2B730"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_wdp_dcp_v1_2.vp",
+    "sha256": "3F30BE0F49F78F09915743995C950FA6FF8DE5F14598EBC8802E73B5C6D140EE"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\ips2l_mcdq_wrapper_v1_2b.vp",
+    "sha256": "D35010F49BE551FB15AB2655CBEFFCAAAA74FDF3CCB0754B033FC979D615E805"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\distributed_fifo\\ips2l_distributed_fifo_v1_0.vp",
+    "sha256": "D6C0B0D8560B0F22128B4883933944FC686FD7597CFEA0D6C545CC6AF56C0B7A"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\distributed_fifo\\rtl\\ips2l_distributed_fifo_ctr_v1_0.vp",
+    "sha256": "FE31C8F44BEA653AB20BB1830AD4F8ED41566E9CFEF354BD5E2D48C7682F353D"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\distributed_fifo\\rtl\\ips2l_distributed_fifo_v1_0_distributed_fifo_v1_0.vp",
+    "sha256": "867AC91A1485DFE613A81F372D788E784BBA8CD4B0497E56986135E92685BA73"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\distributed_fifo\\rtl\\ips2l_distributed_sdpram_v1_0_distributed_fifo_v1_0.vp",
+    "sha256": "3561BBBBD4E4432A538C3D20818D262B4F1E5517C48296F6B1B4CC8AFDD19AEF"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_com_timing_v1_2.vp",
+    "sha256": "E3F19C4BE6352AB64F07426973387F2876C540EE992F6EAC9D3F2D470B3D49C2"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_tfaw_timing_v1_2.vp",
+    "sha256": "C632619F042BEBB4F059DF7F20EEE90EB2B51B81210430CB37D01958AD3CD30F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_tfaw_v1_2.vp",
+    "sha256": "AB87B7718BFFC4FB2A2B27765576187F09B5266BBCA7FC393C43C6DEC96FF379"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_act_pass_v1_2.vp",
+    "sha256": "9F32B6936E039C15F7B07B74480179D39D1B3787965E1B90BD067A7EDE7FDD4C"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_act2wr_pass_v1_2.vp",
+    "sha256": "1B3874B059923481F292BA382AD156F7DCDD9AD39DA6C86DDDD480290CCCE498"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_pre_pass_v1_2.vp",
+    "sha256": "E40A64CAEC9725C231CD88DDE69973EAB3ACA38C9D2E66A2C5C0BBDDF3103AE0"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_rd_pass_v1_2.vp",
+    "sha256": "78B1DE719A43EE0FC80E1A5464F7284439D91F1D4B3F83EF2AE5611920293988"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_ref_pass_v1_2.vp",
+    "sha256": "C79DDE6F9A682C55AFF7BB89C4863F76A069B874FB154DFF7D3E4D4A7A88F9D1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_wr_pass_v1_2.vp",
+    "sha256": "EA3470CA984554D4908EC950314F9242042417C6C4C6B3FD05AC5D6DAAB98C90"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_trc_timing_v1_2.vp",
+    "sha256": "7234241E5968F91EC6E396794F0BB80F6C7D1BCA2038AA004D5078D3937953DA"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\pll\\ips2l_ddrphy_gpll_v1_3.vp",
+    "sha256": "3FECC367573A4B5BD158E1A8FF106C5C401C5F180143E8E5ABE6BB068E5078D2"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\rtl\\pll\\ips2l_ddrphy_ppll_v1_0.vp",
+    "sha256": "34BB46106B84EAB147F130BD7526F1486D35CAEB40B0258CD59656E50D19DDDD"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim\\modelsim\\ctrl_phy_sim.tcl",
+    "sha256": "CCE8FA1D4EB36893423D63F54BF66356252B337F5B3E8E363863523220673CDB"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim\\modelsim\\sim_file_list.f",
+    "sha256": "2D90DAFA3FA46E2B237C5738C8D2C6332CD83DFD80E2822B3338A76B0CA5A4D1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim\\vcs\\makefile",
+    "sha256": "482FBBB8216886FF8276F59B75C26E05B6FACF2FDFBA538FA5518B3BFD0C1884"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim\\vcs\\sim_file_list.f",
+    "sha256": "A6DCFA08F8E21F6976151C60F038648BDF9ECC00EAFCA85DBF6AFCA4017B43EA"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ips2l_rst_sync_v1_3.vp",
+    "sha256": "0E495476CABC14AE97D35358A2091A9E718B033CB074A865B83FD51087C2CF25"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ddr3_controller_slice_top_v1_10.v",
+    "sha256": "E11DDD08515517CA49AF4F807D18476523CDF69EA5B3308EB5192052380BB7F2"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_calib_mux_v1_0.vp",
+    "sha256": "A9BC63536496BB64F0B542357CF5F9CD89E6708A2A7B7FA14BEA94872F884CB3"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_calib_top_v1_10.vp",
+    "sha256": "2F4CA62417C99B25D49453283DCF92A2AEB6D9ED9AE9DB98BEF65FD10DB62871"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_control_path_adj_v1_10.vp",
+    "sha256": "9BE93A2AFCE98D20B4306649C31CE4717744E710FDCE500E966993F8B6F69006"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_cpd_ctrl_v1_3.vp",
+    "sha256": "CAEC1051743CF30BC00A9415F7313035312E960E4C3507E41BB779B40BF15970"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_cpd_lock_v1_0.vp",
+    "sha256": "AD39530CE248DC38C0FDA1FA5A5ED6F7431C4514E0C2CA845DF4CC9F98077C92"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_data_slice_dqs_gate_cal_v1_10.vp",
+    "sha256": "87E01F256CB894330FA548C279E6079E7CCBD0DDC45CE240B0848276EAA4E4CB"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_data_slice_v1_10.vp",
+    "sha256": "62592E5C18F9A53A6B4C7876E10FB018E7F651E4BA92793DE9F5C50DAF770C94"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_data_slice_wrcal_v1_10.vp",
+    "sha256": "7D05F8AF9D4154AE77330F9F30095A5AAE697B8B9146BB8131CC235868EA7827"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_data_slice_wrlvl_v1_10.vp",
+    "sha256": "B91514090F8B627EB582184EB7146C5CDEFC7BC1FB628E65278446207F3B6EFA"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_dfi_v1_3.vp",
+    "sha256": "916E66C2BA2CA8CCE353189BA3B3E0430F16AB7BBF21470250E2C5841242F1A1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_dll_update_ctrl_v1_3.vp",
+    "sha256": "D1DCDE02AEA6327BC0C9BF2AFF8E497CD7A0136E0AA7ED6DF1267BBB1EA38BBB"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_dqs_gate_coarse_cal_v1_0.vp",
+    "sha256": "A9FE39CC3EFF366B6D92658B2DE6C23687F3D9736791EA668153A5AF3EBD7772"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_dqs_rddata_align_v1_10.vp",
+    "sha256": "3988E94A959F58D05E10B1F374998F616724D74274036A60DEB28D0DC27C7340"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_dqsi_rdel_cal_v1_3.vp",
+    "sha256": "5CCCC737FD245DEFF22E50CD5DA2E213EA7EB023AE871F839D7AF102FCA723C8"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_drift_ctrl_v1_0.vp",
+    "sha256": "C7E616A0DE0A0E0FE8625C76FF02C6A68D18BE1EEE9686908813239238A13C87"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_eyecal_v1_5.vp",
+    "sha256": "AC870D9FF7540CC5A837F4322E864A95D2507A8811A9652CF4F4C6DD61331073"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_gate_update_ctrl_v1_3.vp",
+    "sha256": "6C8E60E1898163C0A82983B9FDFAFCC368485BF45B4AD5CC2C1D8D225C12407D"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_gatecal_v1_10.vp",
+    "sha256": "20D9DEAE3FE39362529F1560591D175F86BBA34B0DED30C9F8E65DB19F4EBD23"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_gpll_phase_v1_0.vp",
+    "sha256": "3C196260BDD8A5D834F328DD847EFAAF3159BAA2AF09B262704DD4461CE79A9A"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_info_v1_0.vp",
+    "sha256": "14DE5EA624A5ADB2884B75F668B7A6D86FFCD16BB449E4579DD9F377A97A9A34"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_init_v1_0.vp",
+    "sha256": "AD3642C273981975ED9EF67CAF8F413FA9D0AC6849CF6C99C221CD43E6EFDC99"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_main_ctrl_v1_10.vp",
+    "sha256": "C3A18537EE60294D5560052F4C6F18C7A254AA4AB9718F81B718C5643B64CF98"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_rdcal_v1_10.vp",
+    "sha256": "3E94C9816AAA03CE46B124DF0F8A50FFC834C7BE65CECEBA48B64128591DD34E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_reset_ctrl_v1_3.vp",
+    "sha256": "1F218C8B75AF0B6DBD41C99D3D86BEFE4D961F5CA5C71BA92B4CD96881D16EE1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_rst_clk_phase_adj_v1_0.vp",
+    "sha256": "924056E9A82E0A21A2959EB77FF4E128D0F9598A050AF71A92BA4D35E189F97D"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_rst_debounce_v1_0.vp",
+    "sha256": "41FB4DAF7468B8208D936E6D26287624BD9228C376C80422A46BE5AE16422A3B"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_slice_rddata_align_v1_0.vp",
+    "sha256": "25B13FE2655CD99C6C3ECF075A934ACCD621A0DA4C3E3035175ED17DE55386CD"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_training_ctrl_v1_0.vp",
+    "sha256": "D33331268F6C6C6E033199B0CC5042683C543CCC392AD91C5380A65C118495C3"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_upcal_v1_0.vp",
+    "sha256": "AB88F0145240D0273D502DF0AA75A8D1A15F465EFC2E1DF64C1F93D38F38AD0D"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_wdata_path_adj_v1_10.vp",
+    "sha256": "DA3769A720488C4C5A09127F7B9A6AFB7DDC6CCD527A1285F87C4C4746BA7CEC"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_wrcal_v1_7.vp",
+    "sha256": "44494FA3B9407C7A895D8CB91ADA80DE40FF647E5F49CBDEF7E5642226C1F4DF"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\ddrphy\\ips2l_ddrphy_wrlvl_v1_0.vp",
+    "sha256": "3BC6EE383926534469080669AA240091420E291A81709060D63F71B4574538DB"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_apb_cross_v1_2.vp",
+    "sha256": "CF44A150234032004E902F06FB9B7258D07BCE8087978E72AC596769D9B85D95"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_calib_delay_v1_2.vp",
+    "sha256": "662CD8A2841E6EF7BBE9F72E8D92EE5065D28942FA33C375883635A302F43845"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_cfg_apb_v1_2.vp",
+    "sha256": "98AFCEC69BCCEBEF13D33D1A618C5A6F612E5D64CAED02413A8BA690185A4256"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_dcd_bm_v1_2.vp",
+    "sha256": "E674BC0C9B69E537BA2940BC62AA6A8871284B3EF9193BD24E950258307F8973"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_dcd_rowaddr_v1_2.vp",
+    "sha256": "8CAF57A3E54B5C9DAACA726B4A61C80EFEFAFE26E14D13A7E9E8000253631F4C"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_dcd_sm_v1_2.vp",
+    "sha256": "70B1E2B4A47FFE443123B8266AF50D1AFBF3CDA6B869D5F082F34EF4FC373212"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_dcd_top_v1_2.vp",
+    "sha256": "DB8B5D31BFE462B92590526D6D9D5B3803EFD9AA411451BB9E9B9C9DAEDF41FE"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_dcp_back_ctrl_v1_2.vp",
+    "sha256": "913B65BFC00FDEED1ECC3EF69B5760FFE2421843C37456BB516241A5EC357CEE"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_dcp_buf_v1_2.vp",
+    "sha256": "FF86C2122EBC44407B912DAAA8711DF642C36EBD4D5AA91E9727B7FEDBD02F83"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_dcp_out_v1_2.vp",
+    "sha256": "EABABC11D054C922C526DE1E02647E15B70170CC3C3EB16B24C3D1B5D0E9A677"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_dcp_top_v1_2.vp",
+    "sha256": "EC4992888ECA64051ABB2E49299881D14D3E269D9E50FDABCB20AF090AAEE339"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_dfi_v1_2.vp",
+    "sha256": "92A8DF26C73E89002CE9448590E262E07276642DAB845C8C63DE971B8B56A0C6"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_lp_v1_2.vp",
+    "sha256": "8D850AAA8B1F85FB665E7AB64924DBA518BCB801C85976CB138001C54A933565"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_mrs_v1_2.vp",
+    "sha256": "1440DBBD283E44772619B8714E54C51D0E8B993E8DA2639E5874189B2C472BFF"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_prefetch_fifo_v1_2.vp",
+    "sha256": "6E9FFFAEE84EE8B8166D0FD6441F420A433E49A3D57D9430CE78679BE3E7EC95"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_rdatapath_v1_2.vp",
+    "sha256": "FA03C16CBE39CBBD6C50B9C8F977CB84FAC8A5AF2BA3B11752A909380FB3D071"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_reg_fifo2_v1_2.vp",
+    "sha256": "8E047E52CCAA010FF46D5A7336C2ED749C0E35AA9AF69ADFCF52A5E030273769"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_ui_axi_v1_2a.vp",
+    "sha256": "5787585D3D817DD9249F4570A319C69CCA342CDE50E062AAEA11BD943B979A80"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_wdatapath_v1_2.vp",
+    "sha256": "4C908F1E837BEB8EFFEE8AE3A3D690B7898D2D4F9C6A095B14086B7D1F4240CC"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_wdp_align_v1_2.vp",
+    "sha256": "1AF54DEE07063D6B9D552F106879EA536BEB6584AF4318E715F6E82D6B00F4BE"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_wdp_dcp_v1_2.vp",
+    "sha256": "FD36DA745D7E2ABB31F07C146B8463522CDD739D96EC4817B8323FCDF6725EB0"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\ips2l_mcdq_wrapper_v1_2b.vp",
+    "sha256": "505E31941E71CAA111E9F994E3C3965148C257D67CE3500A6D93BE8413B8E29C"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\distributed_fifo\\ips2l_distributed_fifo_v1_0.vp",
+    "sha256": "C9DD3F15E4D6454C79773D8FBB60234E17168B36291107C3F652209734701C79"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\distributed_fifo\\rtl\\ips2l_distributed_fifo_ctr_v1_0.vp",
+    "sha256": "ACACF1D1AB851D330334A5A6843C6AC3AEC08F3650A335FFD11DF1288F74F396"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\distributed_fifo\\rtl\\ips2l_distributed_fifo_v1_0_distributed_fifo_v1_0.vp",
+    "sha256": "F82850C94054C13745ABA0622CC161779D7AEDDCCC1F5333E67595B91A959089"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\distributed_fifo\\rtl\\ips2l_distributed_sdpram_v1_0_distributed_fifo_v1_0.vp",
+    "sha256": "396B88FF49E7A0FCB9319871CAA1BC9081A6BFBF4DDEB4AA397B30A6108A186F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_com_timing_v1_2.vp",
+    "sha256": "99CB6CAF6FBAD3C72B4331C31B66FF66BECA2CC5B8887FABFF8757E1BDE633C4"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_tfaw_timing_v1_2.vp",
+    "sha256": "247F44A2EBD625072FA21455D2D1F7ABFDBAF22B9CE7580592C22E5294A6D4D9"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_tfaw_v1_2.vp",
+    "sha256": "9D53581FD2A35BA1465BFD86742C5BB40CA8D7CEAE308C4CAC6D4A87768DBDE4"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_act_pass_v1_2.vp",
+    "sha256": "161F8796DA260B7D08EDDAADF9528E68021526A07D96B884B3E12F2B63F28E10"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_act2wr_pass_v1_2.vp",
+    "sha256": "88C9EEC8AAF18248166DEA7C2BCBF2C9EFEC57F402CFC6D9473080F97F355C8F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_pre_pass_v1_2.vp",
+    "sha256": "DAA2D98078A3B5014F78BD3F4C983FE5B5BD983C6C698860D678C177FAC0B102"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_rd_pass_v1_2.vp",
+    "sha256": "0F73F5D8E190396339F90E755E76B2869B937C3A61F4BB27B4624FCA46A53751"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_ref_pass_v1_2.vp",
+    "sha256": "1FDF88FDD2B992C0FE3CDF987BA2AF8D4A271674EB2436095A3CE9C5E573AF30"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_timing_wr_pass_v1_2.vp",
+    "sha256": "ADAD7EECE08A2BE5B6B5F367B8A3487353DE067F1EED2785315E15DD1147241F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\mcdq_ctrl\\syn_mod\\ips2l_mcdq_trc_timing_v1_2.vp",
+    "sha256": "C38736BD8F7D4F066F3AC1F1CCDEE0AE18D7526303D2428C835E28E085ACA881"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\pll\\ips2l_ddrphy_gpll_v1_3.vp",
+    "sha256": "E01ABFCF9ED71430D74F892458BCCC89D5CA4AB33A8724340D2599F2B0FA64DF"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\ddr3_controller\\sim_lib\\pll\\ips2l_ddrphy_ppll_v1_0.vp",
+    "sha256": "62C0AEA04983A99CA0743A505D333CB744A7E456CE7C858F4C9D471EF4AB0885"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\hdmi_tx_pll\\clk_hdmi.v",
+    "sha256": "B65AB143B4A61FB4AAFDBA60C99850B919F90C445C61624E0A9CCE0289B7599E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\.last_generated",
+    "sha256": "19C0760F894519DECA34EEBF549EA8E87847A5151908E6D5DF8343587CDD89C0"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\generate.log",
+    "sha256": "87C07FE39BAE2D1808CF409E9089832FA985F9A4135146692CFE94DB7F14C791"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\raw8_word_cdc_tb.v",
+    "sha256": "B442CCBED951C6B0F1C3EB4918547C551099C3B8A189760581A45AFFBFEB04A6"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\raw8_word_cdc_tmpl.v",
+    "sha256": "2BFF7142C04EE279FBD7AC134ECDD8E2D20C9B9777EBA40C8D941B97F63F82D5"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\raw8_word_cdc_tmpl.vhdl",
+    "sha256": "02BDFFB3D39EEF313C8ABFA97B72E09D3A6248D95095D24A300C6ACFDD1A1CC4"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\raw8_word_cdc.idf",
+    "sha256": "25505CDB046E2BE709DE2BB37029166539002CE8763AAA6D5D9B0B3848CABD2F"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\raw8_word_cdc.v",
+    "sha256": "8C894F27987EB087101C08A78DDF52E2674A729C8BEDDB4094E311765AE626D0"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\rtl\\ipm2l_fifo_ctrl_v1_1_raw8_word_cdc.v",
+    "sha256": "404773802878AE0B80FC861951A15B2C188281C9CF1432EAED28F7A8F8A48CA0"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\rtl\\ipm2l_fifo_v1_10_raw8_word_cdc.v",
+    "sha256": "6FC272F0157A242220AE0DC8C405081D16884E37155F4CF924F7DDE56F404DC5"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\rtl\\ipm2l_sdpram_v1_10_raw8_word_cdc.v",
+    "sha256": "CCF3F6C8FA6D6565C70EB9021010E053A1512FDEB5F7EFEA2B8243EA43A57FED"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_word_cdc\\rtl\\raw8_word_cdc_Reset_Value.v",
+    "sha256": "4943605B2F106DBBA5010D3256D024657BC55ACD943BD246A7E4F5021007A807"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\.last_generated",
+    "sha256": "19C0760F894519DECA34EEBF549EA8E87847A5151908E6D5DF8343587CDD89C0"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\generate.log",
+    "sha256": "75AC627E2CE980C4594318BB2CA9C2CFA3AA596991EC686BABD9E2FFDC8478F0"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\raw8_capture_cdc_tb.v",
+    "sha256": "4FEC3E654D403BAB25510C9958A4A65686491B882692C4FD48136DED97227037"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\raw8_capture_cdc_tmpl.v",
+    "sha256": "407DD41C26AC7E621030275E0A20F8FADE0F4BF27F0332A5CAC00370172EC487"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\raw8_capture_cdc_tmpl.vhdl",
+    "sha256": "FB8417095BA1C2DD6183DE3ED0BDCFF66A6A98E703F3056D7B0035878BE13D11"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\raw8_capture_cdc.idf",
+    "sha256": "23A83AEFDF3A73B0B9348B1E948DB0D34A6DCDD4CAC2830576E3C6B5EEB72E31"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\raw8_capture_cdc.v",
+    "sha256": "C1D5F307492A8EE17799A1969C858D9BE3CDF8FBEF5E2E10B854FB54D05258C6"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc.v",
+    "sha256": "DBEF620B915B068049DB756AE9332C1D99727D2A2BC32C5F3F5DBF5628F0FAC7"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\ipm2l_fifo_v1_10_raw8_capture_cdc.v",
+    "sha256": "8C26495526CE8606900A2FA8D852EBA2E04ACF5E4831DE8922A003975C1B9527"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\ipm2l_sdpram_v1_10_raw8_capture_cdc.v",
+    "sha256": "24C182DF95B055A900224A33C967446732055A06786FE0B571F8089B3DD2B44A"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\ip\\raw8_capture_cdc\\rtl\\raw8_capture_cdc_Reset_Value.v",
+    "sha256": "0469AFE44FEB1B0BFDABB85D1D6EDFF4FAF3D0C04CF8B919E11A0F389B854C75"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\scripts\\build_mini_raw8_dual.ps1",
+    "sha256": "6261C514AFB2EB8E529E071918590A713EE0BF748F7B9F5B2B272C76F30862C9"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\board\\reset_sync.v",
+    "sha256": "DA6A52A5E2BD3F7D8184391E5E9FB355FAAC811DD8FCDDBB3F06A85FA23319F1"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\board\\mini_raw8_dual.v",
+    "sha256": "B4DB8F20D1A1FDAD386F4699DC9B71D86C1DCA77C30B00C91AF4C3DC872C8D27"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\scripts\\create_mini_raw8_dual.tcl",
+    "sha256": "91721A46872F57987044034DFB66ADBB077A6EB8D3223F2FE018F862690C31F4"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\project\\mini_raw8_dual\\mini_raw8_dual.tcl",
+    "sha256": "B46D994C66B79D3599D94E93332BE0B9E939CE0B69A86AFE83E1B4F918735A13"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\mini_dvp_input.v",
+    "sha256": "70FF55439FDC132D0F020D9E85E079477474BEEAD29F8DC48684890FEA1EF1F3"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\ov5640_sccb.v",
+    "sha256": "59DF7DDA7222710DD6E4F8B046648809B02FB35EF7B8579F8C0DE4B4C8EDD193"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\mini_camera_diag\\vendor\\camera\\data_init.v",
+    "sha256": "F674DAA6312EFCF299D6E53B2A5DE31B94FF0C50312CD26FD3D745B1F01D773E"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\constraints\\mini_camera_diag\\ddr_native.fdc",
+    "sha256": "5F398F8104CFB13B230D479D8FD1976C9254DA670C6F3593B95F13C06B5D7A41"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\constraints\\ddr_board_pins.fdc",
+    "sha256": "DD1B6F82D3F984747B2D3486247C1EF593C2E2CF52D2592F2DCD531ED0134135"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\constraints\\placement.fdc",
+    "sha256": "7AD5532591E82CAEF7A65C8600DCE7EC6BDE35C916186368C2CBA42966FD5FCB"
+  },
+  {
+    "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\constraints\\mini_camera_diag\\routing.rcf",
+    "sha256": "518CCDD59ECE6696A8DA573128A766F181EB7600E34BD9F9EA3527EEDA846DB5"
+  }
+]

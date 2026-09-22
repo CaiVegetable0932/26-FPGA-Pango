@@ -1,0 +1,41 @@
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+Analyzing project file 'C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/mini_raw8_dual/native_20260923_001028_899/export_raw8_sbit.pds'.
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676 successfully.
+Executing : set_dir -impl_directory C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\mini_raw8_dual\implementation
+Executing : set_dir -impl_directory C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\mini_raw8_dual\implementation successfully.
+
+
+Executing : gen_bit_stream -input_db_file C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\mini_raw8_dual\implementation\place_route\mini_raw8_dual_pnr.adf -force_to_run -scbv {High Voltage}
+
+
+Process "Generate Bitstream" started.
+Current time: Wed Sep 23 00:21:30 2026
+Compiling architecture definition.
+Analyzing project file 'C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/mini_raw8_dual/native_20260923_001028_899/export_raw8_sbit.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Building architecture model.
+Loading device packaging model.
+Reading design from DB.
+Start Generating Programming File...
+Reading design from DB takes 4.000000 sec.
+Generating architecture configuration.
+The bitstream file is "C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/mini_raw8_dual/implementation/generate_bitstream/mini_raw8_dual.sbit"
+Generate programming file takes 21.000000 sec.
+Generating Programming File done.
+Action gen_bit_stream: Real time elapsed is 0h:0m:36s
+Action gen_bit_stream: CPU time elapsed is 0h:0m:33s
+Action gen_bit_stream: Process CPU time elapsed is 0h:0m:33s
+Current time: Wed Sep 23 00:22:06 2026
+Action gen_bit_stream: Peak memory pool usage is 1,423 MB
+Action from gen_bit_stream to gen_bit_stream: Total Real Time elapsed is 0h:0m:36s
+Action from gen_bit_stream to gen_bit_stream: Total CPU time elapsed is 0h:0m:33s
+Action from gen_bit_stream to gen_bit_stream: Total Process CPU Time elapsed is 0h:0m:33s
+Process "Generate Bitstream" done.
+Executing : gen_bit_stream -input_db_file C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\build\mini_raw8_dual\implementation\place_route\mini_raw8_dual_pnr.adf -force_to_run -scbv {High Voltage} successfully.
+RAW8_EXACT_PNR_IMAGE_GENERATED

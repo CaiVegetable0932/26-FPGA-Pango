@@ -1,0 +1,15 @@
+# Purpose: constrain real held-level first stages, not whole clock domains.
+set_max_delay 6.0 -datapath_only -to [get_cells {u_core.lease_meta u_core.hreq_meta u_core.hrel_meta u_core.u_records.lease_meta u_core.u_records.cfg_meta u_core.u_display.ack_meta u_core.u_display.rel_meta sensor_meta* led_meta*}]
+set_false_path -hold -to [get_cells {u_core.lease_meta u_core.hreq_meta u_core.hrel_meta u_core.u_records.lease_meta u_core.u_records.cfg_meta u_core.u_display.ack_meta u_core.u_display.rel_meta sensor_meta* led_meta*}]
+# Native Gray pointers only. Second synchronizer stages remain timed.
+set_max_delay 6.0 -datapath_only -to [get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_false_path -hold -to [get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+# DDR init / HDMI lock only feed receiving reset chains, never their shift data.
+# Exact mapped driver endpoints are audited after native synthesis.
+# Native optimization may merge dfi_init_complete with phy_cke_d; the preserved
+# top-level ready NET is stable across this transformation and feeds only RS.
+set_false_path -through [get_nets {ddr_init_done}] -to [get_cells {rs_camera.stages* rs_pixel.stages* rs_eth.stages*}]
+# Purpose: packet FIFO and Gray completion counter are the ONLY new crossings
+# into ETH125. Bound first stages; retain all second-stage and data-path timing.
+set_max_delay 6.0 -datapath_only -to [get_cells {u_gmii_bridge.done_meta* bridge_meta u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+set_false_path -hold -to [get_cells {u_gmii_bridge.done_meta* bridge_meta u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]

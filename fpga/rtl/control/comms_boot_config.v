@@ -5,7 +5,10 @@
 // reset. The operator must provide a fresh epoch; no constant boot identity.
 // After the complete ACK and idle guard, the physical UART belongs to the
 // unchanged MCU endpoint (PC emulates an MCU). This is NOT confirmed MCU wiring.
-module comms_boot_config #(parameter CLK_HZ=125000000,BAUD=115200)(
+// Purpose: keep TEST wire admission unchanged by default; the RAW8 board uses
+// command 0x71 and marker RAW8 so old TEST commands cannot commission a camera.
+module comms_boot_config #(parameter CLK_HZ=125000000,BAUD=115200,
+ parameter [7:0] BOOT_COMMAND=8'h70,parameter [31:0] BOOT_MARKER=32'h54534554)(
  input wire clk,reset_n,uart_rx,input wire mcu_tx,
  output wire uart_tx,output reg configured,
  output reg [63:0] epoch,output reg [47:0] src_mac,dst_mac,
@@ -37,7 +40,7 @@ module comms_boot_config #(parameter CLK_HZ=125000000,BAUD=115200)(
  always @* begin
   code=error_code;
   if(error_code==0) begin
-   if(command!=8'h70)code=6;
+   if(command!=BOOT_COMMAND)code=6;
    else if(length!=32)code=3;
    else if(payload[63:0]==0 || payload[111:64]==0 || payload[159:112]==0 ||
       payload[64] || payload[112] ||
@@ -56,8 +59,8 @@ module comms_boot_config #(parameter CLK_HZ=125000000,BAUD=115200)(
    case(state)
     RECEIVE:if(done && reply_allowed)begin
      reply<=0;reply[7:0]<=code;reply[15:8]<=command;reply[95:32]<=payload[63:0];
-     // TEST marker in reserved boot ACK body: never pretend this is a camera.
-     reply[191:160]<=32'h54534554;reply_seq<=seq;reply_cmd<=(code==0)?8'h80:8'h81;
+     // Marker identifies the built image/profile, not physical image-source proof.
+     reply[191:160]<=BOOT_MARKER;reply_seq<=seq;reply_cmd<=(code==0)?8'h80:8'h81;
      accepted<=(code==0);state<=SEND;
      if(code==0)begin
       epoch<=payload[63:0];

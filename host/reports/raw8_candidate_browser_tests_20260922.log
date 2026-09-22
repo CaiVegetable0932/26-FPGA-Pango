@@ -1,0 +1,39 @@
+PASS RAW8 Bayer layout 1
+PASS RAW8 Bayer layout 2
+PASS RAW8 Bayer layout 3
+PASS RAW8 Bayer layout 4
+PASS Full-scale small RAW grayscale preserves samples
+PASS 1080p Bayer downscale has independent color cell averages
+PASS RGB888 order and integer grayscale
+PASS Corrupt lengths, strides, dimensions, formats, and Bayer are rejected
+PASS Wider RAW preview remains bounded to 960 columns
+PASS 1080p RAW sample gray is lossless and phase independent
+✔ host\tests\test_pixels.cjs (229.6118ms)
+PASS Selection excludes live records and cancellation never deletes
+PASS Confirmed parent deletion de-duplicates selected child images
+PASS Partial failures keep undeleted selection and disable stale confirmation
+✔ host\tests\test_records.cjs (100.8392ms)
+PASS Enumerates video devices only without opening hardware
+PASS Saving and restoring a device works with no input signal and no stream
+PASS Opening uses exact saved ID and audio false; identity stays unverified
+PASS Missing device fails without falling back to the built-in camera
+PASS Permission denial and busy-device errors retain saved configuration
+PASS Permission enumeration always releases its temporary stream
+PASS Cancel during a pending device request discards and stops a late stream
+PASS Cancel permission request or close page releases late authorization tracks
+PASS Muted and ended tracks update state without claiming a verified signal
+PASS Device removal stops current tracks and retains the user's exact choice
+PASS Unexpected device identity and playback failure release tracks
+PASS Blocked or corrupt browser storage does not prevent current-page configuration
+PASS Latest enumeration wins and unsupported contexts never request capture
+PASS Destroyed active adapter releases every track and removes hotplug listeners
+PASS Device UI separates save from open and keeps unsaved choices from opening another source
+✔ host\tests\test_video_input.cjs (102.506ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 237.9128

@@ -1,0 +1,257 @@
+##### Written on 2026/09/23 00:11:51 ###############################
+
+
+##### INFO ##################################################
+
+Current device : 
+	PG2L100H-6FBG676
+
+Top Module : 
+	mini_raw8_dual
+
+Constraint File(s) : 
+	C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_camera_diag/ddr_native.fdc
+	C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc
+	C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc
+	C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/timing.fdc
+	C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/cdc.fdc
+	C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/placement.fdc
+
+##### SUMMARY ######################################################
+
+Found 0 error(s), 47 critical warning(s), 0 warning(s), out of 916 constraint(s)
+
+
+Inapplicable constraints(except overwritten constraints):
+********************************************
+
+define_attribute {p:mem_dq[1]} {PAP_IO_LOC} {J6}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 121)] | Port mem_dq[1] has been placed at location J6, whose type is share pin.
+
+define_attribute {p:mem_dq[3]} {PAP_IO_LOC} {L8}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 143)] | Port mem_dq[3] has been placed at location L8, whose type is share pin.
+
+define_attribute {p:mem_dq[5]} {PAP_IO_LOC} {K7}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 165)] | Port mem_dq[5] has been placed at location K7, whose type is share pin.
+
+define_attribute {p:mem_dq[7]} {PAP_IO_LOC} {J5}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 187)] | Port mem_dq[7] has been placed at location J5, whose type is share pin.
+
+define_attribute {p:mem_dq[8]} {PAP_IO_LOC} {H6}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 198)] | Port mem_dq[8] has been placed at location H6, whose type is share pin.
+
+define_attribute {p:mem_dq[10]} {PAP_IO_LOC} {H8}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 220)] | Port mem_dq[10] has been placed at location H8, whose type is share pin.
+
+define_attribute {p:mem_dq[11]} {PAP_IO_LOC} {D6}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 231)] | Port mem_dq[11] has been placed at location D6, whose type is share pin.
+
+define_attribute {p:mem_dq[12]} {PAP_IO_LOC} {G8}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 242)] | Port mem_dq[12] has been placed at location G8, whose type is share pin.
+
+define_attribute {p:mem_dq[13]} {PAP_IO_LOC} {E6}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 253)] | Port mem_dq[13] has been placed at location E6, whose type is share pin.
+
+define_attribute {p:mem_dq[15]} {PAP_IO_LOC} {G6}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 275)] | Port mem_dq[15] has been placed at location G6, whose type is share pin.
+
+define_attribute {p:mem_dm[0]} {PAP_IO_LOC} {K6}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 462)] | Port mem_dm[0] has been placed at location K6, whose type is share pin.
+
+define_attribute {p:mem_dqs[0]} {PAP_IO_LOC} {J4}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 486)] | Port mem_dqs[0] has been placed at location J4, whose type is share pin.
+
+define_attribute {p:mem_dqs[1]} {PAP_IO_LOC} {H7}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 497)] | Port mem_dqs[1] has been placed at location H7, whose type is share pin.
+
+define_attribute {p:mem_dqs_n[0]} {PAP_IO_LOC} {H4}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 530)] | Port mem_dqs_n[0] has been placed at location H4, whose type is share pin.
+
+define_attribute {p:mem_dqs_n[1]} {PAP_IO_LOC} {G7}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc(line number: 541)] | Port mem_dqs_n[1] has been placed at location G7, whose type is share pin.
+
+define_attribute {p:tmds_data_p[0]} {PAP_IO_LOC} {R25}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 35)] | Port tmds_data_p[0] has been placed at location R25, whose type is share pin.
+
+define_attribute {p:tmds_data_p[1]} {PAP_IO_LOC} {P23}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 40)] | Port tmds_data_p[1] has been placed at location P23, whose type is share pin.
+
+define_attribute {p:tmds_data_p[2]} {PAP_IO_LOC} {N23}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 45)] | Port tmds_data_p[2] has been placed at location N23, whose type is share pin.
+
+define_attribute {p:tmds_data_n[0]} {PAP_IO_LOC} {P25}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 50)] | Port tmds_data_n[0] has been placed at location P25, whose type is share pin.
+
+define_attribute {p:tmds_data_n[1]} {PAP_IO_LOC} {P24}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 55)] | Port tmds_data_n[1] has been placed at location P24, whose type is share pin.
+
+define_attribute {p:tmds_data_n[2]} {PAP_IO_LOC} {N24}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 60)] | Port tmds_data_n[2] has been placed at location N24, whose type is share pin.
+
+define_attribute {p:camera_href_0} {PAP_IO_LOC} {T25}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 75)] | Port camera_href_0 has been placed at location T25, whose type is share pin.
+
+define_attribute {p:camera_data_0[0]} {PAP_IO_LOC} {M24}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 80)] | Port camera_data_0[0] has been placed at location M24, whose type is share pin.
+
+define_attribute {p:camera_data_0[1]} {PAP_IO_LOC} {R22}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 85)] | Port camera_data_0[1] has been placed at location R22, whose type is share pin.
+
+define_attribute {p:camera_data_0[2]} {PAP_IO_LOC} {K26}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 90)] | Port camera_data_0[2] has been placed at location K26, whose type is share pin.
+
+define_attribute {p:camera_data_0[3]} {PAP_IO_LOC} {K25}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 95)] | Port camera_data_0[3] has been placed at location K25, whose type is share pin.
+
+define_attribute {p:camera_data_0[4]} {PAP_IO_LOC} {M25}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 100)] | Port camera_data_0[4] has been placed at location M25, whose type is share pin.
+
+define_attribute {p:camera_data_0[5]} {PAP_IO_LOC} {N19}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 105)] | Port camera_data_0[5] has been placed at location N19, whose type is share pin.
+
+define_attribute {p:camera_data_0[7]} {PAP_IO_LOC} {R21}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 115)] | Port camera_data_0[7] has been placed at location R21, whose type is share pin.
+
+define_attribute {p:SCL_0} {PAP_IO_LOC} {P19}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 120)] | Port SCL_0 has been placed at location P19, whose type is share pin.
+
+define_attribute {p:SDA_0} {PAP_IO_LOC} {R20}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 125)] | Port SDA_0 has been placed at location R20, whose type is share pin.
+
+define_attribute {p:cam_rst_0} {PAP_IO_LOC} {T22}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 130)] | Port cam_rst_0 has been placed at location T22, whose type is share pin.
+
+define_attribute {p:phy_reset_n} {PAP_IO_LOC} {G25}
+	C: ConstraintEditor-2002: [C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc(line number: 177)] | Port phy_reset_n has been placed at location G25, whose type is share pin.
+
+
+Constraints with issues:
+********************************************
+
+
+Issues without commands:
+********************************************
+
+C: ConstraintEditor-2009: p:tmds_clk_p is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:tmds_clk_n is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:tmds_data_p[0] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:tmds_data_p[1] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:tmds_data_p[2] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:tmds_data_n[0] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:tmds_data_n[1] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:tmds_data_n[2] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2009: p:SCL_0 is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:SCL_0 is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:SDA_0 is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:SDA_0 is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:cam_rst_0 is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:cam_rst_0 is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+
+Unconstrained ports:
+********************************************
+
+
+Constraints with matching wildcard expressions:
+********************************************
+
+set_false_path -hold -to [get_cells {u_core.lease_meta u_core.hreq_meta u_core.hrel_meta u_core.u_records.lease_meta u_core.u_records.cfg_meta u_core.u_display.ack_meta u_core.u_display.rel_meta sensor_meta* led_meta*}]
+	I: The pattern 'sensor_meta*' in command 'get_cells {u_core.lease_meta u_core.hreq_meta u_core.hrel_meta u_core.u_records.lease_meta u_core.u_records.cfg_meta u_core.u_display.ack_meta u_core.u_display.rel_meta sensor_meta* led_meta*}' match 1 objects below:
+	I: instance sensor_meta[2:0]
+	I: The pattern 'led_meta*' in command 'get_cells {u_core.lease_meta u_core.hreq_meta u_core.hrel_meta u_core.u_records.lease_meta u_core.u_records.cfg_meta u_core.u_display.ack_meta u_core.u_display.rel_meta sensor_meta* led_meta*}' match 1 objects below:
+	I: instance led_meta[3:0]
+
+set_false_path -hold -to [get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+	I: The pattern 'u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*' in command 'get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_core/u_capture_queue/g_records.u_fifo/U_ipm2l_fifo_raw8_capture_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.rwptr1[9:0]
+	I: The pattern 'u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*' in command 'get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_core/u_capture_queue/g_records.u_fifo/U_ipm2l_fifo_raw8_capture_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.wrptr1[9:0]
+	I: The pattern 'u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*' in command 'get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_core/u_h_queue/g_words.u_fifo/U_ipm2l_fifo_raw8_word_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.rwptr1[9:0]
+	I: The pattern 'u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*' in command 'get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_core/u_h_queue/g_words.u_fifo/U_ipm2l_fifo_raw8_word_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.wrptr1[9:0]
+
+set_false_path -hold -to [get_cells {u_gmii_bridge.done_meta* bridge_meta u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+	I: The pattern 'u_gmii_bridge.done_meta*' in command 'get_cells {u_gmii_bridge.done_meta* bridge_meta u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_gmii_bridge/done_meta[15:0]
+	I: The pattern 'u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*' in command 'get_cells {u_gmii_bridge.done_meta* bridge_meta u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_gmii_bridge/u_queue/g_records.u_fifo/U_ipm2l_fifo_raw8_capture_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.rwptr1[9:0]
+	I: The pattern 'u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*' in command 'get_cells {u_gmii_bridge.done_meta* bridge_meta u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_gmii_bridge/u_queue/g_records.u_fifo/U_ipm2l_fifo_raw8_capture_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.wrptr1[9:0]
+
+set_false_path -through [get_nets {ddr_init_done}] -to [get_cells {rs_camera.stages* rs_pixel.stages* rs_eth.stages*}]
+	I: The pattern 'rs_camera.stages*' in command 'get_cells {rs_camera.stages* rs_pixel.stages* rs_eth.stages*}' match 1 objects below:
+	I: instance rs_camera/stages[2:0]
+	I: The pattern 'rs_pixel.stages*' in command 'get_cells {rs_camera.stages* rs_pixel.stages* rs_eth.stages*}' match 1 objects below:
+	I: instance rs_pixel/stages[2:0]
+	I: The pattern 'rs_eth.stages*' in command 'get_cells {rs_camera.stages* rs_pixel.stages* rs_eth.stages*}' match 1 objects below:
+	I: instance rs_eth/stages[2:0]
+
+set_max_delay 20.000 -to [get_ports {uart_tx phy_mdc phy_mdio phy_reset_n led[*] SCL_0 SDA_0 cam_rst_0}]
+	I: The pattern 'led[*]' in command 'get_ports {uart_tx phy_mdc phy_mdio phy_reset_n led[*] SCL_0 SDA_0 cam_rst_0}' match 5 objects below:
+	I: port led[0]
+	I: port led[1]
+	I: port led[2]
+	I: port led[3]
+	I: port led[4]
+
+set_max_delay 6.0 -datapath_only -to [get_cells {u_core.lease_meta u_core.hreq_meta u_core.hrel_meta u_core.u_records.lease_meta u_core.u_records.cfg_meta u_core.u_display.ack_meta u_core.u_display.rel_meta sensor_meta* led_meta*}]
+	I: The pattern 'sensor_meta*' in command 'get_cells {u_core.lease_meta u_core.hreq_meta u_core.hrel_meta u_core.u_records.lease_meta u_core.u_records.cfg_meta u_core.u_display.ack_meta u_core.u_display.rel_meta sensor_meta* led_meta*}' match 1 objects below:
+	I: instance sensor_meta[2:0]
+	I: The pattern 'led_meta*' in command 'get_cells {u_core.lease_meta u_core.hreq_meta u_core.hrel_meta u_core.u_records.lease_meta u_core.u_records.cfg_meta u_core.u_display.ack_meta u_core.u_display.rel_meta sensor_meta* led_meta*}' match 1 objects below:
+	I: instance led_meta[3:0]
+
+set_max_delay 6.0 -datapath_only -to [get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+	I: The pattern 'u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*' in command 'get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_core/u_capture_queue/g_records.u_fifo/U_ipm2l_fifo_raw8_capture_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.rwptr1[9:0]
+	I: The pattern 'u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*' in command 'get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_core/u_capture_queue/g_records.u_fifo/U_ipm2l_fifo_raw8_capture_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.wrptr1[9:0]
+	I: The pattern 'u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*' in command 'get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_core/u_h_queue/g_words.u_fifo/U_ipm2l_fifo_raw8_word_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.rwptr1[9:0]
+	I: The pattern 'u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*' in command 'get_cells {u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_capture_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_core.u_h_queue.g_words.u_fifo.U_ipm2l_fifo_raw8_word_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_core/u_h_queue/g_words.u_fifo/U_ipm2l_fifo_raw8_word_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.wrptr1[9:0]
+
+set_max_delay 6.0 -datapath_only -to [get_cells {u_gmii_bridge.done_meta* bridge_meta u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
+	I: The pattern 'u_gmii_bridge.done_meta*' in command 'get_cells {u_gmii_bridge.done_meta* bridge_meta u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_gmii_bridge/done_meta[15:0]
+	I: The pattern 'u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1*' in command 'get_cells {u_gmii_bridge.done_meta* bridge_meta u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_gmii_bridge/u_queue/g_records.u_fifo/U_ipm2l_fifo_raw8_capture_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.rwptr1[9:0]
+	I: The pattern 'u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*' in command 'get_cells {u_gmii_bridge.done_meta* bridge_meta u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.rwptr1* u_gmii_bridge.u_queue.g_records.u_fifo.U_ipm2l_fifo_raw8_capture_cdc.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}' match 1 objects below:
+	I: instance u_gmii_bridge/u_queue/g_records.u_fifo/U_ipm2l_fifo_raw8_capture_cdc/U_ipm2l_fifo_ctrl/ASYN_CTRL.wrptr1[9:0]
+
+set_min_delay 0.000 -to [get_ports {uart_tx phy_mdc phy_mdio phy_reset_n led[*] SCL_0 SDA_0 cam_rst_0}]
+	I: The pattern 'led[*]' in command 'get_ports {uart_tx phy_mdc phy_mdio phy_reset_n led[*] SCL_0 SDA_0 cam_rst_0}' match 5 objects below:
+	I: port led[0]
+	I: port led[1]
+	I: port led[2]
+	I: port led[3]
+	I: port led[4]
+
+set_output_delay -clock PHY_SAMPLE -clock_fall -max 1.450 -add_delay [get_ports {rgmii_tx_ctl rgmii_txd[*]}]
+	I: The pattern 'rgmii_txd[*]' in command 'get_ports {rgmii_tx_ctl rgmii_txd[*]}' match 4 objects below:
+	I: port rgmii_txd[0]
+	I: port rgmii_txd[1]
+	I: port rgmii_txd[2]
+	I: port rgmii_txd[3]
+
+set_output_delay -clock PHY_SAMPLE -clock_fall -min -1.450 -add_delay [get_ports {rgmii_tx_ctl rgmii_txd[*]}]
+	I: The pattern 'rgmii_txd[*]' in command 'get_ports {rgmii_tx_ctl rgmii_txd[*]}' match 4 objects below:
+	I: port rgmii_txd[0]
+	I: port rgmii_txd[1]
+	I: port rgmii_txd[2]
+	I: port rgmii_txd[3]
+
+set_output_delay -clock PHY_SAMPLE -max 1.450 [get_ports {rgmii_tx_ctl rgmii_txd[*]}]
+	I: The pattern 'rgmii_txd[*]' in command 'get_ports {rgmii_tx_ctl rgmii_txd[*]}' match 4 objects below:
+	I: port rgmii_txd[0]
+	I: port rgmii_txd[1]
+	I: port rgmii_txd[2]
+	I: port rgmii_txd[3]
+
+set_output_delay -clock PHY_SAMPLE -min -1.450 [get_ports {rgmii_tx_ctl rgmii_txd[*]}]
+	I: The pattern 'rgmii_txd[*]' in command 'get_ports {rgmii_tx_ctl rgmii_txd[*]}' match 4 objects below:
+	I: port rgmii_txd[0]
+	I: port rgmii_txd[1]
+	I: port rgmii_txd[2]
+	I: port rgmii_txd[3]
+
+

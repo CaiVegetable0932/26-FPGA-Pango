@@ -1,0 +1,3 @@
+# Diagnostic hypothesis only: PHY reset already prevents reception, so a
+# free-running forwarded clock can omit the output ODDR asynchronous reset.
+set_case_analysis 0 [get_pins {u_rgmii.u_txc_oddr/RS}]

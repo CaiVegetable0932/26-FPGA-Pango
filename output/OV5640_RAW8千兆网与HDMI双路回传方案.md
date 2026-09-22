@@ -1,6 +1,6 @@
 # OV5640 RAW8 千兆网与 HDMI 双路回传方案
 
-RAW8 核心实施增量（2026-09-22）：按用户要求直接采用 1080p RAW8，首版 HDMI 允许 RAW 采样灰阶，不冒充 ISP S1/矫正结果。三个 RAW 槽与 PRAW V1 保持不变；DDR 行尾未定义 padding 不输出。详见 [实施约定](FPGA1080pRAW8双路实施增量.md) 与 [实际离线记录](../fpga/reports/raw8_dual_20260922.md)。整板 top/DDR 仲裁/RAW 启动控制面/时序签核尚未完成，未生成或烧录双路新位流。
+RAW8 整板增量（2026-09-22）：采用 1080p RAW8，首版 HDMI 为 RAW 采样灰阶，不冒充 ISP S1/矫正结果。三个 RAW 槽与 PRAW V1 布局不变；padding 不输出。独立启动命令 0x71/ACK `RAW8`、描述符 0x38574152、param_version=1 与旧 TEST 隔离；epoch 在帧开始前的槽分配时锁存。原生 HMIC 列地址=逻辑字节地址>>2，具体栅栏/控制面见 [实施约定](FPGA1080pRAW8双路实施增量.md)。构建/位流状态以 [整板实际记录](../fpga/reports/raw8_board_candidate_20260922.md) 为准，本轮不烧录、不作真实 30fps 或来源验收。
 
 通信联调增量（2026-09-22）：[MINI 联调方案](FPGA通信上板联调方案.md)及[离线候选报告](../fpga/reports/comms_board_candidate_20260922.md)。PRAW V1 字段/分片/帧池/配对规则不变；专用 TEST 描述符 0x54534554 仅标识合成链路压力流，PC 元数据必须标记 synthetic，不能当作 S0 相机输入或用于 ISP/矫正验收。CP2102 0x70 为独立候选启动命令，不是正式 MCU 命令或真实 MCU 接线确认。候选没有摄像头/HDMI，当前整机目标仍待实现及实板验证。
 

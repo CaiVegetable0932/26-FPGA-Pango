@@ -1,0 +1,62 @@
+library verilog;
+use verilog.vl_types.all;
+entity ipm2l_sdpram_v1_10_raw8_capture_cdc is
+    generic(
+        c_CAS_MODE      : string  := "18K";
+        c_WR_ADDR_WIDTH : integer := 10;
+        c_WR_DATA_WIDTH : integer := 32;
+        c_RD_ADDR_WIDTH : integer := 10;
+        c_RD_DATA_WIDTH : integer := 32;
+        c_WR_ADDR_STROBE_EN: integer := 0;
+        c_WR_CLK_EN     : integer := 0;
+        c_OUTPUT_REG    : integer := 0;
+        c_RD_OCE_EN     : integer := 0;
+        c_FAB_REG       : integer := 0;
+        c_RD_ADDR_STROBE_EN: integer := 0;
+        c_RD_CLK_EN     : integer := 0;
+        c_RESET_TYPE    : string  := "ASYNC";
+        c_RD_CLK_OR_POL_INV: integer := 0;
+        c_POWER_OPT     : integer := 0;
+        c_INIT_FILE     : string  := "NONE";
+        c_INIT_FORMAT   : string  := "BIN";
+        c_WR_BYTE_EN    : integer := 0;
+        c_BE_WIDTH      : integer := 8
+    );
+    port(
+        wr_addr         : in     vl_logic_vector;
+        wr_data         : in     vl_logic_vector;
+        wr_en           : in     vl_logic;
+        wr_clk          : in     vl_logic;
+        wr_clk_en       : in     vl_logic;
+        wr_rst          : in     vl_logic;
+        wr_byte_en      : in     vl_logic_vector;
+        wr_addr_strobe  : in     vl_logic;
+        rd_addr         : in     vl_logic_vector;
+        rd_data         : out    vl_logic_vector;
+        rd_clk          : in     vl_logic;
+        rd_clk_en       : in     vl_logic;
+        rd_rst          : in     vl_logic;
+        rd_oce          : in     vl_logic;
+        rd_addr_strobe  : in     vl_logic
+    );
+    attribute mti_svvh_generic_type : integer;
+    attribute mti_svvh_generic_type of c_CAS_MODE : constant is 1;
+    attribute mti_svvh_generic_type of c_WR_ADDR_WIDTH : constant is 1;
+    attribute mti_svvh_generic_type of c_WR_DATA_WIDTH : constant is 1;
+    attribute mti_svvh_generic_type of c_RD_ADDR_WIDTH : constant is 1;
+    attribute mti_svvh_generic_type of c_RD_DATA_WIDTH : constant is 1;
+    attribute mti_svvh_generic_type of c_WR_ADDR_STROBE_EN : constant is 1;
+    attribute mti_svvh_generic_type of c_WR_CLK_EN : constant is 1;
+    attribute mti_svvh_generic_type of c_OUTPUT_REG : constant is 1;
+    attribute mti_svvh_generic_type of c_RD_OCE_EN : constant is 1;
+    attribute mti_svvh_generic_type of c_FAB_REG : constant is 1;
+    attribute mti_svvh_generic_type of c_RD_ADDR_STROBE_EN : constant is 1;
+    attribute mti_svvh_generic_type of c_RD_CLK_EN : constant is 1;
+    attribute mti_svvh_generic_type of c_RESET_TYPE : constant is 1;
+    attribute mti_svvh_generic_type of c_RD_CLK_OR_POL_INV : constant is 1;
+    attribute mti_svvh_generic_type of c_POWER_OPT : constant is 1;
+    attribute mti_svvh_generic_type of c_INIT_FILE : constant is 1;
+    attribute mti_svvh_generic_type of c_INIT_FORMAT : constant is 1;
+    attribute mti_svvh_generic_type of c_WR_BYTE_EN : constant is 1;
+    attribute mti_svvh_generic_type of c_BE_WIDTH : constant is 1;
+end ipm2l_sdpram_v1_10_raw8_capture_cdc;

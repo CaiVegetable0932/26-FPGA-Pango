@@ -1,5 +1,7 @@
 # FPGA 开发区
 
+当前1080p RAW8双路开发在 `codex/fpga-raw8-dual-output`；使用独立 [整板工程](project/mini_raw8_dual/mini_raw8_dual.pds)，不是下面的合成通信工程。构建/发布的实际状态、限制和回归见 [整板候选报告](reports/raw8_board_candidate_20260922.md)，本轮不烧录。
+
 2026-09-22通信板级候选：新增独立 [MINI 工程](project/mini_comms_bringup/mini_comms_bringup.pds)，原生布局布线 min/max 时序在声明预算下闭合，已生成 [SBIT/SFC 发布包](release/comms_bringup_20260922_e51d3cc9c9ee/README.md)。这是 **CP2102 模拟 MCU＋合成网络测试流**，没有摄像头/DDR/HDMI，未烧录；原生 GPLL 严格仿真仍有初始化除零诊断。完整结果、预算及后续门槛见[候选报告](reports/comms_board_candidate_20260922.md)。不能把它当成真实 RAW8 双路回传验收。
 
 2026-09-21通信子系统：在`codex/fpga-mcu-praw-protocol`实现MCU UART、PRAW/UDP/IP/MAC和原生RGMII TX；完整离线回归及原生编译/综合记录见[通信离线报告](reports/comms_offline_20260921.md)。独立[工程入口](project/fpga_comms/fpga_comms.pds)不是烧录镜像；综合hold、完整板级约束、RAW帧池读DMA和MCU固件适配尚未完成。现有摄像头HDMI工程保持不变。

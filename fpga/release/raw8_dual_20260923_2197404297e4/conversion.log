@@ -1,0 +1,10 @@
+cfg_shell>Executing : cfg_set_tcl_break -flag true
+Executing : cfg_set_tcl_break -flag true successfully.
+Executing : cfg_gen_sfc -device_name xt25f128 -opcode 11 -sbit_start_address 0 -sbit C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\raw8_dual_20260923_2197404297e4\mini_raw8_dual.sbit -sfc C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\raw8_dual_20260923_2197404297e4\mini_raw8_dual.sfc
+W: Configuration-4002: Tcl parameter check failed: C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\raw8_dual_20260923_2197404297e4\mini_raw8_dual.sfc does not exist, now create the file..
+The Start Address of bit file C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\raw8_dual_20260923_2197404297e4\mini_raw8_dual.sbit: 0x0
+Executing : cfg_gen_sfc -device_name xt25f128 -opcode 11 -sbit_start_address 0 -sbit C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\raw8_dual_20260923_2197404297e4\mini_raw8_dual.sbit -sfc C:\Users\ROG\.codex\worktrees\fpga-camera-main-publish\26-FPGA-Pango\fpga\release\raw8_dual_20260923_2197404297e4\mini_raw8_dual.sfc successfully.
+COMMS_SFC_OFFLINE_GENERATED
+Executing : cfg_close
+Executing : cfg_close successfully.
+finish
