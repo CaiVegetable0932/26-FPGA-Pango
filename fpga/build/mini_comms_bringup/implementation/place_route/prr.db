@@ -3232,50 +3232,50 @@
         </row>
         <row>
             <data>Use of CLMA</data>
-            <data>1012</data>
+            <data>1006</data>
             <data>11675</data>
             <data>9</data>
             <row>
                 <data>  FF</data>
-                <data>2542</data>
+                <data>2647</data>
                 <data>93400</data>
                 <data>3</data>
             </row>
             <row>
                 <data>  LUT</data>
-                <data>2843</data>
+                <data>2949</data>
                 <data>46700</data>
                 <data>7</data>
             </row>
             <row>
                 <data>  LUT-FF pairs</data>
-                <data>1381</data>
+                <data>1320</data>
                 <data>46700</data>
                 <data>3</data>
             </row>
         </row>
         <row>
             <data>Use of CLMS</data>
-            <data>658</data>
+            <data>614</data>
             <data>4975</data>
-            <data>14</data>
+            <data>13</data>
             <row>
                 <data>  FF</data>
-                <data>1288</data>
+                <data>1239</data>
                 <data>39800</data>
                 <data>4</data>
             </row>
             <row>
                 <data>  LUT</data>
-                <data>1651</data>
+                <data>1594</data>
                 <data>19900</data>
                 <data>9</data>
             </row>
             <row>
                 <data>  LUT-FF pairs</data>
-                <data>555</data>
+                <data>622</data>
                 <data>19900</data>
-                <data>3</data>
+                <data>4</data>
             </row>
             <row>
                 <data>  Distributed RAM</data>
@@ -3328,9 +3328,9 @@
         </row>
         <row>
             <data>Use of HCKB</data>
-            <data>2</data>
-            <data>96</data>
             <data>3</data>
+            <data>96</data>
+            <data>4</data>
             <row>
                 <data> HCKB dataused</data>
                 <data>0</data>
@@ -3460,14 +3460,14 @@
         </row>
         <row>
             <data>Use of RCKB</data>
-            <data>1</data>
+            <data>0</data>
             <data>24</data>
-            <data>5</data>
+            <data>0</data>
             <row>
                 <data> RCKB dataused</data>
-                <data>1</data>
+                <data>0</data>
                 <data>24</data>
-                <data>5</data>
+                <data>0</data>
             </row>
         </row>
         <row>
@@ -3555,8 +3555,8 @@
         </column_headers>
         <row>
             <data>mini_comms_bringup</data>
-            <data>4494</data>
-            <data>3830</data>
+            <data>4543</data>
+            <data>3886</data>
             <data>641</data>
             <data>1</data>
             <data>1</data>
@@ -3567,7 +3567,7 @@
             <data>0</data>
             <data>0</data>
             <data>1</data>
-            <data>2</data>
+            <data>3</data>
             <data>0</data>
             <data>19</data>
             <data>0</data>
@@ -3575,13 +3575,13 @@
             <data>0</data>
             <data>0</data>
             <data>0</data>
-            <data>1</data>
+            <data>0</data>
             <data>0</data>
             <data>0</data>
             <data>1</data>
             <row>
                 <data>u_boot</data>
-                <data>676</data>
+                <data>675</data>
                 <data>981</data>
                 <data>0</data>
                 <data>0</data>
@@ -3607,7 +3607,7 @@
                 <data>0</data>
                 <row>
                     <data>u_parse</data>
-                    <data>407</data>
+                    <data>408</data>
                     <data>385</data>
                     <data>0</data>
                     <data>0</data>
@@ -3716,8 +3716,8 @@
             </row>
             <row>
                 <data>u_mcu</data>
-                <data>1557</data>
-                <data>1239</data>
+                <data>1574</data>
+                <data>1253</data>
                 <data>129</data>
                 <data>0</data>
                 <data>0</data>
@@ -3742,7 +3742,7 @@
                 <data>0</data>
                 <row>
                     <data>u_parser</data>
-                    <data>415</data>
+                    <data>414</data>
                     <data>385</data>
                     <data>0</data>
                     <data>0</data>
@@ -3769,7 +3769,7 @@
                 </row>
                 <row>
                     <data>u_rx</data>
-                    <data>69</data>
+                    <data>68</data>
                     <data>60</data>
                     <data>0</data>
                     <data>0</data>
@@ -3851,7 +3851,7 @@
             </row>
             <row>
                 <data>u_network</data>
-                <data>1870</data>
+                <data>1891</data>
                 <data>1297</data>
                 <data>512</data>
                 <data>1</data>
@@ -3877,7 +3877,7 @@
                 <data>0</data>
                 <row>
                     <data>u_mac</data>
-                    <data>544</data>
+                    <data>560</data>
                     <data>689</data>
                     <data>0</data>
                     <data>0</data>
@@ -3904,7 +3904,7 @@
                 </row>
                 <row>
                     <data>u_praw</data>
-                    <data>1325</data>
+                    <data>1331</data>
                     <data>416</data>
                     <data>512</data>
                     <data>1</data>
@@ -3932,8 +3932,8 @@
             </row>
             <row>
                 <data>u_phy</data>
-                <data>190</data>
-                <data>166</data>
+                <data>203</data>
+                <data>208</data>
                 <data>0</data>
                 <data>0</data>
                 <data>0</data>
@@ -3958,7 +3958,7 @@
                 <data>0</data>
                 <row>
                     <data>u_mdio</data>
-                    <data>78</data>
+                    <data>80</data>
                     <data>99</data>
                     <data>0</data>
                     <data>0</data>
@@ -4040,7 +4040,7 @@
             </row>
             <row>
                 <data>u_source</data>
-                <data>171</data>
+                <data>172</data>
                 <data>117</data>
                 <data>0</data>
                 <data>0</data>
@@ -4078,10 +4078,10 @@
             <data>RAM(GB)</data>
         </column_headers>
         <row>
-            <data>0h:1m:31s</data>
+            <data>0h:1m:35s</data>
+            <data>0h:1m:47s</data>
             <data>0h:1m:43s</data>
-            <data>0h:1m:38s</data>
-            <data>1,556</data>
+            <data>1,568</data>
             <data>WINDOWS 10 x86_64</data>
             <data>Unknown</data>
             <data>31</data>
@@ -4096,16 +4096,13 @@
             <data message="4">Column Clock Check open.</data>
         </row>
         <row>
-            <data message="4">LUT6D pack result: There are 1364 LUT6 in collection, pack success:37</data>
+            <data message="4">LUT6D pack result: There are 1537 LUT6 in collection, pack success:33</data>
         </row>
         <row>
             <data message="4">Process macros using &quot;Greedy&quot;.</data>
         </row>
         <row>
-            <data message="4">LUT6D pack result: There are 1297 LUT6 in collection, pack success:7</data>
-        </row>
-        <row>
-            <data message="4">Place-6001: Add the new LUT instances CLMA_81_852(/devAL6) replicated by the LUT instance CLMS_75_865(/devAL6_S).</data>
+            <data message="4">LUT6D pack result: There are 1471 LUT6 in collection, pack success:8</data>
         </row>
     </table>
     <general_container id="pnr_settings">
@@ -4403,7 +4400,7 @@
                     <data>clkbufg_0/gopclkbufg</data>
                     <data>USCM_215_576</data>
                     <data>ntclkbufg_0</data>
-                    <data>3936</data>
+                    <data>3981</data>
                     <data>0</data>
                     <data>u_pll/u_gpll/gpll_inst</data>
                     <data>CLKOUT0</data>
@@ -4440,10 +4437,10 @@
                     <data>u_pll/u_gpll/gpll_inst</data>
                     <data>GPLL_367_463</data>
                     <data>CLKIN2</data>
-                    <data>ntR1482</data>
+                    <data>ntR1520</data>
                     <data> - </data>
                     <data> - </data>
-                    <data>GND_233</data>
+                    <data>GND_225</data>
                     <data>Z</data>
                     <data>HARD0_361_487</data>
                 </row>
@@ -4452,7 +4449,7 @@
                     <data>GPLL_367_463</data>
                     <data>CLKOUT0</data>
                     <data>clk125</data>
-                    <data>3936</data>
+                    <data>3981</data>
                     <data>0</data>
                     <data> ... </data>
                     <data> ... </data>

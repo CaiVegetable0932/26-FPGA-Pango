@@ -12,6 +12,16 @@ from copy import deepcopy
 
 
 def configure_pll(values, clock):
+    # Purpose: explicit board profiles must obey UG041001 p33 GPLL PFD/bandwidth
+    # limits, not just output-frequency arithmetic. The legacy profiles remain
+    # unchanged until individually reviewed; only opted-in profiles are emitted.
+    if "bandwidth" in clock:
+        pfd = float(clock["input_mhz"])  # This generator fixes IDIV to one below.
+        bandwidth = clock["bandwidth"]
+        allowed = ("HIGH",) if 40 < pfd <= 450 else ("LOW", "OPTIMIZED")
+        if not 10 <= pfd <= 450 or bandwidth not in allowed:
+            raise ValueError(f"Illegal GPLL PFD/bandwidth: {pfd} MHz / {bandwidth}")
+        values["BANDWIDTH"] = values["BANDWIDTH_advancedPage"] = bandwidth
     values.update(MODE_CFG="1", CLKIN_FREQ=str(clock["input_mhz"]),
                   CLKIN_FREQ_advancedPage=str(clock["input_mhz"]),
                   CLKIN_FREQ_basicPage=str(clock["input_mhz"]),

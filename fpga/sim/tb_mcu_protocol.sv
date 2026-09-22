@@ -31,10 +31,12 @@ module tb_mcu_protocol;
 
     // Clock changes are parameter-driven; serial bits retain true 115200 timing.
     always #(CLK_NS/2.0) clk=~clk;
-    mcu_protocol #(.CLK_HZ(CLK_HZ),.BAUD(BAUD),.RX_TIMEOUT_MS(RX_TIMEOUT_MS)) dut (
+    // A known 96-bit diagnostic snapshot exercises the optional read-only command.
+    mcu_protocol #(.CLK_HZ(CLK_HZ),.BAUD(BAUD),.RX_TIMEOUT_MS(RX_TIMEOUT_MS),.BOARD_DIAGNOSTICS(1)) dut (
         .clk(clk),.rst_n(rst_n),.uart_rx(uart_rx),.uart_tx(uart_tx),
         .link_epoch(link_epoch),.link_epoch_valid(link_epoch_valid),
         .board_time_us(board_time_us),.status_flags(status_flags),.session_active(session_active),
+        .board_diagnostics(96'h0100002c0420001c001cc916),
         .env_valid(env_valid),.env_session_id(env_session_id),.env_event_seq(env_event_seq),
         .env_mcu_time_us(env_mcu_time_us),.env_board_time_us(env_board_time_us),
         .env_lux_milli(env_lux_milli),.env_angle_mdeg(env_angle_mdeg),
@@ -233,6 +235,12 @@ module tb_mcu_protocol;
         expect_reply(10,8'h10,0); expect_reply(11,8'h10,1); expect_reply(12,3,0);
         check(events==2 && env_event_seq==2 && env_measurement_valid==1,"back-to-back event/duplicate/status");
         check(last_response[191:160]==status_flags,"status flag snapshot");
+        // Diagnostics must preserve the common identity prefix and all 96 bits,
+        // reject stale sessions, and never commit an environmental observation.
+        request(5,13,12,session_payload(EPOCH_A,1),1,0); expect_reply(13,5,0);
+        check(last_response[255:160]==96'h0100002c0420001c001cc916,"diagnostic snapshot");
+        request(5,14,12,session_payload(EPOCH_A,2),1,0); expect_reply(14,5,8);
+        check(events==2,"diagnostic has no event side effects");
 
         if(FULL) begin
             // Identity conflict, stale/invalid fields, and stale session/epoch.

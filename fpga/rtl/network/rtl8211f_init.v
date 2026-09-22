@@ -5,17 +5,23 @@
 // 1 for an unshifted MAC clock. RMW and exact readback prevent double delay.
 // Advertise only 1000/full, no PAUSE and no EEE (neither is implemented by
 // this TX-only MAC). Any MDIO/ID/readback error latches a fail-closed fault.
-// Hardware reset is >=10 ms; first MDIO is >=30 ms after release. Link status
+// RTL8211F Rev1.4 section 7.17 and 9.3 note6 require 50 ms settling plus
+// a reserved 100 ms configuration window unless explicitly skipped. Wait
+// 200 ms after reset release; do not race boot or write the skip register.
+// Hardware reset is >=10 ms. Link status
 // is polled every 100 ms. A cable/link change is not an initialization fault.
 module rtl8211f_init #(
  parameter integer CLK_HZ=125000000, HALF_CYCLES=63,
- parameter integer RESET_MS=10, SETTLE_MS=30, POLL_MS=100,
+ parameter integer RESET_MS=10, SETTLE_MS=200, POLL_MS=100,
  parameter [4:0] PHY_ADDR=5'd1,
+ parameter integer SCAN_ADDRESSES=0,
  parameter integer PHY_TX_DELAY=0
 )(input wire clk,reset_n,mdio_i,output wire mdio_o,mdio_oe,mdc,
  output reg phy_reset_n,configured,link_ready,fault,
  output reg [3:0] fault_code,output reg [15:0] phy_status,
- output reg [31:0] phy_id);
+ output reg [31:0] phy_id,output reg [4:0] selected_addr,
+ output wire [5:0] diagnostic_step,output reg [15:0] last_read,
+ output reg last_ack_error);
  localparam integer MS_DIV=CLK_HZ/1000;
  localparam integer MS_CW=(MS_DIV<2)?1:$clog2(MS_DIV);
  reg [MS_CW-1:0] ms_divider;
@@ -32,9 +38,13 @@ module rtl8211f_init #(
  reg [15:0] wdata;
  mdio_clause22 #(.HALF_CYCLES(HALF_CYCLES)) u_mdio(
   .clk(clk),.reset_n(reset_n),.start(start),.read_not_write(rd),
-  .phy_addr(PHY_ADDR),.reg_addr(addr),.write_data(wdata),.mdio_i(mdio_i),
+  .phy_addr(selected_addr),.reg_addr(addr),.write_data(wdata),.mdio_i(mdio_i),
   .mdio_o(mdio_o),.mdio_oe(mdio_oe),.mdc(mdc),.busy(busy),.done(done),
   .ack_error(ack_error),.read_data(rdata));
+ // Purpose: read-only discovery tries non-broadcast RTL8211F addresses 1..7.
+ // No register is written until BOTH identifier words match the expected PHY.
+ // Diagnostic outputs retain the last read and failing step even in FAILED.
+ assign diagnostic_step=step;
  // Purpose: explicit transaction ROM; no broadcast writes or hidden defaults.
  // Steps 14..19 use IEEE MMD access to disable and read back EEE advertisement.
  always @* begin
@@ -74,6 +84,7 @@ module rtl8211f_init #(
    ms_divider<=0;wait_ms<=0;state<=HOLD;step<=0;start<=0;saved<=0;
    phy_reset_n<=0;configured<=0;link_ready<=0;fault<=0;fault_code<=0;
    phy_status<=0;phy_id<=0;
+   selected_addr<=SCAN_ADDRESSES?5'd1:PHY_ADDR;last_read<=0;last_ack_error<=0;
   end else begin
    start<=0;
    if(ms_divider==MS_DIV-1) ms_divider<=0;else ms_divider<=ms_divider+1'b1;
@@ -88,7 +99,10 @@ module rtl8211f_init #(
     end
     ISSUE: if(!busy) begin start<=1;state<=WAIT;end
     WAIT: if(done) begin
-     if(ack_error) begin fault<=1;fault_code<=1;state<=FAILED;link_ready<=0;end
+     if(rd) begin last_read<=rdata;last_ack_error<=ack_error;end
+     if(ack_error && step==0 && SCAN_ADDRESSES && selected_addr<7) begin
+      selected_addr<=selected_addr+1'b1;state<=ISSUE;
+     end else if(ack_error) begin fault<=1;fault_code<=1;state<=FAILED;link_ready<=0;end
      else if((step==0 && rdata!=16'h001c) ||
              (step==1 && (rdata & 16'hfff0)!=16'hc910)) begin
       fault<=1;fault_code<=2;state<=FAILED;

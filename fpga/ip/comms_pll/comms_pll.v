@@ -156,7 +156,7 @@ module comms_pll (
     
     localparam         EXTERNAL_FB      = "DISABLE"; //@IPC enum CLKOUT0,CLKOUT1,CLKOUT2,CLKOUT3,CLKOUT4,CLKOUT5,CLKOUT6,DISABLE 
     
-    localparam         BANDWIDTH        = "OPTIMIZED"; //@IPC enum OPTIMIZED,LOW,HIGH 
+    localparam         BANDWIDTH        = "HIGH"; //@IPC enum OPTIMIZED,LOW,HIGH 
     
     wire clkin2;
     assign clkin2 = 1'b0;

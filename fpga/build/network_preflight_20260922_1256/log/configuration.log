@@ -1,0 +1,57 @@
+[Info] [2026-9-22 12:57:12] /***************************Start Configuration***************************/
+[Info] [2026-9-22 12:57:12] Path: E:/PDS_Pangu/PDS_2022.2-SP6.4/bin
+[Info] [2026-9-22 12:57:12] Version: 146967
+[Info] [2026-9-22 12:57:13] Current Path: C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/network_preflight_20260922_1256
+[Info] [2026-9-22 12:57:13] PDS Dir Path: 
+[Debug] [2026-9-22 12:57:13] begin to check the cfg_connect exec condition.
+[Debug] [2026-9-22 12:57:13] end to check the cfg_connect exec condition.
+[Debug] [2026-9-22 12:57:13] Client Local host name:LAPTOP-B7VM7LU4
+[Debug] [2026-9-22 12:57:13] Client Local Address:169.254.81.186
+[Debug] [2026-9-22 12:57:13] Client Local Address:26.207.88.92
+[Debug] [2026-9-22 12:57:13] Client Local Address:192.168.31.221
+[Debug] [2026-9-22 12:57:13] Server Address:127.0.0.1, Port:65420
+[Info] [2026-9-22 12:57:13] Connect OK, Server: 127.0.0.1  Port: 65420
+[Debug] [2026-9-22 12:57:13] Finish.
+[Info] [2026-9-22 12:57:13] Connect server succeeded
+[Debug] [2026-9-22 12:57:13] Send RPC:1
+[Debug] [2026-9-22 12:57:13] Send cmd [check version information:40004] OK
+[Debug] [2026-9-22 12:57:13] Send RPC:2
+[Debug] [2026-9-22 12:57:13] Send cmd [get_cable_paras:40010] OK
+[Debug] [2026-9-22 12:57:13] COMMAND[check version information] execute successfully, takes 0.0 secs.
+[Debug] [2026-9-22 12:57:14] COMMAND[get_cable_paras] execute successfully, takes 1.3 secs.
+[Debug] [2026-9-22 12:57:15] cfg_connect succeed.
+[Debug] [2026-9-22 12:57:16] Send RPC:3
+[Debug] [2026-9-22 12:57:16] Send cmd [Open config cable:20001] OK
+[Debug] [2026-9-22 12:57:16] begin the exec of open cable cmd...
+[Debug] [2026-9-22 12:57:16] Begin to deal with chain from server...
+[Debug] [2026-9-22 12:57:16] Begin to set user chain...
+[Debug] [2026-9-22 12:57:16] End to set user chain.
+[Debug] [2026-9-22 12:57:16] end the exec of open cable cmd.
+[Debug] [2026-9-22 12:57:16] COMMAND[Open config cable] execute successfully, takes 0.5 secs.
+[Debug] [2026-9-22 12:57:17] cfg_scan_chain succeed.
+[Debug] [2026-9-22 12:57:17] begin to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-22 12:57:17] end to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-22 12:57:17] Send RPC:4
+[Debug] [2026-9-22 12:57:17] Send cmd [Get device id:20006] OK
+[Debug] [2026-9-22 12:57:17] begin the exec of get device property cmd...
+[Debug] [2026-9-22 12:57:17] Begin to show device id result...
+[Debug] [2026-9-22 12:57:17] End to show device id result...
+[Debug] [2026-9-22 12:57:17] end the exec of get device property cmd.
+[Debug] [2026-9-22 12:57:17] COMMAND[Get device id] execute successfully, takes 0.4 secs.
+[Debug] [2026-9-22 12:57:18] cfg_read_device_property succeed.
+[Debug] [2026-9-22 12:57:19] begin to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-22 12:57:19] end to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-22 12:57:19] Send RPC:5
+[Debug] [2026-9-22 12:57:19] Send cmd [Read status:20005] OK
+[Debug] [2026-9-22 12:57:19] begin the exec of get device property cmd...
+[Debug] [2026-9-22 12:57:19] read status exec:
+[Debug] [2026-9-22 12:57:19] Begin to show read status register result...
+[Debug] [2026-9-22 12:57:19] End to show read status register result.
+[Debug] [2026-9-22 12:57:19] end the exec of get device property cmd.
+[Debug] [2026-9-22 12:57:19] COMMAND[Read status] execute successfully, takes 0.4 secs.
+[Debug] [2026-9-22 12:57:20] cfg_read_device_property succeed.
+[Info] [2026-9-22 12:57:20] Disconnect from Server: 127.0.0.1  Port: 65420
+[Warn] [2026-9-22 12:57:20] Server is disconnected
+[Debug] [2026-9-22 12:57:20] end to connect server
+[Debug] [2026-9-22 12:57:20] cfg_disconnect succeed.
+[Info] [2026-9-22 12:57:21] /***************************End Configration***************************/

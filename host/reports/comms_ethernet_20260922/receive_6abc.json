@@ -1,0 +1,101 @@
+{
+  "link_data_passed": true,
+  "source": "FPGA SYNTHETIC TEST - NOT CAMERA",
+  "hardware_received": true,
+  "bind": [
+    "169.254.81.186",
+    50000
+  ],
+  "peer": [
+    "169.254.81.187",
+    50001
+  ],
+  "epoch": 3971348597321107983,
+  "receive_buffer_bytes": 8388608,
+  "counters": {
+    "udp_packets": 444195,
+    "udp_bytes": 649942680,
+    "complete_frames": 298,
+    "exact_test_frames": 298,
+    "exact_test_bytes": 617932800,
+    "assembly_failures": 1
+  },
+  "assembly": {
+    "counters": {
+      "datagrams": 444195,
+      "live_frames_observed": 300,
+      "packets_accepted_unique": 444195,
+      "live_frames_complete": 298,
+      "live_bytes_complete": 617932800,
+      "frames_failed_timeout": 1
+    },
+    "active_frames": 1,
+    "buffer_bytes": 2073600,
+    "stream_epoch": 3971348597321107983,
+    "live_first_id": 1,
+    "live_highwater": 300,
+    "live_unobserved_ids_in_span": 0
+  },
+  "recent_failures": [
+    {
+      "reason": "timeout",
+      "key": [
+        3971348597321107983,
+        93,
+        1,
+        1414743380
+      ],
+      "received": 1473,
+      "expected": 1482
+    }
+  ],
+  "recent_frame_hashes": [
+    {
+      "frame_id": 292,
+      "bytes": 2073600,
+      "sha256": "4c83f117b9d0f12c3040b5825f13669ef15d3ea8e694b7e558857ac3c55761fa"
+    },
+    {
+      "frame_id": 293,
+      "bytes": 2073600,
+      "sha256": "39bd20285e6a84d82c76a67c8676fc238329b8529ff9c0bce5a8c6b167c3de50"
+    },
+    {
+      "frame_id": 294,
+      "bytes": 2073600,
+      "sha256": "79d8b496b48ce54833d7c76f5835f76af116f4d6f4505c5e83bbce44d2697f9a"
+    },
+    {
+      "frame_id": 295,
+      "bytes": 2073600,
+      "sha256": "8a5dda87e14732333b283573565855c6444122c5174240e9e3b71704fee7e847"
+    },
+    {
+      "frame_id": 296,
+      "bytes": 2073600,
+      "sha256": "e5432a05858e9bdd3bf4b72d422b95fc07c236cfc2764ff0808783107687c816"
+    },
+    {
+      "frame_id": 297,
+      "bytes": 2073600,
+      "sha256": "5cf20a52ab53978050f7889f449ebc8eacee17c1ebba4cf50dadba81a5807cc0"
+    },
+    {
+      "frame_id": 298,
+      "bytes": 2073600,
+      "sha256": "3c7a4c691cd2dfce840db93e74cdc7446fbfd099135067b61740c21718446996"
+    },
+    {
+      "frame_id": 299,
+      "bytes": 2073600,
+      "sha256": "713f5d4a566141a73754d347f8a86b25e9457ab6dfbb3e5d558bfdee133aad83"
+    }
+  ],
+  "elapsed_window_seconds": 10.0,
+  "complete_fps_in_receive_window": 29.8,
+  "first_matching_packet": true,
+  "last_complete_seen": true,
+  "payloads_saved": false,
+  "network_settings_changed": false,
+  "note": "Data-path smoke test, not lossless/long-soak/camera/HDMI acceptance"
+}

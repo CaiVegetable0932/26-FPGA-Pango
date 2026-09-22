@@ -1,0 +1,70 @@
+[Info] [2026-9-22 18:51:37] /***************************Start Configuration***************************/
+[Info] [2026-9-22 18:51:37] Path: D:/XDU/concept/26-FPGA-Pango-test/pds_cfg_runtime/bin
+[Info] [2026-9-22 18:51:37] Version: 146967
+[Info] [2026-9-22 18:51:38] Current Path: C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/comms_preburn_probe_20260922_185132
+[Info] [2026-9-22 18:51:38] PDS Dir Path: 
+[Debug] [2026-9-22 18:51:38] begin to check the cfg_connect exec condition.
+[Debug] [2026-9-22 18:51:38] end to check the cfg_connect exec condition.
+[Debug] [2026-9-22 18:51:38] Client Local host name:LAPTOP-B7VM7LU4
+[Debug] [2026-9-22 18:51:38] Client Local Address:169.254.81.186
+[Debug] [2026-9-22 18:51:38] Client Local Address:26.207.88.92
+[Debug] [2026-9-22 18:51:38] Client Local Address:192.168.31.221
+[Debug] [2026-9-22 18:51:38] Server Address:127.0.0.1, Port:65420
+[Info] [2026-9-22 18:51:38] Connect OK, Server: 127.0.0.1  Port: 65420
+[Debug] [2026-9-22 18:51:38] Finish.
+[Info] [2026-9-22 18:51:38] Connect server succeeded
+[Debug] [2026-9-22 18:51:38] Send RPC:1
+[Debug] [2026-9-22 18:51:38] Send cmd [check version information:40004] OK
+[Debug] [2026-9-22 18:51:38] Send RPC:2
+[Debug] [2026-9-22 18:51:38] Send cmd [get_cable_paras:40010] OK
+[Debug] [2026-9-22 18:51:38] COMMAND[check version information] execute successfully, takes 0.0 secs.
+[Debug] [2026-9-22 18:51:40] COMMAND[get_cable_paras] execute successfully, takes 1.5 secs.
+[Debug] [2026-9-22 18:51:40] cfg_connect succeed.
+[Debug] [2026-9-22 18:51:41] Send RPC:3
+[Debug] [2026-9-22 18:51:41] Send cmd [set_cable_paras:40011] OK
+[Debug] [2026-9-22 18:51:42] COMMAND[set_cable_paras] execute successfully, takes 0.9 secs.
+[Debug] [2026-9-22 18:51:42] cfg_set_cable_property succeed.
+[Debug] [2026-9-22 18:51:42] Send RPC:4
+[Debug] [2026-9-22 18:51:42] Send cmd [Open config cable:20001] OK
+[Debug] [2026-9-22 18:51:43] begin the exec of open cable cmd...
+[Debug] [2026-9-22 18:51:43] Begin to deal with chain from server...
+[Debug] [2026-9-22 18:51:43] Begin to set user chain...
+[Debug] [2026-9-22 18:51:43] End to set user chain.
+[Debug] [2026-9-22 18:51:43] end the exec of open cable cmd.
+[Debug] [2026-9-22 18:51:43] COMMAND[Open config cable] execute successfully, takes 0.5 secs.
+[Debug] [2026-9-22 18:51:43] cfg_scan_chain succeed.
+[Debug] [2026-9-22 18:51:44] begin to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-22 18:51:44] end to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-22 18:51:44] Send RPC:5
+[Debug] [2026-9-22 18:51:44] Send cmd [Get device id:20006] OK
+[Debug] [2026-9-22 18:51:44] begin the exec of get device property cmd...
+[Debug] [2026-9-22 18:51:44] Begin to show device id result...
+[Debug] [2026-9-22 18:51:44] End to show device id result...
+[Debug] [2026-9-22 18:51:44] end the exec of get device property cmd.
+[Debug] [2026-9-22 18:51:44] COMMAND[Get device id] execute successfully, takes 0.4 secs.
+[Debug] [2026-9-22 18:51:45] cfg_read_device_property succeed.
+[Debug] [2026-9-22 18:51:45] begin to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-22 18:51:45] end to check the cfg_read_device_property exec condition.
+[Debug] [2026-9-22 18:51:45] Send RPC:6
+[Debug] [2026-9-22 18:51:45] Send cmd [Read status:20005] OK
+[Debug] [2026-9-22 18:51:46] begin the exec of get device property cmd...
+[Debug] [2026-9-22 18:51:46] read status exec:
+[Debug] [2026-9-22 18:51:46] Begin to show read status register result...
+[Debug] [2026-9-22 18:51:46] End to show read status register result.
+[Debug] [2026-9-22 18:51:46] end the exec of get device property cmd.
+[Debug] [2026-9-22 18:51:46] COMMAND[Read status] execute successfully, takes 0.4 secs.
+[Debug] [2026-9-22 18:51:46] cfg_read_device_property succeed.
+[Debug] [2026-9-22 18:51:47] begin to check the cfg_jtag_flash_scan_device exec condition.
+[Debug] [2026-9-22 18:51:47] end to check the cfg_jtag_flash_scan_device exec condition.
+[Debug] [2026-9-22 18:51:47] Send RPC:7
+[Debug] [2026-9-22 18:51:47] Send cmd [Scan Outer SPI Flash:20300] OK
+[Debug] [2026-9-22 18:51:47] begin to exec scan jtag flash cmd...
+[Debug] [2026-9-22 18:51:47] Begin to initialize JtagFlash for selected FPGA Device...
+[Debug] [2026-9-22 18:51:47] end to exec scan jtag flash cmd...
+[Debug] [2026-9-22 18:51:47] COMMAND[Scan Outer SPI Flash] execute successfully, takes 0.4 secs.
+[Debug] [2026-9-22 18:51:48] cfg_jtag_flash_scan_device succeed.
+[Info] [2026-9-22 18:51:48] Disconnect from Server: 127.0.0.1  Port: 65420
+[Warn] [2026-9-22 18:51:48] Server is disconnected
+[Debug] [2026-9-22 18:51:48] end to connect server
+[Debug] [2026-9-22 18:51:48] cfg_disconnect succeed.
+[Info] [2026-9-22 18:51:49] /***************************End Configration***************************/

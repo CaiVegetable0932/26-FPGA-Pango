@@ -1,0 +1,103 @@
+{
+  "timing_constraints_met": true,
+  "source_hashes_match": true,
+  "checked_inputs": 28,
+  "bitstream": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\mini_comms_bringup\\native_20260922_135105_569\\mini_comms_bringup.sbit",
+  "bitstream_sha256": "236d53fb1f80a12ee3a07fae20430b2baf62e331117ef84f0bfe74b68491b1a8",
+  "bytes": 3791112,
+  "timing_report": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\mini_comms_bringup\\implementation\\report_timing\\mini_comms_bringup.rtr",
+  "timing_sha256": "295620c80e672082900fc149ae0c3c0fd8915b0aebc11a2852548894489bc91d",
+  "timing_pairs": [
+    {
+      "section": "Setup_Slow",
+      "launch": "NET125",
+      "capture": "NET125",
+      "slack_ns": 0.479,
+      "endpoints": 17140
+    },
+    {
+      "section": "Setup_Slow",
+      "launch": "NET125",
+      "capture": "PHY_SAMPLE",
+      "slack_ns": 0.126,
+      "endpoints": 5
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "NET125",
+      "capture": "NET125",
+      "slack_ns": 0.176,
+      "endpoints": 17140
+    },
+    {
+      "section": "Hold_Slow",
+      "launch": "NET125",
+      "capture": "PHY_SAMPLE",
+      "slack_ns": 0.103,
+      "endpoints": 5
+    },
+    {
+      "section": "Recovery_Slow",
+      "launch": "NET125",
+      "capture": "NET125",
+      "slack_ns": 1.535,
+      "endpoints": 3037
+    },
+    {
+      "section": "Removal_Slow",
+      "launch": "NET125",
+      "capture": "NET125",
+      "slack_ns": 0.327,
+      "endpoints": 3037
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "NET125",
+      "capture": "NET125",
+      "slack_ns": 3.278,
+      "endpoints": 17140
+    },
+    {
+      "section": "Setup_Fast",
+      "launch": "NET125",
+      "capture": "PHY_SAMPLE",
+      "slack_ns": 0.143,
+      "endpoints": 5
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "NET125",
+      "capture": "NET125",
+      "slack_ns": 0.099,
+      "endpoints": 17140
+    },
+    {
+      "section": "Hold_Fast",
+      "launch": "NET125",
+      "capture": "PHY_SAMPLE",
+      "slack_ns": 0.115,
+      "endpoints": 5
+    },
+    {
+      "section": "Recovery_Fast",
+      "launch": "NET125",
+      "capture": "NET125",
+      "slack_ns": 2.413,
+      "endpoints": 3037
+    },
+    {
+      "section": "Removal_Fast",
+      "launch": "NET125",
+      "capture": "NET125",
+      "slack_ns": 0.198,
+      "endpoints": 3037
+    }
+  ],
+  "image_kind": "SYNTHETIC communications commissioning candidate; NOT camera/HDMI",
+  "programmed": false,
+  "hardware_tested": false,
+  "physical_mcu_wiring_confirmed": false,
+  "pcb_skew_measured": false,
+  "pll_native_strict_simulation_passed": false,
+  "pll_model_note": "Unmodified GTP_GPLL.v:1026 initialization division diagnostic in ModelSim10.1c; 1000 period/phase assertions pass; strict simulation remains failed"
+}

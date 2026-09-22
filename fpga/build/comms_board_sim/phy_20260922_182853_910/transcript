@@ -1,0 +1,22 @@
+# vsim -do {do run.do} -c -voptargs=+acc -onfinish exit -t 1ps {-gUSE_PHY_DELAY=1 -gSETTLE_TEST_MS=30} work.tb_rtl8211f_init 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "rtl8211f_init(fast)".
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_rtl8211f_init(fast)
+# Loading work.rtl8211f_init(fast)
+# Loading work.mdio_clause22(fast)
+# do run.do 
+# PHY_INIT_PASS checks=42264 transactions=103 reads=56 writes=47
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/sim/tb_rtl8211f_init.sv(136)
+#    Time: 1271647444 ns  Iteration: 2  Instance: /tb_rtl8211f_init

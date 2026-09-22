@@ -1,0 +1,19 @@
+{
+  "source": "SYNTHETIC TEST - NOT CAMERA",
+  "epoch": 3676080473871229019,
+  "epoch_hex": "33040fb6dad8205b",
+  "descriptor_id": "0x54534554",
+  "created_ns": 1790072325565970100,
+  "command_hex": "55aa0170010020005b20d8dab60f0433020000000001207bd2c02996a9fe51bba9fe51ba51c350c3cd30",
+  "uart": "CP2102,115200,8N1; not confirmed MCU header wiring",
+  "warning": "one boot only; STOP with reset; no ARP/RX/ICMP; never reuse after reset",
+  "serial_opened": false,
+  "network_opened": false,
+  "hardware_tested": false,
+  "source_mac": "02:00:00:00:00:01",
+  "peer_mac": "20:7B:D2:C0:29:96",
+  "source_ip": "169.254.81.187",
+  "peer_ip": "169.254.81.186",
+  "source_port": 50001,
+  "peer_port": 50000
+}

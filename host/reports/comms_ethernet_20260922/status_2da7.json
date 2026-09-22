@@ -1,0 +1,46 @@
+{
+  "action": "Inspect",
+  "port": "COM15",
+  "pnp": "USB\\VID_10C4&PID_EA60\\0001",
+  "records": [
+    {
+      "request_hex": "55AA0101010000005597",
+      "reply_hex": "55AA018001002000000102006BE73495ED8D3A510000000000000000000420001F00000000C20100DF40",
+      "valid_reply": true,
+      "result": 0,
+      "request_command": 1
+    },
+    {
+      "request_hex": "55AA010202000C006BE73495ED8D3A51010000004FBD",
+      "reply_hex": "55AA018002002000000203006BE73495ED8D3A5101000000000000002900020002000000000000002155",
+      "valid_reply": true,
+      "result": 0,
+      "request_command": 2
+    },
+    {
+      "request_hex": "55AA010303000C006BE73495ED8D3A51010000008905",
+      "reply_hex": "55AA018003002000000303006BE73495ED8D3A510100000000000000390002000300000000000000CA82",
+      "valid_reply": true,
+      "result": 0,
+      "request_command": 3
+    },
+    {
+      "request_hex": "55AA010504000C006BE73495ED8D3A51010000005A0F",
+      "reply_hex": "55AA018004002000000503006BE73495ED8D3A510100000000000000000000003900200000000001B625",
+      "valid_reply": true,
+      "result": 0,
+      "request_command": 5
+    }
+  ],
+  "status_flags": 131129,
+  "diagnostics": {
+    "version": 1,
+    "phy_id": "00000000",
+    "step": 0,
+    "phy_address": 1,
+    "last_ack_error": false,
+    "last_read": "0039",
+    "phy_status": "0000"
+  },
+  "error": null
+}

@@ -5,7 +5,7 @@ Setup Summary(Slow Corner):
                                                                           TNS Failing      TNS Total
  Launch Clock           Capture Clock              WNS(ns)     TNS(ns)      Endpoints      Endpoints
 ----------------------------------------------------------------------------------------------------
- NET125                 NET125                       0.275       0.000              0          16907
+ NET125                 NET125                       0.612       0.000              0          17137
  NET125                 PHY_SAMPLE                   0.126       0.000              0              5
 ====================================================================================================
 
@@ -14,7 +14,7 @@ Hold Summary(Slow Corner):
                                                                           THS Failing      THS Total
  Launch Clock           Capture Clock              WHS(ns)     THS(ns)      Endpoints      Endpoints
 ----------------------------------------------------------------------------------------------------
- NET125                 NET125                       0.172       0.000              0          16907
+ NET125                 NET125                       0.177       0.000              0          17137
  NET125                 PHY_SAMPLE                   0.102       0.000              0              5
 ====================================================================================================
 
@@ -23,7 +23,7 @@ Recovery Summary(Slow Corner):
                                                                           TNS Failing      TNS Total
  Launch Clock           Capture Clock              WNS(ns)     TNS(ns)      Endpoints      Endpoints
 ----------------------------------------------------------------------------------------------------
- NET125                 NET125                       1.316       0.000              0           2981
+ NET125                 NET125                       1.581       0.000              0           3038
 ====================================================================================================
 
 Removal Summary(Slow Corner):
@@ -31,7 +31,7 @@ Removal Summary(Slow Corner):
                                                                           THS Failing      THS Total
  Launch Clock           Capture Clock              WHS(ns)     THS(ns)      Endpoints      Endpoints
 ----------------------------------------------------------------------------------------------------
- NET125                 NET125                       0.239       0.000              0           2981
+ NET125                 NET125                       0.240       0.000              0           3038
 ====================================================================================================
 
 Minimum Pulse Width Summary(Slow Corner):
@@ -46,7 +46,7 @@ Setup Summary(Fast Corner):
                                                                           TNS Failing      TNS Total
  Launch Clock           Capture Clock              WNS(ns)     TNS(ns)      Endpoints      Endpoints
 ----------------------------------------------------------------------------------------------------
- NET125                 NET125                       3.020       0.000              0          16907
+ NET125                 NET125                       3.389       0.000              0          17137
  NET125                 PHY_SAMPLE                   0.143       0.000              0              5
 ====================================================================================================
 
@@ -55,7 +55,7 @@ Hold Summary(Fast Corner):
                                                                           THS Failing      THS Total
  Launch Clock           Capture Clock              WHS(ns)     THS(ns)      Endpoints      Endpoints
 ----------------------------------------------------------------------------------------------------
- NET125                 NET125                       0.100       0.000              0          16907
+ NET125                 NET125                       0.100       0.000              0          17137
  NET125                 PHY_SAMPLE                   0.115       0.000              0              5
 ====================================================================================================
 
@@ -64,7 +64,7 @@ Recovery Summary(Fast Corner):
                                                                           TNS Failing      TNS Total
  Launch Clock           Capture Clock              WNS(ns)     TNS(ns)      Endpoints      Endpoints
 ----------------------------------------------------------------------------------------------------
- NET125                 NET125                       2.208       0.000              0           2981
+ NET125                 NET125                       2.456       0.000              0           3038
 ====================================================================================================
 
 Removal Summary(Fast Corner):
@@ -72,7 +72,7 @@ Removal Summary(Fast Corner):
                                                                           THS Failing      THS Total
  Launch Clock           Capture Clock              WHS(ns)     THS(ns)      Endpoints      Endpoints
 ----------------------------------------------------------------------------------------------------
- NET125                 NET125                       0.135       0.000              0           2981
+ NET125                 NET125                       0.132       0.000              0           3038
 ====================================================================================================
 
 Minimum Pulse Width Summary(Fast Corner):

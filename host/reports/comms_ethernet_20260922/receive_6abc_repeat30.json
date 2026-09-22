@@ -1,0 +1,190 @@
+{
+  "link_data_passed": true,
+  "source": "FPGA SYNTHETIC TEST - NOT CAMERA",
+  "hardware_received": true,
+  "bind": [
+    "169.254.81.186",
+    50000
+  ],
+  "peer": [
+    "169.254.81.187",
+    50001
+  ],
+  "epoch": 3971348597321107983,
+  "receive_buffer_bytes": 8388608,
+  "counters": {
+    "udp_packets": 1331906,
+    "udp_bytes": 1948832784,
+    "complete_frames": 891,
+    "exact_test_frames": 891,
+    "exact_test_bytes": 1847577600,
+    "assembly_failures": 9
+  },
+  "assembly": {
+    "counters": {
+      "datagrams": 1331906,
+      "live_frames_observed": 901,
+      "packets_accepted_unique": 1331673,
+      "live_frames_complete": 891,
+      "live_bytes_complete": 1847577600,
+      "frames_failed_timeout": 9,
+      "packets_late_terminal": 233
+    },
+    "active_frames": 1,
+    "buffer_bytes": 2073600,
+    "stream_epoch": 3971348597321107983,
+    "live_first_id": 1655,
+    "live_highwater": 2555,
+    "live_unobserved_ids_in_span": 0
+  },
+  "recent_failures": [
+    {
+      "reason": "timeout",
+      "key": [
+        3971348597321107983,
+        1655,
+        1,
+        1414743380
+      ],
+      "received": 122,
+      "expected": 1482
+    },
+    {
+      "reason": "timeout",
+      "key": [
+        3971348597321107983,
+        1669,
+        1,
+        1414743380
+      ],
+      "received": 1471,
+      "expected": 1482
+    },
+    {
+      "reason": "timeout",
+      "key": [
+        3971348597321107983,
+        1762,
+        1,
+        1414743380
+      ],
+      "received": 1401,
+      "expected": 1482
+    },
+    {
+      "reason": "timeout",
+      "key": [
+        3971348597321107983,
+        1827,
+        1,
+        1414743380
+      ],
+      "received": 1453,
+      "expected": 1482
+    },
+    {
+      "reason": "timeout",
+      "key": [
+        3971348597321107983,
+        1905,
+        1,
+        1414743380
+      ],
+      "received": 1436,
+      "expected": 1482
+    },
+    {
+      "reason": "timeout",
+      "key": [
+        3971348597321107983,
+        2191,
+        1,
+        1414743380
+      ],
+      "received": 1249,
+      "expected": 1482
+    },
+    {
+      "reason": "timeout",
+      "key": [
+        3971348597321107983,
+        2195,
+        1,
+        1414743380
+      ],
+      "received": 1404,
+      "expected": 1482
+    },
+    {
+      "reason": "timeout",
+      "key": [
+        3971348597321107983,
+        2196,
+        1,
+        1414743380
+      ],
+      "received": 1024,
+      "expected": 1482
+    },
+    {
+      "reason": "timeout",
+      "key": [
+        3971348597321107983,
+        2197,
+        1,
+        1414743380
+      ],
+      "received": 1097,
+      "expected": 1482
+    }
+  ],
+  "recent_frame_hashes": [
+    {
+      "frame_id": 2547,
+      "bytes": 2073600,
+      "sha256": "8d964e749162382f9d5c12d09f7da9ac049abec5e75b8e0f8399be7a9dfdca79"
+    },
+    {
+      "frame_id": 2548,
+      "bytes": 2073600,
+      "sha256": "7207aa01b92ca1657b868c48b1d7ac9e3edfcbcaa1ed872028026f56dc4cb0fc"
+    },
+    {
+      "frame_id": 2549,
+      "bytes": 2073600,
+      "sha256": "c79bab888419a7bf98d2fbc51cd36be24826138313f70c0a0a379ae3a9ab4673"
+    },
+    {
+      "frame_id": 2550,
+      "bytes": 2073600,
+      "sha256": "36349ec885bbc43b3b2d3b71b46680d9e24710495a6af585b109aafa68258d57"
+    },
+    {
+      "frame_id": 2551,
+      "bytes": 2073600,
+      "sha256": "69ec541fdf7ee90900da038a80cee15a1670b0d5ae24ac521a609a087802ed60"
+    },
+    {
+      "frame_id": 2552,
+      "bytes": 2073600,
+      "sha256": "f1355d5f8c8c3479dd598138304a6114b52c557c30d8515d9e82c0111aec93c9"
+    },
+    {
+      "frame_id": 2553,
+      "bytes": 2073600,
+      "sha256": "c6520c31cf1937c8ded998080dc124d6def84f15744b3124bc476ff981789717"
+    },
+    {
+      "frame_id": 2554,
+      "bytes": 2073600,
+      "sha256": "eaf995323341f438b46b8b13f914ffe2e666d7888608d67eb4a9c9a85ef609d3"
+    }
+  ],
+  "elapsed_window_seconds": 30.0,
+  "complete_fps_in_receive_window": 29.7,
+  "first_matching_packet": true,
+  "last_complete_seen": true,
+  "payloads_saved": false,
+  "network_settings_changed": false,
+  "note": "Data-path smoke test, not lossless/long-soak/camera/HDMI acceptance"
+}

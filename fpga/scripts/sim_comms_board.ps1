@@ -3,7 +3,11 @@
 param([string]$ModelSimHome='E:/ModelsimSE/win64',
  [string]$PdsHome='E:/PDS_Pangu/PDS_2022.2-SP6.4',
  [ValidateSet('phy','pll','boot','source')][string]$Case='phy',
- [ValidateSet(0,1)][int]$PhyTxDelay=1)
+ [ValidateSet(0,1)][int]$PhyTxDelay=1,
+ # Purpose: 30 ms is a negative replay; 200 ms is the production startup wait.
+ [ValidateSet(30,200)][int]$PhySettleMs=200,
+ # Purpose: exercise both extremes of the documented PHY MDIO output delay.
+ [ValidateSet(0,300)][int]$PhyReadDelayNs=300)
 $ErrorActionPreference='Stop'
 $taskFpga=Split-Path $PSScriptRoot -Parent
 $taskRun=Join-Path $taskFpga ('build/comms_board_sim/'+$Case+'_'+(Get-Date -Format 'yyyyMMdd_HHmmss_fff'))
@@ -62,7 +66,7 @@ quit -f -code 0
  # Native PLL combinational real-number initialization also runs under the
  # simulator optimizer; keep all signals visible for its phase assertions.
  $taskArgs=@('-c','-voptargs=+acc','-t','1ps','-onfinish','exit',('work.'+$taskTop),'-do','do run.do')
- if($Case -eq 'phy'){$taskArgs+=('-gUSE_PHY_DELAY='+$PhyTxDelay)}
+ if($Case -eq 'phy'){$taskArgs+=@(('-gUSE_PHY_DELAY='+$PhyTxDelay), ('-gSETTLE_TEST_MS='+$PhySettleMs), ('-gPHY_READ_DELAY_NS='+$PhyReadDelayNs))}
  Invoke-BoardSimTool 'vsim.exe' $taskArgs 'simulation.log'
  $taskText=Get-Content simulation.log -Raw
  $taskPassed=$taskText -match $taskMarker -and $taskText -notmatch '\*\* (Error|Fatal)|_FAIL|_TIMEOUT'

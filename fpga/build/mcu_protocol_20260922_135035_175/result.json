@@ -1,0 +1,64 @@
+{
+  "started": "2026-09-22T13:50:35.1999108+08:00",
+  "passed": true,
+  "simulation_passed": true,
+  "synthesis_requested": false,
+  "synthesis_passed": false,
+  "hardware_tested": false,
+  "mcu_firmware_tested": false,
+  "programmed": false,
+  "runs": [
+    {
+      "name": "full",
+      "clock_hz": 1843200,
+      "baud": 115200,
+      "timeout_ms": 2,
+      "full": true,
+      "exit_code": 0,
+      "passed": true,
+      "log": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\mcu_protocol_20260922_135035_175\\full.log"
+    },
+    {
+      "name": "clock125",
+      "clock_hz": 125000000,
+      "baud": 115200,
+      "timeout_ms": 20,
+      "full": false,
+      "exit_code": 0,
+      "passed": true,
+      "log": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\mcu_protocol_20260922_135035_175\\clock125.log"
+    }
+  ],
+  "source_sha256": [
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\mcu_uart_rx.v",
+      "sha256": "1AECCF08189E42F8E548A2D16EA2022726038F3D9F01517FAA21CDC0757C6AF9"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\mcu_uart_tx.v",
+      "sha256": "656E4FB1ECF0FDED3A346CFB65A18DA1988D3F17E41E28B6F16625C00481E553"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\mcu_frame_rx.v",
+      "sha256": "030FDE66741E2B3F529DD4C5BACCD3CA6DF65C116507DCAEC29C7F76C5C170B4"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\mcu_frame_tx.v",
+      "sha256": "6E15BBD1B42BB15A43B5592AC78780FB8056CFF36C4237FA97F4274D5A3CD2B3"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\rtl\\control\\mcu_protocol.v",
+      "sha256": "31E483F5527B8F62DEFCA231D5E21CA63DEADB0D958F3C59CEF7992D9FB09C9F"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\sim\\tb_mcu_protocol.sv",
+      "sha256": "E79A25CBE4B56F02D38EC13E18B1BE53D2124A9D5617BAF1982D7B24F16D959C"
+    },
+    {
+      "path": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\scripts\\sim_mcu_protocol.ps1",
+      "sha256": "8824FC436AEBDBC1B389B9B7098013946FF83665E17FFD23C21FC7869380B82F"
+    }
+  ],
+  "output_directory": "C:\\Users\\ROG\\.codex\\worktrees\\fpga-camera-main-publish\\26-FPGA-Pango\\fpga\\build\\mcu_protocol_20260922_135035_175",
+  "finished": "2026-09-22T13:50:45.6325209+08:00"
+}

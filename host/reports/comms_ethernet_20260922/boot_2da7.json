@@ -1,0 +1,17 @@
+{
+  "action": "Boot",
+  "port": "COM15",
+  "pnp": "USB\\VID_10C4&PID_EA60\\0001",
+  "records": [
+    {
+      "request_hex": "55AA0170010020006BE73495ED8D3A51020000000001207BD2C02996A9FE51BBA9FE51BA51C350C34055",
+      "reply_hex": "55AA018001002000007000006BE73495ED8D3A5100000000000000005445535400000000000000002FFC",
+      "valid_reply": true,
+      "result": 0,
+      "request_command": 112
+    }
+  ],
+  "status_flags": null,
+  "diagnostics": null,
+  "error": null
+}

@@ -1,0 +1,24 @@
+{
+  "action": "Inspect",
+  "port": "COM15",
+  "pnp": "USB\\VID_10C4&PID_EA60\\0001",
+  "records": [
+    {
+      "request_hex": "55AA0101010000005597",
+      "reply_hex": "55AA018001002000000103004A09DE6F9EA070640100000000000000000420000F00000000C2010016AD",
+      "valid_reply": true,
+      "result": 0,
+      "request_command": 1
+    },
+    {
+      "request_hex": "55AA010303000C004A09DE6F9EA07064010000001EA3",
+      "reply_hex": "55AA018003002000000303004A09DE6F9EA0706401000000000000003900010005000000000000001F5F",
+      "valid_reply": true,
+      "result": 0,
+      "request_command": 3
+    }
+  ],
+  "status_flags": 65593,
+  "diagnostics": null,
+  "error": null
+}

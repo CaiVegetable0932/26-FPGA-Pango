@@ -2,9 +2,11 @@
 `default_nettype none
 // Purpose: bounded Clause-22 MDIO transactions, including all 32 preamble bits.
 // One system-clock domain; MDC is a registered output, never a fabric clock.
-// At 125 MHz HALF_CYCLES=63 gives 504 ns per half-cycle. Reads are sampled at
-// the END of MDC high, after the RTL8211F's worst-case 300 ns data-valid delay
-// plus the two input synchronizer cycles. Do not speed this up without review.
+// At 125 MHz HALF_CYCLES=63 gives 504 ns per half-cycle. Capture the input
+// synchronizer immediately BEFORE issuing each MDC rising edge: the PHY bit
+// was launched after the previous rising edge (0..300 ns output delay), so
+// it has a full 1008 ns period minus delay/synchronization to settle. Sampling
+// at the end of high instead consumes the NEXT bit and shifts reads left.
 module mdio_clause22 #(parameter integer HALF_CYCLES=63)(
  input wire clk,reset_n,start,read_not_write,
  input wire [4:0] phy_addr,reg_addr,input wire [15:0] write_data,
@@ -40,10 +42,14 @@ module mdio_clause22 #(parameter integer HALF_CYCLES=63)(
     end
    end else if(tick==HALF_CYCLES-1) begin
     tick<=0;mdc<=~mdc;
-    if(mdc) begin
-     // Late-high sampling tolerates PHY output delay, not merely ideal models.
+    if(!mdc) begin
+     // TA0 is present before rising edge47, D15..D0 before edges48..63.
+     // Use the system clock plus enable, not a new fabric MDC clock domain.
      if(reading && bit_index==16) ack_error<=mdio_sync;
      if(reading && bit_index<16) read_data<={read_data[14:0],mdio_sync};
+    end else begin
+     // Drive/advance host command bits at falling edges; retire after the
+     // final high half-cycle so data/ACK are stable before asserting done.
      if(bit_index==0) begin busy<=0;done<=1;end
      else begin bit_index<=bit_index-1'b1;command<={command[62:0],1'b1};end
     end

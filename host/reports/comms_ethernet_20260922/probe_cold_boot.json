@@ -1,0 +1,14 @@
+{
+  "action": "Probe",
+  "port": "COM15",
+  "pnp": "USB\\VID_10C4&PID_EA60\\0001",
+  "records": [
+    {
+      "request_hex": "55AA0101010000005597",
+      "reply_hex": "",
+      "valid_reply": false
+    }
+  ],
+  "status_flags": null,
+  "error": "No complete valid UART reply (see transcript)"
+}

@@ -34,6 +34,8 @@ module fpga_comms_top(
   .clk(clk125),.rst_n(reset_n),.uart_rx(mcu_rx),.uart_tx(mcu_tx),
   .link_epoch(link_epoch),.link_epoch_valid(link_epoch_valid),
   .board_time_us(board_time_us),.status_flags(status_flags),
+  // Generic integration has no board PHY snapshot and does not advertise bit4.
+  .board_diagnostics(96'd0),
   .session_active(mcu_session_active),.env_valid(env_valid),
   .env_session_id(env_session_id),.env_event_seq(env_event_seq),
   .env_mcu_time_us(env_mcu_time_us),.env_board_time_us(env_board_time_us),

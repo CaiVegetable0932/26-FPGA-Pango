@@ -41,6 +41,7 @@ CRC-16/CCITT-FALSE：poly `0x1021`、init `0xFFFF`、refin/refout=false、xorout
 |02|OPEN_SESSION|12|epoch:u64，session_id:u32|
 |03|GET_STATUS|12|epoch:u64，session_id:u32；必须为当前会话|
 |04|GET_COUNTERS|12|同上|
+|05|GET_BOARD_DIAGNOSTICS（可选）|12|同上；仅能力 bit4=1 时支持，只读板级快照|
 |10|SUBMIT_ENVIRONMENT|32|见下表|
 
 除01外，命令要求非零有效 epoch 和当前会话（02用于建立/提升会话）。所有其他 cmd，包括响应码误发到请求端，返回 UNSUPPORTED。没有运动、光照执行、流开关或视频参数写入命令。
@@ -78,8 +79,9 @@ MCU时戳保持原值，并随 session 标识解释；不能用于冒充板端�
 
 | 响应 | 偏移20 | 偏移24 | 偏移28 |
 |---|---|---|---|
-|成功能力查询|u16协议上限1024 + u16本端上限32|u32能力位图0000000F|u32配置BAUD|
+|成功能力查询|u16协议上限1024 + u16本端上限32|u32能力位图（基础0000000F，含板级诊断0000001F）|u32配置BAUD|
 |成功计数查询|u32 rx_good_count|u32 rx_error_count|u32 tx_overflow_count|
+|成功板级诊断|板级快照 word0|板级快照 word1|板级快照 word2|
 |其余响应|u32 status_flags|u32 rx_good_count|u32 rx_error_count|
 
 能力位图：bit0环境事件，bit1会话/事件幂等，bit2独立板端接受时间，bit3计数查询。`status_flags` 是主顶层只读透传，业务位定义由顶层接口冻结。响应保存的是入队时的完整快照，包括本次成功操作和本次统计；不会随之后的新事件改变。ACK只表示 FPGA 已接受/锁存，不表示机构运动、曝光、视频帧关联或 MCU 固件验证完成。
@@ -102,6 +104,12 @@ MCU时戳保持原值，并随 session 标识解释；不能用于冒充板端�
 |0D|NOT_READY|外部epoch未就绪|
 
 有完整帧时拒错优先级：CRC、version、本端长度、命令/会话/内容。超过1024在长度字段完成后立即BAD_LENGTH并隔离。超时/停止位错误仅在cmd和seq已经完整收到时生成NACK；更早的噪声只计数，不伪造可关联seq。普通非55噪声字节直接忽略。
+
+## 5.1 可选板级诊断
+
+2026-09-22 可选扩展：能力 bit4 表示支持命令05；未使能 `BOARD_DIAGNOSTICS` 的通用端点返回 UNSUPPORTED，并保持原能力位图。命令05要求有效 epoch、当前非零 session、精确12字节请求，沿用公共响应前20字节，不改变任何板级寄存器或事件状态。
+
+MINI 通信候选快照 v1：word0 为 PHY ID；word1 bit15:0 为最近 MDIO 读值、bit19:16保留0、bit20为最近读 TA 无应答标志、bit25:21为探测/选定地址、bit31:26为当前/失败初始化步骤；word2 bit15:0为 PHY 状态寄存器、bit23:16保留0、bit31:24为版本1。正常轮询时“最近读值”与“当前步骤”不一定同一事务；锁存失败时两者对应失败读操作。其它顶层必须另行定义版本及布局，不把全零通用输入当作有效诊断。参见 `FPGA通信上板联调方案.md`。
 
 ## 6. 超时、恢复和队列约束
 

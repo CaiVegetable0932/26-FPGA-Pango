@@ -5,12 +5,15 @@
 module mcu_protocol #(
     parameter integer CLK_HZ = 27000000,
     parameter integer BAUD = 115200,
-    parameter integer RX_TIMEOUT_MS = 20
+    parameter integer RX_TIMEOUT_MS = 20,
+    parameter integer BOARD_DIAGNOSTICS = 0
 ) (
     input wire clk, input wire rst_n,
     input wire uart_rx, output wire uart_tx,
     input wire [63:0] link_epoch, input wire link_epoch_valid,
     input wire [63:0] board_time_us, input wire [31:0] status_flags,
+    // Optional read-only board snapshot; valid only when capability bit4 is set.
+    input wire [95:0] board_diagnostics,
     output wire session_active, output reg env_valid,
     output reg [31:0] env_session_id, output reg [31:0] env_event_seq,
     output reg [31:0] env_mcu_time_us, output reg [63:0] env_board_time_us,
@@ -23,7 +26,7 @@ module mcu_protocol #(
         BAD_EPOCH=7, BAD_SESSION=8, STALE_EVENT=9, ID_CONFLICT=10,
         BAD_FORMAT=11, NOT_READY=13;
     localparam [7:0] CAPS=8'h01, OPEN=8'h02, STATUS=8'h03,
-        COUNTERS=8'h04, ENVIRONMENT=8'h10;
+        COUNTERS=8'h04, DIAGNOSTICS=8'h05, ENVIRONMENT=8'h10;
     reg [63:0] observed_epoch;
     reg observed_epoch_valid;
     wire epoch_change = (link_epoch != observed_epoch) ||
@@ -44,6 +47,22 @@ module mcu_protocol #(
     wire [15:0] request_seq, request_length;
     wire [255:0] request_payload;
     wire byte_valid, framing_error, frame_done, reply_allowed;
+    // Purpose: break the 256-bit duplicate-event comparison into eight parallel
+    // registered 32-bit checks. The parser commits payload bytes BEFORE the two
+    // CRC bytes and asserts frame_done afterwards, so these checks are current
+    // when the request is decoded (even with a byte every clock). No extra
+    // request latency or change to duplicate/id-conflict semantics is introduced.
+    // Preserve the registers so synthesis cannot rebuild a single long carry
+    // comparator on the response-code/counter/queue write path at 125 MHz.
+    reg [7:0] event_chunk_equal /* synthesis syn_preserve = 1 */;
+    integer event_chunk;
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) event_chunk_equal <= 0;
+        else if (epoch_change) event_chunk_equal <= 0;
+        else for (event_chunk=0; event_chunk<8; event_chunk=event_chunk+1)
+            event_chunk_equal[event_chunk] <=
+                request_payload[event_chunk*32 +: 32] == last_event_payload[event_chunk*32 +: 32];
+    end
     mcu_uart_rx #(.CLK_HZ(CLK_HZ),.BAUD(BAUD)) u_rx (
         .clk(clk),.rst_n(rst_n),.flush(epoch_change),.serial_rx(uart_rx),
         .data(rx_byte),.valid(byte_valid),.framing_error(framing_error));
@@ -82,8 +101,10 @@ module mcu_protocol #(
             response_code = OK;
             case (request_command)
                 CAPS: if (request_length != 0) response_code = BAD_LENGTH;
-                OPEN, STATUS, COUNTERS, ENVIRONMENT: begin
-                    if ((request_command == ENVIRONMENT && request_length != 32) ||
+                OPEN, STATUS, COUNTERS, DIAGNOSTICS, ENVIRONMENT: begin
+                    if (request_command == DIAGNOSTICS && !BOARD_DIAGNOSTICS)
+                        response_code = UNSUPPORTED;
+                    else if ((request_command == ENVIRONMENT && request_length != 32) ||
                         (request_command != ENVIRONMENT && request_length != 12))
                         response_code = BAD_LENGTH;
                     else if (!epoch_ready) response_code = NOT_READY;
@@ -99,7 +120,7 @@ module mcu_protocol #(
                         else if (request_payload[127:96] == 0 ||
                                  request_payload[127:96] < env_event_seq) response_code = STALE_EVENT;
                         else if (request_payload[127:96] == env_event_seq) begin
-                            if (request_payload == last_event_payload) response_code = DUPLICATE;
+                            if (&event_chunk_equal) response_code = DUPLICATE;
                             else response_code = ID_CONFLICT;
                         end else accept_event = 1;
                     end
@@ -127,12 +148,16 @@ module mcu_protocol #(
         if (request_command == CAPS && response_code == OK) begin
             response_payload[175:160] = 16'd1024;
             response_payload[191:176] = 16'd32;
-            response_payload[223:192] = 32'h0000000f;
+            response_payload[223:192] = BOARD_DIAGNOSTICS ? 32'h0000001f : 32'h0000000f;
             response_payload[255:224] = BAUD;
         end else if (request_command == COUNTERS && response_code == OK) begin
             response_payload[191:160] = rx_good_count+1'b1;
             response_payload[223:192] = rx_error_count;
             response_payload[255:224] = tx_overflow_count;
+        end else if (request_command == DIAGNOSTICS && response_code == OK) begin
+            // Purpose: correlated, session-checked snapshot in the existing
+            // 12-byte extension area; never writes a PHY or changes streaming.
+            response_payload[255:160] = board_diagnostics;
         end
     end
 

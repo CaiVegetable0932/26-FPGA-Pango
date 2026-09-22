@@ -1,0 +1,38 @@
+{
+  "image_kind": "synthetic communications commissioning candidate",
+  "target": "PG2L100H-6FBG676",
+  "flash": "XT25F128",
+  "spi_width": 1,
+  "opcode": 11,
+  "start_address": 0,
+  "programmed": false,
+  "flash_verified": false,
+  "cold_boot_verified": false,
+  "camera_video": false,
+  "strict_native_pll_simulation_passed": false,
+  "timing_constraints_met": true,
+  "files": [
+    {
+      "name": "mini_comms_bringup.sbit",
+      "bytes": 3791112,
+      "sha256": "236D53FB1F80A12EE3A07FAE20430B2BAF62E331117EF84F0BFE74B68491B1A8"
+    },
+    {
+      "name": "mini_comms_bringup.sfc",
+      "bytes": 3791112,
+      "sha256": "236D53FB1F80A12EE3A07FAE20430B2BAF62E331117EF84F0BFE74B68491B1A8"
+    }
+  ],
+  "conversion_runtime": "D:\\XDU\\concept\\26-FPGA-Pango-test\\pds_cfg_runtime",
+  "runtime_hashes": [
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango-test\\pds_cfg_runtime\\bin\\cdt_cfg_shell.exe",
+      "sha256": "8C7F1EE99A1FCAD01214D1C5F330DA49C1A52CF83F2A237E62CAD68C38D2C54F"
+    },
+    {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango-test\\pds_cfg_runtime\\arch\\vendor\\pango\\arch\\cdt\\flash_list_cd.cfl",
+      "sha256": "BC4450F2B04FA17D9C35FC9C2605AFD55A14782D005FC85FBCE0185541B0A3CA"
+    }
+  ],
+  "reference_directories_modified": false
+}

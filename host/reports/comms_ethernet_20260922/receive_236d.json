@@ -1,0 +1,34 @@
+{
+  "link_data_passed": false,
+  "source": "FPGA SYNTHETIC TEST - NOT CAMERA",
+  "hardware_received": false,
+  "bind": [
+    "169.254.81.186",
+    50000
+  ],
+  "peer": [
+    "169.254.81.187",
+    50001
+  ],
+  "epoch": 3676080473871229019,
+  "receive_buffer_bytes": 8388608,
+  "counters": {},
+  "assembly": {
+    "counters": {},
+    "active_frames": 0,
+    "buffer_bytes": 0,
+    "stream_epoch": 3676080473871229019,
+    "live_first_id": null,
+    "live_highwater": null,
+    "live_unobserved_ids_in_span": 0
+  },
+  "recent_failures": [],
+  "recent_frame_hashes": [],
+  "elapsed_window_seconds": 30.0,
+  "complete_fps_in_receive_window": 0.0,
+  "first_matching_packet": false,
+  "last_complete_seen": false,
+  "payloads_saved": false,
+  "network_settings_changed": false,
+  "note": "Data-path smoke test, not lossless/long-soak/camera/HDMI acceptance"
+}

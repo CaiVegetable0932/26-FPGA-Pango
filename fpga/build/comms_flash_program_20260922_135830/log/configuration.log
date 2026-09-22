@@ -1,0 +1,147 @@
+[Info] [2026-9-22 13:58:33] /***************************Start Configuration***************************/
+[Info] [2026-9-22 13:58:33] Path: D:/XDU/concept/26-FPGA-Pango-test/pds_cfg_runtime/bin
+[Info] [2026-9-22 13:58:33] Version: 146967
+[Info] [2026-9-22 13:58:34] Current Path: C:/Users/ROG/.codex/worktrees/fpga-camera-main-publish/26-FPGA-Pango/fpga/build/comms_flash_program_20260922_135830
+[Info] [2026-9-22 13:58:34] PDS Dir Path: 
+[Debug] [2026-9-22 13:58:34] begin to check the cfg_connect exec condition.
+[Debug] [2026-9-22 13:58:34] end to check the cfg_connect exec condition.
+[Debug] [2026-9-22 13:58:34] Client Local host name:LAPTOP-B7VM7LU4
+[Debug] [2026-9-22 13:58:34] Client Local Address:169.254.81.186
+[Debug] [2026-9-22 13:58:34] Client Local Address:26.207.88.92
+[Debug] [2026-9-22 13:58:34] Client Local Address:192.168.31.221
+[Debug] [2026-9-22 13:58:34] Server Address:127.0.0.1, Port:65420
+[Info] [2026-9-22 13:58:34] Connect OK, Server: 127.0.0.1  Port: 65420
+[Debug] [2026-9-22 13:58:34] Finish.
+[Info] [2026-9-22 13:58:34] Connect server succeeded
+[Debug] [2026-9-22 13:58:34] Send RPC:1
+[Debug] [2026-9-22 13:58:34] Send cmd [check version information:40004] OK
+[Debug] [2026-9-22 13:58:34] Send RPC:2
+[Debug] [2026-9-22 13:58:34] Send cmd [get_cable_paras:40010] OK
+[Debug] [2026-9-22 13:58:34] COMMAND[check version information] execute successfully, takes 0.0 secs.
+[Debug] [2026-9-22 13:58:35] COMMAND[get_cable_paras] execute successfully, takes 1.2 secs.
+[Debug] [2026-9-22 13:58:36] cfg_connect succeed.
+[Debug] [2026-9-22 13:58:37] Send RPC:3
+[Debug] [2026-9-22 13:58:37] Send cmd [set_cable_paras:40011] OK
+[Debug] [2026-9-22 13:58:37] COMMAND[set_cable_paras] execute successfully, takes 0.7 secs.
+[Debug] [2026-9-22 13:58:38] cfg_set_cable_property succeed.
+[Debug] [2026-9-22 13:58:38] Send RPC:4
+[Debug] [2026-9-22 13:58:38] Send cmd [Open config cable:20001] OK
+[Debug] [2026-9-22 13:58:39] begin the exec of open cable cmd...
+[Debug] [2026-9-22 13:58:39] Begin to deal with chain from server...
+[Debug] [2026-9-22 13:58:39] Begin to set user chain...
+[Debug] [2026-9-22 13:58:39] End to set user chain.
+[Debug] [2026-9-22 13:58:39] end the exec of open cable cmd.
+[Debug] [2026-9-22 13:58:39] COMMAND[Open config cable] execute successfully, takes 0.4 secs.
+[Debug] [2026-9-22 13:58:39] cfg_scan_chain succeed.
+[Debug] [2026-9-22 13:58:40] begin to check the cfg_jtag_flash_scan_device exec condition.
+[Debug] [2026-9-22 13:58:40] end to check the cfg_jtag_flash_scan_device exec condition.
+[Debug] [2026-9-22 13:58:40] Send RPC:5
+[Debug] [2026-9-22 13:58:40] Send cmd [Scan Outer SPI Flash:20300] OK
+[Debug] [2026-9-22 13:58:40] begin to exec scan jtag flash cmd...
+[Debug] [2026-9-22 13:58:40] Begin to initialize JtagFlash for selected FPGA Device...
+[Debug] [2026-9-22 13:58:40] end to exec scan jtag flash cmd...
+[Debug] [2026-9-22 13:58:40] COMMAND[Scan Outer SPI Flash] execute successfully, takes 0.4 secs.
+[Debug] [2026-9-22 13:58:41] cfg_jtag_flash_scan_device succeed.
+[Debug] [2026-9-22 13:58:41] begin to check the cfg_jtag_flash_assign_file exec condition.
+[Debug] [2026-9-22 13:58:41] end to check the cfg_jtag_flash_assign_file exec condition.
+[Debug] [2026-9-22 13:58:41] begin to check SFC File and Flash Device Read Mode.
+[Debug] [2026-9-22 13:58:41] end to check SFC File and Flash Device Read Mode.
+[Debug] [2026-9-22 13:58:41] cfg_jtag_flash_assign_file succeed.
+[Debug] [2026-9-22 13:58:42] begin to check the cfg_jtag_flash_erase exec condition.
+[Debug] [2026-9-22 13:58:42] end to check the cfg_jtag_flash_erase exec condition.
+[Debug] [2026-9-22 13:58:42] Send RPC:6
+[Debug] [2026-9-22 13:58:42] Begin to send embed flash erase data.
+[Debug] [2026-9-22 13:58:42] Begin to send flash erase data.
+[Debug] [2026-9-22 13:58:42] End to send flash erase data.
+[Debug] [2026-9-22 13:58:42] End to send embed flash erase data.
+[Debug] [2026-9-22 13:58:42] Send cmd [Erase Outer Flash:20302] OK
+[Debug] [2026-9-22 13:58:42] The value of Progress is 1
+[Debug] [2026-9-22 13:58:43] The value of Progress is 6
+[Debug] [2026-9-22 13:58:43] The value of Progress is 10
+[Debug] [2026-9-22 13:58:44] The value of Progress is 15
+[Debug] [2026-9-22 13:58:45] The value of Progress is 20
+[Debug] [2026-9-22 13:58:45] The value of Progress is 25
+[Debug] [2026-9-22 13:58:46] The value of Progress is 31
+[Debug] [2026-9-22 13:58:47] The value of Progress is 36
+[Debug] [2026-9-22 13:58:47] The value of Progress is 41
+[Debug] [2026-9-22 13:58:48] The value of Progress is 46
+[Debug] [2026-9-22 13:58:48] The value of Progress is 50
+[Debug] [2026-9-22 13:58:49] The value of Progress is 55
+[Debug] [2026-9-22 13:58:50] The value of Progress is 60
+[Debug] [2026-9-22 13:58:50] The value of Progress is 65
+[Debug] [2026-9-22 13:58:51] The value of Progress is 70
+[Debug] [2026-9-22 13:58:52] The value of Progress is 75
+[Debug] [2026-9-22 13:58:52] The value of Progress is 81
+[Debug] [2026-9-22 13:58:53] The value of Progress is 86
+[Debug] [2026-9-22 13:58:54] The value of Progress is 91
+[Debug] [2026-9-22 13:58:54] The value of Progress is 96
+[Debug] [2026-9-22 13:58:54] The value of Progress is 100
+[Debug] [2026-9-22 13:58:55] COMMAND[Erase Outer Flash] execute finish, takes 13.0 secs.
+[Debug] [2026-9-22 13:58:55] cfg_jtag_flash_erase succeed.
+[Debug] [2026-9-22 13:58:55] begin to check the cfg_jtag_flash_program exec condition.
+[Debug] [2026-9-22 13:58:55] end to check the cfg_jtag_flash_program exec condition.
+[Debug] [2026-9-22 13:58:55] Send RPC:7
+[Debug] [2026-9-22 13:58:55] Begin to send jtag flash program data.
+[Debug] [2026-9-22 13:58:55] Begin to send flash program data.
+[Debug] [2026-9-22 13:58:55] End to send flash program data.
+[Debug] [2026-9-22 13:58:55] End to send embed flash program data.
+[Debug] [2026-9-22 13:58:55] Send cmd [Program Outer Flash:20301] OK
+[Debug] [2026-9-22 13:58:57] The value of Progress is 1
+[Debug] [2026-9-22 13:59:03] The value of Progress is 6
+[Debug] [2026-9-22 13:59:06] The value of Progress is 10
+[Debug] [2026-9-22 13:59:11] The value of Progress is 15
+[Debug] [2026-9-22 13:59:15] The value of Progress is 20
+[Debug] [2026-9-22 13:59:20] The value of Progress is 25
+[Debug] [2026-9-22 13:59:24] The value of Progress is 30
+[Debug] [2026-9-22 13:59:29] The value of Progress is 35
+[Debug] [2026-9-22 13:59:33] The value of Progress is 40
+[Debug] [2026-9-22 13:59:37] The value of Progress is 45
+[Debug] [2026-9-22 13:59:42] The value of Progress is 50
+[Debug] [2026-9-22 13:59:46] The value of Progress is 55
+[Debug] [2026-9-22 13:59:51] The value of Progress is 60
+[Debug] [2026-9-22 13:59:55] The value of Progress is 65
+[Debug] [2026-9-22 14:00:00] The value of Progress is 70
+[Debug] [2026-9-22 14:00:04] The value of Progress is 75
+[Debug] [2026-9-22 14:00:09] The value of Progress is 80
+[Debug] [2026-9-22 14:00:13] The value of Progress is 85
+[Debug] [2026-9-22 14:00:17] The value of Progress is 90
+[Debug] [2026-9-22 14:00:22] The value of Progress is 95
+[Debug] [2026-9-22 14:00:26] The value of Progress is 100
+[Debug] [2026-9-22 14:00:26] COMMAND[Program Outer Flash] execute finish, takes 91.1 secs.
+[Debug] [2026-9-22 14:00:27] cfg_jtag_flash_program succeed.
+[Debug] [2026-9-22 14:00:27] begin to check the cfg_jtag_flash_verify exec condition.
+[Debug] [2026-9-22 14:00:27] end to check the cfg_jtag_flash_verify exec condition.
+[Debug] [2026-9-22 14:00:27] Send RPC:8
+[Debug] [2026-9-22 14:00:27] Begin to send embed flash verify data.
+[Debug] [2026-9-22 14:00:27] Begin to send flash verify data.
+[Debug] [2026-9-22 14:00:27] End to send flash verify data.
+[Debug] [2026-9-22 14:00:27] End to send embed flash verify data.
+[Debug] [2026-9-22 14:00:27] Send cmd [Verify Outer Flash:20303] OK
+[Debug] [2026-9-22 14:00:28] The value of Progress is 1
+[Debug] [2026-9-22 14:00:30] The value of Progress is 6
+[Debug] [2026-9-22 14:00:31] The value of Progress is 10
+[Debug] [2026-9-22 14:00:32] The value of Progress is 15
+[Debug] [2026-9-22 14:00:34] The value of Progress is 20
+[Debug] [2026-9-22 14:00:36] The value of Progress is 25
+[Debug] [2026-9-22 14:00:37] The value of Progress is 30
+[Debug] [2026-9-22 14:00:39] The value of Progress is 35
+[Debug] [2026-9-22 14:00:40] The value of Progress is 40
+[Debug] [2026-9-22 14:00:42] The value of Progress is 45
+[Debug] [2026-9-22 14:00:43] The value of Progress is 50
+[Debug] [2026-9-22 14:00:45] The value of Progress is 55
+[Debug] [2026-9-22 14:00:46] The value of Progress is 60
+[Debug] [2026-9-22 14:00:48] The value of Progress is 65
+[Debug] [2026-9-22 14:00:50] The value of Progress is 70
+[Debug] [2026-9-22 14:00:51] The value of Progress is 75
+[Debug] [2026-9-22 14:00:53] The value of Progress is 80
+[Debug] [2026-9-22 14:00:54] The value of Progress is 85
+[Debug] [2026-9-22 14:00:56] The value of Progress is 90
+[Debug] [2026-9-22 14:00:57] The value of Progress is 95
+[Debug] [2026-9-22 14:00:59] The value of Progress is 100
+[Debug] [2026-9-22 14:00:59] COMMAND[Verify Outer Flash] execute successfully, takes 31.5 secs.
+[Debug] [2026-9-22 14:01:00] cfg_jtag_flash_verify succeed.
+[Info] [2026-9-22 14:01:00] Disconnect from Server: 127.0.0.1  Port: 65420
+[Warn] [2026-9-22 14:01:00] Server is disconnected
+[Debug] [2026-9-22 14:01:00] end to connect server
+[Debug] [2026-9-22 14:01:00] cfg_disconnect succeed.
+[Info] [2026-9-22 14:01:01] /***************************End Configration***************************/

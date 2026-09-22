@@ -18,11 +18,17 @@ module mini_comms_bringup(
  // FPGA clock-tree variation. Do not also connect the available +90 PLL output.
  wire mdio_o,mdio_oe,phy_configured,link_ready,phy_fault;
  wire [3:0] phy_fault_code;wire [15:0] phy_status;wire [31:0] phy_id;
+ // Read-only PHY evidence for UART command05, version1; capture failures rather
+ // than guessing their cause from a single LED. Wire layout is in commissioning docs.
+ wire [4:0] phy_address;wire [5:0] phy_step;wire [15:0] phy_last_read;wire phy_last_ack;
+ wire [95:0] phy_diagnostics={8'h01,8'h00,phy_status,
+    phy_step,phy_address,phy_last_ack,4'b0000,phy_last_read,phy_id};
  assign phy_mdio=mdio_oe?mdio_o:1'bz;
- rtl8211f_init #(.PHY_TX_DELAY(1)) u_phy(.clk(clk125),.reset_n(rst125),.mdio_i(phy_mdio),
+ rtl8211f_init #(.PHY_TX_DELAY(1),.SCAN_ADDRESSES(1)) u_phy(.clk(clk125),.reset_n(rst125),.mdio_i(phy_mdio),
   .mdio_o(mdio_o),.mdio_oe(mdio_oe),.mdc(phy_mdc),.phy_reset_n(phy_reset_n),
   .configured(phy_configured),.link_ready(link_ready),.fault(phy_fault),
-  .fault_code(phy_fault_code),.phy_status(phy_status),.phy_id(phy_id));
+  .fault_code(phy_fault_code),.phy_status(phy_status),.phy_id(phy_id),
+  .selected_addr(phy_address),.diagnostic_step(phy_step),.last_read(phy_last_read),.last_ack_error(phy_last_ack));
  wire commissioned,mcu_tx;wire [63:0] epoch;wire [47:0] src_mac,dst_mac;
  wire [31:0] src_ip,dst_ip;wire [15:0] src_port,dst_port;
  comms_boot_config u_boot(.clk(clk125),.reset_n(rst125),.uart_rx(uart_rx),
@@ -67,13 +73,15 @@ module mini_comms_bringup(
  end
  wire [31:0] flags={12'd0,phy_fault_code,8'd0,error_seen,source_fault,phy_fault,
                    mcu_active,commissioned,link_ready,phy_configured,1'b1};
- mcu_protocol #(.CLK_HZ(125000000)) u_mcu(.clk(clk125),.rst_n(rst125 && commissioned),
+ mcu_protocol #(.CLK_HZ(125000000),.BOARD_DIAGNOSTICS(1)) u_mcu(.clk(clk125),.rst_n(rst125 && commissioned),
   .uart_rx(uart_rx),.uart_tx(mcu_tx),.link_epoch(epoch),.link_epoch_valid(commissioned),
   .board_time_us(time_us),.status_flags(flags),.session_active(mcu_active),.env_valid(env_valid),
+  .board_diagnostics(phy_diagnostics),
   .env_session_id(),.env_event_seq(),.env_mcu_time_us(),.env_board_time_us(),
   .env_lux_milli(),.env_angle_mdeg(),.env_measurement_valid(),
   .rx_good_count(),.rx_error_count(),.tx_overflow_count());
- // MINI LEDs are active-low: heartbeat / PHY configured / link / commissioned /
- // fault. No pattern here claims that a camera or PC has received a frame.
- assign led=~{(phy_fault||source_fault||error_seen),commissioned,link_ready,phy_configured,heartbeat[25]};
+ // Purpose: MINI V1.3 manual pp34-35 specifies ACTIVE-HIGH LEDs. Indicate
+ // heartbeat / PHY configured / link / commissioned / fault in LED0..4 order.
+ // No pattern here claims that a camera or PC has received a frame.
+ assign led={(phy_fault||source_fault||error_seen),commissioned,link_ready,phy_configured,heartbeat[25]};
 endmodule
