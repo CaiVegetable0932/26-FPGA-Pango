@@ -11,8 +11,8 @@
 
 | 逻辑轴 n | 机构 | 物理驱动通道 | 正向时 DIR |
 | --- | --- | --- | --- |
-| 1 | 悬臂左右 | 第一块 D36A 通道 1，物理电机 1 | 低 |
-| 2 | 整体龙门架前后 | 第一块通道 2，物理电机 2；第二块通道 1，物理电机 3 | 前者高，后者低 |
+| 1 | 悬臂左右 | 第二块 D36A 通道 1，物理电机 1 | 低 |
+| 2 | 整体龙门架前后 | 第一块通道 1，物理电机 2；第一块通道 2，物理电机 3 | 前者高，后者低 |
 | 3 | 悬臂伸缩 | 第二块 D36A 通道 2，物理电机 4 | 高 |
 
 轴 1 根据最新上电实测反转正方向：`measure 1 start` 和坐标增大时 PA4/DIR1 为低，返回零点时为高。
@@ -35,13 +35,14 @@
 PD8、PD9 在上传的 M144Z-M4 开发板照片中相邻。此串口不经过开发板 USB_OTG，
 不能仅把 USB_OTG 连电脑就当作虚拟串口。断电接线，按芯片信号名找排针，PA0 继续不使用。
 
-电机控制线保持原分配：
+电机控制线按新的驱动板分组接线：龙门架的两台对向电机接在同一块 D36A，另外两台接在另一块 D36A。
+下面的“第一块/第二块”是逻辑板号，实际安装时可互换整板，但不能拆散龙门架的一对通道。
 
 | 逻辑轴 | 物理电机 | D36A 通道 | ST / STEP | DIR | EN |
 | --- | --- | --- | --- | --- | --- |
-| 1 | 1 | 第一块通道 1 | PA5 -> ST1 | PA4 -> DIR1 | PC2 -> EN1 |
-| 2 | 2 | 第一块通道 2 | PA1 -> ST2 | PA2 -> DIR2 | PC3 -> EN2 |
-| 2 | 3 | 第二块通道 1 | PA6 -> ST1 | PB5 -> DIR1 | PG8 -> EN1 |
+| 1 | 1 | 第二块通道 1 | PA5 -> ST1 | PA4 -> DIR1 | PC2 -> EN1 |
+| 2 | 2 | 第一块通道 1 | PA1 -> ST1 | PA2 -> DIR1 | PC3 -> EN1 |
+| 2 | 3 | 第一块通道 2 | PA6 -> ST2 | PB5 -> DIR2 | PG8 -> EN2 |
 | 3 | 4 | 第二块通道 2 | PB6 -> ST2 | PB11 -> DIR2 | PB10 -> EN2 |
 
 两块 D36A 的 Vin+/Vin- 接外部 12 V 电源正负极；两块驱动、STM32 和串口模块信号地共地。
@@ -66,16 +67,18 @@ PA11/PA12 的 USB 和 PA13/PA14 的 SWD 继续保留。
 - 小写 ASCII 文本，每条命令以 LF、CR 或 CRLF 结束；回包以 CRLF 结束。
 - 允许首尾空格、多个空格和制表符；不能省略参数或添加多余参数。
 - **三个轴统一使用 0-100 的归一化坐标**：0 是手动归零点，100 是各轴设定的最远点，50 是半行程。
-  `measure` 回报和 `set n m` 的 m 仍然使用电机圈数；`go x n k` 的 x、`state`、`done` 和已 set 轴的 `stopped` 使用归一化坐标。
-- m、x 为非负十进制，支持最多 6 位小数，不接受负数、科学计数法、NaN 或 Inf。
+  `measure` 回报和 `set n m` 的 m 仍然使用电机圈数；`go x y s` 的 x、y、`state`、`done` 和已 set 轴的 `stopped` 使用归一化坐标。
+- m、x、y、z 为非负十进制，支持最多 6 位小数，不接受负数、科学计数法、NaN 或 Inf。
 - 以 1.8 度电机、8 细分计，一圈 1600 脉冲，分辨率为 0.000625 圈。
   先将 m 四舍五入为行程脉冲数 M，再将目标换算为 `round(x * M / 100)` 个脉冲。
   回报坐标为 `100 * 当前脉冲数 / M`，固定 6 位小数；实际坐标分辨率为 `100 / M`。
   `ok go` 显示实际采用的目标坐标，可能因微步取整而与输入略有不同；0 和 100 均准确对应端点。
-- k 为整数 RPM，范围 1-60，只表示速度大小；正反转根据目标与当前位置自动选择。
+- s 为整数 RPM，范围 1-60，只表示速度大小；正反转根据目标与当前位置自动选择。
 - 最大可设置行程为 1000000 圈，仅为数值上限，不能充当机械限位。
 - 每组同时接受一个运动任务，其他组可并行运动。主机应等待命令确认，再发送下一条；
-  `go` 的确认表示已接受，`done` 才表示脉冲发送完成。等待运动期间仍可发送 `state` 或 `stop`。
+  `go` 的确认表示轴 1/2 已接受，两个目标均完成后分别返回 `done 1 x`、`done 2 y`。
+  `out z s` 控制轴 3，以 s RPM 运行到 z 坐标，完成后返回 `done 3 z`。
+  等待运动期间仍可发送 `state` 或 `stop`。
 
 ### 冷启动与 wake 重连
 
@@ -155,7 +158,7 @@ measure 1 12.345625
 
 这是从零点累计的脉冲对应圈数；轴 2 只报告一台电机等效的圈数，不把两台的圈数相加。
 位置保留在测得的终点，不会假装回到 0。该指令不自动 set，需要继续发送 `set 1 12.345625`。
-用这次测得的圈数 set 后，该轴当前归一化坐标为 100；`go 0 1 10` 可返回原零点。
+用这次测得的圈数 set 后，该轴当前归一化坐标为 100；轴 1 可用 `go 0 0 10` 返回原零点，轴 3 可用 `out 0 10` 返回原零点。
 停止命令从解析生效到结束最多约一个脉冲周期，10 RPM 时约 3.75 ms；此外还有串口传输、
 排队和人的反应时间。测量默认没有已知机械上限，不能依靠堵转判断终点。
 
@@ -171,20 +174,23 @@ set 1 12.345625
 空闲时更改 m 会按新行程重新计算归一化坐标，例如位置为 5 圈，行程从 10 圈改为 20 圈，坐标从 50 变为 25。
 
 ```text
-go 0 1 10
+go 0 0 10
 ```
 
-含义是轴 1 以 10 RPM 到坐标 0。返回 `ok go 1 0.000000`，随后运动完成时返回：
+含义是轴 1 和轴 2 都以 10 RPM 到坐标 0。返回 `ok go 0.000000 0.000000 10`，两个运动完成时分别返回：
 
 ```text
 done 1 0.000000
+done 2 0.000000
 ```
 
-命令顺序严格为 **`go x n k`**，x 的范围是 `[0,100]`，k 仍为 RPM。正向或反向由目标自动决定。
-例如 `set 1 20` 后，`go 50 1 10` 表示以 10 RPM 走到离零点 10 圈处，`go 100 1 10` 表示去最远点。
-未 set 该轴时报 `error not_set n`；非负目标大于 100 报 `error range n`；运动中重发定位报 `error busy n`。
-范围检查在脉冲取整之前执行，`go 100.000001 1 10` 也会被拒绝。
-目标已等于当前位置时立即回包 ok 和 done，不发脉冲。
+命令顺序严格为 **`go x y s`**，x、y 的范围是 `[0,100]`，s 为 RPM。x 对应电机组 1，y 对应龙门架电机组 2；正向或反向由目标自动决定。
+例如 `set 1 20`、`set 2 30` 后，`go 50 25 10` 表示两组分别以 10 RPM 到各自坐标。
+未 set 对应轴时报 `error not_set n`；目标大于 100 报对应的 `error range n`；运动中重发定位报对应的 `error busy n`。
+范围检查在脉冲取整之前执行，`go 100.000001 0 10` 也会被拒绝。
+目标已等于当前位置时立即回包确认和对应的 `done`，不发脉冲。
+
+轴 3 使用独立命令 **`out z s`**，例如 `out 75 12` 表示以 12 RPM 运行到轴 3 的 75 坐标，完成后返回 `done 3 75.000000`。
 
 ### 功能 3：位置查询
 
@@ -239,10 +245,11 @@ set 2 30
 set 3 8
 state
 go 1 1 5
+out 1 5
 ```
 
-最后一条让左右轴去到全行程的 1% 处，速度 5 RPM。等 done 后，`go 0 1 5` 返回零点。
-测试龙门架时可先从较小位移与较低速度开始，例如 `go 0.1 2 5` 表示全行程的 0.1%。
+`go 1 1 5` 让左右轴和龙门架都去到全行程的 1% 处，速度 5 RPM；`out 1 5` 让伸缩轴去到 1%。等对应 `done` 后，`go 0 0 5` 和 `out 0 5` 返回零点。
+测试龙门架时可先从较小位移与较低速度开始，例如 `go 0 0.1 5` 表示龙门架全行程的 0.1%。
 3 组的首次测量则分别使用 `measure n start`、`measure n over`，保存回报并逐轴 set。
 
 所有位置与行程仅保存在 RAM。断电后不会保存，重启后需要手动归零并重新 set；
@@ -326,27 +333,29 @@ USART3 中断仅收字节，主循环执行解析和回复，运动由硬件定�
 
 ## 验证
 
-本次 Debug、Release 固件编译及两组主机测试已通过，无编译警告；wake 和冷启动恢复版本尚需按实际供电顺序上板验证。
-迁入 `26-FPGA-Pango/mcu/stm32` 后，已在新路径重新配置并编译 Debug/Release、运行两组主机测试，全部通过。
+本次 Debug、Release 固件编译及电机驱动、协议主机测试已通过，无编译警告；wake 和冷启动恢复版本尚需按实际供电顺序上板验证。
+本次协议改动新增 `go x y s` 与 `out z s` 的主机回归覆盖；正式固件 Debug/Release 均已重新链接通过。
 后续改动应重新编译并运行测试；主机测试不能代替串口电平和机构实测。
-主机测试覆盖有限脉冲、正反向位置、配对同步、停止脉冲计数、启动静止、测量再 set、回零、
-多轴不同总行程的 0/50/100 映射、微步取整、100.000001 越界拒绝、最大行程计算、
-多轴并行、运动中 state、忙状态、未配置、非法数字、粘包/分包/CRLF、超长行及 UART 错误恢复。
-新增覆盖 wake 重复握手、清空排队指令、保留位置和行程、运行中成对停止、丢失 ready、
-开机残留 FE/NE/ORE、接收连续启动失败后恢复、接收中断停摆，以及 HAL 先交付错误字节再回调错误的顺序。
+驱动测试覆盖有限脉冲、正反向位置、配对同步、停止脉冲计数和时钟检查；协议测试覆盖同步 `go`、并行 `out`、
+测量后 set 与回零、状态查询、wake 停止和接收队列清空、目标取整、完成回包、坐标/速度边界及龙门架成对停止。
 
 本机 PowerShell：
 
 ```powershell
-$env:Path = 'C:/msys64/ucrt64/bin;' + $env:Path
-& C:/msys64/ucrt64/bin/gcc.exe -std=c11 -O2 -Wall -Wextra -Werror -Itests/mocks -ICore/Inc tests/test_d36a_motor.c -o build/test_d36a_motor.exe
+& gcc -std=c11 -O2 -Wall -Wextra -Werror -Itests/mocks -ICore/Inc tests/test_d36a_motor.c -o build/test_d36a_motor.exe
 & ./build/test_d36a_motor.exe
-& C:/msys64/ucrt64/bin/gcc.exe -std=c11 -O2 -Wall -Wextra -Werror -Itests/mocks -ICore/Inc tests/test_main_validation.c -o build/test_main_validation.exe
+& gcc -std=c11 -O2 -Wall -Wextra -Werror -Itests/mocks -ICore/Inc tests/test_main_validation.c -o build/test_main_validation.exe
 & ./build/test_main_validation.exe
 ```
 
-正式程序仍使用原 Debug/Release 构建和烧录入口，`build/Debug/`、`build/Release/` 下提供 ELF/HEX/BIN。
-BIN 下载地址为 `0x08000000`。HEX/BIN 是由本次 ELF 导出的，后续重编译后应重新导出。
+正式程序可通过项目脚本构建。脚本会从 `CUBE_BUNDLE_PATH` 或 `%LOCALAPPDATA%\stm32cube\bundles` 找到 CMake、Ninja 和 ARM GCC，重新配置迁移后的缓存，再构建固件：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build.ps1 -Configuration Debug
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build.ps1 -Configuration Release
+```
+
+每次链接都会从 ELF 同步生成 HEX 和 BIN，均位于对应配置目录；BIN 下载地址为 `0x08000000`。
 
 ## 仓库迁移与协作
 
@@ -358,7 +367,7 @@ Windows 首次克隆后，在该仓库内执行 `git config --local core.longpat
 `LF will be replaced by CRLF` 是 Git 换行符转换警告；本次暂存失败的实际原因是后续的 `Filename too long`。
 提交前检查完整 Git 输出，不要只根据 VS Code 弹窗中的第一行判断失败原因。
 
-复制或克隆后的 CMake 缓存含原电脑的绝对路径，必须重新配置。在本目录、已配置 STM32 工具链 PATH 的终端执行：
+复制或克隆后的 CMake 缓存含原电脑的绝对路径，必须重新配置。使用上面的 `scripts/build.ps1` 可自动发现 STM32Cube bundles 并 fresh 配置；若直接运行 CMake，则需先将 CMake、Ninja 和 `arm-none-eabi-gcc` 放入 PATH：
 
 ```powershell
 cmake --fresh --preset Debug

@@ -36,7 +36,7 @@ rule C_COMPILER__FPGA_unscanned_Release
 
 rule C_EXECUTABLE_LINKER__FPGA_Release
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\ROG\AppData\Local\stm32cube\bundles\gnu-tools-for-stm32\14.3.1+st.2\bin\arm-none-eabi-gcc.exe $FLAGS $LINK_FLAGS $in -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
-  description = Linking C executable $TARGET_FILE
+  description = Linking C executable $TARGET_FILE; Generating Intel HEX and binary firmware images
   restat = $RESTAT
 
 

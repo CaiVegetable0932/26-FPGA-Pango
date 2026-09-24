@@ -726,11 +726,15 @@
 			"properties" : 
 			[
 				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
 					"name" : "HELPSTRING",
-					"value" : "No help, variable specified on the command line."
+					"value" : "Program used to build from build.ninja files."
 				}
 			],
-			"type" : "UNINITIALIZED",
+			"type" : "FILEPATH",
 			"value" : "C:/Users/ROG/AppData/Local/stm32cube/bundles/ninja/1.13.2+st.1/bin/ninja.exe"
 		},
 		{

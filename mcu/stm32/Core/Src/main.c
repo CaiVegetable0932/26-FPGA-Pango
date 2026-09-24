@@ -286,9 +286,135 @@ static void execute_command(char *line)
   uint8_t measure = strcmp(tokens[0], "measure") == 0 && count == 3U;
   uint8_t set = strcmp(tokens[0], "set") == 0 && count == 3U;
   uint8_t go = strcmp(tokens[0], "go") == 0 && count == 4U;
+  uint8_t out = strcmp(tokens[0], "out") == 0 && count == 3U;
   uint8_t stop = strcmp(tokens[0], "stop") == 0 && count == 2U;
-  if (!(measure || set || go || stop)) { reply("error syntax\r\n"); return; }
-  if (!parse_axis(tokens[go ? 2U : 1U], &i)) { reply("error axis\r\n"); return; }
+
+  if (go)
+  {
+    uint64_t x_number, y_number;
+    uint32_t target[2], distance[2];
+    int16_t rpm;
+    D36A_Status status[2];
+    char coordinate[2][24];
+
+    if (!parse_decimal(tokens[1], &x_number) || !parse_decimal(tokens[2], &y_number))
+    {
+      reply("error number\r\n");
+      return;
+    }
+    if (!parse_speed(tokens[3], &rpm))
+    {
+      reply("error speed\r\n");
+      return;
+    }
+    for (i = 0U; i < 2U; ++i)
+    {
+      status[i] = axis_status(i);
+      if (!axes[i].configured)
+      {
+        reply("error not_set %lu\r\n", (unsigned long)i + 1U);
+        return;
+      }
+      if (axes[i].mode != AXIS_IDLE || status[i].running)
+      {
+        reply("error busy %lu\r\n", (unsigned long)i + 1U);
+        return;
+      }
+    }
+    if (x_number > COORDINATE_SCALE)
+    {
+      reply("error range 1\r\n");
+      return;
+    }
+    if (y_number > COORDINATE_SCALE)
+    {
+      reply("error range 2\r\n");
+      return;
+    }
+    target[0] = (uint32_t)((x_number * axes[0].limit + COORDINATE_SCALE / 2U) /
+                           COORDINATE_SCALE);
+    target[1] = (uint32_t)((y_number * axes[1].limit + COORDINATE_SCALE / 2U) /
+                           COORDINATE_SCALE);
+    for (i = 0U; i < 2U; ++i)
+    {
+      format_coordinate(i, (int32_t)target[i], coordinate[i], sizeof(coordinate[i]));
+      distance[i] = (uint32_t)((target[i] >= (uint32_t)status[i].position) ?
+                               (target[i] - (uint32_t)status[i].position) :
+                               ((uint32_t)status[i].position - target[i]));
+    }
+
+    /* Arm the gantry first so both axes are accepted before the response. */
+    if (distance[1] != 0U &&
+        axis_control(1U, target[1] > (uint32_t)status[1].position ? rpm : -rpm,
+                     distance[1]) != HAL_OK)
+    {
+      reply("error driver\r\n");
+      return;
+    }
+    if (distance[0] != 0U &&
+        axis_control(0U, target[0] > (uint32_t)status[0].position ? rpm : -rpm,
+                     distance[0]) != HAL_OK)
+    {
+      if (distance[1] != 0U) (void)axis_control(1U, 0, 0U);
+      reply("error driver\r\n");
+      return;
+    }
+    for (i = 0U; i < 2U; ++i)
+    {
+      if (distance[i] != 0U)
+      {
+        axes[i].target = (int32_t)target[i];
+        axes[i].mode = AXIS_GO;
+      }
+    }
+    reply("ok go %s %s %d\r\n", coordinate[0], coordinate[1], (int)rpm);
+    for (i = 0U; i < 2U; ++i)
+    {
+      if (distance[i] == 0U) reply("done %lu %s\r\n", (unsigned long)i + 1U, coordinate[i]);
+    }
+    return;
+  }
+
+  if (out)
+  {
+    uint64_t number;
+    uint32_t target, distance;
+    int16_t rpm;
+    D36A_Status status;
+    char coordinate[24];
+
+    if (!parse_decimal(tokens[1], &number)) { reply("error number\r\n"); return; }
+    if (!parse_speed(tokens[2], &rpm)) { reply("error speed\r\n"); return; }
+    i = 2U;
+    status = axis_status(i);
+    if (!axes[i].configured) { reply("error not_set 3\r\n"); return; }
+    if (axes[i].mode != AXIS_IDLE || status.running) { reply("error busy 3\r\n"); return; }
+    if (number > COORDINATE_SCALE) { reply("error range 3\r\n"); return; }
+    target = (uint32_t)((number * axes[i].limit + COORDINATE_SCALE / 2U) /
+                        COORDINATE_SCALE);
+    format_coordinate(i, (int32_t)target, coordinate, sizeof(coordinate));
+    distance = (uint32_t)((target >= (uint32_t)status.position) ?
+                          (target - (uint32_t)status.position) :
+                          ((uint32_t)status.position - target));
+    if (distance == 0U)
+    {
+      reply("ok out %s %d\r\n", coordinate, (int)rpm);
+      reply("done 3 %s\r\n", coordinate);
+      return;
+    }
+    if (axis_control(i, target > (uint32_t)status.position ? rpm : -rpm, distance) != HAL_OK)
+    {
+      reply("error driver\r\n");
+      return;
+    }
+    axes[i].target = (int32_t)target;
+    axes[i].mode = AXIS_GO;
+    reply("ok out %s %d\r\n", coordinate, (int)rpm);
+    return;
+  }
+
+  if (!(measure || set || stop)) { reply("error syntax\r\n"); return; }
+  if (!parse_axis(tokens[1], &i)) { reply("error axis\r\n"); return; }
   D36A_Status status = axis_status(i);
   unsigned long n = (unsigned long)i + 1U;
   if (measure && strcmp(tokens[2], "over") == 0)
@@ -317,7 +443,7 @@ static void execute_command(char *line)
     return;
   }
   uint64_t number;
-  if (!parse_decimal(tokens[set ? 2U : 1U], &number)) { reply("error number\r\n"); return; }
+  if (!parse_decimal(tokens[2], &number)) { reply("error number\r\n"); return; }
   char coordinate[24];
   if (set)
   {
@@ -331,26 +457,7 @@ static void execute_command(char *line)
     reply("ok set %lu %s\r\n", n, coordinate);
     return;
   }
-  if (!axes[i].configured) { reply("error not_set %lu\r\n", n); return; }
-  int16_t rpm;
-  if (!parse_speed(tokens[3], &rpm)) { reply("error speed\r\n"); return; }
-  if (number > COORDINATE_SCALE) { reply("error range %lu\r\n", n); return; }
-  uint32_t value = (uint32_t)((number * axes[i].limit + COORDINATE_SCALE / 2U) /
-                              COORDINATE_SCALE);
-  format_coordinate(i, (int32_t)value, coordinate, sizeof(coordinate));
-  int32_t distance = (int32_t)value - status.position;
-  if (distance == 0)
-  {
-    reply("ok go %lu %s\r\n", n, coordinate);
-    reply("done %lu %s\r\n", n, coordinate);
-    return;
-  }
-  if (axis_control(i, distance > 0 ? rpm : -rpm,
-                    (uint32_t)(distance > 0 ? distance : -distance)) != HAL_OK)
-    { reply("error driver\r\n"); return; }
-  axes[i].target = (int32_t)value;
-  axes[i].mode = AXIS_GO;
-  reply("ok go %lu %s\r\n", n, coordinate);
+  reply("error syntax\r\n");
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *uart)
