@@ -28,10 +28,10 @@
 
 ## 固定提交与推送身份（强制）
 
-- 本项目后续提交固定使用姓名 `CaiVegetable0932` 和邮箱 `caivegetable0932@163.com`；GitHub 推送使用已登录的 `CaiVegetable0932` 账户。除非用户明确修改，不得换用其他身份。
+- 本项目后续提交固定使用姓名 `CaiVegetable0932` 和邮箱 `caivegetable0932@163.com`；GitHub 推送使用用户于 2026-09-25 明确确认的协作账户 `hagima410`。提交署名与 GitHub 登录凭据分开管理，除非用户明确修改，不得换用其他提交署名或未授权的推送账户。
 - 每次提交前核对仓库本地 `user.name`、`user.email`，并通过 `git var GIT_AUTHOR_IDENT` 和 `git var GIT_COMMITTER_IDENT` 检查实际作者和提交者，防止环境变量覆盖。两者均须为上述身份，配置不符时先修正再提交。
 - 本仓库使用 `git config --local user.name CaiVegetable0932`、`git config --local user.email caivegetable0932@163.com` 和 `git config --local user.useConfigOnly true` 固定身份；新克隆或新环境也必须先应用这些本地配置。
-- Git 的姓名和邮箱是提交元数据，不等同于 GitHub 登录凭据。推送前确认凭据管理器使用 `CaiVegetable0932`，本仓库 HTTPS 用户名固定为该账户；凭据失效时重新登录该账户，不能用其他账户代替。
+- Git 的姓名和邮箱是提交元数据，不等同于 GitHub 登录凭据。推送前确认凭据管理器使用上述已授权协作账户，本仓库 HTTPS 用户名固定为该账户；凭据失效时重新登录该账户。不得因为提交署名不同，就要求协作者登录提交署名对应的账户；推送权限以远端实际认证结果为准。
 - 新提交完成后核对作者、提交者及云端分支提交号。已有历史保留原作者，不因更新身份而改写历史或强制推送。
 
 ## 修改前核对与回答前推送（强制）

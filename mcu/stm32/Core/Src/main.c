@@ -44,6 +44,11 @@
 #define COORDINATE_SCALE (100U * DECIMAL_SCALE)
 #define RX_CAPACITY 512U
 #define LINE_CAPACITY 96U
+/* Logical-axis travel measured on the mechanism, reported 2026-09-25. */
+#define AXIS1_STARTUP_TRAVEL "5.696250"
+#define AXIS2_STARTUP_TRAVEL "6.195625"
+/* Temporary display scale only: axis 3 has not been measured or configured. */
+#define AXIS3_STATE_FALLBACK_PULSES (2U * D36A_PULSES_PER_REV)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -156,12 +161,11 @@ static void format_revolutions(int32_t pulses, char *output, size_t size)
                            D36A_PULSES_PER_REV));
 }
 
-/* Call only after set: limit is nonzero and positions are logical microsteps. */
-static void format_coordinate(uint32_t i, int32_t pulses, char *output, size_t size)
+/* limit must be nonzero; positions are logical microsteps. */
+static void format_coordinate(uint32_t limit, int32_t pulses, char *output, size_t size)
 {
   uint32_t magnitude = (pulses < 0) ? (uint32_t)(-(int64_t)pulses) : (uint32_t)pulses;
-  uint64_t value = ((uint64_t)magnitude * COORDINATE_SCALE + axes[i].limit / 2U) /
-                   axes[i].limit;
+  uint64_t value = ((uint64_t)magnitude * COORDINATE_SCALE + limit / 2U) / limit;
   snprintf(output, size, "%s%lu.%06lu", pulses < 0 ? "-" : "",
            (unsigned long)(value / DECIMAL_SCALE),
            (unsigned long)(value % DECIMAL_SCALE));
@@ -232,14 +236,14 @@ static void motion_poll(void)
     }
     else if (finished == AXIS_GO && status.position == axes[i].target)
     {
-      format_coordinate(i, status.position, position, sizeof(position));
+      format_coordinate(axes[i].limit, status.position, position, sizeof(position));
       reply("done %lu %s\r\n", (unsigned long)i + 1U, position);
     }
     else if (finished == AXIS_STOP)
     {
       if (axes[i].configured)
       {
-        format_coordinate(i, status.position, position, sizeof(position));
+        format_coordinate(axes[i].limit, status.position, position, sizeof(position));
         reply("stopped %lu %s\r\n", (unsigned long)i + 1U, position);
       }
       else reply("stopped %lu not_set\r\n", (unsigned long)i + 1U);
@@ -273,12 +277,18 @@ static void execute_command(char *line)
     char position[AXIS_COUNT][24];
     for (i = 0U; i < AXIS_COUNT; ++i)
     {
+      uint32_t limit = axes[i].limit;
       if (!axes[i].configured)
       {
-        reply("error not_set %lu\r\n", (unsigned long)i + 1U);
-        return;
+        if (i != 2U)
+        {
+          reply("error not_set %lu\r\n", (unsigned long)i + 1U);
+          return;
+        }
+        /* Never mark axis 3 configured or change its movement limits here. */
+        limit = AXIS3_STATE_FALLBACK_PULSES;
       }
-      format_coordinate(i, axis_status(i).position, position[i], sizeof(position[i]));
+      format_coordinate(limit, axis_status(i).position, position[i], sizeof(position[i]));
     }
     reply("state %s %s %s\r\n", position[0], position[1], position[2]);
     return;
@@ -337,7 +347,7 @@ static void execute_command(char *line)
                            COORDINATE_SCALE);
     for (i = 0U; i < 2U; ++i)
     {
-      format_coordinate(i, (int32_t)target[i], coordinate[i], sizeof(coordinate[i]));
+      format_coordinate(axes[i].limit, (int32_t)target[i], coordinate[i], sizeof(coordinate[i]));
       distance[i] = (uint32_t)((target[i] >= (uint32_t)status[i].position) ?
                                (target[i] - (uint32_t)status[i].position) :
                                ((uint32_t)status[i].position - target[i]));
@@ -392,7 +402,7 @@ static void execute_command(char *line)
     if (number > COORDINATE_SCALE) { reply("error range 3\r\n"); return; }
     target = (uint32_t)((number * axes[i].limit + COORDINATE_SCALE / 2U) /
                         COORDINATE_SCALE);
-    format_coordinate(i, (int32_t)target, coordinate, sizeof(coordinate));
+    format_coordinate(axes[i].limit, (int32_t)target, coordinate, sizeof(coordinate));
     distance = (uint32_t)((target >= (uint32_t)status.position) ?
                           (target - (uint32_t)status.position) :
                           ((uint32_t)status.position - target));
@@ -575,6 +585,11 @@ int main(void)
   /* A transient receive failure is retried by serial_poll, not a fatal boot error. */
   serial_restart(0U);
   reply("ready\r\n");
+  /* Reuse set validation/replies after ready, before consuming host commands. */
+  char startup_axis1[] = "set 1 " AXIS1_STARTUP_TRAVEL;
+  char startup_axis2[] = "set 2 " AXIS2_STARTUP_TRAVEL;
+  execute_command(startup_axis1);
+  execute_command(startup_axis2);
   /* USER CODE END 2 */
 
   /* Infinite loop */

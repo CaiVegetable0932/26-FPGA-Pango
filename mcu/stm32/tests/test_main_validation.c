@@ -47,6 +47,7 @@ static size_t transmitted_size;
 static uint8_t *receive_target;
 static uint32_t init_mask;
 static uint8_t booting;
+static uint32_t boot_reply_count;
 static uint32_t receive_failures;
 static jmp_buf boot_complete;
 static USART_TypeDef mock_uart;
@@ -98,7 +99,14 @@ HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *uart, uint8_t *data,
     memcpy(transmitted + transmitted_size, data, size);
     transmitted_size += size;
     transmitted[transmitted_size] = '\0';
-    if (booting) longjmp(boot_complete, 1);
+    if (booting)
+    {
+        if (boot_reply_count == 0U)
+        {
+            assert(!axes[0].configured && !axes[1].configured && !axes[2].configured);
+        }
+        if (++boot_reply_count == 3U) longjmp(boot_complete, 1);
+    }
     return HAL_OK;
 }
 
@@ -147,13 +155,83 @@ static void boot(void)
     init_mask = 0U;
     clear_output();
     booting = 1U;
+    boot_reply_count = 0U;
     receive_failures = 0U;
     mock_uart = (USART_TypeDef){0};
     receive_target = NULL;
     if (setjmp(boot_complete) == 0) firmware_main();
     booting = 0U;
-    expect("ready\r\n");
+    expect("ready\r\nok set 1 5.696250\r\nok set 2 6.195625\r\n");
     assert(init_mask == 63U && gantry_enabled);
+    assert(axes[0].configured && axes[0].limit == 9114U);
+    assert(axes[1].configured && axes[1].limit == 9913U);
+    assert(!axes[2].configured && axes[2].limit == 0U);
+    for (uint32_t i = 0U; i < AXIS_COUNT; ++i)
+        assert(axis_status(i).position == 0 && !axis_status(i).running);
+    for (uint32_t i = 0U; i < D36A_MOTOR_COUNT; ++i) assert(rising_edges[i] == 0U);
+}
+
+static void test_measured_startup_travel_and_wake(void)
+{
+    boot();
+    send("state\n"); expect("state 0.000000 0.000000 0.000000\r\n");
+    send("out 1 10\n"); expect("error not_set 3\r\n");
+    send("go 100 100 60\n"); expect("ok go 100.000000 100.000000 60\r\n");
+    advance(6195625U);
+    clear_output(); motion_poll();
+    expect("done 1 100.000000\r\ndone 2 100.000000\r\n");
+    assert(rising_edges[0] == 9114U && rising_edges[1] == 9913U &&
+           rising_edges[3] == 9913U && rising_edges[2] == 0U);
+    send("wake\n"); expect("ok wake\r\n");
+    send("state\n"); expect("state 100.000000 100.000000 0.000000\r\n");
+    send("out 1 10\n"); expect("error not_set 3\r\n");
+    send("set 1 12\nset 2 14\n");
+    expect("ok set 1 12.000000\r\nok set 2 14.000000\r\n");
+    send("wake\n"); expect("ok wake\r\n");
+    assert(axes[0].limit == 19200U && axes[1].limit == 22400U);
+    assert(axis_status(0).position == 9114 && axis_status(1).position == 9913);
+    boot(); /* Reset restores measured defaults, not the runtime overrides. */
+}
+
+static void test_state_axis3_fallback_and_explicit_set(void)
+{
+    boot();
+    send("stop 3\n"); expect("stopped 3 not_set\r\n");
+    send("set 3 0\n"); expect("error range 3\r\n");
+    send("measure 3 start\n"); expect("ok measure 3 start\r\n");
+    advance(3000000U);
+    send("state\n"); expect("state 0.000000 0.000000 25.000000\r\n");
+    assert(!axes[2].configured && axes[2].limit == 0U && axis_status(2).running);
+    send("measure 3 over\n"); expect("");
+    advance(3750U);
+    clear_output(); motion_poll(); expect("measure 3 0.500625\r\n");
+    send("state\n"); expect("state 0.000000 0.000000 25.031250\r\n");
+    send("out 50 10\n"); expect("error not_set 3\r\n");
+    send("stop 3\n"); expect("stopped 3 not_set\r\n");
+    assert(!axes[2].configured && axes[2].limit == 0U);
+    send("set 3 4\nstate\n");
+    expect("ok set 3 4.000000\r\nstate 0.000000 0.000000 12.515625\r\n");
+    send("out 0 60\n"); expect("ok out 0.000000 60\r\n");
+    advance(500625U);
+    clear_output(); motion_poll(); expect("done 3 0.000000\r\n");
+    send("measure 3 start\n"); expect("ok measure 3 start\r\n");
+    advance(3000000U);
+    send("state\n"); expect("state 0.000000 0.000000 25.000000\r\n");
+    assert(!axes[2].configured && axes[2].limit == 6400U);
+    send("stop 3\n"); expect("");
+    advance(3750U);
+    clear_output(); motion_poll(); expect("stopped 3 not_set\r\n");
+}
+
+static void test_state_still_requires_axes1_and2(void)
+{
+    boot();
+    send("measure 2 start\n"); expect("ok measure 2 start\r\n");
+    send("state\n"); expect("error not_set 2\r\n");
+    send("go 0 0 10\n"); expect("error not_set 2\r\n");
+    send("stop 2\n"); expect("");
+    advance(3750U);
+    clear_output(); motion_poll(); expect("stopped 2 not_set\r\n");
 }
 
 static void test_batch_go_and_out(void)
@@ -183,9 +261,10 @@ static void test_batch_go_and_out(void)
 static void test_measure_set_state_and_return_to_zero(void)
 {
     boot();
+    send("state\r\n"); expect("state 0.000000 0.000000 0.000000\r\n");
+    send("measure 1 start\r\n"); expect("ok measure 1 start\r\n");
     send("state\r\n"); expect("error not_set 1\r\n");
     send("go 0 0 10\n"); expect("error not_set 1\r\n");
-    send("measure 1 start\r\n"); expect("ok measure 1 start\r\n");
     assert(GPIOA->BSRR == (GPIO_PIN_4 << 16U));
     advance(6002000U);
     send("measure 1 over\n"); expect("");
@@ -265,11 +344,14 @@ static void test_coordinate_rounding_and_large_travel(void)
 
 int main(void)
 {
+    test_measured_startup_travel_and_wake();
+    test_state_axis3_fallback_and_explicit_set();
+    test_state_still_requires_axes1_and2();
     test_batch_go_and_out();
     test_measure_set_state_and_return_to_zero();
     test_validation_and_stop();
     test_wake_stops_motion_and_discards_queued_command();
     test_coordinate_rounding_and_large_travel();
-    puts("PASS: go/out concurrency, gantry synchronization, measurement, position, wake and validation");
+    puts("PASS: measured startup travel, state-only fallback, go/out, gantry, measurement, wake and validation");
     return 0;
 }
