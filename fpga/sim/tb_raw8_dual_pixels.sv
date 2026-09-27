@@ -56,9 +56,9 @@ module tb_raw8_dual_pixels;
   end
   was_en=en;
  end
- // Purpose: independently check display-only median/tone on every HDMI
- // pixel in the first bright-mode frame, while the separate network decoder
- // still checks byte-exact S0 RAW. Dark-mode selection has its own testbench.
+ // Purpose: independently check median/tone and causal Bayer-cell averaging
+ // on every HDMI pixel. The separate network decoder checks enhanced RAW8
+ // bytes; HDMI must preserve frame geometry while removing CFA phase dots.
  function automatic [7:0] display_tone(input [7:0] value);
   // Purpose: independently model the unchanged bright-scene gain and
   // highlight shoulder; the network checker still compares untouched RAW.
@@ -72,13 +72,29 @@ module tb_raw8_dual_pixels;
   if(a>b)median3=b>c?b:(a>c?c:a);
   else median3=a>c?a:(b>c?c:b);
  endfunction
- reg [7:0] expected_raw,expected_display;
+ reg [7:0] expected_raw,expected_display,expected_toned;
+ reg [7:0] expected_line [0:1919];
+ reg [7:0] expected_current_left,expected_prior_left;
+ reg [7:0] expected_left,expected_top,expected_top_left;
+ integer expected_gray,display_x,display_y;
  always @(posedge pclk)if(read_reset && !display_complete)begin
   if(de)begin
    expected_raw=8'((pixels*17+22)&255);
    expected_display=pixels%1920>=4 ? median3(expected_raw,
     8'(((pixels-2)*17+22)&255),8'(((pixels-4)*17+22)&255)) : expected_raw;
-   if(!pv || rgb!=={3{display_tone(expected_display)}})$fatal(1,"RAW8_FAIL HDMI pixel %0d",pixels);
+   // Purpose: compare the rendered HDMI byte to an independent row-buffer
+   // reference, including frame-top and left-edge replication.
+   expected_toned=display_tone(expected_display);
+   display_x=pixels%1920;display_y=pixels/1920;
+   expected_left=display_x==0 ? expected_toned : expected_current_left;
+   expected_top=display_y==0 ? expected_toned : expected_line[display_x];
+   expected_top_left=display_y==0 ? expected_left :
+                     display_x==0 ? expected_top : expected_prior_left;
+   expected_gray=(expected_toned+expected_left+expected_top+expected_top_left+2)>>2;
+   if(!pv || rgb!=={3{expected_gray[7:0]}})$fatal(1,"RAW8_FAIL HDMI pixel %0d got=%h want=%0d",pixels,rgb,expected_gray);
+   expected_line[display_x]=expected_toned;
+   expected_current_left=expected_toned;
+   expected_prior_left=expected_top;
    pixels=pixels+1;
   end
   if(hs)hs_count=hs_count+1;

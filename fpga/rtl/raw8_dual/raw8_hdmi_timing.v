@@ -1,6 +1,6 @@
 // Purpose: 1920x1080p30 raster at 74.25 MHz, positive HS/VS, total 2200x1125.
-// The RGB output is FPGA-enhanced grayscale derived from the stored RAW mosaic;
-// the new Ethernet reader applies the same curve before transmitting Bayer RAW8.
+// The RGB output is FPGA-enhanced grayscale with a Bayer-aware 2x2 display
+// filter. Ethernet keeps the same tone curve but transmits Bayer RAW8 bytes.
 // Consumer must prefetch a full frame into its elastic read path before enable.
 module raw8_hdmi_timing(
  input wire clk,reset_n,enable,input wire [7:0] sample,
@@ -25,7 +25,18 @@ module raw8_hdmi_timing(
   .frame_boundary(frame_boundary),
   .line_active(sample_ready),.line_end(1'b0),.pixel_accept(sample_ready && sample_valid),
   .sample(sample),.luma(display_luma));
- assign rgb=sample_ready && sample_valid ? {display_luma,display_luma,display_luma} : 24'b0;
+ // Purpose: prefetch the previous-line pixel during the horizontal porch,
+ // then suppress Bayer-phase dots before the HDMI/capture-card downscaler.
+ // This does not alter sample_ready, DE, HDMI timing, or the DDR/network path.
+ wire [7:0] display_gray;
+ // Purpose: use an explicitly 11-bit modulo column index for the 1920 active
+ // samples, avoiding port-width truncation warnings from the 12-bit raster.
+ wire [10:0] display_column=h[10:0]-11'd192;
+ raw8_hdmi_gray_antialias u_gray_antialias(.clk(clk),.reset_n(reset_n),
+  .line_preload(h==12'd191),.pixel_accept(sample_ready && sample_valid),
+  .first_row(v==11'd41),.first_col(h==12'd192),
+  .column(display_column),.luma(display_luma),.gray(display_gray));
+ assign rgb=sample_ready && sample_valid ? {display_gray,display_gray,display_gray} : 24'b0;
  always @(posedge clk or negedge reset_n)
   if(!reset_n)begin h<=0;v<=0;poisoned<=0;underflows<=0;end
   else begin

@@ -76,11 +76,11 @@ module tb_raw8_board_core #(parameter LATE_EPOCH=0);
  integer frame_i,x,y,pixels=0,hdmi_frames=0,net_frames=0,packet_count=0;
  integer hexfile,lenfile,wire_length=0;reg was_en=0;
  reg [63:0] hdmi_id;
- // Purpose: independently predict the hardware display-only correction.
- // UDP byte-exact scoreboard below still checks the unmodified RAW source.
+ // Purpose: independently predict HDMI correction and Bayer-cell averaging.
+ // The separate UDP decoder checks the board-enhanced Bayer RAW8 payload.
  function automatic [7:0] display_tone(input [7:0] value);
   // Purpose: assert brighter board-level midtones and preserved high codes;
-  // the parallel Ethernet checker remains byte-exact to source RAW.
+  // the parallel Ethernet checker remains byte-exact to enhanced RAW8.
   if(value<=24)display_tone=0;
   else if(value<=80)display_tone=(value-24)*2;
   else if(value<=144)display_tone=112+(value-80)+((value-80)>>2);
@@ -91,7 +91,11 @@ module tb_raw8_board_core #(parameter LATE_EPOCH=0);
   if(a>b)median3=b>c?b:(a>c?c:a);
   else median3=a>c?a:(b>c?c:b);
  endfunction
- reg [7:0] expected_raw,expected_display;
+ reg [7:0] expected_raw,expected_display,expected_toned;
+ reg [7:0] expected_line [0:1919];
+ reg [7:0] expected_current_left,expected_prior_left;
+ reg [7:0] expected_left,expected_top,expected_top_left;
+ integer expected_gray,display_x,display_y;
  always @(posedge mc)if(rst && dut.net_done)net_frames=net_frames+1;
  always @(posedge ec)if(rst)begin
   if(eth_en)begin
@@ -107,8 +111,20 @@ module tb_raw8_board_core #(parameter LATE_EPOCH=0);
   expected_display=pixels%1920>=4 ? median3(expected_raw,
    8'(((pixels-2)*17+hdmi_id*31+22)&255),
    8'(((pixels-4)*17+hdmi_id*31+22)&255)) : expected_raw;
-  if(dut.h_id!=hdmi_id || rgb!=={3{display_tone(expected_display)}})
-   $fatal(1,"RAW8_BOARD_FAIL HDMI pixel=%0d fid=%0d rgb=%h",pixels,hdmi_id,rgb);
+  // Purpose: enforce every filtered HDMI pixel and its leased frame identity
+  // across six frames, including first-row/column replication at each reset.
+  expected_toned=display_tone(expected_display);
+  display_x=pixels%1920;display_y=pixels/1920;
+  expected_left=display_x==0 ? expected_toned : expected_current_left;
+  expected_top=display_y==0 ? expected_toned : expected_line[display_x];
+  expected_top_left=display_y==0 ? expected_left :
+                    display_x==0 ? expected_top : expected_prior_left;
+  expected_gray=(expected_toned+expected_left+expected_top+expected_top_left+2)>>2;
+  if(dut.h_id!=hdmi_id || rgb!=={3{expected_gray[7:0]}})
+   $fatal(1,"RAW8_BOARD_FAIL HDMI pixel=%0d fid=%0d rgb=%h want=%0d",pixels,hdmi_id,rgb,expected_gray);
+  expected_line[display_x]=expected_toned;
+  expected_current_left=expected_toned;
+  expected_prior_left=expected_top;
   pixels=pixels+1;
   if(pixels==2073600)begin pixels=0;hdmi_frames=hdmi_frames+1;end
  end
