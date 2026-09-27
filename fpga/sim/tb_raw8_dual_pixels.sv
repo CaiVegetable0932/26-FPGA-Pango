@@ -56,17 +56,26 @@ module tb_raw8_dual_pixels;
   end
   was_en=en;
  end
- // Purpose: independently check median/tone and causal Bayer-cell averaging
- // on every HDMI pixel. The separate network decoder checks enhanced RAW8
- // bytes; HDMI must preserve frame geometry while removing CFA phase dots.
+ // Purpose: independently check the fixed midpoint tone and causal Bayer-
+ // cell averaging on every HDMI pixel, including the former mode boundary.
  function automatic [7:0] display_tone(input [7:0] value);
-  // Purpose: independently model the unchanged bright-scene gain and
-  // highlight shoulder; the network checker still compares untouched RAW.
-  if(value<=24)display_tone=0;
-  else if(value<=80)display_tone=(value-24)*2;
-  else if(value<=144)display_tone=112+(value-80)+((value-80)>>2);
-  else if(value==255)display_tone=255;
-  else display_tone=192+((value-144)>>1)+((value-144)>>4)+((value-144)>>6);
+  integer bright,dark,delta;
+  begin
+   if(value<=24)bright=0;
+   else if(value<=80)bright=(value-24)*2;
+   else if(value<=144)bright=112+(value-80)+((value-80)>>2);
+   else if(value==255)bright=255;
+   else begin delta=value-144;bright=192+(delta>>1)+(delta>>4)+(delta>>6);end
+   if(value<=8)dark=0;
+   else if(value<=16)dark=(value-8)*4;
+   else if(value<=32)dark=32+(value-16)*7;
+   else if(value<=64)dark=144+(value-32)*2;
+   else if(value<=128)dark=208+((value-64)>>1);
+   else if(value<=240)dark=240+((value-128)>>4);
+   else if(value==255)dark=255;
+   else dark=247+((value-240)>>1);
+   display_tone=(bright+dark+1)>>1;
+  end
  endfunction
  function automatic [7:0] median3(input [7:0] a,b,c);
   if(a>b)median3=b>c?b:(a>c?c:a);

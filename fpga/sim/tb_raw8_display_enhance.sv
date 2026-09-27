@@ -1,12 +1,12 @@
 `timescale 1ns/1ps
-// Purpose: verify FPGA-only same-CFA median and frame-latched dark/bright
-// curves, including incomplete-frame hold and no source RAW mutation.
+// Purpose: verify same-CFA median and deterministic fixed tone across every
+// code and abrupt changes in previous-frame brightness; no source RAW changes.
 module tb_raw8_display_enhance;
- reg clk=0,reset_n=0,frame_boundary=0,line_active=0,line_end=0,pixel_accept=0;
+ reg clk=0,reset_n=0,line_active=0,line_end=0,pixel_accept=0;
  reg [7:0] sample=0;wire [7:0] luma;
  always #5 clk=~clk;
- raw8_display_enhance #(.MIN_SAMPLES(4)) dut(.clk(clk),.reset_n(reset_n),
-  .frame_boundary(frame_boundary),.line_active(line_active),.line_end(line_end),
+ raw8_display_enhance dut(.clk(clk),.reset_n(reset_n),
+  .line_active(line_active),.line_end(line_end),
   .pixel_accept(pixel_accept),.sample(sample),.luma(luma));
  // Purpose: independently evaluate every input code of the bright-scene tone
  // curve, including both knee joins and the unmodified saturated white code.
@@ -35,6 +35,14 @@ module tb_raw8_display_enhance;
    else begin delta=value-240;expected_dark=247+(delta>>1);end
   end
  endfunction
+ // Purpose: independently calculate the nine-bit rounded midpoint so a
+ // return to the former 50% frame selector fails this regression immediately.
+ function automatic [7:0] expected_fixed(input integer value);
+  integer sum;
+  begin sum=integer'(expected_tone(value))+integer'(expected_dark(value))+1;
+   expected_fixed=sum>>1;
+  end
+ endfunction
  task push(input [7:0] value,expected);
   begin
    @(negedge clk);line_active=1;pixel_accept=1;sample=value;
@@ -42,8 +50,8 @@ module tb_raw8_display_enhance;
    @(posedge clk);#1;
   end
  endtask
- // Purpose: train the frame classifier without assuming the line-local
- // median output during a contiguous saturated lamp strip.
+ // Purpose: emulate strongly different preceding frames without relying on
+ // same-phase median output during contiguous pixels.
  task feed(input [7:0] value);
   begin
    @(negedge clk);line_active=1;pixel_accept=1;sample=value;
@@ -53,12 +61,12 @@ module tb_raw8_display_enhance;
  task end_line;
   begin @(negedge clk);line_active=0;pixel_accept=0;@(posedge clk);#1;end
  endtask
- // Purpose: emulate a complete HDMI frame boundary without changing the
- // current pixel; this is the only point where the selected curve may change.
+ // Purpose: emulate a frame gap and clear Bayer median history. The tone map
+ // must not depend on any preceding frame, regardless of its brightness.
  task next_frame;
   begin
-   @(negedge clk);line_active=0;pixel_accept=0;frame_boundary=1;
-   @(posedge clk);#1;@(negedge clk);frame_boundary=0;
+   @(negedge clk);line_active=0;pixel_accept=0;
+   @(posedge clk);#1;
   end
  endtask
  integer code;
@@ -66,48 +74,41 @@ module tb_raw8_display_enhance;
   repeat(2)@(negedge clk);reset_n=1;
   // Purpose: cover knee transitions and confirm the line-local same-phase
   // median rejects an isolated bright defect without smearing adjacent rows.
-  push(0,0);push(24,0);push(25,2);push(80,112);end_line();
-  push(81,113);push(144,192);push(145,192);push(254,254);end_line();
-  push(40,32);push(40,32);push(40,32);push(40,32);
+  push(0,0);push(24,expected_fixed(24));push(25,expected_fixed(25));
+  push(80,expected_fixed(80));end_line();
+  push(81,expected_fixed(81));push(144,expected_fixed(144));
+  push(145,expected_fixed(145));push(254,254);end_line();
+  push(40,expected_fixed(40));push(40,expected_fixed(40));
+  push(40,expected_fixed(40));push(40,expected_fixed(40));
   // At x=4 the isolated 255 spike is rejected by x=0/x=2 same-CFA history.
-  push(255,32);end_line();
+  push(255,expected_fixed(40));end_line();
   push(255,255);end_line();
   // Purpose: Ethernet has no blanking cycle between rows. Its accepted last
   // pixel must clear the median history without changing that pixel's tone.
-  push(40,32);push(40,32);push(40,32);push(40,32);
+  push(40,expected_fixed(40));push(40,expected_fixed(40));
+  push(40,expected_fixed(40));push(40,expected_fixed(40));
   @(negedge clk);line_active=1;pixel_accept=1;line_end=1;sample=40;
-  #1;if(luma!==8'd32)$fatal(1,"RAW8_LINE_END_LAST_PIXEL");
+  #1;if(luma!==expected_fixed(40))$fatal(1,"RAW8_LINE_END_LAST_PIXEL");
   @(posedge clk);#1;
   @(negedge clk);line_end=0;sample=255;
   #1;if(luma!==8'd255)$fatal(1,"RAW8_LINE_END_NEXT_ROW");
   @(posedge clk);#1;end_line();
-  // Purpose: exhaustively test the unchanged bright curve with the median
+  // Purpose: exhaustively test the fixed map and monotonicity with median
   // history cleared between independent tone samples.
   for(code=0;code<256;code=code+1)begin
-   end_line();push(code[7:0],expected_tone(code));
-   if(code>0 && expected_tone(code)<expected_tone(code-1))$fatal(1,"RAW8_ENHANCE_NONMONOTONIC %0d",code);
+   end_line();push(code[7:0],expected_fixed(code));
+   if(code>0 && expected_fixed(code)<expected_fixed(code-1))$fatal(1,"RAW8_ENHANCE_NONMONOTONIC %0d",code);
   end
-  // Purpose: train a dark majority despite a contiguous saturated lamp strip
-  // covering one of four sampling positions. This reproduces the board's
-  // failure mode where the mean was pulled high by the light source.
+  // Purpose: cross the old dark-majority boundary using a constant 63-code
+  // probe. Its fixed output 142 is midway between the former 78/206 flicker.
   next_frame();
   for(code=0;code<256;code=code+1)
    feed(code>=96 && code<160 ? 8'd255 : 8'd12);
   end_line();
-  push(8'd14,expected_tone(14));
+  next_frame();push(8'd63,8'd142);
   next_frame();
-  push(8'd14,expected_dark(14));
-  next_frame();
-  push(8'd32,expected_dark(32));
-  // Purpose: exhaustively test the low-light curve and its monotonicity,
-  // including the high shoulder that protects true white.
-  for(code=0;code<256;code=code+1)begin
-   end_line();push(code[7:0],expected_dark(code));
-   if(code>0 && expected_dark(code)<expected_dark(code-1))$fatal(1,"RAW8_DARK_NONMONOTONIC %0d",code);
-  end
-  // The evenly sampled rising sweep has no dark majority (0 and 64 tie with
-  // 128 and 192); verify the previous-frame decision returns to bright mode.
-  next_frame();end_line();push(8'd32,expected_tone(32));
+  for(code=0;code<256;code=code+1)feed(8'd192);
+  next_frame();push(8'd63,8'd142);
   $display("RAW8_DISPLAY_ENHANCE_PASS");$finish;
  end
 endmodule

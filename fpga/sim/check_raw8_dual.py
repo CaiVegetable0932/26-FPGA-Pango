@@ -57,21 +57,39 @@ def check(folder: Path, board_core: bool = False, late_epoch: bool = False) -> d
         if frame is not None:
             complete.append(frame)
     assert offset == len(raw) and len(complete) == frames
-    # Purpose: independently model the shared board-side same-phase median
-    # and bright-scene LUT. The synthetic sweep has no dark-pixel majority;
-    # the HDMI and Ethernet consumers must therefore agree byte for byte.
+    # Purpose: independently model the shared same-phase median and fixed
+    # midpoint tone. The result must not depend on the previous frame's dark
+    # fraction, while the standalone transport still carries untouched RAW8.
     def tone(value: int) -> int:
         if value <= 24:
-            return 0
-        if value <= 80:
-            return (value - 24) * 2
-        if value <= 144:
+            bright = 0
+        elif value <= 80:
+            bright = (value - 24) * 2
+        elif value <= 144:
             delta = value - 80
-            return 112 + delta + (delta >> 2)
-        if value == 255:
-            return 255
-        delta = value - 144
-        return 192 + (delta >> 1) + (delta >> 4) + (delta >> 6)
+            bright = 112 + delta + (delta >> 2)
+        elif value == 255:
+            bright = 255
+        else:
+            delta = value - 144
+            bright = 192 + (delta >> 1) + (delta >> 4) + (delta >> 6)
+        if value <= 8:
+            dark = 0
+        elif value <= 16:
+            dark = (value - 8) * 4
+        elif value <= 32:
+            dark = 32 + (value - 16) * 7
+        elif value <= 64:
+            dark = 144 + (value - 32) * 2
+        elif value <= 128:
+            dark = 208 + ((value - 64) >> 1)
+        elif value <= 240:
+            dark = 240 + ((value - 128) >> 4)
+        elif value == 255:
+            dark = 255
+        else:
+            dark = 247 + ((value - 240) >> 1)
+        return (bright + dark + 1) >> 1
 
     def enhanced_row(fid: int, row: int) -> bytes:
         base = (row * 1920 * 17 + fid * 31 + 22) & 255

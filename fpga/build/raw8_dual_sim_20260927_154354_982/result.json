@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "pixels_per_frame": 2073600,
+  "frames": 1,
+  "first_frame_id": 0,
+  "late_epoch_boundary_test": false,
+  "udp_packets": 1482,
+  "raw_sha256": [
+    "d0195d3c68e3c022e4c9d4c81922e327f36b5bb37d303e500abffcadf4b23a7b"
+  ],
+  "source": "DVP stimulus; ideal DDR memory",
+  "host_reassembly_verified": true,
+  "native_fifo_models_verified": false,
+  "gmii_packet_cdc_verified": false,
+  "native_ddr_phy_verified": false,
+  "hardware_tested": false,
+  "physical_camera_source_verified": false,
+  "external_timing_verified": false,
+  "hdmi_source_frame_id": null
+}

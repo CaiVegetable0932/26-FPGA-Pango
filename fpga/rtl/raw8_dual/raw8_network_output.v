@@ -21,8 +21,8 @@ module raw8_network_output #(parameter ENHANCE=0)(
  reg [7:0] staged_pixel;
  reg staged_valid,staged_last;
  wire stage_ready=!staged_valid || packet_pixel_ready;
- // Purpose: the board endpoint uses the exact HDMI median/tone block before
- // packetization, keeping one Bayer-phase sample and eight bits per pixel.
+ // Purpose: the board endpoint uses the exact HDMI median/fixed-tone block
+ // before packetization, keeping one Bayer-phase sample and eight bits per pixel.
  // The legacy standalone network regression leaves ENHANCE=0 to validate the
  // unchanged transport independently of the new board-side processing.
  generate if(ENHANCE)begin: g_network_enhance
@@ -34,7 +34,7 @@ module raw8_network_output #(parameter ENHANCE=0)(
    else if(frame_start && frame_ready)column<=0;
    else if(accepted)column<=line_end ? 11'd0 : column+1'b1;
   raw8_display_enhance u_enhance(.clk(clk),.reset_n(reset_n),
-   .frame_boundary(frame_start && frame_ready),.line_active(1'b1),
+   .line_active(1'b1),
    .line_end(line_end),.pixel_accept(accepted),.sample(pixel_data),
    .luma(network_pixel_data));
  end else begin: g_raw_transport

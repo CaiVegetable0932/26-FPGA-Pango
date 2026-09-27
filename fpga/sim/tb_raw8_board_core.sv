@@ -76,16 +76,26 @@ module tb_raw8_board_core #(parameter LATE_EPOCH=0);
  integer frame_i,x,y,pixels=0,hdmi_frames=0,net_frames=0,packet_count=0;
  integer hexfile,lenfile,wire_length=0;reg was_en=0;
  reg [63:0] hdmi_id;
- // Purpose: independently predict HDMI correction and Bayer-cell averaging.
- // The separate UDP decoder checks the board-enhanced Bayer RAW8 payload.
+ // Purpose: independently predict the shared fixed tone and Bayer-cell HDMI
+ // averaging; the UDP decoder checks enhanced RAW8 bytes from the same board.
  function automatic [7:0] display_tone(input [7:0] value);
-  // Purpose: assert brighter board-level midtones and preserved high codes;
-  // the parallel Ethernet checker remains byte-exact to enhanced RAW8.
-  if(value<=24)display_tone=0;
-  else if(value<=80)display_tone=(value-24)*2;
-  else if(value<=144)display_tone=112+(value-80)+((value-80)>>2);
-  else if(value==255)display_tone=255;
-  else display_tone=192+((value-144)>>1)+((value-144)>>4)+((value-144)>>6);
+  integer bright,dark,delta;
+  begin
+   if(value<=24)bright=0;
+   else if(value<=80)bright=(value-24)*2;
+   else if(value<=144)bright=112+(value-80)+((value-80)>>2);
+   else if(value==255)bright=255;
+   else begin delta=value-144;bright=192+(delta>>1)+(delta>>4)+(delta>>6);end
+   if(value<=8)dark=0;
+   else if(value<=16)dark=(value-8)*4;
+   else if(value<=32)dark=32+(value-16)*7;
+   else if(value<=64)dark=144+(value-32)*2;
+   else if(value<=128)dark=208+((value-64)>>1);
+   else if(value<=240)dark=240+((value-128)>>4);
+   else if(value==255)dark=255;
+   else dark=247+((value-240)>>1);
+   display_tone=(bright+dark+1)>>1;
+  end
  endfunction
  function automatic [7:0] median3(input [7:0] a,b,c);
   if(a>b)median3=b>c?b:(a>c?c:a);

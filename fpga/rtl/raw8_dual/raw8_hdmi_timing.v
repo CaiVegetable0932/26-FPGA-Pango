@@ -18,11 +18,9 @@ module raw8_hdmi_timing(
  // every later pixel. The DMA must flush and restart at the next frame boundary.
  assign sample_ready=de && enable && !poisoned;
  wire [7:0] display_luma;
- // Purpose: remove isolated same-Bayer-phase spikes and select a complete-
- // frame dark/bright tone profile. Ethernet now applies the same block at its
- // own read endpoint; neither consumer changes DDR S0 or implements full ISP.
+ // Purpose: remove isolated same-Bayer-phase spikes and apply one continuous
+ // tone map. Ethernet uses the same block; neither reader changes DDR S0.
  raw8_display_enhance u_enhance(.clk(clk),.reset_n(reset_n),
-  .frame_boundary(frame_boundary),
   .line_active(sample_ready),.line_end(1'b0),.pixel_accept(sample_ready && sample_valid),
   .sample(sample),.luma(display_luma));
  // Purpose: prefetch the previous-line pixel during the horizontal porch,
