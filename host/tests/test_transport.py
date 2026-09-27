@@ -13,7 +13,8 @@ import zlib
 
 from pango_video.cli import HOST_ROOT, load_config, synthetic_pixels
 from pango_video.protocol import (HEADER_STRUCT, LAST_CHUNK, FormatLimits, Header,
-    ProtocolError, decode_datagram, encode_packet, frame_header, packetize)
+    ProtocolError, decode_datagram, encode_packet, frame_header, packetize,
+    source_stage, ENHANCED_RAW8_DESCRIPTOR, ENHANCED_RAW8_VERSION)
 from pango_video.reassembly import AssemblyLimits, FrameAssembler, SnapshotSpec
 from pango_video.receiver import FrameQueue, UDPReceiver
 from pango_video.storage import save_frame, save_snapshot_pair
@@ -54,6 +55,18 @@ def complete_small():
     return result
 
 class ProtocolTests(unittest.TestCase):
+    def test_enhanced_raw8_descriptor_preserves_wire_format_but_not_s0_identity(self):
+        # Purpose: the new board curve stays one Bayer RAW8 byte per pixel;
+        # provenance changes so processed evidence is not mistaken for S0.
+        legacy = frame_header(stream_epoch=1, frame_id=1, width=50, height=40,
+                              bayer_code=4, descriptor_id=0x38574152, param_version=1)
+        enhanced = replace(legacy, descriptor_id=ENHANCED_RAW8_DESCRIPTOR,
+                           param_version=ENHANCED_RAW8_VERSION)
+        self.assertEqual(source_stage(legacy), "S0")
+        self.assertEqual(source_stage(enhanced), "fpga_enhanced_raw8")
+        self.assertEqual(enhanced.pixel_format, legacy.pixel_format)
+        self.assertEqual(enhanced.frame_bytes, legacy.frame_bytes)
+
     def test_iso_hdlc_check(self):
         self.assertEqual(zlib.crc32(b"123456789"), 0xCBF43926)
 

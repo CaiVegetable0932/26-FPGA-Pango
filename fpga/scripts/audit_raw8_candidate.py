@@ -6,6 +6,17 @@ import re
 from audit_comms_candidate import sha, source_path
 
 
+def read_native_text(path):
+    """Decode PDS/simulation evidence from PowerShell 5.1 or modern shells."""
+    # Purpose: Tee-Object writes both logs and redirected JSON as UTF-16 LE
+    # on Windows PowerShell 5.1; modern shells may use UTF-8. Keep strict
+    # decoding so evidence corruption still fails the release audit.
+    with path.open('rb') as stream:
+        signature = stream.read(2)
+    encoding = 'utf-16' if signature in (b'\xff\xfe', b'\xfe\xff') else 'utf-8-sig'
+    return path.read_text(encoding=encoding)
+
+
 def audit(run, simulation, clock_simulation, bridge_simulation):
     """Require fresh routed image, unchanged inputs and full-core host interop."""
     root = Path(__file__).resolve().parents[1]
@@ -14,13 +25,13 @@ def audit(run, simulation, clock_simulation, bridge_simulation):
     # exports the exact routed DB and verifies it is unchanged during export.
     report = impl / 'report_timing/mini_raw8_dual.rtr'
     image = run / 'mini_raw8_dual.sbit'
-    result = json.loads((run / 'result.json').read_text(encoding='utf-8-sig'))
+    result = json.loads(read_native_text(run / 'result.json'))
     if not all(result.get(k) for k in ('native_stage_completed', 'timing_constraints_met', 'bitstream_generated')):
         raise ValueError('native board flow incomplete')
     for log in ('report_timing.log', 'gen_bit_stream.log'):
-        if re.search(r'(?m)^E:|STA-301[35]|not found in current design', (run / log).read_text(encoding='utf-8-sig')):
+        if re.search(r'(?m)^E:|STA-301[35]|not found in current design', read_native_text(run / log)):
             raise ValueError('native constraint/flow diagnostic in ' + log)
-    text = report.read_text(encoding='utf-8-sig')
+    text = read_native_text(report)
     if not re.search(r'^Design Summary\s*:\s*All Constraints Met\.', text, re.M) or 'Slack (VIOLATED)' in text:
         raise ValueError('routed timing failed')
     for token in ('PG2L100H', 'FBG676', 'Speed Grade  : -6'):
@@ -43,7 +54,7 @@ def audit(run, simulation, clock_simulation, bridge_simulation):
         for check in ('Setup', 'Hold', 'Recovery', 'Removal', 'Minimum Pulse Width'):
             if f'{check} Summary({corner} Corner)' not in text:
                 raise ValueError('missing timing coverage')
-    manifest = json.loads((run / 'source_manifest.json').read_text(encoding='utf-8-sig'))
+    manifest = json.loads(read_native_text(run / 'source_manifest.json'))
     for item in manifest:
         if sha(source_path(root, item['path'])).lower() != item['sha256'].lower():
             raise ValueError('build source changed: ' + item['path'])
@@ -51,18 +62,18 @@ def audit(run, simulation, clock_simulation, bridge_simulation):
         raise ValueError('image missing/stale')
     if sha(image) != sha(impl / 'generate_bitstream/mini_raw8_dual.sbit'):
         raise ValueError('image differs from final native output')
-    sim = json.loads((simulation / 'result.json').read_text(encoding='utf-8-sig'))
+    sim = json.loads(read_native_text(simulation / 'result.json'))
     if not (sim.get('passed') and sim.get('frames') == 6 and sim.get('host_reassembly_verified') and sim.get('native_fifo_models_verified') and sim.get('gmii_packet_cdc_verified')):
         raise ValueError('six-frame native core/host regression required')
-    for item in json.loads((simulation / 'sources.json').read_text(encoding='utf-8-sig')):
+    for item in json.loads(read_native_text(simulation / 'sources.json')):
         if sha(source_path(root, item['path'])).lower() != item['sha256'].lower():
             raise ValueError('simulation source changed: ' + item['path'])
-    late = json.loads((simulation / 'late_epoch_result.json').read_text(encoding='utf-8-sig'))
+    late = json.loads(read_native_text(simulation / 'late_epoch_result.json'))
     if not (late.get('passed') and late.get('frames') == 5 and late.get('first_frame_id') == 1):
         raise ValueError('precommissioned frame exclusion not verified')
     # The board uses a free-running forwarding ODDR. Require its exact native
     # model reset/byte regression, independently of the core's GMII scoreboard.
-    clock_sim = json.loads((clock_simulation / 'result.json').read_text(encoding='utf-8-sig'))
+    clock_sim = json.loads(read_native_text(clock_simulation / 'result.json'))
     if not (clock_sim.get('passed') and clock_sim.get('native_gtp_models') and
             clock_sim.get('vectors') == 1024 and clock_sim.get('local_resets') == 4):
         raise ValueError('native forwarding clock regression missing')
@@ -72,7 +83,7 @@ def audit(run, simulation, clock_simulation, bridge_simulation):
                 raise ValueError('clock simulation source changed')
     # Faster/slower consumer clocks plus partial-frame error and two-sided
     # reset recovery complement full-image payload validation after the bridge.
-    bridge_sim = json.loads((bridge_simulation / 'result.json').read_text(encoding='utf-8-sig'))
+    bridge_sim = json.loads(read_native_text(bridge_simulation / 'result.json'))
     if not (bridge_sim.get('passed') and bridge_sim.get('packets_per_case') == 81 and
             bridge_sim.get('read_half_period_ns') == [3.9, 4.1] and bridge_sim.get('native_fifo_models')):
         raise ValueError('native packet clock bridge regression missing')
@@ -84,7 +95,9 @@ def audit(run, simulation, clock_simulation, bridge_simulation):
         timing_sha256=sha(report), simulation=str(simulation), simulation_result=sim,
         clock_simulation=str(clock_simulation), clock_simulation_result=clock_sim,
         bridge_simulation=str(bridge_simulation), bridge_simulation_result=bridge_sim,
-        image_kind='1080p RAW8 DVP -> DDR -> PRAW Ethernet + HDMI raw-sample gray candidate',
+        # Purpose: report the actual processing stage at both outputs; the
+        # Ethernet payload is still Bayer RAW8 but no longer untouched S0.
+        image_kind='1080p RAW8 DVP -> DDR -> FPGA-enhanced PRAW Bayer RAW8 + enhanced HDMI grayscale candidate',
         programmed=False, hardware_tested=False, external_dvp_timing_verified=False,
         external_hdmi_eye_verified=False, rgmii_pcb_skew_measured=False,
         hdmi_source_frame_id=None, physical_camera_source_verified=False,

@@ -150,6 +150,18 @@ MINI 通信候选快照 v1：word0 为 PHY ID；word1 bit15:0 为最近 MDIO 读
 
 ## 8. 验证与未完成事项
 
+RAW8 链路只读遥测（capability bit6，`CHAIN_DIAGNOSTICS=0`默认关闭）：命令07/08/09均请求12字节epoch+session，沿用长度、CRC、epoch/session检查，响应末12字节按以下顺序小端编码：
+
+- 07 DVP_GEOMETRY：u16 VS下降沿计数、u16 VS低电平阶段行数、u16该阶段最短HREF宽、u16最长HREF宽、u16 VS高电平阶段行数、u8采集状态、u8版本（1）。统计上个VS下降沿间隔，以HREF上升时VS电平归属行，计数/行宽饱和65535，帧边沿计数模65536回绕。状态bit7配置同步就绪、6已arm、5正在采集、4坏帧、3关闭中、2结果待发、1字待发、0溢出。
+- 08 DVP_PROGRESS：u32 PCLK累计周期、u32拒绝帧计数、u32溢出帧计数，模2^32回绕。来自与07同一192位摄像头域握手快照；但是不同命令读取时刻不同，**不保证跨响应原子一致**。约8.39ms请求一次，不运行的PCLK无法应答、输出保持旧值。仅观察到累计值不能推导即时频率，频率估计须使用间隔及回绕处理。
+- 09 PIPELINE：u16已消费START数、u16已消费END数、u32已消费WORD数、u16原生W握手数、u8核心状态、u8写引擎状态。核心状态bit7:6采集FSM、5:3 HDMI取帧FSM、2记录valid、1记录ready、0commit。写引擎bit7 active、6:4 FSM（0接记录、1等AW、2等W、3申请栅栏、4等栅栏返回）、3 awvalid、2 fence_req、1 record_ready、0 wready。所有计数按宽度回绕，来自mem_clk；此页不等于已发布帧数。
+
+几何/进度由独立观察模块生成，不改视频、不改变坏帧门禁、不丢弃故障。版本0或计数不变必须结合复位与其它状态判读；不将诊断页当作HDMI帧源身份。
+
+RAW8 可选只读命令 `0x06 GET_VIDEO_SNAPSHOT`：仅 CAPS capability bit5 为1时调用；参数 `VIDEO_DIAGNOSTICS=0` 默认关闭，不影响旧顶层。请求为12字节 epoch+session，沿用0x05的长度、epoch与session检查。响应仍为32字节payload，末12字节（偏移20..31）为首次WORD错误快照：u24实际32字节偏移、u24期望偏移、u24已接受字数、u8行内字序号、u8标志、u8版本，均小端。标志bit0有效、bit1当时active、bit2偏移不符、bit3数量超限；版本1有效快照，复位后的全零版本0表示尚无快照，不代表视频已正常。快照锁存于mem_clk，保持到板端复位；查询不清错、不重新启动采集。PHY命令0x05及视频报文不变。
+
+RAW8 双路顶层诊断扩展（2026-09-23）：GET_STATUS 的 status_flags 保留 bit0～10 和 PHY code bit16～19 原语义。bit14/15 分别为 GMII 桥读/写故障；bit24～28 分别为 RAW 写入、DDR读仲裁、帧池、网络输出、读队列溢出故障；bit29～31 为写引擎首次故障码（1重复START、2WORD偏移/数量、3END身份、4未知记录、5WID/WLAST、6读回栅栏不一致）。bit7 仍为视频核心/桥聚合故障，不屏蔽错误。旧 RAW8 镜像扩展位为0，未知原因不等于无故障。该扩展不改变报文长度、命令、PRAW格式或HDMI帧配对。
+
 自检入口：`fpga/scripts/sim_mcu_protocol.ps1`；串行刺激/解码testbench：`fpga/sim/tb_mcu_protocol.sv`。所有工具产物归 `fpga/build/mcu_protocol...`。实际运行、检查数、版本与限制见 `fpga/reports/mcu_protocol_sim_20260921.md`，只有执行成功的条目才可报告通过。
 
 未验收：MCU固件适配、真实串口通信、电平/引脚/接线、板端epoch来源、时钟CDC整体集成、实测照度/角度精度、曝光时序关联、布局布线时序和上板。禁止由RTL自检或独立综合推导这些项目已通过。

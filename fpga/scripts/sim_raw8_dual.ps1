@@ -8,8 +8,8 @@ New-Item -ItemType Directory -Path $taskRun | Out-Null
 $taskSources=@(Get-ChildItem (Join-Path $taskFpga 'rtl/raw8_dual') -Filter '*.v' | ForEach-Object FullName)
 $taskSources+=@('rtl/mini_camera_diag/ov5640_sccb.v',
  'rtl/mini_camera_diag/vendor/camera/data_init.v','sim/tb_ov5640_verified_startup.sv',
- 'sim/tb_raw8_capture.sv','sim/tb_raw8_startup.sv','sim/tb_raw8_pool.sv',
- 'sim/tb_raw8_read_scheduler.sv','sim/tb_raw8_dual_pixels.sv','sim/tb_raw8_native_contracts.sv',
+ 'sim/tb_raw8_capture.sv','sim/tb_raw8_startup.sv','sim/tb_raw8_pool.sv','sim/tb_raw8_dvp_monitor.sv',
+ 'sim/tb_raw8_read_scheduler.sv','sim/tb_raw8_dual_pixels.sv','sim/tb_raw8_display_enhance.sv','sim/tb_raw8_native_contracts.sv',
  'rtl/network/praw_packetizer.v','rtl/network/udp_ipv4_eth_tx.v',
  'rtl/network/video_network_tx.v') | ForEach-Object {Join-Path $taskFpga $_}
 # Purpose: record the exact tested source set and make failures visible even
@@ -26,10 +26,15 @@ try {
  & "$ModelSimHome/vlog.exe" -sv @taskSources 2>&1 | Tee-Object compile.log
  if($LASTEXITCODE){throw 'RAW8 compile failed'}
  # Purpose: component faults precede full-frame concurrent-output simulation.
- foreach($taskCase in @('capture_small','capture_1080','startup','pool','read_scheduler','native_contracts','dual_pixels')){
+ # Purpose: exercise six sensor-only rows without DDR writes, and reject a
+ # seventh unexpected row in the same capture regression.
+ # Purpose: run the display-only tone/median boundary checks before the
+ # concurrent HDMI/Ethernet regression so high-light clipping cannot regress.
+ foreach($taskCase in @('dvp_monitor','capture_small','capture_extra_small','capture_1080','startup','pool','read_scheduler','display_enhance','native_contracts','dual_pixels')){
   $taskTop=if($taskCase.StartsWith('capture_')){'tb_raw8_capture'}else{"tb_raw8_$taskCase"}
   $taskArgs=@('-c',$taskTop,'-do','run -all; quit -f')
   if($taskCase -eq 'capture_1080'){$taskArgs+=@('-gW=1920','-gH=1080')}
+  if($taskCase -eq 'capture_extra_small'){$taskArgs+=@('-gEXTRA=6')}
   & "$ModelSimHome/vsim.exe" @taskArgs 2>&1 | Tee-Object "$taskCase.log"
   $taskExit=$LASTEXITCODE
   $taskText=Get-Content "$taskCase.log" -Raw

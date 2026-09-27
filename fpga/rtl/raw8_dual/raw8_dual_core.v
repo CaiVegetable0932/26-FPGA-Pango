@@ -13,7 +13,9 @@ module raw8_dual_core #(parameter WARMUP_FRAMES=10)(
  output wire [255:0] wdata,output wire [31:0] wstrb,
  output wire [23:0] rgb,output wire hs,vs,de,
  output wire [7:0] gmii_data,output wire gmii_en,gmii_error,
- output wire fault,output wire [31:0] published,underflows
+ output wire fault,output wire [31:0] published,underflows,
+ output wire [7:0] fault_detail,output wire [95:0] writer_snapshot,
+ output wire [287:0] chain_diagnostics
 );
  wire [287:0] rec_in,rec_out;wire rec_valid,rec_ready,rec_out_valid,rec_out_ready;
  reg lease_valid;wire lease_ack;
@@ -22,15 +24,26 @@ module raw8_dual_core #(parameter WARMUP_FRAMES=10)(
  // physical frame. A pre-commissioning lease stays epoch zero until released.
  reg [63:0] capture_lease_epoch;
  wire [31:0] capture_rejected,capture_overflows;
- raw8_capture_records #(.WARMUP_FRAMES(WARMUP_FRAMES)) u_records(.cam_clk(cam_clk),.cam_reset_n(cam_reset_n),
+ wire [7:0] capture_debug,writer_debug;
+ // Purpose: independent DVP evidence survives rejected frames and FIFO stalls.
+ raw8_dvp_monitor u_dvp_monitor(.cam_clk(cam_clk),.cam_reset_n(cam_reset_n),
+  .mem_clk(mem_clk),.mem_reset_n(mem_reset_n),.vsync(vsync),.href(href),
+  .capture_state(capture_debug),.rejected(capture_rejected),.overflows(capture_overflows),
+  .geometry(chain_diagnostics[95:0]),.progress(chain_diagnostics[191:96]));
+ // Purpose: the ISP RAW candidate may emit exactly 1080 rows, while the prior
+ // sensor RAW tap emitted 1086. Accept only those two complete geometries;
+ // publish the first 1080 and keep the six-row crop explicitly provisional.
+ raw8_capture_records #(.WARMUP_FRAMES(WARMUP_FRAMES),
+  .SENSOR_EXTRA_ROWS(6)) u_records(.cam_clk(cam_clk),.cam_reset_n(cam_reset_n),
   .configured(configured),.lease_valid(lease_valid),.vsync(vsync),.href(href),.data(camera_data),
   .lease_ack(lease_ack),.record_data(rec_in),.record_valid(rec_valid),.record_ready(rec_ready),
-  .rejected(capture_rejected),.overflows(capture_overflows));
+  .rejected(capture_rejected),.overflows(capture_overflows),.debug_state(capture_debug));
  raw8_native_queue #(.WIDTH(288)) u_capture_queue(.wr_clk(cam_clk),.wr_reset_n(cam_reset_n),
   .in_data(rec_in),.in_valid(rec_valid),.in_ready(rec_ready),.wr_used(),
   .rd_clk(mem_clk),.rd_reset_n(mem_reset_n),.out_data(rec_out),
   .out_valid(rec_out_valid),.out_ready(rec_out_ready));
  wire commit,write_good,write_fault,arb_fault,pool_fault;
+ wire [2:0] write_fault_code;
  wire [63:0] captured_id,captured_epoch;
  wire [27:0] capture_base,f_addr;wire [1:0] capture_slot;
  wire f_req,f_ready,f_valid,f_done;
@@ -41,7 +54,8 @@ module raw8_dual_core #(parameter WARMUP_FRAMES=10)(
   .awaddr(awaddr),.awlen(awlen),.awvalid(awvalid),.awready(awready),
   .wready(wready),.wlast(wlast),.wid(wid),.wdata(wdata),.wstrb(wstrb),
   .fence_req(f_req),.fence_addr(f_addr),.fence_ready(f_ready),.fence_valid(f_valid),
-  .fence_done(f_done),.rdata(rdata),.fault(write_fault));
+  .fence_done(f_done),.rdata(rdata),.fault(write_fault),.fault_code(write_fault_code),
+  .fault_snapshot(writer_snapshot),.debug_state(writer_debug));
  reg c_req,h_req,h_release,n_req,n_release;
  wire c_grant,h_grant,n_grant,h_locked,n_locked;
  wire [1:0] h_slot,n_slot;wire [63:0] h_id,h_epoch,n_id,n_epoch;
@@ -129,12 +143,15 @@ module raw8_dual_core #(parameter WARMUP_FRAMES=10)(
  reg net_drain,net_fault,n_finished,n_frame_done,n_seen;
  reg [2:0] nstate;reg [63:0] last_id,last_epoch;
  reg [31:0] last_publication,requested_publication;
- raw8_network_output u_network(.clk(mem_clk),.reset_n(mem_reset_n),
+ // Purpose: publish an explicitly versioned, FPGA-enhanced Bayer RAW8 stream.
+ // DDR still retains the original sensor bytes; Ethernet applies the same
+ // display enhancement as HDMI, so this payload is not unprocessed S0.
+ raw8_network_output #(.ENHANCE(1)) u_network(.clk(mem_clk),.reset_n(mem_reset_n),
   // Finish an admitted frame even if link permission drops on the start edge.
   // New admission still requires network_enable; errors drain the locked slot.
   .enable((network_enable || nstate==2) && !net_fault),.frame_start(n_start),.discard(net_drain),
   .frame_ready(net_ready),.source_idle(net_idle),.stream_epoch(n_epoch),.frame_id(n_id),
-  .descriptor_id(32'h38574152),.param_version(32'd1),
+  .descriptor_id(32'h484e4552),.param_version(32'd2),
   .word_data(n_word),.word_valid(n_word_valid),.word_ready(n_word_ready),
   .src_mac(src_mac),.dst_mac(dst_mac),.src_ip(src_ip),.dst_ip(dst_ip),.src_port(src_port),.dst_port(dst_port),
   .gmii_txd(gmii_data),.gmii_tx_en(gmii_en),.gmii_tx_er(gmii_error),
@@ -170,4 +187,23 @@ module raw8_dual_core #(parameter WARMUP_FRAMES=10)(
   if(!mem_reset_n)overflow_fault<=0;
   else if((h_dma_valid && !h_queue_ready)||(n_dma_valid && !n_queue_ready))overflow_fault<=1;
  assign fault=write_fault || arb_fault || pool_fault || net_fault || overflow_fault;
+ // Purpose: independent sticky source bits plus writer's first-error reason.
+ // This is memory-domain telemetry only; it never masks a stop condition.
+ assign fault_detail={write_fault_code,overflow_fault,net_fault,pool_fault,arb_fault,write_fault};
+ // Purpose: actual accepted records and native W beats, not requested traffic.
+ // These counters and FSM fields all live in mem_clk; no per-bit CDC here.
+ reg [15:0] debug_starts,debug_ends,debug_writes;reg [31:0] debug_words;
+ always @(posedge mem_clk or negedge mem_reset_n)
+  if(!mem_reset_n)begin debug_starts<=0;debug_ends<=0;debug_words<=0;debug_writes<=0;end
+  else begin
+   if(rec_out_valid && rec_out_ready)case(rec_out[287:286])
+    1:debug_starts<=debug_starts+1'b1;
+    2:debug_ends<=debug_ends+1'b1;
+    0:debug_words<=debug_words+1'b1;
+   endcase
+   if(wready && (writer_debug[6:4]==2 || (writer_debug[6:4]==1 && awready)))
+    debug_writes<=debug_writes+1'b1;
+  end
+ assign chain_diagnostics[287:192]={writer_debug,cstate,hstate,rec_out_valid,rec_out_ready,commit,
+                                   debug_writes,debug_words,debug_ends,debug_starts};
 endmodule

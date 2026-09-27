@@ -4,12 +4,13 @@
 module tb_raw8_native_contracts;
  reg clk=0,rst=0;always #4 clk=~clk;
  reg [287:0] record=0;reg rv=0,awr=0,wr=0,wl=0;
- wire rr,commit,good,wfault,awv;wire [27:0] awa;wire [255:0] wd;
+ wire rr,commit,good,wfault,awv;wire [27:0] awa;wire [255:0] wd;wire [2:0] wcode;
+ wire [95:0] snapshot;
  raw8_write_engine w(.clk(clk),.rst_n(rst),.slot_base(28'h3000000),.epoch(64'd7),
   .record_data(record),.record_valid(rv),.record_ready(rr),.commit(commit),.good(good),
   .captured_id(),.captured_epoch(),.awaddr(awa),.awlen(),.awvalid(awv),.awready(awr),
   .wready(wr),.wlast(wl),.wid(4'b0),.wdata(wd),.wstrb(),.fence_req(),.fence_addr(),
-  .fence_ready(1'b0),.fence_valid(1'b0),.fence_done(1'b0),.rdata(256'b0),.fault(wfault));
+  .fence_ready(1'b0),.fence_valid(1'b0),.fence_done(1'b0),.rdata(256'b0),.fault(wfault),.fault_code(wcode),.fault_snapshot(snapshot));
  reg hr=0,nr=0,hs=0,ns=0,fr=0,arready=0,rvalid=0,rlast=0;reg [3:0] rid=0;
  wire hready,nready,fready,hvalid,nvalid,fvalid,hdone,ndone,fdone,arvalid,afault;
  wire [27:0] addr;wire [3:0] len,id;
@@ -35,7 +36,8 @@ module tb_raw8_native_contracts;
   if(!commit || good || wfault)$fatal(1,"RAW8_FAIL bad geometry drain/release");
   send({2'd1,222'b0,64'd12});send({32'b0,256'h5678});
   awr=1;tick();awr=0;wr=1;wl=0;tick();wr=0;
-  if(!wfault || rr)$fatal(1,"RAW8_FAIL missing WLAST not fail-closed");
+  // Purpose: telemetry must name the actual failure without relaxing it.
+  if(!wfault || rr || wcode!=5)$fatal(1,"RAW8_FAIL missing WLAST not fail-closed/reported");
   // Without whole-burst credit, no request may be accepted.
   hr=1;nr=1;repeat(4)begin tick();if(hready||nready||arvalid)$fatal(1,"RAW8_FAIL credit gate");end
   hs=1;tick();hr=0;
@@ -53,6 +55,16 @@ module tb_raw8_native_contracts;
   arready=1;tick();arready=0;rvalid=1;rlast=1;rid=1;tick();rvalid=0;
   if(!afault)$fatal(1,"RAW8_FAIL wrong RID accepted");
   repeat(4)begin tick();if(hready||nready||fready||arvalid)$fatal(1,"RAW8_FAIL reused faulty reader");end
+  // Purpose: separately identify missing START and wrong offset, freezing the
+  // pre-increment count/offset even when the producer changes the input later.
+  rst=0;tick();rst=1;send({15'b0,17'd9,256'h1234});
+  if(!wfault || wcode!=2 || snapshot!=96'h010500000000000000000009)
+   $fatal(1,"RAW8_FAIL missing START snapshot %h",snapshot);
+  record=0;repeat(3)tick();
+  if(snapshot[23:0]!=9)$fatal(1,"RAW8_FAIL snapshot not sticky");
+  rst=0;tick();rst=1;send({2'd1,222'b0,64'd13});send({15'b0,17'd1,256'h1234});
+  if(!wfault || wcode!=2 || snapshot!=96'h010700000000000000000001)
+   $fatal(1,"RAW8_FAIL offset snapshot %h",snapshot);
   $display("RAW8_NATIVE_CONTRACTS_PASS");$finish;
  end
  initial begin #100000;$fatal(1,"RAW8_TIMEOUT native contracts");end

@@ -24,6 +24,9 @@ function New-Request([byte]$Command,[uint16]$Sequence,[byte[]]$Payload){
 }
 function Exchange([byte[]]$Wire){
  # Bound time and bytes. Only a full CRC-checked, sequence-matched ACK is trusted.
+ # Purpose: retain host receive timestamps for approximate counter-rate checks;
+ # these are UART arrival times, never camera exposure/HDMI frame timestamps.
+ $taskSendUtc=[DateTime]::UtcNow.ToString('o')
  $taskSerial.DiscardInBuffer();$taskSerial.Write($Wire,0,$Wire.Length)
  $taskReply=[Collections.Generic.List[byte]]::new();$taskDeadline=[DateTime]::UtcNow.AddSeconds(2)
  while([DateTime]::UtcNow -lt $taskDeadline -and $taskReply.Count -lt 42){
@@ -37,7 +40,9 @@ function Exchange([byte[]]$Wire){
    [BitConverter]::ToUInt16($taskRx,6) -eq 32 -and $taskRx[9] -eq $Wire[3] -and
    (Get-Crc16 ([byte[]]$taskRx[2..39])) -eq [BitConverter]::ToUInt16($taskRx,40)
  }
- $taskRecord=[ordered]@{request_hex=[Convert]::ToHexString($Wire);reply_hex=[Convert]::ToHexString($taskRx);valid_reply=$taskValid}
+ $taskRecord=[ordered]@{request_hex=[Convert]::ToHexString($Wire);reply_hex=[Convert]::ToHexString($taskRx);valid_reply=$taskValid;
+  sent_utc=$taskSendUtc;received_utc=[DateTime]::UtcNow.ToString('o');
+  received_monotonic_ticks=[Diagnostics.Stopwatch]::GetTimestamp();monotonic_frequency=[Diagnostics.Stopwatch]::Frequency}
  if($taskValid){$taskRecord.result=$taskRx[8];$taskRecord.request_command=$taskRx[9]}
  $taskRecords.Add($taskRecord)
  if(!$taskValid){throw 'No complete valid UART reply (see transcript)'}
@@ -53,7 +58,7 @@ if((Get-Crc16 ([Text.Encoding]::ASCII.GetBytes('123456789'))) -ne 0x29b1){throw 
 $taskSerial=[IO.Ports.SerialPort]::new($Port,115200,[IO.Ports.Parity]::None,8,[IO.Ports.StopBits]::One)
 $taskSerial.DtrEnable=$false;$taskSerial.RtsEnable=$false;$taskSerial.Handshake=[IO.Ports.Handshake]::None
 $taskSerial.ReadTimeout=100;$taskSerial.WriteTimeout=1000
-$taskRecords=[Collections.Generic.List[object]]::new();$taskError=$null;$taskFlags=$null;$taskDiagnostics=$null
+$taskRecords=[Collections.Generic.List[object]]::new();$taskError=$null;$taskFlags=$null;$taskDiagnostics=$null;$taskRaw8Status=$null;$taskVideoSnapshot=$null;$taskChain=$null
 try {
  $taskSerial.Open()
  if($Action -eq 'Boot'){
@@ -80,6 +85,17 @@ try {
    $taskRx=Exchange (New-Request 3 3 $taskPayload)
    if($taskRx[8] -ne 0){throw 'Status request failed'}
    $taskFlags=[BitConverter]::ToUInt32($taskRx,28)
+   # Purpose: decode camera status independently of the PHY snapshot. Old RAW8
+   # images leave detail bits zero; zero detail does not clear aggregate fault.
+   if($Profile -eq 'RAW8'){
+    $taskRaw8Status=[ordered]@{sensor_ready=[bool]($taskFlags -band 256);
+     frame_published=[bool]($taskFlags -band 512);hdmi_underflow=[bool]($taskFlags -band 1024);
+     aggregate_core_or_bridge_fault=[bool]($taskFlags -band 128);
+     bridge_read_fault=[bool]($taskFlags -band 16384);bridge_write_fault=[bool]($taskFlags -band 32768);
+     writer_fault=[bool]($taskFlags -band 0x01000000);read_arbiter_fault=[bool]($taskFlags -band 0x02000000);
+     frame_pool_fault=[bool]($taskFlags -band 0x04000000);network_fault=[bool]($taskFlags -band 0x08000000);
+     read_queue_overflow=[bool]($taskFlags -band 0x10000000);writer_first_error=($taskFlags -shr 29)}
+   }
    # Optional versioned PHY snapshot: inspect only when explicitly advertised.
    # Old images remain compatible and are not sent an unsupported command05.
    if($taskCapabilities -band 16){
@@ -91,12 +107,52 @@ try {
      last_ack_error=[bool]($taskPhyWord -band 0x100000);last_read=('{0:X4}' -f ($taskPhyWord -band 65535));
      phy_status=('{0:X4}' -f [BitConverter]::ToUInt16($taskRx,36))}
    }
+   # Purpose: decode the frozen first WORD violation only when capability5 is
+   # advertised. Version0/all-zero means no snapshot, not a validated stream.
+   if($taskCapabilities -band 32){
+    $taskRx=Exchange (New-Request 6 5 $taskPayload)
+    if($taskRx[8] -ne 0 -or $taskRx[39] -notin @(0,1)){throw 'Unsupported/failed video diagnostic snapshot'}
+    $taskVideoSnapshot=[ordered]@{version=$taskRx[39];valid=[bool]($taskRx[38] -band 1);
+     active=[bool]($taskRx[38] -band 2);offset_mismatch=[bool]($taskRx[38] -band 4);
+     count_overrun=[bool]($taskRx[38] -band 8);column_word=$taskRx[37];
+     received_offset=([BitConverter]::ToUInt32($taskRx,28) -band 0xffffff);
+     expected_offset=([BitConverter]::ToUInt32($taskRx,31) -band 0xffffff);
+     accepted_words=([BitConverter]::ToUInt32($taskRx,34) -band 0xffffff)}
+   }
+   # Purpose: capability-gated diagnostic pages, each an independent snapshot.
+   # Counts wrap modulo their widths; no cross-page frame pairing is inferred.
+   if($taskCapabilities -band 64){
+    $taskChain=[ordered]@{}
+    $taskRx=Exchange (New-Request 7 6 $taskPayload)
+    if($taskRx[8] -ne 0 -or $taskRx[39] -notin @(0,1)){throw 'DVP geometry query failed'}
+    $taskChain.geometry=[ordered]@{version=$taskRx[39];frame_edges=[BitConverter]::ToUInt16($taskRx,28);
+     low_vsync_lines=[BitConverter]::ToUInt16($taskRx,30);min_width=[BitConverter]::ToUInt16($taskRx,32);
+     max_width=[BitConverter]::ToUInt16($taskRx,34);high_vsync_lines=[BitConverter]::ToUInt16($taskRx,36);
+     capture_flags=$taskRx[38];configured=[bool]($taskRx[38] -band 128);armed=[bool]($taskRx[38] -band 64);
+     active=[bool]($taskRx[38] -band 32);bad=[bool]($taskRx[38] -band 16);
+     closing=[bool]($taskRx[38] -band 8);result_pending=[bool]($taskRx[38] -band 4);
+     word_pending=[bool]($taskRx[38] -band 2);overflow=[bool]($taskRx[38] -band 1)}
+    $taskRx=Exchange (New-Request 8 7 $taskPayload)
+    if($taskRx[8] -ne 0){throw 'DVP progress query failed'}
+    $taskChain.progress=[ordered]@{pclk_cycles=[BitConverter]::ToUInt32($taskRx,28);
+     rejected=[BitConverter]::ToUInt32($taskRx,32);overflow_frames=[BitConverter]::ToUInt32($taskRx,36)}
+    $taskRx=Exchange (New-Request 9 8 $taskPayload)
+    if($taskRx[8] -ne 0){throw 'Pipeline query failed'}
+    $taskChain.pipeline=[ordered]@{starts=[BitConverter]::ToUInt16($taskRx,28);
+     ends=[BitConverter]::ToUInt16($taskRx,30);words=[BitConverter]::ToUInt32($taskRx,32);
+     writes=[BitConverter]::ToUInt16($taskRx,36);capture_fsm=($taskRx[38] -shr 6);
+     hdmi_fsm=(($taskRx[38] -shr 3) -band 7);record_valid=[bool]($taskRx[38] -band 4);
+     record_ready=[bool]($taskRx[38] -band 2);commit=[bool]($taskRx[38] -band 1);
+     writer_active=[bool]($taskRx[39] -band 128);writer_fsm=(($taskRx[39] -shr 4) -band 7);
+     awvalid=[bool]($taskRx[39] -band 8);fence_request=[bool]($taskRx[39] -band 4);
+     writer_ready=[bool]($taskRx[39] -band 2);wready=[bool]($taskRx[39] -band 1)}
+   }
   }
  }
 }catch {$taskError=$_.Exception.Message}
 finally {
  $taskSerial.Dispose()
  New-Item -ItemType Directory -Path (Split-Path $taskReport) -Force | Out-Null
- [ordered]@{action=$Action;port=$Port;pnp=$taskDevice.InstanceId;records=$taskRecords.ToArray();status_flags=$taskFlags;diagnostics=$taskDiagnostics;error=$taskError} | ConvertTo-Json -Depth 7 | Tee-Object -FilePath $taskReport
+ [ordered]@{action=$Action;port=$Port;pnp=$taskDevice.InstanceId;records=$taskRecords.ToArray();status_flags=$taskFlags;diagnostics=$taskDiagnostics;raw8_status=$taskRaw8Status;video_snapshot=$taskVideoSnapshot;chain=$taskChain;error=$taskError} | ConvertTo-Json -Depth 7 | Tee-Object -FilePath $taskReport
 }
 if($taskError){throw $taskError}

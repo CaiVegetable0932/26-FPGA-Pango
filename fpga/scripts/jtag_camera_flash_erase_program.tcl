@@ -11,7 +11,16 @@ if {![info exists env(CAMERA_SFC)] || ![file exists $env(CAMERA_SFC)]} {
 }
 cfg_set_tcl_break -flag true
 cfg_connect -ip 127.0.0.1 -port 65420
-cfg_set_cable_property -index 0 -freq 1Mhz
+# Purpose: use only rates actually accepted by this USB Cable II; its driver
+# rejects the guide's 300 KHz option. Default stays 1 MHz for prior flows.
+set cable_freq 1Mhz
+if {[info exists env(CAMERA_JTAG_FREQ)]} {
+    if {$env(CAMERA_JTAG_FREQ) ni {1Mhz 500Khz 100Khz}} {
+        error "Unsupported camera JTAG frequency"
+    }
+    set cable_freq $env(CAMERA_JTAG_FREQ)
+}
+cfg_set_cable_property -index 0 -freq $cable_freq
 cfg_scan_chain
 cfg_read_device_property -mode 0 -device_index 0
 cfg_jtag_flash_scan_device -device_index 0

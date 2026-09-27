@@ -1,0 +1,34 @@
+{
+  "image_kind": "1080p RAW8 camera + Ethernet S0 + FPGA-enhanced HDMI, modest brighter AEC/AGC candidate",
+  "target": "PG2L100H-6FBG676",
+  "flash": "XT25F128",
+  "spi_width": 1,
+  "opcode": 11,
+  "start_address": 0,
+  "programmed": true,
+  "flash_verified": true,
+  "cold_boot_verified": true,
+  "camera_video": true,
+  "camera_source_verified": false,
+  "external_dvp_timing_verified": false,
+  "strict_native_pll_simulation_passed": false,
+  "timing_constraints_met": true,
+  "camera_aec_enter_high": "0x80",
+  "camera_aec_enter_low": "0x70",
+  "camera_aec_gain_ceiling": "0x0050",
+  "build_run": "fpga/build/mini_raw8_dual/native_20260926_160634_843",
+  "files": [
+    {
+      "name": "mini_raw8_dual.sbit",
+      "bytes": 3791112,
+      "sha256": "1F0C09CE82334727E2418E59D01725837B56C0401076F0A9BAE653503990DB9D"
+    },
+    {
+      "name": "mini_raw8_dual.sfc",
+      "bytes": 3791112,
+      "sha256": "1F0C09CE82334727E2418E59D01725837B56C0401076F0A9BAE653503990DB9D"
+    }
+  ],
+  "conversion_runtime": "D:\\XDU\\concept\\26-FPGA-Pango-test\\pds_cfg_runtime",
+  "reference_directories_modified": false
+}

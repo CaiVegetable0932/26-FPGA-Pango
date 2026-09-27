@@ -1,0 +1,24 @@
+{
+  "action": "Boot",
+  "port": "COM15",
+  "pnp": "USB\\VID_10C4&PID_EA60\\0001",
+  "records": [
+    {
+      "request_hex": "55AA017101002000FAA31D0EAAC896FD020000000001207BD2C02996A9FE51BBA9FE51BA51C350C3E28D",
+      "reply_hex": "55AA01800100200000710000FAA31D0EAAC896FD00000000000000005241573800000000000000007FF8",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T04:53:47.5559472Z",
+      "received_utc": "2026-09-27T04:53:47.5776258Z",
+      "received_monotonic_ticks": 2614567075657,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 113
+    }
+  ],
+  "status_flags": null,
+  "diagnostics": null,
+  "raw8_status": null,
+  "video_snapshot": null,
+  "chain": null,
+  "error": null
+}

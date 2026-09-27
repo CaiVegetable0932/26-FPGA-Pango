@@ -6,7 +6,7 @@ import json
 import os
 from pathlib import Path
 
-from .protocol import PacketType
+from .protocol import PacketType, source_stage
 from .reassembly import CompleteFrame, SnapshotSpec, validate_specs
 
 
@@ -55,7 +55,9 @@ def save_frame(frame: CompleteFrame, destination: Path, *, device_id: str,
         "stream_epoch": h.stream_epoch, "frame_id": h.frame_id,
         "packet_type": h.packet_type, "descriptor_id": h.descriptor_id,
         "param_version": h.param_version, "width": h.width, "height": h.height,
-        "pixel_format": "RAW8" if raw else "RGB888", "bit_depth": h.bit_depth,
+        # Purpose: preserve which FPGA stage produced the immutable bytes;
+        # enhanced RAW8 remains RAW8 but must not be counted as sensor S0.
+        "pixel_format": "RAW8" if raw else "RGB888", "source_stage": source_stage(h), "bit_depth": h.bit_depth,
         "bayer_code": h.bayer_code, "channel_order": None if raw else "RGB",
         "row_stride": h.row_stride, "frame_bytes": h.frame_bytes,
         "file": "image.raw" if raw else "image.rgb",

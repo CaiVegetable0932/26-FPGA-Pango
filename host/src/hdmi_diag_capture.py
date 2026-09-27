@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import time
 from datetime import datetime, timezone
@@ -43,16 +44,21 @@ def run(ffmpeg: Path, args: list[str], folder: Path, name: str, timeout: int = 3
         raise RuntimeError(f"{name} failed ({result.returncode}); see retained logs")
     return result
 
-def capture(seconds: int = 2) -> Path:
+def capture(seconds: int = 2, size: str = "1280x720") -> Path:
     """Capture the explicitly reviewed external device only, with audio disabled."""
     if not 1 <= seconds <= 10:
         raise ValueError("Diagnostic capture must be between 1 and 10 seconds")
+    # Purpose: explicitly negotiate the board's720p/1080p mode, never resize a
+    # malformed capture to hide a device/HDMI timing error. Default stays720p.
+    if size not in ("1280x720", "1920x1080"):
+        raise ValueError("Only reviewed720p/1080p capture modes are supported")
+    width, height = map(int, size.split("x"))
     ffmpeg = HOST / "build/capture_runtime/imageio_ffmpeg/binaries/ffmpeg-win-x86_64-v7.1.exe"
     if not ffmpeg.is_file():
         raise RuntimeError("Install imageio-ffmpeg==0.6.0 into host/build/capture_runtime first")
     folder = HOST / "data" / ("hdmi_diag_" + datetime.now().strftime("%Y%m%d_%H%M%S_%f"))
     folder.mkdir(parents=True, exist_ok=False)
-    meta = dict(device=DEVICE, requested_size=[1280, 720], requested_capture_fps=30,
+    meta = dict(device=DEVICE, requested_size=[width, height], requested_capture_fps=30,
                 requested_seconds=seconds, source_frame_id=None, pairing_status="unverified",
                 fpga_video_verified=False, sensor_fps_measured=None, source_format="unknown",
                 capture_transport="MJPEG via DirectShow", lossless_fpga_capture=False,
@@ -67,24 +73,27 @@ def capture(seconds: int = 2) -> Path:
         meta["selected_device"] = selected
         # Preserve the original compressed packets and device timestamps in Matroska.
         run(ffmpeg, ["-f", "dshow", "-rtbufsize", "128M", "-vcodec", "mjpeg",
-             "-framerate", "30", "-video_size", "1280x720", "-i", "video=" + device_path,
+             "-framerate", "30", "-video_size", size, "-i", "video=" + device_path,
              "-t", str(seconds), "-map", "0:v:0", "-an", "-c:v", "copy",
              "-progress", "pipe:1", str(folder / "capture.mkv")], folder, "capture")
         # Retain a decoded RGB plane for inspection; it is not sensor-raw data.
-        run(ffmpeg, ["-i", str(folder / "capture.mkv"), "-frames:v", "1",
+        decoded = run(ffmpeg, ["-i", str(folder / "capture.mkv"), "-vf", "showinfo", "-frames:v", "1",
              "-an", "-pix_fmt", "rgb24", "-f", "rawvideo", str(folder / "first_frame.rgb")],
              folder, "rgb")
-        size = (folder / "first_frame.rgb").stat().st_size
-        if size != 1280 * 720 * 3:
-            raise RuntimeError(f"Unexpected decoded frame size {size}; do not assume 720p")
-        run(ffmpeg, ["-f", "rawvideo", "-pixel_format", "rgb24", "-video_size", "1280x720",
+        frame_bytes = (folder / "first_frame.rgb").stat().st_size
+        # Purpose: verify actual decoded width AND height, not merely equal
+        # area (a malformed interlaced JPEG can have the same pixel count).
+        dimensions = re.findall(r"\bs:(\d+)x(\d+)\b", decoded.stderr.decode("utf-8", errors="replace"))
+        if not dimensions or any((int(w), int(h)) != (width, height) for w, h in dimensions) or frame_bytes != width * height * 3:
+            raise RuntimeError(f"Unexpected decoded geometry {dimensions}, bytes={frame_bytes}; requested {size}")
+        run(ffmpeg, ["-f", "rawvideo", "-pixel_format", "rgb24", "-video_size", size,
              "-i", str(folder / "first_frame.rgb"), "-frames:v", "1",
              str(folder / "first_frame.png")], folder, "png")
         run(ffmpeg, ["-i", str(folder / "capture.mkv"), "-an", "-c:v", "libx264",
              "-preset", "fast", "-crf", "20", "-pix_fmt", "yuv420p", "-movflags", "+faststart",
              str(folder / "preview.mp4")], folder, "preview")
         meta.update(status="captured_unverified", decoded_format="RGB24",
-                    decoded_frame_bytes=size)
+                    decoded_size=[width, height], decoded_frame_bytes=frame_bytes)
     except Exception as exc:
         meta.update(status="failed", error=str(exc))
         raise
@@ -100,4 +109,6 @@ def capture(seconds: int = 2) -> Path:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seconds", type=int, default=2)
-    capture(parser.parse_args().seconds)
+    parser.add_argument("--size", choices=("1280x720", "1920x1080"), default="1280x720")
+    args = parser.parse_args()
+    capture(args.seconds, args.size)

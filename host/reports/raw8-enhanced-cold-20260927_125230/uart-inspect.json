@@ -1,0 +1,172 @@
+{
+  "action": "Inspect",
+  "port": "COM15",
+  "pnp": "USB\\VID_10C4&PID_EA60\\0001",
+  "records": [
+    {
+      "request_hex": "55AA0101010000005597",
+      "reply_hex": "55AA01800100200000010200FAA31D0EAAC896FD0000000000000000000420007F00000000C2010067FD",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T04:54:30.4572669Z",
+      "received_utc": "2026-09-27T04:54:30.4826622Z",
+      "received_monotonic_ticks": 2614996127616,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 1
+    },
+    {
+      "request_hex": "55AA010202000C00FAA31D0EAAC896FD01000000AA1C",
+      "reply_hex": "55AA01800200200000020300FAA31D0EAAC896FD01000000000000000F0300000200000000000000CFA6",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T04:54:30.4988262Z",
+      "received_utc": "2026-09-27T04:54:30.5069540Z",
+      "received_monotonic_ticks": 2614996361613,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 2
+    },
+    {
+      "request_hex": "55AA010303000C00FAA31D0EAAC896FD010000006CA4",
+      "reply_hex": "55AA01800300200000030300FAA31D0EAAC896FD01000000000000001F03000003000000000000002471",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T04:54:30.5074192Z",
+      "received_utc": "2026-09-27T04:54:30.5169348Z",
+      "received_monotonic_ticks": 2614996461425,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 3
+    },
+    {
+      "request_hex": "55AA010504000C00FAA31D0EAAC896FD01000000BFAE",
+      "reply_hex": "55AA01800400200000050300FAA31D0EAAC896FD010000000000000016C91C002E3020582E3000010709",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T04:54:30.5195747Z",
+      "received_utc": "2026-09-27T04:54:30.5277037Z",
+      "received_monotonic_ticks": 2614996569099,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 5
+    },
+    {
+      "request_hex": "55AA010605000C00FAA31D0EAAC896FD01000000BD37",
+      "reply_hex": "55AA01800500200000060300FAA31D0EAAC896FD01000000000000000000000000000000000000005184",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T04:54:30.5296421Z",
+      "received_utc": "2026-09-27T04:54:30.5432259Z",
+      "received_monotonic_ticks": 2614996724327,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 6
+    },
+    {
+      "request_hex": "55AA010706000C00FAA31D0EAAC896FD0100000012CF",
+      "reply_hex": "55AA01800600200000070300FAA31D0EAAC896FD0100000000000000BD383804800780070000A0017BEB",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T04:54:30.5442462Z",
+      "received_utc": "2026-09-27T04:54:30.5528618Z",
+      "received_monotonic_ticks": 2614996820685,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 7
+    },
+    {
+      "request_hex": "55AA010807000C00FAA31D0EAAC896FD010000008892",
+      "reply_hex": "55AA01800700200000080300FAA31D0EAAC896FD0100000000000000C5BF21780A000000000000000432",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T04:54:30.5541944Z",
+      "received_utc": "2026-09-27T04:54:30.5619581Z",
+      "received_monotonic_ticks": 2614996911652,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 8
+    },
+    {
+      "request_hex": "55AA010908000C00FAA31D0EAAC896FD0100000070FB",
+      "reply_hex": "55AA01800800200000090300FAA31D0EAAC896FD0100000000000000B138B038AB6F0D38AA6FD8A024F5",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T04:54:30.5630082Z",
+      "received_utc": "2026-09-27T04:54:30.5709426Z",
+      "received_monotonic_ticks": 2614997001493,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 9
+    }
+  ],
+  "status_flags": 799,
+  "diagnostics": {
+    "version": 1,
+    "phy_id": "001CC916",
+    "step": 22,
+    "phy_address": 1,
+    "last_ack_error": false,
+    "last_read": "302E",
+    "phy_status": "302E"
+  },
+  "raw8_status": {
+    "sensor_ready": true,
+    "frame_published": true,
+    "hdmi_underflow": false,
+    "aggregate_core_or_bridge_fault": false,
+    "bridge_read_fault": false,
+    "bridge_write_fault": false,
+    "writer_fault": false,
+    "read_arbiter_fault": false,
+    "frame_pool_fault": false,
+    "network_fault": false,
+    "read_queue_overflow": false,
+    "writer_first_error": 0
+  },
+  "video_snapshot": {
+    "version": 0,
+    "valid": false,
+    "active": false,
+    "offset_mismatch": false,
+    "count_overrun": false,
+    "column_word": 0,
+    "received_offset": 0,
+    "expected_offset": 0,
+    "accepted_words": 0
+  },
+  "chain": {
+    "geometry": {
+      "version": 1,
+      "frame_edges": 14525,
+      "low_vsync_lines": 1080,
+      "min_width": 1920,
+      "max_width": 1920,
+      "high_vsync_lines": 0,
+      "capture_flags": 160,
+      "configured": true,
+      "armed": false,
+      "active": true,
+      "bad": false,
+      "closing": false,
+      "result_pending": false,
+      "word_pending": false,
+      "overflow": false
+    },
+    "progress": {
+      "pclk_cycles": 2015477701,
+      "rejected": 10,
+      "overflow_frames": 0
+    },
+    "pipeline": {
+      "starts": 14513,
+      "ends": 14512,
+      "words": 940404651,
+      "writes": 28586,
+      "capture_fsm": 3,
+      "hdmi_fsm": 3,
+      "record_valid": false,
+      "record_ready": false,
+      "commit": false,
+      "writer_active": true,
+      "writer_fsm": 2,
+      "awvalid": false,
+      "fence_request": false,
+      "writer_ready": false,
+      "wready": false
+    }
+  },
+  "error": null
+}

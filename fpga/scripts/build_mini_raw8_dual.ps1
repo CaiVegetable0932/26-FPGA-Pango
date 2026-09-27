@@ -37,7 +37,12 @@ function Restore-BoardLayout {
  $taskText=Get-Content -LiteralPath $taskProject -Raw
  $taskOld='(_option prj_impl_dir (_string "."))'
  $taskNew='(_option prj_impl_dir (_string "../../build/mini_raw8_dual/implementation"))'
- if($taskText.Contains($taskOld)){$taskText.Replace($taskOld,$taskNew)|Set-Content -LiteralPath $taskProject -Encoding utf8}
+ # Purpose: keep the PDS-native S-expression byte 0 at '('. Windows
+ # PowerShell 5.1 Set-Content -Encoding utf8 adds a BOM that Flow-0130 rejects.
+ if($taskText.Contains($taskOld)){
+  [System.IO.File]::WriteAllText($taskProject,$taskText.Replace($taskOld,$taskNew),
+   [System.Text.UTF8Encoding]::new($false))
+ }
  elseif(!$taskText.Contains($taskNew)){throw 'Unexpected native implementation path'}
 }
 $taskOldLicense=$env:PANGO_LICENSE_FILE

@@ -56,11 +56,29 @@ module tb_raw8_dual_pixels;
   end
   was_en=en;
  end
- // Purpose: compare every active HDMI pixel, including both endpoints, to the
- // original DVP byte, and count the full 2200x1125 positive-sync raster.
+ // Purpose: independently check display-only median/tone on every HDMI
+ // pixel in the first bright-mode frame, while the separate network decoder
+ // still checks byte-exact S0 RAW. Dark-mode selection has its own testbench.
+ function automatic [7:0] display_tone(input [7:0] value);
+  // Purpose: independently model the unchanged bright-scene gain and
+  // highlight shoulder; the network checker still compares untouched RAW.
+  if(value<=24)display_tone=0;
+  else if(value<=80)display_tone=(value-24)*2;
+  else if(value<=144)display_tone=112+(value-80)+((value-80)>>2);
+  else if(value==255)display_tone=255;
+  else display_tone=192+((value-144)>>1)+((value-144)>>4)+((value-144)>>6);
+ endfunction
+ function automatic [7:0] median3(input [7:0] a,b,c);
+  if(a>b)median3=b>c?b:(a>c?c:a);
+  else median3=a>c?a:(b>c?c:b);
+ endfunction
+ reg [7:0] expected_raw,expected_display;
  always @(posedge pclk)if(read_reset && !display_complete)begin
   if(de)begin
-   if(!pv || rgb!=={3{8'((pixels*17+22)&255)}})$fatal(1,"RAW8_FAIL HDMI pixel %0d",pixels);
+   expected_raw=8'((pixels*17+22)&255);
+   expected_display=pixels%1920>=4 ? median3(expected_raw,
+    8'(((pixels-2)*17+22)&255),8'(((pixels-4)*17+22)&255)) : expected_raw;
+   if(!pv || rgb!=={3{display_tone(expected_display)}})$fatal(1,"RAW8_FAIL HDMI pixel %0d",pixels);
    pixels=pixels+1;
   end
   if(hs)hs_count=hs_count+1;

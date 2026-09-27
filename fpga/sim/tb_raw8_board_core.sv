@@ -76,6 +76,22 @@ module tb_raw8_board_core #(parameter LATE_EPOCH=0);
  integer frame_i,x,y,pixels=0,hdmi_frames=0,net_frames=0,packet_count=0;
  integer hexfile,lenfile,wire_length=0;reg was_en=0;
  reg [63:0] hdmi_id;
+ // Purpose: independently predict the hardware display-only correction.
+ // UDP byte-exact scoreboard below still checks the unmodified RAW source.
+ function automatic [7:0] display_tone(input [7:0] value);
+  // Purpose: assert brighter board-level midtones and preserved high codes;
+  // the parallel Ethernet checker remains byte-exact to source RAW.
+  if(value<=24)display_tone=0;
+  else if(value<=80)display_tone=(value-24)*2;
+  else if(value<=144)display_tone=112+(value-80)+((value-80)>>2);
+  else if(value==255)display_tone=255;
+  else display_tone=192+((value-144)>>1)+((value-144)>>4)+((value-144)>>6);
+ endfunction
+ function automatic [7:0] median3(input [7:0] a,b,c);
+  if(a>b)median3=b>c?b:(a>c?c:a);
+  else median3=a>c?a:(b>c?c:b);
+ endfunction
+ reg [7:0] expected_raw,expected_display;
  always @(posedge mc)if(rst && dut.net_done)net_frames=net_frames+1;
  always @(posedge ec)if(rst)begin
   if(eth_en)begin
@@ -87,7 +103,11 @@ module tb_raw8_board_core #(parameter LATE_EPOCH=0);
  // Verify the selected HDMI slot's identity stays locked across all pixels.
  always @(posedge pc)if(rst && dut.u_display.active && de)begin
   if(pixels==0)hdmi_id=dut.h_id;
-  if(dut.h_id!=hdmi_id || rgb!=={3{8'((pixels*17+hdmi_id*31+22)&255)}})
+  expected_raw=8'((pixels*17+hdmi_id*31+22)&255);
+  expected_display=pixels%1920>=4 ? median3(expected_raw,
+   8'(((pixels-2)*17+hdmi_id*31+22)&255),
+   8'(((pixels-4)*17+hdmi_id*31+22)&255)) : expected_raw;
+  if(dut.h_id!=hdmi_id || rgb!=={3{display_tone(expected_display)}})
    $fatal(1,"RAW8_BOARD_FAIL HDMI pixel=%0d fid=%0d rgb=%h",pixels,hdmi_id,rgb);
   pixels=pixels+1;
   if(pixels==2073600)begin pixels=0;hdmi_frames=hdmi_frames+1;end
@@ -104,7 +124,9 @@ module tb_raw8_board_core #(parameter LATE_EPOCH=0);
   force dut.u_pool.found=1;@(negedge mc);release dut.u_pool.found;
   repeat(100)@(negedge cc);
   for(frame_i=0;frame_i<6;frame_i=frame_i+1)begin
-   for(y=0;y<1080;y=y+1)begin
+   // Purpose: reproduce all 1086 measured sensor rows. The final six rows
+   // remain physically present but must not enter HDMI/UDP frame payloads.
+   for(y=0;y<1086;y=y+1)begin
     for(x=0;x<1920;x=x+1)begin
      @(negedge cc);vsync=0;href=1;camdata=((y*1920+x)*17+frame_i*31+22)&255;
     end

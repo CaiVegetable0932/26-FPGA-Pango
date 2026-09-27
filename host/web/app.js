@@ -5,6 +5,9 @@
   // Purpose: default to source samples while the live camera Bayer phase is
   // unverified. Color/averaged previews remain explicit, derived alternatives.
   let status=null, online=false, busy=false, color="raw", lastKey="", workerBusy=false;
+  // Purpose: label the exact stage identified by each received packet, not a
+  // presumed S0 merely because the payload has one RAW8 byte per pixel.
+  let latestStage=null;
   let closed=false, archiveKey="", lastPaint=0, previewErrors=0;
   let rendered=0, renderStart=performance.now(), activeView="live", frameTimer=null, statusTimer=null;
   const recordUI=window.PangoRecords.create({request,previewArchive,toast,getStatus:()=>status,getOnline:()=>online});
@@ -37,7 +40,7 @@
   }
   function update(state){
     const sessionChanged=status&&(status.running!==state.running||status.run_id!==state.run_id);
-    if(status&&status.run_id!==state.run_id){lastKey="";$("live-canvas").hidden=true;$("video-empty").hidden=false;rendered=0;renderStart=performance.now();}
+    if(status&&status.run_id!==state.run_id){lastKey="";latestStage=null;$("live-canvas").hidden=true;$("video-empty").hidden=false;rendered=0;renderStart=performance.now();}
     status=state;
     const c=state.metrics?.assembly?.counters||{}, rx=state.metrics?.counters||{}, running=state.running;
     const mock=state.config.source_mode==="mock", live=state.signal==="live", hasRun=!!state.run_id;
@@ -60,7 +63,8 @@
     text("settings-lock",running?"采集期间连接设置已锁定":"配置仅用于本次服务会话，每次运行均保存配置副本。");
     text("elapsed",elapsed(state.elapsed_seconds));text("transport-pill",running?"UDP 已绑定":"待启动");
     $("transport-pill").className="pill "+(running?"active":"neutral");
-    text("video-origin",mock?"MOCK / 模拟来源":"S0 / 板端 RAW8");
+    text("video-origin",mock?"MOCK / 模拟来源":latestStage==="fpga_enhanced_raw8"?"FPGA 增强 / Bayer RAW8":"S0 / 板端 RAW8");
+    text("raw-stage-note",latestStage==="fpga_enhanced_raw8"?"FPGA 板侧增强 RAW8 · 缩小预览做 Bayer 抗混叠 · RAW 归档不变 · 非原始 S0":"PC 基础可视化 · 不等同于 FPGA S1");
     text("source-node",mock?"模拟发送器":"FPGA RAW8");
     text("packet-total",count(rx.datagrams_received)+" 个数据报");
     text("buffer-usage",((state.metrics?.assembly?.buffer_bytes||0)/1048576).toFixed(2)+" MiB 在途");
@@ -100,7 +104,9 @@
         const response=await fetch("/api/frame?after="+encodeURIComponent(lastKey),{cache:"no-store",signal:AbortSignal.timeout(3000)});
         if(response.status===200){
           const meta=JSON.parse(response.headers.get("X-Frame-Info")), buffer=await response.arrayBuffer();
-          if(meta.run_id===status.run_id){previewErrors=0;lastKey=meta.key;workerBusy=true;worker.postMessage({buffer,meta,mode:color,target:"live"},[buffer]);}
+          // Purpose: pass the actual displayed width to the worker; only
+          // downscaled RAW gray needs Bayer-phase-safe preview sampling.
+          if(meta.run_id===status.run_id){previewErrors=0;lastKey=meta.key;workerBusy=true;worker.postMessage({buffer,meta,mode:color,target:"live",displayWidth:$("video-surface").getBoundingClientRect().width},[buffer]);}
         }else if(response.status!==204)throw Error("预览读取失败");
       }
     }catch(error){previewErrors++;if(previewErrors===3)toast("预览暂时无法读取；接收状态仍独立更新",true);}
@@ -115,7 +121,10 @@
     canvas.getContext("2d").putImageData(new ImageData(new Uint8ClampedArray(result.pixels),result.width,result.height),0,0);
     if(result.target==="live"){
       lastPaint=performance.now();canvas.hidden=false;$("video-empty").hidden=true;
+      latestStage=result.meta.source_stage;
       text("frame-identity","源帧 "+result.meta.frame_id+" · "+result.meta.width+" × "+result.meta.height+" RAW8 · CRC ✓");
+      text("video-origin",latestStage==="fpga_enhanced_raw8"?"FPGA 增强 / Bayer RAW8":"S0 / 板端 RAW8");
+      text("raw-stage-note",latestStage==="fpga_enhanced_raw8"?"FPGA 板侧增强 RAW8 · 缩小预览做 Bayer 抗混叠 · RAW 归档不变 · 非原始 S0":"PC 基础可视化 · 不等同于 FPGA S1");
       rendered++;const dt=(performance.now()-renderStart)/1000;
       if(dt>=1){text("preview-rate","预览 "+(rendered/dt).toFixed(1)+" FPS");rendered=0;renderStart=performance.now();}
     }

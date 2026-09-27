@@ -1,8 +1,8 @@
 {
-  "utc": "2026-09-22T14:50:43.896Z",
+  "utc": "2026-09-27T05:46:18.320Z",
   "node": "v24.14.0",
   "platform": "win32",
-  "tests_run": 10,
+  "tests_run": 11,
   "passed": true,
   "browser_ui_qa": "not_performed",
   "results": [
@@ -45,13 +45,17 @@
     {
       "name": "1080p RAW sample gray is lossless and phase independent",
       "passed": true
+    },
+    {
+      "name": "Half-width RAW gray prefilters Bayer cells without modifying source",
+      "passed": true
     }
   ],
   "source_sha256": {
-    "web/pixels.js": "72ef16190e5a6fbd847ec28249bb5ac5afe546495b2ba134f6b05604d2333304",
-    "web/preview-worker.js": "90101e59e5a9aaec8b314fe2b3196d85f636d122109e36fb41e2c1f720099919",
-    "web/app.js": "2f218d4f8da5b2734ac2a7b6a2676cb8e660de0967c775e66ea9e019ceb4db58",
-    "web/index.html": "ee135a08c3a2aea0f2d4df5382d62a5923b65a5433c908eeab656d641d8eb2d0",
+    "web/pixels.js": "8d2fab7222a1c662a5bdd0fee1b1251c370d0465058c6fe6654c759f98951727",
+    "web/preview-worker.js": "0c572146a4fb362c9bc0b338a35a777c9d2c4437f10685b9c7aab5b837af5015",
+    "web/app.js": "8efc1608cdae5d2e0dc1767fdf7af1a7b4740e31149bcb94c90b7e44231b456e",
+    "web/index.html": "70afe87d76b6d7d52feff446796c2b2c971845b52bf4f2166c9e8f324f5026c4",
     "web/app.css": "aff5fbc924c57b257932bdd57559e88f329f12a785e0a1d240e1a93cf28356ec"
   }
 }

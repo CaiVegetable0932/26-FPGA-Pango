@@ -6,7 +6,9 @@ module mcu_protocol #(
     parameter integer CLK_HZ = 27000000,
     parameter integer BAUD = 115200,
     parameter integer RX_TIMEOUT_MS = 20,
-    parameter integer BOARD_DIAGNOSTICS = 0
+    parameter integer BOARD_DIAGNOSTICS = 0,
+    parameter integer VIDEO_DIAGNOSTICS = 0,
+    parameter integer CHAIN_DIAGNOSTICS = 0
 ) (
     input wire clk, input wire rst_n,
     input wire uart_rx, output wire uart_tx,
@@ -14,6 +16,10 @@ module mcu_protocol #(
     input wire [63:0] board_time_us, input wire [31:0] status_flags,
     // Optional read-only board snapshot; valid only when capability bit4 is set.
     input wire [95:0] board_diagnostics,
+    // Purpose: optional same-clock first-failure snapshot, capability bit5.
+    input wire [95:0] video_diagnostics,
+    // Purpose: mem-clock snapshots for DVP geometry/progress and frame pipeline.
+    input wire [287:0] chain_diagnostics,
     output wire session_active, output reg env_valid,
     output reg [31:0] env_session_id, output reg [31:0] env_event_seq,
     output reg [31:0] env_mcu_time_us, output reg [63:0] env_board_time_us,
@@ -26,7 +32,8 @@ module mcu_protocol #(
         BAD_EPOCH=7, BAD_SESSION=8, STALE_EVENT=9, ID_CONFLICT=10,
         BAD_FORMAT=11, NOT_READY=13;
     localparam [7:0] CAPS=8'h01, OPEN=8'h02, STATUS=8'h03,
-        COUNTERS=8'h04, DIAGNOSTICS=8'h05, ENVIRONMENT=8'h10;
+        COUNTERS=8'h04, DIAGNOSTICS=8'h05, VIDEO_SNAPSHOT=8'h06,
+        DVP_GEOMETRY=8'h07, DVP_PROGRESS=8'h08, PIPELINE=8'h09, ENVIRONMENT=8'h10;
     reg [63:0] observed_epoch;
     reg observed_epoch_valid;
     wire epoch_change = (link_epoch != observed_epoch) ||
@@ -121,8 +128,12 @@ module mcu_protocol #(
             response_code = OK;
             case (request_command)
                 CAPS: if (request_length != 0) response_code = BAD_LENGTH;
-                OPEN, STATUS, COUNTERS, DIAGNOSTICS, ENVIRONMENT: begin
-                    if (request_command == DIAGNOSTICS && !BOARD_DIAGNOSTICS)
+                OPEN, STATUS, COUNTERS, DIAGNOSTICS, VIDEO_SNAPSHOT,
+                DVP_GEOMETRY, DVP_PROGRESS, PIPELINE, ENVIRONMENT: begin
+                    if ((request_command == DIAGNOSTICS && !BOARD_DIAGNOSTICS) ||
+                        (request_command == VIDEO_SNAPSHOT && !VIDEO_DIAGNOSTICS) ||
+                        ((request_command==DVP_GEOMETRY || request_command==DVP_PROGRESS ||
+                          request_command==PIPELINE) && !CHAIN_DIAGNOSTICS))
                         response_code = UNSUPPORTED;
                     else if ((request_command == ENVIRONMENT && request_length != 32) ||
                         (request_command != ENVIRONMENT && request_length != 12))
@@ -168,7 +179,9 @@ module mcu_protocol #(
         if (request_command == CAPS && response_code == OK) begin
             response_payload[175:160] = 16'd1024;
             response_payload[191:176] = 16'd32;
-            response_payload[223:192] = BOARD_DIAGNOSTICS ? 32'h0000001f : 32'h0000000f;
+            response_payload[223:192] = 32'h0000000f |
+                (BOARD_DIAGNOSTICS ? 32'h10 : 32'h0) | (VIDEO_DIAGNOSTICS ? 32'h20 : 32'h0) |
+                (CHAIN_DIAGNOSTICS ? 32'h40 : 32'h0);
             response_payload[255:224] = BAUD;
         end else if (request_command == COUNTERS && response_code == OK) begin
             response_payload[191:160] = rx_good_count+1'b1;
@@ -178,6 +191,18 @@ module mcu_protocol #(
             // Purpose: correlated, session-checked snapshot in the existing
             // 12-byte extension area; never writes a PHY or changes streaming.
             response_payload[255:160] = board_diagnostics;
+        end else if (request_command == VIDEO_SNAPSHOT && response_code == OK) begin
+            // Purpose: same epoch/session validation as PHY telemetry; snapshot
+            // is read-only and does not reset fault latches or restart capture.
+            response_payload[255:160] = video_diagnostics;
+        end else if (request_command == DVP_GEOMETRY && response_code == OK) begin
+            // Purpose: each command captures its own coherent 96-bit page;
+            // separate replies are NOT an atomic shared frame identity.
+            response_payload[255:160] = chain_diagnostics[95:0];
+        end else if (request_command == DVP_PROGRESS && response_code == OK) begin
+            response_payload[255:160] = chain_diagnostics[191:96];
+        end else if (request_command == PIPELINE && response_code == OK) begin
+            response_payload[255:160] = chain_diagnostics[287:192];
         end
     end
 

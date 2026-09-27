@@ -13,7 +13,7 @@ import time
 import uuid
 
 from .cli import HOST_ROOT, validate_config
-from .protocol import FormatLimits
+from .protocol import FormatLimits, source_stage
 from .reassembly import FrameAssembler
 from .receiver import UDPReceiver
 from .storage import save_frame
@@ -42,7 +42,7 @@ def frame_info(frame, run_id, source_mode):
         frame_bytes=h.frame_bytes, pixel_format="RAW8" if h.packet_type == 1 else "RGB888",
         bayer_code=h.bayer_code, packet_count=h.packet_count,
         key=f"{run_id}:{h.stream_epoch}:{h.frame_id}:{h.packet_type}:{h.descriptor_id}",
-        source_stage="S0" if h.packet_type == 1 else "snapshot",
+        source_stage=source_stage(h),
         transport_complete=True, measurement_ready=False)
 
 

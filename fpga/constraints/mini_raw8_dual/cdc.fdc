@@ -1,4 +1,12 @@
 # Purpose: constrain real held-level first stages, not whole clock domains.
+# Purpose: diagnostic request/ack synchronizers only. Snapshot data is held
+# from ACK generation until the next request (~8ms); the destination samples
+# after two ACK stages. Bound bundled-data delay below one 8ns memory period,
+# leave all source logic and second-stage synchronizers normally timed.
+set_max_delay 6.0 -datapath_only -to [get_cells {u_core.u_dvp_monitor.req_meta u_core.u_dvp_monitor.ack_meta}]
+set_false_path -hold -to [get_cells {u_core.u_dvp_monitor.req_meta u_core.u_dvp_monitor.ack_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells {u_core.u_dvp_monitor.held*}] -to [get_cells {u_core.u_dvp_monitor.geometry* u_core.u_dvp_monitor.progress*}]
+set_false_path -hold -from [get_cells {u_core.u_dvp_monitor.held*}] -to [get_cells {u_core.u_dvp_monitor.geometry* u_core.u_dvp_monitor.progress*}]
 set_max_delay 6.0 -datapath_only -to [get_cells {u_core.lease_meta u_core.hreq_meta u_core.hrel_meta u_core.u_records.lease_meta u_core.u_records.cfg_meta u_core.u_display.ack_meta u_core.u_display.rel_meta sensor_meta* led_meta*}]
 set_false_path -hold -to [get_cells {u_core.lease_meta u_core.hreq_meta u_core.hrel_meta u_core.u_records.lease_meta u_core.u_records.cfg_meta u_core.u_display.ack_meta u_core.u_display.rel_meta sensor_meta* led_meta*}]
 # Native Gray pointers only. Second synchronizer stages remain timed.

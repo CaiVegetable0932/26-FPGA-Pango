@@ -4,7 +4,8 @@
 // Address units are 32 bytes, with 2048-byte row stride. Padding is not written
 // and must never be transmitted or displayed. No backpressure reaches a sensor.
 module raw8_capture #(
- parameter WIDTH=1920, HEIGHT=1080, STRIDE=2048, WARMUP_FRAMES=10
+ parameter WIDTH=1920, HEIGHT=1080, STRIDE=2048, WARMUP_FRAMES=10,
+ parameter SENSOR_EXTRA_ROWS=0
 )(
  input wire clk,reset_n,configured,arm,vsync,href,
  input wire [7:0] data,
@@ -12,19 +13,25 @@ module raw8_capture #(
  output reg word_valid, input wire word_ready,
  output reg [255:0] word_data, output reg [16:0] word_offset,
  output reg result_valid, input wire result_ready, output reg result_good,
- output reg [31:0] rejected_frames, overflow_frames
+ output reg [31:0] rejected_frames, overflow_frames,
+ output wire [7:0] debug_state
 );
  reg vs_d,href_d,active,bad,overflow,closing;
  reg [15:0] columns,rows;
  reg [31:0] warmup;
  reg [63:0] sequence_id;
  reg [255:0] pack;
+ // Purpose: source-domain state for the monitor's coherent CDC snapshot.
+ assign debug_state={configured,arm,active,bad,closing,result_valid,word_valid,overflow};
  wire start_edge=vs_d && !vsync;
  wire end_edge=!vs_d && vsync;
  wire line_end=href_d && (!href || vsync);
- // Purpose: accept VSYNC and final HREF falling together without losing the
- // last row; a too-long row or an extra row still poisons the entire frame.
- wire geometry_ok=(line_end ? rows+17'd1 : {1'b0,rows})==HEIGHT &&
+ // Purpose: accept only the requested 1080-row ISP window or the previously
+ // measured 1086-row sensor tap. In either case write exactly HEIGHT rows;
+ // all widths and every optional tail row remain strictly checked.
+ wire [16:0] measured_rows=line_end ? rows+17'd1 : {1'b0,rows};
+ wire geometry_ok=(measured_rows==HEIGHT ||
+                  (SENSOR_EXTRA_ROWS!=0 && measured_rows==HEIGHT+SENSOR_EXTRA_ROWS)) &&
                   (!line_end || columns==WIDTH);
  always @(posedge clk or negedge reset_n) begin
   if(!reset_n) begin
@@ -59,11 +66,11 @@ module raw8_capture #(
         word_offset<=rows*(STRIDE/32)+(columns>>5);
        end else begin bad<=1;overflow<=1;end
       end
-     end else bad<=1;
+     end else if(columns>=WIDTH || rows>=HEIGHT+SENSOR_EXTRA_ROWS)bad<=1;
      if(columns!=65535)columns<=columns+1'b1;
     end
     if(line_end) begin
-     if(columns!=WIDTH || rows>=HEIGHT)bad<=1;
+     if(columns!=WIDTH || rows>=HEIGHT+SENSOR_EXTRA_ROWS)bad<=1;
      if(rows!=65535)rows<=rows+1'b1;
      columns<=0;
     end

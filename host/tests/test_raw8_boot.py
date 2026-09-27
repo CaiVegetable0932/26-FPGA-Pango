@@ -29,6 +29,17 @@ class Raw8BootTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 metadata(*args)
 
+    def test_enhanced_output_changes_identity_not_boot_command(self):
+        # Purpose: selecting the new FPGA enhancement must leave UART command
+        # bytes and 8-bit Bayer geometry intact while updating provenance.
+        old_boot, old_receiver = metadata(*self.args)
+        new_boot, new_receiver = metadata(*self.args, enhanced_output=True)
+        self.assertEqual(new_boot['command_hex'], old_boot['command_hex'])
+        self.assertEqual(new_receiver, old_receiver)
+        self.assertEqual(new_boot['descriptor_id'], '0x484E4552')
+        self.assertEqual(new_boot['param_version'], 2)
+        self.assertEqual(new_boot['source_stage'], 'fpga_enhanced_raw8')
+
 
 if __name__ == '__main__':
     unittest.main()

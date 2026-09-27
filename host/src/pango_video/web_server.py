@@ -144,7 +144,7 @@ class Handler(BaseHTTPRequestHandler):
                 if hashlib.sha256(data).hexdigest() != meta.get("sha256"):
                     return self._json(409,dict(error="原始数据SHA-256与元数据不一致"))
                 info = {k:meta.get(k) for k in ("width","height","row_stride","frame_bytes","pixel_format",
-                    "bayer_code","source_mode","frame_id","stream_epoch","sha256","measurement_ready")}
+                    "bayer_code","source_mode","source_stage","frame_id","stream_epoch","sha256","measurement_ready")}
                 info["key"], info["run_id"] = key, key.split("/")[0]
                 return self._send(200,data,"application/octet-stream",
                     {"X-Frame-Info":json.dumps(info,ensure_ascii=True),

@@ -50,14 +50,39 @@ def check(folder: Path, board_core: bool = False, late_epoch: bool = False) -> d
         h = decode_datagram(payload, limits).header
         assert (h.frame_id, h.packet_type, h.bayer_code) == (first_id + index // 1482, 1, 4)
         assert (h.packet_index, h.packet_count, h.row_stride) == (index % 1482, 1482, 1920)
-        assert (h.param_version, h.descriptor_id, h.frame_bytes) == ((1, 0x38574152, 2073600) if board_core else (7, 99, 2073600))
+        # Purpose: the integrated board marks enhanced Bayer RAW8 separately
+        # from the standalone byte-exact packetizer transport regression.
+        assert (h.param_version, h.descriptor_id, h.frame_bytes) == ((2, 0x484e4552, 2073600) if board_core else (7, 99, 2073600))
         frame = assembler.feed(payload, now_ns=index * 12000)
         if frame is not None:
             complete.append(frame)
     assert offset == len(raw) and len(complete) == frames
+    # Purpose: independently model the shared board-side same-phase median
+    # and bright-scene LUT. The synthetic sweep has no dark-pixel majority;
+    # the HDMI and Ethernet consumers must therefore agree byte for byte.
+    def tone(value: int) -> int:
+        if value <= 24:
+            return 0
+        if value <= 80:
+            return (value - 24) * 2
+        if value <= 144:
+            delta = value - 80
+            return 112 + delta + (delta >> 2)
+        if value == 255:
+            return 255
+        delta = value - 144
+        return 192 + (delta >> 1) + (delta >> 4) + (delta >> 6)
+
+    def enhanced_row(fid: int, row: int) -> bytes:
+        base = (row * 1920 * 17 + fid * 31 + 22) & 255
+        samples = bytes((base + x * 17) & 255 for x in range(1920))
+        return bytes(tone(sorted((samples[x], samples[x-2], samples[x-4]))[1]
+                          if x >= 4 else samples[x]) for x in range(1920))
+
     hashes = []
     for fid, frame in enumerate(complete, start=first_id):
-        expected = bytes((i * 17 + fid * 31 + 22) & 255 for i in range(2073600))
+        expected = ((enhanced_row(fid, 0) + enhanced_row(fid, 1)) * 540 if board_core else
+                    bytes((i * 17 + fid * 31 + 22) & 255 for i in range(2073600)))
         assert frame.data == expected
         hashes.append(hashlib.sha256(expected).hexdigest())
     assert assembler.active_frames == 0 and not assembler.drain_failures()

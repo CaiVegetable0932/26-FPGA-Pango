@@ -34,6 +34,21 @@ class PixelFormat(IntEnum):
     RGB888 = 2
 
 
+# Purpose: distinguish byte-exact sensor S0 from board-enhanced Bayer RAW8
+# without changing the PRAW V1 packet layout or doing any host-side ISP.
+ENHANCED_RAW8_DESCRIPTOR = 0x484E4552
+ENHANCED_RAW8_VERSION = 2
+
+
+def source_stage(header) -> str:
+    if header.packet_type != PacketType.RAW_LIVE:
+        return "snapshot"
+    if (header.descriptor_id == ENHANCED_RAW8_DESCRIPTOR
+            and header.param_version == ENHANCED_RAW8_VERSION):
+        return "fpga_enhanced_raw8"
+    return "S0"
+
+
 class ProtocolError(ValueError):
     def __init__(self, reason: str):
         self.reason = reason

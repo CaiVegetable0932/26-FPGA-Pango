@@ -32,11 +32,14 @@ module tb_mcu_protocol;
     // Clock changes are parameter-driven; serial bits retain true 115200 timing.
     always #(CLK_NS/2.0) clk=~clk;
     // A known 96-bit diagnostic snapshot exercises the optional read-only command.
-    mcu_protocol #(.CLK_HZ(CLK_HZ),.BAUD(BAUD),.RX_TIMEOUT_MS(RX_TIMEOUT_MS),.BOARD_DIAGNOSTICS(1)) dut (
+    mcu_protocol #(.CLK_HZ(CLK_HZ),.BAUD(BAUD),.RX_TIMEOUT_MS(RX_TIMEOUT_MS),.BOARD_DIAGNOSTICS(1),.VIDEO_DIAGNOSTICS(1),.CHAIN_DIAGNOSTICS(1)) dut (
         .clk(clk),.rst_n(rst_n),.uart_rx(uart_rx),.uart_tx(uart_tx),
         .link_epoch(link_epoch),.link_epoch_valid(link_epoch_valid),
         .board_time_us(board_time_us),.status_flags(status_flags),.session_active(session_active),
         .board_diagnostics(96'h0100002c0420001c001cc916),
+        .video_diagnostics(96'h01070100003d000041000042),
+        .chain_diagnostics({96'h8899aabbccddeeff12345678,
+                            96'h112233445566778899aabbcc,96'h018000000780078004380123}),
         .env_valid(env_valid),.env_session_id(env_session_id),.env_event_seq(env_event_seq),
         .env_mcu_time_us(env_mcu_time_us),.env_board_time_us(env_board_time_us),
         .env_lux_milli(env_lux_milli),.env_angle_mdeg(env_angle_mdeg),
@@ -241,6 +244,25 @@ module tb_mcu_protocol;
         check(last_response[255:160]==96'h0100002c0420001c001cc916,"diagnostic snapshot");
         request(5,14,12,session_payload(EPOCH_A,2),1,0); expect_reply(14,5,8);
         check(events==2,"diagnostic has no event side effects");
+        // Purpose: exact snapshot bytes, request length and epoch/session gates
+        // must hold for the new read-only command, without changing MCU events.
+        request(6,15,12,session_payload(EPOCH_A,1),1,0); expect_reply(15,6,0);
+        check(last_response[255:160]==96'h01070100003d000041000042,"video snapshot");
+        request(6,16,12,session_payload(EPOCH_A,2),1,0); expect_reply(16,6,8);
+        request(6,17,12,session_payload(EPOCH_B,1),1,0); expect_reply(17,6,7);
+        request(6,18,11,session_payload(EPOCH_A,1),1,0); expect_reply(18,6,3);
+        check(events==2,"video diagnostic has no event side effects");
+        // Purpose: independently verify each 96-bit page and stale-session gate.
+        request(7,70,12,session_payload(EPOCH_A,1),1,0); expect_reply(70,7,0);
+        check(last_response[255:160]==96'h018000000780078004380123,"DVP geometry page");
+        request(8,71,12,session_payload(EPOCH_A,1),1,0); expect_reply(71,8,0);
+        check(last_response[255:160]==96'h112233445566778899aabbcc,"DVP progress page");
+        request(9,72,12,session_payload(EPOCH_A,1),1,0); expect_reply(72,9,0);
+        check(last_response[255:160]==96'h8899aabbccddeeff12345678,"pipeline page");
+        request(7,73,12,session_payload(EPOCH_A,2),1,0); expect_reply(73,7,8);
+        request(8,74,12,session_payload(EPOCH_B,1),1,0); expect_reply(74,8,7);
+        request(9,75,11,session_payload(EPOCH_A,1),1,0); expect_reply(75,9,3);
+        check(events==2,"chain diagnostics have no event side effects");
 
         if(FULL) begin
             // Identity conflict, stale/invalid fields, and stale session/epoch.

@@ -3,6 +3,7 @@ import hashlib
 import http.client
 import json
 from pathlib import Path
+from types import SimpleNamespace
 import socket
 import tempfile
 import threading
@@ -11,11 +12,11 @@ import unittest
 from unittest.mock import patch
 
 from pango_video.cli import HOST_ROOT
-from pango_video.protocol import FormatLimits, packetize
+from pango_video.protocol import FormatLimits, packetize, frame_header, ENHANCED_RAW8_DESCRIPTOR
 from pango_video.reassembly import FrameAssembler
 from pango_video.receiver import UDPReceiver
 from pango_video.web_server import LocalServer, archives, sample_metadata
-from pango_video.web_session import SessionError, WebSession
+from pango_video.web_session import SessionError, WebSession, frame_info
 
 
 def until(predicate, seconds=4):
@@ -29,6 +30,17 @@ def until(predicate, seconds=4):
 
 
 class WebTests(unittest.TestCase):
+    def test_enhanced_frame_stage_is_propagated_without_host_pixel_processing(self):
+        # Purpose: the live API must identify board-processed bytes so the
+        # browser can decode RAW8 directly without presenting them as S0.
+        header = frame_header(stream_epoch=1, frame_id=7, width=16, height=8,
+                              bayer_code=4, descriptor_id=ENHANCED_RAW8_DESCRIPTOR,
+                              param_version=2)
+        info = frame_info(SimpleNamespace(header=header), "run", "hardware_unverified")
+        self.assertEqual(info["source_stage"], "fpga_enhanced_raw8")
+        self.assertEqual(info["pixel_format"], "RAW8")
+        self.assertEqual(info["frame_bytes"], 128)
+
     def setUp(self):
         build = (HOST_ROOT/"build").resolve()
         build.mkdir(exist_ok=True)

@@ -17,7 +17,7 @@ module mini_raw8_dual(
  inout wire [3:0] mem_dqs,mem_dqs_n,inout wire [31:0] mem_dq
 );
  wire clk_125Mhz,core_clk,ddr_init_done;
- wire eth_raw,eth_clk,eth_locked,eth_reset_n;
+ wire eth_raw,eth_clk,eth_locked,eth_reset_n,eth_tx_reset_n;
  wire bridge_wr_fault,bridge_rd_fault;
  (* syn_preserve=1 *) reg bridge_meta,bridge_sync;
  wire bridge_fault=bridge_wr_fault || bridge_sync;
@@ -42,6 +42,11 @@ module mini_raw8_dual(
  // release each synchronously. No one-sided pointer reset is permitted.
  reset_sync rs_mem(core_clk,rst_in && ddr_init_done && locked0 && eth_locked,mem_reset_n);
  reset_sync rs_eth(eth_clk,rst_in && ddr_init_done && locked0 && eth_locked,eth_reset_n);
+ // Purpose: release the RGMII pad serializers after the ETH/FIFO domain is
+ // ready, using a local reset tree instead of the high-fanout FIFO reset net.
+ // Assertion remains asynchronous; the extra release cycles cannot expose a
+ // partial packet because commissioning starts only after board startup.
+ reset_sync rs_eth_tx(eth_clk,eth_reset_n,eth_tx_reset_n);
  reset_sync rs_camera(camera_clk_0,rst_in && ddr_init_done && locked0 && eth_locked,cam_reset_n);
  reset_sync rs_pixel(pclk,rst_in && ddr_init_done && video_powerup_n && eth_locked,pixel_reset_n);
  always @(posedge core_clk or negedge mem_reset_n)
@@ -75,7 +80,11 @@ module mini_raw8_dual(
  wire axi_awvalid,axi_awready,axi_wready,axi_wlast,axi_arvalid,axi_arready,axi_rvalid,axi_rlast;
  wire [255:0] axi_wdata,axi_rdata;wire [31:0] axi_wstrb;
  wire [23:0] rgb;wire hs,vs,de,core_fault,gmii_en,gmii_error;wire [7:0] gmii_data;
- wire [31:0] published,underflows;
+ wire [31:0] published,underflows;wire [7:0] core_fault_detail;
+ // Purpose: sticky memory-domain record fault snapshot for read-only UART06.
+ wire [95:0] writer_snapshot;
+ // Purpose: coherent camera snapshots and memory-domain progress via UART7..9.
+ wire [287:0] chain_diagnostics;
  raw8_dual_core u_core(.mem_clk(core_clk),.mem_reset_n(mem_reset_n),
   .cam_clk(camera_clk_0),.cam_reset_n(cam_reset_n),.pixel_clk(pclk),.pixel_reset_n(pixel_reset_n),
   .configured(sensor_ready),.vsync(sampled_vsync),.href(sampled_href),.camera_data(sampled_data),
@@ -85,7 +94,8 @@ module mini_raw8_dual(
   .awvalid(axi_awvalid),.arvalid(axi_arvalid),.awready(axi_awready),.arready(axi_arready),
   .wready(axi_wready),.wlast(axi_wlast),.wid(axi_wid),.rid(axi_rid),.rvalid(axi_rvalid),.rlast(axi_rlast),
   .rdata(axi_rdata),.wdata(axi_wdata),.wstrb(axi_wstrb),.rgb(rgb),.hs(hs),.vs(vs),.de(de),
-  .gmii_data(gmii_data),.gmii_en(gmii_en),.gmii_error(gmii_error),.fault(core_fault),.published(published),.underflows(underflows));
+  .gmii_data(gmii_data),.gmii_en(gmii_en),.gmii_error(gmii_error),.fault(core_fault),.published(published),.underflows(underflows),
+  .fault_detail(core_fault_detail),.writer_snapshot(writer_snapshot),.chain_diagnostics(chain_diagnostics));
  hdmi_tx_rgb u_hdmi_tx(.pixel_clk(pclk),.serial_clk(pclkx5),.reset_n(pixel_reset_n),
   .rgb(rgb),.data_enable(de),.hsync(hs),.vsync(vs),.tmds_data_p(tmds_data_p),
   .tmds_data_n(tmds_data_n),.tmds_clk_p(tmds_clk_p),.tmds_clk_n(tmds_clk_n));
@@ -99,7 +109,7 @@ module mini_raw8_dual(
  // an extra fabric-reset path on TXC is unnecessary and complicates its clock
  // propagation. Native GRS still initializes the constant 1/0 forwarding cell.
  pango_rgmii_tx #(.PHY_TXID(1),.SEPARATE_TXC_RESET(1)) u_rgmii(.clk125(eth_clk),.clk125_90(eth_clk),
-  .reset_n(eth_reset_n),.txc_reset_n(1'b1),.gmii_data(eth_data),.gmii_en(eth_en),.gmii_error(eth_error),
+  .reset_n(eth_tx_reset_n),.txc_reset_n(1'b1),.gmii_data(eth_data),.gmii_en(eth_en),.gmii_error(eth_error),
   .rgmii_txc(rgmii_txc),.rgmii_ctl(rgmii_tx_ctl),.rgmii_data(rgmii_txd));
  // Purpose: report stable status only across domains. HDMI underflow is not
  // hidden by continuing its black raster; the MCU status retains that fact.
@@ -120,13 +130,17 @@ module mini_raw8_dual(
    if(us_div==124)begin us_div<=0;time_us<=time_us+1'b1;end else us_div<=us_div+1'b1;
   end
  wire mcu_active;
- wire [31:0] flags={12'b0,phy_fault_code,5'b0,sensor_sync[2],published!=0,sensor_sync[0],
+ // Purpose: preserve status bits0..10 and PHY code16..19; expose individual
+ // core faults24..28, writer reason29..31 and bridge faults14/15. No frame,
+ // wire format, fault gate or PHY diagnostic command semantics are changed.
+ wire [31:0] flags={core_fault_detail,4'b0,phy_fault_code,bridge_wr_fault,bridge_sync,3'b0,sensor_sync[2],published!=0,sensor_sync[0],
                     core_fault || bridge_fault,sensor_sync[1],phy_fault,mcu_active,commissioned,link_ready,phy_configured,1'b1};
  wire [95:0] phy_diagnostics={8'h01,8'h00,phy_status,phy_step,phy_address,phy_last_ack,4'b0,phy_last_read,phy_id};
- mcu_protocol #(.CLK_HZ(125000000),.BOARD_DIAGNOSTICS(1)) u_mcu(
+ mcu_protocol #(.CLK_HZ(125000000),.BOARD_DIAGNOSTICS(1),.VIDEO_DIAGNOSTICS(1),.CHAIN_DIAGNOSTICS(1)) u_mcu(
   .clk(core_clk),.rst_n(mem_reset_n && commissioned),.uart_rx(uart_rx),.uart_tx(mcu_tx),
   .link_epoch(epoch),.link_epoch_valid(commissioned),.board_time_us(time_us),.status_flags(flags),
-  .session_active(mcu_active),.board_diagnostics(phy_diagnostics),.env_valid(),
+  .session_active(mcu_active),.board_diagnostics(phy_diagnostics),
+  .video_diagnostics(writer_snapshot),.chain_diagnostics(chain_diagnostics),.env_valid(),
   .env_session_id(),.env_event_seq(),.env_mcu_time_us(),.env_board_time_us(),.env_lux_milli(),
   .env_angle_mdeg(),.env_measurement_valid(),.rx_good_count(),.rx_error_count(),.tx_overflow_count());
  // Purpose: copy of the board-proven native controller instantiation from

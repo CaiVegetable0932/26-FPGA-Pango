@@ -50,7 +50,9 @@ try {
   }
  }
  # Manifest distinguishes file generation from write/verify/cold-boot evidence.
- [ordered]@{image_kind='1080p RAW8 camera + HDMI raw-gray + Ethernet first-board candidate';
+ # Purpose: identify the versioned board-enhanced RAW8 Ethernet payload and
+ # HDMI gray output without mislabeling transmitted pixels as original S0.
+ [ordered]@{image_kind='1080p RAW8 camera + FPGA-enhanced Bayer RAW8 Ethernet + enhanced HDMI grayscale candidate';
   target='PG2L100H-6FBG676';flash='XT25F128';spi_width=1;opcode=11;start_address=0;
   programmed=$false;flash_verified=$false;cold_boot_verified=$false;camera_video=$true;camera_source_verified=$false;external_dvp_timing_verified=$false;
   strict_native_pll_simulation_passed=$false;timing_constraints_met=$true;

@@ -46,15 +46,17 @@
       </div>
       <div class="capture-layout">
         <article class="panel video-panel primary-viewer">
-          <!-- Purpose: RAW sample gray is the default; it performs no ISP or Bayer phase inference. -->
-          <div class="panel-heading"><div class="panel-title"><span class="channel-label">S0</span><h2>传感器原始数据</h2></div><div class="segmented" role="group" aria-label="原图预览方式"><button class="selected" data-color="raw" aria-pressed="true">RAW 灰阶</button><button data-color="color" aria-pressed="false">基础彩色</button><button data-color="gray" aria-pressed="false">平均灰度</button></div></div>
+          <!-- Purpose: full-size RAW gray remains byte-exact; the reduced-size
+               live preview averages Bayer cells to prevent aliasing, without
+               modifying archived RAW8 or mistaking enhanced RAW8 for S0. -->
+          <div class="panel-heading"><div class="panel-title"><span class="channel-label">RAW8</span><h2>网口 RAW8 数据</h2></div><div class="segmented" role="group" aria-label="RAW8预览方式"><button class="selected" data-color="raw" aria-pressed="true">RAW 灰阶</button><button data-color="color" aria-pressed="false">基础彩色</button><button data-color="gray" aria-pressed="false">平均灰度</button></div></div>
           <div class="video-surface" id="video-surface">
             <canvas id="live-canvas" width="960" height="540" aria-label="来自完整RAW8帧的预览画面" hidden></canvas>
             <div class="video-empty" id="video-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-camera"/></svg></div><strong>等待原始视频</strong><span>开始本机模拟，或配置板端数据来源</span><div class="signal-guide"><span>RAW8</span><span>1920 × 1080</span><span>PRAW V1</span></div></div>
             <span class="video-corner" id="video-origin">MOCK / 模拟来源</span><div class="stale-label" id="stale-label" hidden>画面已停止更新</div>
           </div>
           <div class="video-meta"><span id="frame-identity">尚无完整源帧</span><span id="preview-rate">预览 — FPS</span></div>
-          <div class="viewer-footer"><span>PC 基础可视化 · 不等同于 FPGA S1</span><button id="save-current" class="button small secondary" disabled><svg class="icon"><use href="#i-camera"/></svg>保存最新完整原图</button></div>
+          <div class="viewer-footer"><span id="raw-stage-note">PC 基础可视化 · 不等同于 FPGA S1</span><button id="save-current" class="button small secondary" disabled><svg class="icon"><use href="#i-camera"/></svg>保存最新完整帧</button></div>
         </article>
         <article class="panel video-panel hdmi-panel">
           <div class="panel-heading"><div class="panel-title"><span class="channel-label">IN</span><h2>采集卡视频输入</h2></div><span id="capture-preview-status" class="pill neutral">未配置</span></div>

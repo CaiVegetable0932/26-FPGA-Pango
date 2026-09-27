@@ -1,5 +1,6 @@
 // Purpose: 1920x1080p30 raster at 74.25 MHz, positive HS/VS, total 2200x1125.
-// The RGB output is an unprocessed RAW mosaic shown as gray, NOT FPGA ISP S1.
+// The RGB output is FPGA-enhanced grayscale derived from the stored RAW mosaic;
+// the new Ethernet reader applies the same curve before transmitting Bayer RAW8.
 // Consumer must prefetch a full frame into its elastic read path before enable.
 module raw8_hdmi_timing(
  input wire clk,reset_n,enable,input wire [7:0] sample,
@@ -16,7 +17,15 @@ module raw8_hdmi_timing(
  // Purpose: if an underflow occurs, blank the remainder instead of shifting
  // every later pixel. The DMA must flush and restart at the next frame boundary.
  assign sample_ready=de && enable && !poisoned;
- assign rgb=sample_ready && sample_valid ? {sample,sample,sample} : 24'b0;
+ wire [7:0] display_luma;
+ // Purpose: remove isolated same-Bayer-phase spikes and select a complete-
+ // frame dark/bright tone profile. Ethernet now applies the same block at its
+ // own read endpoint; neither consumer changes DDR S0 or implements full ISP.
+ raw8_display_enhance u_enhance(.clk(clk),.reset_n(reset_n),
+  .frame_boundary(frame_boundary),
+  .line_active(sample_ready),.line_end(1'b0),.pixel_accept(sample_ready && sample_valid),
+  .sample(sample),.luma(display_luma));
+ assign rgb=sample_ready && sample_valid ? {display_luma,display_luma,display_luma} : 24'b0;
  always @(posedge clk or negedge reset_n)
   if(!reset_n)begin h<=0;v<=0;poisoned<=0;underflows<=0;end
   else begin

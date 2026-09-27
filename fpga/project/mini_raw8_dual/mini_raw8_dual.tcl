@@ -31,6 +31,8 @@ add_constraint [file join $fpga_root constraints mini_camera_diag routing.rcf]
 compile -top_module mini_raw8_dual
 synthesize -ads -selected_syn_tool_opt 2
 dev_map
-pnr -congest_overlap_limit 20 -action_timeout 15
+# Purpose: retry native placement with seed 2 after seed 1's -0.096 ns fast
+# RGMII setup miss; retain all original PHY setup/hold timing requirements.
+pnr -congest_overlap_limit 20 -action_timeout 15 -gplace_seed 2
 report_timing -delay_type min_max -max_path 10 -report_exception TRUE
 gen_bit_stream -scbv {High Voltage}

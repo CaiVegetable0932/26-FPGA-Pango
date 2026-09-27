@@ -52,6 +52,20 @@ test("1080p RAW sample gray is lossless and phase independent",()=>{
   assert.equal(crypto.createHash("sha256").update(bytes).digest("hex"),before);
   assert.throws(()=>render([1,2,3,4],{},"unknown"));
 });
+// Purpose: reproduce the browser's half-width view, where picking only one
+// Bayer phase creates false black dots even though the archived RAW is intact.
+test("Half-width RAW gray prefilters Bayer cells without modifying source",()=>{
+  const bytes=new Uint8Array(1920*1080);
+  for(let y=0;y<1080;y++)for(let x=0;x<1920;x++)bytes[y*1920+x]=y%2?(x%2?10:60):(x%2?40:200);
+  const before=crypto.createHash("sha256").update(bytes).digest("hex");
+  const meta={width:1920,height:1080,row_stride:1920,pixel_format:"RAW8",bayer_code:0};
+  const result=renderPixels(bytes.buffer,meta,"raw",{displayWidth:1000});
+  assert.equal(result.width,960);assert.equal(result.height,540);
+  assert.deepEqual([...new Uint8Array(result.pixels).slice(0,4)],[77,77,77,255]);
+  assert.equal(crypto.createHash("sha256").update(bytes).digest("hex"),before);
+  const native=renderPixels(bytes.buffer,meta,"raw",{displayWidth:1920});
+  assert.equal(native.width,1920);assert.equal(new Uint8Array(native.pixels)[0],200);
+});
 const root=path.resolve(__dirname,".."),hashes={};
 for(const file of ["web/pixels.js","web/preview-worker.js","web/app.js","web/index.html","web/app.css"]){
   hashes[file]=crypto.createHash("sha256").update(fs.readFileSync(path.join(root,file))).digest("hex");
