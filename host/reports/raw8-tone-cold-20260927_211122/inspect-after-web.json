@@ -1,0 +1,161 @@
+{
+  "action": "Inspect",
+  "port": "COM15",
+  "pnp": "USB\\VID_10C4&PID_EA60\\0001",
+  "records": [
+    {
+      "request_hex": "55AA0101010000005597",
+      "reply_hex": "55AA018001002000000103005AD63F18C911A4910100000000000000000420007F00000000C20100349D",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T13:36:26.7848714Z",
+      "received_utc": "2026-09-27T13:36:26.8137363Z",
+      "received_monotonic_ticks": 2928159438178,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 1
+    },
+    {
+      "request_hex": "55AA010303000C005AD63F18C911A4910100000054A5",
+      "reply_hex": "55AA018003002000000303005AD63F18C911A49101000000000000001F0300000A00000000000000D274",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T13:36:26.8338548Z",
+      "received_utc": "2026-09-27T13:36:26.8422849Z",
+      "received_monotonic_ticks": 2928159714956,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 3
+    },
+    {
+      "request_hex": "55AA010504000C005AD63F18C911A4910100000087AF",
+      "reply_hex": "55AA018004002000000503005AD63F18C911A491010000000000000016C91C002E3820582E380001F46F",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T13:36:26.8461132Z",
+      "received_utc": "2026-09-27T13:36:26.8560818Z",
+      "received_monotonic_ticks": 2928159852901,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 5
+    },
+    {
+      "request_hex": "55AA010605000C005AD63F18C911A491010000008536",
+      "reply_hex": "55AA018005002000000603005AD63F18C911A4910100000000000000000000000000000000000000AED8",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T13:36:26.8588249Z",
+      "received_utc": "2026-09-27T13:36:26.8668946Z",
+      "received_monotonic_ticks": 2928159961009,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 6
+    },
+    {
+      "request_hex": "55AA010706000C005AD63F18C911A491010000002ACE",
+      "reply_hex": "55AA018006002000000703005AD63F18C911A4910100000000000000C3DB3804800780070000A0015D3C",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T13:36:26.8678810Z",
+      "received_utc": "2026-09-27T13:36:26.8757954Z",
+      "received_monotonic_ticks": 2928160050029,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 7
+    },
+    {
+      "request_hex": "55AA010807000C005AD63F18C911A49101000000B093",
+      "reply_hex": "55AA018007002000000803005AD63F18C911A4910100000000000000B2BE31AD0A00000000000000866A",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T13:36:26.8776879Z",
+      "received_utc": "2026-09-27T13:36:26.8875037Z",
+      "received_monotonic_ticks": 2928160167107,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 8
+    },
+    {
+      "request_hex": "55AA010908000C005AD63F18C911A4910100000048FA",
+      "reply_hex": "55AA018008002000000903005AD63F18C911A4910100000000000000B7DBB6DB79813ED97881D8986F0E",
+      "valid_reply": true,
+      "sent_utc": "2026-09-27T13:36:26.8885774Z",
+      "received_utc": "2026-09-27T13:36:26.9061126Z",
+      "received_monotonic_ticks": 2928160353247,
+      "monotonic_frequency": 10000000,
+      "result": 0,
+      "request_command": 9
+    }
+  ],
+  "status_flags": 799,
+  "diagnostics": {
+    "version": 1,
+    "phy_id": "001CC916",
+    "step": 22,
+    "phy_address": 1,
+    "last_ack_error": false,
+    "last_read": "382E",
+    "phy_status": "382E"
+  },
+  "raw8_status": {
+    "sensor_ready": true,
+    "frame_published": true,
+    "hdmi_underflow": false,
+    "aggregate_core_or_bridge_fault": false,
+    "bridge_read_fault": false,
+    "bridge_write_fault": false,
+    "writer_fault": false,
+    "read_arbiter_fault": false,
+    "frame_pool_fault": false,
+    "network_fault": false,
+    "read_queue_overflow": false,
+    "writer_first_error": 0
+  },
+  "video_snapshot": {
+    "version": 0,
+    "valid": false,
+    "active": false,
+    "offset_mismatch": false,
+    "count_overrun": false,
+    "column_word": 0,
+    "received_offset": 0,
+    "expected_offset": 0,
+    "accepted_words": 0
+  },
+  "chain": {
+    "geometry": {
+      "version": 1,
+      "frame_edges": 56259,
+      "low_vsync_lines": 1080,
+      "min_width": 1920,
+      "max_width": 1920,
+      "high_vsync_lines": 0,
+      "capture_flags": 160,
+      "configured": true,
+      "armed": false,
+      "active": true,
+      "bad": false,
+      "closing": false,
+      "result_pending": false,
+      "word_pending": false,
+      "overflow": false
+    },
+    "progress": {
+      "pclk_cycles": 2905718450,
+      "rejected": 10,
+      "overflow_frames": 0
+    },
+    "pipeline": {
+      "starts": 56247,
+      "ends": 56246,
+      "words": 3644752249,
+      "writes": 33144,
+      "capture_fsm": 3,
+      "hdmi_fsm": 3,
+      "record_valid": false,
+      "record_ready": false,
+      "commit": false,
+      "writer_active": true,
+      "writer_fsm": 1,
+      "awvalid": true,
+      "fence_request": false,
+      "writer_ready": false,
+      "wready": false
+    }
+  },
+  "error": null
+}

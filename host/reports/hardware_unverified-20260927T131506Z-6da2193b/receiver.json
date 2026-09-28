@@ -1,0 +1,161 @@
+{
+  "run_id": "hardware_unverified-20260927T131506Z-6da2193b",
+  "configuration": {
+    "device_id": "PG2L100H-MINI-CAM1",
+    "source_mode": "hardware_unverified",
+    "bind_ip": "169.254.81.186",
+    "port": 50000,
+    "peer_ip": "169.254.81.187",
+    "peer_port": 50001,
+    "stream_epoch": 10494532587073033818,
+    "width": 1920,
+    "height": 1080,
+    "bayer_code": 4,
+    "receive_buffer_bytes": 8388608
+  },
+  "source_mode": "hardware_unverified",
+  "hardware_acceptance": "not_performed",
+  "elapsed_receive_seconds": 40.0,
+  "complete_live_fps_in_receive_window": 29.9,
+  "receiver": {
+    "bind": [
+      "169.254.81.186",
+      50000
+    ],
+    "peer": [
+      "169.254.81.187",
+      50001
+    ],
+    "counters": {
+      "datagrams_received": 1777769,
+      "udp_payload_bytes_received": 2601213816,
+      "live_frames_complete": 1196,
+      "preview_frames_replaced": 1194,
+      "archive_frames_enqueued": 200
+    },
+    "socket_receive_buffer_requested": 8388608,
+    "socket_receive_buffer_reported": 8388608,
+    "assembly": {
+      "counters": {
+        "datagrams": 1777769,
+        "live_frames_observed": 1201,
+        "packets_accepted_unique": 1777769,
+        "live_frames_complete": 1196,
+        "live_bytes_complete": 2480025600,
+        "frames_failed_timeout": 4,
+        "frames_failed_stopped": 1
+      },
+      "active_frames": 0,
+      "buffer_bytes": 0,
+      "stream_epoch": 10494532587073033818,
+      "live_first_id": 17861,
+      "live_highwater": 19061,
+      "live_unobserved_ids_in_span": 0
+    },
+    "preview_queue": {
+      "frames": 2,
+      "payload_bytes": 4147200,
+      "max_frames": 2,
+      "max_bytes": 16777216
+    },
+    "archive_queue": {
+      "frames": 0,
+      "payload_bytes": 0,
+      "max_frames": 4,
+      "max_bytes": 16777216
+    },
+    "recent_failures": [
+      {
+        "key": [
+          10494532587073033818,
+          17861,
+          1,
+          1213089106
+        ],
+        "reason": "timeout",
+        "received_packets": 698,
+        "packet_count": 1482,
+        "missing_ranges": [
+          [
+            0,
+            784
+          ]
+        ]
+      },
+      {
+        "key": [
+          10494532587073033818,
+          18381,
+          1,
+          1213089106
+        ],
+        "reason": "timeout",
+        "received_packets": 1412,
+        "packet_count": 1482,
+        "missing_ranges": [
+          [
+            1228,
+            70
+          ]
+        ]
+      },
+      {
+        "key": [
+          10494532587073033818,
+          18390,
+          1,
+          1213089106
+        ],
+        "reason": "timeout",
+        "received_packets": 1439,
+        "packet_count": 1482,
+        "missing_ranges": [
+          [
+            460,
+            43
+          ]
+        ]
+      },
+      {
+        "key": [
+          10494532587073033818,
+          18758,
+          1,
+          1213089106
+        ],
+        "reason": "timeout",
+        "received_packets": 1395,
+        "packet_count": 1482,
+        "missing_ranges": [
+          [
+            492,
+            87
+          ]
+        ]
+      },
+      {
+        "key": [
+          10494532587073033818,
+          19061,
+          1,
+          1213089106
+        ],
+        "reason": "stopped",
+        "received_packets": 353,
+        "packet_count": 1482,
+        "missing_ranges": [
+          [
+            353,
+            1129
+          ]
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "frames_saved": 200,
+    "error": null
+  },
+  "receive_error": null,
+  "notes": "No GUI consumer: preview replacements are expected. Host receive time is not FPGA latency."
+}
