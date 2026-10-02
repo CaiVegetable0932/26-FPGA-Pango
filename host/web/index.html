@@ -24,6 +24,8 @@
     <button class="nav-button active" data-view="live" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg>实时采集</button>
     <button class="nav-button" data-view="records"><svg class="icon"><use href="#i-folder"/></svg>采集记录<span id="nav-saved" class="nav-count">0</span></button>
     <button class="nav-button" data-view="settings"><svg class="icon"><use href="#i-tune"/></svg>连接设置</button>
+    <!-- Purpose: keep calibration in the same local workbench without presenting it as FPGA correction. -->
+    <a class="nav-button" href="/calibration"><svg class="icon"><use href="#i-camera"/></svg>图像标定</a>
   </nav>
   <div class="sidebar-note"><span class="small-dot"></span>本机工作台<span id="server-health">正在连接服务</span></div>
   <div class="platform-card"><span class="eyebrow">PROJECT PLATFORM</span><strong>PG2L100H</strong><span>单路 OV5640 · RAW8</span><div class="platform-rule"></div><small>目标 1920 × 1080 / 30 FPS</small></div>
