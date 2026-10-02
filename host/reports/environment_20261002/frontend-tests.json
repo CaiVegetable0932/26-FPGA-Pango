@@ -1,0 +1,61 @@
+{
+  "utc": "2026-10-02T07:45:10.750Z",
+  "node": "v22.23.3",
+  "platform": "linux",
+  "tests_run": 11,
+  "passed": true,
+  "browser_ui_qa": "not_performed",
+  "results": [
+    {
+      "name": "RAW8 Bayer layout 1",
+      "passed": true
+    },
+    {
+      "name": "RAW8 Bayer layout 2",
+      "passed": true
+    },
+    {
+      "name": "RAW8 Bayer layout 3",
+      "passed": true
+    },
+    {
+      "name": "RAW8 Bayer layout 4",
+      "passed": true
+    },
+    {
+      "name": "Full-scale small RAW grayscale preserves samples",
+      "passed": true
+    },
+    {
+      "name": "1080p Bayer downscale has independent color cell averages",
+      "passed": true
+    },
+    {
+      "name": "RGB888 order and integer grayscale",
+      "passed": true
+    },
+    {
+      "name": "Corrupt lengths, strides, dimensions, formats, and Bayer are rejected",
+      "passed": true
+    },
+    {
+      "name": "Wider RAW preview remains bounded to 960 columns",
+      "passed": true
+    },
+    {
+      "name": "1080p RAW sample gray is lossless and phase independent",
+      "passed": true
+    },
+    {
+      "name": "Half-width RAW gray prefilters Bayer cells without modifying source",
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "web/pixels.js": "be05fefffa5bf7b9178604feba8edba0830fee39d7a4b4a9b66e25c165d90f40",
+    "web/preview-worker.js": "80ec5fcbf54f0ff6f754450aede5283336d061dff340bb8b6345d7f26be7670d",
+    "web/app.js": "bb7497a48e04e723c691c2889fef442c37021749b62b82dbba65994af8c6071e",
+    "web/index.html": "e98eadc17ee0b8d16f6f447655380139d49ddfe6188a199449cfe49191f58a3c",
+    "web/app.css": "67d4149835fb91ee8e8b06e465989f66d37afb342cb9d7eced97925cf3fc310c"
+  }
+}

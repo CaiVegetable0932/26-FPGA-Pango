@@ -1,0 +1,43 @@
+{
+  "utc": "2026-10-02T07:55:11.581053+00:00",
+  "source_mode": "mock",
+  "hardware_acceptance": "not_performed",
+  "passed": true,
+  "checks": [
+    "HTTP page and initial inactive state",
+    "1920x1080 RAW8 loopback and browser Worker preview",
+    "manual RAW archive and original-byte SHA-256",
+    "stop drains capture and preserves evidence",
+    "record and connection settings navigation"
+  ],
+  "headed": true,
+  "chromium_sandbox": true,
+  "browser_version": "153.0.8010.12",
+  "rendered_canvas": {
+    "width": 960,
+    "height": 540,
+    "pixels": [
+      220,
+      220,
+      220,
+      255,
+      220,
+      220,
+      220,
+      255,
+      220,
+      220,
+      220,
+      255,
+      220,
+      220,
+      220,
+      255
+    ]
+  },
+  "raw_artifact": "web-mock-20261002T075517Z-67c73f1e/e1_f35_t1_d1",
+  "raw_sha256": "77748d6fc7a77c5d7bf85f19a610c9e2cf07a2927108eb27e9ea5029c4cf84e6",
+  "complete_frames": 45,
+  "run_id": "web-mock-20261002T075517Z-67c73f1e",
+  "page_errors": []
+}
