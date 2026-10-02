@@ -1,0 +1,24 @@
+{
+  "schema": "pango.fisheye-preview.v1",
+  "preset_name": "用户审校 · 200°鱼眼（2026-10-02）",
+  "parameters": {
+    "model": "fisheye_equidistant",
+    "reference_width": 1920,
+    "reference_height": 1080,
+    "fx": 770,
+    "fy": 752,
+    "cx": 945,
+    "cy": 553,
+    "k1": 0.121,
+    "k2": -0.118,
+    "k3": 0,
+    "k4": 0.036,
+    "output_fov_deg": 139
+  },
+  "parameters_origin": "manual_approximate",
+  "processing_location": "pc_software_reference",
+  "fpga_compatible": false,
+  "source_frame_id": null,
+  "pairing_status": "unverified",
+  "notes": "用户于 2026-10-02 提供的网页审校截图参数；用于手动鱼眼软件预览，未作标定精度验收。"
+}

@@ -1,6 +1,12 @@
 # 上位机开发区
 
-2026-10-02：Jetson Ubuntu 22.04 ARM64 本机环境已配置，项目 Python 3.12.13 与独立 Chromium 可启动 Web 上位机；77 项 Python、11 项前端像素及实际桌面浏览器检查通过。直接运行 `sh host/scripts/start_web.sh`；环境重建、服务管理与设备接入范围见 [本机环境配置](docs/本机环境配置.md) 和 [验证报告](reports/environment_20261002/README.md)。
+2026-10-02：Linux/Jetson 环境与本地标定工作台合并。Linux 提交 `931f2da6` 的历史 Jetson Ubuntu 22.04 ARM64 验证（77 项 Python、11 项前端像素及桌面浏览器检查）见[本机环境配置](docs/本机环境配置.md)和[原验证报告](reports/environment_20261002/README.md)，不代表合并版本已在 Jetson 实板复验。合并版本的 Windows/Linux 软件回归见[合并报告](reports/host_linux_merge_20261002/README.md)。已有 Jetson 环境更新后先执行 `source host/scripts/env.sh` 和 `python host/scripts/setup_calibration.py` 补齐标定依赖，再运行 `sh host/scripts/start_web.sh`。
+
+## 镜头与相机标定（开发中）
+
+本分支新增本机 `/calibration` 工作台：手动记录镜头—图卡实测距离及其参考面、图卡尺寸、镜头/相机/焦点、光照、曝光、云台角度和龙门架位置；支持网口完整 RAW8、采集卡 RGB 和图像导入，分别保存原始证据与派生角点图。OpenCV 提供鱼眼等距模型及受限针孔模型的候选拟合和独立验证；鱼眼系数**不兼容**当前 FPGA 针孔寄存器，不会自动下发或宣称板端完成矫正。安装可选依赖：`python host/scripts/setup_calibration.py`。使用边界与步骤见[标定工作台](docs/标定工作台.md)。
+
+`/calibration#manual-preview` 提供用户指定的手动鱼眼软件参考：默认采用 2026-10-02 用户审校组合（1920×1080；fx/fy=770/752，cx/cy=945/553；D=0.121/-0.118/0/0.036；输出139°），并保留通用光学假设预置。支持焦距、主点、k1～k4 和输出视场即时调参、同输入原图对比、冻结、JSON 导入导出。来源为已保存样本或显式打开的采集卡；结果标记为 PC 软件参考，不替代正式 FPGA 视频链路或标定验收。
 
 1080p RAW8 双路候选的串口配置、网络接收与 Hagibis 独立预览见 [启动说明](docs/RAW8双路候选启动与预览.md)。新 0x71/RAW8 与旧 TEST 严格区分；本轮只做离线验证，不宣称已经收到实际双路相机画面。
 
@@ -63,7 +69,7 @@ Windows 双击 [start_web.cmd](scripts/start_web.cmd)；Ubuntu 在项目根目�
 
 ## 当前基线与后续第一步
 
-硬件基线为PG2L100H（盘古100Kmini）＋单路OV5640，真实1080p30为交付目标。S0 RAW8通过板载千兆网接收，FPGA结果通过单HDMI采集通道接收；PC不向FPGA转发视频，也不在实时模式执行几何矫正。采用串口融合IMU直连FPGA的方向，具体模块和协议待落实。当前界面采用浏览器＋Python标准库本机服务，替代此前PySide6建议；OpenCV/pySerial等后续采集与控制依赖仍需分别验证。本版无第三方Python运行依赖，Ubuntu24.04目标机尚未验证。
+硬件基线为PG2L100H（盘古100Kmini）＋单路OV5640，真实1080p30为交付目标。S0 RAW8通过板载千兆网接收，FPGA结果通过单HDMI采集通道接收；PC不向FPGA转发主视频，手动鱼眼预览仅是明确标记的软件参考，不属于板端实时矫正。采用串口融合IMU直连FPGA的方向，具体模块和协议待落实。当前界面采用浏览器＋Python标准库本机服务，替代此前PySide6建议；核心不依赖第三方包，标定功能需 OpenCV/NumPy，Linux 设备工具与 Jetson 环境依赖及验收边界见上方说明。
 
 先按03文档推进可靠控制、S0网络接收、结果HDMI回采与板端同帧证据采集，再接入测评与自动报告。无硬件时可以用显式标注的mock/replay推进软件，不计作新的实时硬件验收。
 

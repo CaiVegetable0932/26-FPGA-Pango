@@ -4,3 +4,5 @@ playwright==1.63.0
 pyee==13.0.1
 pyserial==3.5
 typing-extensions==4.16.0
+# Share the reviewed calibration pins across Windows/Linux, including ARM64.
+-r ../requirements-calibration.txt

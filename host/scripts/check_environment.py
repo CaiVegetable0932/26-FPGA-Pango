@@ -44,12 +44,20 @@ def main():
             report["checks"]["module_" + name] = True
         except ImportError:
             report["checks"]["module_" + name] = False
-    for name in ("pyserial", "playwright"):
+    # Merged calibration features need the same pinned packages on ARM64.
+    for name in ("pyserial", "playwright", "numpy", "opencv-python-headless"):
         try:
             report["packages"][name] = metadata.version(name)
             report["checks"]["package_" + name] = True
         except metadata.PackageNotFoundError:
             report["checks"]["package_" + name] = False
+    # Metadata alone does not prove the native ARM64 extensions load correctly.
+    for name in ("numpy", "cv2"):
+        try:
+            __import__(name)
+            report["checks"]["module_" + name] = True
+        except (ImportError, OSError):
+            report["checks"]["module_" + name] = False
     tools = {"node": [str(ENVIRONMENT / "node/bin/node"), "--version"],
              "ffmpeg": [str(ENVIRONMENT / "bin/ffmpeg"), "-version"],
              "ffprobe": [str(ENVIRONMENT / "bin/ffprobe"), "-version"],

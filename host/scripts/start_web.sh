@@ -2,8 +2,8 @@
 # Ubuntu/Linux entry point; paths and arguments may contain spaces.
 set -eu
 pango_script_dir=$(cd -P -- "$(dirname -- "$0")" >/dev/null && pwd)
-# Prefer the prepared project runtime on Jetson, whose system Python belongs
-# to Ubuntu/NVIDIA. An explicit PANGO_PYTHON always takes precedence.
+# Prefer Jetson's prepared runtime over the optional calibration venv, while
+# honoring an explicit interpreter; never alter Ubuntu/NVIDIA's system Python.
 pango_environment="$pango_script_dir/../build/environment"
 # Use the native project browser when the prepared runtime is present. This
 # avoids relying on Snap in constrained Jetson desktop sessions and respects
@@ -15,6 +15,8 @@ if [ -n "${PANGO_PYTHON:-}" ]; then
     pango_python=$PANGO_PYTHON
 elif [ -x "$pango_environment/venv/bin/python" ]; then
     pango_python="$pango_environment/venv/bin/python"
+elif [ -x "$pango_script_dir/../build/calibration-venv/bin/python" ]; then
+    pango_python="$pango_script_dir/../build/calibration-venv/bin/python"
 elif command -v python3.12 >/dev/null 2>&1; then
     pango_python=python3.12
 else
