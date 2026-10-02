@@ -151,6 +151,15 @@
   });
   // Purpose: release both the video track and the GPU/reference loop on navigation.
   window.addEventListener("pagehide",()=>{tuning.destroy();controller.destroy();});
-  action(async()=>{token=(await api("/api/session")).token;await refresh();if(controller.getState().supported)await controller.refresh();message("选择或创建标定组后开始采集。");});
+  // Resume the previously opened card on navigation; the shared controller
+  // releases this origin's other preview first and retains unverified identity.
+  action(async()=>{
+    token=(await api("/api/session")).token;await refresh();
+    if(controller.getState().supported){
+      await controller.refresh();
+      if(storage?.getItem("pango.capture.resume")==="1"&&controller.getState().selected)await controller.open();
+    }
+    message("选择或创建标定组后开始采集。");
+  });
 })();
 

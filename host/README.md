@@ -1,5 +1,7 @@
 # 上位机开发区
 
+板卡上电后的日常入口见[一键连接与预览](docs/板卡上电一键启动.md)：首次选择 CP2102 和直连网卡，后续启动 host 可自动完成 RAW8 UART 配置、UDP 接收与采集卡恢复；Windows/Linux 共用实现。
+
 2026-10-02：Linux/Jetson 环境与本地标定工作台合并。Linux 提交 `931f2da6` 的历史 Jetson Ubuntu 22.04 ARM64 验证（77 项 Python、11 项前端像素及桌面浏览器检查）见[本机环境配置](docs/本机环境配置.md)和[原验证报告](reports/environment_20261002/README.md)，不代表合并版本已在 Jetson 实板复验。合并版本的 Windows/Linux 软件回归见[合并报告](reports/host_linux_merge_20261002/README.md)。已有 Jetson 环境更新后先执行 `source host/scripts/env.sh` 和 `python host/scripts/setup_calibration.py` 补齐标定依赖，再运行 `sh host/scripts/start_web.sh`。
 
 ## 镜头与相机标定（开发中）

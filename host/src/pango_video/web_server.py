@@ -13,6 +13,7 @@ from .cli import HOST_ROOT
 from .web_session import SessionError, WebSession
 from .record_store import safe_child, sample_metadata, archives, runs, report_file
 from .calibration import CalibrationStore
+from .board_link import BoardLink
 
 ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.html","text/html; charset=utf-8"),
     "app.css":("app.css","text/css; charset=utf-8"), "app.js":("app.js","text/javascript; charset=utf-8"),
@@ -20,6 +21,7 @@ ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.htm
     "records.js":("records.js","text/javascript; charset=utf-8"),
     "video-input.js":("video-input.js","text/javascript; charset=utf-8"),
     "video-input-ui.js":("video-input-ui.js","text/javascript; charset=utf-8"),
+    "board-link.js":("board-link.js","text/javascript; charset=utf-8"),
     "preview-worker.js":("preview-worker.js","text/javascript; charset=utf-8"),
     # Purpose: serve the local calibration workbench from the same protected origin.
     "calibration":("calibration.html","text/html; charset=utf-8"),
@@ -45,6 +47,8 @@ class LocalServer(ThreadingHTTPServer):
 
     def __init__(self, port=8765, session=None):
         self.session = session or WebSession()
+        # One coordinator owns commissioning and receiver restarts across tabs.
+        self.board_link = BoardLink(self.session)
         # Purpose: serialize CPU-heavy image analysis independently of live UDP reception.
         self.calibration = CalibrationStore(self.session.root)
         self.calibration_slot = threading.BoundedSemaphore(1)
@@ -127,6 +131,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(200,dict(token=self.server.token,status=self.server.session.status()))
             if route == "/api/status":
                 return self._json(200,self.server.session.status())
+            if route == "/api/board/status":
+                return self._json(200,self.server.board_link.status())
+            if route == "/api/board/devices":
+                return self._json(200,self.server.board_link.devices())
             if route == "/api/calibration":
                 return self._json(200,self.server.calibration.list())
             if route == "/api/calibration/artifact":
@@ -201,6 +209,15 @@ class Handler(BaseHTTPRequestHandler):
                 raise SessionError("请求必须是JSON对象")
             route = urlsplit(self.path).path
             session = self.server.session
+            # Board startup is asynchronous, keeping frame/status HTTP responsive.
+            if route == "/api/board/start":
+                return self._json(202,self.server.board_link.start(data or None))
+            if route == "/api/board/stop":
+                if data:
+                    raise SessionError("停止请求不需要参数")
+                return self._json(200,self.server.board_link.stop())
+            if route in ("/api/start", "/api/config") and self.server.board_link.status()["busy"]:
+                raise SessionError("板卡启动中，请等待完成或先停止链路")
             if route == "/api/records/delete":
                 if set(data) != {"targets"}:
                     raise SessionError("删除请求仅接受targets字段")
@@ -212,7 +229,8 @@ class Handler(BaseHTTPRequestHandler):
             if route == "/api/stop":
                 if data:
                     raise SessionError("停止请求不需要参数")
-                return self._json(200,session.stop())
+                self.server.board_link.stop()
+                return self._json(200,session.status())
             if route == "/api/save":
                 if data:
                     raise SessionError("保存请求不需要参数")

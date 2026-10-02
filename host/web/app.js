@@ -12,13 +12,16 @@
   let rendered=0, renderStart=performance.now(), activeView="live", frameTimer=null, statusTimer=null;
   const recordUI=window.PangoRecords.create({request,previewArchive,toast,getStatus:()=>status,getOnline:()=>online});
   const videoInputUI=window.PangoVideoInputUI.create({toast});
+  // The board panel coordinates physical startup; the generic mock stays explicit.
+  const boardUI=window.PangoBoardLink.create({request,video:videoInputUI.controller,toast});
   let recordsLastRefresh=0;
   const archiveWorker=new Worker("/preview-worker.js");
   const worker=new Worker("/preview-worker.js"), title={live:"实时采集",records:"采集记录",settings:"连接设置"};
   function text(id,value){$(id).textContent=value;}
   function toast(message,error=false){$("toast").textContent=message;$("toast").classList.toggle("error",error);$("toast").hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("toast").hidden=true,5000);}
   async function request(path,data,retried=false){
-    const opts={cache:"no-store",signal:AbortSignal.timeout(12000)};
+    // Device enumeration and graceful worker/receiver shutdown can outlast a frame request.
+    const opts={cache:"no-store",signal:AbortSignal.timeout(path.startsWith("/api/board/")?25000:12000)};
     if(data!==undefined){opts.method="POST";opts.headers={"Content-Type":"application/json","X-Pango-Token":api.token};opts.body=JSON.stringify(data);}
     const response=await fetch(path,opts);
     const result=await response.json();
@@ -213,8 +216,8 @@
       }},{signal:toolLifetime.signal})).catch(error=>console.warn("WebMCP registration unavailable",name,error));}catch(error){console.warn("WebMCP registration unavailable",name,error);}
     }
   }
-  window.addEventListener("pagehide",()=>{closed=true;videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);worker.terminate();archiveWorker.terminate();});
+  window.addEventListener("pagehide",()=>{closed=true;boardUI.destroy();videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);worker.terminate();archiveWorker.terminate();});
 
   window.addEventListener("pageshow",event=>{if(event.persisted)location.reload();});
-  init().then(()=>{registerWorkbenchTools();poll();framePoll();});
+  init().then(()=>{registerWorkbenchTools();poll();framePoll();void boardUI.init();});
 })();

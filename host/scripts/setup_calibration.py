@@ -29,6 +29,8 @@ def main() -> None:
     root = Path(__file__).resolve().parents[1]
     python = calibration_python(root)
     subprocess.run([str(python), "-m", "pip", "install", "-r", str(root / "requirements-calibration.txt")], check=True)
+    # The same interpreter must provide serial commissioning and calibration.
+    subprocess.run([str(python), "-m", "pip", "install", "-r", str(root / "requirements-device.txt")], check=True)
     subprocess.run([str(python), "-c", "import cv2,numpy; print('OpenCV',cv2.__version__,'NumPy',numpy.__version__)"], check=True)
 
 

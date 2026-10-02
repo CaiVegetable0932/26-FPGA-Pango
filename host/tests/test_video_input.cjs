@@ -130,6 +130,25 @@ async function test(name,fn){try{await fn();results.push({name,passed:true});}ca
     const stream=ui.controller.getStream();await $("capture-preview-close").fire("click");assert.equal(stream.track.stops,1);assert.equal($("capture-video").hidden,true);
     ui.destroy();f.controller.destroy();assert.equal($("capture-open").listeners.get("click").size,0);
   });
+  // Regression cases for USB re-enumeration and bounded busy-driver recovery.
+  await test("Transient busy capture retries the same exact device",async()=>{
+    const f=fixture();await f.controller.refresh();f.controller.configure("card");let tries=0;
+    f.media.next=async()=>{if(tries++===0)throw Object.assign(Error(),{name:"NotReadableError"});return capture();};
+    assert.equal((await f.controller.open()).status,"open");assert.equal(f.calls.length,2);
+    assert.ok(f.calls.every(c=>c.video.deviceId.exact==="card"));f.controller.destroy();
+  });
+  await test("USB ID is recovered only from a unique saved device label",async()=>{
+    const f=fixture();await f.controller.refresh();f.controller.configure("card");
+    f.media.devices[0].deviceId="replugged";await f.controller.refresh();
+    assert.equal((await f.controller.open()).selected.deviceId,"replugged");
+    assert.equal(f.calls[0].video.deviceId.exact,"replugged");f.controller.destroy();
+  });
+  await test("Ambiguous matching labels do not select a replacement",async()=>{
+    const f=fixture();await f.controller.refresh();f.controller.configure("card");
+    f.media.devices=[{kind:"videoinput",deviceId:"new1",label:"Hagibis"},{kind:"videoinput",deviceId:"new2",label:"Hagibis"}];
+    await f.controller.refresh();f.media.next=async()=>{throw Object.assign(Error(),{name:"NotFoundError"});};
+    assert.equal((await f.controller.open()).status,"error");assert.equal(f.calls[0].video.deviceId.exact,"card");f.controller.destroy();
+  });
   const root=path.resolve(__dirname,".."),files=["web/video-input.js","web/video-input-ui.js","tests/test_video_input.cjs"];
   const report={utc:new Date().toISOString(),node:process.version,tests_run:results.length,passed:results.every(r=>r.passed),
     test_environment:"Node.js MediaDevices, MediaStreamTrack and DOM fixtures",browser_ui_qa:"not_performed",hardware_capture:"not_performed",signal_validation:"not_performed",results,

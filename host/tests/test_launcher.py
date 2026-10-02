@@ -132,6 +132,9 @@ class LauncherTests(unittest.TestCase):
         with patch.object(launcher, "LocalServer") as factory, redirect_stdout(self.output):
             server = factory.return_value
             server.serve_forever.side_effect = KeyboardInterrupt
+            # Coordinator shutdown delegates to the owned receiver's stop.
+            server.board_link.profile = {}
+            server.board_link.stop.side_effect = server.session.stop
             self.assertEqual(launcher.run(0, open_browser=False), 0)
             server.session.stop.assert_called_once()
             server.server_close.assert_called_once()
@@ -143,6 +146,9 @@ class LauncherTests(unittest.TestCase):
             server = factory.return_value
             server.serve_forever.side_effect = KeyboardInterrupt
             server.session.stop.side_effect = SessionError("writer still busy")
+            # Preserve the shutdown-failure assertion through the new owner.
+            server.board_link.profile = {}
+            server.board_link.stop.side_effect = server.session.stop
             self.assertEqual(launcher.run(0, open_browser=False), 2)
             server.server_close.assert_called_once()
         self.assertIn("writer still busy", self.output.getvalue())

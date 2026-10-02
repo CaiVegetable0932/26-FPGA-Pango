@@ -1590,6 +1590,14 @@ td.table-actions a,td.table-actions button { display:inline-block; margin:4px 10
 #capture-message { padding:12px 14px; background:#edf4ff; border-left:3px solid #4882e5; border-radius:4px; overflow-wrap:anywhere; }
 .capture-facts { display:flex; flex-wrap:wrap; gap:16px 32px; margin:16px 0 0; }
 .capture-facts dt { color:#526e8e; font-size:13px; }
+/* Physical setup remains compact, with actionable progress above both previews. */
+.board-startup { margin-bottom:20px; }
+.board-fields { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:16px 20px; }
+.board-fields label { display:grid; gap:6px; font-size:13px; color:#284c79; }
+.board-fields input,.board-fields select { width:100%; min-width:0; padding:9px; border:1px solid #c8d9ee; border-radius:7px; background:white; }
+.board-actions { display:flex; gap:12px; align-items:center; flex-wrap:wrap; padding:0 20px; }
+.board-startup>p { margin:12px 20px; color:#284c79; }
+@media(max-width:850px) { .board-fields { grid-template-columns:1fr; } }
 .capture-facts dd { margin:5px 0 0; color:#284c79; font-size:14px; overflow-wrap:anywhere; }
 .capture-form-actions,.capture-preview-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .capture-preview-actions .button { min-height:34px; padding:6px 10px; font-size:13px; }

@@ -5,7 +5,7 @@
   <title>Pango Vision · 视频采集工作台</title>
   <meta name="description" content="PG2L100H 上位机：RAW8视频接收、源帧预览与原始证据归档。">
   <link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/app.css">
-  <script src="/records.js" defer></script><script src="/video-input.js" defer></script><script src="/video-input-ui.js" defer></script><script src="/app.js" defer></script>
+  <script src="/records.js" defer></script><script src="/video-input.js" defer></script><script src="/video-input-ui.js" defer></script><script src="/board-link.js" defer></script><script src="/app.js" defer></script>
 </head>
 <body>
 <svg class="icon-defs" aria-hidden="true"><defs>
@@ -36,6 +36,21 @@
     <div id="connection-alert" class="alert" role="alert" hidden>本地服务未响应。请确认服务正在运行。<button id="reconnect">重新连接</button></div>
     <section id="view-live" class="view">
       <div class="page-heading"><div><div class="eyebrow page-kicker">CAPTURE WORKSPACE</div><h1>视频采集工作台</h1><p>查看源帧，检查链路，保留原始证据。</p></div><button class="button secondary" data-view="settings"><svg class="icon"><use href="#i-tune"/></svg>连接设置</button></div>
+      <!-- One saved physical setup drives UART commissioning and UDP reception. -->
+      <article class="panel board-startup" aria-labelledby="board-title">
+        <div class="panel-heading"><h2 id="board-title">板卡上电 → 一键连接</h2><button id="board-refresh" class="button secondary">刷新设备</button></div>
+        <div class="board-fields">
+          <label>板卡 USB-UART / CP2102<select id="board-port"><option value="">请刷新设备</option></select></label>
+          <label>连接板卡的以太网卡<select id="board-interface"><option value="">请刷新设备</option></select></label>
+          <label>FPGA IPv4<input id="board-source-ip" value="169.254.81.187" inputmode="decimal"></label>
+          <label>FPGA MAC<input id="board-source-mac" value="02:00:00:00:00:01"></label>
+          <label>PC 接收端口<input id="board-peer-port" type="number" value="50000" min="1" max="65535"></label>
+          <label>FPGA 发送端口<input id="board-source-port" type="number" value="50001" min="1" max="65535"></label>
+        </div>
+        <div class="board-actions"><label><input id="board-auto" type="checkbox" checked>下次启动 host 自动连接</label><button id="board-start" class="button primary">启动 / 重连板卡链路</button><button id="board-stop" class="button secondary">停止板卡接收</button><a href="/calibration" class="button secondary">进入标定</a></div>
+        <p id="board-message" role="status">首次选择直连板卡的网卡和串口；本机 IP/MAC 将从该网卡读取。</p>
+        <p id="board-diagnostics"></p>
+      </article>
       <div class="session-toolbar">
         <div class="session-label"><span id="source-pill" class="pill mock">本机模拟</span><span class="status-dot" id="session-dot"></span><strong id="session-state">未开始采集</strong></div>
         <div class="toolbar-actions"><label class="archive-policy">自动归档<select id="archive-every" aria-label="自动归档策略"><option value="0">关闭</option><option value="30">每 30 个完整帧</option><option value="1">每个完整帧</option></select></label><button id="stop" class="button secondary" disabled><span class="stop-shape"></span>停止</button><button id="start" class="button primary"><span class="play-shape"></span><span id="start-label">开始模拟</span></button></div>

@@ -73,6 +73,18 @@ class WebTests(unittest.TestCase):
         self.assertTrue(self.root.resolve().is_relative_to((HOST_ROOT/"build").resolve()))
         self.temp.cleanup()
 
+    def test_board_routes_require_token_and_expose_inventory_errors(self):
+        """Device failures remain actionable through HTTP without opening hardware."""
+        self.server.board_link.inventory = lambda:[]
+        self.server.board_link.ports = lambda:[]
+        code, _, body = self.call("GET", "/api/board/devices")
+        self.assertEqual(code, 200)
+        self.assertEqual(body, dict(interfaces=[], ports=[], errors=[]))
+        self.assertEqual(self.call("GET", "/api/board/status")[2]["phase"], "idle")
+        self.assertEqual(self.call("POST", "/api/board/start", {}, headers={"X-Pango-Token":""})[0], 403)
+        self.assertEqual(self.call("POST", "/api/board/start", {})[0], 409)
+        self.assertEqual(self.call("POST", "/api/board/stop", {})[2]["phase"], "stopped")
+
     def call(self, method, path, data=None, headers=None, raw=False):
         connection = http.client.HTTPConnection("127.0.0.1",self.server.server_port,timeout=5)
         body = None if data is None else json.dumps(data).encode()
