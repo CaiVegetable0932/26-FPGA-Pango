@@ -1,0 +1,101 @@
+{
+  "utc": "2026-10-02T08:25:25.620869+00:00",
+  "platform": "Linux-5.15.148-tegra-aarch64-with-glibc2.35",
+  "machine": "aarch64",
+  "python": "3.12.13 (main, Aug  7 2026, 02:24:44) [Clang 22.1.3 ]",
+  "executable": "/home/cai/26-FPGA-Pango/26-FPGA-Pango/host/build/environment/venv/bin/python",
+  "hardware_acceptance": "not_performed",
+  "checks": {
+    "python_312_or_newer": true,
+    "module_ssl": true,
+    "module_sqlite3": true,
+    "module_bz2": true,
+    "module_lzma": true,
+    "module_venv": true,
+    "package_pyserial": true,
+    "package_playwright": true,
+    "tool_node": true,
+    "tool_ffmpeg": true,
+    "tool_ffprobe": true,
+    "tool_v4l2-ctl": true,
+    "tool_chromium": true,
+    "udp_8mib_request_available": true,
+    "dialout_configured": true
+  },
+  "tools": {
+    "node": {
+      "returncode": 0,
+      "stdout": "v22.23.3",
+      "stderr": ""
+    },
+    "ffmpeg": {
+      "returncode": 0,
+      "stdout": "ffmpeg version 4.4.2-0ubuntu0.22.04.1 Copyright (c) 2000-2021 the FFmpeg developers\nbuilt with gcc 11 (Ubuntu 11.2.0-19ubuntu1)\nconfiguration: --prefix=/usr --extra-version=0ubuntu0.22.04.1 --toolchain=hardened --libdir=/usr/lib/aarch64-linux-gnu --incdir=/usr/include/aarch64-linux-gnu --arch=arm64 --enable-gpl --disable-stripping --enable-gnutls --enable-ladspa --enable-libaom --enable-libass --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libcodec2 --enable-libdav1d --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libjack --enable-libmp3lame --enable-libmysofa --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-libpulse --enable-librabbitmq --enable-librubberband --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-libzmq --enable-libzvbi --enable-lv2 --enable-omx --enable-openal --enable-opencl --enable-opengl --enable-sdl2 --enable-pocketsphinx --enable-librsvg --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-libx264 --enable-shared\nlibavutil      56. 70.100 / 56. 70.100\nlibavcodec     58.134.100 / 58.134.100\nlibavformat    58. 76.100 / 58. 76.100\nlibavdevice    58. 13.100 / 58. 13.100\nlibavfilter     7.110.100 /  7.110.100\nlibswscale      5.  9.100 /  5.  9.100\nlibswresample   3.  9.100 /  3.  9.100\nlibpostproc    55.  9.100 / 55.  9.100",
+      "stderr": ""
+    },
+    "ffprobe": {
+      "returncode": 0,
+      "stdout": "ffprobe version 4.4.2-0ubuntu0.22.04.1 Copyright (c) 2007-2021 the FFmpeg developers\nbuilt with gcc 11 (Ubuntu 11.2.0-19ubuntu1)\nconfiguration: --prefix=/usr --extra-version=0ubuntu0.22.04.1 --toolchain=hardened --libdir=/usr/lib/aarch64-linux-gnu --incdir=/usr/include/aarch64-linux-gnu --arch=arm64 --enable-gpl --disable-stripping --enable-gnutls --enable-ladspa --enable-libaom --enable-libass --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libcdio --enable-libcodec2 --enable-libdav1d --enable-libflite --enable-libfontconfig --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libjack --enable-libmp3lame --enable-libmysofa --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-libpulse --enable-librabbitmq --enable-librubberband --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvorbis --enable-libvpx --enable-libwebp --enable-libx265 --enable-libxml2 --enable-libxvid --enable-libzimg --enable-libzmq --enable-libzvbi --enable-lv2 --enable-omx --enable-openal --enable-opencl --enable-opengl --enable-sdl2 --enable-pocketsphinx --enable-librsvg --enable-libdc1394 --enable-libdrm --enable-libiec61883 --enable-chromaprint --enable-frei0r --enable-libx264 --enable-shared\nlibavutil      56. 70.100 / 56. 70.100\nlibavcodec     58.134.100 / 58.134.100\nlibavformat    58. 76.100 / 58. 76.100\nlibavdevice    58. 13.100 / 58. 13.100\nlibavfilter     7.110.100 /  7.110.100\nlibswscale      5.  9.100 /  5.  9.100\nlibswresample   3.  9.100 /  3.  9.100\nlibpostproc    55.  9.100 / 55.  9.100",
+      "stderr": ""
+    },
+    "v4l2-ctl": {
+      "returncode": 0,
+      "stdout": "v4l2-ctl 1.22.1",
+      "stderr": ""
+    },
+    "chromium": {
+      "returncode": 0,
+      "stdout": "Google Chrome for Testing 153.0.8010.12",
+      "stderr": ""
+    }
+  },
+  "packages": {
+    "pyserial": "3.5",
+    "playwright": "1.63.0",
+    "pip": "26.2.1"
+  },
+  "installed_dependencies": [
+    "greenlet==3.5.6",
+    "pip==26.2.1",
+    "playwright==1.63.0",
+    "pyee==13.0.1",
+    "pyserial==3.5",
+    "typing-extensions==4.16.0"
+  ],
+  "hardware_inventory": {
+    "usb": {
+      "returncode": 0,
+      "stdout": "Bus 002 Device 002: ID 0bda:0489 Realtek Semiconductor Corp. 4-Port USB 3.0 Hub\nBus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 001 Device 003: ID 13d3:3549 IMC Networks Bluetooth Radio\nBus 001 Device 004: ID 0c45:fefe Microdia 2.4G Dongle\nBus 001 Device 002: ID 0bda:5489 Realtek Semiconductor Corp. 4-Port USB 2.0 Hub\nBus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub",
+      "stderr": ""
+    },
+    "network": {
+      "returncode": 0,
+      "stdout": "lo               UNKNOWN        127.0.0.1/8 ::1/128 \nwlP1p1s0         UP             192.168.31.123/24 fe80::c935:6c8a:f352:db1f/64 \ncan0             DOWN           \nenP8p1s0         DOWN           \nl4tbr0           DOWN           \nusb0             DOWN           \nusb1             DOWN",
+      "stderr": ""
+    },
+    "video_nodes": [],
+    "serial_ports": []
+  },
+  "dialout": {
+    "user": "cai",
+    "configured": true,
+    "active_in_this_session": false
+  },
+  "udp_buffer_limit": {
+    "returncode": 0,
+    "stdout": "net.core.rmem_max = 16777216\nnet.core.rmem_default = 212992",
+    "stderr": ""
+  },
+  "udp_receive_buffer": {
+    "requested": 8388608,
+    "reported": 16777216
+  },
+  "source_sha256": {
+    "scripts/start_web.sh": "f335d2eea989e8d2119d23d84ca7848c561b6535e30108c9ba0e224a2765cfdb",
+    "scripts/env.sh": "72bc7615b00bd4f50a00a5e496fc6b680ac8dbfc0e746b04f699a7063e697300",
+    "scripts/open_browser.sh": "f3265931a23538c58c0e1d80d2bbe15092ee1d6bfcc2eec755dcfe6523f336e3",
+    "scripts/run_capture_tool.sh": "661d22e626c2107ad08b2470bb7c73d2a0ea1d3859f2734ceec9177c287a65ff",
+    "build/environment/downloads/node-SHASUMS256.txt": "4fe99a2ba9d552a6f51c13ed68fb11104cfa5df601aec616be689253a8139e7a"
+  },
+  "software_environment_ready": true
+}
