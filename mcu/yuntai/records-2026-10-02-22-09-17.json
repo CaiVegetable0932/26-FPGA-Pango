@@ -1,0 +1,200 @@
+[
+  {
+    "type": "read",
+    "data": "READY two-axis test; no automatic motion; USART1 115200 8N1\r\nScale assumption: 270deg / 4095 counts; test step=152 counts\r\nhelp | status | scan [first last] | ping ID | get ID\r\nmove 1 | move 2 | map AXIS ID | setid OLD NEW isolated\r\nov [AXIS] : hold current position; torque ID 0|1\r\nst/calibration are not implemented. End each command with CR/LF.\r\n",
+    "timestamp": 1790949387687,
+    "time": "2026-10-02 21:56:27:687",
+    "firstSeenAt": 1790949387687,
+    "lastSeenAt": 1790949387717,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 349
+  },
+  {
+    "type": "write",
+    "data": "ping 1\n",
+    "timestamp": 1790949624915,
+    "time": "2026-10-02 22:00:24:915",
+    "firstSeenAt": 1790949624915,
+    "lastSeenAt": 1790949624915,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 7
+  },
+  {
+    "type": "read",
+    "data": "PING requested=1 actual=1\r\n",
+    "timestamp": 1790949624929,
+    "time": "2026-10-02 22:00:24:929",
+    "firstSeenAt": 1790949624929,
+    "lastSeenAt": 1790949624929,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 27
+  },
+  {
+    "type": "write",
+    "data": "setid 1 2 isolated\n",
+    "timestamp": 1790949662374,
+    "time": "2026-10-02 22:01:02:374",
+    "firstSeenAt": 1790949662374,
+    "lastSeenAt": 1790949662374,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 19
+  },
+  {
+    "type": "read",
+    "data": "SETID old=1 new=2 comm=0; power-cycle and ping new ID\r\n",
+    "timestamp": 1790949662605,
+    "time": "2026-10-02 22:01:02:605",
+    "firstSeenAt": 1790949662605,
+    "lastSeenAt": 1790949662609,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 55
+  },
+  {
+    "type": "read",
+    "data": "READY two-axis test; no automatic motion; USART1 115200 8N1\r\nScale assumption: 270deg / 4095 counts; test step=152 counts\r\nhelp | status | scan [first last] | ping ID | get ID\r\nmove 1 | move 2 | map AXIS ID | setid OLD NEW isolated\r\nov [AXIS] : hold current position; torque ID 0|1\r\nst/calibration are not implemented. End each command with CR/LF.\r\n",
+    "timestamp": 1790949693049,
+    "time": "2026-10-02 22:01:33:049",
+    "firstSeenAt": 1790949693049,
+    "lastSeenAt": 1790949693078,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 349
+  },
+  {
+    "type": "write",
+    "data": "ping 2\n",
+    "timestamp": 1790949733665,
+    "time": "2026-10-02 22:02:13:665",
+    "firstSeenAt": 1790949733665,
+    "lastSeenAt": 1790949733665,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 7
+  },
+  {
+    "type": "read",
+    "data": "PING requested=2 actual=2\r\n",
+    "timestamp": 1790949733678,
+    "time": "2026-10-02 22:02:13:678",
+    "firstSeenAt": 1790949733678,
+    "lastSeenAt": 1790949733678,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 27
+  },
+  {
+    "type": "write",
+    "data": "scan 1 2\n",
+    "timestamp": 1790949778842,
+    "time": "2026-10-02 22:02:58:842",
+    "firstSeenAt": 1790949778842,
+    "lastSeenAt": 1790949778842,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 9
+  },
+  {
+    "type": "read",
+    "data": "SCAN 1..2 (up to 27s); wait for SCAN DONE\r\n",
+    "timestamp": 1790949778847,
+    "time": "2026-10-02 22:02:58:847",
+    "firstSeenAt": 1790949778847,
+    "lastSeenAt": 1790949778851,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 43
+  },
+  {
+    "type": "read",
+    "data": "FOUND id=1 alarm=0x00\r\n",
+    "timestamp": 1790949778860,
+    "time": "2026-10-02 22:02:58:860",
+    "firstSeenAt": 1790949778860,
+    "lastSeenAt": 1790949778860,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 23
+  },
+  {
+    "type": "read",
+    "data": "FOUND id=2 alarm=0x00\r\nSCAN DONE found=2 (duplicate IDs cannot be detected reliably)\r\n",
+    "timestamp": 1790949778869,
+    "time": "2026-10-02 22:02:58:869",
+    "firstSeenAt": 1790949778869,
+    "lastSeenAt": 1790949778875,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 86
+  },
+  {
+    "type": "write",
+    "data": "move 1\n",
+    "timestamp": 1790949832835,
+    "time": "2026-10-02 22:03:52:835",
+    "firstSeenAt": 1790949832835,
+    "lastSeenAt": 1790949832835,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 7
+  },
+  {
+    "type": "read",
+    "data": "MOVE axis=1 id=1 raw=871 -> 1023 (+10deg), then return\r\n",
+    "timestamp": 1790949832887,
+    "time": "2026-10-02 22:03:52:887",
+    "firstSeenAt": 1790949832887,
+    "lastSeenAt": 1790949832890,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 56
+  },
+  {
+    "type": "read",
+    "data": "ERR axis=1 target=1023 actual=1008; holding actual position\r\n",
+    "timestamp": 1790949835399,
+    "time": "2026-10-02 22:03:55:399",
+    "firstSeenAt": 1790949835399,
+    "lastSeenAt": 1790949835402,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 61
+  },
+  {
+    "type": "write",
+    "data": "move 2\n",
+    "timestamp": 1790949846940,
+    "time": "2026-10-02 22:04:06:940",
+    "firstSeenAt": 1790949846940,
+    "lastSeenAt": 1790949846940,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 7
+  },
+  {
+    "type": "read",
+    "data": "MOVE axis=2 id=2 raw=2030 -> 2182 (+10deg), then return\r\n",
+    "timestamp": 1790949846993,
+    "time": "2026-10-02 22:04:06:993",
+    "firstSeenAt": 1790949846993,
+    "lastSeenAt": 1790949846996,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 57
+  },
+  {
+    "type": "read",
+    "data": "ERR axis=2 target=2182 actual=2168; holding actual position\r\n",
+    "timestamp": 1790949849504,
+    "time": "2026-10-02 22:04:09:504",
+    "firstSeenAt": 1790949849504,
+    "lastSeenAt": 1790949849508,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 61
+  }
+]
