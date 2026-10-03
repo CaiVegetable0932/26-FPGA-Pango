@@ -499,6 +499,19 @@ JOHO_STATUS USL_ReadRegister(Usart_DataTypeDef *usart, uint8_t id,
     return JOHO_STATUS_ID_NOT_MATCH;
 }
 
+JOHO_STATUS USL_WriteRegister(Usart_DataTypeDef *usart, uint8_t id,
+                             uint8_t address, const uint8_t *data, uint8_t length)
+{
+    uint8_t content[41];
+    if (id < 1U || id > 250U || !data || length < 1U || length > 40U) {
+        return JOHO_STATUS_FAIL;
+    }
+    content[0] = address;
+    memcpy(&content[1], data, length);
+    JOHO_PackageBuild_Send(usart, id, (uint8_t)(length + 3U), CMDType_Write, content);
+    return lastTransmitStatus == HAL_OK ? JOHO_STATUS_SUCCESS : JOHO_STATUS_FAIL;
+}
+
 JOHO_STATUS USL_ChangeId(Usart_DataTypeDef *usart, uint8_t old_id, uint8_t new_id)
 {
     uint8_t request[2] = {0x05U, new_id};

@@ -207,6 +207,8 @@ void SET_Torque(Usart_DataTypeDef *usart, uint8_t servo_id, uint8_t isopen);
 JOHO_STATUS USL_ReadRegister(Usart_DataTypeDef *usart, uint8_t id,
                             uint8_t address, uint8_t *data, uint8_t length,
                             uint8_t *servo_status);
+JOHO_STATUS USL_WriteRegister(Usart_DataTypeDef *usart, uint8_t id,
+                             uint8_t address, const uint8_t *data, uint8_t length);
 JOHO_STATUS USL_ChangeId(Usart_DataTypeDef *usart, uint8_t old_id, uint8_t new_id);
 JOHO_STATUS USL_MoveChecked(Usart_DataTypeDef *usart, uint8_t id,
                            uint16_t position, uint16_t interval);

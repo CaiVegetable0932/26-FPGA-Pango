@@ -71,6 +71,21 @@ int main(void)
     const uint8_t torque[] = {0xFF,0xFF,2,4,3,0x28,1,0xCD};
     assert(USL_TorqueChecked(&bus, 2U, 1U) == JOHO_STATUS_SUCCESS);
     Expect(torque, sizeof(torque));
+    const uint8_t fullRangeData[] = {0x00,0x00,0x0F,0xFF};
+    const uint8_t fullRange[] = {0xFF,0xFF,1,7,3,0x09,0x00,0x00,0x0F,0xFF,0xDD};
+    assert(USL_WriteRegister(&bus, 1U, 0x09U, fullRangeData, sizeof(fullRangeData)) == JOHO_STATUS_SUCCESS);
+    Expect(fullRange, sizeof(fullRange));
+    const uint8_t motorModeData[] = {0x00};
+    const uint8_t motorModeFrame[] = {0xFF,0xFF,1,4,3,0x1C,0x00,0xDB};
+    assert(USL_WriteRegister(&bus, 1U, 0x1CU, motorModeData, sizeof(motorModeData)) == JOHO_STATUS_SUCCESS);
+    Expect(motorModeFrame, sizeof(motorModeFrame));
+    const uint8_t directionFrame[] = {0xFF,0xFF,1,4,3,0x1D,0x00,0xDA};
+    assert(USL_WriteRegister(&bus, 1U, 0x1DU, motorModeData, sizeof(motorModeData)) == JOHO_STATUS_SUCCESS);
+    Expect(directionFrame, sizeof(directionFrame));
+    const uint8_t speedData[] = {0x00,0x14,0x00,0x00};
+    const uint8_t speedFrame[] = {0xFF,0xFF,1,7,3,0x41,0x00,0x14,0x00,0x00,0x9F};
+    assert(USL_WriteRegister(&bus, 1U, 0x41U, speedData, sizeof(speedData)) == JOHO_STATUS_SUCCESS);
+    Expect(speedFrame, sizeof(speedFrame));
 
     uint8_t data[2], alarm = 0U;
     const uint8_t position[] = {7, 0xD0};
@@ -107,6 +122,6 @@ int main(void)
     assert(USL_MoveChecked(&bus, 1U, 2000U, 1000U) == JOHO_STATUS_FAIL);
     assert(USL_TorqueChecked(&bus, 1U, 1U) == JOHO_STATUS_FAIL);
     assert(USL_TorqueChecked(&bus, 254U, 1U) == JOHO_STATUS_FAIL);
-    puts("PASS: golden UART frames, checksum, big endian, ACK/ID filtering, alarm, malformed size, timeout, ID readback and TX failure");
+    puts("PASS: golden UART frames, checksum, big endian, motor mode direction/speed frames, ACK/ID filtering, alarm, malformed size, timeout, ID readback and TX failure");
     return 0;
 }
