@@ -85,6 +85,13 @@ def run(port=8765, *, open_browser=True):
         print(f"Pango Web UI: http://127.0.0.1:{server.server_port}/", flush=True)
         print(f"[Pango] Python {sys.version.split()[0]}; capture starts only from the page.", flush=True)
         print("[Pango] Keep this terminal open. Press Ctrl+C here to stop the service safely.", flush=True)
+        # Saved physical setup is restored; probe cold/warm state before boot.
+        if server.board_link.profile.get("auto_start"):
+            try:
+                server.board_link.start()
+            except SessionError as error:
+                # Keep the page available to repair stale or manually edited preferences.
+                server.board_link._set("error", str(error))
         if open_browser:
             threading.Thread(target=open_when_ready, args=(server.server_port, cancelled),
                              name="pango-browser", daemon=True).start()
@@ -97,7 +104,7 @@ def run(port=8765, *, open_browser=True):
     finally:
         cancelled.set()
         try:
-            server.session.stop()
+            server.board_link.stop()
         except (OSError, SessionError) as error:
             print(f"[Pango] Capture could not stop cleanly: {error}", file=sys.stderr, flush=True)
             exit_code = 2

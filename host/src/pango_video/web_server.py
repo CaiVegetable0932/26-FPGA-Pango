@@ -12,6 +12,8 @@ from urllib.parse import parse_qs, quote, urlsplit
 from .cli import HOST_ROOT
 from .web_session import SessionError, WebSession
 from .record_store import safe_child, sample_metadata, archives, runs, report_file
+from .calibration import CalibrationStore
+from .board_link import BoardLink
 
 ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.html","text/html; charset=utf-8"),
     "app.css":("app.css","text/css; charset=utf-8"), "app.js":("app.js","text/javascript; charset=utf-8"),
@@ -19,7 +21,16 @@ ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.htm
     "records.js":("records.js","text/javascript; charset=utf-8"),
     "video-input.js":("video-input.js","text/javascript; charset=utf-8"),
     "video-input-ui.js":("video-input-ui.js","text/javascript; charset=utf-8"),
+    "board-link.js":("board-link.js","text/javascript; charset=utf-8"),
     "preview-worker.js":("preview-worker.js","text/javascript; charset=utf-8"),
+    # Purpose: serve the local calibration workbench from the same protected origin.
+    "calibration":("calibration.html","text/html; charset=utf-8"),
+    "calibration.html":("calibration.html","text/html; charset=utf-8"),
+    "calibration.js":("calibration.js","text/javascript; charset=utf-8"),
+    "calibration.css":("calibration.css","text/css; charset=utf-8"),
+    # Purpose: keep the manually editable PC fish-eye reference local to calibration.
+    "fisheye-preview.js":("fisheye-preview.js","text/javascript; charset=utf-8"),
+    "fisheye-tuning.js":("fisheye-tuning.js","text/javascript; charset=utf-8"),
     "favicon.svg":("favicon.svg","image/svg+xml")}
 
 
@@ -36,6 +47,11 @@ class LocalServer(ThreadingHTTPServer):
 
     def __init__(self, port=8765, session=None):
         self.session = session or WebSession()
+        # One coordinator owns commissioning and receiver restarts across tabs.
+        self.board_link = BoardLink(self.session)
+        # Purpose: serialize CPU-heavy image analysis independently of live UDP reception.
+        self.calibration = CalibrationStore(self.session.root)
+        self.calibration_slot = threading.BoundedSemaphore(1)
         self.token = secrets.token_urlsafe(32)
         self._slots = threading.BoundedSemaphore(16)
         super().__init__(("127.0.0.1",port), Handler)
@@ -115,6 +131,18 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(200,dict(token=self.server.token,status=self.server.session.status()))
             if route == "/api/status":
                 return self._json(200,self.server.session.status())
+            if route == "/api/board/status":
+                return self._json(200,self.server.board_link.status())
+            if route == "/api/board/devices":
+                return self._json(200,self.server.board_link.devices())
+            if route == "/api/calibration":
+                return self._json(200,self.server.calibration.list())
+            if route == "/api/calibration/artifact":
+                path = self.server.calibration.artifact(
+                    query.get("dataset",[""])[0], query.get("sample",[""])[0],
+                    query.get("file",[""])[0], query.get("version",[None])[0])
+                return self._send(200,path.read_bytes(),"application/octet-stream",
+                    {"Content-Disposition":"attachment; filename*=UTF-8''"+quote(path.name)})
             if route == "/api/frame":
                 latest = self.server.session.latest()
                 if latest is None:
@@ -169,6 +197,9 @@ class Handler(BaseHTTPRequestHandler):
             if self.headers.get("Transfer-Encoding"):
                 return self._json(400,dict(error="不支持分块请求体"))
             route = urlsplit(self.path).path
+            # Purpose: large calibration uploads have a separate bounded request path.
+            if route.startswith("/api/calibration/"):
+                return self._calibration_post(route)
             size = int(self.headers.get("Content-Length","0"))
             maximum = 1024*1024 if route == "/api/records/delete" else 16384
             if not 0 < size <= maximum:
@@ -178,6 +209,15 @@ class Handler(BaseHTTPRequestHandler):
                 raise SessionError("请求必须是JSON对象")
             route = urlsplit(self.path).path
             session = self.server.session
+            # Board startup is asynchronous, keeping frame/status HTTP responsive.
+            if route == "/api/board/start":
+                return self._json(202,self.server.board_link.start(data or None))
+            if route == "/api/board/stop":
+                if data:
+                    raise SessionError("停止请求不需要参数")
+                return self._json(200,self.server.board_link.stop())
+            if route in ("/api/start", "/api/config") and self.server.board_link.status()["busy"]:
+                raise SessionError("板卡启动中，请等待完成或先停止链路")
             if route == "/api/records/delete":
                 if set(data) != {"targets"}:
                     raise SessionError("删除请求仅接受targets字段")
@@ -189,7 +229,8 @@ class Handler(BaseHTTPRequestHandler):
             if route == "/api/stop":
                 if data:
                     raise SessionError("停止请求不需要参数")
-                return self._json(200,session.stop())
+                self.server.board_link.stop()
+                return self._json(200,session.status())
             if route == "/api/save":
                 if data:
                     raise SessionError("保存请求不需要参数")
@@ -204,3 +245,32 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_OPTIONS(self):
         self._json(403,dict(error="跨源访问未启用"))
+
+    def _calibration_post(self, route):
+        """Validate token in do_POST; bound uploads and preserve live receiver capacity."""
+        if not self.server.calibration_slot.acquire(blocking=False):
+            return self._json(409,dict(error="标定任务正在处理，请稍后重试"))
+        try:
+            size = int(self.headers.get("Content-Length","0"))
+            limit = 44*1024*1024 if route == "/api/calibration/image" else 16384
+            if not 0 < size <= limit:
+                return self._json(413,dict(error="标定请求长度不允许"))
+            data = json.loads(self.rfile.read(size))
+            if not isinstance(data,dict):
+                raise ValueError("请求必须是JSON对象")
+            store = self.server.calibration
+            if route == "/api/calibration/create":
+                result = store.create(data.get("config"))
+            elif route == "/api/calibration/image":
+                result = store.add(data.get("dataset"),data)
+            elif route == "/api/calibration/select":
+                result = store.select(data.get("dataset"),data.get("sample"),data.get("enabled"),data.get("reason"))
+            elif route == "/api/calibration/solve":
+                result = store.solve(data.get("dataset"))
+            else:
+                return self._json(404,dict(error="标定接口不存在"))
+            return self._json(200,result)
+        except (ValueError,TypeError,OSError,KeyError) as error:
+            return self._json(400,dict(error=str(error)))
+        finally:
+            self.server.calibration_slot.release()

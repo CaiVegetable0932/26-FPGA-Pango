@@ -1,5 +1,7 @@
 # RAW8 双路候选：启动与预览
 
+日常操作现已整合到 Web 的[板卡上电一键启动](板卡上电一键启动.md)。下文是早期候选固件的手动联调流程；“Web 不会自动下发串口配置”仅适用于旧版或仍使用通用“开始接收”的方式。
+
 适用 FPGA top：`mini_raw8_dual`，分支 `codex/fpga-raw8-dual-output`。构建/位流状态见 [FPGA 候选报告](../../fpga/reports/raw8_board_candidate_20260922.md)。本说明不是已经烧录或实测的记录。
 
 ## 两路含义

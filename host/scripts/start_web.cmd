@@ -3,6 +3,11 @@ setlocal DisableDelayedExpansion
 rem Double-click this file, or pass --port / --no-browser from a terminal.
 rem PANGO_PYTHON may name a specific python.exe (without extra arguments).
 if defined PANGO_PYTHON goto custom
+rem Purpose: prefer the project-local optional OpenCV runtime when installed.
+if exist "%~dp0..\build\calibration-venv\Scripts\python.exe" (
+  set "PANGO_PYTHON=%~dp0..\build\calibration-venv\Scripts\python.exe"
+  goto custom
+)
 py -3.12 -I -B -c "import sys; sys.exit(sys.version_info[:2] < (3, 12))" >nul 2>nul
 if not errorlevel 1 goto py312
 py -3 -I -B -c "import sys; sys.exit(sys.version_info[:2] < (3, 12))" >nul 2>nul

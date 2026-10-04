@@ -1,7 +1,7 @@
 {
-  "utc": "2026-09-22T14:50:43.819Z",
+  "utc": "2026-10-02T10:03:34.355Z",
   "node": "v24.14.0",
-  "tests_run": 15,
+  "tests_run": 18,
   "passed": true,
   "test_environment": "Node.js MediaDevices, MediaStreamTrack and DOM fixtures",
   "browser_ui_qa": "not_performed",
@@ -67,11 +67,23 @@
     {
       "name": "Device UI separates save from open and keeps unsaved choices from opening another source",
       "passed": true
+    },
+    {
+      "name": "Transient busy capture retries the same exact device",
+      "passed": true
+    },
+    {
+      "name": "USB ID is recovered only from a unique saved device label",
+      "passed": true
+    },
+    {
+      "name": "Ambiguous matching labels do not select a replacement",
+      "passed": true
     }
   ],
   "source_sha256": {
-    "web/video-input.js": "0fdcd571b0f3dd456594cf0ecb35b30b2918f5d31148d66d489bc39bff1e5266",
+    "web/video-input.js": "198fcfad5610cbd0036e71e832fd10c487fbb75ada958edeaeb2f4216908f65f",
     "web/video-input-ui.js": "f1405ab8578c2aecc6e194b88306814eec24a1f57e4e6cf780a9f933226c4e07",
-    "tests/test_video_input.cjs": "21b874d463c211abb7a85d1070b54606f986ae24606ff6ccc28f37f168c02084"
+    "tests/test_video_input.cjs": "f128c3c68ad0a3964e1f51b440cb5e18f7a841f8f1a0488898fa5021ab4e6332"
   }
 }
