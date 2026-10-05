@@ -2,7 +2,9 @@
 // The RGB output is FPGA-enhanced grayscale with a Bayer-aware 2x2 display
 // filter. Ethernet keeps the same tone curve but transmits Bayer RAW8 bytes.
 // Consumer must prefetch a full frame into its elastic read path before enable.
-module raw8_hdmi_timing(
+// Purpose: processed grayscale bypasses both tone mapping and Bayer filtering,
+// which have already happened BEFORE geometry. Legacy RAW defaults unchanged.
+module raw8_hdmi_timing #(parameter PROCESSED=0)(
  input wire clk,reset_n,enable,input wire [7:0] sample,
  input wire sample_valid,output wire sample_ready,
  output wire hsync,vsync,de,frame_boundary,output wire [23:0] rgb,
@@ -34,7 +36,8 @@ module raw8_hdmi_timing(
   .line_preload(h==12'd191),.pixel_accept(sample_ready && sample_valid),
   .first_row(v==11'd41),.first_col(h==12'd192),
   .column(display_column),.luma(display_luma),.gray(display_gray));
- assign rgb=sample_ready && sample_valid ? {display_gray,display_gray,display_gray} : 24'b0;
+ wire [7:0] selected_gray=PROCESSED?sample:display_gray;
+ assign rgb=sample_ready && sample_valid ? {selected_gray,selected_gray,selected_gray} : 24'b0;
  always @(posedge clk or negedge reset_n)
   if(!reset_n)begin h<=0;v<=0;poisoned<=0;underflows<=0;end
   else begin

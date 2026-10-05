@@ -1,5 +1,9 @@
 # FPGA 开发区
 
+2026-10-05：灰度矫正工程的宽乘法改为输入寄存、部分积及加法树流水线；专项与完整 1080p 板级模型仿真通过。综合、布局、布线及独立多角 STA 已执行，但 setup −2.424 ns、hold −0.008 ns，时序未闭合，未导出位流。参数命令/读回链路仍需流水化；处理速度也未达到实时 1080p30。证据与限制见 [离线构建报告](reports/geometry_timing_20261005.md)。本轮未烧录。
+
+2026-10-04：在 `codex/fpga-geometry-correction` 新增独立 [灰度鱼眼矫正工程](project/mini_raw8_geometry/mini_raw8_geometry.pds)，连接 RAW 租约、板内径向表、随机 DDR 缓存、灰度双线性插值、结果及有效掩码三槽、写回栅栏与 HDMI。配置经 UART 0x30～0x34 下发、回读、按处理帧边界生效；MCU 角度保留为帧上下文，不自动充当标定旋转。参见 [参数接口](../output/FPGA灰度鱼眼矫正参数接口.md) 与 [实际验证记录](reports/geometry_chain_20261004.md)。现有 `mini_raw8_dual` 工程保持原路径；新工程不能冒充彩色 S1/S2 或真实 1080p30 已验收。
+
 当前1080p RAW8双路开发在 `codex/fpga-raw8-dual-output`；使用独立 [整板工程](project/mini_raw8_dual/mini_raw8_dual.pds)，不是下面的合成通信工程。构建/发布的实际状态、限制和回归见 [整板候选报告](reports/raw8_board_candidate_20260922.md)，本轮不烧录。
 
 2026-09-22通信板级候选：新增独立 [MINI 工程](project/mini_comms_bringup/mini_comms_bringup.pds)，原生布局布线 min/max 时序在声明预算下闭合，已生成 [SBIT/SFC 发布包](release/comms_bringup_20260922_e51d3cc9c9ee/README.md)。这是 **CP2102 模拟 MCU＋合成网络测试流**，没有摄像头/DDR/HDMI，未烧录；原生 GPLL 严格仿真仍有初始化除零诊断。完整结果、预算及后续门槛见[候选报告](reports/comms_board_candidate_20260922.md)。不能把它当成真实 RAW8 双路回传验收。

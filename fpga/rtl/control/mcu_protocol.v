@@ -1,5 +1,6 @@
-// Purpose: MCU-only binary endpoint; no motor commands and no video stream
-// control. All sideband ports belong to clk. The integrator must supply a fresh
+// Purpose: MCU observation endpoint with an opt-in PC geometry extension;
+// no motor commands or video-stream startup control. All sidebands belong to
+// clk. Geometry is disabled in legacy tops. The integrator supplies a fresh
 // nonzero epoch after every reset/reconfiguration; leave epoch_valid low until
 // that guarantee is available. Constant/reused epochs cannot isolate reboots.
 module mcu_protocol #(
@@ -8,7 +9,8 @@ module mcu_protocol #(
     parameter integer RX_TIMEOUT_MS = 20,
     parameter integer BOARD_DIAGNOSTICS = 0,
     parameter integer VIDEO_DIAGNOSTICS = 0,
-    parameter integer CHAIN_DIAGNOSTICS = 0
+    parameter integer CHAIN_DIAGNOSTICS = 0,
+    parameter integer GEOMETRY_CONTROL = 0
 ) (
     input wire clk, input wire rst_n,
     input wire uart_rx, output wire uart_tx,
@@ -20,7 +22,13 @@ module mcu_protocol #(
     input wire [95:0] video_diagnostics,
     // Purpose: mem-clock snapshots for DVP geometry/progress and frame pipeline.
     input wire [287:0] chain_diagnostics,
-    output wire session_active, output reg env_valid,
+    output wire session_active, output wire [31:0] current_session_id,
+    // Purpose: optional same-clock PC geometry extension. Admission keeps the
+    // existing CRC/epoch/session/queue rules; unsupported legacy tops stay off.
+    output wire geometry_command_valid,output wire [7:0] geometry_command,
+    output wire [255:0] geometry_payload,
+    input wire [7:0] geometry_code,input wire [95:0] geometry_reply,
+    output reg env_valid,
     output reg [31:0] env_session_id, output reg [31:0] env_event_seq,
     output reg [31:0] env_mcu_time_us, output reg [63:0] env_board_time_us,
     output reg [31:0] env_lux_milli, output reg signed [31:0] env_angle_mdeg,
@@ -45,6 +53,7 @@ module mcu_protocol #(
     reg [31:0] active_session;
     reg [255:0] last_event_payload;
     assign session_active = (active_session != 0) && epoch_ready && !epoch_change;
+    assign current_session_id=active_session;
 
     // Changes invalidate parser, queued replies, handshake, and measurement
     // validity together. The top must synchronize/stabilize these input buses.
@@ -113,6 +122,12 @@ module mcu_protocol #(
     reg [7:0] response_code;
     reg accept_session, accept_event;
     reg [255:0] response_payload;
+    // Purpose: declare extension wiring after parser/admission signals to
+    // avoid implicit nets in the installed Verilog/ModelSim tool versions.
+    assign geometry_command=request_command;
+    assign geometry_payload=request_payload;
+    assign geometry_command_valid=GEOMETRY_CONTROL && push && response_code==OK &&
+        request_command>=8'h30 && request_command<=8'h34;
     mcu_frame_tx #(.CLK_HZ(CLK_HZ),.BAUD(BAUD)) u_tx (
         .clk(clk),.rst_n(rst_n),.flush(epoch_change),.valid(queue_count != 0),
         .ready(tx_ready),.command(reply_command_fifo[read_ptr]),
@@ -129,14 +144,21 @@ module mcu_protocol #(
             case (request_command)
                 CAPS: if (request_length != 0) response_code = BAD_LENGTH;
                 OPEN, STATUS, COUNTERS, DIAGNOSTICS, VIDEO_SNAPSHOT,
-                DVP_GEOMETRY, DVP_PROGRESS, PIPELINE, ENVIRONMENT: begin
+                DVP_GEOMETRY, DVP_PROGRESS, PIPELINE, ENVIRONMENT,
+                8'h30,8'h31,8'h32,8'h33,8'h34: begin
                     if ((request_command == DIAGNOSTICS && !BOARD_DIAGNOSTICS) ||
                         (request_command == VIDEO_SNAPSHOT && !VIDEO_DIAGNOSTICS) ||
                         ((request_command==DVP_GEOMETRY || request_command==DVP_PROGRESS ||
-                          request_command==PIPELINE) && !CHAIN_DIAGNOSTICS))
+                          request_command==PIPELINE) && !CHAIN_DIAGNOSTICS) ||
+                        (request_command>=8'h30 && request_command<=8'h34 && !GEOMETRY_CONTROL))
                         response_code = UNSUPPORTED;
                     else if ((request_command == ENVIRONMENT && request_length != 32) ||
-                        (request_command != ENVIRONMENT && request_length != 12))
+                        ((request_command==8'h30 || request_command==8'h31) && request_length!=24) ||
+                        (request_command==8'h32 && request_length!=16) ||
+                        (request_command==8'h34 && request_length!=20) ||
+                        (request_command!=ENVIRONMENT && request_command!=8'h30 &&
+                         request_command!=8'h31 && request_command!=8'h32 &&
+                         request_command!=8'h34 && request_length!=12))
                         response_code = BAD_LENGTH;
                     else if (!epoch_ready) response_code = NOT_READY;
                     else if (!(&request_epoch_equal)) response_code = BAD_EPOCH;
@@ -146,6 +168,7 @@ module mcu_protocol #(
                         else if (request_payload[95:64] < active_session) response_code = BAD_SESSION;
                         else accept_session = 1;
                     end else if (request_payload[95:64] != active_session) response_code = BAD_SESSION;
+                    else if (request_command>=8'h30 && request_command<=8'h34) response_code=geometry_code;
                     else if (request_command == ENVIRONMENT) begin
                         if (request_payload[255:226] != 0) response_code = BAD_FORMAT;
                         else if (request_payload[127:96] == 0 ||
@@ -181,7 +204,7 @@ module mcu_protocol #(
             response_payload[191:176] = 16'd32;
             response_payload[223:192] = 32'h0000000f |
                 (BOARD_DIAGNOSTICS ? 32'h10 : 32'h0) | (VIDEO_DIAGNOSTICS ? 32'h20 : 32'h0) |
-                (CHAIN_DIAGNOSTICS ? 32'h40 : 32'h0);
+                (CHAIN_DIAGNOSTICS ? 32'h40 : 32'h0) | (GEOMETRY_CONTROL ? 32'h80 : 32'h0);
             response_payload[255:224] = BAUD;
         end else if (request_command == COUNTERS && response_code == OK) begin
             response_payload[191:160] = rx_good_count+1'b1;
@@ -201,6 +224,10 @@ module mcu_protocol #(
             response_payload[255:160] = chain_diagnostics[95:0];
         end else if (request_command == DVP_PROGRESS && response_code == OK) begin
             response_payload[255:160] = chain_diagnostics[191:96];
+        end else if (request_command>=8'h30 && request_command<=8'h34 && GEOMETRY_CONTROL) begin
+            // Purpose: response carries the actual readback/staging snapshot,
+            // not a claim that a queued configuration is already displayed.
+            response_payload[255:160]=geometry_reply;
         end else if (request_command == PIPELINE && response_code == OK) begin
             response_payload[255:160] = chain_diagnostics[287:192];
         end

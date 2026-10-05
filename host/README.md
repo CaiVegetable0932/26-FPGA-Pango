@@ -1,12 +1,14 @@
 # 上位机开发区
 
+2026-10-04：新增 [FPGA 几何参数上传器](scripts/fpga_geometry.py)，用于独立 `mini_raw8_geometry` 工程声明的 CAPS 0x80 扩展。沿用用户审校鱼眼预设，PC 只编码 K/D/仿射参数、回读并确认按帧生效，不处理主视频；详见 [接口及使用流程](../output/FPGA灰度鱼眼矫正参数接口.md)。当前网页的即时鱼眼画面仍是软件参考，不会自动改成 FPGA 结果或给 HDMI 提供可信源帧号。
+
 板卡上电后的日常入口见[一键连接与预览](docs/板卡上电一键启动.md)：首次选择 CP2102 和直连网卡，后续启动 host 可自动完成 RAW8 UART 配置、UDP 接收与采集卡恢复；Windows/Linux 共用实现。
 
 2026-10-02：Linux/Jetson 环境与本地标定工作台合并。Linux 提交 `931f2da6` 的历史 Jetson Ubuntu 22.04 ARM64 验证（77 项 Python、11 项前端像素及桌面浏览器检查）见[本机环境配置](docs/本机环境配置.md)和[原验证报告](reports/environment_20261002/README.md)，不代表合并版本已在 Jetson 实板复验。合并版本的 Windows/Linux 软件回归见[合并报告](reports/host_linux_merge_20261002/README.md)。已有 Jetson 环境更新后先执行 `source host/scripts/env.sh` 和 `python host/scripts/setup_calibration.py` 补齐标定依赖，再运行 `sh host/scripts/start_web.sh`。
 
 ## 镜头与相机标定（开发中）
 
-本分支新增本机 `/calibration` 工作台：手动记录镜头—图卡实测距离及其参考面、图卡尺寸、镜头/相机/焦点、光照、曝光、云台角度和龙门架位置；支持网口完整 RAW8、采集卡 RGB 和图像导入，分别保存原始证据与派生角点图。OpenCV 提供鱼眼等距模型及受限针孔模型的候选拟合和独立验证；鱼眼系数**不兼容**当前 FPGA 针孔寄存器，不会自动下发或宣称板端完成矫正。安装可选依赖：`python host/scripts/setup_calibration.py`。使用边界与步骤见[标定工作台](docs/标定工作台.md)。
+本分支新增本机 `/calibration` 工作台：手动记录镜头—图卡实测距离及其参考面、图卡尺寸、镜头/相机/焦点、光照、曝光、云台角度和龙门架位置；支持网口完整 RAW8、采集卡 RGB 和图像导入，分别保存原始证据与派生角点图。OpenCV 提供鱼眼等距模型及受限针孔模型的候选拟合和独立验证；鱼眼系数不兼容旧 FPGA Brown 针孔寄存器，新灰度候选须显式选择 model=2 并独立下发。网页不会自动下发或宣称板端完成矫正。安装可选依赖：`python host/scripts/setup_calibration.py`。使用边界与步骤见[标定工作台](docs/标定工作台.md)。
 
 `/calibration#manual-preview` 提供用户指定的手动鱼眼软件参考：默认采用 2026-10-02 用户审校组合（1920×1080；fx/fy=770/752，cx/cy=945/553；D=0.121/-0.118/0/0.036；输出139°），并保留通用光学假设预置。支持焦距、主点、k1～k4 和输出视场即时调参、同输入原图对比、冻结、JSON 导入导出。来源为已保存样本或显式打开的采集卡；结果标记为 PC 软件参考，不替代正式 FPGA 视频链路或标定验收。
 

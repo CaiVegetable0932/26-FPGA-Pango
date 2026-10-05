@@ -1,0 +1,178 @@
+{"reference_vectors": 305, "analytic_lut_max_coordinate_error_px": 0.007565948774597749}
+Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+-- Compiling module geometry_bilinear_rgb
+-- Compiling module geometry_byte_cache
+-- Compiling module geometry_config_bank
+-- Compiling module geometry_frame_control
+-- Compiling module geometry_gray_processor
+-- Compiling module geometry_gray_sampler
+-- Compiling module geometry_inverse_map
+-- Compiling module geometry_lens_lut
+-- Compiling module geometry_map_engine
+-- Compiling module geometry_read_arbiter
+-- Compiling module geometry_result_writer
+-- Compiling module geometry_write_arbiter
+-- Compiling module raw8_geometry_core
+-- Compiling module ov5640_raw8_profile
+-- Compiling module ov5640_raw8_startup
+-- Compiling module raw8_capture_records
+-- Compiling module raw8_capture
+-- Compiling module raw8_display_enhance
+-- Compiling module raw8_dual_core
+-- Compiling module raw8_dvp_monitor
+-- Compiling module raw8_frame_pool
+-- Compiling module raw8_gmii_cdc
+-- Compiling module raw8_hdmi_consumer
+-- Compiling module raw8_hdmi_gray_antialias
+-- Compiling module raw8_hdmi_timing
+-- Compiling module raw8_native_queue
+-- Compiling module raw8_network_output
+-- Compiling module raw8_read_arbiter
+-- Compiling module raw8_read_scheduler
+-- Compiling module raw8_unpack
+-- Compiling module raw8_write_engine
+-- Compiling module comms_boot_config
+-- Compiling module fpga_comms_top
+-- Compiling module mcu_frame_rx
+-- Compiling module mcu_frame_tx
+-- Compiling module mcu_protocol
+-- Compiling module mcu_uart_rx
+-- Compiling module mcu_uart_tx
+-- Compiling module comms_test_source
+-- Compiling module mdio_clause22
+-- Compiling module pango_rgmii_tx
+-- Compiling module praw_packetizer
+-- Compiling module rtl8211f_init
+-- Compiling module udp_ipv4_eth_tx
+-- Compiling module video_network_tx
+-- Compiling module tb_geometry_lens
+-- Compiling module tb_geometry_pipeline
+-- Compiling module tb_geometry_uart
+-- Compiling module tb_geometry_pool
+-- Compiling module tb_geometry
+
+Top level modules:
+	raw8_geometry_core
+	ov5640_raw8_startup
+	raw8_dual_core
+	raw8_gmii_cdc
+	comms_boot_config
+	fpga_comms_top
+	comms_test_source
+	rtl8211f_init
+	tb_geometry_lens
+	tb_geometry_pipeline
+	tb_geometry_uart
+	tb_geometry_pool
+	tb_geometry
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {run -all; quit -f} -c tb_geometry_lens 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_geometry_lens(fast)
+# run -all 
+# GEOMETRY_LENS_PASS vectors=305 max_error_q12=31
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_geometry_lens.sv(52)
+#    Time: 1172384 ns  Iteration: 1  Instance: /tb_geometry_lens
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {run -all; quit -f} -c tb_geometry_pipeline 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_geometry_pipeline(fast)
+# run -all 
+# GEOMETRY_PIPELINE_PASS frames=2 pixels=512 cycles=10200 cache_hits=4241 cache_misses=16
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_geometry_pipeline.sv(146)
+#    Time: 820208 ns  Iteration: 1  Instance: /tb_geometry_pipeline
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {run -all; quit -f} -c tb_geometry_uart 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_geometry_uart(fast)
+# run -all 
+# GEOMETRY_UART_PASS checks=6073 responses=63
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_geometry_uart.sv(290)
+#    Time: 472103336924 ps  Iteration: 0  Instance: /tb_geometry_uart
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {run -all; quit -f} -c tb_geometry_pool 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_geometry_pool(fast)
+# run -all 
+# GEOMETRY_POOL_PASS publication=2 lease_identity=11
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_geometry_pool.sv(26)
+#    Time: 96 ns  Iteration: 1  Instance: /tb_geometry_pool
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {run -all; quit -f} -c tb_geometry 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_geometry(fast)
+# run -all 
+# GEOMETRY_PASS
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_geometry.sv(188)
+#    Time: 256 ns  Iteration: 0  Instance: /tb_geometry
+GEOMETRY_CHAIN_PASS C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\geometry_chain_20261004_175406_384

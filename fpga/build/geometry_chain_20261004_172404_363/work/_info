@@ -1,0 +1,1007 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\geometry_chain_20261004_172404_363
+T_opt
+Vl0MRi]<]90iV0<5^fVN1@0
+04 16 4 work tb_geometry_lens fast 0
+=1-207bd2c02996-6ac21b3c-11c-28b54
+Z1 o-quiet -auto_acc_if_foreign -work work
+n@_opt
+Z2 OL;O;10.1c;51
+Z3 dC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\geometry_chain_20261004_172404_363
+T_opt1
+Vl6A;57<G1lKdk7ZlDRGFU2
+04 11 4 work tb_geometry fast 0
+=1-207bd2c02996-6ac21b43-31a-28b54
+R1
+n@_opt1
+R2
+vcomms_boot_config
+Z4 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+ISfJAmE7mbPf5mlMlEBH5d0
+VIbC0ZbCCjSNnX8^alE=lW0
+S1
+R3
+Z5 w1790581595
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\comms_boot_config.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\comms_boot_config.v
+L0 10
+Z6 OL;L;10.1c;51
+r1
+31
+Z7 !s108 1791105844.693000
+Z8 !s107 C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_geometry.sv|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_geometry_lens.sv|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\video_network_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\udp_ipv4_eth_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\rtl8211f_init.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\praw_packetizer.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\pango_rgmii_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\mdio_clause22.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\comms_test_source.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\fpga_comms_top.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\comms_boot_config.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_write_engine.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_unpack.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_read_scheduler.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_read_arbiter.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_network_output.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_native_queue.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_timing.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_gray_antialias.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_consumer.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_gmii_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_frame_pool.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_dvp_monitor.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_dual_core.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_display_enhance.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_capture.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_capture_records.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\ov5640_raw8_startup.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\ov5640_raw8_profile.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\raw8_geometry_core.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_write_arbiter.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_result_writer.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_read_arbiter.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_map_engine.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_lens_lut.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_inverse_map.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_gray_sampler.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_gray_processor.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_frame_control.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_config_bank.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_byte_cache.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_bilinear_rgb.v|
+Z9 !s90 -sv|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_bilinear_rgb.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_byte_cache.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_config_bank.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_frame_control.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_gray_processor.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_gray_sampler.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_inverse_map.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_lens_lut.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_map_engine.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_read_arbiter.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_result_writer.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_write_arbiter.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\raw8_geometry_core.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\ov5640_raw8_profile.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\ov5640_raw8_startup.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_capture_records.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_capture.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_display_enhance.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_dual_core.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_dvp_monitor.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_frame_pool.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_gmii_cdc.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_consumer.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_gray_antialias.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_timing.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_native_queue.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_network_output.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_read_arbiter.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_read_scheduler.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_unpack.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_write_engine.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\comms_boot_config.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\fpga_comms_top.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\comms_test_source.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\mdio_clause22.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\pango_rgmii_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\praw_packetizer.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\rtl8211f_init.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\udp_ipv4_eth_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\video_network_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_geometry_lens.sv|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_geometry.sv|
+Z10 o-sv -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!i10b 1
+!s100 J?j=nCegkT@SPAYVkN^eT3
+!s105 comms_boot_config_v_unit
+!s85 0
+vcomms_test_source
+R4
+I>3VB`k5PY>kaI1HidH_:h3
+VbbNRhzSc<3fe3ZJ:S_b<@0
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\comms_test_source.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\comms_test_source.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 ^CcGd];AD?3Malg9d6aUD0
+!s105 comms_test_source_v_unit
+!s85 0
+vfpga_comms_top
+R4
+ILUnY26hOG<6Rk[FlG>ISD0
+VGX]9;3SXC[E0KK4L29N3G1
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\fpga_comms_top.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\fpga_comms_top.v
+L0 7
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 Shn3fPEX^acOgVf=A>^MY0
+!s105 fpga_comms_top_v_unit
+!s85 0
+vgeometry_bilinear_rgb
+R4
+ILakH^2E=oP]ELGV4AmHTA0
+VoY1Rd`Ki_20YXj74aka:[2
+S1
+R3
+Z11 w1790582159
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_bilinear_rgb.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_bilinear_rgb.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 JmzLQMD<lI0U[zHh163Y71
+!s105 geometry_bilinear_rgb_v_unit
+!s85 0
+vgeometry_byte_cache
+R4
+I]0R8OlVXnS3U=Bog4QD]g3
+VkO:MWlz`KE[g>m8^FLiEa3
+S1
+R3
+Z12 w1791105006
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_byte_cache.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_byte_cache.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 `8Z9K;8N6f@Q9GAciQ]5n0
+!s105 geometry_byte_cache_v_unit
+!s85 0
+vgeometry_config_bank
+R4
+IhZnh6[C2Vz0H4j]^@9]XC2
+VEN0<EGCzR2f_5dVbH]0b>2
+S1
+R3
+w1791105201
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_config_bank.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_config_bank.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 :W?<LiQ7OcG>Q_3Nb?J931
+!s105 geometry_config_bank_v_unit
+!s85 0
+vgeometry_frame_control
+R4
+I6c?<eM<2>[Q60P@e1e3;e0
+VAkmaCm@zF@g:icHdVoZ4]1
+S1
+R3
+w1790583062
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_frame_control.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_frame_control.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 noL;0^=iRD6ZLH@nO?3cW0
+!s105 geometry_frame_control_v_unit
+!s85 0
+vgeometry_gray_processor
+R4
+I36YaDf6dkQmenB3@L^R=H2
+VTGB^IkeijM@k1^iLa>:g02
+S1
+R3
+Z13 w1791105345
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_gray_processor.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_gray_processor.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 ^kM@n7z?@2MQdj0;`lVgS1
+!s105 geometry_gray_processor_v_unit
+!s85 0
+vgeometry_gray_sampler
+R4
+IN9JWE[2J[G98K6PcGBmEH0
+VZ[RX6OAUJ^0kOd>CHEg5^3
+S1
+R3
+w1791105139
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_gray_sampler.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_gray_sampler.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 _SfIcQC]e0kT;XX8S6lzZ2
+!s105 geometry_gray_sampler_v_unit
+!s85 0
+vgeometry_inverse_map
+R4
+Io[fiDRdV9Cihdne6:VV^Z1
+V;>F688ng4jR9EBh>B0]2I2
+S1
+R3
+R11
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_inverse_map.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_inverse_map.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 FamRC6`C9^Om7NJPNI[nZ1
+!s105 geometry_inverse_map_v_unit
+!s85 0
+vgeometry_lens_lut
+R4
+I@W8ez:@1E[MYfAMfoe9S<1
+VLDnP7D@40@DaaAB3;5IK92
+S1
+R3
+R12
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_lens_lut.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_lens_lut.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 2NKAaIc^lT19OBoPXFW3<1
+!s105 geometry_lens_lut_v_unit
+!s85 0
+vgeometry_map_engine
+R4
+ILEU]bPQM<3alWWoTSI?Gh3
+V6:]9Ag4SCcDhjBHj1nBO`0
+S1
+R3
+Z14 w1791105843
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_map_engine.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_map_engine.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 HNe[1F1[C?VZ_gR095m752
+!s105 geometry_map_engine_v_unit
+!s85 0
+vgeometry_read_arbiter
+R4
+IAgIMGU9FM9S6d<B_POKYE1
+V6OI7TBBAHF5V850_KK>Yn1
+S1
+R3
+Z15 w1791105436
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_read_arbiter.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_read_arbiter.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 QZ[mnn_RGbK7XIG6IGQg70
+!s105 geometry_read_arbiter_v_unit
+!s85 0
+vgeometry_result_writer
+R4
+I21]]5m?NSgSATl^;[bcS>3
+VOSG<JoOj0ZlbAHg^h3l;T0
+S1
+R3
+R13
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_result_writer.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_result_writer.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 oLag[^R7Lg>V3XDTA^3LJ2
+!s105 geometry_result_writer_v_unit
+!s85 0
+vgeometry_write_arbiter
+R4
+Iek_K570U<;5o3[d8E38NX1
+VFa:b>noNE_zf3QIZaZB=]1
+S1
+R3
+R15
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_write_arbiter.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\geometry_write_arbiter.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 Ue9an08FZzalJ2Ag3;kHU0
+!s105 geometry_write_arbiter_v_unit
+!s85 0
+vmcu_frame_rx
+R4
+IdY?972aI7RmUA7]@R8?oB3
+VBUBmnc[mA>K=J^f4zBYFH2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 8B^Z<T_<W@WPg7R7lHj8i2
+!s105 mcu_frame_rx_v_unit
+!s85 0
+vmcu_frame_tx
+R4
+IVfjS`AUM@1cnEdH2cOC2F2
+V=KGQLKFJRCU5ENLf1`QXN3
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 GXoAzJYTMC?jXkO0?WGzi2
+!s105 mcu_frame_tx_v_unit
+!s85 0
+vmcu_protocol
+R4
+ICCgT_`^4^1dLZ[[a^>`N11
+VX5=eh77aDGJjWVhF^j>WZ3
+S1
+R3
+R14
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 X1NGcz7<BAiYF53_1E4ka0
+!s105 mcu_protocol_v_unit
+!s85 0
+vmcu_uart_rx
+R4
+I<^9kI2Z^UiXZLn61TC7kQ1
+VT]R?JE5`Y[52bS>nlNf`B2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 PWcT^;:NmcD5S^S>`X]zh2
+!s105 mcu_uart_rx_v_unit
+!s85 0
+vmcu_uart_tx
+R4
+I_Zf1FRl=787KacanC9_TQ1
+VQ>b6W=oVoJ3BL4zI[@mi;2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v
+L0 3
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 Ub>KI_S8n_;V8<`ddVj_80
+!s105 mcu_uart_tx_v_unit
+!s85 0
+vmdio_clause22
+R4
+IeZHzVYUP32@N@fBBiZ1Ce2
+Vb8M9=<C`cLXQEg4aFmCH^2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\mdio_clause22.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\mdio_clause22.v
+L0 10
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 ZW[jg1ogn8M0UOBnUhmOI0
+!s105 mdio_clause22_v_unit
+!s85 0
+vov5640_raw8_profile
+R4
+IW:3]^mQfPh5S6<le3Fl>n2
+VDMi=ANH1ML5M93`1dd70I0
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\ov5640_raw8_profile.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\ov5640_raw8_profile.v
+L0 15
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 mGSfQnO]?UAUV3@1[XRo;0
+!s105 ov5640_raw8_profile_v_unit
+!s85 0
+vov5640_raw8_startup
+R4
+I9?JfR=`3Vl9^cDQfGA[M63
+VHnfYFG4[3mGAcIdHjnXXh2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\ov5640_raw8_startup.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\ov5640_raw8_startup.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 c9?OjCa]l1<To5T3[l?n03
+!s105 ov5640_raw8_startup_v_unit
+!s85 0
+vpango_rgmii_tx
+R4
+IZ?23?TY;Xl5ZYU5[dF1lG2
+VdGVbAoS2McJnhko7j0;j10
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\pango_rgmii_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\pango_rgmii_tx.v
+L0 16
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 9mLAV2:^91Mi4Mc@>AjUh2
+!s105 pango_rgmii_tx_v_unit
+!s85 0
+vpraw_packetizer
+R4
+I`AJ`c;3D6mLlf<0:Pbh;_1
+VY`kC;k4@n]_k@>DniGU6m0
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\praw_packetizer.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\praw_packetizer.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 O7>FjH5PXhMm<>];:Hm=l3
+!s105 praw_packetizer_v_unit
+!s85 0
+vraw8_capture
+R4
+Iz4d82PJ_BUl<CgmKZlJ^Z0
+VaAX07<ncX]1b<4^Xl2=Jm2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_capture.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_capture.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 EDgXeRiT=9_ITfcfoih`a3
+!s105 raw8_capture_v_unit
+!s85 0
+vraw8_capture_records
+R4
+IKaMmgzM;bgO8I7PXWH3mS1
+VFi^:PJ3Ik9O5JoT1g;1NI2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_capture_records.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_capture_records.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 _TF^31e?F2To=m9VKG<5C2
+!s105 raw8_capture_records_v_unit
+!s85 0
+vraw8_display_enhance
+R4
+I>Xe9:mUlR;g[GEJMJcM]z2
+VgbFG]X]lG3DocdFm4Em=@2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_display_enhance.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_display_enhance.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 zoNf6IDTb;7di<o_KU=K00
+!s105 raw8_display_enhance_v_unit
+!s85 0
+vraw8_dual_core
+R4
+Ian2]^G97>jZh>jg4<:o]f3
+Vged>i=2UBI1KSV4=R8Q@90
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_dual_core.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_dual_core.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 [H:NIEBDb5bgF0CfW74=h0
+!s105 raw8_dual_core_v_unit
+!s85 0
+vraw8_dvp_monitor
+R4
+I@JD1hkZl3O=g=:c[J[Md>2
+V@[Pc>nfjE^@VGeBhU7e@O3
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_dvp_monitor.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_dvp_monitor.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 iCVJVW_<9;YC>`^m<L8j]2
+!s105 raw8_dvp_monitor_v_unit
+!s85 0
+vraw8_frame_pool
+R4
+IoSJD7`[^VT3;GCB_g2>MY0
+VF;QhWZ[J^Y3?Mgh6COc9D0
+S1
+R3
+R15
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_frame_pool.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_frame_pool.v
+L0 8
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 eZn>RN;kgbQ;>I>V>PnOW0
+!s105 raw8_frame_pool_v_unit
+!s85 0
+vraw8_geometry_core
+R4
+I7jl>8IUf=H<fLASnc=Xeh2
+VV4RAk[jdhKH=9AN9jHP7]3
+S1
+R3
+w1791105554
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\raw8_geometry_core.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\geometry\raw8_geometry_core.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 A9E@iGE23ILK]]a:`a]X30
+!s105 raw8_geometry_core_v_unit
+!s85 0
+vraw8_gmii_cdc
+R4
+IbPP@kU;NeF`fCN^CfUTMI1
+VeSomMmT7U^>h>fH[EQZ2c1
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_gmii_cdc.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_gmii_cdc.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 0jJBGnfZP6IgS1EB^hKUe1
+!s105 raw8_gmii_cdc_v_unit
+!s85 0
+vraw8_hdmi_consumer
+R4
+IV@2eAiA1`:ARoe`FBD@Fa1
+Vhm52_BM?VRoYbY[?dIjXP1
+S1
+R3
+R15
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_consumer.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_consumer.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 `AI6gEgNUYFlTc8>dQ2T?0
+!s105 raw8_hdmi_consumer_v_unit
+!s85 0
+vraw8_hdmi_gray_antialias
+R4
+IEC?4zPVmKKJIP=HEnUNV>3
+VLoj^4[9aI^]RH>BIjn>Hb0
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_gray_antialias.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_gray_antialias.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 G2A_<B0^BkFE`9JS;C5^90
+!s105 raw8_hdmi_gray_antialias_v_unit
+!s85 0
+vraw8_hdmi_timing
+R4
+IegJlFU53C3R16W440S>bX1
+Va1zSc27?kVmS`niBW6jja0
+S1
+R3
+R15
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_timing.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_hdmi_timing.v
+L0 7
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 l_JcSFaa_ij:<C>Y[?JIX2
+!s105 raw8_hdmi_timing_v_unit
+!s85 0
+vraw8_native_queue
+R4
+I4`:Nl<CK<n1[VUcB:_mCW3
+VK4CYlef^gLEI9AFk8o1bP0
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_native_queue.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_native_queue.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 37X`>cW8H1z1DhR8[SodU0
+!s105 raw8_native_queue_v_unit
+!s85 0
+vraw8_network_output
+R4
+IOzeP_4P4Ih5dc2^G;LjiH2
+Vad53e7NooDbEPAR28X^jn0
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_network_output.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_network_output.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 Umof<Pb167SgIPCCz1@Sa3
+!s105 raw8_network_output_v_unit
+!s85 0
+vraw8_read_arbiter
+R4
+IES`Xo9?;bJ<SFc:KFK9432
+Vk2[<O3jX6QB==QMA=V2?]0
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_read_arbiter.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_read_arbiter.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 7?6XT07AT2HbVjB^Nm;Wl1
+!s105 raw8_read_arbiter_v_unit
+!s85 0
+vraw8_read_scheduler
+R4
+I;_5_[1;[XzL^51fTJdUT]1
+V=i5NRG0B@TJD5B:LU<aI`1
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_read_scheduler.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_read_scheduler.v
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 C0mm]I2453mi1=?70QR]b2
+!s105 raw8_read_scheduler_v_unit
+!s85 0
+vraw8_unpack
+R4
+I59i[BACk[:<U<[z[k8PRQ3
+V]R=Q9Zg4L>l5[gRILZFC>2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_unpack.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_unpack.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 SH8UXWzToU>oUh[P>[5hT3
+!s105 raw8_unpack_v_unit
+!s85 0
+vraw8_write_engine
+R4
+Ik[Hm7^SdhYI0Gie]dn6:I2
+V;0ZO]Y=8]OFf<j^@PznWV3
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_write_engine.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\raw8_dual\raw8_write_engine.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 o]9O=lPXol<>eXGU4KNQ72
+!s105 raw8_write_engine_v_unit
+!s85 0
+vrtl8211f_init
+R4
+IkYK:D`C^o9KL=bZb2^a?b2
+V;9[M8X`oC0>;n@efCYo3:1
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\rtl8211f_init.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\rtl8211f_init.v
+L0 13
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 zHl0Po=CMXVBOXQOYGN9U1
+!s105 rtl8211f_init_v_unit
+!s85 0
+vtb_geometry
+R4
+Ik<cf^gh9oh3Z>L=zM>IJ>0
+VBIKD9c^mA0;;Q0:964AVK0
+S1
+R3
+w1790583200
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_geometry.sv
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_geometry.sv
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 5Aj14j4b?gY]ReH86;M8^1
+!s105 tb_geometry_sv_unit
+!s85 0
+vtb_geometry_lens
+R4
+IG[[U7;F7R6HOQ2EY_P27O3
+VP2A[TmHnOg`k5eYnRISme3
+S1
+R3
+w1791105812
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_geometry_lens.sv
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_geometry_lens.sv
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 bWj9d[^?E0?DX1ZRSPD?>3
+!s105 tb_geometry_lens_sv_unit
+!s85 0
+vudp_ipv4_eth_tx
+R4
+I;No4U;_?7om25dUYEB@l62
+VXJmGP^<ZD=mmV_kXF;8Cg2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\udp_ipv4_eth_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\udp_ipv4_eth_tx.v
+L0 10
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 mYSJj[[o;n7Lzj[C[JBKP3
+!s105 udp_ipv4_eth_tx_v_unit
+!s85 0
+vvideo_network_tx
+R4
+IH2UM4Zn<52G5XWCT7gY2_3
+V4fUCP5Ih>nOY2zogKS@_i1
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\video_network_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\network\video_network_tx.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 VeYJ>4cgMeYDlbe0?HW4Q0
+!s105 video_network_tx_v_unit
+!s85 0

@@ -1,7 +1,9 @@
 // Purpose: four-phase frame lease/release across pixel and memory clocks.
 // Prefetch during vertical blank; start only on a raster boundary. On underflow
 // drain the entire remaining frame without display, never reset FIFO pointers.
-module raw8_hdmi_consumer(
+// Purpose: PROCESSED selects already enhanced/corrected gray bytes; the
+// default retains the original Bayer display path and all lease semantics.
+module raw8_hdmi_consumer #(parameter PROCESSED=0)(
  input wire clk,rst_n,frame_ack,release_ack,
  output reg frame_req,release_req,
  input wire [255:0] word_data,input wire word_valid,output wire word_ready,
@@ -17,7 +19,7 @@ module raw8_hdmi_consumer(
   .word_data(word_data),.word_valid(word_valid),.word_ready(word_ready),
   .pixel_data(sample),.pixel_valid(valid),.pixel_last(),
   .pixel_ready(ready || drain),.done(unpack_done));
- raw8_hdmi_timing u_raster(.clk(clk),.reset_n(rst_n),.enable(active && !drain),
+ raw8_hdmi_timing #(.PROCESSED(PROCESSED)) u_raster(.clk(clk),.reset_n(rst_n),.enable(active && !drain),
   .sample(sample),.sample_valid(valid),.sample_ready(ready),.hsync(hs),.vsync(vs),
   .de(de),.frame_boundary(boundary),.rgb(rgb),.underflows(underflows));
  always @(posedge clk or negedge rst_n)
