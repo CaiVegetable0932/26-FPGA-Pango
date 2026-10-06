@@ -50,6 +50,9 @@ class WebSession:
     def __init__(self, root=HOST_ROOT):
         self.root = Path(root).resolve()
         self._lock = threading.RLock()
+        # Preview requests sleep until a newer complete frame arrives, instead
+        # of imposing a browser polling interval or copying incomplete data.
+        self._frame_ready = threading.Condition(self._lock)
         self._operation = threading.Lock()
         self._thread = None
         self._receiver = None
@@ -221,6 +224,7 @@ class WebSession:
                 with self._lock:
                     if self._frame is None or frame.header.frame_id > self._frame.header.frame_id:
                         self._frame = frame
+                        self._frame_ready.notify_all()
 
     def _archive(self):
         rx = self._receiver
@@ -336,13 +340,27 @@ class WebSession:
             self._pending.add(name)
             return dict(status="queued", frame_id=str(h.frame_id))
 
-    def latest(self):
+    def latest(self, after="", wait_seconds=0):
+        """Return only a fresh complete frame, with a bounded optional wait."""
+        deadline = time.monotonic() + min(0.5, max(0, wait_seconds))
         with self._lock:
+            while (self._state == "listening" and
+                   (self._frame is None or frame_info(self._frame, self._run_id,
+                    self._config["source_mode"])["key"] == after)):
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                self._frame_ready.wait(remaining)
             if self._frame is None or self._state in ("idle", "stopping", "stopped", "error"):
                 return None
             if time.monotonic_ns() - self._frame.complete_ns > 1_000_000_000:
                 return None
             return self._frame, frame_info(self._frame, self._run_id, self._config["source_mode"])
+
+    def preview_running(self):
+        """Check stream lifetime without copying metrics/history every frame."""
+        with self._lock:
+            return self._state == "listening"
 
     def status(self):
         with self._lock:

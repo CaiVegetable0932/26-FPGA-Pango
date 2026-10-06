@@ -4,9 +4,16 @@ from collections import Counter, deque
 from dataclasses import dataclass, field
 import json
 import time
+from struct import Struct
 
 from .protocol import (FormatLimits, Header, PacketType, ProtocolError,
                        decode_datagram, frame_header, validate_header)
+from .protocol import CHUNK_BYTES, HEADER_BYTES, MAX_DATAGRAM_BYTES, packet_crc32
+
+# Decode only varying chunk fields for the common already-admitted RAW frame.
+# All immutable bytes and every packet CRC are still verified on this path.
+_CHUNK_POSITION = Struct("<IH")
+_CHUNK_INDEX = Struct("<H")
 
 
 @dataclass(frozen=True, slots=True)
@@ -100,6 +107,8 @@ class _Assembly:
     seen: bytearray = field(init=False)
     received: int = 0
     highest_index: int = -1
+    wire_header: bytes | None = None
+    native_buffers: object = None
 
     def __post_init__(self):
         self.data = bytearray(self.header.frame_bytes)
@@ -139,6 +148,8 @@ class FrameAssembler:
         self.live_highwater: int | None = None
         self.live_first_id: int | None = None
         self.live_observed = 0
+        self._fast_live = None
+        self._next_deadline_ns = 0
 
     @property
     def active_frames(self) -> int:
@@ -151,6 +162,8 @@ class FrameAssembler:
 
     def _remove(self, key: tuple) -> _Assembly:
         state = self._active.pop(key)
+        if self._fast_live is state:
+            self._fast_live = None
         self.buffer_bytes -= len(state.data)
         self._terminal[state.header.identity] = state.header.key
         return state
@@ -165,9 +178,14 @@ class FrameAssembler:
 
     def expire(self, now_ns: int | None = None):
         now = time.monotonic_ns() if now_ns is None else now_ns
+        # No allocation/active-frame scan before the earliest possible expiry.
+        # A removed earliest deadline may cause one harmless early rescan.
+        if now < self._next_deadline_ns:
+            return
         for key, state in list(self._active.items()):
             if now >= state.deadline_ns:
                 self._fail(key, "timeout")
+        self._next_deadline_ns = min((s.deadline_ns for s in self._active.values()), default=0)
 
     def abort(self, reason: str = "stopped"):
         for key in list(self._active):
@@ -209,6 +227,7 @@ class FrameAssembler:
             self._active[state.header.key] = state
             self._snapshot_keys.add(state.header.key)
             self._terminal.pop(state.header.identity, None)
+        self._next_deadline_ns = min(s.deadline_ns for s in self._active.values())
         self.buffer_bytes += required
 
     def close_snapshot(self):
@@ -243,6 +262,28 @@ class FrameAssembler:
         now = time.monotonic_ns() if now_ns is None else now_ns
         self.expire(now)
         self.stats["datagrams"] += 1
+        # A frame has 1482 packets at 1080p. Reusing its validated invariant
+        # avoids 1481 frozen dataclass constructions and whole-header checks.
+        # Any changed/invalid field falls back to the authoritative decoder,
+        # preserving rejection reasons, conflicts, epoch and replay handling.
+        state = self._fast_live
+        view = memoryview(datagram)
+        if state is not None and HEADER_BYTES < len(view) <= MAX_DATAGRAM_BYTES:
+            template = state.wire_header
+            if (view[:9] == template[:9] and view[10:44] == template[10:44]
+                    and view[50:52] == template[50:52] and view[54:56] == template[54:56]
+                    and view[60:64] == template[60:64]):
+                index = _CHUNK_INDEX.unpack_from(view, 52)[0]
+                offset, size = _CHUNK_POSITION.unpack_from(view, 44)
+                flags = view[9]
+                if (index < state.header.packet_count and offset == index * CHUNK_BYTES
+                        and size == min(CHUNK_BYTES, state.header.frame_bytes - offset)
+                        and len(view) == HEADER_BYTES + size and not flags & ~3
+                        and bool(flags & 2) == (index == state.header.packet_count - 1)):
+                    if packet_crc32(view) != int.from_bytes(view[56:60], "little"):
+                        self.stats["packets_rejected_crc"] += 1
+                        return None
+                    return self._accept(state, index, offset, view[HEADER_BYTES:], flags, now, True)
         try:
             packet = decode_datagram(datagram, self.format_limits)
         except ProtocolError as error:
@@ -288,13 +329,21 @@ class FrameAssembler:
             self._active[h.key] = state
             self.buffer_bytes += h.frame_bytes
             self.stats["live_frames_observed"] += 1
+            self._next_deadline_ns = min(s.deadline_ns for s in self._active.values())
         if state.header.invariant != h.invariant:
             self._fail(h.key, "metadata_conflict")
             return None
-        index = h.packet_index
-        start, end = h.payload_offset, h.payload_offset + h.payload_bytes
+        if raw:
+            state.wire_header = bytes(view[:HEADER_BYTES])
+            self._fast_live = state
+        return self._accept(state, h.packet_index, h.payload_offset, packet.payload, h.flags, now, raw)
+
+    def _accept(self, state, index, start, payload, flags, now, raw):
+        """One common commit path keeps duplicate, ordering and evidence checks."""
+        h = state.header
+        end = start + len(payload)
         if state.seen[index]:
-            if memoryview(state.data)[start:end] != packet.payload:
+            if memoryview(state.data)[start:end] != payload:
                 self._fail(h.key, "duplicate_conflict")
             else:
                 self.stats["packets_duplicate"] += 1
@@ -304,11 +353,11 @@ class FrameAssembler:
         if index < state.highest_index:
             self.stats["packets_out_of_order"] += 1
         state.highest_index = max(state.highest_index, index)
-        state.data[start:end] = packet.payload
+        state.data[start:end] = payload
         state.seen[index] = 1
         state.received += 1
         self.stats["packets_accepted_unique"] += 1
-        if h.flags & 1:
+        if flags & 1:
             self.stats["packets_retransmitted"] += 1
         if state.received != h.packet_count:
             return None
@@ -317,6 +366,36 @@ class FrameAssembler:
         self.stats["live_bytes_complete" if raw else "snapshot_bytes_complete"] += h.frame_bytes
         return CompleteFrame(state.header, bytes(state.data), state.first_receive_ns,
                              now, state.descriptor_json)
+
+    def feed_batch(self, batch, start, count):
+        """Native equivalent of the admitted-RAW hot path; exceptional packets
+        still pass through feed(). Returns consumed datagrams, bytes and frame.
+        """
+        # Native execution must stop at the earliest deadline, including any
+        # concurrently admitted snapshot, just as feed() expires per packet.
+        self.expire()
+        state = self._fast_live
+        result = batch.consume_raw(state, start, count, self._next_deadline_ns)
+        if result is None or not result.consumed:
+            return 0, 0, None
+        self.stats["datagrams"] += result.consumed
+        for name, value in (("packets_accepted_unique", result.accepted),
+                ("packets_duplicate", result.duplicates), ("packets_retransmitted", result.retransmitted),
+                ("packets_out_of_order", result.out_of_order), ("packets_rejected_crc", result.rejected_crc)):
+            if value:
+                self.stats[name] += value
+        state.received += result.accepted
+        state.highest_index = result.highest_index
+        frame = None
+        if result.conflict:
+            self._fail(state.header.key, "duplicate_conflict")
+        elif result.complete:
+            self._remove(state.header.key)
+            self.stats["live_frames_complete"] += 1
+            self.stats["live_bytes_complete"] += state.header.frame_bytes
+            frame = CompleteFrame(state.header, bytes(state.data), state.first_receive_ns,
+                                  result.complete_ns, state.descriptor_json)
+        return result.consumed, result.payload_bytes, frame
 
     def status(self) -> dict:
         span = 0 if self.live_first_id is None else self.live_highwater - self.live_first_id + 1

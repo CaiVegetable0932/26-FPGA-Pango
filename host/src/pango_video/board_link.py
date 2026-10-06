@@ -18,6 +18,12 @@ import time
 from .raw8_boot import crc16, metadata
 from .web_session import SessionError
 
+# The documented direct-link baseline. A reset discovers its real NIC/MAC
+# and the saved CP2102 identity; it never writes OS addresses or USB settings.
+ETHERNET_DEFAULTS = dict(source_ip="192.168.80.3", source_mac="02:00:00:00:00:01",
+                         peer_port=50000, source_port=50001)
+DEFAULT_PEER_IP = "192.168.80.2"
+
 
 def interfaces():
     """Read actual local IPv4/MAC pairs; never substitute a guessed peer MAC."""
@@ -35,7 +41,9 @@ def interfaces():
         if isinstance(rows, dict):
             rows = [rows]
     else:
-        result = subprocess.run(["ip", "-j", "-4", "address", "show", "up"],
+        # Query all address families so iproute2 retains link-layer MAC fields;
+        # its IPv4-only output omits them on Jetson. Filter IPv4 rows below.
+        result = subprocess.run(["ip", "-j", "address", "show", "up"],
                                 capture_output=True, text=True, timeout=10, check=True)
         rows = [dict(name=item["ifname"], ip=a["local"], prefix=a["prefixlen"], mac=item.get("address", ""))
                 for item in json.loads(result.stdout) for a in item.get("addr_info", []) if a["family"] == "inet"]
@@ -172,6 +180,34 @@ class BoardLink:
             self.thread = threading.Thread(target=self._run, args=(selected,), name="board-startup", daemon=True)
             self.thread.start()
             return self.status()
+
+    def reset_ethernet(self):
+        """Restore only Ethernet defaults and restart this receiver asynchronously.
+
+        Resolve physical devices before disturbing a live session. Warm boards
+        must still pass the existing immutable endpoint/epoch check in _run.
+        HDMI belongs to the browser and is never opened/closed by this action.
+        """
+        with self.lock:
+            if self.thread and self.thread.is_alive():
+                raise SessionError("板卡启动中，请等待完成再重置以太网")
+            ports = self.ports()
+            serial = self.profile.get("serial_number")
+            if serial:
+                ports = [p for p in ports if p.get("serial") == serial]
+            elif len(ports) > 1:
+                ports = [p for p in ports if p["port"] == self.profile.get("port")]
+            if len(ports) != 1:
+                raise SessionError("默认以太网重连需要唯一的已选 CP2102，请检查连接并选择设备")
+            cards = [n for n in self.inventory() if n["ip"] == DEFAULT_PEER_IP and
+                     ipaddress.ip_address(ETHERNET_DEFAULTS["source_ip"]) in
+                     ipaddress.ip_network(f'{n["ip"]}/{n["prefix"]}', strict=False)]
+            if len(cards) != 1:
+                raise SessionError("未找到唯一的默认直连网卡（192.168.80.2，须与 192.168.80.3 同网段）；请核对系统网卡配置")
+            profile = dict(ETHERNET_DEFAULTS, port=ports[0]["port"],
+                           serial_number=ports[0].get("serial", ""), interface=cards[0]["name"],
+                           auto_start=self.profile.get("auto_start", False))
+            return self.start(profile)
 
     def stop(self):
         """Cancel only this service's startup/receiver; release serial in finally."""

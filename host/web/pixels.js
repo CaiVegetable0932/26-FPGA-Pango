@@ -1,11 +1,14 @@
 /* Pure pixel conversion: also exercised by Node tests; no browser state. */
 (function(root){
   "use strict";
+  // One packed RGBA store per pixel on the usual little-endian browser hosts;
+  // retain byte stores on other layouts so exported colors remain portable.
+  const littleEndian=new Uint8Array(new Uint32Array([1]).buffer)[0]===1;
   function renderPixels(buffer, meta, mode="color", options={}){
     const input=new Uint8Array(buffer), w=meta.width, h=meta.height;
     if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||input.length>8388608) throw Error("非法图像尺寸");
-    const rgb=meta.pixel_format==="RGB888", raw=meta.pixel_format==="RAW8";
-    if(!rgb&&!raw) throw Error("不支持的像素格式");
+    const rgb=meta.pixel_format==="RGB888", raw=meta.pixel_format==="RAW8",gray=meta.pixel_format==="GRAY8";
+    if(!rgb&&!raw&&!gray) throw Error("不支持的像素格式");
     if(input.length!==w*h*(rgb?3:1)||meta.row_stride!==w*(rgb?3:1)) throw Error("图像字节不完整");
     // Purpose: retain an exact one-sample RAW view at native display size.
     // When the browser must shrink Bayer pixels, prefilter one complete 2x2
@@ -22,6 +25,21 @@
     const width=Math.floor(w/step), height=Math.max(1,Math.floor(h/step));
     if(!width||!height) throw Error("图像不足以生成预览");
     const output=new Uint8ClampedArray(width*height*4);
+    const packed=littleEndian?new Uint32Array(output.buffer):null;
+    // Compact grayscale/native sample previews need no Bayer addressing or
+    // color branches per pixel; keep the common loop contiguous and allocation free.
+    if(packed&&step===1&&(gray||(exactRaw&&!filteredRaw))){
+      for(let i=0;i<input.length;i++)packed[i]=0xff000000|input[i]*0x010101;
+      return {width,height,pixels:output.buffer};
+    }
+    // The server's color derivative is already contiguous RGB888. Expand it
+    // directly without row addressing or Bayer/mode branches at every pixel;
+    // gray mode still uses the existing weighted luminance calculation below.
+    if(packed&&step===1&&rgb&&mode!=="gray"){
+      for(let i=0,j=0;i<packed.length;i++,j+=3)
+        packed[i]=0xff000000|(input[j+2]<<16)|(input[j+1]<<8)|input[j];
+      return {width,height,pixels:output.buffer};
+    }
     const layout={1:[0,1,2,3],2:[1,0,3,2],3:[2,0,3,1],4:[3,1,2,0]}[meta.bayer_code];
     if(color&&!layout) throw Error("Bayer排列未确认");
     for(let y=0;y<height;y++){
@@ -29,8 +47,11 @@
         const source=y*step*w+x*step, dest=(y*width+x)*4;
         let r,g,b;
         if(color){
-          const values=[input[source],input[source+1],input[source+w],input[source+w+1]];
-          r=values[layout[0]]; g=(values[layout[1]]+values[layout[2]])>>1; b=values[layout[3]];
+          // Read the Bayer cell directly instead of allocating one array for
+          // every pixel in every preview frame.
+          r=input[source+(layout[0]>>1)*w+(layout[0]&1)];
+          g=(input[source+(layout[1]>>1)*w+(layout[1]&1)]+input[source+(layout[2]>>1)*w+(layout[2]&1)])>>1;
+          b=input[source+(layout[3]>>1)*w+(layout[3]&1)];
         }else if(rgb){
           r=input[source*3];g=input[source*3+1];b=input[source*3+2];
           if(mode==="gray") r=g=b=Math.round((r*77+g*150+b*29)/256);
@@ -41,7 +62,8 @@
           if((filteredRaw||!exactRaw)&&step>=2&&x*step+1<w&&y*step+1<h) r=(r+input[source+1]+input[source+w]+input[source+w+1])>>2;
           g=b=r;
         }
-        output[dest]=r;output[dest+1]=g;output[dest+2]=b;output[dest+3]=255;
+        if(packed)packed[dest>>2]=0xff000000|(b<<16)|(g<<8)|r;
+        else{output[dest]=r;output[dest+1]=g;output[dest+2]=b;output[dest+3]=255;}
       }
     }
     return {width,height,pixels:output.buffer};

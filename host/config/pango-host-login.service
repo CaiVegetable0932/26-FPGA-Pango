@@ -1,0 +1,15 @@
+# Keep the existing host receiver owned by the desktop user across logins.
+[Unit]
+Description=Pango FPGA video workbench
+After=basic.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/cai/26-FPGA-Pango/26-FPGA-Pango
+ExecStart=/usr/bin/python3 -B /home/cai/26-FPGA-Pango/26-FPGA-Pango/host/scripts/start_host_at_login.py
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

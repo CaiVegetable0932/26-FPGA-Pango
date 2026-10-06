@@ -1,6 +1,14 @@
 # 上位机开发区
 
+2026-10-06：本轮仅上传核心实现与构建文件，采集与测试记录留在本机，详见[核心版本提交范围](docs/核心版本提交范围.md)。
+
 板卡上电后的日常入口见[一键连接与预览](docs/板卡上电一键启动.md)：首次选择 CP2102 和直连网卡，后续启动 host 可自动完成 RAW8 UART 配置、UDP 接收与采集卡恢复；Windows/Linux 共用实现。
+
+2026-10-06：HDMI 预览 FPS 改为实际观察到的新帧回调计数，跳过的回调不再补计，并增加解码 FPS、跳过更新、最长间隔；新增独立“以太网恢复默认并重连”按钮。用法见[启动说明](docs/板卡上电一键启动.md)，验证边界与结果见修复验证记录（本机留存：`reports/hdmi-fps-ethernet-reset-20261006/README.md`）。
+
+2026-10-04：本机 Jetson 日常启动使用 `sh /home/cai/26-FPGA-Pango/26-FPGA-Pango/host/scripts/start_workbench.sh`，启动后台服务并复用工作台页。已接入网口完整帧和两个预览的实时 FPS，HDMI 默认请求 1920×1080 / 30 FPS；本次真实硬件性能、原始证据和测试边界见1080p30 双路性能验收（本机留存：`reports/preview-performance-20261004/README.md`）。以下较早报告保留各自当时的验收范围。
+
+2026-10-04 双路波动复测：默认启用 Worker/GPU 派生预览、减少逐帧界面开销，1080p 请求目标 30 FPS 并保留 31 FPS 浏览器交付容差（实际 UVC 仍为 30）。连续 61 秒完整接收 30.00、网口彩色显示 29.92、HDMI 解码 29.87 FPS；短窗口仍有波动，详见双路预览优化与实测（本机留存：`reports/dual-preview-stability-20261004/README.md`）。
 
 2026-10-02：Linux/Jetson 环境与本地标定工作台合并。Linux 提交 `931f2da6` 的历史 Jetson Ubuntu 22.04 ARM64 验证（77 项 Python、11 项前端像素及桌面浏览器检查）见[本机环境配置](docs/本机环境配置.md)和[原验证报告](reports/environment_20261002/README.md)，不代表合并版本已在 Jetson 实板复验。合并版本的 Windows/Linux 软件回归见[合并报告](reports/host_linux_merge_20261002/README.md)。已有 Jetson 环境更新后先执行 `source host/scripts/env.sh` 和 `python host/scripts/setup_calibration.py` 补齐标定依赖，再运行 `sh host/scripts/start_web.sh`。
 

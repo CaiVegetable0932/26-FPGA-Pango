@@ -1,0 +1,47 @@
+{
+  "modules": {
+    "original": {
+      "path": "/home/cai/26-FPGA-Pango/26-FPGA-Pango/host/build/uvc-diagnostic/original-uvcvideo.ko",
+      "sha256": "555d9945e8ac1f4a5f3b3eb5d0d8f7765b18dbaf8457b4fbd15b39947baa53eb",
+      "version": "1.1.1",
+      "srcversion": "62141F80FEED8A5C0693267",
+      "vermagic": "5.15.148-tegra SMP preempt mod_unload modversions aarch64",
+      "imported_symbol_count": 155,
+      "added_imports": {},
+      "abi_mismatches": {}
+    },
+    "seeed-baseline": {
+      "path": "/home/cai/26-FPGA-Pango/26-FPGA-Pango/host/build/uvc-diagnostic/seeed-baseline/uvcvideo.ko",
+      "sha256": "fdc7f9ac0ebf656d6ae644974538b9d0ce44b18b1755d88165f9b40b8b88808f",
+      "version": "1.1.1",
+      "srcversion": "62141F80FEED8A5C0693267",
+      "vermagic": "5.15.148-tegra SMP preempt mod_unload modversions aarch64",
+      "imported_symbol_count": 155,
+      "added_imports": {},
+      "abi_mismatches": {}
+    },
+    "hagibis-payload": {
+      "path": "/home/cai/26-FPGA-Pango/26-FPGA-Pango/host/build/uvc-diagnostic/hagibis-payload/uvcvideo.ko",
+      "sha256": "2ba0ffd9ed762064486430eb02a61172ffe244b02542f4a83531f4b24d8f0120",
+      "version": "1.1.1-pango-hagibis",
+      "srcversion": "07CEFA74AE992273053776F",
+      "vermagic": "5.15.148-tegra SMP preempt mod_unload modversions aarch64",
+      "imported_symbol_count": 156,
+      "added_imports": {
+        "strcmp": "0xe2d5255a"
+      },
+      "abi_mismatches": {}
+    }
+  },
+  "checks": {
+    "baseline_source_identity_matches": true,
+    "candidate_vermagic_matches": true,
+    "candidate_abi_matches": true,
+    "baseline_abi_matches": true
+  },
+  "UVC_URBS": 5,
+  "UVC_MAX_PACKETS": 32,
+  "source_url": "https://github.com/Seeed-Studio/Linux_for_Tegra/blob/798d0238554f3385e185ef3610025dbbba0c54f0/source/kernel/kernel-jammy-src/drivers/media/usb/uvc/uvc_video.c",
+  "driver_loaded": false,
+  "installed_module_replaced": false
+}

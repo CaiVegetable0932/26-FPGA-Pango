@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import secrets
 import threading
+from struct import Struct
 from urllib.parse import parse_qs, quote, urlsplit
 
 from .cli import HOST_ROOT
@@ -14,6 +15,7 @@ from .web_session import SessionError, WebSession
 from .record_store import safe_child, sample_metadata, archives, runs, report_file
 from .calibration import CalibrationStore
 from .board_link import BoardLink
+from .preview import preview_payload
 
 ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.html","text/html; charset=utf-8"),
     "app.css":("app.css","text/css; charset=utf-8"), "app.js":("app.js","text/javascript; charset=utf-8"),
@@ -23,12 +25,18 @@ ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.htm
     "video-input-ui.js":("video-input-ui.js","text/javascript; charset=utf-8"),
     "board-link.js":("board-link.js","text/javascript; charset=utf-8"),
     "preview-worker.js":("preview-worker.js","text/javascript; charset=utf-8"),
+    # GPU display helper stays on the same protected origin as its worker.
+    "preview-renderer.js":("preview-renderer.js","text/javascript; charset=utf-8"),
+    # Independent actual presentation meters for browser-owned video previews.
+    "preview-rate.js":("preview-rate.js","text/javascript; charset=utf-8"),
+    "preview-stream.js":("preview-stream.js","text/javascript; charset=utf-8"),
     # Purpose: serve the local calibration workbench from the same protected origin.
     "calibration":("calibration.html","text/html; charset=utf-8"),
     "calibration.html":("calibration.html","text/html; charset=utf-8"),
     "calibration.js":("calibration.js","text/javascript; charset=utf-8"),
     "calibration.css":("calibration.css","text/css; charset=utf-8"),
-    # Purpose: keep the manually editable PC fish-eye reference local to calibration.
+    # Purpose: share the local PC fish-eye reference between calibration and
+    # the optional HDMI display, without sending video to a remap endpoint.
     "fisheye-preview.js":("fisheye-preview.js","text/javascript; charset=utf-8"),
     "fisheye-tuning.js":("fisheye-tuning.js","text/javascript; charset=utf-8"),
     "favicon.svg":("favicon.svg","image/svg+xml")}
@@ -43,7 +51,9 @@ def instance_identity():
 
 class LocalServer(ThreadingHTTPServer):
     daemon_threads = True
-    allow_reuse_address = False
+    # TCP TIME_WAIT must not prevent a clean service restart. A second active
+    # listener remains forbidden: SO_REUSEPORT is not enabled, nor is UDP reuse.
+    allow_reuse_address = True
 
     def __init__(self, port=8765, session=None):
         self.session = session or WebSession()
@@ -74,6 +84,9 @@ class LocalServer(ThreadingHTTPServer):
 
 
 class Handler(BaseHTTPRequestHandler):
+    # A frame response sends short headers followed by a large RAW body.
+    # Disable Nagle so delayed ACKs cannot add ~40 ms to each local preview.
+    disable_nagle_algorithm = True
     server_version = "PangoLocal/0.2"
     sys_version = ""
 
@@ -83,6 +96,43 @@ class Handler(BaseHTTPRequestHandler):
 
     def log_message(self, *args):
         pass
+
+    def _preview_stream(self, query):
+        """One loopback connection follows new complete frames, without copies
+        of the original RAW or a growing queue when the display is slower.
+        """
+        mode = query.get("mode", ["raw"])[0]
+        scale = int(query.get("downscale", ["2"])[0])
+        if mode not in ("raw", "gray", "color") or scale not in (1,2):
+            raise ValueError("invalid preview mode/scale")
+        # HTTP/1.0 closes this lengthless binary body at stream end. Bound each
+        # write with the existing socket timeout; a closed view releases its slot.
+        self.send_response(200)
+        self.send_header("Content-Type", "application/octet-stream")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.end_headers()
+        prefix = Struct("<II")
+        after = ""
+        try:
+            # A preview needs only the lifecycle bit; the full status snapshot
+            # is reserved for UI polls and would otherwise hold the RX lock
+            # while copying metrics/history at video frame rate.
+            while self.server.session.preview_running():
+                latest = self.server.session.latest(after, 0.5)
+                if latest is None:
+                    continue
+                frame, info = latest
+                if info["key"] == after:
+                    continue
+                pixels, derived = preview_payload(frame, mode, scale)
+                info.update(derived)
+                metadata = json.dumps(info, ensure_ascii=True).encode()
+                self.wfile.write(prefix.pack(len(metadata), len(pixels)) + metadata)
+                self.wfile.write(pixels)
+                after = info["key"]
+        except (BrokenPipeError, ConnectionResetError, TimeoutError):
+            pass  # Closing/hiding a browser view cancels only its preview.
 
     def _trusted(self, mutate=False):
         hosts = {f"127.0.0.1:{self.server.server_port}",f"localhost:{self.server.server_port}"}
@@ -137,20 +187,32 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(200,self.server.board_link.devices())
             if route == "/api/calibration":
                 return self._json(200,self.server.calibration.list())
+            if route == "/api/preview-stream":
+                return self._preview_stream(query)
             if route == "/api/calibration/artifact":
                 path = self.server.calibration.artifact(
                     query.get("dataset",[""])[0], query.get("sample",[""])[0],
                     query.get("file",[""])[0], query.get("version",[None])[0])
                 return self._send(200,path.read_bytes(),"application/octet-stream",
                     {"Content-Disposition":"attachment; filename*=UTF-8''"+quote(path.name)})
-            if route == "/api/frame":
-                latest = self.server.session.latest()
+            if route in ("/api/frame", "/api/preview"):
+                # One bounded long poll follows complete source frames. The
+                # legacy zero-wait API stays compatible with archive/tests.
+                wait_ms = min(500, max(0, int(query.get("wait", ["0"])[0])))
+                latest = self.server.session.latest(query.get("after", [""])[0], wait_ms / 1000)
                 if latest is None:
                     return self._send(204)
                 frame, info = latest
                 if query.get("after",[""])[0] == info["key"]:
                     return self._send(204)
-                return self._send(200,frame.data,"application/octet-stream",
+                pixels = frame.data
+                if route == "/api/preview":
+                    # Transfer only the current display's derived pixels;
+                    # /api/frame and archives always expose original RAW bytes.
+                    pixels, derivative = preview_payload(frame, query.get("mode", ["raw"])[0],
+                                                         int(query.get("downscale", ["2"])[0]))
+                    info.update(derivative)
+                return self._send(200,pixels,"application/octet-stream",
                     {"X-Frame-Info":json.dumps(info,ensure_ascii=True)})
             if route == "/api/records":
                 return self._json(200,self.server.session.records())
@@ -212,6 +274,12 @@ class Handler(BaseHTTPRequestHandler):
             # Board startup is asynchronous, keeping frame/status HTTP responsive.
             if route == "/api/board/start":
                 return self._json(202,self.server.board_link.start(data or None))
+            # This token-protected action restores Ethernet defaults only.
+            # Device/epoch validation happens before restarting the owned UDP.
+            if route == "/api/board/reset-ethernet":
+                if data:
+                    raise SessionError("以太网恢复默认请求不需要参数")
+                return self._json(202,self.server.board_link.reset_ethernet())
             if route == "/api/board/stop":
                 if data:
                     raise SessionError("停止请求不需要参数")

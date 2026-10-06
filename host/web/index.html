@@ -5,7 +5,8 @@
   <title>Pango Vision · 视频采集工作台</title>
   <meta name="description" content="PG2L100H 上位机：RAW8视频接收、源帧预览与原始证据归档。">
   <link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/app.css">
-  <script src="/records.js" defer></script><script src="/video-input.js" defer></script><script src="/video-input-ui.js" defer></script><script src="/board-link.js" defer></script><script src="/app.js" defer></script>
+  <!-- HDMI software-reference display shares the calibration renderer. -->
+  <script src="/records.js" defer></script><script src="/preview-stream.js" defer></script><script src="/preview-rate.js" defer></script><script src="/video-input.js" defer></script><script src="/fisheye-preview.js" defer></script><script src="/video-input-ui.js" defer></script><script src="/board-link.js" defer></script><script src="/app.js" defer></script>
 </head>
 <body>
 <svg class="icon-defs" aria-hidden="true"><defs>
@@ -47,7 +48,8 @@
           <label>PC 接收端口<input id="board-peer-port" type="number" value="50000" min="1" max="65535"></label>
           <label>FPGA 发送端口<input id="board-source-port" type="number" value="50001" min="1" max="65535"></label>
         </div>
-        <div class="board-actions"><label><input id="board-auto" type="checkbox" checked>下次启动 host 自动连接</label><button id="board-start" class="button primary">启动 / 重连板卡链路</button><button id="board-stop" class="button secondary">停止板卡接收</button><a href="/calibration" class="button secondary">进入标定</a></div>
+        <!-- Ethernet recovery restores the default link without touching HDMI. -->
+        <div class="board-actions"><label><input id="board-auto" type="checkbox" checked>下次启动 host 自动连接</label><button id="board-start" class="button primary">启动 / 重连板卡链路</button><button id="board-reset-ethernet" type="button" class="button secondary" title="恢复默认网口参数并重启 RAW8 接收，保留 HDMI 预览">以太网恢复默认并重连</button><button id="board-stop" class="button secondary">停止板卡接收</button><a href="/calibration" class="button secondary">进入标定</a></div>
         <p id="board-message" role="status">首次选择直连板卡的网卡和串口；本机 IP/MAC 将从该网卡读取。</p>
         <p id="board-diagnostics"></p>
       </article>
@@ -61,6 +63,8 @@
         <div class="metric"><div class="metric-label">RAW 有效吞吐</div><div><strong id="metric-throughput">—</strong><span class="unit">MB/s</span></div><small>按完整像素字节计数</small></div>
         <div class="metric"><div class="metric-label">校验失败 / 组帧失败</div><div><strong id="metric-errors">— / —</strong></div><small id="error-hint">等待接收数据</small></div>
       </div>
+      <!-- One display-only switch controls original and mapped pixel overlays. -->
+      <div class="pixel-marker-toolbar"><button id="pixel-markers-toggle" type="button" class="button small secondary" aria-pressed="false" aria-controls="raw-pixel-markers capture-pixel-markers">显示像素标记</button><span id="pixel-markers-info" role="status">标记已隐藏 · 可观察原图像素的矫正映射</span></div>
       <div class="capture-layout">
         <article class="panel video-panel primary-viewer">
           <!-- Purpose: full-size RAW gray remains byte-exact; the reduced-size
@@ -69,21 +73,29 @@
           <div class="panel-heading"><div class="panel-title"><span class="channel-label">RAW8</span><h2>网口 RAW8 数据</h2></div><div class="segmented" role="group" aria-label="RAW8预览方式"><button class="selected" data-color="raw" aria-pressed="true">RAW 灰阶</button><button data-color="color" aria-pressed="false">基础彩色</button><button data-color="gray" aria-pressed="false">平均灰度</button></div></div>
           <div class="video-surface" id="video-surface">
             <canvas id="live-canvas" width="960" height="540" aria-label="来自完整RAW8帧的预览画面" hidden></canvas>
+            <svg id="raw-pixel-markers" class="pixel-marker-overlay" aria-label="网口原图的代表像素位置" hidden></svg>
             <div class="video-empty" id="video-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-camera"/></svg></div><strong>等待原始视频</strong><span>开始本机模拟，或配置板端数据来源</span><div class="signal-guide"><span>RAW8</span><span>1920 × 1080</span><span>PRAW V1</span></div></div>
             <span class="video-corner" id="video-origin">MOCK / 模拟来源</span><div class="stale-label" id="stale-label" hidden>画面已停止更新</div>
           </div>
-          <div class="video-meta"><span id="frame-identity">尚无完整源帧</span><span id="preview-rate">预览 — FPS</span></div>
+          <div class="video-meta"><span id="frame-identity">尚无完整源帧</span><span><span id="receive-rate">完整接收 0.0 FPS</span> · <span id="preview-rate">显示 0.0 FPS</span></span></div>
           <div class="viewer-footer"><span id="raw-stage-note">PC 基础可视化 · 不等同于 FPGA S1</span><button id="save-current" class="button small secondary" disabled><svg class="icon"><use href="#i-camera"/></svg>保存最新完整帧</button></div>
         </article>
         <article class="panel video-panel hdmi-panel">
           <div class="panel-heading"><div class="panel-title"><span class="channel-label">IN</span><h2>采集卡视频输入</h2></div><span id="capture-preview-status" class="pill neutral">未配置</span></div>
           <div class="video-surface result-surface" id="result-surface">
             <video id="capture-video" autoplay muted playsinline aria-label="所选视频采集设备的预览" hidden></video>
+            <!-- Display-only correction covers the existing video; it never
+                 opens a second device or changes the captured source pixels. -->
+            <canvas id="capture-corrected" width="1" height="1" aria-label="HDMI 图像的计算机矫正预览，与标定页面共用手动参数" hidden></canvas>
+            <svg id="capture-pixel-markers" class="pixel-marker-overlay" aria-label="HDMI 原图或计算机矫正后的对应像素位置" hidden></svg>
             <div class="video-empty hdmi-empty" id="capture-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-monitor"/></svg></div><strong id="capture-empty-title">选择视频输入设备</strong><span id="capture-empty-detail">在连接设置中选择采集卡，无信号时也可保存配置</span><button class="button small secondary" type="button" data-view="settings">配置视频输入</button></div>
-            <span class="video-corner">采集卡输入 / 信号未验证</span>
+            <span id="capture-view-label" class="video-corner">HDMI 原图 / 信号未验证</span>
           </div>
-          <div class="video-meta"><span id="capture-preview-device">尚未选择设备</span><span id="capture-format">采集格式 —</span></div>
-          <div class="viewer-footer"><span>源帧配对未验证</span><div class="capture-preview-actions"><button id="capture-preview-open" type="button" class="button small secondary" disabled>打开预览</button><button id="capture-preview-close" type="button" class="button small secondary" disabled>关闭</button></div></div>
+          <!-- Negotiated input, observed preview and decode health are distinct. -->
+          <div class="video-meta"><span id="capture-preview-device">尚未选择设备</span><span id="capture-format">采集格式 —</span><span id="capture-preview-rate" title="每秒实际观察到的新帧回调；跳过的回调不补计，不能证明显示器或远程桌面的最终帧率">预览 0.0 FPS</span></div>
+          <p id="capture-preview-health" class="capture-health" role="status" title="跳过更新表示合成提交帧数跨越了多个回调；不等同于 FPGA 源帧丢失">解码 0.0 FPS · 跳过更新 0 · 解码丢帧 0 · 最长间隔 0 ms</p>
+          <p id="capture-correction-info" class="capture-health" role="status">当前：HDMI 原图 · 可切换为标定页面的计算机矫正</p>
+          <div class="viewer-footer"><span>源帧配对未验证</span><div class="capture-preview-actions"><button id="capture-correction-toggle" type="button" class="button small secondary" aria-pressed="false" aria-controls="capture-corrected" title="使用标定页面的手动鱼眼参数进行 PC 软件矫正，只切换显示">计算机矫正</button><button id="capture-preview-open" type="button" class="button small secondary" disabled>打开预览</button><button id="capture-preview-close" type="button" class="button small secondary" disabled>关闭</button></div></div>
         </article>
       </div>
       <div class="connection-row"><article class="panel connection-panel"><div class="panel-heading"><h2>当前连接</h2><span id="transport-pill" class="pill neutral">待启动</span></div><dl class="connection-facts"><div><dt>设备标识</dt><dd id="device-id">—</dd></div><div><dt>接收地址</dt><dd id="bind-address">—</dd></div><div><dt>来源地址</dt><dd id="peer-address">—</dd></div><div><dt>源代次</dt><dd id="epoch">—</dd></div><div><dt>运行时长</dt><dd id="elapsed">00:00</dd></div></dl><div class="control-note"><span class="status-dot"></span>UART 控制尚未接入</div></article></div>
@@ -108,6 +120,8 @@
           <div class="capture-device-row"><select id="capture-device" aria-describedby="capture-device-note"><option value="">先刷新设备列表</option></select><button id="capture-refresh" type="button" class="button secondary">刷新设备</button><button id="capture-authorize" type="button" class="button secondary">授权显示设备</button></div>
           <p id="capture-device-note">首次使用需允许浏览器访问摄像头。授权时会短暂打开一个视频设备，读取名称后立即释放。</p>
           <p id="capture-message" role="status" aria-live="polite">设备配置与输入信号无关；选择采集卡后可先保存，稍后再打开预览。</p>
+          <label for="capture-mode">预览采集模式</label><select id="capture-mode"><option value="1080p30">1920 × 1080 · 30 FPS</option><option value="720p30">1280 × 720 · 30 FPS</option></select>
+          <p>协商 FPS 是设备参数；预览 FPS 按实际观察到的新帧回调计数，跳过的更新不补计。解码 FPS、跳过更新和最长间隔独立显示；不代表 FPGA 源帧或远程桌面的帧率。</p>
           <dl class="capture-facts"><div><dt>已保存的设备</dt><dd id="capture-selected">尚未选择</dd></div><div><dt>输入信号</dt><dd>未验证</dd></div><div><dt>源帧关联</dt><dd>未配对</dd></div></dl>
         </div>
         <div class="form-footer"><span>选择仅保存在当前浏览器。保存不会打开设备，关闭页面会释放采集卡。</span><div class="capture-form-actions"><button id="capture-save" type="button" class="button primary" disabled>保存设备选择</button><button id="capture-open" type="button" class="button secondary" disabled>打开预览</button><button id="capture-close" type="button" class="button secondary" disabled>关闭设备</button></div></div>

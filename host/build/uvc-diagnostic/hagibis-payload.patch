@@ -1,0 +1,32 @@
+--- seeed-baseline/uvc_video.c
++++ hagibis-payload/uvc_video.c
+@@ -232,8 +232,16 @@
+ 		ctrl->dwMaxPayloadTransferSize = bandwidth;
+ 	}
+ 
+-	if (format->flags & UVC_FMT_FLAG_COMPRESSED) {
+-			ctrl->dwMaxPayloadTransferSize = 0x300;
++	/* Pango Hagibis diagnostic: retain the device-negotiated bulk payload.
++	 * Seeed's 768-byte compressed override fragments this Actions device's
++	 * MJPEG payloads; preserve the vendor behavior for every other device.
++	 */
++	if ((format->flags & UVC_FMT_FLAG_COMPRESSED) &&
++	    !(le16_to_cpu(stream->dev->udev->descriptor.idVendor) == 0x1de1 &&
++	      le16_to_cpu(stream->dev->udev->descriptor.idProduct) == 0xf105 &&
++	      stream->dev->udev->product &&
++	      !strcmp(stream->dev->udev->product, "Hagibis"))) {
++		ctrl->dwMaxPayloadTransferSize = 0x300;
+ 	}
+ 
+ 	
+--- seeed-baseline/uvcvideo.h
++++ hagibis-payload/uvcvideo.h
+@@ -180,7 +180,7 @@
+  * Driver specific constants.
+  */
+ 
+-#define DRIVER_VERSION		"1.1.1"
++#define DRIVER_VERSION		"1.1.1-pango-hagibis"
+ 
+ /* Number of isochronous URBs. */
+ #define UVC_URBS		5

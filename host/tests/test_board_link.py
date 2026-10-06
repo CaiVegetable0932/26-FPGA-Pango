@@ -4,8 +4,10 @@ from pathlib import Path
 import struct
 import tempfile
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 
-from pango_video.board_link import BoardLink, Uart
+from pango_video.board_link import BoardLink, Uart, interfaces
 from pango_video.raw8_boot import crc16
 from pango_video.web_session import SessionError
 
@@ -127,6 +129,70 @@ class BoardLinkTests(unittest.TestCase):
         self.assertEqual(self.run_link(changed)["phase"], "error")
         self.assertNotIn(0x71, self.events)
 
+    def test_ethernet_defaults_replace_bad_preferences_and_reuse_warm_epoch(self):
+        """Reset repairs saved host parameters without recommissioning the FPGA."""
+        self.run_link()
+        epoch = self.board.epoch
+        self.link.profile.update(interface="wrong", source_ip="10.0.0.3", source_mac="bad",
+                                 peer_port=12345, source_port=23456)
+        self.events.clear()
+        self.link.reset_ethernet()
+        self.link.thread.join(3)
+        self.assertEqual(self.link.status()["phase"], "ready")
+        self.assertEqual(self.board.epoch, epoch)
+        self.assertNotIn(0x71, self.events)
+        self.assertEqual(self.link.profile["interface"], "ethernet")
+        self.assertEqual(self.link.profile["source_ip"], "192.168.80.3")
+        self.assertEqual(self.link.profile["peer_port"], 50000)
+        self.assertEqual(self.link.profile["source_port"], 50001)
+        self.assertTrue(self.link.profile["auto_start"])
+        self.assertEqual(json.loads(self.link.path.read_text()), self.link.profile)
+
+    def test_ethernet_reset_missing_or_ambiguous_defaults_keeps_live_receiver(self):
+        """Discovery errors must not stop an already functioning stream."""
+        self.run_link()
+        saved = self.link.path.read_text()
+        for cards in ([], self.cards * 2, [dict(self.cards[0], prefix=32)]):
+            self.cards = cards
+            self.events.clear()
+            with self.assertRaises(SessionError):
+                self.link.reset_ethernet()
+            self.assertTrue(self.session.live)
+            self.assertEqual(self.events, [])
+            self.assertEqual(self.link.path.read_text(), saved)
+
+    def test_ethernet_reset_respects_immutable_foreign_endpoints(self):
+        """A warm board using other addresses is not silently overwritten."""
+        self.run_link(dict(self.profile, source_ip="192.168.80.4"))
+        boot = self.link.boot_path.read_text()
+        self.events.clear()
+        self.link.reset_ethernet()
+        self.link.thread.join(3)
+        self.assertEqual(self.link.status()["phase"], "error")
+        self.assertTrue(self.session.live)
+        self.assertNotIn("stop", self.events)
+        self.assertNotIn(0x71, self.events)
+        self.assertEqual(self.link.boot_path.read_text(), boot)
+        self.assertEqual(self.link.profile["source_ip"], "192.168.80.4")
+
+    def test_ethernet_reset_follows_saved_serial_and_blocks_busy_or_missing_board(self):
+        """USB renumbering cannot select a different CP2102 or race startup."""
+        self.link.ports = lambda:[dict(port="CP2102", serial="unit1")]
+        self.run_link()
+        self.events.clear()
+        self.link.ports = lambda:[dict(port="other", serial="unit2")]
+        with self.assertRaises(SessionError):
+            self.link.reset_ethernet()
+        self.assertEqual(self.events, [])
+        self.link.ports = lambda:[dict(port="other", serial="unit2"), dict(port="renumbered", serial="unit1")]
+        self.link.reset_ethernet()
+        self.link.thread.join(3)
+        self.assertEqual(self.link.profile["port"], "renumbered")
+        self.assertEqual(self.link.status()["phase"], "ready")
+        self.link.thread = SimpleNamespace(is_alive=lambda:True)
+        with self.assertRaises(SessionError):
+            self.link.reset_ethernet()
+
     def test_unknown_warm_epoch_does_not_send_boot(self):
         self.board.epoch = 123
         self.assertEqual(self.run_link()["phase"], "error")
@@ -184,6 +250,32 @@ class BoardLinkTests(unittest.TestCase):
         uart.link, uart.sequence, uart.records = Wire(), 0, []
         self.assertEqual(uart.exchange(1)[1], 1)
         self.assertEqual(len(uart.records), 1)
+
+
+class LinuxInterfaceTests(unittest.TestCase):
+    def test_actual_mac_and_ipv4_survive_family_filtering(self):
+        """Keep a real NIC's IPv4/MAC pair while excluding loopback and IPv6.
+
+        Model iproute2's observed Jetson behavior: -4 removes MAC fields, so
+        the previous invocation returns no usable physical interfaces.
+        """
+        rows = [dict(ifname="lo", address="00:00:00:00:00:00",
+                     addr_info=[dict(family="inet", local="127.0.0.1", prefixlen=8)]),
+                dict(ifname="enP8p1s0", address="3c:6d:66:b5:44:6b", addr_info=[
+                    dict(family="inet", local="192.168.80.2", prefixlen=24),
+                    dict(family="inet6", local="fe80::1", prefixlen=64)])]
+
+        def ip_output(command, **kwargs):
+            output = [dict(row) for row in rows]
+            if "-4" in command:
+                for row in output:
+                    row.pop("address", None)
+            return SimpleNamespace(stdout=json.dumps(output))
+
+        with patch("pango_video.board_link.sys.platform", "linux"), patch(
+                "pango_video.board_link.subprocess.run", side_effect=ip_output):
+            self.assertEqual(interfaces(), [dict(name="enP8p1s0", ip="192.168.80.2",
+                                                prefix=24, mac="3c:6d:66:b5:44:6b")])
 
 
 if __name__ == "__main__":
