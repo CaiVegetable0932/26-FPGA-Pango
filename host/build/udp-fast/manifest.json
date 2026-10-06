@@ -1,0 +1,21 @@
+{
+  "machine": "aarch64",
+  "source_sha256": "50b569520c5fc68b7ae964453716fa86a5f89e5d63d8475113b09245429575ec",
+  "binary_sha256": "61cc1c166fd46f7c9bdf40b74a8ea8e82f305586eaabbbba89ff7ec419670926",
+  "command": [
+    "cc",
+    "-std=c11",
+    "-O3",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fPIC",
+    "-shared",
+    "/home/cai/26-FPGA-Pango/26-FPGA-Pango/host/src/pango_video/raw_batch.c",
+    "-lz",
+    "-o",
+    "/home/cai/26-FPGA-Pango/26-FPGA-Pango/host/build/udp-fast/libpango_raw_batch.next.so"
+  ],
+  "compiler": "cc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0",
+  "abi": 1
+}

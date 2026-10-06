@@ -6,6 +6,7 @@ import ipaddress
 import socket
 import threading
 import time
+import sys
 
 from .protocol import PacketType
 from .reassembly import CompleteFrame, FrameAssembler
@@ -77,6 +78,8 @@ class UDPReceiver:
         self.failures: deque[dict] = deque(maxlen=256)
         self.socket: socket.socket | None = None
         self.socket_receive_buffer_reported = 0
+        self.receive_batch_size = 1
+        self.native_batch_parser = False
 
     def _failure(self, event: dict):
         if len(self.failures) == self.failures.maxlen:
@@ -141,6 +144,18 @@ class UDPReceiver:
         # Holds the largest IPv4 UDP payload plus margin. Reading only 1464 bytes
         # could truncate an oversized datagram into an apparently valid packet.
         buffer = bytearray(65535)
+        # Linux can receive 32 queued packets per syscall, reducing GIL
+        # handovers while HTTP/video threads run. Other platforms retain the
+        # portable receive path and identical validation/peer filtering.
+        batch = None
+        if sys.platform.startswith("linux"):
+            try:
+                from .linux_udp import LinuxDatagramBatch
+                batch = LinuxDatagramBatch(self.socket, self.peer)
+            except (AttributeError, ImportError):
+                pass  # libc/platform without recvmmsg uses recvfrom_into.
+        self.receive_batch_size = batch.SIZE if batch else 1
+        self.native_batch_parser = bool(batch and batch.native)
         deadline = None if duration is None else time.monotonic() + duration
         try:
             while not stop.is_set() and (deadline is None or time.monotonic() < deadline):
@@ -148,7 +163,11 @@ class UDPReceiver:
                     on_status(self.status())  # Snapshot from the socket/assembler owner.
                     next_status = time.monotonic() + status_interval
                 try:
-                    size, peer = self.socket.recvfrom_into(buffer)
+                    if batch:
+                        available = batch.receive()
+                    else:
+                        size, peer = self.socket.recvfrom_into(buffer)
+                        available = 1
                 except socket.timeout:
                     self.assembler.expire()
                     self._drain_failures()
@@ -156,17 +175,39 @@ class UDPReceiver:
                 except OSError:
                     self.stats["socket_errors"] += 1
                     raise
-                self.stats["datagrams_received"] += 1
-                self.stats["udp_payload_bytes_received"] += size
-                if peer != self.peer:
-                    self.stats["datagrams_wrong_peer"] += 1
-                    # Foreign traffic must not prevent timeout of admitted frames.
+                if not available:
                     self.assembler.expire()
-                else:
-                    frame = self.assembler.feed(memoryview(buffer)[:size])
-                    if frame is not None:
-                        self._publish(frame)
-                self._drain_failures()
+                    self._drain_failures()
+                index = 0
+                while index < available:
+                    # The C module validates CRCs and copies only this admitted
+                    # frame's chunks; first/new/conflicting/foreign packets use
+                    # the Python reference path with all original checks.
+                    consumed, payload_size, frame = self.assembler.feed_batch(batch, index, available-index) if batch else (0, 0, None)
+                    if consumed:
+                        self.stats["datagrams_received"] += consumed
+                        self.stats["udp_payload_bytes_received"] += payload_size
+                        if frame is not None:
+                            self._publish(frame)
+                        self._drain_failures()
+                        index += consumed
+                        continue
+                    datagram, actual_size, peer_matches = batch.packet(index) if batch else (
+                        memoryview(buffer)[:size], size, peer == self.peer)
+                    self.stats["datagrams_received"] += 1
+                    self.stats["udp_payload_bytes_received"] += actual_size
+                    if not peer_matches:
+                        self.stats["datagrams_wrong_peer"] += 1
+                        self.assembler.expire()
+                    else:
+                        frame = self.assembler.feed(datagram)
+                        if frame is not None:
+                            self._publish(frame)
+                    index += 1
+                    # Native batches emit at most one duplicate conflict;
+                    # exceptional/reference packets drain individually so even
+                    # a custom small failure-event budget cannot overflow.
+                    self._drain_failures()
         finally:
             self.assembler.abort("stopped")
             self._drain_failures()
@@ -174,6 +215,7 @@ class UDPReceiver:
     def status(self) -> dict:
         """Read after run() returns, or inside the owner-thread on_status callback."""
         return {"bind": self.bind, "peer": self.peer, "counters": dict(self.stats),
+                "backend": dict(receive_batch_size=self.receive_batch_size, native_batch_parser=self.native_batch_parser),
                 "socket_receive_buffer_requested": self.receive_buffer_bytes,
                 "socket_receive_buffer_reported": self.socket_receive_buffer_reported,
                 "assembly": self.assembler.status(), "preview_queue": self.live_frames.status(),

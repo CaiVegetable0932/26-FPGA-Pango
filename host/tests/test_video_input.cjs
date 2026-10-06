@@ -38,8 +38,9 @@ async function test(name,fn){try{await fn();results.push({name,passed:true});}ca
   });
   await test("Opening uses exact saved ID and audio false; identity stays unverified",async()=>{
     const f=fixture();await f.controller.refresh();f.controller.configure("card");const state=await f.controller.open();
-    // Purpose: verify the 720p30 preference never weakens exact device selection.
-    assert.deepEqual(f.calls,[{audio:false,video:{deviceId:{exact:"card"},width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30}}}]);
+    // The native 30 FPS target has a small browser delivery tolerance while
+    // exact saved device selection and measured settings remain independent.
+    assert.deepEqual(f.calls,[{audio:false,video:{deviceId:{exact:"card"},width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30,max:31}}}]);
     assert.equal(state.pending,false);assert.equal(state.status,"open");assert.equal(state.source_frame_id,null);assert.equal(state.pairing_status,"unverified");
     assert.equal(state.signal_validation,"not_performed");assert.equal(f.video.srcObject,f.controller.getStream());
     assert.throws(()=>f.controller.configure("webcam"),/关闭设备/);
@@ -111,26 +112,59 @@ async function test(name,fn){try{await fn();results.push({name,passed:true});}ca
   });
   await test("Device UI separates save from open and keeps unsaved choices from opening another source",async()=>{
     class Element extends Events{
-      constructor(tag="div"){super();Object.assign(this,{tag,value:"",textContent:"",children:[],hidden:false,disabled:false,className:"",srcObject:null});}
+      // Include timing diagnostics and accessible correction toggle state.
+      constructor(tag="div"){super();Object.assign(this,{tag,value:"",textContent:"",children:[],hidden:false,disabled:false,className:"",srcObject:null,dataset:{},attributes:new Map()});}
       replaceChildren(...children){this.children=children;this.value=children[0]?.value||"";}
+      setAttribute(key,value){this.attributes.set(key,value);}getAttribute(key){return this.attributes.get(key);}
       pause(){} async play(){}
     }
     const f=fixture(),elements=new Map(),messages=[];
-    const document={getElementById(id){if(!elements.has(id))elements.set(id,new Element());return elements.get(id);},createElement:tag=>new Element(tag)};
-    const context={window:{PangoVideoInput:{createController},localStorage:f.storage,isSecureContext:true},navigator:{mediaDevices:f.media},document};
+    const document={hidden:false,getElementById(id){if(!elements.has(id))elements.set(id,new Element());return elements.get(id);},createElement:tag=>new Element(tag)};
+    // The browser global is its window; isolated frame scheduling prevents a
+    // software UI fixture from starting any real capture/rendering activity.
+    const context={PangoVideoInput:{createController},PangoPreviewRate:require("../web/preview-rate.js"),
+      PangoFisheyePreview:require("../web/fisheye-preview.js"),localStorage:f.storage,isSecureContext:true,
+      navigator:{mediaDevices:f.media},document,performance,setInterval,clearInterval,
+      requestAnimationFrame:()=>1,cancelAnimationFrame:()=>{}};
+    context.window=context;
     vm.createContext(context);vm.runInContext(fs.readFileSync(path.join(__dirname,"../web/video-input-ui.js"),"utf8"),context);
     const ui=context.window.PangoVideoInputUI.create({toast:message=>messages.push(message)}),$=id=>document.getElementById(id);
-    assert.equal(f.calls.length,0);await ui.refresh();$("capture-device").value="card";await $("capture-device").fire("change");
+    assert.equal(f.calls.length,0);await $("capture-correction-toggle").fire("click");
+    assert.equal($("capture-correction-toggle").getAttribute("aria-pressed"),"true");
+    assert.match($("capture-view-label").textContent,/PC 软件参考/);assert.equal($("capture-corrected").hidden,true);
+    await $("capture-correction-toggle").fire("click");assert.equal(f.calls.length,0);
+    await ui.refresh();$("capture-device").value="card";await $("capture-device").fire("change");
     assert.equal($("capture-save").disabled,false);assert.equal($("capture-open").disabled,true);await $("capture-save").fire("click");
     assert.equal(f.calls.length,0);assert.equal($("capture-open").disabled,false);assert.equal($("capture-selected").textContent,"Hagibis");
     $("capture-device").value="webcam";await $("capture-device").fire("change");assert.equal($("capture-open").disabled,true);
     $("capture-device").value="card";await $("capture-device").fire("change");await $("capture-open").fire("click");
     assert.equal($("capture-video").hidden,false);assert.equal($("capture-empty").hidden,true);assert.equal($("capture-device").disabled,true);
     assert.match($("capture-format").textContent,/协商 30 FPS/);assert.equal(f.calls[0].audio,false);
-    const stream=ui.controller.getStream();await $("capture-preview-close").fire("click");assert.equal(stream.track.stops,1);assert.equal($("capture-video").hidden,true);
+    // Both display actions retain the exact existing stream and never make an
+    // additional getUserMedia request. Closing still releases it exactly once.
+    const stream=ui.controller.getStream();await $("capture-correction-toggle").fire("click");
+    assert.equal($("capture-corrected").hidden,false);assert.match($("capture-preview-rate").textContent,/矫正显示/);
+    await $("capture-correction-toggle").fire("click");assert.equal(ui.controller.getStream(),stream);assert.equal(f.calls.length,1);
+    await $("capture-preview-close").fire("click");assert.equal(stream.track.stops,1);assert.equal($("capture-video").hidden,true);
     ui.destroy();f.controller.destroy();assert.equal($("capture-open").listeners.get("click").size,0);
   });
   // Regression cases for USB re-enumeration and bounded busy-driver recovery.
+  await test("Explicit 720p compatibility choice persists without changing device",async()=>{
+    const f=fixture();await f.controller.refresh();f.controller.configure("card");f.controller.configureMode("720p30");
+    await f.controller.open();assert.equal(f.calls[0].video.width.ideal,1280);
+    assert.equal(f.calls[0].video.height.ideal,720);assert.equal(f.calls[0].video.deviceId.exact,"card");
+    // The established compatibility profile keeps its strict 30 FPS bound.
+    assert.deepEqual(f.calls[0].video.frameRate,{ideal:30,max:30});
+    assert.throws(()=>f.controller.configureMode("1080p30"),/关闭预览/);
+    const restored=createController({mediaDevices:f.media,storage:f.storage});
+    assert.equal(restored.getState().capture_mode,"720p30");restored.destroy();f.controller.destroy();
+  });
+  await test("Presentation FPS expires to zero without new frames",async()=>{
+    let now=0;const rate=require("../web/preview-rate.js").createCounter(()=>now);
+    rate.mark(30);now=1000;assert.equal(rate.sample(),30);
+    now=2000;assert.equal(rate.sample(),0);rate.reset();rate.mark(15);
+    now=2500;assert.equal(rate.sample(),30);
+  });
   await test("Transient busy capture retries the same exact device",async()=>{
     const f=fixture();await f.controller.refresh();f.controller.configure("card");let tries=0;
     f.media.next=async()=>{if(tries++===0)throw Object.assign(Error(),{name:"NotReadableError"});return capture();};
@@ -149,7 +183,7 @@ async function test(name,fn){try{await fn();results.push({name,passed:true});}ca
     await f.controller.refresh();f.media.next=async()=>{throw Object.assign(Error(),{name:"NotFoundError"});};
     assert.equal((await f.controller.open()).status,"error");assert.equal(f.calls[0].video.deviceId.exact,"card");f.controller.destroy();
   });
-  const root=path.resolve(__dirname,".."),files=["web/video-input.js","web/video-input-ui.js","tests/test_video_input.cjs"];
+  const root=path.resolve(__dirname,".."),files=["web/video-input.js","web/video-input-ui.js","web/preview-rate.js","tests/test_video_input.cjs"];
   const report={utc:new Date().toISOString(),node:process.version,tests_run:results.length,passed:results.every(r=>r.passed),
     test_environment:"Node.js MediaDevices, MediaStreamTrack and DOM fixtures",browser_ui_qa:"not_performed",hardware_capture:"not_performed",signal_validation:"not_performed",results,
     source_sha256:Object.fromEntries(files.map(name=>[name,crypto.createHash("sha256").update(fs.readFileSync(path.join(root,name))).digest("hex")]))};

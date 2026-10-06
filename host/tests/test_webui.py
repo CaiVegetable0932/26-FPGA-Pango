@@ -85,6 +85,17 @@ class WebTests(unittest.TestCase):
         self.assertEqual(self.call("POST", "/api/board/start", {})[0], 409)
         self.assertEqual(self.call("POST", "/api/board/stop", {})[2]["phase"], "stopped")
 
+    def test_ethernet_reset_route_requires_token_and_no_parameters(self):
+        """The independent reset cannot accept ad-hoc endpoint overrides."""
+        with patch.object(self.server.board_link, "reset_ethernet", return_value=dict(phase="checking", busy=True)) as reset:
+            self.assertEqual(self.call("POST", "/api/board/reset-ethernet", {}, headers={"X-Pango-Token":""})[0], 403)
+            self.assertEqual(self.call("POST", "/api/board/reset-ethernet", {"source_ip":"10.0.0.3"})[0], 409)
+            reset.assert_not_called()
+            code, _, result = self.call("POST", "/api/board/reset-ethernet", {})
+            self.assertEqual(code, 202)
+            self.assertTrue(result["busy"])
+            reset.assert_called_once_with()
+
     def call(self, method, path, data=None, headers=None, raw=False):
         connection = http.client.HTTPConnection("127.0.0.1",self.server.server_port,timeout=5)
         body = None if data is None else json.dumps(data).encode()
@@ -169,6 +180,67 @@ class WebTests(unittest.TestCase):
         self.assertIsNone(state["hdmi"]["source_frame_id"])
         self.assertEqual(state["hdmi"]["pairing_status"], "unverified")
 
+    def test_compact_display_preserves_full_raw_and_source_identity(self):
+        """Derived HTTP pixels cannot replace native RAW evidence or geometry."""
+        self.start();data = self.send();until(self.session.latest)
+        code, headers, display = self.call("GET", "/api/preview?mode=raw&downscale=2", raw=True)
+        self.assertEqual(code, 200)
+        info = json.loads(headers["X-Frame-Info"])
+        self.assertEqual((info["width"], info["height"], info["pixel_format"]), (16,8,"RAW8"))
+        self.assertEqual((info["preview_width"],info["preview_height"],info["preview_pixel_format"]), (8,4,"GRAY8"))
+        expected = bytes((data[y*16+x]+data[y*16+x+1]+data[(y+1)*16+x]+data[(y+1)*16+x+1])//4
+                         for y in range(0,8,2) for x in range(0,16,2))
+        self.assertEqual(display, expected)
+        self.assertEqual(self.call("GET", "/api/frame", raw=True)[2], data)
+        self.assertEqual(self.call("GET", "/api/preview?downscale=1", raw=True)[2], data)
+        self.call("POST", "/api/save", {})
+        until(lambda:self.session.status()["saved_frames"]==1)
+        item = self.call("GET", "/api/archives")[2]["items"][0]
+        self.assertEqual(self.call("GET", "/api/archive/pixels?key="+item["key"], raw=True)[2], data)
+        self.assertEqual(self.call("GET", "/api/preview?mode=invalid")[0], 400)
+
+    def test_preview_long_poll_wakes_for_new_complete_frame(self):
+        """Wait for completion rather than a timer; incomplete frames stay hidden."""
+        self.start();self.send(frame_id=1);until(self.session.latest)
+        key = self.session.latest()[1]["key"]
+        response = []
+        waiter = threading.Thread(target=lambda:response.append(self.call("GET", "/api/frame?wait=500&after="+key, raw=True)))
+        waiter.start();time.sleep(0.02);self.send(frame_id=2);waiter.join(2)
+        self.assertFalse(waiter.is_alive());self.assertEqual(response[0][0], 200)
+        self.assertEqual(json.loads(response[0][1]["X-Frame-Info"])["frame_id"], "2")
+
+    def test_preview_stream_emits_derived_frame_and_releases_on_disconnect(self):
+        """A real HTTP stream stays separate from full RAW reception ownership."""
+        from struct import unpack
+        self.start();data = self.send();until(self.session.latest)
+        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=3)
+        connection.request("GET", "/api/preview-stream?mode=raw&downscale=2")
+        response = connection.getresponse();self.assertEqual(response.status, 200)
+        meta_bytes, pixel_bytes = unpack("<II", response.read(8))
+        info = json.loads(response.read(meta_bytes));pixels = response.read(pixel_bytes)
+        self.assertEqual((info["width"],info["height"],len(pixels)), (16,8,32))
+        self.assertTrue(info["preview_derivative"])
+        response.close();connection.close()
+        self.send(frame_id=2**63+8)
+        until(lambda:self.session.latest()[0].header.frame_id==2**63+8)
+        self.assertTrue(self.session.status()["running"])
+        self.assertEqual(self.session.latest()[0].data, data)
+
+    def test_preview_stream_closes_when_receiver_stops(self):
+        """A waiting preview must reach EOF without full status snapshots."""
+        from struct import unpack
+        self.start();self.send();until(self.session.latest)
+        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=3)
+        try:
+            connection.request("GET", "/api/preview-stream?mode=color&downscale=2")
+            response = connection.getresponse()
+            meta_bytes, pixel_bytes = unpack("<II", response.read(8))
+            self.assertEqual(len(response.read(meta_bytes+pixel_bytes)), meta_bytes+pixel_bytes)
+            self.session.stop()
+            self.assertEqual(response.read(), b"")
+        finally:
+            connection.close()
+
     def test_state_machine_config_lock_and_restart_identity(self):
         first = self.start()
         self.assertEqual(self.call("POST","/api/start",{})[0],409)
@@ -233,7 +305,7 @@ class WebTests(unittest.TestCase):
         self.assertIn("default-src 'self'",headers["Content-Security-Policy"])
         self.assertNotIn("Access-Control-Allow-Origin",headers)
         self.assertIn(b"/app.js",html)
-        for asset in ("app.css","app.js","pixels.js","preview-worker.js","favicon.svg"):
+        for asset in ("app.css","app.js","pixels.js","preview-worker.js","preview-renderer.js","favicon.svg"):
             self.assertEqual(self.call("GET","/"+asset,raw=True)[0],200)
 
     def test_bind_failure_leaves_session_retryable(self):

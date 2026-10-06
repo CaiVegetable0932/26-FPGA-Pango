@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import random
 import socket
+import sys
 import struct
 import tempfile
 import threading
@@ -149,6 +150,74 @@ class ProtocolTests(unittest.TestCase):
                 pass
 
 class AssemblyTests(unittest.TestCase):
+    @unittest.skipUnless(sys.platform.startswith("linux"), "Linux batch ABI")
+    def test_native_batch_matches_reference_for_wire_errors_and_duplicate_conflicts(self):
+        """C CRC/copy must agree with the reference decoder on hostile packets."""
+        import ctypes
+        from pango_video.linux_udp import LinuxDatagramBatch
+        from pango_video.protocol import CRC_FIELD, packet_crc32
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            batch = LinuxDatagramBatch(sock, ("127.0.0.1", 1234))
+            if batch.native is None:
+                self.skipTest("Optional current-source native parser has not been built")
+            first, last = packets()
+            candidates = [last, first]
+            for offset in (0,4,6,8,9,10,12,20,28,32,34,36,40,44,48,50,51,52,54,60,64):
+                bad = bytearray(last);bad[offset] ^= 1
+                CRC_FIELD.pack_into(bad, 56, packet_crc32(bad));candidates.append(bytes(bad))
+            bad = bytearray(first);bad[-1] ^= 1;candidates.append(bytes(bad))
+            bad = bytearray(first);bad[-1] ^= 1
+            CRC_FIELD.pack_into(bad, 56, packet_crc32(bad));candidates.append(bytes(bad))
+            for candidate in candidates:
+                with self.subTest(candidate=candidate[:64].hex()):
+                    cached, reference = assembler(), assembler()
+                    cached.feed(first);reference.feed(first)
+                    sequence = [first, candidate, last, last]
+                    for index, data in enumerate(sequence):
+                        ctypes.memmove(batch._buffers[index], data, len(data))
+                        batch._messages[index].length = len(data)
+                        address = batch._addresses[index]
+                        address.family, address.port = socket.AF_INET, socket.htons(1234)
+                        address.address = batch._peer_address
+                    expected = []
+                    for data in sequence:
+                        reference._fast_live = None
+                        frame = reference.feed(data)
+                        if frame:expected.append((frame.header, frame.data, frame.descriptor_json))
+                    actual, index = [], 0
+                    while index < len(sequence):
+                        consumed, _, frame = cached.feed_batch(batch, index, len(sequence)-index)
+                        if not consumed:
+                            frame = cached.feed(batch.packet(index)[0]);consumed = 1
+                        if frame:actual.append((frame.header, frame.data, frame.descriptor_json))
+                        index += consumed
+                    self.assertEqual(actual, expected)
+                    self.assertEqual(cached.status(), reference.status())
+                    self.assertEqual(cached.drain_failures(), reference.drain_failures())
+
+    def test_cached_raw_decoder_matches_reference_for_corrupt_and_conflicting_chunks(self):
+        """The faster common path must preserve every strict wire rejection."""
+        from pango_video.protocol import CRC_FIELD, packet_crc32
+        first, last = packets()
+        candidates = [last]
+        # Mutate each wire field, repairing CRC to exercise structural checks.
+        # Include a corrupt CRC and a conflicting duplicate payload separately.
+        for offset in (0,4,6,8,9,10,12,20,28,32,34,36,40,44,48,50,51,52,54,60,64):
+            bad = bytearray(last)
+            bad[offset] ^= 1
+            CRC_FIELD.pack_into(bad, 56, packet_crc32(bad))
+            candidates.append(bytes(bad))
+        bad = bytearray(last);bad[-1] ^= 1;candidates.append(bytes(bad))
+        for candidate in candidates:
+            with self.subTest(candidate=candidate[:64].hex()):
+                cached, reference = assembler(), assembler()
+                for packet in (first, first, candidate, last):
+                    reference._fast_live = None
+                    actual, expected = cached.feed(packet, 1), reference.feed(packet, 1)
+                    self.assertEqual(actual, expected)
+                    self.assertEqual(cached.status(), reference.status())
+                    self.assertEqual(cached.drain_failures(), reference.drain_failures())
+
     def test_reorder_duplicate_and_owned_bytes(self):
         a = assembler()
         first, last = packets()

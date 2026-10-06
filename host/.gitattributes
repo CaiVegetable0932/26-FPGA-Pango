@@ -4,3 +4,6 @@
 # Keep acquisition evidence byte-exact, including logs/metadata whose SHA256
 # values are recorded during capture. This is not an ignore rule.
 data/hdmi_diag_*/** -text
+# Vendor source fingerprints and Linux Kbuild .cmd files must remain byte-exact;
+# the root Windows .cmd CRLF rule does not apply to these diagnostic snapshots.
+build/uvc-diagnostic/** -text

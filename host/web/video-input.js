@@ -13,7 +13,11 @@
     let saved=null;
     try{const data=JSON.parse(storage?.getItem(STORAGE_KEY)||"null");if(data?.version===1&&typeof data.deviceId==="string"&&data.deviceId.length>0&&data.deviceId.length<4096)saved={deviceId:data.deviceId,label:typeof data.label==="string"?data.label.slice(0,256):"视频输入设备"};}catch{}
     const supported=secureContext&&typeof mediaDevices?.getUserMedia==="function"&&typeof mediaDevices?.enumerateDevices==="function";
-    const state={supported,devices:[],selected:saved,status:supported?(saved?"configured":"idle"):"unsupported",pending:false,refreshing:false,
+    // Prefer native 1080p30; retain an explicit 720p compatibility choice.
+    // The reported track settings always show the actual negotiated geometry.
+    let captureMode="1080p30";
+    try{if(storage?.getItem("pango.capture.mode.v1")==="720p30")captureMode="720p30";}catch{}
+    const state={supported,devices:[],selected:saved,capture_mode:captureMode,status:supported?(saved?"configured":"idle"):"unsupported",pending:false,refreshing:false,
       permissionRequired:false,listed:false,persistent:!!storage,settings:{},message:saved?"已恢复设备选择；尚未打开采集卡。":"刷新设备后选择采集卡，保存配置无需输入信号。",listError:""};
     const unsupported="当前窗口无法访问视频设备，请使用系统浏览器打开 http://127.0.0.1:8765/（或实际启动端口）。";
     if(!supported)state.message=unsupported;
@@ -71,6 +75,12 @@
       return getState();
     }
     function begin(status,message){ensure();if(state.pending)throw Error("请先处理浏览器中的权限请求，或等待上一次设备请求结束。");const ticket=++generation;emit({pending:true,status,message});return ticket;}
+    function configureMode(mode){
+      ensure();if(state.pending||stream)throw Error("请先关闭预览，再修改采集模式。");
+      if(!["1080p30","720p30"].includes(mode))throw Error("不支持的采集模式。");
+      state.capture_mode=mode;try{storage?.setItem("pango.capture.mode.v1",mode);}catch{}
+      emit();return getState();
+    }
     function current(ticket){return !disposed&&ticket===generation;}
     async function acquireVideo(constraints){
       // Bound an unresponsive driver request. A late permission/driver success
@@ -117,16 +127,21 @@
             try{storage?.setItem(STORAGE_KEY,JSON.stringify({version:1,...chosen}));}catch{}
           }
         }
-        // Purpose: prefer the CAM1 HDMI capture mode while binding the selected
-        // device exactly; report negotiated settings if the driver chooses otherwise.
+        // Bind the same exact device at the selected native mode; never scale
+        // a lower-resolution input to claim native 1080p acceptance.
         if(channel){channel.postMessage({claim:true,...chosen});await new Promise(r=>setTimeout(r,250));}
         // UVC can remain briefly busy after another page releases it. Retry
         // transient driver errors on the same exact device, never permissions.
         for(let attempt=0;attempt<3;attempt++){
           if(!current(ticket))throw Error("设备打开已取消");
           try{
+            // Native 1080p remains a 30 FPS target. A small delivery ceiling
+            // tolerance avoids extra browser pacing drops from UVC timestamp
+            // jitter; actual format/FPS are still read back and measured. Keep
+            // the explicit 720p compatibility profile's existing strict bound.
             incoming=await acquireVideo({audio:false,video:{deviceId:{exact:chosen.deviceId},
-              width:{ideal:1280},height:{ideal:720},frameRate:{ideal:30}}});
+              width:{ideal:state.capture_mode==="720p30"?1280:1920},
+              height:{ideal:state.capture_mode==="720p30"?720:1080},frameRate:{ideal:30,max:state.capture_mode==="720p30"?30:31}}});
             break;
           }catch(error){
             if(!["NotReadableError","AbortError"].includes(error?.name)||attempt===2)throw error;
@@ -160,7 +175,7 @@
     const deviceChange=()=>{refresh().catch(()=>{});};
     if(supported)mediaDevices.addEventListener?.("devicechange",deviceChange);
     function destroy(){disposed=true;generation++;inventoryGeneration++;channel?.close();mediaDevices?.removeEventListener?.("devicechange",deviceChange);release();}
-    return {getState,refresh,configure,authorize,open,close,destroy,getStream:()=>stream};
+    return {getState,refresh,configure,configureMode,authorize,open,close,destroy,getStream:()=>stream};
   }
   const api={createController,STORAGE_KEY};
   if(typeof module!=="undefined"&&module.exports)module.exports=api;

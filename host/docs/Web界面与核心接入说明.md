@@ -44,9 +44,19 @@ RAW8 网络连接设置在当前服务会话内生效；服务重新启动后使
 | 采集卡输入区 | 显示用户选择的视频设备输出；独立打开/关闭、设备协商格式与连接状态；信号和源帧配对仍 unverified |
 | 控制状态区 | 明确显示 UART 未接入；不提供看似生效的灯光、电机、参数或快照按钮 |
 
-S0 预览使用 2×2 Bayer 色块：取 R/B，平均两个 G，并按需要稀疏采样，输出宽度不超过 960。它只用于观察图案、通道顺序和来源，未经白平衡、色彩校准、板端 ISP 等价性或几何精度验证。灰度缩小时平均色块，避免只取单个 Bayer 相位。RGB888 归档可独立回看。
+RAW8 基础彩色预览使用 2×2 Bayer 色块：取 R/B，平均两个 G，1080p 来源显示为 960×540 的派生预览。它只用于观察图案、通道顺序和来源，未经白平衡、色彩校准、板端 ISP 等价性或几何精度验证。RAW 灰阶在原生大小时逐字节显示，缩小时平均色块以避免只取单个 Bayer 相位。源阶段按报文描述符显示；当前实板的 FPGA 增强 RAW8 不能标为未处理的 S0。完整 1920×1080 RAW 与 RGB888 归档仍可独立读取和回看。
 
-网络完整帧率在消费预览前计数，和浏览器 Canvas 绘制 FPS 分别显示。浏览器状态约每 500ms 更新，预览请求之间至少间隔 125ms；不追求浏览器 30 FPS。没有新帧返回 HTTP 204，超过 1 秒的新鲜度阈值会标记等待/停止，旧画面仍带提示。标签页隐藏时暂停轮询，接收与归档继续。
+网络完整帧率在消费预览前计数，和浏览器 Canvas 显示 FPS、HDMI 实际呈现 FPS 分别显示。状态约每 500ms 更新；实时预览使用一条持续 HTTP 二进制连接随新完整帧发送，不再有 125ms 轮询间隔。服务器提供明确标记的缩小显示数据，完整 RAW API 与归档不受影响。支持的浏览器在 Worker 中使用 OffscreenCanvas/WebGL 直接上传 RGB888/GRAY8，再把 ImageBitmap 交给页面显示；不支持时使用原有像素转换。旧待处理预览可被最新帧替换，防止积压延迟；不完整来源帧不会进入显示。超过 1 秒未收到新完整帧标记等待/停止，隐藏标签页或离开实时视图会取消预览连接，接收与归档继续。
+
+## 像素标记与矫正位置（2026-10-06）
+
+两路实时预览上方新增“显示像素标记 / 隐藏像素标记”按钮，一次控制 RAW8 与 HDMI 的标记。每张原图选择 20 个整数像素：编号 1～4 是四角，5～8 是上下左右边缘的中心点，9 是中心点，10～13 是两条对角线的四分之一位置及其对称点；新增 14～17 是十字轴内部四点，18～20 是对角线内部的三分之一位置。原有 1～13 编号和位置保持不变。偶数尺寸的中心取最近的像素，位置始终以各链路自己的原生图像尺寸计算。
+
+标记为鲜艳的圆点与同色编号，圆点直径约 10 个屏幕像素，中心锚定对应源像素；缩小预览和画面留边会同步换算位置。它们位于独立 SVG 层，不写入 RAW/RGB 或矫正渲染输入，也不进入原始归档。
+
+右侧切换到“计算机矫正”后，沿用当前标定页的鱼眼参数，把这些源像素正向映射到实际矫正输出，保留编号和颜色。参数或分辨率变化时重新计算；裁剪到当前视野外的点不强行画在边缘，按钮旁显示其编号。这里表示 PC 软件参考图的坐标关系，不证明 HDMI 与网口来自同一源帧或板端矫正模型一致。
+
+标定页面的原图与 PC 矫正图也提供同一开关。同一浏览器、同一站点会记住显示状态，并在已打开的工作台和标定标签页之间同步。新增内容使用已有静态资源，刷新页面即可加载，无需重启服务。软件数值与界面检查记录见20 点界面验证（本机留存：`../reports/pixel-markers20-ui-20261006/verification.json`），实机截图和输入证据见20 点真实视频验证（本机留存：`../reports/pixel-markers20-hardware-20261006/verification.json`）。
 
 ## 3. 与已有核心的连接
 
@@ -59,8 +69,8 @@ flowchart LR
     D --> F[WebSession 最新完整帧]
     E --> G[save_frame 原始证据]
     B -->|线程内状态快照| F
-    F -->|本机 HTTP 二进制 RAW| H[浏览器 Worker]
-    H --> I[Canvas 基础预览]
+    F -->|本机持续 HTTP / 派生显示数据| H[浏览器 Worker / GPU]
+    H -->|ImageBitmap 或 RGBA 字节| I[Canvas 基础预览]
     G --> J[RAW/RGB + metadata.json]
     K[USB 视频采集设备] --> L[浏览器 MediaDevices / MediaStream]
     L --> M[右侧视频输入预览 / 源帧未验证]
@@ -71,7 +81,7 @@ flowchart LR
 - [web_server.py](../src/pango_video/web_server.py)：本机 HTTP API、静态页面、证据查询与下载。
 - [web_launcher.py](../src/pango_video/web_launcher.py)：启动与环境提示、同目录服务复用、就绪后打开浏览器，以及 Ctrl+C / SIGTERM 收尾。
 - [receiver.py](../src/pango_video/receiver.py)：保留原有接收策略，新增可选 on_status 回调，由接收线程生成状态，避免 HTTP 线程遍历正在变化的组帧表。
-- [app.js](../web/app.js)：交互、配置、状态、预览调度和记录操作；[preview-worker.js](../web/preview-worker.js) 与 [pixels.js](../web/pixels.js) 在 Worker 内处理像素，ArrayBuffer 通过 transferable 传递。
+- [app.js](../web/app.js)：交互、配置、状态、预览调度和记录操作；[preview-worker.js](../web/preview-worker.js) 与 [preview-renderer.js](../web/preview-renderer.js) 在 Worker 内绘制 GPU 预览，ImageBitmap 通过 transferable 交接；[pixels.js](../web/pixels.js) 保留 Bayer/归档及无 GPU 时的像素转换。
 - [demo.py](../src/pango_video/demo.py)：显式 mock 校验图和实际 UDP 发送，包含彩条、棋盘、灰阶及移动标记；只能向回环地址发送。
 - [storage.py](../src/pango_video/storage.py)：复用原有 metadata-last 提交流程，原图未压缩，SHA-256 来源为 host。未改变 PRAW 64B 报头、1400B 分块或跨端配对语义。
 
@@ -105,6 +115,7 @@ host/
 | GET /api/session | 无 | token、status |
 | GET /api/status | 无 | 状态、配置、完整帧身份、核心计数、短窗口速率、事件、历史、能力标志 |
 | GET /api/frame?after=<key> | 最近显示的身份，可省略 | 完整 RAW8 二进制与 X-Frame-Info；无新帧为 204 |
+| GET /api/preview-stream?mode=raw&downscale=2 | 模式 raw/gray/color，缩小倍数 1/2 | 连续帧：小端 uint32 元数据长度、像素长度、JSON 元数据、显示像素；原始几何与派生几何分别标记 |
 | POST /api/start | 可选 config、archive_every、auto_mock | 开始后的状态；mock 默认启动自有发送子进程 |
 | POST /api/stop | {} | 停止后的状态；归档仍在排空时返回 409，稍后检查 |
 | POST /api/save | {} | 202，queued 或 already_saved_or_queued 及实际 frame_id |

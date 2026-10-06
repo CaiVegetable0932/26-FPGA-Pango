@@ -27,6 +27,28 @@ test("RGB888 order and integer grayscale",()=>{
   const gray=render([255,0,0],{width:1,height:1,row_stride:3,pixel_format:"RGB888"},"gray");
   assert.deepEqual([...new Uint8ClampedArray(gray.pixels)],[77,77,77,255]);
 });
+// The contiguous color path must preserve every channel and row boundary;
+// the same source must retain weighted grayscale behavior and remain intact.
+test("Contiguous RGB888 preview preserves channels across odd-width rows",()=>{
+  const bytes=Uint8Array.from({length:7*5*3},(_,i)=>(i*53+17)&255),before=bytes.slice();
+  const meta={width:7,height:5,row_stride:21,pixel_format:"RGB888"};
+  for(const mode of ["color","raw","gray"]){
+    const result=renderPixels(bytes.buffer,meta,mode),rgba=new Uint8Array(result.pixels);
+    assert.equal(result.width,7);assert.equal(result.height,5);
+    for(let i=0;i<35;i++){
+      const rgb=[...bytes.subarray(i*3,i*3+3)];
+      const expected=mode==="gray"?Array(3).fill(Math.round((rgb[0]*77+rgb[1]*150+rgb[2]*29)/256)):rgb;
+      assert.deepEqual([...rgba.subarray(i*4,i*4+4)],[...expected,255]);
+    }
+  }
+  assert.deepEqual(bytes,before);
+});
+// Derived GRAY8 display data is distinct from the unchanged RAW8 source.
+test("Compact GRAY8 display maps bytes exactly without a second Bayer filter",()=>{
+  const result=renderPixels(Uint8Array.from([77,88]).buffer,
+    {width:2,height:1,row_stride:2,pixel_format:"GRAY8"},"raw",{displayWidth:100});
+  assert.deepEqual([...new Uint8Array(result.pixels)],[77,77,77,255,88,88,88,255]);
+});
 test("Corrupt lengths, strides, dimensions, formats, and Bayer are rejected",()=>{
   for(const [bytes,meta] of [[[1,2],{}],[[1,2,3,4],{row_stride:3}],[[1],{width:0}],[[1,2,3,4],{bayer_code:0}],[[1,2,3,4],{pixel_format:"JPEG"}]]){
     assert.throws(()=>render(bytes,meta));
@@ -67,7 +89,8 @@ test("Half-width RAW gray prefilters Bayer cells without modifying source",()=>{
   assert.equal(native.width,1920);assert.equal(new Uint8Array(native.pixels)[0],200);
 });
 const root=path.resolve(__dirname,".."),hashes={};
-for(const file of ["web/pixels.js","web/preview-worker.js","web/app.js","web/index.html","web/app.css"]){
+// Include the actual GPU display source in the reproducible frontend report.
+for(const file of ["web/pixels.js","web/preview-renderer.js","web/preview-worker.js","web/app.js","web/index.html","web/app.css"]){
   hashes[file]=crypto.createHash("sha256").update(fs.readFileSync(path.join(root,file))).digest("hex");
 }
 const report={utc:new Date().toISOString(),node:process.version,platform:process.platform,tests_run:results.length,

@@ -1,0 +1,16 @@
+# Validate the kernel-specific UVC override before any desktop camera client.
+[Unit]
+Description=Pango verified Hagibis UVC payload workaround
+DefaultDependencies=no
+After=local-fs.target systemd-modules-load.service systemd-udev-trigger.service
+Before=systemd-user-sessions.service display-manager.service shutdown.target
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 -B /usr/local/libexec/pango/hagibis_uvc_boot.py
+RemainAfterExit=yes
+TimeoutStartSec=60
+
+[Install]
+WantedBy=multi-user.target

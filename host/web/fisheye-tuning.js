@@ -5,11 +5,25 @@
   const STORAGE="pango.fisheye-preview.v1",math=window.PangoFisheyePreview,$=id=>document.getElementById(id);
 
   function create({video,storage=null}){
-    const form=$("tuning-parameters"),original=$("tuning-original"),context=original.getContext("2d",{willReadFrequently:true});
+    // Original-frame copies remain on the accelerated 2D canvas path. This
+    // tuning view does no per-frame CPU pixel readback; frozen/sample frames
+    // still provide an immutable input shared by both views.
+    const form=$("tuning-parameters"),original=$("tuning-original"),context=original.getContext("2d",{alpha:false});
     let params=math.preset(),renderer=null,valid=true,ready=false,disposed=false,frozen=false,revision=0;
-    let frameTicket=0,lastDraw=0,lastVideoTime=-1,lastAdvance=0,lastStatus="",sampleTicket=0,samples=[],urlFor=null;
+    let frameTicket=null,lastDraw=0,lastVideoTime=-1,lastAdvance=0,lastStatus="",sampleTicket=0,samples=[],urlFor=null;
+    const videoCallbacks=typeof video.requestVideoFrameCallback==="function"&&typeof video.cancelVideoFrameCallback==="function";
     let sampleCanvas=null,sampleId="",sampleGroup="",drawCount=0,fpsCount=0,fpsTime=performance.now(),fps=0;
-    try{const saved=JSON.parse(storage?.getItem(STORAGE)||"null");if(saved?.schema===STORAGE)params=math.normalize(saved.parameters);}catch{}
+    // The main HDMI toggle restores this same schema, reviewed default and
+    // validated parameters; editing here remains the single parameter source.
+    params=math.loadSettings(storage).parameters;
+    // Markers sit in separate SVGs, retaining the same identity before/after
+    // correction and never contaminating source samples or renderer pixels.
+    let markerToggle=null;
+    const overlayChanged=()=>markerToggle?.updateInfo();
+    const originalMarkers=math.createPixelOverlay({element:$("tuning-original-markers"),environment:window,onChange:overlayChanged});
+    const correctedMarkers=math.createPixelOverlay({element:$("tuning-corrected-markers"),environment:window,onChange:overlayChanged});
+    markerToggle=math.createMarkerToggle({button:$("tuning-pixel-markers-toggle"),info:$("tuning-marker-info"),
+      overlays:[originalMarkers,correctedMarkers],storage,environment:window});
     const keys=Object.keys(params).filter(key=>key!=="model");
     // Purpose: pressing Enter edits parameters without navigating/reloading
     // the page; use an external handler compatible with the site's CSP.
@@ -33,11 +47,13 @@
       if(!ready||!valid||!renderer)return;
       try{
         renderer.render(original,params);drawCount++;fpsCount++;
+        correctedMarkers.setView({width:$("tuning-corrected").width,height:$("tuning-corrected").height,
+          sourceWidth:original.width,sourceHeight:original.height,parameters:params});
         $("tuning-corrected").dataset.parameterRevision=String(revision);$("tuning-corrected").dataset.renderCount=String(drawCount);
         const mode=$("tuning-source").value==="sample"?"已保存样本":frozen?"冻结帧":"实时采集卡";
         const shownFps=$("tuning-source").value==="sample"||frozen?0:fps;
         status(`${mode} · ${original.width}×${original.height} · 参数参考 ${params.reference_width}×${params.reference_height} · ${renderer.kind} · ${shownFps.toFixed(1)} FPS · 参数版本 ${revision}`);
-      }catch(error){valid=false;renderer.clear();status(error.message,true);}
+      }catch(error){valid=false;renderer.clear();correctedMarkers.setView(null);status(error.message,true);}
     }
     // Purpose: keep incomplete edits visible and pause only the correction view;
     // the last valid settings are persisted only after complete validation.
@@ -48,7 +64,7 @@
         params=math.normalize(value);valid=true;revision++;identifyPreset();
         try{storage?.setItem(STORAGE,JSON.stringify(math.exportSettings(params)));}catch{}
         draw();if(!ready)status("参数已更新；打开采集卡或选择已保存样本即可预览。");
-      }catch(error){valid=false;renderer?.clear();status(error.message,true);}
+      }catch(error){valid=false;renderer?.clear();correctedMarkers.setView(null);status(error.message,true);}
     }
     form.addEventListener("input",event=>{
       if(event.target.dataset.parameter)form.elements.namedItem(event.target.dataset.parameter).value=event.target.value;
@@ -91,11 +107,12 @@
         if($("tuning-source").value==="sample"){copy(sampleCanvas);draw();}
       }catch(error){if(ticket===sampleTicket)status(error.message,true);}
     }
-    function clear(){ready=false;context.clearRect(0,0,original.width,original.height);renderer?.clear();}
+    function clear(){ready=false;context.clearRect(0,0,original.width,original.height);renderer?.clear();originalMarkers.setView(null);correctedMarkers.setView(null);}
     function copy(source){
       const width=source.videoWidth||source.width,height=source.videoHeight||source.height;
       if(original.width!==width||original.height!==height){original.width=width;original.height=height;}
       context.drawImage(source,0,0,width,height);ready=true;
+      originalMarkers.setView({width,height});
     }
     $("tuning-source").addEventListener("change",()=>{
       frozen=false;$("tuning-freeze").textContent="冻结当前画面";lastVideoTime=-1;clear();
@@ -115,22 +132,34 @@
     video.addEventListener("emptied",()=>{if($("tuning-source").value==="live"&&!frozen){clear();status("采集卡已关闭；请选择保存的样本或重新打开预览。");}});
     $("tuning-corrected").addEventListener("webglcontextlost",event=>{event.preventDefault();valid=false;status("GPU 预览已中断，请刷新页面。",true);});
 
-    // Purpose: capture each live frame once so both panes show the same software
-    // input; limit UI throughput and report it independently of camera/FPGA FPS.
-    function tick(now){
-      if(disposed)return;frameTicket=requestAnimationFrame(tick);
+    // Purpose: copy each newly decoded picture once into the shared GPU canvas,
+    // then correct that same immutable image. Poll only for older browsers.
+    function schedule(){if(!disposed&&frameTicket===null)frameTicket=videoCallbacks?
+      video.requestVideoFrameCallback(tick):requestAnimationFrame(tick);}
+    function tick(now,metadata){
+      frameTicket=null;if(disposed)return;schedule();
       if(document.hidden||$("tuning-source").value!=="live"||frozen||!renderer)return;
       const track=video.srcObject?.getVideoTracks()[0];
       if(video.readyState<2||!video.videoWidth||track?.muted||track?.readyState!=="live"){
         if(ready)clear();status("等待实时采集卡画面；请在下方打开预览。");return;
       }
-      if(video.currentTime!==lastVideoTime&&now-lastDraw>=1000/renderer.maxFps){
-        lastVideoTime=video.currentTime;lastDraw=now;lastAdvance=now;copy(video);draw();
+      const quality=!videoCallbacks?video.getVideoPlaybackQuality?.():null;
+      const media=metadata?.mediaTime??(quality?quality.totalVideoFrames-quality.droppedVideoFrames:video.currentTime);
+      if(media!==lastVideoTime&&now-lastDraw>=1000/renderer.maxFps){
+        lastVideoTime=media;lastDraw=now;lastAdvance=now;copy(video);draw();
       }else if(lastAdvance&&now-lastAdvance>1500){if(ready)clear();status("采集卡画面停止更新，请检查设备输出。",true);}
       if(now-fpsTime>=1000){fps=fpsCount*1000/(now-fpsTime);fpsCount=0;fpsTime=now;}
     }
+    // A stalled camera stops emitting video callbacks; clear it independently
+    // while keeping deliberate frozen/static sample views available for edits.
+    const staleTimer=setInterval(()=>{
+      if(disposed||frozen||$("tuning-source").value!=="live")return;
+      if(ready&&(document.hidden||lastAdvance&&performance.now()-lastAdvance>1500)){
+        clear();fps=0;fpsCount=0;status("采集卡画面停止更新，请检查设备输出。",true);
+      }
+    },1000);
     fill();
-    try{renderer=math.createRenderer($("tuning-corrected"));status("已预置近似鱼眼参数；打开采集卡或选择保存样本。");frameTicket=requestAnimationFrame(tick);}
+    try{renderer=math.createRenderer($("tuning-corrected"));status("已预置近似鱼眼参数；打开采集卡或选择保存样本。");schedule();}
     catch(error){status(error.message,true);}
     return {
       setSamples(items,artifact,groupId){
@@ -141,7 +170,8 @@
         if(!video.srcObject&&!frozen&&items.length){$("tuning-source").value="sample";if(changed||sampleId!==$("tuning-sample").value)loadSample($("tuning-sample").value);}
         else if(changed&&$("tuning-source").value==="sample")loadSample($("tuning-sample").value);
       },
-      destroy(){disposed=true;sampleTicket++;cancelAnimationFrame(frameTicket);renderer?.dispose();}
+      destroy(){disposed=true;sampleTicket++;if(frameTicket!==null){if(videoCallbacks)video.cancelVideoFrameCallback(frameTicket);else cancelAnimationFrame(frameTicket);}
+        clearInterval(staleTimer);markerToggle.destroy();originalMarkers.destroy();correctedMarkers.destroy();renderer?.dispose();}
     };
   }
   window.PangoFisheyeTuning={create};

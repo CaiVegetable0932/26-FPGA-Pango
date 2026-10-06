@@ -69,7 +69,13 @@ def main():
                 raise RuntimeError("The browser mock did not receive 20 complete frames")
             # A nonempty canvas proves that the real Worker converted the RAW
             # payload, rather than merely displaying a ready HTTP endpoint.
-            visible = page.locator("#live-canvas").evaluate("canvas => ({width:canvas.width,height:canvas.height, pixels:[...canvas.getContext('2d').getImageData(0,0,2,2).data]})")
+            # Read a small derivative through a separate 2D canvas so both
+            # bitmap/GPU and legacy 2D preview backends can be verified.
+            visible = page.locator("#live-canvas").evaluate("""canvas => {
+                const probe=document.createElement('canvas');probe.width=probe.height=2;
+                const ctx=probe.getContext('2d');ctx.drawImage(canvas,0,0);
+                return {width:canvas.width,height:canvas.height,renderer:canvas.dataset.renderer,
+                    pixels:[...ctx.getImageData(0,0,2,2).data]};}""")
             assert visible["width"] > 0 and any(visible["pixels"])
             report["rendered_canvas"] = visible
             report["checks"].append("1920x1080 RAW8 loopback and browser Worker preview")

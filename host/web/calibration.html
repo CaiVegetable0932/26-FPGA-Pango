@@ -21,11 +21,14 @@
 <label>调参画面来源<select id="tuning-source"><option value="live">实时采集卡</option><option value="sample">已保存样本</option></select></label>
 <label>选择保存的样本<select id="tuning-sample"><option value="">暂无样本</option></select></label>
 <button id="tuning-freeze">冻结当前画面</button>
+<!-- The same reference pixels stay above the immutable tuning input/output. -->
+<button id="tuning-pixel-markers-toggle" type="button" aria-pressed="false" aria-controls="tuning-original-markers tuning-corrected-markers">显示像素标记</button>
 </div>
 <div class="twocol tuning-views">
-<figure><figcaption>输入原图 · 来源未验证</figcaption><canvas id="tuning-original" width="1280" height="720" aria-label="鱼眼输入原图"></canvas></figure>
-<figure><figcaption>鱼眼校正 · PC 软件参考 / 近似参数</figcaption><canvas id="tuning-corrected" width="1280" height="720" aria-label="鱼眼软件校正预览"></canvas></figure>
+<figure><figcaption>输入原图 · 来源未验证</figcaption><div class="tuning-image-surface"><canvas id="tuning-original" width="1280" height="720" aria-label="鱼眼输入原图"></canvas><svg id="tuning-original-markers" class="pixel-marker-overlay" aria-label="原图的代表像素位置" hidden></svg></div></figure>
+<figure><figcaption>鱼眼校正 · PC 软件参考 / 近似参数</figcaption><div class="tuning-image-surface"><canvas id="tuning-corrected" width="1280" height="720" aria-label="鱼眼软件校正预览"></canvas><svg id="tuning-corrected-markers" class="pixel-marker-overlay" aria-label="矫正后的对应像素位置" hidden></svg></div></figure>
 </div>
+<p id="tuning-marker-info" class="muted" role="status">标记已隐藏 · 可观察原图像素的矫正映射</p>
 <p id="tuning-status" role="status" aria-live="polite">准备鱼眼预览…</p>
 <form id="tuning-parameters">
 <div class="fields">
@@ -84,4 +87,3 @@
 <section><h2>3 · 样本检查</h2><p id="counts">尚未选择标定组</p><p>点击图像查看角点。剔除只影响本次拟合，原图和理由继续保留。</p><div class="table-wrap"><table><thead><tr><th>图像</th><th>分组 / 尺寸</th><th>检测 / 原因</th><th>操作</th></tr></thead><tbody id="samples"></tbody></table></div></section>
 <section><h2>4 · 求解与导出</h2><button id="solve">按所选模型求解候选内参与畸变</button><p>输出含 K/D、逐图误差、人工测距、4×3 覆盖统计、模式说明、原图清单与哈希。独立验证只估计每张图的姿态，不更新内参与畸变参数。</p><div id="downloads"></div><pre id="result"></pre><p class="muted">结果为候选参数。独立网格直线度、有效域、S1 等价性与板端下发回读需另行验证；上方调参为单独的 PC 软件参考预览。</p></section>
 </main></body></html>
-
