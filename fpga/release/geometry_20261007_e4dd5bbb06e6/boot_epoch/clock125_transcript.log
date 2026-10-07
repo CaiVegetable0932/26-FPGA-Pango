@@ -1,0 +1,35 @@
+# vsim -do {onerror {quit -code 2}; onbreak {quit -code 2}; run -all; quit -f} -l clock125_transcript.log -c -voptargs=+acc -wlf clock125.wlf -gFULL=0 -gCLK_HZ=125000000 tb_mcu_stable_link_epoch 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "mcu_uart_rx(fast)".
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "comms_boot_config(fast)".
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_mcu_stable_link_epoch(fast)
+# Loading work.comms_boot_config(fast)
+# Loading work.mcu_uart_rx(fast)
+# Loading work.mcu_frame_rx(fast)
+# Loading work.mcu_frame_tx(fast)
+# Loading work.mcu_uart_tx(fast)
+# Loading work.mcu_protocol(fast)
+# Loading work.mcu_reply_queue_ram(fast)
+# Loading work.mcu_frame_tx(fast__1)
+# Loading work.mcu_protocol_golden(fast)
+# onerror {quit -code 2} 
+#  Warning: onerror command for use within macro
+#  onbreak {quit -code 2} 
+#  Warning: onbreak command for use within macro
+#  run -all 
+# MCU_STABLE_EPOCH_PASS clk=125000000 full=0 cycles=13410978 checks=40234162 releases=2 invalid_boot=2 guard_noise=1 reset_pending=1 reset_uart=0 reset_guard=0 single_bits=0 replies=14 pushes=11 pops=10 env=2 geometry=2 max_queue=1
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/build/mcu_stable_epoch_proof_20261007_144143_995/attempt_20261007_161933_853_98ae2b14/sources/tb_mcu_stable_link_epoch.sv(199)
+#    Time: 107287827949 ps  Iteration: 0  Instance: /tb_mcu_stable_link_epoch

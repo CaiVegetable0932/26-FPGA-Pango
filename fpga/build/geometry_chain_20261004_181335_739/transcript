@@ -1,0 +1,20 @@
+# vsim -do {run -all; quit -f} -c -gKIND=1 tb_geometry_lens 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_geometry_lens(fast)
+# Loading work.geometry_lens_lut(fast)
+# Loading work.geometry_map_engine(fast)
+# run -all 
+# GEOMETRY_LENS_PASS model=1 vectors=305 max_error_q12=1
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_geometry_lens.sv(55)
+#    Time: 435104 ns  Iteration: 1  Instance: /tb_geometry_lens

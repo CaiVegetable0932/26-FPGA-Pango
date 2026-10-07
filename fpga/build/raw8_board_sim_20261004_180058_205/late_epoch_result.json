@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "pixels_per_frame": 2073600,
+  "frames": 5,
+  "first_frame_id": 1,
+  "late_epoch_boundary_test": true,
+  "udp_packets": 7410,
+  "raw_sha256": [
+    "5275bb5553caa5344b19727c7efde3542f03fd51440e3a18f8b2a20d401e84e7",
+    "45aea26950a6ebd4855fd3a6a1beaf38344a6e52c07a12b2df21919ca52f5847",
+    "14d4807527b8252ab18609b135d76890156d0aab708a7cc45b3a67b39efbdc5b",
+    "dcb5209ad5f5e30fb9e46b817f07a0e6c6cef379578bee3bfb62e3922ffebccf",
+    "5e0fd41d513e7b7336edb5b2f6215447915a7a2aa02fe49f66765b13e4409653"
+  ],
+  "source": "DVP simulation stimulus; behavioral HMIC memory",
+  "host_reassembly_verified": true,
+  "native_fifo_models_verified": true,
+  "gmii_packet_cdc_verified": true,
+  "native_ddr_phy_verified": false,
+  "hardware_tested": false,
+  "physical_camera_source_verified": false,
+  "external_timing_verified": false,
+  "hdmi_source_frame_id": null
+}

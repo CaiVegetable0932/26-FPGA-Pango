@@ -1,5 +1,6 @@
-// Purpose: MCU-only binary endpoint; no motor commands and no video stream
-// control. All sideband ports belong to clk. The integrator must supply a fresh
+// Purpose: MCU observation endpoint with an opt-in PC geometry extension;
+// no motor commands or video-stream startup control. All sidebands belong to
+// clk. Geometry is disabled in legacy tops. The integrator supplies a fresh
 // nonzero epoch after every reset/reconfiguration; leave epoch_valid low until
 // that guarantee is available. Constant/reused epochs cannot isolate reboots.
 module mcu_protocol #(
@@ -8,7 +9,17 @@ module mcu_protocol #(
     parameter integer RX_TIMEOUT_MS = 20,
     parameter integer BOARD_DIAGNOSTICS = 0,
     parameter integer VIDEO_DIAGNOSTICS = 0,
-    parameter integer CHAIN_DIAGNOSTICS = 0
+    parameter integer CHAIN_DIAGNOSTICS = 0,
+    parameter integer GEOMETRY_CONTROL = 0,
+    // Purpose: separately advertise frame-atomic display control; legacy tops
+    // retain their exact capability word and reject opcode 0x35 by default.
+    parameter integer DISPLAY_CONTROL = 0,
+    // Purpose: optional immutable-commissioning contract, not a delayed flush.
+    // Enable ONLY when epoch is settled and valid before rst_n is released,
+    // and cannot change again without asserting this module's reset. The
+    // physical geometry top satisfies this via comms_boot_config's RUN state.
+    // Generic users retain live 64-bit change detection with the default 0.
+    parameter integer STABLE_LINK_EPOCH = 0
 ) (
     input wire clk, input wire rst_n,
     input wire uart_rx, output wire uart_tx,
@@ -20,7 +31,13 @@ module mcu_protocol #(
     input wire [95:0] video_diagnostics,
     // Purpose: mem-clock snapshots for DVP geometry/progress and frame pipeline.
     input wire [287:0] chain_diagnostics,
-    output wire session_active, output reg env_valid,
+    output wire session_active, output wire [31:0] current_session_id,
+    // Purpose: optional same-clock PC geometry extension. Admission keeps the
+    // existing CRC/epoch/session/queue rules; unsupported legacy tops stay off.
+    output wire geometry_command_valid,output wire [7:0] geometry_command,
+    output wire [255:0] geometry_payload,
+    input wire [7:0] geometry_code,input wire [95:0] geometry_reply,
+    output reg env_valid,
     output reg [31:0] env_session_id, output reg [31:0] env_event_seq,
     output reg [31:0] env_mcu_time_us, output reg [63:0] env_board_time_us,
     output reg [31:0] env_lux_milli, output reg signed [31:0] env_angle_mdeg,
@@ -36,8 +53,14 @@ module mcu_protocol #(
         DVP_GEOMETRY=8'h07, DVP_PROGRESS=8'h08, PIPELINE=8'h09, ENVIRONMENT=8'h10;
     reg [63:0] observed_epoch;
     reg observed_epoch_valid;
-    wire epoch_change = (link_epoch != observed_epoch) ||
-                        (link_epoch_valid != observed_epoch_valid);
+    // Purpose: keep same-edge invalidation without putting a live 64-bit carry
+    // comparator ahead of queue capacity and geometry write CEs on the board.
+    // Under the explicit stable-epoch/reset contract, the first valid edge is
+    // the only post-reset change and still flushes parser/TX/queue/session.
+    // This is a constant specialization, not a registered/one-cycle-late test;
+    // arbitrary runtime epoch changes remain fully detected in legacy mode.
+    wire epoch_change = (link_epoch_valid != observed_epoch_valid) ||
+                        (!STABLE_LINK_EPOCH && (link_epoch != observed_epoch));
     // Purpose: predecode the stable epoch's nonzero status. epoch_change flushes
     // all admission during an update, so no request uses the preceding value.
     reg epoch_nonzero /* synthesis syn_preserve = 1 */;
@@ -45,9 +68,12 @@ module mcu_protocol #(
     reg [31:0] active_session;
     reg [255:0] last_event_payload;
     assign session_active = (active_session != 0) && epoch_ready && !epoch_change;
+    assign current_session_id=active_session;
 
     // Changes invalidate parser, queued replies, handshake, and measurement
     // validity together. The top must synchronize/stabilize these input buses.
+    // observed_epoch remains necessary in generic mode; native synthesis may
+    // remove it only in the opt-in immutable commissioning specialization.
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin observed_epoch <= 0; observed_epoch_valid <= 0; epoch_nonzero <= 0; end
         else begin observed_epoch <= link_epoch; observed_epoch_valid <= link_epoch_valid; epoch_nonzero <= link_epoch != 0; end
@@ -61,6 +87,29 @@ module mcu_protocol #(
     // two registered halves so 64-bit equality is not cascaded with response
     // decoding, counter increments and inferred reply-memory bypass at 125 MHz.
     reg [1:0] request_epoch_equal /* synthesis syn_preserve = 1 */;
+    // Purpose: frame lengths settle before payload/CRC. Parallel registered
+    // exact matches remove the length bus from reply mux and admission paths.
+    // Bit order: 0,12,16,20,24,32 bytes. Error frames bypass these predicates.
+    reg [5:0] request_length_equal /* synthesis syn_preserve = 1 */;
+    always @(posedge clk or negedge rst_n)
+        if(!rst_n)request_length_equal<=0;
+        else request_length_equal<={request_length==16'd32,request_length==16'd24,
+            request_length==16'd20,request_length==16'd16,
+            request_length==16'd12,request_length==16'd0};
+    // Purpose: session payload precedes both CRC bytes, just like the epoch.
+    // Precompute comparisons before frame_done to remove the session bus from
+    // parameter write CEs. OPEN/epoch changes flush or precede the next frame;
+    // parser errors bypass session checks. No request or response latency added.
+    reg request_session_equal,request_session_nonzero,request_session_less
+        /* synthesis syn_preserve = 1 */;
+    always @(posedge clk or negedge rst_n)
+        if(!rst_n)begin
+            request_session_equal<=0;request_session_nonzero<=0;request_session_less<=0;
+        end else begin
+            request_session_equal<=request_payload[95:64]==active_session;
+            request_session_nonzero<=request_payload[95:64]!=0;
+            request_session_less<=request_payload[95:64]<active_session;
+        end
     always @(posedge clk or negedge rst_n)
         if (!rst_n) request_epoch_equal <= 0;
         else begin
@@ -94,71 +143,165 @@ module mcu_protocol #(
 
     // Eight response slots bound storage. Acceptance reserves a response slot
     // before changing state; overload drops a request without side effects.
-    reg [255:0] reply_payload_fifo [0:7];
-    reg [15:0] reply_seq_fifo [0:7];
-    reg [7:0] reply_command_fifo [0:7];
-    reg [2:0] write_ptr, read_ptr;
-    reg [3:0] queue_count;
+    // Purpose: synchronous RAM reply queue. The registered head retains the
+    // original same-cycle visibility, while synchronous lookahead eliminates
+    // the wide eight-way register mux and the old LUT-RAM-to-TX bypass.
+    wire [279:0] reply_front;
+    wire [3:0] queue_count;
     // Purpose: reserve a response before side effects, then register its entire
-    // snapshot before writing the reply RAM. The pending slot counts toward the
+    // snapshot before writing the reply RAM queue. The pending slot counts toward the
     // fixed eight-slot capacity; epoch changes flush it with the queue.
     reg pending_reply;
     reg [255:0] pending_payload /* synthesis syn_preserve = 1 */;
     reg [15:0] pending_seq;
     reg [7:0] pending_command;
+    // Purpose: capture the geometry reply independently of the common reply
+    // mux, on the SAME acceptance edge. Assemble it at FIFO write next cycle;
+    // this cuts the config readback-to-prefix-mux path without a stale snapshot
+    // or extra queue slot. Epoch changes invalidate both pieces together.
+    reg [95:0] pending_geometry_data /* synthesis syn_preserve=1 */;
+    reg pending_geometry;
+    wire response_geometry=(GEOMETRY_CONTROL && request_command>=8'h30 && request_command<=8'h34) ||
+        (DISPLAY_CONTROL && request_command==8'h35);
+    wire [255:0] queued_payload=pending_geometry ?
+        {pending_geometry_data,pending_payload[159:0]} : pending_payload;
     wire tx_ready;
     wire pop = (queue_count != 0) && tx_ready && !epoch_change;
     wire space_available = (queue_count + {3'b0,pending_reply} < 8) || pop;
     wire push = frame_done && reply_allowed && space_available && !epoch_change;
-    reg [7:0] response_code;
-    reg accept_session, accept_event;
+    reg [7:0] response_code, admission_code;
+    reg accept_session, accept_event, admit_geometry;
     reg [255:0] response_payload;
+    // Purpose: read-only snapshot replies all share this direct validity
+    // predicate. Do not encode an error number and decode it back to OK before
+    // selecting 96 data bits. These checks exactly match the 12-byte commands;
+    // optional diagnostic capability checks remain local to each reply kind.
+    wire snapshot_ok=(parse_error==0) && request_length_equal[1] && epoch_ready &&
+        (&request_epoch_equal) && request_session_nonzero && request_session_equal;
+    // Purpose: directly decode the exclusive reply kinds. CAPS validity is
+    // independent of epoch/session; enabled geometry reserves its tail even on
+    // errors. Invalid/disabled snapshot queries use the ordinary status tail.
+    wire reply_caps=(request_command==CAPS) && (parse_error==0) && request_length_equal[0];
+    wire reply_counters=(request_command==COUNTERS) && snapshot_ok;
+    wire reply_board=(request_command==DIAGNOSTICS) && BOARD_DIAGNOSTICS && snapshot_ok;
+    wire reply_video=(request_command==VIDEO_SNAPSHOT) && VIDEO_DIAGNOSTICS && snapshot_ok;
+    wire reply_dvp_geometry=(request_command==DVP_GEOMETRY) && CHAIN_DIAGNOSTICS && snapshot_ok;
+    wire reply_dvp_progress=(request_command==DVP_PROGRESS) && CHAIN_DIAGNOSTICS && snapshot_ok;
+    wire reply_pipeline=(request_command==PIPELINE) && CHAIN_DIAGNOSTICS && snapshot_ok;
+    // Purpose: fallback depends directly on command class and validity, avoiding
+    // a serial priority encoder and avoiding a response_code-to-OK decode.
+    wire reply_snapshot_command=(request_command==COUNTERS) ||
+        ((request_command==DIAGNOSTICS) && BOARD_DIAGNOSTICS) ||
+        ((request_command==VIDEO_SNAPSHOT) && VIDEO_DIAGNOSTICS) ||
+        (((request_command==DVP_GEOMETRY) || (request_command==DVP_PROGRESS) ||
+          (request_command==PIPELINE)) && CHAIN_DIAGNOSTICS);
+    wire reply_default=!(reply_caps || (reply_snapshot_command && snapshot_ok) || response_geometry);
+    wire [31:0] reply_good_next=rx_good_count+32'd1;
+    wire [31:0] reply_error_next=rx_error_count+32'd1;
+    localparam [31:0] REPLY_CAPABILITIES=32'h0000000f |
+        (BOARD_DIAGNOSTICS ? 32'h10 : 32'h0) | (VIDEO_DIAGNOSTICS ? 32'h20 : 32'h0) |
+        (CHAIN_DIAGNOSTICS ? 32'h40 : 32'h0) | (GEOMETRY_CONTROL ? 32'h80 : 32'h0) |
+        (DISPLAY_CONTROL ? 32'h100 : 32'h0);
+    localparam [31:0] REPLY_BAUD=BAUD;
+    wire [95:0] reply_caps_data={REPLY_BAUD,REPLY_CAPABILITIES,16'd32,16'd1024};
+    wire [95:0] reply_counters_data={tx_overflow_count,rx_error_count,reply_good_next};
+    wire [95:0] reply_default_data={
+        ((admission_code>=2) ? reply_error_next : rx_error_count),
+        ((parse_error==0) ? reply_good_next : rx_good_count),status_flags};
+    wire [95:0] reply_extension;
+    genvar reply_lane;
+    generate for(reply_lane=0;reply_lane<3;reply_lane=reply_lane+1) begin: g_reply_lane
+        // Purpose: independently OR the masked sources in each 32-bit lane.
+        // Geometry contributes zero here; its existing separate capture still
+        // joins at FIFO write. No pipeline stage, admission CE or reset changes.
+        assign reply_extension[reply_lane*32+:32]=
+            ({32{reply_default}} & reply_default_data[reply_lane*32+:32]) |
+            ({32{reply_caps}} & reply_caps_data[reply_lane*32+:32]) |
+            ({32{reply_counters}} & reply_counters_data[reply_lane*32+:32]) |
+            ({32{reply_board}} & board_diagnostics[reply_lane*32+:32]) |
+            ({32{reply_video}} & video_diagnostics[reply_lane*32+:32]) |
+            ({32{reply_dvp_geometry}} & chain_diagnostics[reply_lane*32+:32]) |
+            ({32{reply_dvp_progress}} & chain_diagnostics[96+reply_lane*32+:32]) |
+            ({32{reply_pipeline}} & chain_diagnostics[192+reply_lane*32+:32]);
+    end endgenerate
+    // Purpose: declare extension wiring after parser/admission signals to
+    // avoid implicit nets in the installed Verilog/ModelSim tool versions.
+    assign geometry_command=request_command;
+    assign geometry_payload=request_payload;
+    // Admission covers transport/session/queue checks only. The config bank
+    // already gates its own mutations with code==OK; do not route its code
+    // back through the MCU decoder to its write enable a second time.
+    assign geometry_command_valid=push && admit_geometry;
+    // The front caches stored words; it is not an extra response slot. The
+    // existing pending reservation and eight-slot admission remain unchanged.
+    mcu_reply_queue_ram u_reply_queue (
+        .clk(clk),.rst_n(rst_n),.flush(epoch_change),.write(pending_reply),
+        .write_data({pending_command,pending_seq,queued_payload}),.pop(pop),
+        .count(queue_count),.front(reply_front));
     mcu_frame_tx #(.CLK_HZ(CLK_HZ),.BAUD(BAUD)) u_tx (
         .clk(clk),.rst_n(rst_n),.flush(epoch_change),.valid(queue_count != 0),
-        .ready(tx_ready),.command(reply_command_fifo[read_ptr]),
-        .sequence_id(reply_seq_fifo[read_ptr]),.payload(reply_payload_fifo[read_ptr]),
+        .ready(tx_ready),.command(reply_front[279:272]),
+        .sequence_id(reply_front[271:256]),.payload(reply_front[255:0]),
         .serial_tx(uart_tx));
 
     // Decode only CRC/version/length-validated frames. Session IDs increase
     // without wrap within an epoch. Event IDs increase within a session;
     // identical last-event retries are acknowledged without another pulse.
     always @* begin
-        response_code = parse_error; accept_session = 0; accept_event = 0;
+        // Purpose: keep transport/session decoding independent of the late
+        // geometry-layer code. Geometry replaces its entire upper snapshot,
+        // so that code must not traverse unrelated status/counter reply muxes.
+        admission_code = parse_error; accept_session = 0; accept_event = 0; admit_geometry=0;
         if (parse_error == 0) begin
-            response_code = OK;
+            admission_code = OK;
             case (request_command)
-                CAPS: if (request_length != 0) response_code = BAD_LENGTH;
+                CAPS: if (!request_length_equal[0]) admission_code = BAD_LENGTH;
                 OPEN, STATUS, COUNTERS, DIAGNOSTICS, VIDEO_SNAPSHOT,
-                DVP_GEOMETRY, DVP_PROGRESS, PIPELINE, ENVIRONMENT: begin
+                DVP_GEOMETRY, DVP_PROGRESS, PIPELINE, ENVIRONMENT,
+                8'h30,8'h31,8'h32,8'h33,8'h34,8'h35: begin
                     if ((request_command == DIAGNOSTICS && !BOARD_DIAGNOSTICS) ||
                         (request_command == VIDEO_SNAPSHOT && !VIDEO_DIAGNOSTICS) ||
                         ((request_command==DVP_GEOMETRY || request_command==DVP_PROGRESS ||
-                          request_command==PIPELINE) && !CHAIN_DIAGNOSTICS))
-                        response_code = UNSUPPORTED;
-                    else if ((request_command == ENVIRONMENT && request_length != 32) ||
-                        (request_command != ENVIRONMENT && request_length != 12))
-                        response_code = BAD_LENGTH;
-                    else if (!epoch_ready) response_code = NOT_READY;
-                    else if (!(&request_epoch_equal)) response_code = BAD_EPOCH;
-                    else if (request_payload[95:64] == 0) response_code = BAD_SESSION;
+                          request_command==PIPELINE) && !CHAIN_DIAGNOSTICS) ||
+                        (request_command>=8'h30 && request_command<=8'h34 && !GEOMETRY_CONTROL) ||
+                        (request_command==8'h35 && !DISPLAY_CONTROL))
+                        admission_code = UNSUPPORTED;
+                    else if ((request_command == ENVIRONMENT && !request_length_equal[5]) ||
+                        ((request_command==8'h30 || request_command==8'h31 || request_command==8'h35) && !request_length_equal[4]) ||
+                        (request_command==8'h32 && !request_length_equal[2]) ||
+                        (request_command==8'h34 && !request_length_equal[3]) ||
+                        (request_command!=ENVIRONMENT && request_command!=8'h30 &&
+                         request_command!=8'h31 && request_command!=8'h32 &&
+                         request_command!=8'h34 && request_command!=8'h35 && !request_length_equal[1]))
+                        admission_code = BAD_LENGTH;
+                    else if (!epoch_ready) admission_code = NOT_READY;
+                    else if (!(&request_epoch_equal)) admission_code = BAD_EPOCH;
+                    else if (!request_session_nonzero) admission_code = BAD_SESSION;
                     else if (request_command == OPEN) begin
-                        if (request_payload[95:64] == active_session) response_code = DUPLICATE;
-                        else if (request_payload[95:64] < active_session) response_code = BAD_SESSION;
+                        if (request_session_equal) admission_code = DUPLICATE;
+                        else if (request_session_less) admission_code = BAD_SESSION;
                         else accept_session = 1;
-                    end else if (request_payload[95:64] != active_session) response_code = BAD_SESSION;
+                    end else if (!request_session_equal) admission_code = BAD_SESSION;
+                    else if (request_command>=8'h30 && request_command<=8'h35) begin
+                        admit_geometry=1;
+                    end
                     else if (request_command == ENVIRONMENT) begin
-                        if (request_payload[255:226] != 0) response_code = BAD_FORMAT;
+                        if (request_payload[255:226] != 0) admission_code = BAD_FORMAT;
                         else if (request_payload[127:96] == 0 ||
-                                 request_payload[127:96] < env_event_seq) response_code = STALE_EVENT;
+                                 request_payload[127:96] < env_event_seq) admission_code = STALE_EVENT;
                         else if (request_payload[127:96] == env_event_seq) begin
-                            if (&event_chunk_equal) response_code = DUPLICATE;
-                            else response_code = ID_CONFLICT;
+                            if (&event_chunk_equal) admission_code = DUPLICATE;
+                            else admission_code = ID_CONFLICT;
                         end else accept_event = 1;
                     end
                 end
-                default: response_code = UNSUPPORTED;
+                default: admission_code = UNSUPPORTED;
             endcase
         end
+        // Actual wire ACK/NACK, prefix and error counters retain the complete
+        // code, including geometry failures. Only irrelevant upper fields use
+        // admission_code; geometry overwrites those fields unconditionally.
+        response_code=admit_geometry ? geometry_code : admission_code;
 
         // Common 20-byte response prefix followed by 12 command-specific bytes.
         // Snapshot reflects successful mutation and this request's counters.
@@ -173,68 +316,25 @@ module mcu_protocol #(
         response_payload[127:96] = accept_session ? request_payload[95:64] : active_session;
         response_payload[159:128] = accept_session ? 32'd0 :
                                     (accept_event ? request_payload[127:96] : env_event_seq);
-        response_payload[191:160] = status_flags;
-        response_payload[223:192] = rx_good_count + ((parse_error == 0) ? 32'd1 : 32'd0);
-        response_payload[255:224] = rx_error_count + ((response_code >= 2) ? 32'd1 : 32'd0);
-        if (request_command == CAPS && response_code == OK) begin
-            response_payload[175:160] = 16'd1024;
-            response_payload[191:176] = 16'd32;
-            response_payload[223:192] = 32'h0000000f |
-                (BOARD_DIAGNOSTICS ? 32'h10 : 32'h0) | (VIDEO_DIAGNOSTICS ? 32'h20 : 32'h0) |
-                (CHAIN_DIAGNOSTICS ? 32'h40 : 32'h0);
-            response_payload[255:224] = BAUD;
-        end else if (request_command == COUNTERS && response_code == OK) begin
-            response_payload[191:160] = rx_good_count+1'b1;
-            response_payload[223:192] = rx_error_count;
-            response_payload[255:224] = tx_overflow_count;
-        end else if (request_command == DIAGNOSTICS && response_code == OK) begin
-            // Purpose: correlated, session-checked snapshot in the existing
-            // 12-byte extension area; never writes a PHY or changes streaming.
-            response_payload[255:160] = board_diagnostics;
-        end else if (request_command == VIDEO_SNAPSHOT && response_code == OK) begin
-            // Purpose: same epoch/session validation as PHY telemetry; snapshot
-            // is read-only and does not reset fault latches or restart capture.
-            response_payload[255:160] = video_diagnostics;
-        end else if (request_command == DVP_GEOMETRY && response_code == OK) begin
-            // Purpose: each command captures its own coherent 96-bit page;
-            // separate replies are NOT an atomic shared frame identity.
-            response_payload[255:160] = chain_diagnostics[95:0];
-        end else if (request_command == DVP_PROGRESS && response_code == OK) begin
-            response_payload[255:160] = chain_diagnostics[191:96];
-        end else if (request_command == PIPELINE && response_code == OK) begin
-            response_payload[255:160] = chain_diagnostics[287:192];
-        end
+        // Purpose: mutually exclusive opcodes allow parallel masked data terms
+        // instead of seven successive priority choices over the 96-bit tail.
+        // Keep the same-edge snapshot of status/counters and pending registers.
+        response_payload[255:160] = reply_extension;
     end
 
-    // Queue memory needs no reset: pointers/count prevent reading stale data.
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin pending_reply<=0;pending_payload<=0;pending_seq<=0;pending_command<=0;end
-        else if(epoch_change) pending_reply<=0;
-        else begin
-            pending_reply<=push;
-            if(push) begin
-                pending_payload<=response_payload;pending_seq<=request_seq;
-                pending_command<=(response_code<2)?8'h80:8'h81;
-            end
-        end
+    // Purpose: snapshot buses run every cycle; pending_reply alone authorizes
+    // consumption on the following edge. Thus the accepted snapshot is still
+    // taken on push, while wide data flops need neither a late admission CE nor
+    // reset routing. Reset/epoch flush clears the validity token, not the data.
+    always @(posedge clk) begin
+        pending_payload<=response_payload;pending_seq<=request_seq;
+        pending_command<=(response_code<2)?8'h80:8'h81;
+        pending_geometry<=response_geometry;pending_geometry_data<=geometry_reply;
     end
     always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin write_ptr <= 0; read_ptr <= 0; queue_count <= 0; end
-        else if (epoch_change) begin write_ptr <= 0; read_ptr <= 0; queue_count <= 0; end
-        else begin
-            if (pending_reply) begin
-                reply_payload_fifo[write_ptr] <= pending_payload;
-                reply_seq_fifo[write_ptr] <= pending_seq;
-                reply_command_fifo[write_ptr] <= pending_command;
-                write_ptr <= write_ptr+1'b1;
-            end
-            if (pop) read_ptr <= read_ptr+1'b1;
-            case ({pending_reply,pop})
-                2'b10: queue_count <= queue_count+1'b1;
-                2'b01: queue_count <= queue_count-1'b1;
-                default: begin end
-            endcase
-        end
+        if (!rst_n) pending_reply<=0;
+        else if(epoch_change) pending_reply<=0;
+        else pending_reply<=push;
     end
 
     // Latched environment outputs update atomically only after all checks and
@@ -270,6 +370,57 @@ module mcu_protocol #(
             if (response_code >= 2 || (reply_allowed && !space_available))
                 rx_error_count <= rx_error_count+1'b1;
             if (reply_allowed && !space_available) tx_overflow_count <= tx_overflow_count+1'b1;
+        end
+    end
+endmodule
+
+// Purpose: private synchronous-RAM reply queue for mcu_protocol. Bundled here
+// to preserve existing PDS source lists. Keep the eight-slot interface while replacing
+// the wide register bank with synchronous block RAM. The head and lookahead
+// duplicate stored slots; they do not add logical capacity or response delay.
+module mcu_reply_queue_ram (
+    input wire clk, input wire rst_n, input wire flush,
+    input wire write, input wire [279:0] write_data, input wire pop,
+    output reg [3:0] count, output reg [279:0] front
+);
+    reg [279:0] memory [0:7] /* synthesis syn_ramstyle="block_ram" */;
+    reg [2:0] write_ptr, read_ptr;
+    reg [279:0] ram_ahead, forwarded;
+    reg forward_valid;
+    // Purpose: fetch the successor of the head AFTER this edge. Explicit
+    // write forwarding defines collision data independent of the RAM mode.
+    wire [2:0] ahead_address=read_ptr+(pop ? 3'd2 : 3'd1);
+    wire [279:0] next_front=forward_valid ? forwarded : ram_ahead;
+    always @(posedge clk) begin
+        if (write && rst_n && !flush) memory[write_ptr]<=write_data;
+        ram_ahead<=memory[ahead_address];
+        forward_valid<=write && rst_n && !flush && write_ptr==ahead_address;
+        if (write && rst_n && !flush && write_ptr==ahead_address)
+            forwarded<=write_data;
+    end
+    // Purpose: direct first-word forwarding preserves the original queue's
+    // visibility on empty writes and one-word simultaneous pop/push. For a
+    // deeper queue the synchronous lookahead was prepared on the prior edge.
+    // No RAM/head reset is needed: count prevents stale/uninitialized reads.
+    always @(posedge clk) begin
+        if (rst_n && !flush) begin
+            if (write && (count==0 || (pop && count==1))) front<=write_data;
+            else if (pop && count>1) front<=next_front;
+        end
+    end
+    // Purpose: the caller reserves capacity before write, and pops only when
+    // count is nonzero. Reset/epoch flush invalidates every queued response.
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin count<=0;write_ptr<=0;read_ptr<=0;end
+        else if (flush) begin count<=0;write_ptr<=0;read_ptr<=0;end
+        else begin
+            if(write)write_ptr<=write_ptr+1'b1;
+            if(pop)read_ptr<=read_ptr+1'b1;
+            case ({write,pop})
+                2'b10:count<=count+1'b1;
+                2'b01:count<=count-1'b1;
+                default:begin end
+            endcase
         end
     end
 endmodule

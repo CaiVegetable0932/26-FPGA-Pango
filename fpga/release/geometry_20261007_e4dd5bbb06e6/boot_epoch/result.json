@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "source_manifest_sha256": "FBDE9646448170E7C5C8B1DF8242D430C112AA6B6382989A679A0E8D293618A0",
+  "runs": [
+    {
+      "name": "full",
+      "clock_hz": 1843200,
+      "baud": 115200,
+      "full": true,
+      "plus_acc": true,
+      "exit_code": 0,
+      "passed": true,
+      "log": "full.log",
+      "log_sha256": "A4ACB4A3A43246A52C89D2B335BE2CA17B2F486494557CEE76D9E9FEA9DD6177"
+    },
+    {
+      "name": "clock125",
+      "clock_hz": 125000000,
+      "baud": 115200,
+      "full": false,
+      "plus_acc": true,
+      "exit_code": 0,
+      "passed": true,
+      "log": "clock125.log",
+      "log_sha256": "5A3A31F41448E2EB5A2C1B1C3D5160102EE5FCECE0686B68446259C234EB1942"
+    }
+  ],
+  "formal_proof": false,
+  "pds_run": false,
+  "hardware_tested": false,
+  "sources_unchanged": true,
+  "finished": "2026-10-07T16:20:19.1999114+08:00"
+}

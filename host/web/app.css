@@ -1617,3 +1617,5 @@ td.table-actions a,td.table-actions button { display:inline-block; margin:4px 10
 .capture-preview-actions .button { min-height:34px; padding:6px 10px; font-size:13px; }
 #capture-empty .button { margin-top:16px; }
 @media(max-width:650px) { .capture-settings-body { padding:16px; } .capture-device-row { align-items:stretch; } .capture-device-row .button { flex:1; } .capture-form-actions { width:100%; } .capture-form-actions>.button { flex:1; } }
+/* Explicit board parameter JSON stays within narrow workbench layouts. */
+#fpga-parameters { display:block; width:100%; max-width:100%; box-sizing:border-box; font-family:monospace; }

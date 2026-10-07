@@ -1,5 +1,16 @@
 # OV5640 RAW8 千兆网与 HDMI 双路回传方案
 
+2026-10-07 显示控制增量：`mini_raw8_geometry` 增加 CAPS 0x100、UART 0x35
+原图/矫正图及标记开关、READ 0x34 bank2 的 FPGA 20 点映射元数据。
+原图与矫正图保持同一灰度 ISP；彩色编号只在 HDMI 末端叠加，网口 RENH v2
+增强 RAW8 字节和帧池布局不变，也不冒充 S0。参数/模式按帧生效，元数据随结果槽
+传递；generation/参数版本不是 HDMI 外部帧身份。协议见
+[灰度接口增量](FPGA灰度鱼眼矫正参数接口.md)，构建和未验收项见
+[实际记录](../fpga/reports/geometry_pipeline_release_20261006.md)。
+下文正式彩色 S1/S2 和严格同帧验收目标不变。
+
+2026-10-04 灰度矫正候选：独立 `mini_raw8_geometry` 工程的网口保持 `0x484E4552`/版本 2 的增强 Bayer RAW8；HDMI 改读 FPGA 鱼眼/平面变换后的 Y8 结果，复制为 RGB，不能再宣称两路像素相同。灰度结果/掩码三槽为 `0x04000000/0x04400000/0x04800000`，不是下文正式 RGB888 布局；使用该工程时两套结果布局互斥。UART 增加会话保护的 0x30～0x34 参数事务，HDMI 外部身份仍 null/unverified。见 [接口](FPGA灰度鱼眼矫正参数接口.md) 和 [实际验证及限制](../fpga/reports/geometry_chain_20261004.md)。正式 S0 和同帧彩色快照验收目标不变。
+
 RAW8 整板增量（2026-09-22）：采用 1080p RAW8，首版 HDMI 为 RAW 采样灰阶，不冒充 ISP S1/矫正结果。三个 RAW 槽与 PRAW V1 布局不变；padding 不输出。独立启动命令 0x71/ACK `RAW8`、描述符 0x38574152、param_version=1 与旧 TEST 隔离；epoch 在帧开始前的槽分配时锁存。原生 HMIC 列地址=逻辑字节地址>>2，具体栅栏/控制面见 [实施约定](FPGA1080pRAW8双路实施增量.md)。构建/位流状态以 [整板实际记录](../fpga/reports/raw8_board_candidate_20260922.md) 为准，本轮不烧录、不作真实 30fps 或来源验收。
 
 2026-09-26 双路亮度对齐候选：在当前调试链路中，网口 PRAW V1 可保持 Bayer RAW8 单字节格式，同时在 FPGA 封包前施加 HDMI 同款同相位中值与明暗曲线。用描述符 `0x484E4552`（RENH）/param_version=2 明确标记 `fpga_enhanced_raw8`；旧 `0x38574152`/版本 1 才是未经处理的 S0。增强负载不能冒充 S0 原图用于原始精度验收；DDR 内的 S0 尚在，但未来若需同时导出真实 S0，须另设可区分的流/快照及带宽预算。当前候选未完成上板验证，不改变下文正式 S0 测评目标。

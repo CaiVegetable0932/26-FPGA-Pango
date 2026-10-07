@@ -31,6 +31,8 @@
   const videoInputUI=window.PangoVideoInputUI.create({toast});
   // The board panel coordinates physical startup; the generic mock stays explicit.
   const boardUI=window.PangoBoardLink.create({request,video:videoInputUI.controller,toast});
+  // Board controls own only UART and the FPGA metadata layer, not video capture.
+  const boardGeometry=window.PangoBoardGeometry.create({request,videoUI:videoInputUI});
   let recordsLastRefresh=0;
   const archiveWorker=new Worker("/preview-worker.js");
   const worker=new Worker("/preview-worker.js"), title={live:"实时采集",records:"采集记录",settings:"连接设置"};
@@ -67,6 +69,7 @@
     const sessionChanged=status&&(status.running!==state.running||status.run_id!==state.run_id);
     if(status&&status.run_id!==state.run_id){lastKey="";latestStage=null;$("live-canvas").hidden=true;$("video-empty").hidden=false;videoInputUI.setNetworkFrame(null);rendered=0;renderStart=performance.now();}
     status=state;
+    if(state.signal!=="live")boardGeometry.setNetworkFrame(null);
     const c=state.metrics?.assembly?.counters||{}, rx=state.metrics?.counters||{}, running=state.running;
     const mock=state.config.source_mode==="mock", live=state.signal==="live", hasRun=!!state.run_id;
     const failures=Object.entries(c).reduce((sum,[key,value])=>sum+(key.startsWith("frames_failed_")&&key!=="frames_failed_stopped"?value:0),0)+Number(c.frames_rejected_memory||0);
@@ -179,6 +182,9 @@
       // reduced display raster. The overlay caches unchanged geometry.
       videoInputUI.setNetworkFrame({width:result.width,height:result.height,
         sourceWidth:result.meta.width,sourceHeight:result.meta.height});
+      boardGeometry.setNetworkFrame({width:result.width,height:result.height,
+        sourceWidth:result.meta.width,sourceHeight:result.meta.height,
+        stream_epoch:result.meta.stream_epoch,source_mode:result.meta.source_mode});
       latestStage=result.meta.source_stage;
       // Keep the source identity readable at five updates per second; actual
       // pixel presentation and the FPS counters below still count every frame.
@@ -286,8 +292,8 @@
       }},{signal:toolLifetime.signal})).catch(error=>console.warn("WebMCP registration unavailable",name,error));}catch(error){console.warn("WebMCP registration unavailable",name,error);}
     }
   }
-  window.addEventListener("pagehide",()=>{closed=true;streamAbort?.abort();surfaceResize.disconnect();boardUI.destroy();videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);clearInterval(previewRateTimer);worker.terminate();archiveWorker.terminate();});
+  window.addEventListener("pagehide",()=>{closed=true;streamAbort?.abort();surfaceResize.disconnect();boardUI.destroy();boardGeometry.destroy();videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);clearInterval(previewRateTimer);worker.terminate();archiveWorker.terminate();});
 
   window.addEventListener("pageshow",event=>{if(event.persisted)location.reload();});
-  init().then(()=>{registerWorkbenchTools();poll();framePoll();void boardUI.init();});
+  init().then(()=>{registerWorkbenchTools();poll();framePoll();void boardUI.init();void boardGeometry.init();});
 })();

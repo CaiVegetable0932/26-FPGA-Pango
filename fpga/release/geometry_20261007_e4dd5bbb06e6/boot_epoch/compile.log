@@ -1,0 +1,20 @@
+Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+-- Compiling module mcu_uart_rx
+-- Compiling module mcu_uart_tx
+-- Compiling module mcu_frame_rx
+-- Compiling module mcu_frame_tx
+-- Compiling module comms_boot_config
+-- Compiling module mcu_protocol_golden
+-- Compiling module mcu_reply_queue_ram
+-- Compiling module mcu_protocol
+** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mcu_stable_epoch_proof_20261007_144143_995\attempt_20261007_161933_853_98ae2b14\sources\mcu_protocol.v(381): (vlog-2275) 'mcu_reply_queue_ram' already exists and will be overwritten.
+
+-- Compiling module mcu_reply_queue_ram
+-- Compiling module tb_mcu_stable_link_epoch
+** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mcu_stable_epoch_proof_20261007_144143_995\attempt_20261007_161933_853_98ae2b14\sources\tb_mcu_stable_link_epoch.sv(26): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+
+** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mcu_stable_epoch_proof_20261007_144143_995\attempt_20261007_161933_853_98ae2b14\sources\tb_mcu_stable_link_epoch.sv(36): (vlog-2600) [RDGN] - Redundant digits in numeric literal.
+
+
+Top level modules:
+	tb_mcu_stable_link_epoch

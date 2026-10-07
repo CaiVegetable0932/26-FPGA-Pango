@@ -1,0 +1,40 @@
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {onerror {quit -code 2}; onbreak {quit -code 2}; run -all; quit -f} -c -wlf {C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mcu_protocol_20261004_174311_376\full.wlf} -gFULL=1 -gRX_TIMEOUT_MS=2 -gCLK_HZ=1843200 tb_mcu_protocol 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv(47): (vopt-2685) [TFMPC] - Too few port connections for 'dut'.  Expected 29, found 23.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv(47): (vopt-2718) [TFMPC] - Missing connection for port 'geometry_reply'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv(47): (vopt-2718) [TFMPC] - Missing connection for port 'geometry_code'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv(47): (vopt-2718) [TFMPC] - Missing connection for port 'geometry_payload'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv(47): (vopt-2718) [TFMPC] - Missing connection for port 'geometry_command'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv(47): (vopt-2718) [TFMPC] - Missing connection for port 'geometry_command_valid'.
+# 
+# ** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv(47): (vopt-2718) [TFMPC] - Missing connection for port 'current_session_id'.
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_mcu_protocol(fast)
+# onerror {quit -code 2} 
+#  Warning: onerror command for use within macro
+#  onbreak {quit -code 2} 
+#  Warning: onbreak command for use within macro
+#  run -all 
+# MCU_PROTOCOL_PASS clk=1843200 baud=115200 timeout_ms=2 full=1 checks=6538 events=3 responses=68
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_mcu_protocol.sv(357)
+#    Time: 471609622899 ps  Iteration: 0  Instance: /tb_mcu_protocol

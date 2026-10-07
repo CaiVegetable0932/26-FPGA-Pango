@@ -1,0 +1,39 @@
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+W: Warning : The license will invalid in 29 days. In order not to affect your usage, please update the license in time.
+
+E: Flow-0182: option number_of_router_thread is not support for the device.
+E: 
+E: Flow-0163: Failed to parse file "C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\scripts\resume_geometry_route.tcl" at line 13. Check if the command options or arguments are valid.
+Analyzing project file 'C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/build/mini_raw8_geometry/resumed_20261005_112801_756/resume_geometry_route.pds'.
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676 successfully.
+Executing : set_dir -impl_directory C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mini_raw8_geometry\resumed_20261005_112801_756
+Executing : set_dir -impl_directory C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mini_raw8_geometry\resumed_20261005_112801_756 successfully.
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/mini_camera_diag/ddr_native.fdc
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/mini_camera_diag/ddr_native.fdc successfully.
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/ddr_board_pins.fdc successfully.
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/pins.fdc successfully.
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/timing.fdc
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/timing.fdc successfully.
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/cdc.fdc
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/mini_raw8_dual/cdc.fdc successfully.
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/placement.fdc
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/placement.fdc successfully.
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/mini_camera_diag/routing.rcf
+Executing : add_constraint C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/constraints/mini_camera_diag/routing.rcf successfully.
+
+
+Executing : pnr -input_db_file C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mini_raw8_geometry\route_checkpoint_20261005_104822\mini_raw8_geometry_map.adf -input_place_db_file C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mini_raw8_geometry\route_checkpoint_20261005_104822\mini_raw8_geometry_plc.adf -force_to_run -action_timeout 90 -number_of_router_thread 4 -congest_overlap_limit 20 -gplace_seed 2
+E: Flow-0182: option number_of_router_thread is not support for the device.
+W: Failed to execute the script : 
+Checkpoint native flow failed
+At C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\scripts\resume_geometry_route.ps1:38 char:
+99
++ ... tches no|No .* found' -Quiet)){throw 'Checkpoint native flow failed'}
++                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Checkpoint native flow failed:String) [], RuntimeException
+    + FullyQualifiedErrorId : Checkpoint native flow failed
+ 

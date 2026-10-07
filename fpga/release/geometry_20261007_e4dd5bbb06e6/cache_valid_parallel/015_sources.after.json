@@ -1,0 +1,59 @@
+{
+  "schema_version": "cache-valid-parallel-sources/v1",
+  "files": [
+    {
+      "role": "golden",
+      "path": "fpga/build/cache_valid_parallel_20261007_171322_219/geometry_window_cache.golden.v",
+      "sha256": "0F3CB37128B5544FDB764BD071AD969256F62B900391566507A962BB1324C385",
+      "bytes": 14216
+    },
+    {
+      "role": "golden",
+      "path": "fpga/build/cache_valid_parallel_20261007_171322_219/attempt_20261007_172113_476/sources/geometry_window_cache.golden.v",
+      "sha256": "0F3CB37128B5544FDB764BD071AD969256F62B900391566507A962BB1324C385",
+      "bytes": 14216
+    },
+    {
+      "role": "candidate",
+      "path": "fpga/rtl/geometry/geometry_window_cache.v",
+      "sha256": "69422BF532261480BEB3EC2B1687D8D50BCB1BC14D54C3461C59A63441405635",
+      "bytes": 15736
+    },
+    {
+      "role": "candidate",
+      "path": "fpga/build/cache_valid_parallel_20261007_171322_219/attempt_20261007_172113_476/sources/geometry_window_cache.v",
+      "sha256": "69422BF532261480BEB3EC2B1687D8D50BCB1BC14D54C3461C59A63441405635",
+      "bytes": 15736
+    },
+    {
+      "role": "bench",
+      "path": "fpga/sim/tb_cache_valid_parallel.sv",
+      "sha256": "4F695BD926BB9076AB79BAC83A813ED3EA2C0944F8EA13BA3BEB3563747B8D0B",
+      "bytes": 17216
+    },
+    {
+      "role": "bench",
+      "path": "fpga/build/cache_valid_parallel_20261007_171322_219/attempt_20261007_172113_476/sources/tb_cache_valid_parallel.sv",
+      "sha256": "4F695BD926BB9076AB79BAC83A813ED3EA2C0944F8EA13BA3BEB3563747B8D0B",
+      "bytes": 17216
+    },
+    {
+      "role": "runner",
+      "path": "fpga/scripts/sim_cache_valid_parallel.ps1",
+      "sha256": "6B4B9481E8EA123AA13F1A6004BCC305946A638628AD2BCDCEFA918F759177FA",
+      "bytes": 5823
+    },
+    {
+      "role": "runner",
+      "path": "fpga/build/cache_valid_parallel_20261007_171322_219/attempt_20261007_172113_476/sources/sim_cache_valid_parallel.ps1",
+      "sha256": "6B4B9481E8EA123AA13F1A6004BCC305946A638628AD2BCDCEFA918F759177FA",
+      "bytes": 5823
+    },
+    {
+      "role": "renamed_golden",
+      "path": "fpga/build/cache_valid_parallel_20261007_171322_219/attempt_20261007_172113_476/sources/geometry_window_cache_golden.v",
+      "sha256": "62E92266671A47E9DCD862401DD8DFE8155ADC07B5C4A6D32EF327DA193D211B",
+      "bytes": 14223
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 基于紫光同创 PG2L100H（盘古100Kmini）的图像畸变矫正项目。当前实施基线为单路 OV5640 RAW8 DVP：S0 原图经板载千兆网传给 PC，FPGA 独立完成基础 ISP 与矫正，完整 RGB888 结果经唯一 HDMI 输出回采。真实 1920×1080@30FPS 为必达目标。
 
-当前已有[host网络接收核心及软件验证](host/docs/千兆网视频协议与上位机实现.md)，提供[Ubuntu 24.04与Windows运行说明](host/docs/Ubuntu24.04与Windows运行说明.md)；尚未建立正式RTL工程或完成硬件验证。
+2026-10-07 核心集成：已有正式 PDS 工程、摄像头/DDR/网络/HDMI、FPGA 灰度矫正及 20 点硬件标记；本候选时序闭合、Flash 固化和回读通过，用户反馈功能正常。host 含 Linux/Jetson 工作台、标定和独立软件参考；MCU 含三轴 D36A 与二维舵机驱动。完整彩色处理、严格同帧证据、完整 MCU 遥测、测评自动化及新矫正候选四类 1080p30 实测尚未完成，不能将主线合并等同于题目全部验收。MCU 协议差异和实施顺序见[串口修改方案](output/MCU对接现有FPGA串口的修改方案.md)。
 
 - [FPGA 开发区](fpga/README.md)
 - [MCU 设备端开发区](mcu/README.md)

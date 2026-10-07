@@ -1,0 +1,14 @@
+# Purpose: geometry-only explicit allocation of four HDMI reset registers.
+# Sixth/seventh layouts failed legalization inside otherwise valid narrow
+# regions. Keep shared placement.fdc and all recovery/removal checks intact;
+# allocate these known-good FF sub-sites before unconstrained logic packing.
+# Evidence: native_20261007_003538_119 routed netlist, independently exported
+# in geometry_physical_audit_20261007/native_types_20261007_042407_227.
+# All four are gopQ / V_FFASYN at FF0; sites are observed, not extrapolated.
+# PDS 2022.2-SP6.4 UCE physical pp.94-96 documents PAP_LOC grid:primitive.
+# Native mapping must emit the matching four def_inst_site entries. Previous
+# placement success does not waive fresh legality or final min/max timing.
+define_attribute {i:u_hdmi_tx.g_data_lanes[0].u_data_lane.lane_reset} {PAP_LOC} {CLMA_21_378:FF0}
+define_attribute {i:u_hdmi_tx.g_data_lanes[1].u_data_lane.lane_reset} {PAP_LOC} {CLMA_21_402:FF0}
+define_attribute {i:u_hdmi_tx.g_data_lanes[2].u_data_lane.lane_reset} {PAP_LOC} {CLMA_21_426:FF0}
+define_attribute {i:u_hdmi_tx.u_clock_lane.lane_reset} {PAP_LOC} {CLMA_21_450:FF0}

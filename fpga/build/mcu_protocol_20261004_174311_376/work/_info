@@ -1,0 +1,146 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mcu_protocol_20261004_174311_376
+T_opt
+V;8KBldLGSAGBTQ>I>1KG51
+Z1 04 15 4 work tb_mcu_protocol fast 0
+=1-207bd2c02996-6ac21fb2-54-26358
+o-quiet -auto_acc_if_foreign -work work -g FULL=1 -g RX_TIMEOUT_MS=2 -g CLK_HZ=1843200
+n@_opt
+Z2 OL;O;10.1c;51
+Z3 dC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\build\mcu_protocol_20261004_174311_376
+T_opt1
+V`B73QlO]0jRN1i?3;]9Yg2
+R1
+=1-207bd2c02996-6ac21fb6-4c-288b4
+o-quiet -auto_acc_if_foreign -work work -g FULL=0 -g RX_TIMEOUT_MS=20 -g CLK_HZ=125000000
+n@_opt1
+R2
+vmcu_frame_rx
+Z4 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+IdY?972aI7RmUA7]@R8?oB3
+VBUBmnc[mA>K=J^f4zBYFH2
+S1
+R3
+Z5 w1790581595
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v
+L0 5
+Z6 OL;L;10.1c;51
+r1
+31
+Z7 !s108 1791106991.653000
+Z8 !s107 C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v|
+Z9 !s90 -sv|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_rx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v|C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv|
+Z10 o-sv -L mtiAvm -L mtiOvm -L mtiUvm -L mtiUPF
+!i10b 1
+!s100 8B^Z<T_<W@WPg7R7lHj8i2
+!s105 mcu_frame_rx_v_unit
+!s85 0
+vmcu_frame_tx
+R4
+IVfjS`AUM@1cnEdH2cOC2F2
+V=KGQLKFJRCU5ENLf1`QXN3
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_frame_tx.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 GXoAzJYTMC?jXkO0?WGzi2
+!s105 mcu_frame_tx_v_unit
+!s85 0
+vmcu_protocol
+R4
+IEUDO]Cd39e4GOAB>nPT]H2
+VX5=eh77aDGJjWVhF^j>WZ3
+S1
+R3
+w1791106604
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_protocol.v
+L0 6
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 7aiO<7HRfXb8CoW;8_FWY3
+!s105 mcu_protocol_v_unit
+!s85 0
+vmcu_uart_rx
+R4
+I<^9kI2Z^UiXZLn61TC7kQ1
+VT]R?JE5`Y[52bS>nlNf`B2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_rx.v
+L0 4
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 PWcT^;:NmcD5S^S>`X]zh2
+!s105 mcu_uart_rx_v_unit
+!s85 0
+vmcu_uart_tx
+R4
+I_Zf1FRl=787KacanC9_TQ1
+VQ>b6W=oVoJ3BL4zI[@mi;2
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\rtl\control\mcu_uart_tx.v
+L0 3
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 Ub>KI_S8n_;V8<`ddVj_80
+!s105 mcu_uart_tx_v_unit
+!s85 0
+vtb_mcu_protocol
+R4
+IH;=_c4NW4zC2Z=3DdiddR1
+VKM=E`Tl45U4fd1QbXdEFg0
+S1
+R3
+R5
+8C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv
+FC:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_mcu_protocol.sv
+L0 5
+R6
+r1
+31
+R7
+R8
+R9
+R10
+!i10b 1
+!s100 czD3MRcBjLLV:_oA>8lcN1
+!s105 tb_mcu_protocol_sv_unit
+!s85 0

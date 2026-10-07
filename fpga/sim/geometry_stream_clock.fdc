@@ -1,0 +1,3 @@
+# Purpose: standalone streaming-map 125MHz resource/timing estimate only.
+create_clock -name {map_clk} -period 8.000 [get_ports {clk}]
+

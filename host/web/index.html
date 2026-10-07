@@ -6,7 +6,7 @@
   <meta name="description" content="PG2L100H 上位机：RAW8视频接收、源帧预览与原始证据归档。">
   <link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/app.css">
   <!-- HDMI software-reference display shares the calibration renderer. -->
-  <script src="/records.js" defer></script><script src="/preview-stream.js" defer></script><script src="/preview-rate.js" defer></script><script src="/video-input.js" defer></script><script src="/fisheye-preview.js" defer></script><script src="/video-input-ui.js" defer></script><script src="/board-link.js" defer></script><script src="/app.js" defer></script>
+  <script src="/records.js" defer></script><script src="/preview-stream.js" defer></script><script src="/preview-rate.js" defer></script><script src="/video-input.js" defer></script><script src="/fisheye-preview.js" defer></script><script src="/video-input-ui.js" defer></script><script src="/board-link.js" defer></script><script src="/board-geometry.js" defer></script><script src="/app.js" defer></script>
 </head>
 <body>
 <svg class="icon-defs" aria-hidden="true"><defs>
@@ -53,6 +53,24 @@
         <p id="board-message" role="status">首次选择直连板卡的网卡和串口；本机 IP/MAC 将从该网卡读取。</p>
         <p id="board-diagnostics"></p>
       </article>
+      <!-- Physical view/parameters use the live UART session, independently of PC reference rendering. -->
+      <article class="panel board-startup" aria-labelledby="fpga-geometry-title">
+        <div class="panel-heading"><h2 id="fpga-geometry-title">FPGA 几何与显示控制</h2><button id="fpga-refresh" type="button" class="button secondary">回读板端状态</button></div>
+        <div class="board-fields">
+          <label>预览处理来源<select id="geometry-display-owner"><option value="fpga">FPGA HDMI（板端标记）</option><option value="software">计算机软件参考</option></select></label>
+          <label>板端 HDMI 模式<select id="fpga-view-mode"><option value="corrected">灰度 ISP + 几何矫正</option><option value="original">灰度 ISP 原图（非 RAW S0）</option></select></label>
+          <label><input id="fpga-markers" type="checkbox">板端显示像素标记</label>
+          <label>标记直径（源像素）<input id="fpga-marker-diameter" type="number" value="10" min="4" max="32"></label>
+        </div>
+        <div class="board-actions"><button id="fpga-view-apply" type="button" class="button primary">应用板端显示</button></div>
+        <details><summary>FPGA 几何参数（上传后按帧生效）</summary>
+          <label for="fpga-parameters">鱼眼参数 JSON</label><textarea id="fpga-parameters" rows="10" cols="70" spellcheck="false"></textarea>
+          <div class="board-fields"><label>旋转角（度）<input id="fpga-rotation" type="number" value="0" min="-360" max="360"></label><label><input id="fpga-enhance" type="checkbox" checked>板端增强</label></div>
+          <div class="board-actions"><button id="fpga-parameters-load" type="button" class="button secondary">填入标定页保存参数</button><button id="fpga-parameters-apply" type="button" class="button primary">上传并验证 FPGA 参数</button></div>
+        </details>
+        <p id="fpga-control-status" role="status">尚未查询 FPGA；需要已启动链路及支持显示控制的新固件。</p>
+        <p>网口只叠加 FPGA 回读的源像素位置；HDMI 已由板端绘制。参数确认不等于图像精度验收，源帧配对仍未验证。</p>
+      </article>
       <div class="session-toolbar">
         <div class="session-label"><span id="source-pill" class="pill mock">本机模拟</span><span class="status-dot" id="session-dot"></span><strong id="session-state">未开始采集</strong></div>
         <div class="toolbar-actions"><label class="archive-policy">自动归档<select id="archive-every" aria-label="自动归档策略"><option value="0">关闭</option><option value="30">每 30 个完整帧</option><option value="1">每个完整帧</option></select></label><button id="stop" class="button secondary" disabled><span class="stop-shape"></span>停止</button><button id="start" class="button primary"><span class="play-shape"></span><span id="start-label">开始模拟</span></button></div>
@@ -74,6 +92,7 @@
           <div class="video-surface" id="video-surface">
             <canvas id="live-canvas" width="960" height="540" aria-label="来自完整RAW8帧的预览画面" hidden></canvas>
             <svg id="raw-pixel-markers" class="pixel-marker-overlay" aria-label="网口原图的代表像素位置" hidden></svg>
+            <svg id="fpga-source-markers" class="pixel-marker-overlay" aria-label="FPGA 回读的源像素标记" hidden></svg>
             <div class="video-empty" id="video-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-camera"/></svg></div><strong>等待原始视频</strong><span>开始本机模拟，或配置板端数据来源</span><div class="signal-guide"><span>RAW8</span><span>1920 × 1080</span><span>PRAW V1</span></div></div>
             <span class="video-corner" id="video-origin">MOCK / 模拟来源</span><div class="stale-label" id="stale-label" hidden>画面已停止更新</div>
           </div>
@@ -98,7 +117,7 @@
           <div class="viewer-footer"><span>源帧配对未验证</span><div class="capture-preview-actions"><button id="capture-correction-toggle" type="button" class="button small secondary" aria-pressed="false" aria-controls="capture-corrected" title="使用标定页面的手动鱼眼参数进行 PC 软件矫正，只切换显示">计算机矫正</button><button id="capture-preview-open" type="button" class="button small secondary" disabled>打开预览</button><button id="capture-preview-close" type="button" class="button small secondary" disabled>关闭</button></div></div>
         </article>
       </div>
-      <div class="connection-row"><article class="panel connection-panel"><div class="panel-heading"><h2>当前连接</h2><span id="transport-pill" class="pill neutral">待启动</span></div><dl class="connection-facts"><div><dt>设备标识</dt><dd id="device-id">—</dd></div><div><dt>接收地址</dt><dd id="bind-address">—</dd></div><div><dt>来源地址</dt><dd id="peer-address">—</dd></div><div><dt>源代次</dt><dd id="epoch">—</dd></div><div><dt>运行时长</dt><dd id="elapsed">00:00</dd></div></dl><div class="control-note"><span class="status-dot"></span>UART 控制尚未接入</div></article></div>
+      <div class="connection-row"><article class="panel connection-panel"><div class="panel-heading"><h2>当前连接</h2><span id="transport-pill" class="pill neutral">待启动</span></div><dl class="connection-facts"><div><dt>设备标识</dt><dd id="device-id">—</dd></div><div><dt>接收地址</dt><dd id="bind-address">—</dd></div><div><dt>来源地址</dt><dd id="peer-address">—</dd></div><div><dt>源代次</dt><dd id="epoch">—</dd></div><div><dt>运行时长</dt><dd id="elapsed">00:00</dd></div></dl><div class="control-note"><span class="status-dot"></span>UART 板端控制 · HDMI 源帧配对未验证</div></article></div>
       <div class="bottom-layout">
         <article class="panel"><div class="panel-heading"><h2>链路与缓冲</h2><span class="muted-label">实时统计</span></div><div class="flow"><div><span class="flow-number">01</span><strong id="source-node">模拟发送器</strong><small>源帧身份</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">02</span><strong>UDP 接收</strong><small id="packet-total">— 个数据报</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">03</span><strong>完整帧重组</strong><small id="buffer-usage">— MiB 在途</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">04</span><strong>预览 / 归档</strong><small id="saved-total">0 张已保存</small></div></div><div class="counter-strip"><span>重复包 <b id="duplicate-count">0</b></span><span>乱序包 <b id="reorder-count">0</b></span><span>未见源帧 <b id="missing-count">0</b></span><span>旧预览替换 <b id="preview-drops">0</b></span><span>归档拒绝 <b id="archive-drops">0</b></span></div></article>
         <article class="panel events-panel"><div class="panel-heading"><h2>运行事件</h2><span class="muted-label">最近 5 条</span></div><ul id="event-list" class="event-list"><li class="empty-row">启动采集后显示运行事件</li></ul></article>

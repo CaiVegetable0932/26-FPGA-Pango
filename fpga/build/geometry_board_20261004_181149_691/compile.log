@@ -1,0 +1,54 @@
+Model Technology ModelSim SE-64 vlog 10.1c Compiler 2012.07 Jul 27 2012
+-- Compiling module raw8_word_cdc
+-- Compiling module ipm2l_fifo_ctrl_v1_1_raw8_word_cdc
+-- Compiling module ipm2l_fifo_v1_10_raw8_word_cdc
+-- Compiling module ipm2l_sdpram_v1_10_raw8_word_cdc
+-- Compiling module raw8_capture_cdc
+-- Compiling module ipm2l_fifo_ctrl_v1_1_raw8_capture_cdc
+-- Compiling module ipm2l_fifo_v1_10_raw8_capture_cdc
+-- Compiling module ipm2l_sdpram_v1_10_raw8_capture_cdc
+-- Compiling module geometry_bilinear_rgb
+-- Compiling module geometry_byte_cache
+-- Compiling module geometry_config_bank
+-- Compiling module geometry_frame_control
+-- Compiling module geometry_gray_processor
+-- Compiling module geometry_gray_sampler
+-- Compiling module geometry_inverse_map
+-- Compiling module geometry_lens_lut
+-- Compiling module geometry_map_engine
+-- Compiling module geometry_read_arbiter
+-- Compiling module geometry_result_writer
+-- Compiling module geometry_write_arbiter
+-- Compiling module raw8_geometry_core
+-- Compiling module ov5640_raw8_profile
+-- Compiling module ov5640_raw8_startup
+-- Compiling module raw8_capture_records
+-- Compiling module raw8_capture
+-- Compiling module raw8_display_enhance
+-- Compiling module raw8_dual_core
+-- Compiling module raw8_dvp_monitor
+-- Compiling module raw8_frame_pool
+-- Compiling module raw8_gmii_cdc
+-- Compiling module raw8_hdmi_consumer
+-- Compiling module raw8_hdmi_gray_antialias
+-- Compiling module raw8_hdmi_timing
+-- Compiling module raw8_native_queue
+-- Compiling module raw8_network_output
+-- Compiling module raw8_read_arbiter
+-- Compiling module raw8_read_scheduler
+-- Compiling module raw8_unpack
+-- Compiling module raw8_write_engine
+-- Compiling module praw_packetizer
+-- Compiling module udp_ipv4_eth_tx
+-- Compiling module video_network_tx
+-- Compiling module tb_geometry_board_core
+** Warning: C:\Users\ROG\.codex\worktrees\fpga-camera-hdmi-preview\26-FPGA-Pango\fpga\sim\tb_geometry_board_core.sv(124): (vlog-2597) '2500000000' is being treated as 32-bit signed integer and will overflow.
+
+
+Top level modules:
+	geometry_bilinear_rgb
+	geometry_inverse_map
+	ov5640_raw8_startup
+	raw8_dual_core
+	raw8_gmii_cdc
+	tb_geometry_board_core

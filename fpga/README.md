@@ -1,5 +1,17 @@
 # FPGA 开发区
 
+2026-10-07 最新状态：灰度矫正、20 点标记、原图/矫正切换及硬件坐标映射已集成；时序优先实现完成综合、布线和 slow/fast 五类 STA，十项汇总 TNS=0、失败端点=0。当前 [发布包](release/geometry_20261007_e4dd5bbb06e6/README.md) 的 SFC/SBIT SHA-256 为 `E4DD5BBB06E659C55ECB87B7A4F66385D0680A2D1C4DE46F838830B7AFA180A2`；XT25F128 擦写、原生校验和独立配置镜像回读通过，用户随后反馈固件运行无问题。该反馈不替代本候选四类真实帧率、精度、曝光同步及长期稳定性的量化验收。离线发布 manifest 保留生成时状态，后续固化见 [烧录记录](reports/geometry_flash_20261007.md)。网口仍是明确标注的增强 Bayer RAW8 / RENH v2，HDMI 为板侧灰度几何结果；它们不是完整彩色 S1/S2 同帧证据。下面 2026-10-06 及更早内容均为历史阶段记录。
+
+2026-10-06 最新状态：灰度矫正候选已完成原生布局布线和独立慢/快角 min/max STA，最终为 All Constraints Met，DDR 125MHz 慢角 setup +0.151ns。已生成 [SBIT / XT25F128 SFC 离线发布包](release/geometry_20261006_5cfc0a3d20d0/README.md)，等价、UART、PRAW 及完整1080p模型回归通过；未烧录，外部 DVP 时序与真实1080p30未验收。最终物理实现使用冻结 mapped checkpoint、原生 PCF、seed=4 / decongestion=2；复现须按发布包说明执行，不能把下面旧阶段结果当作当前状态。
+
+## 历史阶段记录
+
+2026-10-05 效率优化：已先提交不可直接使用的存档 `8b52050b`（`NOT USABLE`），随后在 `codex/fpga-geometry-correction` 优化参数译码、坐标/采样并行、双线性 DSP 运算和固定曲线 ROM，保留图像算法及协议。旧版对照、整链与完整 1080p 模型回归通过；模型首帧周期减少 43.36%，综合 LUT 20832→20173、APM 43→39。最终综合 setup 估算仍为 −0.097 ns，新源码尚未重新布线/最终 STA，未生成位流、未烧录，不是可直接使用版本。优化改动保留在工作区，未再次提交或推送；详细范围和证据见 [效率优化记录](reports/geometry_timing_20261005.md#2026-10-05-效率优化先存档再逐块等价改写)。下面的布线数据属于存档基线，不代表优化后源码。
+
+2026-10-05：灰度矫正工程的宽乘法改为输入寄存、部分积及加法树流水线；专项与完整 1080p 板级模型仿真通过。综合、布局、布线及独立多角 STA 已执行，但 setup −2.424 ns、hold −0.008 ns，时序未闭合，未导出位流。参数命令/读回链路仍需流水化；处理速度也未达到实时 1080p30。证据与限制见 [离线构建报告](reports/geometry_timing_20261005.md)。本轮未烧录。
+
+2026-10-04：在 `codex/fpga-geometry-correction` 新增独立 [灰度鱼眼矫正工程](project/mini_raw8_geometry/mini_raw8_geometry.pds)，连接 RAW 租约、板内径向表、随机 DDR 缓存、灰度双线性插值、结果及有效掩码三槽、写回栅栏与 HDMI。配置经 UART 0x30～0x34 下发、回读、按处理帧边界生效；MCU 角度保留为帧上下文，不自动充当标定旋转。参见 [参数接口](../output/FPGA灰度鱼眼矫正参数接口.md) 与 [实际验证记录](reports/geometry_chain_20261004.md)。现有 `mini_raw8_dual` 工程保持原路径；新工程不能冒充彩色 S1/S2 或真实 1080p30 已验收。
+
 当前1080p RAW8双路开发在 `codex/fpga-raw8-dual-output`；使用独立 [整板工程](project/mini_raw8_dual/mini_raw8_dual.pds)，不是下面的合成通信工程。构建/发布的实际状态、限制和回归见 [整板候选报告](reports/raw8_board_candidate_20260922.md)，本轮不烧录。
 
 2026-09-22通信板级候选：新增独立 [MINI 工程](project/mini_comms_bringup/mini_comms_bringup.pds)，原生布局布线 min/max 时序在声明预算下闭合，已生成 [SBIT/SFC 发布包](release/comms_bringup_20260922_e51d3cc9c9ee/README.md)。这是 **CP2102 模拟 MCU＋合成网络测试流**，没有摄像头/DDR/HDMI，未烧录；原生 GPLL 严格仿真仍有初始化除零诊断。完整结果、预算及后续门槛见[候选报告](reports/comms_board_candidate_20260922.md)。不能把它当成真实 RAW8 双路回传验收。

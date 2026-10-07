@@ -1,0 +1,21 @@
+# vsim -do {run -all; quit -f} -c tb_geometry_mul_pipe 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_geometry_mul_pipe(fast)
+# run -all 
+# MUL_CASE_PASS A=32 B=36 checked=3506
+# MUL_CASE_PASS A=40 B=33 checked=3505
+# MUL_CASE_PASS A=32 B=32 checked=3507
+# GEOMETRY_MUL_PASS
+# ** Note: $finish    : C:/Users/ROG/.codex/worktrees/fpga-camera-hdmi-preview/26-FPGA-Pango/fpga/sim/tb_geometry_mul_pipe.sv(54)
+#    Time: 32920 ns  Iteration: 2  Instance: /tb_geometry_mul_pipe

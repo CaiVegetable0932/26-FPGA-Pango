@@ -62,8 +62,10 @@ module praw_packetizer #(
   begin c=previous^{24'b0,data};for(j=0;j<8;j=j+1)
    c=c[0] ? (c>>1)^32'hedb88320 : c>>1;crc_byte=c;end
  endfunction
- // Purpose: one authoritative little-endian header definition; CRC bytes are
- // zero during accumulation and replaced only after all real payload is present.
+ // Purpose: fixed byte slices form one parallel header mux, avoiding variable
+ // shifts/subtractions on the metadata-to-packet-RAM path. Wire layout, byte
+ // order and one-byte-per-cycle cadence are unchanged. CRC bytes remain zero
+ // during accumulation and are patched only after all real payload is present.
  function [7:0] header_byte;
   input [6:0] n;
   begin
@@ -79,15 +81,25 @@ module praw_packetizer #(
     50:header_byte=bayer_latched;51:header_byte=8;
     52:header_byte=index[7:0];53:header_byte=index[15:8];
     54:header_byte=count[7:0];55:header_byte=count[15:8];
-    default:begin
-     if(n>=12 && n<20)header_byte=epoch_latched>>((n-12)*8);
-     else if(n>=20 && n<28)header_byte=id_latched>>((n-20)*8);
-     else if(n>=28 && n<32)header_byte=param_latched>>((n-28)*8);
-     else if(n>=36 && n<40)header_byte=stride>>((n-36)*8);
-     else if(n>=40 && n<44)header_byte=total_bytes>>((n-40)*8);
-     else if(n>=44 && n<48)header_byte=offset>>((n-44)*8);
-     else if(n>=60)header_byte=descriptor_latched>>((n-60)*8);
-    end
+    12:header_byte=epoch_latched[7:0];13:header_byte=epoch_latched[15:8];
+    14:header_byte=epoch_latched[23:16];15:header_byte=epoch_latched[31:24];
+    16:header_byte=epoch_latched[39:32];17:header_byte=epoch_latched[47:40];
+    18:header_byte=epoch_latched[55:48];19:header_byte=epoch_latched[63:56];
+    20:header_byte=id_latched[7:0];21:header_byte=id_latched[15:8];
+    22:header_byte=id_latched[23:16];23:header_byte=id_latched[31:24];
+    24:header_byte=id_latched[39:32];25:header_byte=id_latched[47:40];
+    26:header_byte=id_latched[55:48];27:header_byte=id_latched[63:56];
+    28:header_byte=param_latched[7:0];29:header_byte=param_latched[15:8];
+    30:header_byte=param_latched[23:16];31:header_byte=param_latched[31:24];
+    36:header_byte=stride[7:0];37:header_byte=stride[15:8];
+    38:header_byte=stride[23:16];39:header_byte=stride[31:24];
+    40:header_byte=total_bytes[7:0];41:header_byte=total_bytes[15:8];
+    42:header_byte=total_bytes[23:16];43:header_byte=total_bytes[31:24];
+    44:header_byte=offset[7:0];45:header_byte=offset[15:8];
+    46:header_byte=offset[23:16];47:header_byte=offset[31:24];
+    60:header_byte=descriptor_latched[7:0];61:header_byte=descriptor_latched[15:8];
+    62:header_byte=descriptor_latched[23:16];63:header_byte=descriptor_latched[31:24];
+    default:header_byte=0;
    endcase
   end
  endfunction
