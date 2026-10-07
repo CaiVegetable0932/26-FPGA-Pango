@@ -1,0 +1,11 @@
+# Purpose: constrain only the geometry target's new metadata handshake.
+# Official reference: PDS 2022.2-SP6.4 Pango_Design_Suite_User_Guide.pdf,
+# physical pp.201/203 (set_max_delay -datapath_only). No clock group is cut.
+# These are ONLY first synchronizer stages; second stages remain fully timed.
+set_max_delay 6.0 -datapath_only -to [get_cells {u_core.u_view_snapshot.req_meta u_core.u_view_snapshot.ack_meta u_core.u_view_snapshot.display_meta u_core.u_view_snapshot.frame_ack_meta}]
+set_false_path -hold -to [get_cells {u_core.u_view_snapshot.req_meta u_core.u_view_snapshot.ack_meta u_core.u_view_snapshot.display_meta u_core.u_view_snapshot.frame_ack_meta}]
+# Purpose: held_bus is fixed before the request toggle traverses two flops,
+# sampled once into pixel_pending, and remains fixed through frame consumption.
+# Bound its transport below one 74.25MHz pixel period; never waive its setup.
+set_max_delay 6.0 -datapath_only -from [get_cells {u_core.u_view_snapshot.held_bus*}] -to [get_cells {u_core.u_view_snapshot.pixel_pending*}]
+set_false_path -hold -from [get_cells {u_core.u_view_snapshot.held_bus*}] -to [get_cells {u_core.u_view_snapshot.pixel_pending*}]

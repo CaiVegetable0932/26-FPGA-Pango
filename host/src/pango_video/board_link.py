@@ -1,10 +1,11 @@
 """Cross-platform RAW8 commissioning; one owner for UART and UDP startup.
 
-Only the existing CP2102 boot/CAPS/OPEN/STATUS commands are used. Configuration
-is immutable until board reset, so a warm resume requires the exact saved epoch
-and endpoints. No operating-system network settings or board firmware change.
+CP2102 boot/CAPS/OPEN/STATUS and capability-checked geometry/view controls share
+one UART owner. Boot endpoints are immutable until board reset, so warm resume
+requires the exact saved epoch and endpoints. No OS or board firmware change.
 """
 from copy import deepcopy
+from contextlib import contextmanager
 import ipaddress
 import json
 from pathlib import Path
@@ -17,6 +18,8 @@ import time
 
 from .raw8_boot import crc16, metadata
 from .web_session import SessionError
+from .geometry_control import GeometryClient, GeometryProfile
+from .board_view import BoardViewClient
 
 # The documented direct-link baseline. A reset discovers its real NIC/MAC
 # and the saved CP2102 identity; it never writes OS addresses or USB settings.
@@ -116,6 +119,9 @@ class BoardLink:
         self.path = self.root / "config" / "board-link.json"
         self.boot_path = self.root / "config" / "board-link-boot.json"
         self.lock = threading.RLock()
+        # Startup, parameter uploads and metadata reads share one UART owner.
+        # Keep this separate from the short-lived UI state lock.
+        self.uart_lock = threading.Lock()
         self.cancel = threading.Event()
         self.thread = None
         self.state = dict(phase="idle", message="首次使用请选择板卡网卡和 CP2102，然后启动链路", busy=False)
@@ -134,6 +140,9 @@ class BoardLink:
         with self.lock:
             value = deepcopy(self.state)
             value["profile"] = dict(self.profile)
+        # Expose a live control transaction to all lifecycle/API clients so
+        # none can replace the receiver while the UART operation is in flight.
+        value["busy"] = value["busy"] or self.uart_lock.locked()
         # Never keep a stale ready badge after stream loss or board power-off.
         session = self.session.status()
         config = session.get("config", {})
@@ -163,6 +172,8 @@ class BoardLink:
         with self.lock:
             if self.thread and self.thread.is_alive():
                 return self.status()
+            if self.uart_lock.locked():
+                raise SessionError("板卡 UART 控制正在进行，暂不能重启链路")
             selected = dict(self.profile if profile is None else profile)
             allowed = {"port", "interface", "source_ip", "source_mac", "peer_port", "source_port", "auto_start", "serial_number"}
             if set(selected) - allowed or not all(isinstance(selected.get(k), str) and selected[k]
@@ -217,8 +228,13 @@ class BoardLink:
             worker.join(timeout=20)
             if worker.is_alive():
                 raise SessionError("设备检查正在结束，请稍后再试")
-        self.session.stop()
-        self._set("stopped", "已停止本网口接收，板卡启动配置保持不变", busy=False)
+        if not self.uart_lock.acquire(blocking=False):
+            raise SessionError("板卡 UART 控制正在进行，请等待后停止链路")
+        try:
+            self.session.stop()
+            self._set("stopped", "已停止本网口接收，板卡启动配置保持不变", busy=False)
+        finally:
+            self.uart_lock.release()
         return self.status()
 
     def _check_cancel(self):
@@ -226,6 +242,72 @@ class BoardLink:
             raise SessionError("启动已取消")
 
     def _run(self, profile):
+        """Serialize the entire commissioning session against live controls."""
+        with self.uart_lock:
+            self._run_locked(profile)
+
+    @contextmanager
+    def control_session(self, *, view=False):
+        """Bind a unique saved CP2102 to the live epoch without restarting UDP.
+
+        A nonblocking lock returns an explicit busy error. The same open UART
+        stays owned across upload, polling and repeated metadata reads.
+        """
+        if not self.uart_lock.acquire(blocking=False):
+            raise SessionError("板卡 UART 正忙，请等待当前操作完成")
+        uart = None
+        try:
+            with self.lock:
+                profile, state = dict(self.profile), dict(self.state)
+            if state.get("busy") or state.get("phase") not in ("ready", "waiting") or not state.get("epoch"):
+                raise SessionError("请先启动板卡链路；当前没有可用的板端会话")
+            live = self.session.status().get("config", {})
+            if live.get("source_mode") != "hardware_unverified" or str(live.get("stream_epoch")) != state["epoch"]:
+                raise SessionError("当前接收会话与板卡 epoch 不匹配")
+            choices = [p for p in self.ports() if
+                       (p.get("serial") == profile["serial_number"] if profile.get("serial_number")
+                        else p["port"] == profile.get("port"))]
+            if len(choices) != 1:
+                raise SessionError("找不到唯一的已选 CP2102；请检查连接")
+            uart = self.uart(choices[0]["port"])
+            client = (BoardViewClient if view else GeometryClient)(uart)
+            if str(client.epoch) != state["epoch"] or client.session != state.get("session_id"):
+                raise SessionError("板卡 epoch/session 已变化，请重新启动链路")
+            yield client
+        finally:
+            try:
+                if uart is not None:
+                    uart.close()
+            finally:
+                self.uart_lock.release()
+
+    def geometry(self, data=None):
+        """Expose the existing checked uploader, not a software correction path."""
+        if data is not None:
+            if set(data)-{"preset", "rotation_deg", "enhance", "version"} or "preset" not in data:
+                raise SessionError("几何请求需要 preset；仅接受 rotation_deg/enhance/version")
+            profile = GeometryProfile.from_preset(data["preset"], rotation_deg=data.get("rotation_deg", 0),
+                                                  enhance=data.get("enhance", True))
+        with self.control_session() as client:
+            if data is not None:
+                return client.upload(profile, version=data.get("version"))
+            return dict(client.status(), epoch=str(client.epoch), session=client.session,
+                        capabilities=client.capabilities, processing_location="fpga",
+                        source_frame_id=None, pairing_status="unverified", hardware_image_verified=False)
+
+    def view(self, data):
+        """Apply view-only changes in the running board session."""
+        if set(data)-{"mode", "markers", "diameter", "revision"} or not {"mode", "markers"} <= set(data):
+            raise SessionError("显示请求需要 mode/markers；仅接受 diameter/revision")
+        with self.control_session(view=True) as client:
+            return client.configure(**data)
+
+    def markers(self):
+        """Return FPGA-computed coordinates from one coherent metadata bank."""
+        with self.control_session(view=True) as client:
+            return client.markers()
+
+    def _run_locked(self, profile):
         uart = None
         started = False
         report = dict(profile=profile, hardware_acceptance="not_performed")
@@ -291,7 +373,7 @@ class BoardLink:
             if not int.from_bytes(probe[12:16], "little"):
                 if uart.exchange(2, payload)[0] not in (0, 1):
                     raise SessionError("状态会话打开失败")
-            self._set("waiting", "地址配置完成，等待相机完整帧…", epoch=str(boot["epoch"]))
+            self._set("waiting", "地址配置完成，等待相机完整帧…", epoch=str(boot["epoch"]), session_id=session_id)
             deadline = time.monotonic() + 12
             flags = 0
             while time.monotonic() < deadline:

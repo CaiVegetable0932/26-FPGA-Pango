@@ -25,21 +25,38 @@ add_design [file join $fpga_root ip raw8_word_cdc raw8_word_cdc.idf]
 add_design [file join $fpga_root ip raw8_capture_cdc raw8_capture_cdc.idf]
 add_constraint [file join $fpga_root constraints mini_camera_diag ddr_native.fdc]
 add_constraint [file join $fpga_root constraints ddr_board_pins.fdc]
-add_constraint [file join $fpga_root constraints mini_raw8_dual pins.fdc]
+# Geometry-only electrical tuning preserves the shared dual-output baseline.
+add_constraint [file join $fpga_root constraints mini_raw8_dual geometry_pins.fdc]
 # Purpose: identical board clocks, pins and first-stage CDC endpoints retain
-# the qualified dual-output budgets. All new geometry logic is mem_clk only;
-# no broad false paths or timing relaxation is introduced for correction.
+# the qualified dual-output budgets. Geometry arithmetic is mem_clk; the final
+# marker overlay is pixel_clk with a separately bounded held-bus handshake.
 add_constraint [file join $fpga_root constraints mini_raw8_dual timing.fdc]
 add_constraint [file join $fpga_root constraints mini_raw8_dual cdc.fdc]
+add_constraint [file join $fpga_root constraints mini_raw8_dual geometry_view_cdc.fdc]
 add_constraint [file join $fpga_root constraints placement.fdc]
-add_constraint [file join $fpga_root constraints mini_camera_diag routing.rcf]
+# Reserve the four historically legal FF sub-sites without expanding regions
+# or changing the HDMI reset implementation/recovery-removal requirements.
+add_constraint [file join $fpga_root constraints mini_raw8_dual geometry_reset_sites.fdc]
+# PDS keeps one RCF. This file includes the native DDR/HDMI priorities plus
+# geometry-specific additions; a second add_constraint would replace it.
+add_constraint [file join $fpga_root constraints mini_raw8_dual geometry_priority.rcf]
 compile -top_module mini_raw8_geometry
 synthesize -ads -selected_syn_tool_opt 2
 dev_map
-# Purpose: retain board-proven seed 2 and all PHY setup/hold requirements.
-# The first geometry routing exceeded the 15-minute task budget; give this
-# larger design 30 minutes without changing clock or interface constraints.
-pnr -congest_overlap_limit 20 -action_timeout 30 -gplace_seed 2
+# Purpose: rebuild the structural timing candidate with a fresh seed after
+# the first 20-marker layout failed DDR/control timing. All board clocks and
+# PHY setup/hold budgets are unchanged; native STA is the acceptance gate.
+# Header/tag/snapshot paths are shortened in RTL, never waived in STA.
+# Purpose: allow the larger correction design to finish timing-driven routing.
+# Multi-corner hold repair changes effort only, not clocks or timing exceptions.
+# Purpose: retain decongestion 3 for the now ~62% LUT design. Installed PDS
+# User Guide physical pp.112/252 documents its 0..9 area expansion and timing
+# tradeoff. Seed 2 follows the better DDR locality of the fifth run, now with
+# address-predecoded metadata and CE-free divider registers. The geometry
+# pin file owns the all-16mA RGMII candidate; fresh min/max STA is mandatory.
+# Placement estimates never replace STA; post-map DDR deltas use the audited
+# checkpoint runner, not compile-time GOP constraints.
+pnr -congest_overlap_limit 20 -action_timeout 180 -gplace_seed 2 -plc_decongestion 3 -mode performance -optimize_multi_corner_timing -fix_hold_violation -fix_hold_violation_iterations 10 -report_timing
 report_timing -delay_type min_max -max_path 10 -report_exception TRUE
 gen_bit_stream -scbv {High Voltage}
 

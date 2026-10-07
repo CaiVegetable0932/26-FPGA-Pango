@@ -1,10 +1,18 @@
 # Purpose: full native-FIFO board-core regression, with no physical I/O.
-param([string]$ModelSimHome='E:/ModelsimSE/win64')
+param([string]$ModelSimHome='E:/ModelsimSE/win64',
+ [ValidateSet('translation','original','fisheye')][string]$Scenario='translation',
+ [string]$Python='python')
 $ErrorActionPreference='Stop'
 $taskFpga=Split-Path $PSScriptRoot -Parent
 $taskRun=Join-Path $taskFpga ('build/geometry_board_'+(Get-Date -Format 'yyyyMMdd_HHmmss_fff'))
 $taskLib=Join-Path $taskFpga 'build/simlib_2022_2_sp6_4_modelsim_10_1c_logos2'
 New-Item -ItemType Directory -Path $taskRun | Out-Null
+# Purpose: analytic raster classification is simulation evidence, not a map
+# uploaded to FPGA. The board still computes its own inverse coordinates.
+if($Scenario -eq 'fisheye'){
+ & $Python -B (Join-Path $taskFpga 'sim/prepare_geometry_fullframe.py') $taskRun
+ if($LASTEXITCODE){throw 'Full-raster analytic reference failed'}
+}
 $taskOldModelsim=$env:MODELSIM
 Push-Location $taskRun
 try {
@@ -26,13 +34,20 @@ try {
  }
  $taskSources+=@('rtl/network/praw_packetizer.v','rtl/network/udp_ipv4_eth_tx.v',
   'rtl/network/video_network_tx.v','sim/tb_geometry_board_core.sv') | ForEach-Object {Join-Path $taskFpga $_}
- @($taskSources | ForEach-Object {[ordered]@{path=$_;sha256=(Get-FileHash $_).Hash}}) |
+ $taskInputs=@($taskSources)+@($PSCommandPath,(Join-Path $taskFpga 'sim/prepare_geometry_fullframe.py'),
+  (Join-Path $taskFpga 'model/fisheye_geometry_reference.py'))
+ @($taskInputs | ForEach-Object {[ordered]@{path=$_;sha256=(Get-FileHash $_).Hash}}) |
   ConvertTo-Json | Set-Content sources.json -Encoding utf8
  & "$ModelSimHome/vlog.exe" -sv @taskSources 2>&1 | Tee-Object compile.log
  if($LASTEXITCODE){throw 'geometry board compile failed'}
- & "$ModelSimHome/vsim.exe" -c -L usim -L vsim tb_geometry_board_core -do 'run -all; quit -f' 2>&1 | Tee-Object simulation.log
+ $taskOriginal=[int]($Scenario -eq 'original');$taskFisheye=[int]($Scenario -eq 'fisheye')
+ & "$ModelSimHome/vsim.exe" -c -L usim -L vsim tb_geometry_board_core "-gORIGINAL=$taskOriginal" "-gFISHEYE=$taskFisheye" -do 'run -all; quit -f' 2>&1 | Tee-Object simulation.log
  $taskText=Get-Content simulation.log -Raw
  if($LASTEXITCODE -or $taskText -notmatch 'GEOMETRY_BOARD_PASS' -or
     $taskText -match 'GEOMETRY_BOARD_FAIL|GEOMETRY_BOARD_TIMEOUT|\*\* (Fatal|Error)'){throw 'geometry board simulation failed'}
- Write-Output "GEOMETRY_BOARD_REGRESSION_PASS $taskRun"
+ # Purpose: never label a simulation as current if any input changed mid-run.
+ foreach($taskInput in (Get-Content sources.json -Raw | ConvertFrom-Json)){
+  if((Get-FileHash -LiteralPath $taskInput.path).Hash -ne $taskInput.sha256){throw 'Board simulation input drift'}
+ }
+ Write-Output "GEOMETRY_BOARD_REGRESSION_PASS scenario=$Scenario $taskRun"
 } finally {$env:MODELSIM=$taskOldModelsim;Pop-Location}

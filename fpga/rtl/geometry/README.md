@@ -1,5 +1,13 @@
 # 几何矫正独立单元（开发中）
 
+## 当前状态（2026-10-06）
+
+现已有独立 `mini_raw8_geometry` 板级工程，使用 `geometry_config_bank`、`geometry_lens_lut`、`geometry_map_engine`、`geometry_gray_sampler/processor` 等灰度链路，接入 DDR、UART 配置与 HDMI；并非把本文件下述早期 RGB 单元原样接入。效率与时序优化保持现有定点像素算法和外部协议，增加映射/采样重叠、固定曲线 ROM、控制预译码和缓存寄存分段。完整模型与独立基线对照通过，最终原生布线多角 STA 为 All Constraints Met；已生成 [未烧录的上板调试候选](../../release/geometry_20261006_5cfc0a3d20d0/README.md)。外部 DVP 时序、物理链路及真实1080p30尚未验收；不能据此宣称实时性能完成。准确范围见 [构建及效率记录](../../reports/geometry_timing_20261005.md)。
+
+## 早期独立 RGB 单元说明（历史范围）
+
+以下“当前/尚未”描述仅指早期 `geometry_frame_control/inverse_map/bilinear_rgb` 单元，不应当作最新灰度板级工程的集成状态。
+
 本目录按 `output/PG2L100H_1080p畸变矫正详细设计方案.md` §6 的输出坐标逆映射实现。当前是可仿真的 RTL 算法单元，**没有接入 `mini_raw8_dual`、DDR 图块缓存或 HDMI 输出，不是已上板实时矫正版本**。稳定 RAW8 双路板级位流保持不变。参考模型位于 `fpga/model/geometry_reference.py`，测试脚本为 `fpga/scripts/sim_geometry.ps1`。
 
 ## 数据和计算合同

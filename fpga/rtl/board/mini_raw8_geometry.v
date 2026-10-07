@@ -20,6 +20,12 @@ module mini_raw8_geometry(
 );
  wire clk_125Mhz,core_clk,ddr_init_done;
  wire eth_raw,eth_clk,eth_locked,eth_reset_n,eth_tx_reset_n;
+ // Purpose: retain a distinct, low-load physical clock branch for the RGMII
+ // serializers. This is the SAME PLL output/frequency/phase as eth_clk, not
+ // an asynchronous clock or an extra PHY TX delay (TXID remains enabled).
+ // Installed ADS Synthesis User Guide 5.11 documents syn_keep for net names;
+ // native map/STA must separately prove that both clock buffers are retained.
+ wire eth_tx_clk /* synthesis syn_keep=1 */;
  wire bridge_wr_fault,bridge_rd_fault;
  (* syn_preserve=1 *) reg bridge_meta,bridge_sync;
  wire bridge_fault=bridge_wr_fault || bridge_sync;
@@ -31,6 +37,11 @@ module mini_raw8_geometry(
  // synchronizers cross between these two nominal 125 MHz domains.
  comms_pll u_eth_pll(.clkin1(clk_125Mhz),.rst(!rst_in),.clkout0(eth_raw),.clkout1(),.lock(eth_locked));
  GTP_CLKBUFG u_eth_clock(.CLKIN(eth_raw),.CLKOUT(eth_clk));
+ // Purpose: separate the six pad serializers from the heavily loaded packet
+ // fabric clock tree, reducing data/TXC branch skew without changing byte
+ // latency, reset protocol or nominal PHY sampling phase. Related-clock
+ // setup/hold and reset recovery/removal remain subject to native final STA.
+ GTP_CLKBUFG u_eth_tx_clock(.CLKIN(eth_raw),.CLKOUT(eth_tx_clk));
  wire pclk,pclkx5,serial_raw,locked0,hdmi_div_reset_n,video_powerup_n;
  wire sys_reset_n,mem_reset_n,cam_reset_n,pixel_reset_n;
  clk_hdmi u_video_pll(.clkin1(sys_clk),.clkout0(),.clkout1(serial_raw),.lock(locked0));
@@ -91,7 +102,9 @@ module mini_raw8_geometry(
  wire geo_cmd_valid,env_valid;wire [7:0] geo_cmd,geo_code;wire [255:0] geo_payload;
  wire [95:0] geo_reply;wire [31:0] mcu_session_id,env_seq;
  wire [63:0] env_time;wire signed [31:0] env_angle;wire [1:0] env_measurement;
- raw8_geometry_core u_core(.mem_clk(core_clk),.mem_reset_n(mem_reset_n),
+ // UART commits payload before its CRC bytes; enable address-only reply
+ // predecode while preserving the live acceptance-edge metadata snapshot.
+ raw8_geometry_core #(.PREDECODE_VIEW_READ(1)) u_core(.mem_clk(core_clk),.mem_reset_n(mem_reset_n),
   .cam_clk(camera_clk_0),.cam_reset_n(cam_reset_n),.pixel_clk(pclk),.pixel_reset_n(pixel_reset_n),
   .configured(sensor_ready),.vsync(sampled_vsync),.href(sampled_href),.camera_data(sampled_data),
   .commissioned(commissioned),.network_enable(commissioned && link_ready && phy_configured && !phy_fault && !bridge_fault),
@@ -117,7 +130,7 @@ module mini_raw8_geometry(
  // exists. PHY reset and data/control ODDR resets already inhibit reception;
  // an extra fabric-reset path on TXC is unnecessary and complicates its clock
  // propagation. Native GRS still initializes the constant 1/0 forwarding cell.
- pango_rgmii_tx #(.PHY_TXID(1),.SEPARATE_TXC_RESET(1)) u_rgmii(.clk125(eth_clk),.clk125_90(eth_clk),
+ pango_rgmii_tx #(.PHY_TXID(1),.SEPARATE_TXC_RESET(1)) u_rgmii(.clk125(eth_tx_clk),.clk125_90(eth_tx_clk),
   .reset_n(eth_tx_reset_n),.txc_reset_n(1'b1),.gmii_data(eth_data),.gmii_en(eth_en),.gmii_error(eth_error),
   .rgmii_txc(rgmii_txc),.rgmii_ctl(rgmii_tx_ctl),.rgmii_data(rgmii_txd));
  // Purpose: report stable status only across domains. HDMI underflow is not
@@ -145,7 +158,13 @@ module mini_raw8_geometry(
  wire [31:0] flags={core_fault_detail,4'b0,phy_fault_code,bridge_wr_fault,bridge_sync,3'b0,sensor_sync[2],published!=0,sensor_sync[0],
                     core_fault || bridge_fault,sensor_sync[1],phy_fault,mcu_active,commissioned,link_ready,phy_configured,1'b1};
  wire [95:0] phy_diagnostics={8'h01,8'h00,phy_status,phy_step,phy_address,phy_last_ack,4'b0,phy_last_read,phy_id};
- mcu_protocol #(.CLK_HZ(125000000),.BOARD_DIAGNOSTICS(1),.VIDEO_DIAGNOSTICS(1),.CHAIN_DIAGNOSTICS(1),.GEOMETRY_CONTROL(1)) u_mcu(
+ // Purpose: this board wires both geometry and frame-atomic view/marker control.
+ // Boot writes epoch while commissioned=0 keeps the endpoint in reset, then
+ // completes its ACK and guard before entering immutable RUN. commissioned
+ // cannot fall, and epoch cannot change, until mem_reset_n resets BOTH blocks.
+ // Thus STABLE_LINK_EPOCH removes the impossible live-bus change path, while
+ // preserving the first post-reset flush, queue timing and all UART semantics.
+ mcu_protocol #(.CLK_HZ(125000000),.BOARD_DIAGNOSTICS(1),.VIDEO_DIAGNOSTICS(1),.CHAIN_DIAGNOSTICS(1),.GEOMETRY_CONTROL(1),.DISPLAY_CONTROL(1),.STABLE_LINK_EPOCH(1)) u_mcu(
   .clk(core_clk),.rst_n(mem_reset_n && commissioned),.uart_rx(uart_rx),.uart_tx(mcu_tx),
   .link_epoch(epoch),.link_epoch_valid(commissioned),.board_time_us(time_us),.status_flags(flags),
   .session_active(mcu_active),.current_session_id(mcu_session_id),.board_diagnostics(phy_diagnostics),

@@ -2,7 +2,7 @@
 // Purpose: full 1080p DVP -> native FIFOs/HMIC leases -> nonidentity gray warp
 // -> result publication -> HDMI, while Ethernet also drains camera frames.
 // The delayed memory is a protocol model, NOT DDR PHY or hardware verification.
-module tb_geometry_board_core;
+module tb_geometry_board_core #(parameter ORIGINAL=0,FISHEYE=0);
  reg mc=0,cc=0,pc=0,rst=0,vsync=1,href=0;reg [7:0] camera=0;
  always #4 mc=~mc;always #6 cc=~cc;always #6.734 pc=~pc;
  GTP_GRS GRS_INST(.GRS_N(rst));
@@ -11,7 +11,8 @@ module tb_geometry_board_core;
  wire awvalid,arvalid;reg awready=0,arready=0,wready=0,wlast=0,rvalid=0,rlast=0;
  reg [3:0] rid=0;reg [255:0] rdata=0;wire [255:0] wdata;wire [31:0] wstrb;
  wire [23:0] rgb;wire hs,vs,de,en,er,fault;wire [7:0] txd;wire [31:0] published,underflows;
- raw8_geometry_core #(.WARMUP_FRAMES(0)) dut(.mem_clk(mc),.mem_reset_n(rst),
+ // Exercise the production UART-address predecode, not only its legacy API.
+ raw8_geometry_core #(.WARMUP_FRAMES(0),.PREDECODE_VIEW_READ(1)) dut(.mem_clk(mc),.mem_reset_n(rst),
   .cam_clk(cc),.cam_reset_n(rst),.pixel_clk(pc),.pixel_reset_n(rst),.configured(1'b1),
   .vsync(vsync),.href(href),.camera_data(camera),.commissioned(1'b1),.network_enable(1'b1),
   .epoch(64'd123),.src_mac(48'h020000000001),.dst_mac(48'h020000001001),
@@ -27,6 +28,7 @@ module tb_geometry_board_core;
  reg [255:0] ram[0:917503];
  integer cycle=0,wi=0,ri=0,waitw=0,waitr=0,beats=0,read_count=0,writes=0;
  integer raw_fences=0,geo_fences=0,net_frames=0,results=0,display_pixels=0;
+ integer raw_bytes=0,network_bytes=0;reg [1:0] display_active_delay=0;
  // Purpose: latch latency of the actually completed first result, rather than
  // printing a live counter that may already describe the following frame.
  integer first_result_cycles=0,first_cache_hits=0,first_cache_misses=0;
@@ -80,10 +82,13 @@ module tb_geometry_board_core;
  // Purpose: direct admitted-command stimulus isolates board integration;
  // separate UART regression verifies the CRC/session admission layer itself.
  task control(input [7:0] c,input [255:0] p);
-  begin @(negedge mc);cmd=c;payload=p;#1;if(code!=0)$fatal(1,"GEOMETRY_BOARD_FAIL config %h/%d",c,code);
+  // Model the real parser's settled payload before CRC acceptance. Only the
+  // command/address waits; state and response data stay live at acceptance.
+  begin @(negedge mc);cmd=c;payload=p;@(negedge mc);#1;if(code!=0)$fatal(1,"GEOMETRY_BOARD_FAIL config %h/%d",c,code);
    cv=1;@(negedge mc);cv=0;end
  endtask
  integer i,x,y,f,gray;reg [255:0] p;reg [31:0] params[0:13];
+ reg [1:0] analytic_mask[0:2073599];
  function automatic [7:0] tone(input integer value);
   integer b,d,v;
   begin
@@ -97,26 +102,57 @@ module tb_geometry_board_core;
    tone=(b+d+1)>>1;
   end
  endfunction
- // Nonidentity half/quarter-pixel translation clips last column/row. Every
- // valid byte is enhanced once, not again by HDMI's legacy Bayer filter.
- always @(posedge pc)if(rst && dut.u_display.active && de)begin
-  gray=(display_pixels%1920==1919 || display_pixels/1920==1079)?0:tone(50+dut.result_hdmi_id*31);
-  if(rgb!=={3{gray[7:0]}})$fatal(1,"GEOMETRY_BOARD_FAIL pixel %d rgb=%h want=%d",display_pixels,rgb,gray);
+ // Purpose: markers must not change camera/RAW storage or existing enhanced
+ // network bytes. Score every unpacked and admitted network pixel separately.
+ always @(posedge mc)if(rst)begin
+  if(dut.u_network.pixel_valid && dut.u_network.pixel_ready)begin
+   if(dut.u_network.pixel_data!==(8'(50+dut.n_id*31)))
+    $fatal(1,"GEOMETRY_BOARD_FAIL sensor RAW changed");
+   raw_bytes=raw_bytes+1;
+  end
+  if(dut.u_network.staged_valid && dut.u_network.packet_pixel_ready)begin
+   if(dut.u_network.staged_pixel!==tone(50+dut.n_id*31))
+    $fatal(1,"GEOMETRY_BOARD_FAIL enhanced network byte changed");
+   network_bytes=network_bytes+1;
+  end
+ end
+ // Purpose: final overlay delays RGB and raster two clocks, including when
+ // disabled. Delay only the reference active flag; keep exact pixel checks.
+ always @(posedge pc)display_active_delay<={display_active_delay[0],rst && dut.u_display.active};
+ // Nonidentity half/quarter-pixel translation clips last column/row. Original
+ // mode has identical tone/gray ISP but must not perform the geometric clip.
+ always @(posedge pc)if(rst && display_active_delay[1] && de)begin
+  gray=(!ORIGINAL && (display_pixels%1920==1919 || display_pixels/1920==1079))?0:tone(50+dut.result_hdmi_id*31);
+  // Purpose: full fisheye uses an independent analytic source-coordinate
+  // validity map. Only the 0.025px boundary-error band permits either mask.
+  if(FISHEYE)begin
+   gray=analytic_mask[display_pixels]==0?0:tone(50+dut.result_hdmi_id*31);
+   if(analytic_mask[display_pixels]==2)begin
+    if(rgb!==24'b0 && rgb!=={3{gray[7:0]}})
+     $fatal(1,"GEOMETRY_BOARD_FAIL fisheye boundary pixel %d",display_pixels);
+   end else if(rgb!=={3{gray[7:0]}})
+    $fatal(1,"GEOMETRY_BOARD_FAIL fisheye analytic mask pixel %d rgb=%h want=%d",display_pixels,rgb,gray);
+  end else if(rgb!=={3{gray[7:0]}})$fatal(1,"GEOMETRY_BOARD_FAIL pixel %d rgb=%h want=%d",display_pixels,rgb,gray);
   display_pixels=display_pixels+1;
   if(display_pixels==2073600)begin
-   if(underflows || published!=2 || net_frames!=2 || raw_fences!=2 || geo_fences<1)
+   if(underflows || published!=2 || net_frames!=2 || raw_fences!=2 || geo_fences<1 ||
+      raw_bytes!=4147200 || network_bytes!=4147200)
     $fatal(1,"GEOMETRY_BOARD_FAIL counts");
-   $display("GEOMETRY_BOARD_PASS source_frames=%d results=%d hdmi_pixels=%d net_frames=%d first_result_cycles=%d cache_hits=%d cache_misses=%d",
-      published,results,display_pixels,net_frames,first_result_cycles,first_cache_hits,first_cache_misses);$finish;
+   $display("GEOMETRY_BOARD_PASS original=%0d fisheye=%0d source_frames=%d results=%d hdmi_pixels=%d net_frames=%d raw_bytes=%d network_bytes=%d first_result_cycles=%d cache_hits=%d cache_misses=%d",
+      ORIGINAL,FISHEYE,published,results,display_pixels,net_frames,raw_bytes,network_bytes,first_result_cycles,first_cache_hits,first_cache_misses);$finish;
   end
  end
  initial begin
   repeat(20)@(negedge cc);rst=1;repeat(100)@(negedge cc);
+  // Purpose: exercise real admitted view control before capture; the separate
+  // UART suite verifies framing, CRC and context admission for this command.
+  p=0;p[127:96]=1;p[159:128]=ORIGINAL;p[191:160]=10;control('h35,p);
   // Purpose: exact fixed-point nonidentity rays, safe over full source domain.
   for(i=0;i<14;i=i+1)params[i]=0;
   params[0]=65536;params[2]=32768;params[4]=65536;params[5]=16384;
   params[10]=67108864;params[11]=67108864;
-  p=0;p[127:96]=1;p[135:128]=1;p[143:136]=1;p[159:144]=1920;p[175:160]=1080;control('h30,p);
+  if(FISHEYE)begin $readmemh("fisheye_words.hex",params);$readmemh("fisheye_mask.hex",analytic_mask);end
+  p=0;p[127:96]=1;p[135:128]=FISHEYE?2:1;p[143:136]=1;p[159:144]=1920;p[175:160]=1080;control('h30,p);
   for(i=0;i<14;i=i+1)begin p=0;p[127:96]=1;p[159:128]=i;p[191:160]=params[i];control('h31,p);end
   p=0;p[127:96]=1;control('h32,p);wait(dut.u_geometry.pending);
   for(f=0;f<2;f=f+1)begin

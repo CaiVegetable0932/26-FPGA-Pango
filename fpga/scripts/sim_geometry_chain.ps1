@@ -1,6 +1,7 @@
 # Purpose: bounded, offline geometry regression. Only project-owned outputs
 # are created; no UART/JTAG/Flash is opened and official files remain read-only.
-param([string]$ModelSimHome='E:/ModelsimSE/win64',[string]$Python='python')
+param([string]$ModelSimHome='E:/ModelsimSE/win64',[string]$Python='python',
+ [ValidateRange(1843200,250000000)][int]$GeometryUartClockHz=1843200)
 $ErrorActionPreference='Stop'
 $taskFpga=Split-Path $PSScriptRoot -Parent
 $taskRun=Join-Path $taskFpga ('build/geometry_chain_'+(Get-Date -Format 'yyyyMMdd_HHmmss_fff'))
@@ -30,7 +31,12 @@ try {
  & "$ModelSimHome/vlog.exe" -sv @taskSources 2>&1 | Tee-Object compile.log
  if($LASTEXITCODE){throw 'geometry compile failed'}
  foreach($taskTop in @('tb_geometry_lens','tb_geometry_pipeline','tb_geometry_uart','tb_geometry_pool','tb_geometry')){
-  & "$ModelSimHome/vsim.exe" -c $taskTop -do 'run -all; quit -f' 2>&1 | Tee-Object "$taskTop.log"
+  # Purpose: optionally exercise the same physical UART suite at the actual
+  # 125MHz board domain; serial bit time remains 115200 baud, not scaled.
+  $taskSimArgs=@('-c',$taskTop)
+  if($taskTop -eq 'tb_geometry_uart'){$taskSimArgs+="-gCLK_HZ=$GeometryUartClockHz"}
+  $taskSimArgs+=@('-do','run -all; quit -f')
+  & "$ModelSimHome/vsim.exe" @taskSimArgs 2>&1 | Tee-Object "$taskTop.log"
   $taskText=Get-Content "$taskTop.log" -Raw
   if($LASTEXITCODE -or $taskText -notmatch 'GEOMETRY(_LENS|_PIPELINE|_UART|_POOL)?_PASS' -or
      $taskText -match '\*\* (Fatal|Error)|GEOMETRY_.*FAIL|GEOMETRY_.*TIMEOUT'){

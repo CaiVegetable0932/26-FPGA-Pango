@@ -1,0 +1,32 @@
+Reading E:/ModelsimSE/tcl/vsim/pref.tcl 
+
+# 10.1c
+
+# vsim -do {onerror {quit -code 2}; run -all; quit -f} -c -voptargs=+acc -gSEED=987654321 -gCACHE_WORDS=512 -gSTRIDE=32 tb_cache_valid_parallel 
+# ** Note: (vsim-3812) Design is being optimized...
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "geometry_window_cache(fast)".
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "geometry_window_cache_golden(fast)".
+# 
+# ** Note: (vopt-143) Recognized 1 FSM in module "tb_cache_valid_parallel(fast)".
+# 
+# //  ModelSim SE-64 10.1c Jul 28 2012 
+# //
+# //  Copyright 1991-2012 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading work.tb_cache_valid_parallel(fast)
+# Loading work.geometry_window_cache(fast)
+# Loading work.geometry_window_cache_golden(fast)
+# onerror {quit -code 2} 
+#  Warning: onerror command for use within macro
+#  run -all 
+# CACHE_VALID_PARALLEL_PASS stride=32 cache_words=512 seed=987654321 requests=2048 cycles=82376 accepted=2141 emitted=2133 reads=7218 promotions=2140 replays=1754 stalls=7859 wrong_slot_rejects=0 tag_commits=7213 grant_replies=1032 fault_cases=6 initial_x_checks=6 valid_checks=247128 lookup_checks=9927 hold_checks=237201 reset_cases=10 queued_checks=80766 fill_checks=7216 inactive_xz_cases=1 pre_checks=82376 post_checks=82376
+# ** Note: $finish    : sources/tb_cache_valid_parallel.sv(274)
+#    Time: 659008 ns  Iteration: 1  Instance: /tb_cache_valid_parallel

@@ -30,7 +30,11 @@ class GeometryProfile:
         This matches OpenCV's four-coefficient fish-eye model, not Brown p1/p2.
         Rotation is an explicit in-plane setting; MCU angles are metadata only.
         """
+        if not isinstance(preset, dict):
+            raise GeometryError("preset 必须是参数对象")
         p = preset.get("parameters", preset)
+        if not isinstance(p, dict):
+            raise GeometryError("parameters 必须是参数对象")
         if p.get("model") != "fisheye_equidistant":
             raise GeometryError("只接受 fisheye_equidistant 四系数参数")
         def number(name):
@@ -40,7 +44,10 @@ class GeometryProfile:
             return float(value)
         width, height = number("reference_width"), number("reference_height")
         fx, fy = number("fx")*1920/width if width > 0 else 0, number("fy")*1080/height if height > 0 else 0
-        cx, cy = number("cx")*1920/width if width > 0 else 0, number("cy")*1080/height if height > 0 else 0
+        # Pixel centers must follow the canonical browser sourcePoint mapping,
+        # including when the calibration reference raster is resized.
+        cx = (number("cx")+.5)*1920/width-.5 if width > 0 else 0
+        cy = (number("cy")+.5)*1080/height-.5 if height > 0 else 0
         fov = number("output_fov_deg")
         if min(width, height, fx, fy) <= 0 or max(fx, fy) > 4096 or max(abs(cx), abs(cy)) > 4096:
             raise GeometryError("图像尺寸、焦距或主点超出 FPGA 配置范围")
@@ -65,12 +72,13 @@ class GeometryClient:
     def __init__(self, uart, *, clock=time.monotonic, sleep=time.sleep):
         self.uart, self.clock, self.sleep = uart, clock, sleep
         caps = uart.exchange(1)
-        if len(caps) != 32 or caps[0] or not int.from_bytes(caps[24:28], "little") & 0x80:
+        if len(caps) != 32 or caps[0] or caps[1] != 1 or not int.from_bytes(caps[24:28], "little") & 0x80:
             raise GeometryError("当前固件未开放 FPGA 矫正参数接口；不能向旧位流写入")
         self.epoch, self.session = struct.unpack_from("<QI", caps, 4)
         if not self.epoch or not self.session or not caps[2] & 1:
             raise GeometryError("请先在 host 启动板卡链路，获得有效 epoch/session")
         self.prefix = struct.pack("<QI", self.epoch, self.session)
+        self.capabilities = int.from_bytes(caps[24:28], "little")
 
     def _command(self, cmd, extra=b""):
         """Accept only matching common identity, including duplicate ACKs."""
@@ -141,7 +149,8 @@ class GeometryClient:
                     raise GeometryError("活动模型/增强设置与期望不一致")
                 return dict(state, epoch=str(self.epoch), session=self.session,
                             parameters_verified=True, processing_location="fpga",
-                            hardware_image_verified=False, words=list(profile.words))
+                            hardware_image_verified=False, words=list(profile.words),
+                            source_frame_id=None, pairing_status="unverified")
             flags, _ = self.read(14, bank=0)
             if state["version"] > version:
                 raise GeometryError("其他上传者已激活更新版本，请重新核对参数")

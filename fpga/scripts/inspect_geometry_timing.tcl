@@ -13,8 +13,11 @@ set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
 set_dir -impl_directory $env(GEOMETRY_DIAG_IMPL)
 foreach path {
  constraints/mini_camera_diag/ddr_native.fdc constraints/ddr_board_pins.fdc
- constraints/mini_raw8_dual/pins.fdc constraints/mini_raw8_dual/timing.fdc
- constraints/mini_raw8_dual/cdc.fdc constraints/placement.fdc
+ constraints/mini_raw8_dual/geometry_pins.fdc constraints/mini_raw8_dual/timing.fdc
+ constraints/mini_raw8_dual/cdc.fdc constraints/mini_raw8_dual/geometry_view_cdc.fdc
+ constraints/mini_raw8_dual/geometry_priority.rcf
+ constraints/placement.fdc
+ constraints/mini_raw8_dual/geometry_reset_sites.fdc
 } {add_constraint [file join $fpga_root $path]}
 # Purpose: allow a deeper read-only path inventory without rerouting or
 # relaxing constraints. Limit the requested count to bound report growth.

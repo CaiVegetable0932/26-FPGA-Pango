@@ -1,0 +1,25 @@
+# Purpose: bounded geometry-only DDR write placement experiment; NOT APPLIED.
+# Exact third-run native sites from native_export_20261007_041619_765/old_ddr.pcf.
+# Scope: group1 only, 10 leaves covering the three reported worst setup and
+# three reported worst hold endpoints in run9 PNR RTR (2026-10-07 06:31:01).
+# Preserve the current board PCF, four HDMI reset locations, RCF, clocks,
+# phases, timing budgets and exceptions. Merge these commands into a COPY
+# of the current mapped PCF; do not replace the whole board PCF with this file.
+# No -no_check: unresolved mapped names or incompatible resources must fail.
+# Current mapping name/type/packing checks and full routed min/max STA remain
+# required. Historical sites do not preserve routing or prove closure.
+# Setup shared control source: old_ddr.pcf:1996.
+def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/ddrphy_dqs_rddata_align/ck_dqs_diff[1]/opit_0_inv_L6QL5Q1} CLMA_357_858 FYA
+# Setup mux leaves: old_ddr.pcf:2290,2295,2307. Destinations are TX_DATA[6/3/7].
+def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/ddrphy_wdata_path_adj/adj_wrdata_mask_3[42]/LUT6_inst_perm} CLMA_303_961 FYD
+def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/ddrphy_wdata_path_adj/adj_wrdata_mask_3[47]/LUT6_inst_perm} CLMA_315_912 FYD
+def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/ddrphy_wdata_path_adj/adj_wrdata_mask_3[59]/LUT6_inst_perm} CLMS_351_931 FYD
+# Hold pair for dq_loop[7]/TX_DATA[5]: old_ddr.pcf:2374,2321.
+def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/ddrphy_wdata_path_adj/phy_wrdata_r[58]/opit_0_inv_L6QQ} CLMA_357_930 FYD
+def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/ddrphy_wdata_path_adj/adj_wrdata_mask_3[73]/LUT6_inst_perm} CLMA_357_912 FYB
+# Hold pair for dq_loop[5]/TX_DATA[1]: old_ddr.pcf:2362,2301.
+def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/ddrphy_wdata_path_adj/phy_wrdata_r[44]/opit_0_inv_L6QQ} CLMA_357_949 FYC
+def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/ddrphy_wdata_path_adj/adj_wrdata_mask_3[53]/LUT6_inst_perm} CLMA_357_924 FYA
+# Hold pair for dq_loop[7]/TX_DATA[0]: old_ddr.pcf:2373,2316.
+def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/ddrphy_wdata_path_adj/phy_wrdata_r[57]/opit_0_inv_L6QQ} CLMA_357_1002 FYC
+def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/ddrphy_wdata_path_adj/adj_wrdata_mask_3[68]/LUT6_inst_perm} CLMA_357_991 FYA

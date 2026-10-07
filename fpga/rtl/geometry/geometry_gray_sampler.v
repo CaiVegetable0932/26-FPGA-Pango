@@ -13,6 +13,10 @@ module geometry_gray_sampler #(parameter STRIDE=2048)(
  reg [2:0] state;reg [3:0] item;
  reg [11:0] xx0,xx1,yy0,yy1,fx,fy;reg [27:0] held_base;
  reg held_enhance;reg [7:0] samples[0:8];reg [7:0] answer;
+ // Purpose: isolate RAM byte selection from the nonlinear curve. Capture the
+ // raw byte on cache handshake, apply the curve during the next request cycle.
+ // Only the last footprint byte needs one drain cycle; arithmetic is unchanged.
+ reg sample_pending;reg [7:0] pending_sample;reg [3:0] pending_item;
  reg [19:0] top,bottom;reg [31:0] weighted;
  reg [11:0] sx,sy;
  assign ready=state==0 && !valid;
@@ -30,7 +34,7 @@ module geometry_gray_sampler #(parameter STRIDE=2048)(
  // because random-access samples cannot use a raster-stream median history.
  wire [7:0] enhanced;
  raw8_display_enhance u_curve(.clk(clk),.reset_n(rst_n),.line_active(1'b0),
-  .line_end(1'b0),.pixel_accept(1'b0),.sample(cache_value),.luma(enhanced));
+  .line_end(1'b0),.pixel_accept(1'b0),.sample(pending_sample),.luma(enhanced));
  function [7:0] average;
   input [7:0] a,b,c,d;
   reg [9:0] s;
@@ -40,6 +44,19 @@ module geometry_gray_sampler #(parameter STRIDE=2048)(
  wire [7:0] p10=average(samples[1],samples[2],samples[4],samples[5]);
  wire [7:0] p01=average(samples[3],samples[4],samples[6],samples[7]);
  wire [7:0] p11=average(samples[4],samples[5],samples[7],samples[8]);
+ // Purpose: DSP-friendly exact bilinear factorization:
+ // (4096-f)*a+f*b = 4096*a+f*(b-a). Guard bits retain signed differences;
+ // no new rounding or saturation. Six products become three, and the final
+ // 21x13 signed product fits one Logos2 25x18 APM. Rounding remains +2^23.
+ wire signed [8:0] dt=$signed({1'b0,p10})-$signed({1'b0,p00});
+ wire signed [8:0] db=$signed({1'b0,p11})-$signed({1'b0,p01});
+ wire signed [21:0] pt=$signed({1'b0,fx})*dt;
+ wire signed [21:0] pb=$signed({1'b0,fx})*db;
+ wire signed [21:0] row_top=$signed({2'b0,p00,12'b0})+pt;
+ wire signed [21:0] row_bottom=$signed({2'b0,p01,12'b0})+pb;
+ wire signed [20:0] dy=$signed({1'b0,bottom})-$signed({1'b0,top});
+ wire signed [33:0] py=$signed({1'b0,fy})*dy;
+ wire signed [33:0] interpolation=$signed({2'b0,top,12'b0})+py+34'sd8388608;
  // Purpose: hold one pixel until the result packer accepts it. Invalid source
  // mappings skip ALL memory reads and produce an explicit black-mask pixel.
  always @(posedge clk or negedge rst_n)
@@ -47,7 +64,10 @@ module geometry_gray_sampler #(parameter STRIDE=2048)(
    state<=0;item<=0;valid<=0;mask_valid<=0;answer<=0;
    xx0<=0;xx1<=0;yy0<=0;yy1<=0;fx<=0;fy<=0;held_base<=0;held_enhance<=0;
    top<=0;bottom<=0;weighted<=0;
+   sample_pending<=0;pending_sample<=0;pending_item<=0;
   end else begin
+   sample_pending<=0;
+   if(sample_pending)samples[pending_item]<=held_enhance?enhanced:pending_sample;
    if(valid && pixel_ready)valid<=0;
    case(state)
     0:if(start && ready)begin
@@ -57,14 +77,15 @@ module geometry_gray_sampler #(parameter STRIDE=2048)(
     end
     1:if(cache_ready)state<=2;
     2:if(cache_valid)begin
-     samples[item]<=held_enhance?enhanced:cache_value;
-     if(item==8)state<=3;else begin item<=item+1'b1;state<=1;end
+     pending_sample<=cache_value;pending_item<=item;sample_pending<=1;
+     if(item==8)state<=6;else begin item<=item+1'b1;state<=1;end
     end
+    // Drain the last registered byte before reading the completed 3x3 footprint.
+    6:state<=3;
     3:begin
-     top<=(13'd4096-{1'b0,fx})*p00+{1'b0,fx}*p10;
-     bottom<=(13'd4096-{1'b0,fx})*p01+{1'b0,fx}*p11;state<=4;
+     top<=row_top[19:0];bottom<=row_bottom[19:0];state<=4;
     end
-    4:begin weighted<=(13'd4096-{1'b0,fy})*top+{1'b0,fy}*bottom+32'd8388608;state<=5;end
+    4:begin weighted<=interpolation[31:0];state<=5;end
     5:begin answer<=weighted[31:24];valid<=1;state<=0;end
    endcase
   end

@@ -24,6 +24,7 @@ ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.htm
     "video-input.js":("video-input.js","text/javascript; charset=utf-8"),
     "video-input-ui.js":("video-input-ui.js","text/javascript; charset=utf-8"),
     "board-link.js":("board-link.js","text/javascript; charset=utf-8"),
+    "board-geometry.js":("board-geometry.js","text/javascript; charset=utf-8"),
     "preview-worker.js":("preview-worker.js","text/javascript; charset=utf-8"),
     # GPU display helper stays on the same protected origin as its worker.
     "preview-renderer.js":("preview-renderer.js","text/javascript; charset=utf-8"),
@@ -183,6 +184,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(200,self.server.session.status())
             if route == "/api/board/status":
                 return self._json(200,self.server.board_link.status())
+            # Live controls read the serialized board session, never a local cache.
+            if route == "/api/board/geometry":
+                return self._json(200,self.server.board_link.geometry())
+            if route == "/api/board/markers":
+                return self._json(200,self.server.board_link.markers())
             if route == "/api/board/devices":
                 return self._json(200,self.server.board_link.devices())
             if route == "/api/calibration":
@@ -274,6 +280,11 @@ class Handler(BaseHTTPRequestHandler):
             # Board startup is asynchronous, keeping frame/status HTTP responsive.
             if route == "/api/board/start":
                 return self._json(202,self.server.board_link.start(data or None))
+            # Token-protected board changes preserve the running video chain.
+            if route == "/api/board/geometry":
+                return self._json(200,self.server.board_link.geometry(data))
+            if route == "/api/board/view":
+                return self._json(200,self.server.board_link.view(data))
             # This token-protected action restores Ethernet defaults only.
             # Device/epoch validation happens before restarting the owned UDP.
             if route == "/api/board/reset-ethernet":

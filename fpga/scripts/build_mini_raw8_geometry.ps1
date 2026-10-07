@@ -1,7 +1,7 @@
 # Purpose: board-specific native project, place/route and min/max STA gate.
 # Generating an image never opens JTAG/serial/network devices or programs Flash.
 param([string]$PdsHome='E:/PDS_Pangu/PDS_2022.2-SP6.4',[string]$LicenseFile='',
- [ValidateSet('compile','synthesize','pnr','report_timing')][string]$Stage='report_timing',
+ [ValidateSet('compile','synthesize','dev_map','pnr','report_timing')][string]$Stage='report_timing',
  [switch]$EmitBitstream)
 $ErrorActionPreference='Stop'
 $taskFpga=Split-Path $PSScriptRoot -Parent
@@ -26,6 +26,7 @@ $taskPaths=@($taskInputs.FullName)+@($PSCommandPath,
  (Join-Path $taskFpga 'rtl/board/reset_sync.v'),(Join-Path $taskFpga 'rtl/board/mini_raw8_geometry.v'),
  (Join-Path $PSScriptRoot 'create_mini_raw8_geometry.tcl'),
  (Join-Path $PSScriptRoot 'export_geometry_sbit.tcl'),
+ (Join-Path $PSScriptRoot 'check_geometry_route_constraints.ps1'),
  (Join-Path $taskFpga 'project/mini_raw8_geometry/mini_raw8_geometry.tcl'))
 $taskPaths+=@('rtl/mini_camera_diag/mini_dvp_input.v','rtl/mini_camera_diag/ov5640_sccb.v',
  'rtl/mini_camera_diag/vendor/camera/data_init.v','constraints/mini_camera_diag/ddr_native.fdc',
@@ -57,11 +58,16 @@ try {
  if($LASTEXITCODE -or !(Select-String generation.log -Pattern MINI_RAW8_GEOMETRY_NATIVE_PROJECT_GENERATED -Quiet)){throw 'Native project generation failed'}
  Restore-BoardLayout
  $taskStart=Get-Date
+ # Purpose: PDS keeps one RCF. Fail before synthesis if its native writer
+ # replaced inherited DDR/HDMI priorities instead of loading the merged file.
+ & (Join-Path $PSScriptRoot 'check_geometry_route_constraints.ps1') -Project $taskProject -EvidenceDirectory $taskRun
  & "$PdsHome/bin/pds_shell.exe" -project $taskProject -work_dir $taskImpl -run $Stage 2>&1 | Tee-Object "$Stage.log"
  if($LASTEXITCODE -or (Select-String "$Stage.log" -Pattern '^E:|Check license failed' -Quiet)){throw 'Native stage failed'}
  Restore-BoardLayout
- $taskSub=@{compile='compile';synthesize='synthesize';pnr='place_route';report_timing='report_timing'}[$Stage]
- $taskExt=@{compile='cmr';synthesize='snr';pnr='prr';report_timing='rtr'}[$Stage]
+ # Purpose: a map-only checkpoint permits audited post-map physical deltas
+ # before a separate PNR run. It is never treated as timing/image success.
+ $taskSub=@{compile='compile';synthesize='synthesize';dev_map='device_map';pnr='place_route';report_timing='report_timing'}[$Stage]
+ $taskExt=@{compile='cmr';synthesize='snr';dev_map='dmr';pnr='prr';report_timing='rtr'}[$Stage]
  $taskReport=Join-Path $taskImpl "$taskSub/mini_raw8_geometry.$taskExt"
  if(!(Test-Path $taskReport) -or (Get-Item $taskReport).LastWriteTime -lt $taskStart){throw 'Missing fresh native report'}
  Copy-Item -LiteralPath $taskReport -Destination (Join-Path $taskRun "stage_report.$taskExt")
@@ -114,7 +120,7 @@ try {
   source_inputs_unchanged=$taskInputsUnchanged;
   bitstream_generated=$taskBitstream;hardware_tested=$false;programmed=$false;
   camera_video=$true;physical_mcu_wiring_confirmed=$false;pcb_skew_measured=$false;
-  external_dvp_timing_verified=$false;scope='RAW8 Ethernet + FPGA gray fisheye correction to HDMI; throughput unverified'} |
+  external_dvp_timing_verified=$false;scope='Unmarked enhanced Bayer RAW8 Ethernet + pipelined FPGA gray correction/original HDMI with 20 markers; real throughput unverified'} |
   ConvertTo-Json | Set-Content result.json -Encoding utf8
  $env:PANGO_LICENSE_FILE=$taskOldLicense;Pop-Location
 }

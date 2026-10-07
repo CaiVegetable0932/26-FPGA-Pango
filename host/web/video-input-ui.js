@@ -121,13 +121,15 @@
     // Original RAW8 coordinates use metadata, HDMI coordinates use its actual
     // video dimensions. Same IDs describe each link's own pixels, not pairing.
     const math=window.PangoFisheyePreview;
-    let markerToggle=null,correctedGeometry=null;
+    let markerToggle=null,correctedGeometry=null,boardMode=false,boardMetadata=null,networkGeometry=null;
     const overlayChanged=()=>markerToggle?.updateInfo();
     const rawMarkers=math.createPixelOverlay({element:$("raw-pixel-markers"),container:$("video-surface"),environment:window,onChange:overlayChanged});
     const hdmiMarkers=math.createPixelOverlay({element:$("capture-pixel-markers"),container:$("result-surface"),environment:window,onChange:overlayChanged});
     markerToggle=math.createMarkerToggle({button:$("pixel-markers-toggle"),info:$("pixel-markers-info"),
       overlays:[rawMarkers,hdmiMarkers],storage,environment:window});
     function syncHdmiMarkers(){
+      // FPGA HDMI already contains its markers; never paint a second host layer.
+      if(boardMode){hdmiMarkers.setView(null);return;}
       const video=$("capture-video"),corrected=correctionState.mode==="corrected";
       hdmiMarkers.setView(video.hidden?null:corrected?
         (correctionState.hasFrame?correctedGeometry:null):video.readyState>=2&&video.videoWidth&&video.videoHeight?
@@ -145,9 +147,9 @@
       correctionState=state;const corrected=state.mode==="corrected";
       text("capture-correction-toggle",corrected?"显示原图":"计算机矫正");
       $("capture-correction-toggle").setAttribute("aria-pressed",String(corrected));
-      text("capture-view-label",corrected?"计算机矫正 / PC 软件参考":"HDMI 原图 / 信号未验证");
+      text("capture-view-label",boardMode?`FPGA HDMI / ${boardMetadata?.mode==="original"?"灰度 ISP 原图（非 S0）":boardMetadata?.mode==="corrected"?"灰度 ISP + 矫正":"模式未查询"} / 源帧未验证`:corrected?"计算机矫正 / PC 软件参考":"HDMI 原图 / 信号未验证");
       const origin=state.origin==="calibration"?"标定页已保存参数":"标定页默认参数";
-      text("capture-correction-info",state.error?`矫正失败：${state.error} · 当前显示原图`:corrected?
+      text("capture-correction-info",boardMode?"板端处理 · HDMI source_frame_id=null / pairing_status=unverified":state.error?`矫正失败：${state.error} · 当前显示原图`:corrected?
         `PC 软件参考 · ${origin} · 输出视场 ${state.outputFov}°`+
         (state.renderer?` · ${state.renderer}（上限 ${state.maxFps} FPS）`:"")+
         (!state.hasFrame?" · 等待 HDMI 图像":"")+
@@ -226,7 +228,15 @@
     for(const id of ["capture-close","capture-preview-close"])on(id,"click",()=>controller.close());
     render(controller.getState());
     return {controller,refresh:()=>{if(controller.getState().supported&&!controller.getState().refreshing)return controller.refresh().catch(()=>{});},
-      setNetworkFrame(meta){rawMarkers.setView(meta);},
+      setNetworkFrame(meta){networkGeometry=meta;rawMarkers.setView(boardMode?null:meta);},
+      // Switching display ownership changes only browser presentation. Actual
+      // FPGA view commands are issued by the separate board control panel.
+      setBoardMode(enabled,metadata=null){boardMode=!!enabled;boardMetadata=metadata;
+        if(boardMode&&correction.getState().mode==="corrected")correction.toggle();
+        $("capture-correction-toggle").disabled=boardMode;$("pixel-markers-toggle").disabled=boardMode;
+        rawMarkers.setView(boardMode?null:networkGeometry);renderCorrection(correction.getState());
+        if(boardMode)text("pixel-markers-info","板端标记由上方 FPGA 显示控制操作；HDMI 不重复叠加");
+        else markerToggle.updateInfo();},
       destroy(){disposed=true;markerToggle.destroy();rawMarkers.destroy();hdmiMarkers.destroy();correction.destroy();rateMeter.destroy();for(const [id,event,fn] of listeners)$(id).removeEventListener(event,fn);controller.destroy();}};
   }
   const api={create,createCorrectionView};root.PangoVideoInputUI=api;

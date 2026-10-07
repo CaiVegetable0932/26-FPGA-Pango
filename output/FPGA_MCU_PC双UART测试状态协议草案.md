@@ -1,5 +1,7 @@
 # MCU→FPGA／上位机双 UART 测试状态协议草案
 
+2026-10-07 兼容性复核：当前几何位流仍只支持旧 `0x10` 单角度/照度；本草案未落地。bit7 已分配给几何控制、bit8 给显示控制，新 TEST_STATE_72 提议移至 bit9（0x200），实现前须冻结。已合并 MCU 云台代码轴名为 pitch/yaw，龙门架回报 0～100 归一化位置，不能直接视为本草案 Roll/Pitch 与 μm；见 [MCU 修改方案](MCU对接现有FPGA串口的修改方案.md)。
+
 状态：**接口设计，尚未实现或上板验收**。本草案落实“MCU 将当前云台角度、三种预设颜色之一、龙门架 XYZ 位置分别通过 UART 回传 FPGA 和上位机”的六项要求。它扩展 [FPGA–MCU V1](FPGA_MCU通信协议V1.md) 的帧包络，不改动已存在的 `0x10 SUBMIT_ENVIRONMENT` 含义。机械与坐标依据 [STM32F407ZGT6 测试系统方案](STM32F407ZGT6_三轴龙门架与二维无刷云台黑箱测试系统设计方案.md) 和 [光照黑箱方案](光照黑箱详细设计方案.md)；三种颜色的具体名称、光谱/灯路配方和接线仍需实物配置确认。
 
 ## 1. 两个接收端与同一采样
@@ -26,7 +28,7 @@ TestState[72] | CRC16/CCITT-FALSE:u16
 
 `0x0048` 为十进制 72，在线路上是 `48 00`。CRC 参数沿用 V1：poly `0x1021`、init `0xFFFF`、不反射、xorout 0，覆盖 `version` 至载荷，不覆盖 `55 AA` 与 CRC 自身；CRC 小端发送。完整报文 82 字节。外层 `seq` 为该 UART 链路的 16 位请求/应答关联号，允许回绕；可取 `sample_seq` 的低 16 位，但业务去重必须使用完整的 `mcu_boot_id + sample_seq`。
 
-新命令暂定 `0x11 SUBMIT_TEST_STATE`；它是**待实现扩展**，现有 `mcu_protocol.v` 只接受至多 32 字节请求，当前 PC 上位机也没有该二进制接收器。旧固件可能返回 `BAD_LENGTH` 或 `UNSUPPORTED`；不能向旧端点发送新包后把 NACK 当作板卡故障。正式启用前，FPGA 的 `GET_CAPABILITIES` 必须新增能力 bit7=`TEST_STATE_72` 并报告本端请求上限至少 72 字节，PC 接收器也须明确声明同一载荷版本。未经能力确认不发送 `0x11`。保留 `version=01` 表示沿用帧包络，不表示旧实现已支持新命令。
+新命令暂定 `0x11 SUBMIT_TEST_STATE`；它是**待实现扩展**，现有 `mcu_protocol.v` 只接受至多 32 字节请求，当前 PC 上位机也没有该二进制接收器。旧固件可能返回 `BAD_LENGTH` 或 `UNSUPPORTED`；不能向旧端点发送新包后把 NACK 当作板卡故障。正式启用前，FPGA 的 `GET_CAPABILITIES` 应新增能力 bit9=`TEST_STATE_72`（0x200，提议值）并报告本端请求上限至少 72 字节，PC 接收器也须明确声明同一载荷版本。保留现有 bit7 几何控制与 bit8 显示控制，未经新能力确认不发送 `0x11`。保留 `version=01` 表示沿用帧包络，不表示旧实现已支持新命令。
 
 ## 3. TestState 载荷布局（固定 72 字节）
 

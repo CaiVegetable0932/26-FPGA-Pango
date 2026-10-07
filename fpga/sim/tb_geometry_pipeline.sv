@@ -3,7 +3,8 @@
 // identity, subpixel mapping, edge masks, source cache invalidation, shadow
 // changes during a frame, row padding and ordered result fence publication.
 module tb_geometry_pipeline;
- reg clk=0,rst=0,start=0,cmd_valid=0;always #4 clk=~clk;
+ reg clk=0,rst=0,start=0,cmd_valid=0,display_original=0;always #4 clk=~clk;
+ wire frame_original;wire [447:0] active_words;wire [1:0] active_model;wire active_enhance;
  reg [7:0] cmd=0;reg [255:0] payload=0;wire [7:0] code;wire [95:0] reply;
  reg [63:0] frame_id=100;
  wire busy,done,good,fault;wire [27:0] awaddr,read_addr;wire [3:0] awlen;
@@ -12,7 +13,11 @@ module tb_geometry_pipeline;
  reg [255:0] read_data=0;
  wire [31:0] version,frame_version,frame_cycles,hits,misses;wire [63:0] applied;
  geometry_gray_processor #(.WIDTH(32),.HEIGHT(8),.STRIDE(64)) dut(
-  .clk(clk),.rst_n(rst),.start(start),.source_base(28'b0),.result_base(28'h4000000),
+  // Purpose: observe the exact configuration latched for each output frame.
+  .clk(clk),.rst_n(rst),.start(start),.display_original(display_original),
+  .frame_original(frame_original),.active_words_out(active_words),
+  .active_model_out(active_model),.active_enhance_out(active_enhance),
+  .source_base(28'b0),.result_base(28'h4000000),
   .source_id(frame_id),.epoch(64'd123),.context_valid(1'b1),.session_id(32'd1),
   .cmd_valid(cmd_valid),.cmd(cmd),.payload(payload),.code(code),.reply(reply),
   .busy(busy),.done(done),.good(good),.fault(fault),
@@ -143,7 +148,23 @@ module tb_geometry_pipeline;
    $fatal(1,"GEOMETRY_PIPELINE_FAIL second commit");
   compare_frame();
   if(hits==0 || misses==0)$fatal(1,"GEOMETRY_PIPELINE_FAIL cache coverage");
-  $display("GEOMETRY_PIPELINE_PASS frames=2 pixels=512 cycles=%0d cache_hits=%0d cache_misses=%0d",frame_cycles,hits,misses);$finish;
+  // Purpose: original/corrected selection bypasses geometry only. A control
+  // change while pixels are in flight must not alter that frame or its ISP.
+  wait(!busy);display_original=1;seed=91;fill_source();frame_id=102;shiftx=0;shifty=0;
+  @(negedge clk);start=1;@(negedge clk);start=0;
+  repeat(30)@(negedge clk);display_original=0;
+  wait(done);@(negedge clk);
+  if(!good || !frame_original || frame_version!=2 || fences!=3 || active_enhance || active_model!=1)
+   $fatal(1,"GEOMETRY_PIPELINE_FAIL original mode atomicity/ISP");
+  compare_frame();
+  wait(!busy);seed=123;fill_source();frame_id=103;shiftx=2048;shifty=1024;
+  @(negedge clk);start=1;@(negedge clk);start=0;
+  repeat(30)@(negedge clk);display_original=1;
+  wait(done);@(negedge clk);
+  if(!good || frame_original || frame_version!=2 || fences!=4)
+   $fatal(1,"GEOMETRY_PIPELINE_FAIL corrected mode atomicity");
+  compare_frame();
+  $display("GEOMETRY_PIPELINE_PASS frames=4 pixels=1024 cycles=%0d cache_hits=%0d cache_misses=%0d",frame_cycles,hits,misses);$finish;
  end
  initial begin #6000000;$fatal(1,"GEOMETRY_PIPELINE_TIMEOUT");end
 endmodule

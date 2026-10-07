@@ -12,38 +12,38 @@ module raw8_display_enhance(
   (prev2>prev4 ? prev2 : (sample>prev4 ? prev4 : sample)) :
   (sample>prev4 ? sample : (prev2>prev4 ? prev4 : prev2));
  wire [7:0] selected = valid_count==4 ? same_phase_median : sample;
- // Purpose: retain the tested highlight-protecting curve as the low-gain
- // endpoint of a fixed tone map; its 24/80/144 knees protect bright regions.
- wire [7:0] shadow_delta=selected-8'd24;
- wire [7:0] mid_delta=selected-8'd80;
- wire [7:0] highlight_delta=selected-8'd144;
- wire [7:0] bright_luma = selected<=24 ? 8'd0 :
-               selected<=80 ? shadow_delta<<1 :
-               selected<=144 ? 8'd112+mid_delta+(mid_delta>>2) :
-               selected==255 ? 8'd255 :
-               8'd192+(highlight_delta>>1)+(highlight_delta>>4)+(highlight_delta>>6);
- // Purpose: retain the tested shadow-revealing curve as the high-gain
- // endpoint. Its monotonic shoulder and 255 white code remain unchanged.
- wire [7:0] low8_delta=selected-8'd8;
- wire [7:0] low16_delta=selected-8'd16;
- wire [7:0] low32_delta=selected-8'd32;
- wire [7:0] low64_delta=selected-8'd64;
- wire [7:0] low128_delta=selected-8'd128;
- wire [7:0] low240_delta=selected-8'd240;
- wire [7:0] dark_luma = selected<=8 ? 8'd0 :
-              selected<=16 ? low8_delta<<2 :
-              selected<=32 ? 8'd32+(low16_delta<<3)-low16_delta :
-              selected<=64 ? 8'd144+(low32_delta<<1) :
-              selected<=128 ? 8'd208+(low64_delta>>1) :
-              selected<=240 ? 8'd240+(low128_delta>>4) :
-              selected==255 ? 8'd255 :
-              8'd247+(low240_delta>>1);
- // Purpose: blend both tested endpoints once per pixel, not once per frame.
- // The explicit nine-bit sum prevents overflow near white; rounding keeps
- // the map monotonic and preserves black=0/white=255. No exposure classifier,
- // frame memory, or temporal state remains in this display-only operation.
- wire [8:0] tone_sum={1'b0,bright_luma}+{1'b0,dark_luma}+9'd1;
- assign luma=tone_sum[8:1];
+ // Purpose: elaborate the UNCHANGED two-endpoint tone formula into a 256x8
+ // combinational ROM. No frame classification, new rounding or pipeline
+ // delay is added. PDS 2022.2-SP6.4 ADS guide section 5.18 documents lut_rom;
+ // distributed ROM avoids the prior cascaded subtract/add/mux critical path.
+ function [7:0] tone_value;
+  input [7:0] v;
+  reg [7:0] bright,dark,d;
+  reg [8:0] sum;
+  begin
+   if(v<=24)bright=0;
+   else if(v<=80)begin d=v-8'd24;bright=d<<1;end
+   else if(v<=144)begin d=v-8'd80;bright=8'd112+d+(d>>2);end
+   else if(v==255)bright=255;
+   else begin d=v-8'd144;bright=8'd192+(d>>1)+(d>>4)+(d>>6);end
+   if(v<=8)dark=0;
+   else if(v<=16)begin d=v-8'd8;dark=d<<2;end
+   else if(v<=32)begin d=v-8'd16;dark=8'd32+(d<<3)-d;end
+   else if(v<=64)begin d=v-8'd32;dark=8'd144+(d<<1);end
+   else if(v<=128)begin d=v-8'd64;dark=8'd208+(d>>1);end
+   else if(v<=240)begin d=v-8'd128;dark=8'd240+(d>>4);end
+   else if(v==255)dark=255;
+   else begin d=v-8'd240;dark=8'd247+(d>>1);end
+   sum={1'b0,bright}+{1'b0,dark}+9'd1;tone_value=sum[8:1];
+  end
+ endfunction
+ reg [7:0] tone_rom[0:255] /* synthesis syn_romstyle="lut_rom" */;
+ integer tone_index;
+ initial begin
+  for(tone_index=0;tone_index<256;tone_index=tone_index+1)
+   tone_rom[tone_index]=tone_value(tone_index[7:0]);
+ end
+ assign luma=tone_rom[selected];
  always @(posedge clk or negedge reset_n) begin
   if(!reset_n)begin prev1<=0;prev2<=0;prev3<=0;prev4<=0;valid_count<=0;end
   // Purpose: the continuous Ethernet byte stream has no horizontal blanking;

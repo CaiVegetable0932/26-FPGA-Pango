@@ -3,7 +3,10 @@
 // not a claim of 1080p30 throughput or board verification.
 // mem_clk is the native 125 MHz HMIC core clock; network uses that SAME domain.
 // All cross-clock pixels/records traverse native FIFOs; controls are held levels.
-module raw8_geometry_core #(parameter WARMUP_FRAMES=10)(
+module raw8_geometry_core #(parameter WARMUP_FRAMES=10,
+ // Production UART fields settle before CRC; direct callers keep the legacy
+ // combinational view decoder unless they explicitly meet that contract.
+ parameter PREDECODE_VIEW_READ=0)(
  input wire mem_clk,mem_reset_n,cam_clk,cam_reset_n,pixel_clk,pixel_reset_n,
  input wire configured,vsync,href,input wire [7:0] camera_data,
  input wire commissioned,network_enable,input wire [63:0] epoch,
@@ -109,6 +112,18 @@ module raw8_geometry_core #(parameter WARMUP_FRAMES=10)(
  wire [31:0] result_published,geo_version,geo_frame_version,geo_cycles,geo_hits,geo_misses;
  wire [63:0] geo_applied_id;
  reg result_request,result_hdmi_request,result_hdmi_release,geo_start;
+ // Purpose: fence + marker completion publish one atomic result/metadata slot.
+ // h_grant freezes intent before geo_start reaches the processor next clock.
+ reg result_commit,result_good,marker_start_delay;
+ wire [447:0] geo_active_words;wire [1:0] geo_active_model;wire geo_active_enhance;
+ wire [31:0] frame_view_revision,frame_view_packed;
+ wire [31:0] displayed_view_revision,displayed_view_packed,displayed_version,display_generation;
+ wire [7:0] view_code;wire [95:0] view_reply;
+ wire marker_ready;wire [1279:0] marker_coordinates,pixel_marker_coordinates;
+ wire [19:0] marker_visible,pixel_marker_visible;wire [31:0] marker_status,pixel_view_packed;
+ wire [31:0] marker_read_value;wire marker_read_valid,metadata_lease_ready;
+ wire [23:0] display_rgb;wire display_hs,display_vs,display_de;
+ wire pixel_req,pixel_release;reg pixel_ack,pixel_release_ack;
  reg [2:0] process_state;reg [31:0] processed_publication;
  // Purpose: retain a readable identity and posture snapshot of the most recent
  // fenced result, not a claimed identity of an external HDMI capture frame.
@@ -122,13 +137,55 @@ module raw8_geometry_core #(parameter WARMUP_FRAMES=10)(
  // implicit-net differences between the native compiler and ModelSim.
  reg net_fault,overflow_fault;
  wire [7:0] processor_code;wire [95:0] processor_reply;
- wire core_read=geo_cmd==8'h34 && geo_payload[159:128]==1 &&
-                geo_payload[127:96]>=21 && geo_payload[127:96]<=33;
+ wire core_read,marker_read,view_selected;
+ wire [31:0] core_read_index;
+ generate if(PREDECODE_VIEW_READ)begin:g_view_read_predecode
+  // Address/command-only predecode removes parser-payload fanout from the
+  // late reply mux. Dynamic status, versions and metadata remain live, so
+  // this adds no response latency and never returns a pre-acceptance sample.
+  (* syn_preserve=1, syn_allow_retiming=0 *) reg core_q,marker_q,view_q;
+  (* syn_preserve=1, syn_allow_retiming=0 *) reg [5:0] core_index_q;
+  always @(posedge mem_clk or negedge mem_reset_n)
+   if(!mem_reset_n)begin core_q<=0;marker_q<=0;view_q<=0;core_index_q<=0;end
+   else begin
+    core_q<=geo_cmd==8'h34 && geo_payload[159:128]==1 &&
+        geo_payload[127:96]>=21 && geo_payload[127:96]<=33;
+    marker_q<=geo_cmd==8'h34 && geo_payload[159:128]==2;
+    view_q<=geo_cmd==8'h35;core_index_q<=geo_payload[101:96];
+   end
+  assign core_read=core_q,marker_read=marker_q,view_selected=view_q;
+  assign core_read_index={26'b0,core_index_q};
+ end else begin:g_view_read_combinational
+  assign core_read=geo_cmd==8'h34 && geo_payload[159:128]==1 &&
+      geo_payload[127:96]>=21 && geo_payload[127:96]<=33;
+  assign marker_read=geo_cmd==8'h34 && geo_payload[159:128]==2;
+  assign view_selected=geo_cmd==8'h35,core_read_index=geo_payload[127:96];
+ end endgenerate
  reg [31:0] core_read_value;
- assign geo_code=core_read?8'd0:processor_code;
- assign geo_reply=core_read?{completed_version,core_read_value,geo_payload[127:96]}:processor_reply;
+ assign geo_code=view_selected ? view_code:marker_read?(marker_read_valid?8'd0:8'd11):core_read?8'd0:processor_code;
+ assign geo_reply=view_selected ? view_reply:marker_read?{displayed_version,marker_read_value,geo_payload[127:96]}:
+  core_read?{completed_version,core_read_value,geo_payload[127:96]}:processor_reply;
+ geometry_view_control u_view_control(.clk(mem_clk),.rst_n(mem_reset_n),.context_valid(mcu_context_valid),
+  .epoch(epoch),.session_id(mcu_session_id),.cmd_valid(geo_cmd_valid),.cmd(geo_cmd),.payload(geo_payload),
+  .frame_prepare(process_state==2 && h_grant),.applied_revision(displayed_view_revision),.applied_packed(displayed_view_packed),
+  .code(view_code),.reply(view_reply),.frame_revision(frame_view_revision),.frame_packed(frame_view_packed));
+ // Config activation happens on geo_start. This delayed token samples the NEW
+ // active words/model on the next edge, just as processor state 5 does.
+ always @(posedge mem_clk or negedge mem_reset_n)
+  if(!mem_reset_n)marker_start_delay<=0;else marker_start_delay<=geo_start;
+ geometry_marker_table u_markers(.clk(mem_clk),.rst_n(mem_reset_n),.start(marker_start_delay),
+  .original(frame_view_packed[0]),.model(geo_active_model),.words(geo_active_words),
+  .ready(marker_ready),.coordinates(marker_coordinates),.visible_mask(marker_visible),.status(marker_status));
+ geometry_view_snapshot #(.PREDECODE_READ(PREDECODE_VIEW_READ)) u_view_snapshot(.mem_clk(mem_clk),.mem_rst_n(mem_reset_n),.pixel_clk(pixel_clk),.pixel_rst_n(pixel_reset_n),
+  .commit(result_commit && result_good),.result_slot(result_slot),.coordinates(marker_coordinates),.visible_mask(marker_visible),
+  .revision(frame_view_revision),.packed_control(frame_view_packed),.version(geo_frame_version),.status(marker_status),
+  .lease(result_hdmi_grant),.lease_slot(result_hdmi_slot),.lease_ready(metadata_lease_ready),
+  .pixel_request(pixel_req),.pixel_frame_ack(pixel_ack),.in_vs(display_vs),.in_de(display_de),
+  .read_index(geo_payload[127:96]),.read_value(marker_read_value),.read_valid(marker_read_valid),
+  .applied_revision(displayed_view_revision),.applied_packed(displayed_view_packed),.applied_version(displayed_version),.generation(display_generation),
+  .pixel_coordinates(pixel_marker_coordinates),.pixel_visible(pixel_marker_visible),.pixel_packed(pixel_view_packed));
  always @* begin
-  case(geo_payload[127:96])
+  case(core_read_index)
    21:core_read_value={20'b0,process_state,result_pool_fault,write_arb_fault,geo_fault,
                       arb_fault,write_fault,net_fault,overflow_fault,pool_fault,1'b0};
    22:core_read_value=result_published;
@@ -148,15 +205,19 @@ module raw8_geometry_core #(parameter WARMUP_FRAMES=10)(
  end
  raw8_frame_pool #(.BASE(28'h4000000)) u_result_pool(.clk(mem_clk),.reset_n(mem_reset_n),
   .capture_request(result_request),.capture_grant(result_grant),.capture_slot(result_slot),.capture_base(result_base),
-  .capture_commit(geo_done),.capture_good(geo_good && !geo_fault && !write_arb_fault),
-  .capture_drained(geo_done),.captured_id(h_id),.captured_epoch(h_epoch),
+  .capture_commit(result_commit),.capture_good(result_good),
+  .capture_drained(result_commit),.captured_id(h_id),.captured_epoch(h_epoch),
   .hdmi_request(result_hdmi_request),.hdmi_release(result_hdmi_release),
   .hdmi_grant(result_hdmi_grant),.hdmi_locked(result_hdmi_locked),.hdmi_slot(result_hdmi_slot),
   .hdmi_id(result_hdmi_id),.hdmi_epoch(result_hdmi_epoch),
   .net_request(1'b0),.net_release(1'b0),.net_grant(),.net_locked(),.net_slot(),.net_id(),.net_epoch(),
   .published(result_published),.dropped(),.protocol_error(result_pool_fault));
  wire g_req,g_ready,g_valid,g_done;wire [27:0] g_addr;wire [4:0] g_len;
- geometry_gray_processor u_geometry(.clk(mem_clk),.rst_n(mem_reset_n),.start(geo_start),
+ // UART parser payload precedes both CRC bytes. Predecode only READ selectors;
+ // the MCU still snapshots fresh values on its unchanged acceptance edge.
+ geometry_gray_processor #(.PREDECODE_READ(1)) u_geometry(.clk(mem_clk),.rst_n(mem_reset_n),.start(geo_start),
+  .display_original(frame_view_packed[0]),.active_words_out(geo_active_words),
+  .active_model_out(geo_active_model),.active_enhance_out(geo_active_enhance),
   .source_base(28'h3000000+({26'b0,h_slot}<<22)),.result_base(result_base),
   .source_id(h_id),.epoch(epoch),.context_valid(mcu_context_valid),.session_id(mcu_session_id),
   .cmd_valid(geo_cmd_valid),.cmd(geo_cmd),.payload(geo_payload),.code(processor_code),.reply(processor_reply),
@@ -177,11 +238,11 @@ module raw8_geometry_core #(parameter WARMUP_FRAMES=10)(
  // ordered result fence; slow correction never overwrites either reader.
  always @(posedge mem_clk or negedge mem_reset_n)
   if(!mem_reset_n)begin
-   process_state<=0;processed_publication<=0;result_request<=0;h_req<=0;h_release<=0;geo_start<=0;
+   process_state<=0;processed_publication<=0;result_request<=0;h_req<=0;h_release<=0;geo_start<=0;result_commit<=0;result_good<=0;
    completed_id<=0;completed_epoch<=0;completed_version<=0;completed_angle<=0;
    completed_angle_time<=0;completed_angle_seq<=0;completed_angle_session<=0;completed_angle_valid<=0;
   end else begin
-   h_release<=0;geo_start<=0;
+   h_release<=0;geo_start<=0;result_commit<=0;
    case(process_state)
     0:if(published!=processed_publication && !geo_fault && !write_arb_fault && !result_pool_fault)begin
      result_request<=1;process_state<=1;
@@ -193,14 +254,18 @@ module raw8_geometry_core #(parameter WARMUP_FRAMES=10)(
      h_req<=0;processed_publication<=h_publication;geo_start<=1;process_state<=3;
     end
     3:if(geo_done)begin
+     result_good<=geo_good && !geo_fault && !write_arb_fault;
      if(geo_good && !geo_fault && !write_arb_fault)begin
       completed_id<=h_id;completed_epoch<=h_epoch;completed_version<=geo_frame_version;
       completed_angle<=angle_value;completed_angle_time<=angle_time;
       completed_angle_seq<=angle_seq;completed_angle_session<=angle_session;
       completed_angle_valid<=angle_valid && angle_epoch==h_epoch;
      end
-     h_release<=1;process_state<=0;
+     process_state<=4;
     end
+    4:if(marker_ready)begin result_commit<=1;process_state<=5;end
+    // Pool and metadata consume result_commit together before source release.
+    5:begin h_release<=1;process_state<=0;end
    endcase
   end
  // Purpose: reserve MCU posture metadata without uncalibrated automatic
@@ -244,11 +309,15 @@ module raw8_geometry_core #(parameter WARMUP_FRAMES=10)(
   .in_data(rdata),.in_valid(n_dma_valid),.in_ready(n_queue_ready),.wr_used(n_used),
   .rd_clk(mem_clk),.rd_reset_n(mem_reset_n),.out_data(n_word),
   .out_valid(n_word_valid),.out_ready(n_word_ready));
- wire pixel_req,pixel_release;reg pixel_ack,pixel_release_ack;
  raw8_hdmi_consumer #(.PROCESSED(1)) u_display(.clk(pixel_clk),.rst_n(pixel_reset_n),
   .frame_ack(pixel_ack),.release_ack(pixel_release_ack),.frame_req(pixel_req),.release_req(pixel_release),
   .word_data(h_word),.word_valid(h_word_valid),.word_ready(h_word_ready),
-  .hs(hs),.vs(vs),.de(de),.rgb(rgb),.underflows(underflows));
+  .hs(display_hs),.vs(display_vs),.de(display_de),.rgb(display_rgb),.underflows(underflows));
+ geometry_marker_overlay u_overlay(.clk(pixel_clk),.rst_n(pixel_reset_n),
+  .coordinates(pixel_marker_coordinates),.visible_mask(pixel_marker_visible),
+  .enabled(pixel_view_packed[1]),.size(pixel_view_packed[13:8]),
+  .in_rgb(display_rgb),.in_hs(display_hs),.in_vs(display_vs),.in_de(display_de),
+  .rgb(rgb),.hs(hs),.vs(vs),.de(de));
  (* syn_preserve=1 *) reg hreq_meta,hreq_sync,hrel_meta,hrel_sync;
  reg [2:0] hstate;reg h_finished;
  always @(posedge mem_clk or negedge mem_reset_n)
@@ -260,7 +329,10 @@ module raw8_geometry_core #(parameter WARMUP_FRAMES=10)(
    if(h_dma_done)h_finished<=1;
    case(hstate)
     0:if(hreq_sync)begin result_hdmi_request<=1;hstate<=1;end
-    1:if(result_hdmi_grant)begin result_hdmi_request<=0;pixel_ack<=1;h_start<=1;h_finished<=0;hstate<=2;end
+    1:if(result_hdmi_grant)begin result_hdmi_request<=0;h_start<=1;h_finished<=0;hstate<=5;end
+    // The held marker bus must be acknowledged in pixel_clk BEFORE the image
+    // lease ack; this forbids using a new framebuffer with an old overlay.
+    5:if(metadata_lease_ready)begin pixel_ack<=1;hstate<=2;end
     2:if(!hreq_sync)begin pixel_ack<=0;hstate<=3;end
     3:if(hrel_sync && h_finished)begin result_hdmi_release<=1;pixel_release_ack<=1;hstate<=4;end
     4:if(!hrel_sync)begin pixel_release_ack<=0;hstate<=0;end

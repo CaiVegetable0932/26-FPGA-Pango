@@ -54,8 +54,16 @@ module geometry_map_engine #(parameter WIDTH=1920,HEIGHT=1080)(
   case(state)
    0:if(request_valid && request_ready)begin
     px<=ox;py<=oy;
-    tx0<=a00*$signed({1'b0,ox});tx1<=a01*$signed({1'b0,oy});
-    ty0<=a10*$signed({1'b0,ox});ty1<=a11*$signed({1'b0,oy});state<=1;
+    // Purpose: bypass is wiring and edge clamping, not lens arithmetic.
+    // Output bits and backpressure retention remain identical; latency drops.
+    if(model==0)begin
+     result_valid<=1;source_valid<=1;frac_x<=0;frac_y<=0;
+     x0<=ox;x1<=ox==WIDTH-1?ox:ox+1'b1;
+     y0<=oy;y1<=oy==HEIGHT-1?oy:oy+1'b1;
+    end else begin
+     tx0<=a00*$signed({1'b0,ox});tx1<=a01*$signed({1'b0,oy});
+     ty0<=a10*$signed({1'b0,ox});ty1<=a11*$signed({1'b0,oy});state<=1;
+    end
    end
    1:begin xwide<=tx0+tx1+a02;ywide<=ty0+ty1+a12;state<=2;end
    2:begin

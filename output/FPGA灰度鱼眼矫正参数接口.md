@@ -22,7 +22,7 @@ RAW 槽基址为 `0x03000000/0x03400000/0x03800000`。灰度结果槽为 `0x0400
 
 ## UART 报文
 
-沿用 [MCU 通信协议 V1](FPGA_MCU通信协议V1.md) 的 `55 AA`、版本 1、命令、seq、payload_length、小端负载及 CRC16 CCITT FALSE。仅支持本工程声明的 CAPS 位 7（0x80）；旧顶层默认不开放这些命令。复用 CP2102 的当前会话，不代表已确认外置 MCU 独立 UART 的实际接线。
+沿用 [MCU 通信协议 V1](FPGA_MCU通信协议V1.md) 的 `55 AA`、版本 1、命令、seq、payload_length、小端负载及 CRC16 CCITT FALSE。几何参数命令要求 CAPS 位 7（0x80）；新增显示/标记功能另需位 8（0x100），必须分别查询，旧顶层默认不开放。复用 CP2102 的当前会话，不代表已确认外置 MCU 独立 UART 的实际接线。
 
 请求负载的公共前缀为 epoch LE64 和 session LE32，共 12 字节。响应仍为 32 字节，前 20 字节保持原码、命令和会话上下文，后 12 字节为下表扩展。所有写操作先经过 CRC、长度、epoch、session、回复队列容量检查。
 
@@ -32,7 +32,8 @@ RAW 槽基址为 `0x03000000/0x03400000/0x03800000`。灰度结果槽为 `0x0400
 | 0x31 WORD | 24 | version u32、index u32、value s32 | index u32、value s32、影子版本 u32 |
 | 0x32 COMMIT | 16 | version u32 | 当前活动版本 u32、首次生效源帧号 u64 |
 | 0x33 STATUS | 12 | 无 | 当前活动版本 u32、首次生效源帧号 u64 |
-| 0x34 READ | 20 | index u32、bank u32（0 影子、1 活动） | index u32、value u32、对应版本 u32 |
+| 0x34 READ | 20 | index u32、bank u32（0 影子、1 活动、2 显示快照） | index u32、value u32、对应版本 u32 |
+| 0x35 VIEW（需 0x100） | 24 | revision u32、flags u32、diameter u32 | 请求 revision、已显示 revision、已显示 flags\|diameter<<8，均 u32 |
 
 BEGIN 的 model 只允许 0/1/2，enhance 只允许 0/1，尺寸固定 1920×1080，reserved 必须为零。版本须非零、递增且不回绕。BEGIN 清空写入位图；14 字完整写入且字段有效才可 COMMIT。COMMIT 的 ACK 仅确认构建请求或暂存，不表示已应用。硬件构表完成后等待下一处理帧边界，原子切换整组参数和表银行，记录该源帧号。
 
@@ -49,6 +50,50 @@ READ 0～13 为参数。14 为状态：bits1:0 model、bit2 enhance、bit3 构�
 READ 是逐次事务，不是跨多个寄存器的原子快照。需要关联多个诊断字时应前后复读版本和帧号并拒绝变化的组；即便读取到板内结果身份，普通 HDMI 采集帧仍为 null/unverified，不能按到达顺序与网口配对。
 
 会话改变后保留的活动参数及首次应用帧号属于历史状态；回复公共前缀描述当前 UART 会话，不会把历史首次应用自动改标成当前 epoch。新会话需要新的按帧生效证明时，应提交递增的新版本，并结合最近完成结果的版本、源帧号及 epoch 核对，不能只凭历史 STATUS 或同版本重复 ACK 证明新帧已产生。
+
+## 2026-10-07：FPGA 原图/矫正图与 20 点标记
+
+本增量不改变 0x30～0x33 的负载、PRAW V1 字节或现有 RAW/结果槽布局。
+20 点原生整数坐标、编号、RGB 以 `host/web/fisheye-preview.js::markerPixels()`
+为权威，HDMI 标记由 FPGA 在显示末端叠加，不写回 RAW、采样源或归档。
+源点到输出点采用正向映射；整幅采样采用输出到源的逆映射，不能相互混用。
+越界点不钳到边缘，掩码第 i 位为 0 表示编号 i+1 被裁剪。
+当前前向标记支持鱼眼、旁路和无切向项的 Brown；不支持的模型/奇异映射
+通过状态明确报告，不能使用软件计算结果替代板端元数据。
+
+VIEW flags bit0=原图、bit1=显示标记，其余位必须为 0；diameter=4～32，
+默认 10。默认矫正模式、标记隐藏。原图仍是同一灰度 ISP 阶段，只绕过此次几何
+映射，不等于未经处理的 S0。revision 非零递增不回绕；同版本同字段为重复，
+不同字段为冲突。控制不重启摄像头/网络/采集端，在处理帧边界锁定，随结果槽
+传递并在 HDMI 帧边界生效；ACK 本身不代表已显示。
+
+READ bank2 头部和记录定义：
+
+| index | u32 值 |
+| --- | --- |
+| 0 | magic `0x4d4b5231` |
+| 1 | HDMI 实际显示的 view revision |
+| 2 | 实际 flags \| (diameter<<8) |
+| 3 | HDMI 实际显示的几何参数版本 |
+| 4 | 20 位可见掩码，高 12 位为 0 |
+| 5 | metadata generation；首次有效显示或元数据改变时递增，不是源帧号 |
+| 6 | bit0 ready、bit1 映射失败、bit2 LUT 失败、bit3 模型不支持 |
+| 16+5*i + 0 | 编号 i+1 的源坐标：x 低 16 位、y 高 16 位 |
+| 16+5*i + 1/2 | 目的 x/y：有符号 Q12；visible=0 时不得绘到边缘 |
+| 16+5*i + 3/4 | RGB24（高 8 位 0）/visible bit0（其余位 0） |
+
+每次 bank2 READ 的扩展 version 是该快照的 HDMI 参数版本。主机在 100 个
+记录字前后各读 7 个头字，确认两组相同、所有 READ 版本一致且匹配 index3，
+status=1、generation 非零；最多重试 3 次，否则清除叠加并报告未确认。
+114 次事务在 115200/8N1 下纯线速约 0.713 秒，不逐帧请求。
+配置不变的重复显示不递增 generation，避免串口永远读不到一致快照。
+
+网口继续是 RENH v2 增强 Bayer RAW8，不是未经处理 S0；标记不进入负载。
+网页只用 FPGA 回读的源坐标/颜色画独立层；HDMI 不再软件重复叠加。
+计算机/Jetson GPU 矫正保留为独立参考，不冒充 FPGA 输出。
+无可信 HDMI 像素身份时 frame_id 仍为 null/unverified，不按到达顺序配对。
+Web 操作与错误处理见 [上位机接口](../host/docs/FPGA几何与显示Web接口.md)；
+离线验证、时序及待板测状态仅以 [本轮记录](../fpga/reports/geometry_pipeline_release_20261006.md) 为准。
 
 ## 下发流程
 
