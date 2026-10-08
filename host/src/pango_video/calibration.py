@@ -93,7 +93,8 @@ def fit_model(config, training, validation, size):
     cv, np = vision()
     obj = object_points(config)
     points = [np.asarray(p, np.float32).reshape(-1, 1, 2) for p in training]
-    if config["model"] == "fisheye_equidistant":
+    # Earlier local groups used the restricted pinhole model and lack a model key.
+    if config.get("model", "pinhole_k1_k2_p1_p2") == "fisheye_equidistant":
         # Purpose: keep OpenCV's four fisheye coefficients distinct from the
         # FPGA's unsupported four-coefficient pinhole register interpretation.
         obj64 = np.asarray(obj, np.float64).reshape(-1, 1, 3)
@@ -223,6 +224,9 @@ class CalibrationStore:
         supplied = request.get("metadata", {})
         if not isinstance(supplied, dict):
             raise ValueError("元数据必须是 JSON 对象")
+        # Known synthetic or corrected inputs are rejected even for manual uploads.
+        from .calibration_source import check_source
+        check_source(supplied)
         payload = base64.b64decode(request.get("payload", ""), validate=True)
         if not 0 < len(payload) <= 32 * 1024 * 1024:
             raise ValueError("图像数据大小不允许")
@@ -240,11 +244,9 @@ class CalibrationStore:
                     bayer = request.get("bayer_code")
                     if type(bayer) is not int or bayer not in (1, 2, 3, 4) or len(payload) != width * height:
                         raise ValueError("RAW8 Bayer 相位或字节长度无效")
-                    # Purpose: OpenCV's RGB conversion aliases are reversed
-                    # relative to our first-pixel Bayer labels; this mapping
-                    # was checked against all four 2x2 synthetic color cells.
-                    code = {1: cv.COLOR_BayerBG2RGB, 2: cv.COLOR_BayerGB2RGB,
-                            3: cv.COLOR_BayerGR2RGB, 4: cv.COLOR_BayerRG2RGB}[bayer]
+                    # Four-letter codes explicitly match protocol Bayer phases.
+                    code = {1: cv.COLOR_BayerRGGB2RGB, 2: cv.COLOR_BayerGRBG2RGB,
+                            3: cv.COLOR_BayerGBRG2RGB, 4: cv.COLOR_BayerBGGR2RGB}[bayer]
                     rgb = cv.cvtColor(np.frombuffer(payload, np.uint8).reshape(height, width), code)
                 else:
                     if len(payload) != width * height * 3:
@@ -287,6 +289,10 @@ class CalibrationStore:
                           source_metadata=supplied, manual=manual, captured=datetime.now(timezone.utc).isoformat(),
                           name=str(request.get("name", "capture"))[:256], corners=[], enabled=False,
                           reason="", source_signature=signature, decoded_from_compressed=(kind == "image"))
+            if kind == "raw8":
+                sample.update(original_file="image.raw", original_sha256=sample["upload_sha256"],
+                              conversion="OpenCV bilinear Bayer to RGB at native resolution; no geometry transform",
+                              s1_equivalence="unverified")
             reasons = []
             if kind == "raw8" and (supplied.get("source_mode") != "hardware_unverified" or
                                   supplied.get("pixel_format") != "RAW8" or
@@ -378,9 +384,11 @@ class CalibrationStore:
             version = uuid.uuid4().hex
             # Purpose: archive operator-measured distance per frame without
             # pretending that it constrains the OpenCV intrinsic fit.
-            distances = [{"sample_id":s["id"], "distance_mm":s["manual"]["distance_mm"],
-                          "uncertainty_mm":s["manual"]["distance_uncertainty_mm"]} for s in selected]
-            result.update(version=version, dataset_id=dataset, model=state["config"]["model"],
+            # Legacy evidence has no manual measurements; keep them null, never invent values.
+            distances = [{"sample_id":s["id"], "distance_mm":(s.get("manual") or {}).get("distance_mm"),
+                          "uncertainty_mm":(s.get("manual") or {}).get("distance_uncertainty_mm")} for s in selected]
+            model = state["config"].get("model", "pinhole_k1_k2_p1_p2")
+            result.update(version=version, dataset_id=dataset, model=model,
                           pixel_center="integer (0,0)", image_size=list(size), config=state["config"],
                           opencv=cv.__version__, created=datetime.now(timezone.utc).isoformat(),
                           status="candidate_unverified", measurement_ready=False, hardware_applied=False,
@@ -388,7 +396,8 @@ class CalibrationStore:
                           warnings=["人工距离仅作实验记录，未作为内参拟合约束", "来源与 S1 几何等价性需独立验证",
                                     "重投影误差不等同于独立网格直线度或有效域验收"] +
                                    (["鱼眼系数不兼容当前 FPGA 针孔 k1/k2/p1/p2 寄存器，禁止直接下发"]
-                                    if state["config"]["model"] == "fisheye_equidistant" else []),
+                                    if model == "fisheye_equidistant" else []) +
+                                   (["旧样本缺少人工测距记录，相关值保持 null"] if any(d["distance_mm"] is None for d in distances) else []),
                           manual_distances=distances,
                           samples=state["samples"], training_ids=[s["id"] for s in train],
                           validation_ids=[s["id"] for s in valid])

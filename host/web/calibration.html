@@ -54,8 +54,9 @@
 <!-- Purpose: freeze optical model and physical reference before collecting any images. -->
 <label>镜头模型<select name="model"><option value="fisheye_equidistant">鱼眼等距 k1～k4</option><option value="pinhole_k1_k2_p1_p2">针孔 k1/k2/p1/p2</option></select></label>
 <label>图卡类型<select name="pattern"><option value="chessboard">棋盘格（填写内角点数）</option><option value="circles">对称圆点（填写圆心数）</option><option value="asymmetric_circles">非对称圆点</option></select></label>
-<label>列数<input name="cols" type="number" min="3" max="30" value="9" required></label><label>行数<input name="rows" type="number" min="3" max="30" value="6" required></label>
-<label>实测格长 / 间距 mm<input name="square_mm" type="number" min="0.001" step="any" placeholder="请实测填写" required></label>
+<!-- User-confirmed physical board: 22x22 squares, 21x21 internal corners, 10 mm pitch. -->
+<label>内角点列数<input name="cols" type="number" min="3" max="30" value="21" required></label><label>内角点行数<input name="rows" type="number" min="3" max="30" value="21" required></label>
+<label>实测格长 / 间距 mm<input name="square_mm" type="number" min="0.001" step="any" value="10" required></label>
 <label>图卡编号<input name="board_id" required></label><label>图卡平整度记录<input name="flatness" placeholder="填写检查结果" required></label>
 <label>相机编号<input name="camera_id" required></label><label>镜头编号<input name="lens_id" required></label><label>镜头焦点设置<input name="lens_focus" required></label>
 <label>距离测量参考面<input name="distance_reference" placeholder="如：镜头前端机械平面；注明与光心的未知偏移" required></label>
@@ -76,6 +77,8 @@
 <label>龙门架 Y mm<input name="gantry_y_mm" type="number" step="any" placeholder="可留空"></label>
 <label>龙门架 Z mm<input name="gantry_z_mm" type="number" step="any" placeholder="可留空"></label>
 </div><label>本张样本备注<textarea name="notes" placeholder="例如测距方法、光源变化、遮挡和图卡姿态"></textarea></label></fieldset>
+<!-- Import original server-owned captures, preserving the current sample's manual measurements. -->
+<h3>当前上位机已保存原图</h3><div class="row"><label>完整 RAW8 / RGB888<select id="host-records"><option value="">加载记录…</option></select></label><button id="refresh-records">刷新原图列表</button><button id="import-record">选入此原图并检测</button></div><p class="muted">选择完整原图，填写其对应的人工测量信息。TEST / MOCK 图源及已声明的 S2/S3 结果不能用于镜头标定。</p>
 <div class="twocol"><div><h3>采集卡 / 摄像头</h3><div class="row"><select id="device" aria-label="视频设备"></select><button id="authorize">授权并读取设备</button><button id="open">打开预览</button><button id="close">关闭设备</button></div>
 <video id="video" muted playsinline></video><p id="device-status">尚未打开设备</p><button id="capture">保存当前标定图</button><p class="muted">按视频固有分辨率保存 RGB，不按页面缩放尺寸截屏。无数据或轨道静音时拒绝拍照。</p></div>
 <div><h3>导入板端快照 / 本地图像</h3><label>单张 PNG / JPEG / 无填充 RGB888<input id="files" type="file" accept=".png,.jpg,.jpeg,.rgb"></label>
@@ -85,5 +88,5 @@
 <img id="preview" alt="选中图像的角点叠加预览" hidden></div></div></section>
 <section><h2>网口完整 RAW8 帧</h2><p>从本机正在运行的接收器读取最新完整帧，保存原始 .raw 与派生 RGB；源帧号仅作接收端声明，不自动验证 S1 身份或 HDMI 配对。</p><button id="capture-network">抓取网口当前帧并检测角点</button></section>
 <section><h2>3 · 样本检查</h2><p id="counts">尚未选择标定组</p><p>点击图像查看角点。剔除只影响本次拟合，原图和理由继续保留。</p><div class="table-wrap"><table><thead><tr><th>图像</th><th>分组 / 尺寸</th><th>检测 / 原因</th><th>操作</th></tr></thead><tbody id="samples"></tbody></table></div></section>
-<section><h2>4 · 求解与导出</h2><button id="solve">按所选模型求解候选内参与畸变</button><p>输出含 K/D、逐图误差、人工测距、4×3 覆盖统计、模式说明、原图清单与哈希。独立验证只估计每张图的姿态，不更新内参与畸变参数。</p><div id="downloads"></div><pre id="result"></pre><p class="muted">结果为候选参数。独立网格直线度、有效域、S1 等价性与板端下发回读需另行验证；上方调参为单独的 PC 软件参考预览。</p></section>
+<section><h2>4 · 求解与导出</h2><button id="solve">按所选模型求解候选内参与畸变</button><p>输出含 K/D、逐图误差、人工测距、4×3 覆盖统计、模式说明、原图清单与哈希。独立验证只估计每张图的姿态，不更新内参与畸变参数。</p><pre id="parameters" hidden></pre><div id="downloads"></div><details><summary>完整求解报告</summary><pre id="result"></pre></details><p class="muted">结果为候选参数。独立网格直线度、有效域、S1 等价性与板端下发回读需另行验证；上方调参为单独的 PC 软件参考预览。</p></section>
 </main></body></html>

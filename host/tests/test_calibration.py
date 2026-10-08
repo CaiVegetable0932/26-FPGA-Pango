@@ -251,6 +251,16 @@ class CalibrationTests(unittest.TestCase):
         path = self.store.artifact(self.dataset, None, "json", result["version"])
         self.assertTrue(path.exists())
         self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), self.store.read(self.dataset)["results"][-1]["sha256"])
+        # Older local groups lack a model/manual schema. They retain pinhole semantics
+        # and null distances, without rewriting archived measurements or image bytes.
+        legacy = self.store.read(self.dataset)
+        legacy["config"].pop("model")
+        for sample in legacy["samples"]:
+            sample.pop("manual")
+        (self.store.folder(self.dataset) / "dataset.json").write_text(json.dumps(legacy), encoding="utf-8")
+        legacy_result = self.store.solve(self.dataset)
+        self.assertEqual(legacy_result["model"], "pinhole_k1_k2_p1_p2")
+        self.assertTrue(all(item["distance_mm"] is None for item in legacy_result["manual_distances"]))
         evidence = self.store.artifact(self.dataset, result["training_ids"][0], "image.rgb")
         evidence.write_bytes(b"tamper")
         with self.assertRaisesRegex(ValueError, "校验失败"):

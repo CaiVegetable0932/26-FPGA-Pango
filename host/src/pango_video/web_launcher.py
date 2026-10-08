@@ -43,12 +43,13 @@ def open_page(url):
         print("[Pango] Browser could not be opened. Open the URL above manually.", flush=True)
 
 
-def open_when_ready(port, cancelled, timeout=5.0):
+def open_when_ready(port, cancelled, timeout=5.0, *, page=""):
+    """Open the chosen local route after readiness without changing capture ownership."""
     deadline = time.monotonic() + timeout
     while not cancelled.is_set() and time.monotonic() < deadline:
         if is_same_instance(port, timeout=0.5):
             if not cancelled.is_set():
-                open_page(f"http://127.0.0.1:{port}/")
+                open_page(f"http://127.0.0.1:{port}/{page}")
             return
         cancelled.wait(0.1)
     if not cancelled.is_set():
@@ -59,12 +60,13 @@ def _interrupt(signum, frame):
     raise KeyboardInterrupt
 
 
-def run(port=8765, *, open_browser=True):
+def run(port=8765, *, open_browser=True, page=""):
+    """Start or reuse the latest workbench and select its initial page."""
     try:
         server = LocalServer(port)
     except (OSError, ValueError) as error:
         if port and is_same_instance(port):
-            url = f"http://127.0.0.1:{port}/"
+            url = f"http://127.0.0.1:{port}/{page}"
             print(f"[Pango] Already running from this checkout: {url}", flush=True)
             print("[Pango] Reusing the existing service and capture session.", flush=True)
             if open_browser:
@@ -82,7 +84,7 @@ def run(port=8765, *, open_browser=True):
     try:
         if threading.current_thread() is threading.main_thread():
             old_term = signal.signal(signal.SIGTERM, _interrupt)
-        print(f"Pango Web UI: http://127.0.0.1:{server.server_port}/", flush=True)
+        print(f"Pango Web UI: http://127.0.0.1:{server.server_port}/{page}", flush=True)
         print(f"[Pango] Python {sys.version.split()[0]}; capture starts only from the page.", flush=True)
         print("[Pango] Keep this terminal open. Press Ctrl+C here to stop the service safely.", flush=True)
         # Saved physical setup is restored; probe cold/warm state before boot.
@@ -94,6 +96,7 @@ def run(port=8765, *, open_browser=True):
                 server.board_link._set("error", str(error))
         if open_browser:
             threading.Thread(target=open_when_ready, args=(server.server_port, cancelled),
+                             kwargs={"page": page},
                              name="pango-browser", daemon=True).start()
         server.serve_forever(poll_interval=0.2)
     except KeyboardInterrupt:
@@ -121,7 +124,10 @@ def main(argv=None):
                         help="loopback HTTP port (default: 8765; 0 chooses a free port)")
     parser.add_argument("--no-browser", action="store_true",
                         help="run/reuse the service without opening a browser")
+    # Only fixed local routes are accepted; this cannot launch an external URL.
+    parser.add_argument("--page", choices=("", "calibration"), default="",
+                        help="initial workbench page")
     args = parser.parse_args(argv)
     if not 0 <= args.port <= 65535:
         parser.error("HTTP port must be between 0 and 65535")
-    return run(args.port, open_browser=not args.no_browser)
+    return run(args.port, open_browser=not args.no_browser, page=args.page)

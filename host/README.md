@@ -12,6 +12,15 @@
 
 2026-10-02：Linux/Jetson 环境与本地标定工作台合并。Linux 提交 `931f2da6` 的历史 Jetson Ubuntu 22.04 ARM64 验证（77 项 Python、11 项前端像素及桌面浏览器检查）见[本机环境配置](docs/本机环境配置.md)和[原验证报告](reports/environment_20261002/README.md)，不代表合并版本已在 Jetson 实板复验。合并版本的 Windows/Linux 软件回归见[合并报告](reports/host_linux_merge_20261002/README.md)。已有 Jetson 环境更新后先执行 `source host/scripts/env.sh` 和 `python host/scripts/setup_calibration.py` 补齐标定依赖，再运行 `sh host/scripts/start_web.sh`。
 
+## 简单标定入口（2026-10-08）
+
+Windows 双击 `scripts/start_calibration.cmd`；Linux 使用
+`sh host/scripts/start_web.sh --page calibration`。默认图卡为用户确认的
+**21×21内角点、10 mm格长（22×22方格）**，支持选入已保存完整原图、抓取当前
+网络帧或采集卡拍照，直接查看按模型区分的内参与畸变系数。
+新增功能与新版鱼眼/针孔模型、人工测距及参考预览共用同一工作台；
+[简单标定使用说明](docs/标定图像使用说明.md)给出操作步骤和验证边界。
+
 ## 镜头与相机标定（开发中）
 
 本分支新增本机 `/calibration` 工作台：手动记录镜头—图卡实测距离及其参考面、图卡尺寸、镜头/相机/焦点、光照、曝光、云台角度和龙门架位置；支持网口完整 RAW8、采集卡 RGB 和图像导入，分别保存原始证据与派生角点图。OpenCV 提供鱼眼等距模型及受限针孔模型的候选拟合和独立验证；鱼眼系数**不兼容**当前 FPGA 针孔寄存器，不会自动下发或宣称板端完成矫正。安装可选依赖：`python host/scripts/setup_calibration.py`。使用边界与步骤见[标定工作台](docs/标定工作台.md)。

@@ -23,6 +23,28 @@
   function link(label,url){const n=document.createElement("a");n.textContent=label;n.href=url;n.download="";return n;}
   function artifact(sample,file,version){return "/api/calibration/artifact?"+new URLSearchParams({dataset:current,sample:sample||"",file,...(version?{version}: {})});}
   function group(){const g=sets.find(g=>g.id===current);if(!g)throw Error("请先创建或选择标定组");return g;}
+  // Archive selection passes a server-owned key and does not load display previews.
+  async function refreshRecords(){
+    const result=await api("/api/calibration/sources"),select=$("host-records"),previous=select.value;
+    select.replaceChildren(option("",result.items.length?"请选择已保存原图":"暂无完整原图，可重新拍照"));
+    for(const item of result.items){
+      const n=option(item.key,`${item.width}×${item.height} ${item.pixel_format} · ${item.key}${item.calibration_reason?" · "+item.calibration_reason:""}`);
+      n.disabled=!item.calibration_allowed;select.append(n);
+    }
+    select.value=previous;
+  }
+  function showSample(sample){
+    $("preview").src=artifact(sample.id,"corners.png");$("preview").hidden=false;
+    message(sample.eligible?"原始图与角点已保存，请继续变换位置、距离和倾角。":"图像已保留："+sample.reason,!sample.eligible);
+  }
+  // Optical model controls coefficient names: fisheye k3/k4 are never labelled p1/p2.
+  function showResult(result){
+    const K=result.K,f=n=>Number(n).toPrecision(9),fish=result.model==="fisheye_equidistant";
+    const names=fish?["k1","k2","k3","k4"]:["k1","k2","p1","p2"];
+    $("parameters").hidden=false;
+    $("parameters").textContent=`模型：${fish?"鱼眼等距（不兼容当前 FPGA 针孔寄存器）":"针孔 k1/k2/p1/p2，k3=0"}\n分辨率：${result.image_size.join(" × ")}\nfx=${f(K[0][0])}  fy=${f(K[1][1])}  cx=${f(K[0][2])}  cy=${f(K[1][2])}\n${result.D.map((d,i)=>names[i]+"="+f(d)).join("  ")}\n拟合 RMS：${f(result.rms_px)} px\n独立验证 RMS（逐图）：${result.validation_errors_px.map(f).join(", ")} px\n状态：候选参数 / 板端尚未应用`;
+    const summary={...result};delete summary.samples;$("result").textContent=JSON.stringify(summary,null,2);
+  }
   // Purpose: capture an explicit per-image operator measurement rather than
   // reusing a nominal setup distance after the chart/camera moves.
   function manual(){
@@ -53,6 +75,7 @@
   }
   function render(){
     $("samples").replaceChildren();$("downloads").replaceChildren();$("result").textContent="";
+    $("parameters").hidden=true;
     const g=sets.find(g=>g.id===current);
     // Purpose: expose saved exact RGB samples, including detection failures,
     // to manual review without promoting them into the fitted data set.
@@ -76,13 +99,16 @@
       });actions.append(b);}
       $("samples").append(row);
     }
-    for(const r of g.results){$("downloads").append(link("参数与逐图报告 "+r.version.slice(0,8),artifact(null,"json",r.version)),link("SHA-256",artifact(null,"sha256",r.version)));}
+    for(const r of g.results){
+      const view=document.createElement("button");view.textContent="查看参数 "+r.version.slice(0,8);
+      view.onclick=()=>action(async()=>showResult(await api(artifact(null,"json",r.version))));
+      $("downloads").append(view,link("下载 JSON",artifact(null,"json",r.version)),link("SHA-256",artifact(null,"sha256",r.version)));
+    }
   }
   function base64(bytes){let text="";for(let i=0;i<bytes.length;i+=32768)text+=String.fromCharCode(...bytes.subarray(i,i+32768));return btoa(text);}
   async function saveImage(data){
     const sample=await api("/api/calibration/image",{dataset:current,role:$("role").value,manual:manual(),...data});
-    await refresh();$("preview").src=artifact(sample.id,"corners.png");$("preview").hidden=false;
-    message(sample.eligible?"原始图与角点已保存，请继续变换位置、距离和倾角。":"图像已保留："+sample.reason,!sample.eligible);
+    await refresh();showSample(sample);
   }
   $("config").addEventListener("submit",event=>{event.preventDefault();action(async()=>{
     const config=Object.fromEntries(new FormData($("config")));
@@ -93,6 +119,12 @@
   });});
   $("datasets").addEventListener("change",()=>{current=$("datasets").value;$("preview").hidden=true;render();});
   on("refresh",async()=>{await refresh();await controller.refresh();});
+  on("refresh-records",refreshRecords);
+  on("import-record",async()=>{
+    group();const key=$("host-records").value;if(!key)throw Error("请选择完整原图");
+    const context=manual();message("读取完整原图并检测角点…");
+    const sample=await api("/api/calibration/record",{dataset:current,key,role:$("role").value,manual:context});await refresh();showSample(sample);
+  });
   on("authorize",async()=>{await controller.authorize();});
   on("open",async()=>{controller.configure($("device").value);await controller.open();});
   on("close",async()=>controller.close());
@@ -130,21 +162,12 @@
   // Purpose: import only a current, complete local receiver frame and retain
   // exact RAW8 bytes; derived RGB never becomes a claimed FPGA S1 snapshot.
   on("capture-network",async()=>{
-    group();manual();message("读取网口最新完整 RAW8 帧…");
-    const response=await fetch("/api/frame",{cache:"no-store"});
-    if(response.status===204)throw Error("接收器没有新鲜完整帧；请先在实时采集页启动网口接收");
-    if(!response.ok)throw Error("网口帧读取失败："+response.status);
-    const meta=JSON.parse(response.headers.get("X-Frame-Info")||"null");
-    if(!meta||meta.pixel_format!=="RAW8"||meta.source_mode!=="hardware_unverified"||meta.transport_complete!==true)
-      throw Error("当前不是已完整接收的硬件 RAW8 帧，不可作为相机样本");
-    const bytes=new Uint8Array(await response.arrayBuffer());
-    if(bytes.length!==meta.width*meta.height||meta.row_stride!==meta.width)throw Error("RAW8 帧尺寸/行跨度不完整");
-    await saveImage({kind:"raw8",width:meta.width,height:meta.height,bayer_code:meta.bayer_code,
-      payload:base64(bytes),name:`网口源帧 ${meta.frame_id}`,metadata:meta});
+    group();const context=manual();message("读取网口最新完整原图…");
+    const sample=await api("/api/calibration/live",{dataset:current,role:$("role").value,manual:context});await refresh();showSample(sample);
   });
   on("solve",async()=>{
     group();message("正在求解和验证，请稍候…");const result=await api("/api/calibration/solve",{dataset:current});await refresh();
-    const summary={...result};delete summary.samples;$("result").textContent=JSON.stringify(summary,null,2);
+    showResult(result);
     const coverage=document.createElement("div");coverage.className="coverage";coverage.setAttribute("aria-label","4×3 视场覆盖角点数");
     for(const count of result.coverage_4x3.flat()){const item=document.createElement("span");item.textContent=count+" 点";if(!count)item.className="empty";coverage.append(item);}
     $("downloads").append(coverage);message("候选参数已导出；来源、独立网格与板端应用仍需验证。");
@@ -154,7 +177,7 @@
   // Resume the previously opened card on navigation; the shared controller
   // releases this origin's other preview first and retains unverified identity.
   action(async()=>{
-    token=(await api("/api/session")).token;await refresh();
+    token=(await api("/api/session")).token;await refresh();await refreshRecords();
     if(controller.getState().supported){
       await controller.refresh();
       if(storage?.getItem("pango.capture.resume")==="1"&&controller.getState().selected)await controller.open();

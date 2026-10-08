@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import secrets
+import socket
 import threading
 from struct import Struct
 from urllib.parse import parse_qs, quote, urlsplit
@@ -14,6 +15,7 @@ from .cli import HOST_ROOT
 from .web_session import SessionError, WebSession
 from .record_store import safe_child, sample_metadata, archives, runs, report_file
 from .calibration import CalibrationStore
+from .calibration_source import saved_sources, saved_request, live_request
 from .board_link import BoardLink
 from .preview import preview_payload
 
@@ -51,9 +53,16 @@ def instance_identity():
 
 class LocalServer(ThreadingHTTPServer):
     daemon_threads = True
-    # TCP TIME_WAIT must not prevent a clean service restart. A second active
-    # listener remains forbidden: SO_REUSEPORT is not enabled, nor is UDP reuse.
-    allow_reuse_address = True
+    # POSIX may reuse TIME_WAIT, but Windows SO_REUSEADDR permits two active
+    # listeners. Exclusive Windows binding lets the launcher safely reuse only
+    # the existing service identified by its checkout instead of sharing a port.
+    allow_reuse_address = os.name != "nt"
+
+    def server_bind(self):
+        """Keep one owner per HTTP port on Windows, including external listeners."""
+        if os.name == "nt":
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
 
     def __init__(self, port=8765, session=None):
         self.session = session or WebSession()
@@ -131,7 +140,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.write(prefix.pack(len(metadata), len(pixels)) + metadata)
                 self.wfile.write(pixels)
                 after = info["key"]
-        except (BrokenPipeError, ConnectionResetError, TimeoutError):
+        except (ConnectionError, TimeoutError):
             pass  # Closing/hiding a browser view cancels only its preview.
 
     def _trusted(self, mutate=False):
@@ -187,6 +196,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(200,self.server.board_link.devices())
             if route == "/api/calibration":
                 return self._json(200,self.server.calibration.list())
+            if route == "/api/calibration/sources":
+                # Inventory only: opening this route never commissions hardware.
+                return self._json(200,dict(items=saved_sources(self.server.session.root)))
             if route == "/api/preview-stream":
                 return self._preview_stream(query)
             if route == "/api/calibration/artifact":
@@ -331,6 +343,12 @@ class Handler(BaseHTTPRequestHandler):
                 result = store.create(data.get("config"))
             elif route == "/api/calibration/image":
                 result = store.add(data.get("dataset"),data)
+            elif route in ("/api/calibration/record", "/api/calibration/live"):
+                # Freeze full server-owned pixels and attach the operator's per-image context.
+                request = (saved_request(self.server.session.root, data.get("key"), data.get("role", "train"))
+                           if route.endswith("/record") else live_request(self.server.session, data.get("role", "train")))
+                request["manual"] = data.get("manual")
+                result = store.add(data.get("dataset"), request)
             elif route == "/api/calibration/select":
                 result = store.select(data.get("dataset"),data.get("sample"),data.get("enabled"),data.get("reason"))
             elif route == "/api/calibration/solve":

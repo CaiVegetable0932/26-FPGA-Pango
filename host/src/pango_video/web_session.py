@@ -355,7 +355,10 @@ class WebSession:
                 return None
             if time.monotonic_ns() - self._frame.complete_ns > 1_000_000_000:
                 return None
-            return self._frame, frame_info(self._frame, self._run_id, self._config["source_mode"])
+            # Keep frame bytes and their device identity from one locked session snapshot.
+            info = frame_info(self._frame, self._run_id, self._config["source_mode"])
+            info["device_id"] = self._config["device_id"]
+            return self._frame, info
 
     def preview_running(self):
         """Check stream lifetime without copying metrics/history every frame."""
