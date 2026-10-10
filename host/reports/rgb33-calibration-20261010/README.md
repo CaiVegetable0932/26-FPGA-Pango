@@ -2,6 +2,8 @@
 
 2026-10-10。用户指定将本次本地标定数据与两份 PDF 同步 GitHub，供 Jetson 最终上位机使用。源文件来自 `D:/XDU/concept/26-FPGA-Pango/host/reports/rgb33-calibration-20261010/`，14 个交付原件按字节复制并核对 SHA-256，没有改写源报告。
 
+本目录 `.gitattributes` 仅对这14个原件禁用 Git 文本换行转换，确保 Windows 提交和 Linux/ARM64 拉取的字节哈希一致，不改变仓库忽略规则或系统 Git 配置。不要重新序列化 JSON/YAML 后仍沿用原哈希。
+
 ## 内容与范围
 
 - `report.pdf`：完整 33 视图标定报告，包含角点覆盖、误差和软件参考图。

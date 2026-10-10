@@ -1,0 +1,19 @@
+# Preserve original calibration artifacts byte-for-byte across Windows/ARM64.
+# Their SHA-256 provenance must not change through Git newline normalization.
+calibration-results.json -text
+fisheye_equidistant.json -text
+fisheye_equidistant.sha256 -text
+fisheye_equidistant.yml -text
+pinhole_k1_k2_p1_p2.json -text
+pinhole_k1_k2_p1_p2.sha256 -text
+pinhole_k1_k2_p1_p2.yml -text
+fisheye-preview-rgb33.json -text
+preview-coordinate-reference.json -text
+tuning-fov-sweep.json -text
+per-view-errors.csv -text
+delivery-verification.json -text
+report.pdf -text
+tuning-guide.pdf -text
+# Delivery instructions and the checksum list are authored portable text.
+SHA256SUMS text eol=lf
+README.md text eol=lf
