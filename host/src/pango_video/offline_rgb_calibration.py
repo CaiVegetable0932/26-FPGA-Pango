@@ -332,7 +332,8 @@ def run(args):
                   software_output_fov_deg=args.fov,
                   script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   independent_test_images=0, MTF50=None, SFR=None, hardware_latency_ms=None, hardware_fps=None,
-                  limitations=["11-view small-batch candidate; no new independent test set",
+                  # Keep the disclosure tied to the actual usable views as batches grow.
+                  limitations=[f"{len(accepted)}-view candidate; no new independent test set",
                                "LOO model selection reuses folds; reported validation is not an unbiased outer-test estimate",
                                "board flatness, spacing accuracy, focus stability, crop and S1 equivalence not physically verified",
                                "historical per-image manual distance is a claim and is not a calibration constraint",

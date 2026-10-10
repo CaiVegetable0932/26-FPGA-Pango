@@ -55,7 +55,7 @@ def sections(result):
         "留一验证每轮拿走一整张图，仅用其余图重拟合K/D，验证图仅估计姿态，再投影回原始畸变像素域。",
         "本批每个有效视图都恰好作为一次留出视图。合并留一RMS等于sqrt(各折RMS平方的平均值)，"
         "适用于本次各图点数相同的情况。选模使用了这些折，因此这些数值不是另外一个外层独立测试集的误差。",
-        f"仅{result['accepted_count']}张而非工作台建议25～40张加3张独立验证图。本脚本允许小批次诊断候选拟合，不降低工作台原有25/3门槛。"
+        f"本次{result['accepted_count']}张用于拟合；工作台建议25～40张拟合图并另留至少3张独立验证图。本脚本的候选拟合不降低工作台原有25/3门槛。"
         "本次没有额外独立测试图、绝对距离真值、直线度标准或MTF/SFR验收数据。"], tables=[]))
     blocks.append(dict(title="4. 两种模型的参数与误差", paragraphs=[
         f"K的焦距与主点单位是输入像素，畸变系数无量纲。参数适用于当前{result['image_size'][0]}×{result['image_size'][1]}模式；改变裁剪、焦点或镜头需重新标定。"
@@ -85,7 +85,8 @@ def sections(result):
                            number(m["training_errors_px"][i]), number(fold.get("rms_px")), fold.get("error", "完成")])
     blocks.append(dict(title="5. 逐图误差与视场覆盖", paragraphs=[
         "角点覆盖图在原始像素域绘制所有有效角点，不以板材白边面积替代角点覆盖。"
-        "图卡在视场中心附近覆盖较密；周边没有足够实测角点约束，因此全画幅外推尤其边缘不可直接认证。",
+        # Coverage changes with later batches; avoid reusing the first batch's distribution.
+        "覆盖分布见实际点云；角点稀疏或缺失区域缺少实测约束，全画幅外推尤其边缘不可直接认证。",
         "每图灰度分位数、全图Laplacian方差、棋盘凸包占比、检测耗时和实际点坐标保存在完整JSON。"
         "全图清晰度代理值受背景影响，不是MTF50或SFR，也没有设置任意的通过阈值。"],
         tables=[(["图", "模型", "训练RMS px", "留出RMS px", "状态"], errors)]))
@@ -179,7 +180,8 @@ def create_reports(result, folder, pdf=True):
             markdown.append("")
         figures = []
         if block["title"].startswith("2."):
-            figures = [("contact-sheet.png", "全部11张输入概览；这里只显示派生缩略图")]
+            # Batch size is measured from inputs, including any rejected evidence.
+            figures = [("contact-sheet.png", f"全部{len(result['inputs'])}张输入概览；这里只显示派生缩略图")]
         elif block["title"].startswith("5."):
             figures = [("coverage.png", "所有实际检测内角点的原始像素覆盖"), ("loo-errors.png", "每张图都曾被排除出其验证轮次的内参拟合")]
         elif block["title"].startswith("6."):
@@ -252,9 +254,9 @@ def create_pdf(result, folder, blocks, title):
                 ("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 5),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 5), ("TOPPADDING", (0, 0), (-1, -1), 5),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 5)]))
-            if headers == ["图", "中心深度 mm", "光心到中心 mm", "法线倾角 °"]:
+            if headers == ["图", "中心深度 mm", "光心到中心 mm", "法线倾角 °"] and len(rows) <= 14:
                 # The compact pose table is a separate diagnostic; keep all
-                # views together rather than leaving one isolated row behind.
+                # views together; larger batches must split with repeated headers.
                 story.append(KeepTogether([table, Spacer(1, 14)]))
             else:
                 story.extend([table, Spacer(1, 14)])
@@ -265,7 +267,7 @@ def create_pdf(result, folder, blocks, title):
             del story[section_start:]
             story.append(KeepTogether(group))
         if block["title"].startswith("2.") and (folder / "contact-sheet.png").exists():
-            story.extend(figure(folder / "contact-sheet.png", "11张输入的派生缩略图；完整原始字节独立归档。"))
+            story.extend(figure(folder / "contact-sheet.png", f"{len(result['inputs'])}张输入的派生缩略图；完整原始字节独立归档。"))
         if block["title"].startswith("5."):
             # Put the related scientific figures on a dedicated page so the
             # validation plot is not orphaned by the preceding pose table.
