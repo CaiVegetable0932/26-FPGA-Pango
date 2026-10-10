@@ -1,5 +1,7 @@
 # FPGA 几何与显示 Web 接口
 
+当前用户审校参数的独立记录、定点编码及 Jetson 下发步骤见 [Jetson 联调说明](Jetson与FPGA矫正参数联调.md)。静态记录不是板上活动参数证明，真正的应用版本以 UART 回读为准。
+
 此实现属于板端控制：主机编码参数、发送 UART、回读版本并在网口预览上绘制 FPGA 返回的源像素位置。计算机软件参考仍使用 `fisheye-preview.js` 的标准 `markerPixels/sourcePoint/destinationPoint`，算法未改动。
 
 ## 工作台

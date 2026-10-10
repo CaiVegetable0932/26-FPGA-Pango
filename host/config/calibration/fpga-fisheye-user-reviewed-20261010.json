@@ -1,0 +1,53 @@
+{
+  "schema": "pango.fpga-geometry-record.v1",
+  "preset_name": "FPGA 联调 · 用户审校 200°鱼眼参数",
+  "record_date": "2026-10-10",
+  "source_preset": "host/config/calibration/fisheye-user-reviewed-20261002.json",
+  "parameters_origin": "manual_approximate",
+  "processing_location": "fpga_configuration_target",
+  "parameters": {
+    "model": "fisheye_equidistant",
+    "reference_width": 1920,
+    "reference_height": 1080,
+    "fx": 770,
+    "fy": 752,
+    "cx": 945,
+    "cy": 553,
+    "k1": 0.121,
+    "k2": -0.118,
+    "k3": 0,
+    "k4": 0.036,
+    "output_fov_deg": 139
+  },
+  "fpga_encoding": {
+    "encoder": "host/src/pango_video/geometry_control.py::GeometryProfile.from_preset",
+    "model": 2,
+    "width": 1920,
+    "height": 1080,
+    "rotation_deg": 0,
+    "enhance": true,
+    "word_order": ["a00", "a01", "a02", "a10", "a11", "a12", "k1", "k2", "k3", "k4", "fx", "fy", "cx", "cy"],
+    "fractional_bits": [26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 16, 16, 16, 16],
+    "signed_words": [186970, 0, -179397325, 0, 186970, -100870096, 8120173, -7918846, 0, 2415919, 50462720, 49283072, 61931520, 36241408],
+    "purpose": "离线编码记录；CLI/Web 从 parameters 重新编码，不直接导入本数组。改变旋转、增强或参数后须重新生成记录。"
+  },
+  "target_firmware": {
+    "release": "fpga/release/geometry_20261007_e4dd5bbb06e6",
+    "sfc_sha256": "E4DD5BBB06E659C55ECB87B7A4F66385D0680A2D1C4DE46F838830B7AFA180A2",
+    "geometry_capability": "0x80",
+    "display_capability": "0x100",
+    "corrected_output": "HDMI",
+    "network_output": "fpga_enhanced_raw8_RENH_v2"
+  },
+  "verification": {
+    "encoding_generated": true,
+    "uploaded": false,
+    "applied_parameter_version": null,
+    "parameters_verified_on_board": false,
+    "hardware_image_verified": false,
+    "calibration_accuracy_verified": false,
+    "source_frame_id": null,
+    "pairing_status": "unverified"
+  },
+  "notes": "保留 2026-10-02 用户审校的近似参数；不是重新标定结果，也不是板上活动参数读回。具体 epoch/session/参数版本由联调时查询和分配。"
+}
