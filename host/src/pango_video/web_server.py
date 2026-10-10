@@ -187,6 +187,9 @@ class Handler(BaseHTTPRequestHandler):
             # Live controls read the serialized board session, never a local cache.
             if route == "/api/board/geometry":
                 return self._json(200,self.server.board_link.geometry())
+            # Mode verification is independent of optional marker coordinates.
+            if route == "/api/board/view":
+                return self._json(200,self.server.board_link.view_status())
             if route == "/api/board/markers":
                 return self._json(200,self.server.board_link.markers())
             if route == "/api/board/devices":

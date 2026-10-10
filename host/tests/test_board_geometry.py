@@ -93,6 +93,37 @@ class BoardViewTests(unittest.TestCase):
             with self.subTest(field=field), self.assertRaises(GeometryError):
                 BoardViewClient(uart).configure(mode="corrected", markers=True)
 
+    def test_unmarked_view_can_verify_mode_with_marker_mapping_failure(self):
+        # An out-of-domain edge marker must not invalidate unmarked HDMI mode
+        # or silently authorize the failed coordinate table.
+        uart = ViewUart()
+        uart.marker_status = 3
+        client = BoardViewClient(uart)
+        result = client.configure(mode="corrected", markers=False)
+        self.assertTrue(result["view_verified"])
+        self.assertFalse(result["metadata_verified"])
+        self.assertEqual(result["mode"], "corrected")
+        self.assertEqual(result["points"], [])
+        self.assertIsNotNone(result["marker_error"])
+        self.assertFalse(result["hardware_image_verified"])
+        with self.assertRaises(GeometryError):
+            client.markers()
+        with self.assertRaises(GeometryError):
+            client.configure(mode="corrected", markers=True)
+
+    def test_view_header_rejects_tearing_lut_model_and_unknown_status(self):
+        # Mode-only reads retain identity, readiness and core lens checks.
+        for status in (0, 5, 9, 0x80000001):
+            uart = ViewUart()
+            uart.marker_status = status
+            with self.subTest(status=status), self.assertRaises(GeometryError):
+                BoardViewClient(uart).view_status()
+        for field in ("moving", "bad_version"):
+            uart = ViewUart()
+            setattr(uart, field, True)
+            with self.subTest(field=field), self.assertRaises(GeometryError):
+                BoardViewClient(uart).view_status()
+
     def test_reset_error_status_and_generation_tearing_are_fail_closed(self):
         # Distinguish declared LUT/model/map errors from uninitialized display
         # state; none can be shown as a valid coordinate table.
@@ -204,8 +235,26 @@ class BoardGeometryApiTests(unittest.TestCase):
         self.assertIn("0x100", result["error"])
 
     def test_unconfigured_board_does_not_open_hardware(self):
+        # Unconfigured mode queries also cannot open a physical UART.
+        self.link.state.update(phase="idle")
+        self.assertNotEqual(self.call("GET", "/api/board/view")[0], 200)
+        self.assertEqual(self.uart.calls, [])
         self.link.state.update(phase="idle")
         code, result = self.call("GET", "/api/board/markers")
         self.assertNotEqual(code, 200)
         self.assertIn("启动", result["error"])
         self.assertEqual(self.uart.calls, [])
+
+    def test_view_header_route_keeps_marker_failure_explicit(self):
+        # Mode proof uses the live UART lock; strict coordinates still reject
+        # the real RGB33 edge-marker failure shape and never restart the stream.
+        self.uart.marker_status = 3
+        code, result = self.call("GET", "/api/board/view")
+        self.assertEqual(code, 200, result)
+        self.assertTrue(result["view_verified"])
+        self.assertFalse(result["metadata_verified"])
+        self.assertEqual(result["points"], [])
+        self.assertIsNotNone(result["marker_error"])
+        self.assertNotEqual(self.call("GET", "/api/board/markers")[0], 200)
+        self.assertFalse(self.link.uart_lock.locked())
+        self.assertFalse(any(c in (2, 0x71, 0x35) for c, _ in self.uart.calls))

@@ -18,6 +18,7 @@
 | --- | --- |
 | GET `/api/board/geometry` | CAPS 0x80、当前参数版本及首次应用帧；不是 HDMI 帧关联证明 |
 | POST `/api/board/geometry` | `{preset, rotation_deg?:0, enhance?:true, version?:N}`；现有 GeometryClient 完整上传、参数回读、按帧激活等待 |
+| GET `/api/board/view` | 两次一致的 7 字显示头部，核对已显示模式和参数版本；不授权标记坐标叠加 |
 | POST `/api/board/view` | `{mode:"original"或"corrected", markers:boolean, diameter?:10, revision?:N}`；CAPS 0x100 必须存在 |
 | GET `/api/board/markers` | 一致的 FPGA 标记元数据，含 20 条源位置、目标 Q12 解码位置、颜色与可见性 |
 
@@ -28,6 +29,8 @@
 根据当前 `geometry_marker_table.v`，status bit0=ready；bit1=映射失败、bit2=LUT失败、bit3=模型不支持。主机仅接受 status=1、generation非零；错误或未知位均失败关闭。头部七字在全部记录前后重复读取，全部 READ 参数版本、头部、revision/generation 必须一致，最多重试三次。记录可见性须与掩码一致，保留位和尺寸须有效。
 
 ## 来源与验收边界
+
+2026-10-10 实物联调补充：RGB33 参数的左上角源标记可能超出固件前向映射的光线范围，板端报告 status=3。关闭标记时，上位机通过两次一致的显示头部独立核对模式、参数版本和 generation，并显式报告标记错误；返回 `view_verified=true`、`metadata_verified=false` 和空 points。模式回读不代表坐标表或图像精度已验证。LUT、模型、未知状态、未就绪及头部撕裂仍拒绝；启用标记和 `/api/board/markers` 继续要求完整坐标表 status=1。关闭标记的 VIEW 应用等待使用头部核对，不再被单个不可映射标记阻塞。
 
 源像素叠加只使用 bank2 的 SOURCE 坐标、RGB 和 visible，不能用目标映射位置标记未矫正网口图像。叠加还要求网口为硬件来源、epoch 相同、源尺寸匹配；失败、过期、等待写入或链路中断清除旧层。原始 RAW 和采集像素不被改写。普通 HDMI 始终 `source_frame_id=null`、`pairing_status=unverified`、`hardware_image_verified=false`。
 

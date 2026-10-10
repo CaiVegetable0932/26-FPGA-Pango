@@ -15,6 +15,41 @@ class BoardViewClient(GeometryClient):
         if not self.capabilities & 0x100:
             raise GeometryError("当前固件未开放 FPGA 显示/标记接口（CAPS 0x100）")
 
+    def view_status(self, *, attempts=3):
+        """Verify displayed mode separately from the optional coordinate table.
+
+        A forward marker outside the supported ray domain remains an explicit
+        error, without hiding a coherent unmarked HDMI mode. Header-only
+        readback never authorizes drawing any marker coordinates.
+        """
+        for _ in range(attempts):
+            before = [self.read(i, bank=2) for i in range(7)]
+            after = [self.read(i, bank=2) for i in range(7)]
+            versions = {version for _, version in before+after}
+            if before != after or len(versions) != 1:
+                continue
+            magic, revision, packed, version, mask, generation, status = [v for v, _ in before]
+            if magic != 0x4d4b5231 or versions != {version}:
+                raise GeometryError("FPGA 显示头部 magic/参数版本不一致")
+            if status & ~0xf:
+                raise GeometryError("FPGA 显示状态含未知位")
+            if not status & 1 or not generation:
+                raise MarkerPending("FPGA 尚无已显示且就绪的模式快照")
+            flags, diameter = packed & 0xff, packed >> 8
+            if flags & ~3 or not 4 <= diameter <= 32 or mask & ~0xfffff:
+                raise GeometryError("FPGA 显示元数据保留位或直径无效")
+            if status & 0xc:
+                raise GeometryError(f"FPGA LUT/模型错误：0x{status:08x}")
+            return dict(epoch=str(self.epoch), session=self.session, revision=revision,
+                        flags=flags, mode="original" if flags & 1 else "corrected",
+                        markers=bool(flags & 2), diameter=diameter, generation=generation,
+                        displayed_param_version=version, status=status, points=[],
+                        marker_error="标记映射超出支持范围或失败" if status & 2 else None,
+                        source_width=1920, source_height=1080, processing_location="fpga",
+                        view_verified=True, metadata_verified=False,
+                        source_frame_id=None, pairing_status="unverified", hardware_image_verified=False)
+        raise MarkerPending("FPGA 显示头部正在变化，未获得一致快照")
+
     def markers(self, *, attempts=3):
         """Bracket all 20 records with identical metadata and reply versions.
 
@@ -85,7 +120,9 @@ class BoardViewClient(GeometryClient):
         deadline = self.clock()+timeout
         while True:
             try:
-                state = self.markers()
+                # Full coordinates remain mandatory when enabling markers.
+                # Unmarked output uses independently verified display headers.
+                state = self.markers() if markers else self.view_status()
             except MarkerPending:
                 if self.clock() >= deadline:
                     raise GeometryError("显示请求尚未应用或快照不一致；不代表 HDMI 图像验证成功")

@@ -295,6 +295,11 @@ class BoardLink:
                         capabilities=client.capabilities, processing_location="fpga",
                         source_frame_id=None, pairing_status="unverified", hardware_image_verified=False)
 
+    def view_status(self):
+        """Read coherent HDMI mode under the shared UART lock, without overlays."""
+        with self.control_session(view=True) as client:
+            return client.view_status()
+
     def view(self, data):
         """Apply view-only changes in the running board session."""
         if set(data)-{"mode", "markers", "diameter", "revision"} or not {"mode", "markers"} <= set(data):

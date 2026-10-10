@@ -44,7 +44,8 @@
       metadata=value;metadataAt=now();draw();
       // Repeated polling must not replace an operator's unapplied form edits.
       if(changed){$("fpga-view-mode").value=value.mode;$("fpga-markers").checked=value.markers;$("fpga-marker-diameter").value=String(value.diameter);}
-      message(`板端显示版本 ${value.revision} · 参数版本 ${value.displayed_param_version} · 标记代次 ${value.generation} · HDMI 源帧未验证`);
+      message(`板端显示版本 ${value.revision} · 参数版本 ${value.displayed_param_version} · 标记代次 ${value.generation} · HDMI 源帧未验证`+
+        (value.marker_error?` · ${value.marker_error}，标记坐标未验证`:""));
       videoUI.setBoardMode(boardMode,value);
     }
     async function action(fn){
@@ -57,7 +58,13 @@
     // there is no local fallback to old metadata or software-computed points.
     function invalidate(){metadata=null;draw();videoUI.setBoardMode(boardMode,null);}
     function on(id,event,fn){$(id).addEventListener(event,fn);listeners.push([id,event,fn]);}
-    const refresh=()=>action(async()=>accept(await request("/api/board/markers")));
+    // Read only the coherent header when markers are off; full coordinate
+    // checks remain mandatory before authorizing any source overlay.
+    async function readDisplay(){
+      const view=await request("/api/board/view");
+      return view.markers?await request("/api/board/markers"):view;
+    }
+    const refresh=()=>action(async()=>accept(await readDisplay()));
     on("fpga-refresh","click",refresh);
     on("fpga-view-apply","click",()=>action(async()=>{
       invalidate();
@@ -76,7 +83,7 @@
         enhance:$("fpga-enhance").checked});
       metadata=null;draw();
       message(`FPGA 参数版本 ${result.version} 已回读 · 图像精度尚未验收`);
-      accept(await request("/api/board/markers"));
+      accept(await readDisplay());
     }));
     on("fpga-parameters-load","click",()=>{
       try{

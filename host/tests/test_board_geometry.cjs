@@ -29,7 +29,7 @@ function fixture(){
   const app=create({environment,videoUI:{setBoardMode(...args){owners.push(args);}},request:async(path,data)=>{
     calls.push({path,data});if(failure)throw Error(failure);
     if(path==="/api/board/markers")return current;
-    if(path==="/api/board/view")return write?write():{...current,revision:current.revision+1,...data};
+    if(path==="/api/board/view")return data?(write?write():{...current,revision:current.revision+1,...data}):current;
     if(path==="/api/board/geometry")return {version:3,parameters_verified:true};
     throw Error("Unexpected restart/capture request: "+path);
   }});
@@ -90,6 +90,18 @@ test("Explicit parameter JSON goes to checked board uploader, not a software ren
   assert.deepEqual(request.data,{preset:{parameters:math.preset()},rotation_deg:0,enhance:true});
   f.$("fpga-parameters").value="broken";await f.$("fpga-parameters-apply").fire();
   assert.equal(f.calls.filter(c=>c.path==="/api/board/geometry").length,1);f.app.destroy();
+});
+
+test("Unmarked HDMI mode remains confirmed while failed marker coordinates stay hidden",async()=>{
+  // Header-only mode proof never becomes coordinate-table proof or a warp.
+  const f=fixture();f.set({...metadata(),markers:false,status:3,metadata_verified:false,
+    view_verified:true,marker_error:"标记映射超出支持范围或失败",points:[]});
+  await f.app.init();f.app.setNetworkFrame(frame());
+  assert.equal(f.$("fpga-source-markers").children.length,0);
+  assert.match(f.$("fpga-control-status").textContent,/标记坐标未验证/);
+  assert.equal(f.owners.at(-1)[1].view_verified,true);
+  assert.ok(f.calls.every(c=>c.path!=="/api/board/markers"));
+  f.app.destroy();
 });
 
 test("Actual video UI clears both canonical overlays and PC warp when FPGA owns HDMI",()=>{
