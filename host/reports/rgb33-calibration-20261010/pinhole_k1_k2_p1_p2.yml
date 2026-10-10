@@ -1,0 +1,20 @@
+%YAML:1.0
+---
+model: pinhole_k1_k2_p1_p2
+camera_matrix: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 852.23782588616302, 0., 947.42141899504384, 0.,
+       846.84931774874326, 582.26319232084438, 0., 0., 1. ]
+distortion_coefficients: !!opencv-matrix
+   rows: 4
+   cols: 1
+   dt: d
+   data: [ -0.25293223333471904, 0.047522529802792528,
+       -0.0014616301819675237, -0.00025182660541714217 ]
+distortion_order: "[\"k1\", \"k2\", \"p1\", \"p2\"]"
+image_width: 1920
+image_height: 1080
+square_mm: 15.
+status: candidate_unverified

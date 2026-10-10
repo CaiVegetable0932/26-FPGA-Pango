@@ -1,0 +1,20 @@
+%YAML:1.0
+---
+model: fisheye_equidistant
+camera_matrix: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 831.41060615884726, 0., 984.17294739264901, 0.,
+       829.53289893634701, 572.12771080175708, 0., 0., 1. ]
+distortion_coefficients: !!opencv-matrix
+   rows: 4
+   cols: 1
+   dt: d
+   data: [ 0.0035368974900875827, -0.010670268206139475,
+       0.019404349394633712, -0.0073830977799236395 ]
+distortion_order: "[\"k1\", \"k2\", \"k3\", \"k4\"]"
+image_width: 1920
+image_height: 1080
+square_mm: 15.
+status: candidate_unverified

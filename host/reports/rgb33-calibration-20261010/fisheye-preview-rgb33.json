@@ -1,0 +1,24 @@
+{
+  "schema": "pango.fisheye-preview.v1",
+  "parameters": {
+    "model": "fisheye_equidistant",
+    "reference_width": 1920,
+    "reference_height": 1080,
+    "fx": 831.4106061588473,
+    "fy": 829.532898936347,
+    "cx": 984.172947392649,
+    "cy": 572.1277108017571,
+    "k1": 0.0035368974900875827,
+    "k2": -0.010670268206139475,
+    "k3": 0.019404349394633712,
+    "k4": -0.0073830977799236395,
+    "output_fov_deg": 100
+  },
+  "parameters_origin": "rgb33_real_calibration_candidate",
+  "calibration_result_sha256": "cca6c72fc9462c2a947dbd80f0fb2fcd8b79f6f75219ecc4efbc7f4e9f76aee4",
+  "processing_location": "pc_software_reference",
+  "hardware_applied": false,
+  "fpga_compatible": false,
+  "source_frame_id": null,
+  "pairing_status": "unverified"
+}

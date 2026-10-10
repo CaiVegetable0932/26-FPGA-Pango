@@ -1,0 +1,93 @@
+{
+  "parameters": {
+    "model": "fisheye_equidistant",
+    "reference_width": 1920,
+    "reference_height": 1080,
+    "fx": 831.4106061588473,
+    "fy": 829.532898936347,
+    "cx": 984.172947392649,
+    "cy": 572.1277108017571,
+    "k1": 0.0035368974900875827,
+    "k2": -0.010670268206139475,
+    "k3": 0.019404349394633712,
+    "k4": -0.0073830977799236395,
+    "output_fov_deg": 100
+  },
+  "samples": [
+    {
+      "output_hfov_deg": 80,
+      "output_focal_px": 1144.0834488904418,
+      "strict_bilinear_valid_fraction": 1.0,
+      "output_max_ray_angle_deg": 43.89471034899219,
+      "minimum_radial_derivative": 1.0,
+      "beyond_max_observed_ray_angle": false,
+      "accuracy_verified": false
+    },
+    {
+      "output_hfov_deg": 90,
+      "output_focal_px": 960.0000000000001,
+      "strict_bilinear_valid_fraction": 1.0,
+      "output_max_ray_angle_deg": 48.907839980810614,
+      "minimum_radial_derivative": 1.0,
+      "beyond_max_observed_ray_angle": false,
+      "accuracy_verified": false
+    },
+    {
+      "output_hfov_deg": 100,
+      "output_focal_px": 805.5356459301888,
+      "strict_bilinear_valid_fraction": 1.0,
+      "output_max_ray_angle_deg": 53.803666551537155,
+      "minimum_radial_derivative": 1.0,
+      "beyond_max_observed_ray_angle": false,
+      "accuracy_verified": false
+    },
+    {
+      "output_hfov_deg": 110,
+      "output_focal_px": 672.1992366813214,
+      "strict_bilinear_valid_fraction": 0.9782146990740741,
+      "output_max_ray_angle_deg": 58.589204231290374,
+      "minimum_radial_derivative": 1.0,
+      "beyond_max_observed_ray_angle": false,
+      "accuracy_verified": false
+    },
+    {
+      "output_hfov_deg": 120,
+      "output_focal_px": 554.2562584220409,
+      "strict_bilinear_valid_fraction": 0.9077710262345678,
+      "output_max_ray_angle_deg": 63.274030622561824,
+      "minimum_radial_derivative": 1.0,
+      "beyond_max_observed_ray_angle": true,
+      "accuracy_verified": false
+    },
+    {
+      "output_hfov_deg": 130,
+      "output_focal_px": 447.65535182879864,
+      "strict_bilinear_valid_fraction": 0.8061651234567901,
+      "output_max_ray_angle_deg": 67.86971515697542,
+      "minimum_radial_derivative": 1.0,
+      "beyond_max_observed_ray_angle": true,
+      "accuracy_verified": false
+    },
+    {
+      "output_hfov_deg": 139,
+      "output_focal_px": 358.92929230541245,
+      "strict_bilinear_valid_fraction": 0.6354764660493827,
+      "output_max_ray_angle_deg": 71.94039006682843,
+      "minimum_radial_derivative": 1.0,
+      "beyond_max_observed_ray_angle": true,
+      "accuracy_verified": false
+    },
+    {
+      "output_hfov_deg": 140,
+      "output_focal_px": 349.4114248955543,
+      "strict_bilinear_valid_fraction": 0.6106828703703704,
+      "output_max_ray_angle_deg": 72.38932400882528,
+      "minimum_radial_derivative": 1.0,
+      "beyond_max_observed_ray_angle": true,
+      "accuracy_verified": false
+    }
+  ],
+  "source_image": "image (15).rgb",
+  "source_sha256": "df77675a2959bc722c1ad55c7b37686a25564feb208f66bbbed77879fd525526",
+  "hardware_acceptance": "not_performed"
+}

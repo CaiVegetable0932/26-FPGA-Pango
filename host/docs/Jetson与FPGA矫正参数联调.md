@@ -2,6 +2,8 @@
 
 2026-10-10。本文随当前参数记录发布；本次没有执行串口上传、图像采集或板测。
 
+2026-10-10 后续更新：用户已提供 RGB33 真实标定候选，后续推荐使用[Jetson RGB33 标定接入说明](Jetson_RGB33标定接入说明.md)及[新 FPGA 参数记录](../config/calibration/fpga-fisheye-rgb33-20261010.json)。本文下方的旧手填近似值仅保留作历史参考/回退，不是新标定值，也不会自动恢复到板卡。
+
 ## 参数与来源
 
 - 用户审校原件：[fisheye-user-reviewed-20261002.json](../config/calibration/fisheye-user-reviewed-20261002.json)，保留 PC 软件参考身份，不覆盖。

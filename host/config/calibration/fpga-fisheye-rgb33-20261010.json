@@ -1,0 +1,79 @@
+{
+  "schema": "pango.fpga-geometry-record.v1",
+  "preset_name": "RGB33 实测鱼眼标定候选 · 100°输出",
+  "record_date": "2026-10-10",
+  "source_preset": "host/reports/rgb33-calibration-20261010/fisheye-preview-rgb33.json",
+  "calibration_result_sha256": "cca6c72fc9462c2a947dbd80f0fb2fcd8b79f6f75219ecc4efbc7f4e9f76aee4",
+  "parameters_origin": "rgb33_real_calibration_candidate",
+  "processing_location": "fpga_configuration_target",
+  "status": "candidate_unverified",
+  "hardware_applied": false,
+  "measurement_ready": false,
+  "source_stage": "unverified",
+  "source_frame_id": null,
+  "pairing_status": "unverified",
+  "parameters": {
+    "model": "fisheye_equidistant",
+    "reference_width": 1920,
+    "reference_height": 1080,
+    "fx": 831.4106061588473,
+    "fy": 829.532898936347,
+    "cx": 984.172947392649,
+    "cy": 572.1277108017571,
+    "k1": 0.0035368974900875827,
+    "k2": -0.010670268206139475,
+    "k3": 0.019404349394633712,
+    "k4": -0.0073830977799236395,
+    "output_fov_deg": 100
+  },
+  "calibration": {
+    "sample_count": 33,
+    "corners_per_view": 135,
+    "pattern_columns": 15,
+    "pattern_rows": 9,
+    "square_mm": 15,
+    "training_rms_px": 0.3628572835349543,
+    "leave_one_view_out_pooled_rms_px": 0.3886656015463157,
+    "leave_one_view_out_max_rms_px": 0.7366001058038532,
+    "independent_final_test_images": 0,
+    "purpose": "继承原标定报告的软件拟合统计；不代表 FPGA 定点误差或独立终验结果。"
+  },
+  "fpga_encoding": {
+    "encoder": "host/src/pango_video/geometry_control.py::GeometryProfile.from_preset",
+    "model": 2,
+    "width": 1920,
+    "height": 1080,
+    "rotation_deg": 0,
+    "enhance": true,
+    "word_order": ["a00", "a01", "a02", "a10", "a11", "a12", "k1", "k2", "k3", "k4", "fx", "fy", "cx", "cy"],
+    "fractional_bits": [26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 16, 16, 16, 16],
+    "signed_words": [83310, 0, -79935575, 0, 83310, -44945537, 237357, -716070, 1302204, -495471, 54487325, 54364268, 64498758, 37494962],
+    "purpose": "离线生成的编码对照；Web/CLI 使用 parameters 重新编码。旋转/参数变化后本数组须重新生成，enhance 由单独控制字段发送。"
+  },
+  "compatibility": {
+    "coefficient_semantics_match_repository_model_2": true,
+    "offline_fixed_point_encoding_in_range": true,
+    "board_firmware_capability_check_required": true,
+    "source_stage_equivalence_verified": false,
+    "note": "原报告的 fpga_compatible=false 保持不变；该标记针对旧针孔接口。当前 model=2 的语义/编码检查不是硬件精度验收。"
+  },
+  "target_firmware": {
+    "release": "fpga/release/geometry_20261007_e4dd5bbb06e6",
+    "sfc_sha256": "E4DD5BBB06E659C55ECB87B7A4F66385D0680A2D1C4DE46F838830B7AFA180A2",
+    "geometry_capability": "0x80",
+    "display_capability": "0x100",
+    "corrected_output": "HDMI",
+    "network_output": "fpga_enhanced_raw8_RENH_v2"
+  },
+  "verification": {
+    "encoding_generated": true,
+    "uploaded": false,
+    "applied_parameter_version": null,
+    "parameters_verified_on_board": false,
+    "hardware_image_verified": false,
+    "calibration_accuracy_verified": false,
+    "source_frame_id": null,
+    "pairing_status": "unverified"
+  },
+  "notes": "本次真实标定候选作为后续推荐联调基线，保留旧手调记录用于回退。没有打开串口、应用参数、烧录或板测；运行时 epoch/session/版本由 Jetson 查询及分配。"
+}
