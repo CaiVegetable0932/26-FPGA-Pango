@@ -19,7 +19,7 @@ from unittest.mock import patch
 from pango_video.cli import HOST_ROOT
 from pango_video import web_launcher as launcher
 from pango_video.web_server import LocalServer, instance_identity
-from pango_video.web_session import SessionError
+from pango_video.web_session import SessionError, WebSession
 
 
 def get(port, path):
@@ -34,7 +34,16 @@ def get(port, path):
 
 class LauncherTests(unittest.TestCase):
     def setUp(self):
-        self.server = LocalServer(0)
+        # Background recovery must never read a developer's saved physical board
+        # preferences during launcher tests. Copy only the mock receiver fixture.
+        build = HOST_ROOT / "build"
+        build.mkdir(exist_ok=True)
+        self.temp = tempfile.TemporaryDirectory(prefix="launcher-unit-", dir=build)
+        self.addCleanup(self.temp.cleanup)
+        root = Path(self.temp.name)
+        (root / "config").mkdir()
+        shutil.copyfile(HOST_ROOT / "config/receiver.mock.json", root / "config/receiver.mock.json")
+        self.server = LocalServer(0, WebSession(root))
         self.port = self.server.server_port
         self.thread = threading.Thread(target=self.server.serve_forever,
             kwargs={"poll_interval":0.02}, daemon=True)

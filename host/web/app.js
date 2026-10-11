@@ -33,6 +33,8 @@
   const boardUI=window.PangoBoardLink.create({request,video:videoInputUI.controller,toast});
   // Board controls own only UART and the FPGA metadata layer, not video capture.
   const boardGeometry=window.PangoBoardGeometry.create({request,videoUI:videoInputUI});
+  // Recovery lives in the server; this widget only configures and observes it.
+  const boardAutoload=window.PangoBoardAutoload.create({request});
   let recordsLastRefresh=0;
   const archiveWorker=new Worker("/preview-worker.js");
   const worker=new Worker("/preview-worker.js"), title={live:"实时采集",records:"采集记录",settings:"连接设置"};
@@ -293,8 +295,8 @@
       }},{signal:toolLifetime.signal})).catch(error=>console.warn("WebMCP registration unavailable",name,error));}catch(error){console.warn("WebMCP registration unavailable",name,error);}
     }
   }
-  window.addEventListener("pagehide",()=>{closed=true;streamAbort?.abort();surfaceResize.disconnect();boardUI.destroy();boardGeometry.destroy();videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);clearInterval(previewRateTimer);worker.terminate();archiveWorker.terminate();});
+  window.addEventListener("pagehide",()=>{closed=true;streamAbort?.abort();surfaceResize.disconnect();boardUI.destroy();boardGeometry.destroy();boardAutoload.destroy();videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);clearInterval(previewRateTimer);worker.terminate();archiveWorker.terminate();});
 
   window.addEventListener("pageshow",event=>{if(event.persisted)location.reload();});
-  init().then(()=>{registerWorkbenchTools();poll();framePoll();void boardUI.init();void boardGeometry.init();});
+  init().then(()=>{registerWorkbenchTools();poll();framePoll();void boardUI.init();void boardGeometry.init();void boardAutoload.init();});
 })();

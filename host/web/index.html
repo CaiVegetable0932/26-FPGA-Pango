@@ -6,7 +6,7 @@
   <meta name="description" content="PG2L100H 上位机：RAW8视频接收、源帧预览与原始证据归档。">
   <link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/app.css">
   <!-- HDMI software-reference display shares the calibration renderer. -->
-  <script src="/records.js" defer></script><script src="/preview-stream.js" defer></script><script src="/preview-rate.js" defer></script><script src="/video-input.js" defer></script><script src="/fisheye-preview.js" defer></script><script src="/video-input-ui.js" defer></script><script src="/board-link.js" defer></script><script src="/board-geometry.js" defer></script><script src="/app.js" defer></script>
+  <script src="/records.js" defer></script><script src="/preview-stream.js" defer></script><script src="/preview-rate.js" defer></script><script src="/video-input.js" defer></script><script src="/fisheye-preview.js" defer></script><script src="/video-input-ui.js" defer></script><script src="/board-link.js" defer></script><script src="/board-geometry.js" defer></script><script src="/board-autoload.js" defer></script><script src="/app.js" defer></script>
 </head>
 <body>
 <svg class="icon-defs" aria-hidden="true"><defs>
@@ -54,6 +54,22 @@
         <p id="board-diagnostics"></p>
       </article>
       <!-- Physical view/parameters use the live UART session, independently of PC reference rendering. -->
+      <!-- Opt-in settings are persisted by the service; no browser uptime is required. -->
+      <article class="panel board-startup" aria-labelledby="autoload-title">
+        <div class="panel-heading"><h2 id="autoload-title">上电自动恢复 FPGA 矫正</h2></div>
+        <div class="board-fields">
+          <label><input id="autoload-enabled" type="checkbox">后台检测上电并自动下发参数</label>
+          <label>参数文件（host 内相对路径）<input id="autoload-preset" value="config/calibration/fpga-fisheye-rgb33-20261010.json" maxlength="256"></label>
+          <label>启动 HDMI 模式<select id="autoload-mode"><option value="corrected">FPGA 矫正图</option><option value="original">同 ISP 原图</option></select></label>
+          <label>面内旋转（度）<input id="autoload-rotation" type="number" value="0" min="-360" max="360"></label>
+          <label><input id="autoload-enhance" type="checkbox" checked>板端增强</label>
+          <label><input id="autoload-markers" type="checkbox">恢复板端像素标记</label>
+          <label>标记直径（源像素）<input id="autoload-diameter" type="number" value="10" min="4" max="32"></label>
+        </div>
+        <div class="board-actions"><button id="autoload-save" type="button" class="button primary">保存自动恢复设置</button><button id="autoload-load" type="button" class="button secondary">填入已保存恢复文件供审校</button></div>
+        <p id="autoload-status" role="status">默认不自动写入 FPGA。首次先完成一次板卡连接配置，再启用并保存。</p>
+        <p>只使用现有 UART 接口，不烧录。手动改参/显示优先至本次板卡重启；停止接收会暂停自动恢复。参数和显示回读不等于图像精度验收。</p>
+      </article>
       <article class="panel board-startup" aria-labelledby="fpga-geometry-title">
         <div class="panel-heading"><h2 id="fpga-geometry-title">FPGA 几何与显示控制</h2><button id="fpga-refresh" type="button" class="button secondary">回读板端状态</button></div>
         <div class="board-fields">

@@ -246,6 +246,40 @@ class BoardLink:
         with self.uart_lock:
             self._run_locked(profile)
 
+    def probe_boot(self):
+        """Read CAPS on the uniquely saved bridge without writing boot or parameters.
+
+        A USB bridge may exist with the FPGA unpowered. Only a validated UART
+        response proves running logic; serial enumeration alone is not enough.
+        """
+        if not self.uart_lock.acquire(blocking=False):
+            raise SessionError("板卡 UART 正忙，后台探测稍后重试")
+        uart = None
+        try:
+            with self.lock:
+                profile = dict(self.profile)
+            choices = [p for p in self.ports() if
+                       (p.get("serial") == profile["serial_number"] if profile.get("serial_number")
+                        else p["port"] == profile.get("port"))]
+            if len(choices) != 1:
+                raise SessionError("等待唯一的已保存 CP2102；请先完成一次板卡连接配置")
+            uart = self.uart(choices[0]["port"])
+            reply = uart.exchange(1)
+            if len(reply) != 32 or reply[1] != 1:
+                raise SessionError("FPGA 探测回复长度/命令无效")
+            cold = reply[0] == 6 and reply[20:24] == b"RAW8"
+            epoch, session = struct.unpack_from("<QI", reply, 4)
+            if not cold and (reply[0] != 0 or not epoch):
+                raise SessionError("FPGA 未返回当前 RAW8 冷/热启动入口")
+            return dict(cold=cold, epoch=epoch, session_id=session,
+                        capabilities=int.from_bytes(reply[24:28], "little"))
+        finally:
+            try:
+                if uart is not None:
+                    uart.close()
+            finally:
+                self.uart_lock.release()
+
     @contextmanager
     def control_session(self, *, view=False):
         """Bind a unique saved CP2102 to the live epoch without restarting UDP.

@@ -1,0 +1,98 @@
+{
+  "utc": "2026-10-11T05:07:19.504Z",
+  "node": "v24.19.0",
+  "tests_run": 20,
+  "passed": true,
+  "test_environment": "Node.js MediaDevices, MediaStreamTrack and DOM fixtures",
+  "browser_ui_qa": "not_performed",
+  "hardware_capture": "not_performed",
+  "signal_validation": "not_performed",
+  "results": [
+    {
+      "name": "Enumerates video devices only without opening hardware",
+      "passed": true
+    },
+    {
+      "name": "Saving and restoring a device works with no input signal and no stream",
+      "passed": true
+    },
+    {
+      "name": "Opening uses exact saved ID and audio false; identity stays unverified",
+      "passed": true
+    },
+    {
+      "name": "Missing device fails without falling back to the built-in camera",
+      "passed": true
+    },
+    {
+      "name": "Permission denial and busy-device errors retain saved configuration",
+      "passed": true
+    },
+    {
+      "name": "Permission enumeration always releases its temporary stream",
+      "passed": true
+    },
+    {
+      "name": "Cancel during a pending device request discards and stops a late stream",
+      "passed": true
+    },
+    {
+      "name": "Cancel permission request or close page releases late authorization tracks",
+      "passed": true
+    },
+    {
+      "name": "Muted and ended tracks update state without claiming a verified signal",
+      "passed": true
+    },
+    {
+      "name": "Device removal stops current tracks and retains the user's exact choice",
+      "passed": true
+    },
+    {
+      "name": "Unexpected device identity and playback failure release tracks",
+      "passed": true
+    },
+    {
+      "name": "Blocked or corrupt browser storage does not prevent current-page configuration",
+      "passed": true
+    },
+    {
+      "name": "Latest enumeration wins and unsupported contexts never request capture",
+      "passed": true
+    },
+    {
+      "name": "Destroyed active adapter releases every track and removes hotplug listeners",
+      "passed": true
+    },
+    {
+      "name": "Device UI separates save from open and keeps unsaved choices from opening another source",
+      "passed": true
+    },
+    {
+      "name": "Explicit 720p compatibility choice persists without changing device",
+      "passed": true
+    },
+    {
+      "name": "Presentation FPS expires to zero without new frames",
+      "passed": true
+    },
+    {
+      "name": "Transient busy capture retries the same exact device",
+      "passed": true
+    },
+    {
+      "name": "USB ID is recovered only from a unique saved device label",
+      "passed": true
+    },
+    {
+      "name": "Ambiguous matching labels do not select a replacement",
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "web/video-input.js": "9299a67b7cf944129a0918fa429177d86f4aabf3dd8d770220105ca1de5318fc",
+    "web/video-input-ui.js": "9361069d3c03e13272b4cfd22d111bb12402a57e62f54abd28f77027ea0fed6f",
+    "web/preview-rate.js": "4ac4c9da4f4fd981df67b895bb62adc01930a7e721179d3312d93f9bc9a81dae",
+    "tests/test_video_input.cjs": "97bce8d020b273607b1d2ab0f32644c86143b83fbb7789907e43e1f5551fae71"
+  }
+}

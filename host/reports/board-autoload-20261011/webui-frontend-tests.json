@@ -1,0 +1,70 @@
+{
+  "utc": "2026-10-11T05:07:17.513Z",
+  "node": "v24.19.0",
+  "platform": "win32",
+  "tests_run": 13,
+  "passed": true,
+  "browser_ui_qa": "not_performed",
+  "results": [
+    {
+      "name": "RAW8 Bayer layout 1",
+      "passed": true
+    },
+    {
+      "name": "RAW8 Bayer layout 2",
+      "passed": true
+    },
+    {
+      "name": "RAW8 Bayer layout 3",
+      "passed": true
+    },
+    {
+      "name": "RAW8 Bayer layout 4",
+      "passed": true
+    },
+    {
+      "name": "Full-scale small RAW grayscale preserves samples",
+      "passed": true
+    },
+    {
+      "name": "1080p Bayer downscale has independent color cell averages",
+      "passed": true
+    },
+    {
+      "name": "RGB888 order and integer grayscale",
+      "passed": true
+    },
+    {
+      "name": "Contiguous RGB888 preview preserves channels across odd-width rows",
+      "passed": true
+    },
+    {
+      "name": "Compact GRAY8 display maps bytes exactly without a second Bayer filter",
+      "passed": true
+    },
+    {
+      "name": "Corrupt lengths, strides, dimensions, formats, and Bayer are rejected",
+      "passed": true
+    },
+    {
+      "name": "Wider RAW preview remains bounded to 960 columns",
+      "passed": true
+    },
+    {
+      "name": "1080p RAW sample gray is lossless and phase independent",
+      "passed": true
+    },
+    {
+      "name": "Half-width RAW gray prefilters Bayer cells without modifying source",
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "web/pixels.js": "c17ddf00a348172176f0d02e6ebe2cf12bf160b294684938b46b3c566ed9d0d8",
+    "web/preview-renderer.js": "d68aebf06599d85c4904549bb7a8f859847d8eada2759dbbeda11c6c0c5bef4f",
+    "web/preview-worker.js": "07c76fedeacfcf43c7dcf10e5e1b50b5ebbd677121badf68ce58b5aaa2821000",
+    "web/app.js": "a5af41caab4b6525c4e4eb359083f9f6d6a93bc3de2da0d7cd3e0616dbe12779",
+    "web/index.html": "1546730bcc525c94e078c133efd09e3784e33671f8e53c03fc0f86c255a6055a",
+    "web/app.css": "248ca977b1bcf170d7413f0a7131f4487f65f4667b881fc4ed2bad818c4c2491"
+  }
+}

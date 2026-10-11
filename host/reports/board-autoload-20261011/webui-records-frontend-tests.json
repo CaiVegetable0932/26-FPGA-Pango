@@ -1,0 +1,25 @@
+{
+  "utc": "2026-10-11T05:07:17.469Z",
+  "node": "v24.19.0",
+  "tests_run": 3,
+  "passed": true,
+  "browser_ui_qa": "not_performed",
+  "test_environment": "isolated DOM fixture",
+  "results": [
+    {
+      "name": "Selection excludes live records and cancellation never deletes",
+      "passed": true
+    },
+    {
+      "name": "Confirmed parent deletion de-duplicates selected child images",
+      "passed": true
+    },
+    {
+      "name": "Partial failures keep undeleted selection and disable stale confirmation",
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "web/records.js": "dde16b5159ebaa9f81958ca9e17c0d41c953746a6b707921f5a86591b298ff80"
+  }
+}

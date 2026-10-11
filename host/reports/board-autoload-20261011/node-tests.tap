@@ -1,0 +1,187 @@
+TAP version 13
+# Subtest: Opening/polling does not opt in, upload or overwrite pending form edits
+ok 1 - Opening/polling does not opt in, upload or overwrite pending form edits
+  ---
+  duration_ms: 1.1957
+  type: 'test'
+  ...
+# Subtest: Explicit settings are persisted once; duplicate clicks and failures are bounded
+ok 2 - Explicit settings are persisted once; duplicate clicks and failures are bounded
+  ---
+  duration_ms: 0.6726
+  type: 'test'
+  ...
+# Subtest: Preset review is explicit GET only, not a board write or capture restart
+ok 3 - Preset review is explicit GET only, not a board write or capture restart
+  ---
+  duration_ms: 1.1306
+  type: 'test'
+  ...
+# Subtest: FPGA source overlay uses source pixels, returned colors/mask and exact epoch only
+ok 4 - FPGA source overlay uses source pixels, returned colors/mask and exact epoch only
+  ---
+  duration_ms: 2.2476
+  type: 'test'
+  ...
+# Subtest: Board view is independent, applies one command, keeps source IDs null and clears failures
+ok 5 - Board view is independent, applies one command, keeps source IDs null and clears failures
+  ---
+  duration_ms: 3.4051
+  type: 'test'
+  ...
+# Subtest: Pending view never retains stale overlays or reports local success; duplicate clicks are blocked
+ok 6 - Pending view never retains stale overlays or reports local success; duplicate clicks are blocked
+  ---
+  duration_ms: 0.5031
+  type: 'test'
+  ...
+# Subtest: Software reference switch hides FPGA overlay; stale frames and absent hardware fail gracefully
+ok 7 - Software reference switch hides FPGA overlay; stale frames and absent hardware fail gracefully
+  ---
+  duration_ms: 0.7502
+  type: 'test'
+  ...
+# Subtest: Explicit parameter JSON goes to checked board uploader, not a software renderer
+ok 8 - Explicit parameter JSON goes to checked board uploader, not a software renderer
+  ---
+  duration_ms: 0.6285
+  type: 'test'
+  ...
+# Subtest: Unmarked HDMI mode remains confirmed while failed marker coordinates stay hidden
+ok 9 - Unmarked HDMI mode remains confirmed while failed marker coordinates stay hidden
+  ---
+  duration_ms: 0.2999
+  type: 'test'
+  ...
+# Subtest: Actual video UI clears both canonical overlays and PC warp when FPGA owns HDMI
+ok 10 - Actual video UI clears both canonical overlays and PC warp when FPGA owns HDMI
+  ---
+  duration_ms: 4.0427
+  type: 'test'
+  ...
+# PASS Ethernet defaults replace form edits after completion without touching HDMI; duplicate clicks and POST/poll race are blocked
+# Subtest: host\\tests\\test_board_link.cjs
+ok 3 - host\\tests\\test_board_link.cjs
+  ---
+  duration_ms: 264.7248
+  type: 'test'
+  ...
+# PASS fish-eye presets, pixel centers, asymmetric optics, input rejection and reference-only export
+# Subtest: host\\tests\\test_fisheye_preview.cjs
+ok 4 - host\\tests\\test_fisheye_preview.cjs
+  ---
+  duration_ms: 240.1528
+  type: 'test'
+  ...
+# PASS Closed input can select either mode without creating a renderer or requesting capture
+# PASS Correction reuses the source object and exactly the calibration page's saved parameters
+# PASS GPU budget admits every 30 FPS input picture and counts actual correction draws
+# PASS Video callbacks reject duplicate decoded timestamps and stalled input clears without another callback
+# PASS Legacy RAF uses decoder progress rather than an advancing clock to avoid duplicate frame counts
+# PASS CPU fallback still skips intermediate pictures within its bounded work budget
+# PASS Calibration storage edits update live parameters and invalid settings disclose default fallback
+# PASS Disconnect and source replacement clear the old image and correction rate
+# PASS Hidden views stop drawing and cannot retain a prior correction FPS
+# PASS Renderer failure exposes labelled original and destroy releases callbacks and GPU resources
+# Subtest: host\\tests\\test_hdmi_correction.cjs
+ok 5 - host\\tests\\test_hdmi_correction.cjs
+  ---
+  duration_ms: 212.9681
+  type: 'test'
+  ...
+# PASS Twenty unique integer pixels retain the original anchors and add inner cross/diagonal references
+# PASS Forward marker coordinates reverse renderer mapping, including asymmetric and resized outputs
+# PASS Zero-distortion equidistant projection agrees with analytic tan-radius mapping
+# PASS Cropped corners remain outside and reduced outputs preserve half-pixel locations
+# PASS Overlay letterboxing uses actual display pixels and changing markers leaves image buffers untouched
+# PASS Mapped overlays retain identities, disclose cropped IDs and share persisted visibility
+# Subtest: host\\tests\\test_pixel_markers.cjs
+ok 6 - host\\tests\\test_pixel_markers.cjs
+  ---
+  duration_ms: 186.1873
+  type: 'test'
+  ...
+# PASS RAW8 Bayer layout 1
+# PASS RAW8 Bayer layout 2
+# PASS RAW8 Bayer layout 3
+# PASS RAW8 Bayer layout 4
+# PASS Full-scale small RAW grayscale preserves samples
+# PASS 1080p Bayer downscale has independent color cell averages
+# PASS RGB888 order and integer grayscale
+# PASS Contiguous RGB888 preview preserves channels across odd-width rows
+# PASS Compact GRAY8 display maps bytes exactly without a second Bayer filter
+# PASS Corrupt lengths, strides, dimensions, formats, and Bayer are rejected
+# PASS Wider RAW preview remains bounded to 960 columns
+# PASS 1080p RAW sample gray is lossless and phase independent
+# PASS Half-width RAW gray prefilters Bayer cells without modifying source
+# Subtest: host\\tests\\test_pixels.cjs
+ok 7 - host\\tests\\test_pixels.cjs
+  ---
+  duration_ms: 234.4
+  type: 'test'
+  ...
+# PASS Missed callbacks are not backfilled from compositor totals
+# PASS Repeated media timestamps do not create observed new frames
+# PASS A burst with a 30 FPS average still exposes its long update gap
+# PASS Decoder counter rollback resets history without negative or huge rates
+# PASS Browser meter separates observed updates from playback-quality totals
+# PASS Source replacement, hidden and paused previews cannot carry old counts
+# PASS Without frame callbacks the UI cannot mistake quality totals for preview FPS
+# PASS All frames flagged dropped cannot claim zero decoded FPS over real callbacks
+# Subtest: host\\tests\\test_preview_rate.cjs
+ok 8 - host\\tests\\test_preview_rate.cjs
+  ---
+  duration_ms: 130.3437
+  type: 'test'
+  ...
+# PASS binary preview framing: all split boundaries, limits, truncated frames
+# Subtest: host\\tests\\test_preview_stream.cjs
+ok 9 - host\\tests\\test_preview_stream.cjs
+  ---
+  duration_ms: 100.8783
+  type: 'test'
+  ...
+# PASS Selection excludes live records and cancellation never deletes
+# PASS Confirmed parent deletion de-duplicates selected child images
+# PASS Partial failures keep undeleted selection and disable stale confirmation
+# Subtest: host\\tests\\test_records.cjs
+ok 10 - host\\tests\\test_records.cjs
+  ---
+  duration_ms: 103.7323
+  type: 'test'
+  ...
+# PASS Enumerates video devices only without opening hardware
+# PASS Saving and restoring a device works with no input signal and no stream
+# PASS Opening uses exact saved ID and audio false; identity stays unverified
+# PASS Missing device fails without falling back to the built-in camera
+# PASS Permission denial and busy-device errors retain saved configuration
+# PASS Permission enumeration always releases its temporary stream
+# PASS Cancel during a pending device request discards and stops a late stream
+# PASS Cancel permission request or close page releases late authorization tracks
+# PASS Muted and ended tracks update state without claiming a verified signal
+# PASS Device removal stops current tracks and retains the user's exact choice
+# PASS Unexpected device identity and playback failure release tracks
+# PASS Blocked or corrupt browser storage does not prevent current-page configuration
+# PASS Latest enumeration wins and unsupported contexts never request capture
+# PASS Destroyed active adapter releases every track and removes hotplug listeners
+# PASS Device UI separates save from open and keeps unsaved choices from opening another source
+# PASS Explicit 720p compatibility choice persists without changing device
+# PASS Presentation FPS expires to zero without new frames
+# PASS Transient busy capture retries the same exact device
+# PASS USB ID is recovered only from a unique saved device label
+# PASS Ambiguous matching labels do not select a replacement
+# Subtest: host\\tests\\test_video_input.cjs
+ok 11 - host\\tests\\test_video_input.cjs
+  ---
+  duration_ms: 2111.0754
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2403.5382

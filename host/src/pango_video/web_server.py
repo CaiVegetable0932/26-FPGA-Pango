@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import secrets
+import socket
 import threading
 from struct import Struct
 from urllib.parse import parse_qs, quote, urlsplit
@@ -15,6 +16,7 @@ from .web_session import SessionError, WebSession
 from .record_store import safe_child, sample_metadata, archives, runs, report_file
 from .calibration import CalibrationStore
 from .board_link import BoardLink
+from .board_autoload import BoardAutoLoader
 from .preview import preview_payload
 
 ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.html","text/html; charset=utf-8"),
@@ -25,6 +27,8 @@ ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.htm
     "video-input-ui.js":("video-input-ui.js","text/javascript; charset=utf-8"),
     "board-link.js":("board-link.js","text/javascript; charset=utf-8"),
     "board-geometry.js":("board-geometry.js","text/javascript; charset=utf-8"),
+    # File-backed automatic controls do not change the independent PC reference.
+    "board-autoload.js":("board-autoload.js","text/javascript; charset=utf-8"),
     "preview-worker.js":("preview-worker.js","text/javascript; charset=utf-8"),
     # GPU display helper stays on the same protected origin as its worker.
     "preview-renderer.js":("preview-renderer.js","text/javascript; charset=utf-8"),
@@ -52,20 +56,43 @@ def instance_identity():
 
 class LocalServer(ThreadingHTTPServer):
     daemon_threads = True
-    # TCP TIME_WAIT must not prevent a clean service restart. A second active
-    # listener remains forbidden: SO_REUSEPORT is not enabled, nor is UDP reuse.
+    # Unix reuse handles TIME_WAIT, without SO_REUSEPORT or UDP sharing.
+    # Windows needs exclusive binding instead: SO_REUSEADDR there allows a
+    # second active host to steal requests and bypass instance-reuse detection.
     allow_reuse_address = True
 
     def __init__(self, port=8765, session=None):
         self.session = session or WebSession()
         # One coordinator owns commissioning and receiver restarts across tabs.
         self.board_link = BoardLink(self.session)
+        # One opt-in background owner restores parameters without a live page.
+        self.board_autoload = BoardAutoLoader(self.board_link)
         # Purpose: serialize CPU-heavy image analysis independently of live UDP reception.
         self.calibration = CalibrationStore(self.session.root)
         self.calibration_slot = threading.BoundedSemaphore(1)
         self.token = secrets.token_urlsafe(32)
         self._slots = threading.BoundedSemaphore(16)
         super().__init__(("127.0.0.1",port), Handler)
+
+    def server_bind(self):
+        """Keep one loopback owner per port on both Windows and Linux/Jetson."""
+        if os.name == "nt":
+            self.allow_reuse_address = False
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
+
+    def serve_forever(self, poll_interval=0.5):
+        """Start recovery only for a successfully bound, actually running service."""
+        self.board_autoload.start()
+        try:
+            return super().serve_forever(poll_interval=poll_interval)
+        finally:
+            self.board_autoload.close()
+
+    def server_close(self):
+        """Revoke background serial work before releasing the HTTP listener."""
+        self.board_autoload.close()
+        super().server_close()
 
     def process_request(self, request, address):
         if not self._slots.acquire(blocking=False):
@@ -185,6 +212,11 @@ class Handler(BaseHTTPRequestHandler):
                                   if query.get("summary") == ["1"] else self.server.session.status())
             if route == "/api/board/status":
                 return self._json(200,self.server.board_link.status())
+            # Recovery settings/state are local controls, not image evidence.
+            if route == "/api/board/autoload":
+                return self._json(200,self.server.board_autoload.status())
+            if route == "/api/board/autoload/preset":
+                return self._json(200,self.server.board_autoload.preset())
             # Live controls read the serialized board session, never a local cache.
             if route == "/api/board/geometry":
                 return self._json(200,self.server.board_link.geometry())
@@ -286,21 +318,29 @@ class Handler(BaseHTTPRequestHandler):
             session = self.server.session
             # Board startup is asynchronous, keeping frame/status HTTP responsive.
             if route == "/api/board/start":
+                self.server.board_autoload.resume()
                 return self._json(202,self.server.board_link.start(data or None))
+            # Explicit opt-in validates the stored preset before any board write.
+            if route == "/api/board/autoload":
+                return self._json(200,self.server.board_autoload.configure(data))
             # Token-protected board changes preserve the running video chain.
             if route == "/api/board/geometry":
+                self.server.board_autoload.manual_override()
                 return self._json(200,self.server.board_link.geometry(data))
             if route == "/api/board/view":
+                self.server.board_autoload.manual_override()
                 return self._json(200,self.server.board_link.view(data))
             # This token-protected action restores Ethernet defaults only.
             # Device/epoch validation happens before restarting the owned UDP.
             if route == "/api/board/reset-ethernet":
                 if data:
                     raise SessionError("以太网恢复默认请求不需要参数")
+                self.server.board_autoload.resume()
                 return self._json(202,self.server.board_link.reset_ethernet())
             if route == "/api/board/stop":
                 if data:
                     raise SessionError("停止请求不需要参数")
+                self.server.board_autoload.pause()
                 return self._json(200,self.server.board_link.stop())
             if route in ("/api/start", "/api/config") and self.server.board_link.status()["busy"]:
                 raise SessionError("板卡启动中，请等待完成或先停止链路")
@@ -311,10 +351,13 @@ class Handler(BaseHTTPRequestHandler):
             if route == "/api/start":
                 if set(data)-{"config","archive_every","auto_mock"}:
                     raise SessionError("存在未定义启动字段")
+                # Explicit alternate/mock capture must not be auto-replaced.
+                self.server.board_autoload.pause("手动采集已暂停自动板卡恢复")
                 return self._json(200,session.start(**data))
             if route == "/api/stop":
                 if data:
                     raise SessionError("停止请求不需要参数")
+                self.server.board_autoload.pause()
                 self.server.board_link.stop()
                 return self._json(200,session.status())
             if route == "/api/save":
