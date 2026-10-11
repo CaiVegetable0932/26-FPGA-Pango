@@ -362,12 +362,19 @@ class WebSession:
         with self._lock:
             return self._state == "listening"
 
-    def status(self):
+    def status(self, *, summary=False):
+        """Keep high-frequency UI polls independent of detailed failure history.
+
+        Full diagnostics remain the default API/report contract. The UI only
+        needs counters, so omit failure records BEFORE deepcopy to avoid long
+        Python/lock stalls when UDP losses have filled the bounded history.
+        """
         with self._lock:
             running = self._state in ("listening", "stopping")
             age = None if self._frame is None else max(0, (time.monotonic_ns()-self._frame.complete_ns)/1_000_000)
             signal = "live" if running and age is not None and age <= 1000 else "waiting" if running else "stopped"
-            metrics = deepcopy(self._metrics)
+            metrics = deepcopy({k:v for k,v in self._metrics.items()
+                                if not summary or k != "recent_failures"})
             assembly = metrics.get("assembly", {})
             for key in ("stream_epoch", "live_first_id", "live_highwater"):
                 if assembly.get(key) is not None:

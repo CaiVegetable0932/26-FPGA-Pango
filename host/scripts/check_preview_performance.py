@@ -30,7 +30,7 @@ def snapshot(page):
             drops = int(fields[-1])
     video = page.locator("#capture-video").evaluate("""v => ({width:v.videoWidth,height:v.videoHeight,
         frames:v.getVideoPlaybackQuality().totalVideoFrames,dropped:v.getVideoPlaybackQuality().droppedVideoFrames,
-        settings:v.srcObject?.getVideoTracks()[0]?.getSettings(),label:v.srcObject?.getVideoTracks()[0]?.label})""")
+        observed:Number(v.dataset.framesObserved||0),settings:v.srcObject?.getVideoTracks()[0]?.getSettings(),label:v.srcObject?.getVideoTracks()[0]?.label})""")
     return dict(now=time.monotonic(), running=status["running"], config=status["config"],
         run_id=status["run_id"], frame=status["frame"], counters=counts, nic=nic, socket_drops=drops,
         assembly=status["metrics"].get("assembly", {}), video=video,
@@ -123,7 +123,9 @@ def main():
             dt = b["now"]-a["now"]
             intervals.append(dict(elapsed_seconds=dt,
                 network_canvas_fps=(int(b["canvas"].get("framesPresented",0))-int(a["canvas"].get("framesPresented",0)))/dt,
-                decoded_hdmi_fps=(b["video"]["frames"]-a["video"]["frames"])/dt,
+                # Quality totals and actual observed callbacks are separate.
+                hdmi_browser_total_fps=(b["video"]["frames"]-a["video"]["frames"])/dt,
+                hdmi_observed_preview_fps=(b['video']['observed']-a['video']['observed'])/dt,
                 complete_fps=(b["counters"].get("live_frames_complete",0)-a["counters"].get("live_frames_complete",0))/dt))
         page.screenshot(path=str(folder / "dual-preview.png"), full_page=True)
         evidence = {}
@@ -154,14 +156,15 @@ def main():
         report = dict(label=args.label, preview_mode=preview_mode, elapsed_seconds=elapsed, physical_device=device,
             before=first, after=last, samples=samples, delta=delta,
             intervals=intervals,
-            complete_fps=complete_fps, observed_source_fps=observed_fps,
-            decoded_hdmi_fps=hdmi_fps, network_canvas_fps=canvas_fps, source_frame_pairing="unverified", page_errors=errors,
+            complete_fps=complete_fps, observed_network_ids_fps=observed_fps,
+            hdmi_browser_total_fps=hdmi_fps,hdmi_observed_preview_fps=(last['video']['observed']-first['video']['observed'])/elapsed,
+            network_canvas_fps=canvas_fps, source_frame_pairing="unverified", page_errors=errors,
             socket_drops=None if first["socket_drops"] is None else last["socket_drops"]-first["socket_drops"],
             nic_delta={k:last["nic"][k]-first["nic"][k] for k in first["nic"]})
         report["evidence"] = evidence
         report["renderer_checks"] = renderer_checks
         (folder / "performance.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
-        print(json.dumps({k:report[k] for k in ("label", "elapsed_seconds", "complete_fps", "observed_source_fps", "decoded_hdmi_fps", "network_canvas_fps", "socket_drops", "nic_delta", "delta", "page_errors")}, ensure_ascii=False))
+        print(json.dumps({k:report[k] for k in ("label", "elapsed_seconds", "complete_fps", "observed_network_ids_fps", "hdmi_browser_total_fps", "hdmi_observed_preview_fps", "network_canvas_fps", "socket_drops", "nic_delta", "delta", "page_errors")}, ensure_ascii=False))
         print(f"Report: {folder}")
     return 0 if not errors else 1
 

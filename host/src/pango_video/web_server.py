@@ -181,12 +181,16 @@ class Handler(BaseHTTPRequestHandler):
             if route == "/api/session":
                 return self._json(200,dict(token=self.server.token,status=self.server.session.status()))
             if route == "/api/status":
-                return self._json(200,self.server.session.status())
+                return self._json(200,self.server.session.status(summary=True)
+                                  if query.get("summary") == ["1"] else self.server.session.status())
             if route == "/api/board/status":
                 return self._json(200,self.server.board_link.status())
             # Live controls read the serialized board session, never a local cache.
             if route == "/api/board/geometry":
                 return self._json(200,self.server.board_link.geometry())
+            # Count FPGA results independently of repeated HDMI/UVC frames.
+            if route == "/api/board/performance":
+                return self._json(200,self.server.board_link.performance())
             # Mode verification is independent of optional marker coordinates.
             if route == "/api/board/view":
                 return self._json(200,self.server.board_link.view_status())

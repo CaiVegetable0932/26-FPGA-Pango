@@ -17,12 +17,17 @@
 | HTTP | 内容 |
 | --- | --- |
 | GET `/api/board/geometry` | CAPS 0x80、当前参数版本及首次应用帧；不是 HDMI 帧关联证明 |
+| GET `/api/board/performance` | 只读结果发布、DVP 输入、采集拒绝/溢出、运行周期、cache 与故障计数；复用同一 UART 锁 |
 | POST `/api/board/geometry` | `{preset, rotation_deg?:0, enhance?:true, version?:N}`；现有 GeometryClient 完整上传、参数回读、按帧激活等待 |
 | GET `/api/board/view` | 两次一致的 7 字显示头部，核对已显示模式和参数版本；不授权标记坐标叠加 |
 | POST `/api/board/view` | `{mode:"original"或"corrected", markers:boolean, diameter?:10, revision?:N}`；CAPS 0x100 必须存在 |
 | GET `/api/board/markers` | 一致的 FPGA 标记元数据，含 20 条源位置、目标 Q12 解码位置、颜色与可见性 |
 
 0x35 请求为 24 字节：epoch LE64、session LE32、revision LE32、flags LE32、diameter LE32。flags bit0=原图，bit1=显示标记。其他位拒绝。回复额外 12 字节为请求 revision、已显示 revision、**已显示** flags | (diameter<<8)。ACK 不等于已显示：客户端继续回读确认。
+
+`/api/board/performance` 将结果 READ bank1/index22 的 32 位发布数与独立 DVP `0x07` 的 16 位 VSYNC 数分开，保留各自单调时钟采样时间。DVP 诊断要求 CAPS 0x40，并核对格式版本；不支持时返回 null，不伪造源帧率。`0x08` 返回摄像头时钟、采集拒绝/溢出计数。READ index18 是运行中帧计时器，下一帧 start 清零，不是上一帧完整耗时。完成 source_id/epoch/version 在发布计数前后变化时置 null，避免 UART 顺序读取形成伪同帧身份。计数增加与实际图像、HDMI 配对、Flash 身份仍分别验证。
+
+本轮帧率定位与 Windows 后续开发要求见 [1080p30 帧率优化交接](../../fpga/docs/Windows_1080p30帧率优化交接.md)。
 
 0x34 bank=2：0 magic `0x4d4b5231`；1 显示 revision；2 flags/diameter；3 HDMI 显示参数版本；4 20 位可见掩码；5 generation；6 status。每个 ID 的五字记录位于 `16+5*(id-1)`：source x低16/y高16、dest x signed Q12、dest y signed Q12、RGB24、visible bit0。READ 回复 version 字段是 **HDMI 参数版本**，不是显示 revision。
 

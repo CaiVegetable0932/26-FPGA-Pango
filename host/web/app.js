@@ -127,7 +127,8 @@
   }
   function offline(){online=false;recordUI.sync();$("connection-alert").hidden=false;text("server-health","服务未连接");$("start").disabled=true;$("stop").disabled=true;$("save-current").disabled=true;if(!$("live-canvas").hidden){$("stale-label").hidden=false;text("stale-label","服务连接已中断");}}
   async function poll(){
-    if(!document.hidden){try{const state=await request("/api/status");if(!online){await init();}else update(state);}catch(error){offline();}}
+    // UI polls need counters, not the full diagnostic loss history.
+    if(!document.hidden){try{const state=await request("/api/status?summary=1");if(!online){await init();}else update(state);}catch(error){offline();}}
     if(online&&activeView==="records"&&!document.hidden&&performance.now()-recordsLastRefresh>3000)refreshRecords();
     if(!closed)statusTimer=setTimeout(poll,500);
   }

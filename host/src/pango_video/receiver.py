@@ -144,7 +144,7 @@ class UDPReceiver:
         # Holds the largest IPv4 UDP payload plus margin. Reading only 1464 bytes
         # could truncate an oversized datagram into an apparently valid packet.
         buffer = bytearray(65535)
-        # Linux can receive 32 queued packets per syscall, reducing GIL
+        # Linux can receive 256 queued packets per syscall, reducing GIL
         # handovers while HTTP/video threads run. Other platforms retain the
         # portable receive path and identical validation/peer filtering.
         batch = None

@@ -30,6 +30,20 @@ def until(predicate, seconds=4):
 
 
 class WebTests(unittest.TestCase):
+    def test_summary_status_omits_failure_records_without_losing_counters(self):
+        # UI polling must avoid copying the full loss history, while the normal
+        # diagnostic endpoint and saved report preserve all original evidence.
+        with self.session._lock:
+            self.session._metrics = dict(counters=dict(datagrams_received=9),
+                assembly=dict(counters=dict(frames_failed_timeout=2)),
+                recent_failures=[dict(key=[1,2,1,0],reason="timeout")])
+        full = self.call("GET","/api/status")[2]
+        light = self.call("GET","/api/status?summary=1")[2]
+        self.assertEqual(full["metrics"]["recent_failures"][0]["reason"], "timeout")
+        self.assertNotIn("recent_failures",light["metrics"])
+        self.assertEqual(full["metrics"]["assembly"],light["metrics"]["assembly"])
+        self.assertEqual(full["metrics"]["counters"],light["metrics"]["counters"])
+
     def test_enhanced_frame_stage_is_propagated_without_host_pixel_processing(self):
         # Purpose: the live API must identify board-processed bytes so the
         # browser can decode RAW8 directly without presenting them as S0.

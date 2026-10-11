@@ -13,6 +13,7 @@ test("Repeated media timestamps do not create observed new frames",()=>{
   for(let i=0;i<30;i++){now=i*1000/30;c.frame({presentedFrames:i+1,mediaTime:1});}
   now=1000;const s=c.sample();assert.equal(s.frames,1);assert.equal(s.repeated,29);assert.equal(s.maxGapMs,1000);
   now=2000;assert.equal(c.sample().fps,0);
+  assert.equal(c.sample().totalFrames,1);
 });
 test("A burst with a 30 FPS average still exposes its long update gap",()=>{
   let now=0;const c=createVideoCounter(()=>now);
@@ -37,10 +38,10 @@ function fixture(withCallback=true){
   return {video,rates,meter,callbacks,at(t){now=t;},tick(){timer();},frame(meta){
     const [key,fn]=callbacks.entries().next().value;callbacks.delete(key);fn(now,meta);}};
 }
-test("Browser meter reports observed updates separately from decode and decoder drops",()=>{
+test("Browser meter separates observed updates from playback-quality totals",()=>{
   const f=fixture();f.frame({presentedFrames:1,mediaTime:0});f.at(400);f.frame({presentedFrames:13,mediaTime:.4});
   f.video.quality={totalVideoFrames:30,droppedVideoFrames:4};f.at(1000);f.tick();
-  const r=f.rates.at(-1);assert.equal(r.fps,2);assert.equal(r.info.skipped,11);assert.equal(r.info.decodeFps,26);assert.equal(r.info.decoderDrops,4);
+  const r=f.rates.at(-1);assert.equal(r.fps,2);assert.equal(r.info.skipped,11);assert.equal(r.info.playbackTotalFps,30);assert.equal(r.info.playbackDrops,4);assert.equal(r.info.qualityConsistent,true);
   f.at(2000);f.tick();assert.equal(f.rates.at(-1).fps,0);assert.equal(f.rates.at(-1).info.ageMs,1600);
   f.meter.destroy();assert.equal(f.callbacks.size,0);
 });
@@ -51,9 +52,17 @@ test("Source replacement, hidden and paused previews cannot carry old counts",()
   f.video.hidden=true;f.at(2500);f.tick();assert.equal(f.rates.at(-1).fps,0);
   f.video.hidden=false;f.video.paused=true;f.at(3500);f.tick();assert.equal(f.rates.at(-1).fps,0);f.meter.destroy();
 });
-test("Without frame callbacks the UI cannot mistake decoded counts for preview FPS",()=>{
+test("Without frame callbacks the UI cannot mistake quality totals for preview FPS",()=>{
   const f=fixture(false);f.tick();f.video.quality={totalVideoFrames:30,droppedVideoFrames:5};f.at(1000);f.tick();
-  assert.equal(f.rates.at(-1).fps,null);assert.equal(f.rates.at(-1).info.decodeFps,25);assert.equal(f.rates.at(-1).info.measurable,false);f.meter.destroy();
+  assert.equal(f.rates.at(-1).fps,null);assert.equal(f.rates.at(-1).info.playbackTotalFps,30);assert.equal(f.rates.at(-1).info.measurable,false);f.meter.destroy();
+});
+test("All frames flagged dropped cannot claim zero decoded FPS over real callbacks",()=>{
+  // Reproduce the actual Hagibis/Chromium quality-counter contradiction.
+  const f=fixture();f.frame({presentedFrames:1,mediaTime:0});
+  f.at(500);f.frame({presentedFrames:16,mediaTime:.5});
+  f.video.quality={totalVideoFrames:30,droppedVideoFrames:30};f.at(1000);f.tick();
+  const r=f.rates.at(-1);assert.equal(r.fps,2);assert.equal(r.info.playbackTotalFps,30);
+  assert.equal(r.info.qualityConsistent,false);assert.equal(r.info.decodeFps,undefined);f.meter.destroy();
 });
 // This report describes software fixtures only; runtime hardware proof is separate.
 const report={tests_run:results.length,passed:results.every(r=>r.passed),hardware_acceptance:"not_performed",results};

@@ -110,9 +110,9 @@
             <div class="video-empty hdmi-empty" id="capture-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-monitor"/></svg></div><strong id="capture-empty-title">选择视频输入设备</strong><span id="capture-empty-detail">在连接设置中选择采集卡，无信号时也可保存配置</span><button class="button small secondary" type="button" data-view="settings">配置视频输入</button></div>
             <span id="capture-view-label" class="video-corner">HDMI 原图 / 信号未验证</span>
           </div>
-          <!-- Negotiated input, observed preview and decode health are distinct. -->
+          <!-- Negotiated input, observed preview and browser quality counters are distinct. -->
           <div class="video-meta"><span id="capture-preview-device">尚未选择设备</span><span id="capture-format">采集格式 —</span><span id="capture-preview-rate" title="每秒实际观察到的新帧回调；跳过的回调不补计，不能证明显示器或远程桌面的最终帧率">预览 0.0 FPS</span></div>
-          <p id="capture-preview-health" class="capture-health" role="status" title="跳过更新表示合成提交帧数跨越了多个回调；不等同于 FPGA 源帧丢失">解码 0.0 FPS · 跳过更新 0 · 解码丢帧 0 · 最长间隔 0 ms</p>
+          <p id="capture-preview-health" class="capture-health" role="status" title="跳过更新表示合成提交帧数跨越了多个回调；不等同于 FPGA 源帧丢失">浏览器累计 0.0 FPS · 跳过更新 0 · 质量统计丢弃 0 · 最长间隔 0 ms</p>
           <p id="capture-correction-info" class="capture-health" role="status">当前：HDMI 原图 · 可切换为标定页面的计算机矫正</p>
           <div class="viewer-footer"><span>源帧配对未验证</span><div class="capture-preview-actions"><button id="capture-correction-toggle" type="button" class="button small secondary" aria-pressed="false" aria-controls="capture-corrected" title="使用标定页面的手动鱼眼参数进行 PC 软件矫正，只切换显示">计算机矫正</button><button id="capture-preview-open" type="button" class="button small secondary" disabled>打开预览</button><button id="capture-preview-close" type="button" class="button small secondary" disabled>关闭</button></div></div>
         </article>

@@ -2,7 +2,7 @@
 
 Use glibc's public ABI through ctypes, with no driver dependency. A locally
 built, hash-verified C hot path is optional; missing builds retain Python checks.
-The batch holds only 32 x 2048 bytes. MSG_TRUNC preserves the original length
+The batch holds only 256 x 2048 bytes. MSG_TRUNC preserves the original length
 so an oversized datagram can never appear to be a valid 1464-byte PRAW packet.
 """
 import ctypes as c
@@ -66,7 +66,10 @@ def load_native():
 
 class LinuxDatagramBatch:
     """Borrowed packet views last until the next receive call, as recvfrom_into."""
-    SIZE = 32
+    # At 1080p30 the FPGA sends about 44,460 datagrams/s. Drain larger queued
+    # bursts after compositor/HTTP scheduling delays, amortizing ctypes/GIL
+    # transitions without waiting for a full batch or increasing frame queues.
+    SIZE = 256
     PAYLOAD = 2048
 
     def __init__(self, sock, peer):

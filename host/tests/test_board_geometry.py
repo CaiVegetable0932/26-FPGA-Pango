@@ -220,6 +220,18 @@ class BoardGeometryApiTests(unittest.TestCase):
         self.assertEqual(self.uart.closed, 4)
         self.assertFalse(self.link.uart_lock.locked())
 
+    def test_performance_route_serializes_uart_without_changing_capture(self):
+        # Exercise the real BoardLink mutex/identity checks through HTTP. The
+        # generic fake's diagnostic values are fixtures, never hardware proof.
+        code, result = self.call("GET", "/api/board/performance")
+        self.assertEqual(code, 200, result)
+        self.assertEqual((result["epoch"],result["session"]), ("123",1))
+        self.assertIn("result_published", result)
+        self.assertIn("running_frame_cycles", result)
+        self.assertTrue(all(cmd in (1,0x34) for cmd, _ in self.uart.calls))
+        self.assertEqual(self.uart.closed, 1)
+        self.assertFalse(self.link.uart_lock.locked())
+
     def test_busy_unknown_fields_epoch_and_old_firmware_fail(self):
         with self.link.uart_lock:
             self.assertEqual(self.call("POST", "/api/board/view", dict(mode="original", markers=True))[0], 409)

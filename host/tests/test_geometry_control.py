@@ -57,6 +57,36 @@ class FakeUart:
 
 class GeometryControlTests(unittest.TestCase):
     """Verify exact coefficients, no legacy writes, retry and pending failures."""
+    def test_performance_counts_physical_dvp_independently_of_results(self):
+        # The input monitor includes rejected VSYNC intervals. Keep its 16-bit
+        # counter, geometry and overflow data independent of result publication.
+        class ChainUart(FakeUart):
+            format_version = 1
+            def exchange(self,command,payload=b''):
+                if command in (7,8):
+                    self.calls.append((command,payload))
+                    reply=bytearray(32);reply[1:3]=bytes((command,1))
+                    struct.pack_into('<QI',reply,4,123,1)
+                    if command==7:
+                        struct.pack_into('<5HBB',reply,20,65535,1080,1920,1920,0,3,self.format_version)
+                    else:
+                        struct.pack_into('<III',reply,20,123456,7,2)
+                    return bytes(reply)
+                reply=bytearray(super().exchange(command,payload))
+                if command==1:struct.pack_into('<I',reply,24,0xc0)
+                return bytes(reply)
+        uart=ChainUart();result=GeometryClient(uart).performance()
+        self.assertEqual(result['dvp_frame_count'],65535)
+        self.assertEqual(result['dvp_low_lines'],1080)
+        self.assertEqual(result['dvp_min_width'],1920)
+        self.assertEqual(result['capture_rejected'],7)
+        self.assertEqual(result['capture_overflows'],2)
+        self.assertIsNotNone(result['dvp_counter_time'])
+        self.assertTrue(all(command in (1,7,8,0x34) for command,_ in uart.calls))
+        uart.format_version=2
+        with self.assertRaisesRegex(GeometryError,'快照版本'):
+            GeometryClient(uart).performance()
+
     def test_matches_independent_fpga_encoder(self):
         # Purpose: compare separate host implementation against FPGA model at
         # test time only; production host never imports the FPGA development zone.
@@ -127,6 +157,43 @@ class GeometryControlTests(unittest.TestCase):
         with self.assertRaises(GeometryError):
             GeometryClient(uart).upload(profile)
         self.assertFalse(any(cmd in (0x30, 0x31, 0x32) for cmd, _ in uart.calls))
+
+    def test_performance_reads_do_not_invent_a_completed_frame_on_tearing(self):
+        # Simulate publication while UART reads the independent telemetry words.
+        # The rate counter remains usable; a torn 64-bit identity must be null.
+        class PerformanceUart(FakeUart):
+            def __init__(self, moving=False):
+                super().__init__()
+                self.moving, self.count_reads = moving, 0
+
+            def exchange(self, command, payload=b""):
+                if command != 0x34:
+                    return super().exchange(command, payload)
+                self.calls.append((command, payload))
+                index, bank = struct.unpack_from("<II", payload, 12)
+                assert bank == 1
+                if index == 22:
+                    self.count_reads += 1
+                values = {18:12345,19:800,20:3,21:2 << 9,22:100,
+                          23:7,24:42,25:1,32:123,33:0}
+                value = values[index] + int(index == 22 and self.moving and self.count_reads > 1)
+                result = bytearray(32)
+                result[1] = command
+                struct.pack_into("<QI", result, 4, 123, 1)
+                struct.pack_into("<III", result, 20, index, value, 7)
+                return bytes(result)
+
+        for moving in (False, True):
+            uart = PerformanceUart(moving)
+            result = GeometryClient(uart).performance()
+            self.assertEqual(result["result_published"], 100)
+            self.assertEqual(result["running_frame_cycles"], 12345)
+            self.assertEqual(result["fault_bits"], 0)
+            self.assertEqual(result["process_state"], 2)
+            self.assertEqual(result["completed_identity_coherent"], not moving)
+            self.assertEqual(result["completed_source_frame_id"], None if moving else str((1 << 32)+42))
+            self.assertFalse(result["hardware_image_verified"])
+            self.assertTrue(all(cmd in (1, 0x34) for cmd, _ in uart.calls))
 
 
 if __name__ == "__main__":

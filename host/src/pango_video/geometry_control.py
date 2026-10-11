@@ -101,6 +101,53 @@ class GeometryClient:
         version, frame = struct.unpack("<IQ", self._command(0x33))
         return dict(version=version, applied_source_frame_id=frame)
 
+    def performance(self):
+        """Read result publication counters without changing the running board.
+
+        UART words are not an atomic snapshot. Bracket the completed identity
+        with publication counts, and leave it null if a result changed. Index
+        18 is a RUNNING frame timer, never the last completed frame duration.
+        """
+        begin = self.clock()
+        first, version = self.read(22)
+        counter_time = self.clock()
+        values = {22: first}
+        versions = {version}
+        for index in (18, 19, 20, 21, 23, 24, 25, 32, 33):
+            values[index], read_version = self.read(index)
+            versions.add(read_version)
+        last, end_version = self.read(22)
+        versions.add(end_version)
+        coherent = first == last and len(versions) == 1
+        faults = values[21] & 0x1fe
+        # The independent DVP monitor counts physical VSYNC boundaries even
+        # when capture rejects a frame. Its 16-bit counter and separate sample
+        # time must never be substituted for the geometry result counter.
+        dvp = dict(dvp_frame_count=None,dvp_counter_time=None,
+                   dvp_low_lines=None,dvp_high_lines=None,dvp_min_width=None,dvp_max_width=None,
+                   capture_rejected=None,capture_overflows=None)
+        if self.capabilities & 0x40:
+            frames,low,minimum,maximum,high,state,format_version = struct.unpack('<5HBB',self._command(7))
+            if format_version != 1:
+                raise GeometryError('DVP 监测快照版本未知')
+            dvp_time = self.clock()
+            clocks,rejected,overflows = struct.unpack('<III',self._command(8))
+            dvp.update(dvp_frame_count=frames,dvp_counter_time=dvp_time,dvp_low_lines=low,
+                       dvp_high_lines=high,dvp_min_width=minimum,dvp_max_width=maximum,
+                       capture_state=state,camera_clock_count=clocks,
+                       capture_rejected=rejected,capture_overflows=overflows)
+        return dict(epoch=str(self.epoch), session=self.session,
+                    counter_time=counter_time, read_seconds=self.clock()-begin,
+                    result_published=first, result_published_after=last,
+                    running_frame_cycles=values[18], cache_hits=values[19], cache_misses=values[20],
+                    fault_bits=faults, process_state=(values[21] >> 9) & 7,
+                    completed_identity_coherent=coherent,
+                    completed_source_frame_id=str(values[24] | values[25] << 32) if coherent else None,
+                    completed_epoch=str(values[32] | values[33] << 32) if coherent else None,
+                    completed_parameter_version=values[23] if coherent else None,
+                    parameter_version=version if len(versions) == 1 else None,
+                    configured_memory_clock_hz=125000000, hardware_image_verified=False,**dvp)
+
     def upload(self, profile, *, version=None, timeout=10):
         """BEGIN/14 WORDs/readback/COMMIT, then wait for frame-boundary use.
 

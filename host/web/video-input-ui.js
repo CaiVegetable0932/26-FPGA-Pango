@@ -115,7 +115,7 @@
   function create({toast=()=>{}}={}){
     const $=id=>document.getElementById(id),text=(id,value)=>{$(id).textContent=value;};
     let storage=null,disposed=false,inventoryKey="",correction=null,correctionState={mode:"original"};
-    let nativeFps=0,nativeInfo={decodeFps:0,skipped:0,decoderDrops:0,maxGapMs:0,ageMs:0};
+    let nativeFps=0,nativeInfo={playbackTotalFps:0,skipped:0,playbackDrops:0,qualityConsistent:true,maxGapMs:0,ageMs:0};
     let correctedFps=0,correctedInfo={frames:0,maxGapMs:0,ageMs:0};
     try{storage=window.localStorage;}catch{}
     // Original RAW8 coordinates use metadata, HDMI coordinates use its actual
@@ -167,7 +167,9 @@
       $("capture-preview-rate").title=corrected?"每秒实际完成的 PC 矫正绘制次数；不代表采集、FPGA 或远程桌面帧率":"每秒实际观察到的新帧回调；跳过的回调不补计，不能证明显示器或远程桌面的最终帧率";
       $("capture-preview-rate").dataset.fps=fps===null?"":String(fps);
       $("capture-preview-rate").dataset.measurement=JSON.stringify({...info,mode:correctionState.mode});
-      text("capture-preview-health",`解码 ${nativeInfo.decodeFps.toFixed(1)} FPS · 跳过更新 ${nativeInfo.skipped} · 解码丢帧 ${nativeInfo.decoderDrops} · ${corrected?"矫正":"原图"}最长间隔 ${Math.round(info.maxGapMs)} ms`+
+      // Quality totals are browser bookkeeping, not decoded or FPGA unique frames.
+      text("capture-preview-health",`浏览器累计 ${nativeInfo.playbackTotalFps.toFixed(1)} FPS · 跳过更新 ${nativeInfo.skipped} · 质量统计丢弃 ${nativeInfo.playbackDrops} · ${corrected?"矫正":"原图"}最长间隔 ${Math.round(info.maxGapMs)} ms`+
+        (!nativeInfo.qualityConsistent?" · 质量统计与显示回调不一致":"")+
         (info.ageMs>200?` · 已停顿 ${Math.round(info.ageMs)} ms`:""));
     }
     // Count observed new-frame callbacks, not negotiated FPS or backfilled
