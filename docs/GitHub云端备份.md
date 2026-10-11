@@ -45,10 +45,10 @@ git clone https://github.com/CaiVegetable0932/26-FPGA-Pango.git
 用 VS Code 打开克隆后的目录。若需要编辑远程开发分支，从分支列表选择对应分支。安装 PDS、ModelSim，恢复外部资料并配置本机工具路径和 License。克隆不会复制旧电脑的本地 Git 配置，可在新仓库设置：
 
 ```powershell
-git config --local user.name CaiVegetable0932
-git config --local user.email caivegetable0932@163.com
+git config --local user.name hagima410
+git config --local user.email 2849996579@qq.com
 git config --local user.useConfigOnly true
-git config --local credential.https://github.com.username CaiVegetable0932
+git config --local credential.https://github.com.username hagima410
 git config pull.ff only
 git config push.default simple
 git config fetch.prune true
@@ -58,13 +58,13 @@ git config core.quotepath false
 
 ## 固定身份与 GitHub 登录
 
-本项目提交作者与提交者均固定为 `CaiVegetable0932 <caivegetable0932@163.com>`；推送使用 `CaiVegetable0932` 登录账户。提交前用 `git var GIT_AUTHOR_IDENT` 和 `git var GIT_COMMITTER_IDENT` 核对实际身份，提交后通过 `git log -1 --format=fuller` 复核。Git 配置不会替代 GitHub 登录。
+本项目提交作者与提交者均固定为 `hagima410 <2849996579@qq.com>`；推送使用已授权协作者 `hagima410` 登录账户。身份以 [项目工作约定](../AGENTS.md) 中 2026-09-25 更新的规则为准，远程仓库所有者仍为 `CaiVegetable0932`。提交前用 `git var GIT_AUTHOR_IDENT` 和 `git var GIT_COMMITTER_IDENT` 核对实际身份，提交后通过 `git log -1 --format=fuller` 复核。Git 配置不会替代 GitHub 登录。
 
-使用 Git Credential Manager 或 VS Code 的 GitHub 登录提示完成授权。凭据由本机凭据管理器保存，不写入仓库。认证失败时可在终端运行 `git credential-manager github login --username CaiVegetable0932 --force --browser` 重新登录，无需将密码或令牌发给他人。
+使用 Git Credential Manager 或 VS Code 的 GitHub 登录提示完成授权。凭据由本机凭据管理器保存，不写入仓库。认证失败时可在终端运行 `git credential-manager github login --username hagima410 --force --browser` 重新登录，无需将密码或令牌发给他人。
 
 ## 不包含的内容
 
-仅根目录 `PDS/` 和整个 `reference/` 被排除，合计约 9.6 GiB。其他目录及根目录文件默认纳入，包括隐藏文件、本地配置和构建结果。`reference/内容索引.md` 已停止跟踪但保留本地文件，旧提交中的历史不变。资料范围见[本地资料说明](本地资料说明.md)。请把它们单独备份到自己的网盘或外部磁盘；当前没有配置或上传这部分文件。
+根目录 `PDS/` 和整个 `reference/` 被排除，合计约 9.6 GiB。其他目录及根目录文件默认纳入，包括隐藏文件、本地配置和构建结果。2026-10-11 用户另行授权忽略 MCU 临时 PDF 阅读工具、重复临时测试程序和失败下载页面，精确路径见根目录 `.gitignore`；正式构建产物和迁移归档继续提交。`reference/内容索引.md` 已停止跟踪但保留本地文件，旧提交中的历史不变。资料范围见[本地资料说明](本地资料说明.md)。请把它们单独备份到自己的网盘或外部磁盘；当前没有配置或上传这部分文件。
 
 GitHub 分支保护和其他托管平台设置未配置。云端推送结果以 Git 实际返回值及远程提交号为准。
 
