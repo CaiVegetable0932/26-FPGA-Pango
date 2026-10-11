@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "geometry_id": 1,
+  "protocol_profile": "MCU_POSE_V2",
+  "hardware_verified": false,
+  "pose_parameters": "pose_config.h",
+  "board_interfaces": "board_interfaces.md",
+  "f4": {
+    "project_target": "STM32F407xx",
+    "position_source": "software_step_estimate",
+    "coordinate_full_travel": 100000000,
+    "home": "power_off_manual_zero_then_reset_and_confirm",
+    "axes": [
+      {"name": "X", "driver_channel": 1, "positive_dir_level": 0, "startup_travel_revolutions": "5.696250"},
+      {"name": "Y", "driver_channels": [2, 3], "paired_opposite_direction": true, "positive_dir_level": 1, "startup_travel_revolutions": "6.195625"},
+      {"name": "Z", "driver_channel": 4, "positive_dir_level": 1, "startup_travel_revolutions": null}
+    ],
+    "motion_timeout_ms": 180000,
+    "encoder_verified": false
+  },
+  "f1": {
+    "project_target": "STM32F103xB",
+    "servo_bus": "USART3_115200_JOHO",
+    "servo_angle_scale_mdeg": 270000,
+    "servo_raw_max": 4095,
+    "move_time_ms": 2000,
+    "home_timeout_ms": 15000,
+    "axes": [
+      {"name": "pitch", "servo_id": 1, "center_raw": 1881, "relative_range_mdeg": [-60000, 60000]},
+      {"name": "yaw", "servo_id": 2, "center_raw": 2405, "relative_range_mdeg": [-60000, 60000]}
+    ],
+    "imu": {
+      "device": "MPU6050",
+      "i2c_address": "0x68",
+      "i2c_clock_hz": 400000,
+      "sample_rate_hz": 200,
+      "accel_full_scale_g": 2,
+      "gyro_full_scale_dps": 250,
+      "dlpf_cfg": 3,
+      "smplrt_div": 4,
+      "fifo_enabled": false,
+      "capture": "data_ready_polling_approximation",
+      "filter": "six_axis_complementary_gravity_correction_0.5s",
+      "mounting_measured": false,
+      "absolute_yaw_reference": false,
+      "runtime_zero_and_bias": "archive_GET_CONFIG_by_boot_id_and_config_version"
+    }
+  },
+  "physical_chain_order": null,
+  "camera_extrinsics": null,
+  "independent_angle_reference": null,
+  "calibration_evidence": null
+}

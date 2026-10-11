@@ -1,0 +1,32 @@
+#ifndef GIMBAL_TEST_H
+#define GIMBAL_TEST_H
+
+#include "uart_servo_lite.h"
+
+/* JOHO position raw 0..4095 maps to the calibrated 270 degree range. */
+#define GIMBAL_TRAVEL_DEGREES              270U
+#define GIMBAL_POSITION_MAX                4095U
+#define GIMBAL_ANGLE_SCALE_MDEG            (GIMBAL_TRAVEL_DEGREES * 1000U)
+#define GIMBAL_CENTER_PITCH_MDEG           124022L
+#define GIMBAL_CENTER_YAW_MDEG             158571L
+#define GIMBAL_ALLOWED_OFFSET_MDEG         60000L
+#define GIMBAL_CENTER_PITCH_RAW            1881U
+#define GIMBAL_CENTER_YAW_RAW              2405U
+#define GIMBAL_MOVE_TIME_MS                2000U
+#define GIMBAL_SETTLE_TIME_MS              1000U
+#define GIMBAL_POSITION_TOLERANCE          12U
+
+void Gimbal_Test_Init(Usart_DataTypeDef *bus);
+void Gimbal_Test_Poll(void);
+/* Optional pose observer keeps the vendor control and arrival tests intact. */
+typedef void (*GimbalFeedback)(unsigned axis, uint16_t raw, uint8_t valid);
+void Gimbal_SetFeedback(GimbalFeedback feedback);
+void Gimbal_SetPoseReady(uint8_t ready);
+uint8_t Gimbal_State(void); /* 0 idle, 1 move, 2 centering, 5 failed */
+uint8_t Gimbal_Ready(void);
+uint8_t Gimbal_Go(int32_t pitch, int32_t yaw);
+/* Local fault recovery only; there is no serial all-axis stop command. */
+uint8_t Gimbal_CancelMotion(void);
+void Gimbal_ReadFeedback(void);
+
+#endif
