@@ -1,6 +1,22 @@
-/* Upload compact display bytes directly; source RAW and archive APIs stay intact. */
+/* Upload validated display bytes directly; source RAW and archives stay intact. */
 (function(root){
   "use strict";
+  function directPlan(bytes,meta,mode,displayWidth){
+    // Exact native RAW can use one LUMINANCE texture. Reduced Bayer views
+    // still require full 2x2 anti-aliasing in the existing reference converter.
+    const {width:w,height:h,row_stride:stride,pixel_format:kind}=meta;
+    const channels={GRAY8:1,RGB888:3,RAW8:1}[kind];
+    if(!channels||!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||
+      stride!==w*channels||bytes.byteLength!==w*h*channels||bytes.byteLength>8388608)
+      throw Error("非法 GPU 图像长度或跨度");
+    if(!["raw","gray","color"].includes(mode))throw Error("不支持的预览模式");
+    if(kind==="RAW8"){
+      if(mode!=="raw"||w>1920||(Number.isFinite(displayWidth)&&displayWidth>0&&displayWidth<w))return null;
+      return {width:w,height:h,kind:"GRAY8"};
+    }
+    if(w>960||(kind==="RGB888"&&mode==="gray"))return null;
+    return {width:w,height:h,kind};
+  }
   function create(canvas){
     const gl=canvas.getContext("webgl",{alpha:false,antialias:false,depth:false,stencil:false,
       premultipliedAlpha:false,preserveDrawingBuffer:false});
@@ -47,5 +63,6 @@
         gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
       }};
   }
-  root.PangoPreviewRenderer={create};
+  const api={create,directPlan};root.PangoPreviewRenderer=api;
+  if(typeof module!=="undefined")module.exports=api;
 })(typeof self!=="undefined"?self:globalThis);

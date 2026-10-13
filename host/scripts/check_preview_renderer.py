@@ -25,6 +25,16 @@ def verify_renderer(page):
       fixtures.push({name:'native RAW exact samples',values:[0,127,255,23],
         expected:[0,0,0,255,127,127,127,255,255,255,255,255,23,23,23,255],mode:'raw',
         meta:{width:2,height:2,row_stride:2,pixel_format:'RAW8',bayer_code:0}});
+      // Native-width rows exercise the one-channel upload with all Bayer
+      // identities; color/reduced displays still use the reference converter.
+      for(const code of [1,2,3,4]){
+        const values=Array.from({length:1920*2},(_,i)=>(i*17+23)&255);
+        fixtures.push({name:'native-width single-channel '+code,values,
+          expected:values.flatMap(v=>[v,v,v,255]),mode:'raw',
+          meta:{width:1920,height:2,row_stride:1920,pixel_format:'RAW8',bayer_code:code}});
+      }
+      fixtures.push({name:'native stride rejected',values:[1,2,3,4],error:true,mode:'raw',
+        meta:{width:2,height:2,row_stride:3,pixel_format:'RAW8',bayer_code:1}});
       // Invalid bytes must fail before painting, just as on the byte backend.
       fixtures.push({name:'truncated RGB rejected',values:[1,2],error:true,mode:'color',
         meta:{width:2,height:2,row_stride:2,pixel_format:'RAW8',preview_derivative:true,

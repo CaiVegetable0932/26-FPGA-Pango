@@ -18,7 +18,6 @@ from .record_store import safe_child, sample_metadata, archives, runs, report_fi
 from .calibration import CalibrationStore
 from .board_link import BoardLink
 from .board_autoload import BoardAutoLoader
-from .preview import preview_payload
 from .preview_delivery import PreviewDelivery
 
 ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.html","text/html; charset=utf-8"),
@@ -135,8 +134,11 @@ class Handler(BaseHTTPRequestHandler):
         """
         mode = query.get("mode", ["raw"])[0]
         scale = int(query.get("downscale", ["2"])[0])
+        limit = int(query.get("limit", ["0"])[0])
         if mode not in ("raw", "gray", "color") or scale not in (1,2):
             raise ValueError("invalid preview mode/scale")
+        if limit not in (0,1,2):
+            raise ValueError("preview credit must be 1 or 2 (0 is legacy streaming)")
         # HTTP/1.0 closes this lengthless binary body at stream end. Bound each
         # write with the existing socket timeout; a closed view releases its slot.
         self.send_response(200)
@@ -145,12 +147,16 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("X-Content-Type-Options", "nosniff")
         self.end_headers()
         prefix = Struct("<II")
-        after = ""
+        # Current browsers request at most two complete messages at a time.
+        # Old clients retain the stream API, but cannot grant unbounded credits
+        # through the new parameter. Never abandon a frame mid-message.
+        after = query.get("after", [""])[0]
+        sent = 0
         try:
             # A preview needs only the lifecycle bit; the full status snapshot
             # is reserved for UI polls and would otherwise hold the RX lock
             # while copying metrics/history at video frame rate.
-            while self.server.session.preview_running():
+            while self.server.session.preview_running() and (not limit or sent < limit):
                 latest = self.server.session.latest(after, 0.5)
                 if latest is None:
                     continue
@@ -165,6 +171,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.write(pixels)
                 self.server.preview_delivery.sent(send_ms)
                 after = info["key"]
+                sent += 1
         except (BrokenPipeError, ConnectionResetError, TimeoutError):
             pass  # Closing/hiding a browser view cancels only its preview.
 
@@ -268,9 +275,8 @@ class Handler(BaseHTTPRequestHandler):
                 if route == "/api/preview":
                     # Transfer only the current display's derived pixels;
                     # /api/frame and archives always expose original RAW bytes.
-                    pixels, derivative = preview_payload(frame, query.get("mode", ["raw"])[0],
-                                                         int(query.get("downscale", ["2"])[0]))
-                    info.update(derivative)
+                    pixels, info = self.server.preview_delivery.payload(frame, info, query.get("mode", ["raw"])[0],
+                                                                       int(query.get("downscale", ["2"])[0]))
                 return self._send(200,pixels,"application/octet-stream",
                     {"X-Frame-Info":json.dumps(info,ensure_ascii=True)})
             if route == "/api/records":

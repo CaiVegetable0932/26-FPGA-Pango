@@ -13,6 +13,7 @@
   // Measure canvas presentations separately from complete source frames.
   let frameFetching=false, previewRateTimer=null,pendingPreview=null,totalPresented=0,lastPresentedKey="";
   let streamAbort=null;
+  let previewGeneration=0,streamConfig=null,drainWait=null;
   // Keep only bounded aggregates. No per-frame disk log or GPU readback runs
   // in the live path; clock estimates always retain their RTT uncertainty.
   const previewDiagnostics=window.PangoPreviewDiagnostics.create();
@@ -40,7 +41,12 @@
   const videoSurface=$("video-surface");
   let displayWidth=videoSurface.getBoundingClientRect().width,lastIdentityUpdate=0,eventsKey=null;
   const surfaceResize=new ResizeObserver(entries=>{
-    const width=entries[0]?.contentRect.width;if(width>0)displayWidth=width;
+    const width=entries[0]?.contentRect.width;if(width>0){
+      const before=previewScale();displayWidth=width;
+      // Crossing the native/reduced threshold renegotiates pixels before
+      // another fetch; a late bitmap from the old size cannot overwrite it.
+      if(before!==previewScale())invalidatePreview();
+    }
   });
   surfaceResize.observe(videoSurface);
   const recordUI=window.PangoRecords.create({request,previewArchive,toast,getStatus:()=>status,getOnline:()=>online});
@@ -76,7 +82,7 @@
   function showView(view){
     activeView=view;
     // A hidden view must release the HTTP stream and its bounded server slot.
-    if(view!=="live")streamAbort?.abort();
+    if(view!=="live")invalidatePreview();
     for(const name of Object.keys(title)) $("view-"+name).hidden=name!==view;
     document.querySelectorAll(".nav-button").forEach(button=>{const selected=button.dataset.view===view;button.classList.toggle("active",selected);if(selected)button.setAttribute("aria-current","page");else button.removeAttribute("aria-current");});
     text("breadcrumb-view",title[view]);
@@ -85,7 +91,7 @@
   }
   function update(state){
     const sessionChanged=status&&(status.running!==state.running||status.run_id!==state.run_id);
-    if(status&&status.run_id!==state.run_id){lastKey="";latestStage=null;$("live-canvas").hidden=true;$("video-empty").hidden=false;videoInputUI.setNetworkFrame(null);rendered=0;renderStart=performance.now();}
+    if(status&&status.run_id!==state.run_id){invalidatePreview();latestStage=null;$("live-canvas").hidden=true;$("video-empty").hidden=false;videoInputUI.setNetworkFrame(null);rendered=0;renderStart=performance.now();}
     status=state;
     if(state.signal!=="live")boardGeometry.setNetworkFrame(null);
     const c=state.metrics?.assembly?.counters||{}, rx=state.metrics?.counters||{}, running=state.running;
@@ -162,37 +168,53 @@
       if(online&&status?.signal==="live"&&!document.hidden&&activeView==="live"){
         // Keep full-resolution reception/archives while transferring the same
         // Bayer-cell visualization already used by the smaller on-screen view.
-        const fullSize=color==="raw"&&displayWidth>=status.config.width;
+        const generation=previewGeneration;
         streamAbort=new AbortController();
-        const streamMode=color,streamScale=fullSize?1:2;
-        const response=await fetch(`/api/preview-stream?mode=${streamMode}&downscale=${streamScale}`,{cache:"no-store",signal:streamAbort.signal});
+        const streamMode=color,streamScale=previewScale();
+        streamConfig={mode:streamMode,scale:streamScale,generation};
+        // Finite credits stop TCP/browser buffering beyond two frames. Wait
+        // for the prior execution/pending pair before granting more credits.
+        if(workerBusy||pendingPreview)await new Promise(resolve=>{drainWait=resolve;});
+        if(generation!==previewGeneration||closed||document.hidden||activeView!=="live")return;
+        const response=await fetch(`/api/preview-stream?limit=2&after=${encodeURIComponent(lastKey)}&mode=${streamMode}&downscale=${streamScale}`,{cache:"no-store",signal:streamAbort.signal});
         if(!response.ok)throw Error("预览读取失败");
         const decoder=window.PangoPreviewStream.createDecoder(job=>{
-          if(job.meta.run_id!==status?.run_id||job.meta.key===lastKey)return;
+          if(generation!==previewGeneration||job.meta.run_id!==status?.run_id||job.meta.key===lastKey)return;
           previewErrors=0;lastKey=job.meta.key;
-          Object.assign(job,{mode:streamMode,target:"live",displayWidth,receivedMs:performance.now()});
+          Object.assign(job,{mode:streamMode,target:"live",displayWidth,receivedMs:performance.now(),generation});
           if(workerBusy){if(pendingPreview)previewDiagnostics.replace();pendingPreview=job;}else submitPreview(job);
         });
         const reader=response.body.getReader();
         try{
-          while(!closed&&!document.hidden&&activeView==="live"&&color===streamMode){
+          while(!closed&&!document.hidden&&activeView==="live"&&generation===previewGeneration){
             const {done,value}=await reader.read();if(done){decoder.finish();break;}decoder.push(value);
           }
         }finally{await reader.cancel().catch(()=>{});}
       }
     }catch(error){if(error.name!=="AbortError"){previewErrors++;if(previewErrors===3)toast("预览暂时无法读取；接收状态仍独立更新",true);}}
-    frameFetching=false;
+    finally{frameFetching=false;streamConfig=null;
     // Pipeline one fetch with one conversion. Only the newest pending RAW is
     // kept, so a slow display never builds an unbounded stale-frame queue.
     if(!closed)frameTimer=setTimeout(framePoll,status?.signal==="live"&&!document.hidden&&activeView==="live"?0:100);
+    }
+  }
+  function previewScale(){return color==="raw"&&displayWidth>=(status?.config.width||1920)?1:2;}
+  function invalidatePreview(){
+    previewGeneration++;lastKey="";pendingPreview=null;streamAbort?.abort();
+    drainWait?.();drainWait=null;previewDiagnostics.reset();
   }
   function submitPreview(job){workerBusy=true;job.queueMs=performance.now()-job.receivedMs;worker.postMessage(job,[job.buffer]);}
-  document.addEventListener("visibilitychange",()=>{if(document.hidden)streamAbort?.abort();});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)invalidatePreview();});
   worker.onmessage=event=>{
     const result=event.data;workerBusy=false;
-    if(pendingPreview&&!closed){const job=pendingPreview;pendingPreview=null;if(job.meta.run_id===status?.run_id)submitPreview(job);}
+    if(pendingPreview&&!closed){const job=pendingPreview;pendingPreview=null;
+      if(job.meta.run_id===status?.run_id&&job.generation===previewGeneration)submitPreview(job);
+    }
+    if(!workerBusy){drainWait?.();drainWait=null;}
     if(result.error){toast(result.error,true);return;}
-    if(result.target==="live"&&result.meta.run_id!==status?.run_id){result.bitmap?.close();return;}
+    if(result.target==="live"&&(result.meta.run_id!==status?.run_id||result.generation!==previewGeneration||document.hidden||activeView!=="live")){
+      result.bitmap?.close();previewDiagnostics.reject();return;
+    }
     const canvas=result.target==="archive"?$("archive-canvas"):liveCanvas;
     const paintStart=performance.now();
     // Resizing resets the backing store; do it only when geometry changes.
@@ -229,12 +251,13 @@
       canvas.dataset.renderer=result.renderer||"main-2d";
       previewDiagnostics.record({meta:result.meta,mode:color,width:result.width,height:result.height,
         fetchMs:result.fetchMs,convertMs:result.convertMs,workerPaintMs:result.workerPaintMs||0,
-        queueMs:result.queueMs,paintMs:performance.now()-paintStart,renderer:canvas.dataset.renderer});
+        queueMs:result.queueMs,paintMs:performance.now()-paintStart,renderer:canvas.dataset.renderer,
+        uploadBytes:result.uploadBytes,directTexture:result.directTexture,generation:result.generation});
     }
   };
   archiveWorker.onmessage=event=>{const r=event.data;if(r.meta&&r.meta.key!==archiveKey)return;if(r.error){text("archive-detail",r.error);return;}const canvas=$("archive-canvas");canvas.width=r.width;canvas.height=r.height;canvas.getContext("2d").putImageData(new ImageData(new Uint8ClampedArray(r.pixels),r.width,r.height),0,0);canvas.hidden=false;};
   archiveWorker.onerror=()=>text("archive-detail","归档预览转换失败");
-  worker.onerror=()=>{workerBusy=false;pendingPreview=null;toast("预览转换失败，请刷新页面重试",true);};
+  worker.onerror=()=>{workerBusy=false;pendingPreview=null;drainWait?.();drainWait=null;toast("预览转换失败，请刷新页面重试",true);};
   // A timer expires the FPS to zero during stalls, even if no new frame arrives.
   previewRateTimer=setInterval(()=>{const now=performance.now(),dt=(now-renderStart)/1000;
     text("preview-rate",`显示 ${(rendered/dt).toFixed(1)} FPS`);rendered=0;renderStart=now;},1000);
@@ -288,7 +311,7 @@
 
   document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>showView(button.dataset.view)));
   document.querySelectorAll("[data-color]").forEach(button=>button.addEventListener("click",()=>{
-    color=button.dataset.color;lastKey="";document.querySelectorAll("[data-color]").forEach(b=>{b.classList.toggle("selected",b===button);b.setAttribute("aria-pressed",String(b===button));});
+    color=button.dataset.color;invalidatePreview();document.querySelectorAll("[data-color]").forEach(b=>{b.classList.toggle("selected",b===button);b.setAttribute("aria-pressed",String(b===button));});
   }));
   $("start").addEventListener("click",()=>action("/api/start",{archive_every:Number($("archive-every").value)}).catch(()=>{}));
   $("stop").addEventListener("click",()=>action("/api/stop").catch(()=>{}));

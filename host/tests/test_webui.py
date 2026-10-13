@@ -265,6 +265,29 @@ class WebTests(unittest.TestCase):
         finally:
             connection.close()
 
+    def test_preview_credits_choose_latest_and_close_at_complete_message(self):
+        """Slow subscribers get the newest immutable frame on their next credit."""
+        from struct import unpack
+        self.start();self.send(frame_id=1);until(self.session.latest)
+        after = self.session.latest()[1]["key"]
+        self.send(frame_id=2);self.send(frame_id=3)
+        until(lambda:self.session.latest()[1]["frame_id"] == "3")
+        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=3)
+        try:
+            connection.request("GET","/api/preview-stream?limit=1&after="+after)
+            response = connection.getresponse()
+            meta_bytes, pixel_bytes = unpack("<II",response.read(8))
+            info = json.loads(response.read(meta_bytes))
+            self.assertEqual(info["frame_id"],"3")
+            self.assertEqual(len(response.read(pixel_bytes)),pixel_bytes)
+            self.assertEqual(response.read(),b"")
+            self.assertIn("send_start_ms",info["host_timing"])
+            self.assertLessEqual(info["host_timing"]["complete_ms"],info["host_timing"]["send_start_ms"])
+            self.assertTrue(self.session.status()["running"])
+        finally:
+            connection.close()
+        self.assertEqual(self.call("GET","/api/preview-stream?limit=3")[0],400)
+
     def test_state_machine_config_lock_and_restart_identity(self):
         first = self.start()
         self.assertEqual(self.call("POST","/api/start",{})[0],409)
