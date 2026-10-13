@@ -42,11 +42,21 @@ def main():
         # remote desktop; this experiment measures transport, not UI latency.
         def click(selector):
             page.evaluate("s=>document.querySelector(s).click()",selector)
+        def wait_track(opened):
+            # Direct snapshots stay reliable when injected browser pollers
+            # time out even though a Hagibis track has actually resumed.
+            deadline=time.monotonic()+30
+            while time.monotonic()<deadline:
+                state=page.evaluate("()=>{const v=document.querySelector('#capture-video');return {present:!!v.srcObject,live:v.srcObject?.getVideoTracks()[0]?.readyState==='live'}}")
+                if state["live"] if opened else not state["present"]:
+                    return
+                time.sleep(.1)
+            raise RuntimeError("Hagibis track did not "+("resume" if opened else "release"))
         click('nav button[data-view="live"]')
         if args.restore_only:
             if not page.evaluate("()=>document.querySelector('#capture-video').srcObject?.getVideoTracks()[0]?.readyState==='live'"):
                 click('#capture-preview-open')
-            page.wait_for_function("() => document.querySelector('#capture-video').srcObject?.getVideoTracks()[0]?.readyState==='live'",timeout=30000,polling=100)
+            wait_track(True)
             print('Saved Hagibis preview restored',flush=True)
             return
         settings = page.evaluate("()=>{const v=document.querySelector('#capture-video');return {settings:v.srcObject?.getVideoTracks()[0]?.getSettings(),label:v.srcObject?.getVideoTracks()[0]?.label}}")
@@ -54,7 +64,7 @@ def main():
             raise RuntimeError("Expected existing native 1080p Hagibis track")
         report["browser_before"] = settings
         click('#capture-preview-close')
-        page.wait_for_function("() => !document.querySelector('#capture-video').srcObject",polling=100)
+        wait_track(False)
         try:
             time.sleep(1)
             before = api('/api/status')
@@ -121,7 +131,7 @@ def main():
         finally:
             report_dir.joinpath('measurement.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
             click('#capture-preview-open')
-            page.wait_for_function("() => document.querySelector('#capture-video').srcObject?.getVideoTracks()[0]?.readyState==='live'",timeout=30000,polling=100)
+            wait_track(True)
             click('nav button[data-view="live"]')
     print('Report: '+str(report_dir),flush=True)
 
