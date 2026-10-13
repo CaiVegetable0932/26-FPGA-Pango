@@ -8,6 +8,7 @@ from pathlib import Path
 import secrets
 import socket
 import threading
+import time
 from struct import Struct
 from urllib.parse import parse_qs, quote, urlsplit
 
@@ -18,6 +19,7 @@ from .calibration import CalibrationStore
 from .board_link import BoardLink
 from .board_autoload import BoardAutoLoader
 from .preview import preview_payload
+from .preview_delivery import PreviewDelivery
 
 ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.html","text/html; charset=utf-8"),
     "app.css":("app.css","text/css; charset=utf-8"), "app.js":("app.js","text/javascript; charset=utf-8"),
@@ -35,6 +37,7 @@ ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.htm
     # Independent actual presentation meters for browser-owned video previews.
     "preview-rate.js":("preview-rate.js","text/javascript; charset=utf-8"),
     "preview-stream.js":("preview-stream.js","text/javascript; charset=utf-8"),
+    "preview-diagnostics.js":("preview-diagnostics.js","text/javascript; charset=utf-8"),
     # Purpose: serve the local calibration workbench from the same protected origin.
     "calibration":("calibration.html","text/html; charset=utf-8"),
     "calibration.html":("calibration.html","text/html; charset=utf-8"),
@@ -70,6 +73,7 @@ class LocalServer(ThreadingHTTPServer):
         # Purpose: serialize CPU-heavy image analysis independently of live UDP reception.
         self.calibration = CalibrationStore(self.session.root)
         self.calibration_slot = threading.BoundedSemaphore(1)
+        self.preview_delivery = PreviewDelivery()
         self.token = secrets.token_urlsafe(32)
         self._slots = threading.BoundedSemaphore(16)
         super().__init__(("127.0.0.1",port), Handler)
@@ -153,11 +157,13 @@ class Handler(BaseHTTPRequestHandler):
                 frame, info = latest
                 if info["key"] == after:
                     continue
-                pixels, derived = preview_payload(frame, mode, scale)
-                info.update(derived)
+                pixels, info = self.server.preview_delivery.payload(frame, info, mode, scale)
+                send_ms = time.monotonic_ns()/1_000_000
+                info["host_timing"]["send_start_ms"] = send_ms
                 metadata = json.dumps(info, ensure_ascii=True).encode()
                 self.wfile.write(prefix.pack(len(metadata), len(pixels)) + metadata)
                 self.wfile.write(pixels)
+                self.server.preview_delivery.sent(send_ms)
                 after = info["key"]
         except (BrokenPipeError, ConnectionResetError, TimeoutError):
             pass  # Closing/hiding a browser view cancels only its preview.
@@ -194,6 +200,9 @@ class Handler(BaseHTTPRequestHandler):
         self._send(code,json.dumps(data, ensure_ascii=False, allow_nan=False).encode("utf-8"))
 
     def do_GET(self):
+        # Bracket a clock exchange in the same monotonic domain as CompleteFrame.
+        # The client reports RTT uncertainty, not an optical end-to-end latency.
+        request_ms = time.monotonic_ns() / 1_000_000
         if not self._trusted():
             return self._json(403,dict(error="请求来源不允许"))
         url = urlsplit(self.path)
@@ -205,6 +214,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200,(HOST_ROOT/"web"/filename).read_bytes(),kind)
             if route == "/api/health":
                 return self._json(200, instance_identity())
+            if route == "/api/clock":
+                return self._json(200, dict(clock="host_monotonic_ms", received_ms=request_ms,
+                                          sent_ms=time.monotonic_ns()/1_000_000))
+            if route == "/api/preview-performance":
+                return self._json(200, self.server.preview_delivery.status())
             if route == "/api/session":
                 return self._json(200,dict(token=self.server.token,status=self.server.session.status()))
             if route == "/api/status":

@@ -42,25 +42,37 @@ class _FastResult(c.Structure):
                 ("highest_index", c.c_int32), ("payload_bytes", c.c_uint64), ("complete_ns", c.c_uint64)]
 
 
-def load_native():
+def load_native(diagnostics=None):
     """Use only the current-source, current-architecture, hash-verified build."""
+    # Expose why the safe reference path is selected; a present .so alone is
+    # never evidence that the admitted native parser is actually active.
+    report = diagnostics if diagnostics is not None else {}
+    report.update(enabled=False, reason="not_loaded", machine=platform.machine(), abi=1)
     source = Path(__file__).with_name("raw_batch.c")
     folder = Path(__file__).resolve().parents[2] / "build/udp-fast"
     try:
         manifest = json.loads((folder / "manifest.json").read_text())
         target = folder / "libpango_raw_batch.so"
-        if (manifest["machine"] != platform.machine() or manifest["abi"] != 1
-                or hashlib.sha256(source.read_bytes()).hexdigest() != manifest["source_sha256"]
-                or hashlib.sha256(target.read_bytes()).hexdigest() != manifest["binary_sha256"]):
-            return None
+        report["source_sha256"] = hashlib.sha256(source.read_bytes()).hexdigest()
+        report["binary_sha256"] = hashlib.sha256(target.read_bytes()).hexdigest()
+        for valid, reason in ((manifest["machine"] == platform.machine(), "architecture_mismatch"),
+                (manifest["abi"] == 1, "abi_mismatch"),
+                (report["source_sha256"] == manifest["source_sha256"], "source_hash_mismatch"),
+                (report["binary_sha256"] == manifest["binary_sha256"], "binary_hash_mismatch")):
+            if not valid:
+                report["reason"] = reason
+                return None
         library = c.CDLL(str(target))
         function = library.pango_raw_apply
         function.argtypes = [c.POINTER(_MultiMessage), c.c_uint32, c.c_uint32,
             c.c_uint32, c.c_uint16, c.c_void_p, c.c_void_p, c.c_uint32, c.c_void_p,
             c.c_uint32, c.c_uint32, c.c_int32, c.c_uint64, c.POINTER(_FastResult)]
         function.restype = None
+        report.update(enabled=True, reason="verified")
         return function
-    except (OSError, ValueError, KeyError, AttributeError):
+    except (OSError, ValueError, KeyError, AttributeError, TypeError) as error:
+        report.update(reason="missing_build" if isinstance(error, FileNotFoundError) else "invalid_build",
+                      error_type=type(error).__name__)
         return None
 
 
@@ -92,7 +104,8 @@ class LinuxDatagramBatch:
                 c.sizeof(_Address), c.pointer(self._vectors[index]), 1, None, 0, 0)
         self._peer_address = int.from_bytes(socket.inet_aton(peer[0]), sys.byteorder)
         self._peer_port = socket.htons(peer[1])
-        self.native = load_native()
+        self.native_status = {}
+        self.native = load_native(self.native_status)
 
     def consume_raw(self, state, start, count, deadline_ns):
         """Apply consecutive valid chunks in C; borrowed bytearrays stay pinned."""

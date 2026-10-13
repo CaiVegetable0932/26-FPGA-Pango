@@ -13,6 +13,22 @@
   // Measure canvas presentations separately from complete source frames.
   let frameFetching=false, previewRateTimer=null,pendingPreview=null,totalPresented=0,lastPresentedKey="";
   let streamAbort=null;
+  // Keep only bounded aggregates. No per-frame disk log or GPU readback runs
+  // in the live path; clock estimates always retain their RTT uncertainty.
+  const previewDiagnostics=window.PangoPreviewDiagnostics.create();
+  window.pangoPreviewDiagnostics=()=>previewDiagnostics.snapshot({executing:Number(workerBusy),pending:Number(!!pendingPreview)});
+  let clockTimer=null,longTaskObserver=null;
+  async function syncPreviewClock(){
+    try{for(let i=0;i<3;i++){
+      const sent=performance.now(),value=await request("/api/clock");
+      previewDiagnostics.sync(sent,performance.now(),value);
+    }}catch{/* Diagnostic failure must never stop reception or display. */}
+    if(!closed)clockTimer=setTimeout(syncPreviewClock,30000);
+  }
+  if(typeof PerformanceObserver!=="undefined")try{
+    longTaskObserver=new PerformanceObserver(list=>{for(const entry of list.getEntries())previewDiagnostics.longTask(entry.duration);});
+    longTaskObserver.observe({type:"longtask",buffered:false});
+  }catch{/* Browsers without long-task reporting keep other measurements. */}
   // A bitmap presentation transfers ownership instead of expanding/copying a
   // full RGBA frame on the UI thread that also schedules the HDMI video.
   const liveCanvas=$("live-canvas");
@@ -73,6 +89,11 @@
     status=state;
     if(state.signal!=="live")boardGeometry.setNetworkFrame(null);
     const c=state.metrics?.assembly?.counters||{}, rx=state.metrics?.counters||{}, running=state.running;
+    // A verified fast path and a safe fallback are both valid, but must remain
+    // distinguishable when diagnosing receive loss under desktop load.
+    const backend=state.metrics?.backend;
+    text("receive-backend",!backend?"接收后端待启动":backend.native_batch_parser?
+      `原生校验 · 批次 ${backend.receive_batch_size}`:`参考校验 · ${backend.native_parser_status?.reason||"未启用原生模块"}`);
     const mock=state.config.source_mode==="mock", live=state.signal==="live", hasRun=!!state.run_id;
     const failures=Object.entries(c).reduce((sum,[key,value])=>sum+(key.startsWith("frames_failed_")&&key!=="frames_failed_stopped"?value:0),0)+Number(c.frames_rejected_memory||0);
     const labels={idle:"未开始采集",listening:live?"正在接收完整帧":"等待来源数据",stopping:"正在停止并保存",stopped:"采集已停止",error:"采集发生错误"};
@@ -149,8 +170,8 @@
         const decoder=window.PangoPreviewStream.createDecoder(job=>{
           if(job.meta.run_id!==status?.run_id||job.meta.key===lastKey)return;
           previewErrors=0;lastKey=job.meta.key;
-          Object.assign(job,{mode:streamMode,target:"live",displayWidth});
-          if(workerBusy)pendingPreview=job;else submitPreview(job);
+          Object.assign(job,{mode:streamMode,target:"live",displayWidth,receivedMs:performance.now()});
+          if(workerBusy){if(pendingPreview)previewDiagnostics.replace();pendingPreview=job;}else submitPreview(job);
         });
         const reader=response.body.getReader();
         try{
@@ -165,7 +186,7 @@
     // kept, so a slow display never builds an unbounded stale-frame queue.
     if(!closed)frameTimer=setTimeout(framePoll,status?.signal==="live"&&!document.hidden&&activeView==="live"?0:100);
   }
-  function submitPreview(job){workerBusy=true;worker.postMessage(job,[job.buffer]);}
+  function submitPreview(job){workerBusy=true;job.queueMs=performance.now()-job.receivedMs;worker.postMessage(job,[job.buffer]);}
   document.addEventListener("visibilitychange",()=>{if(document.hidden)streamAbort?.abort();});
   worker.onmessage=event=>{
     const result=event.data;workerBusy=false;
@@ -206,6 +227,9 @@
       canvas.dataset.paintMs=String(performance.now()-paintStart);
       canvas.dataset.workerPaintMs=String(result.workerPaintMs||0);
       canvas.dataset.renderer=result.renderer||"main-2d";
+      previewDiagnostics.record({meta:result.meta,mode:color,width:result.width,height:result.height,
+        fetchMs:result.fetchMs,convertMs:result.convertMs,workerPaintMs:result.workerPaintMs||0,
+        queueMs:result.queueMs,paintMs:performance.now()-paintStart,renderer:canvas.dataset.renderer});
     }
   };
   archiveWorker.onmessage=event=>{const r=event.data;if(r.meta&&r.meta.key!==archiveKey)return;if(r.error){text("archive-detail",r.error);return;}const canvas=$("archive-canvas");canvas.width=r.width;canvas.height=r.height;canvas.getContext("2d").putImageData(new ImageData(new Uint8ClampedArray(r.pixels),r.width,r.height),0,0);canvas.hidden=false;};
@@ -295,8 +319,8 @@
       }},{signal:toolLifetime.signal})).catch(error=>console.warn("WebMCP registration unavailable",name,error));}catch(error){console.warn("WebMCP registration unavailable",name,error);}
     }
   }
-  window.addEventListener("pagehide",()=>{closed=true;streamAbort?.abort();surfaceResize.disconnect();boardUI.destroy();boardGeometry.destroy();boardAutoload.destroy();videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);clearInterval(previewRateTimer);worker.terminate();archiveWorker.terminate();});
+  window.addEventListener("pagehide",()=>{closed=true;streamAbort?.abort();surfaceResize.disconnect();boardUI.destroy();boardGeometry.destroy();boardAutoload.destroy();videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);clearTimeout(clockTimer);longTaskObserver?.disconnect();clearInterval(previewRateTimer);worker.terminate();archiveWorker.terminate();});
 
   window.addEventListener("pageshow",event=>{if(event.persisted)location.reload();});
-  init().then(()=>{registerWorkbenchTools();poll();framePoll();void boardUI.init();void boardGeometry.init();void boardAutoload.init();});
+  init().then(()=>{registerWorkbenchTools();poll();framePoll();void syncPreviewClock();void boardUI.init();void boardGeometry.init();void boardAutoload.init();});
 })();

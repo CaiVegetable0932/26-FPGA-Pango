@@ -30,6 +30,16 @@ def until(predicate, seconds=4):
 
 
 class WebTests(unittest.TestCase):
+    def test_preview_clock_exchange_and_bounded_delivery_status(self):
+        # Read-only diagnostics must share host timestamps without authorizing
+        # FPGA frame identity, changing receiver state, or writing an archive.
+        clock = self.call("GET","/api/clock")[2]
+        self.assertEqual(clock["clock"],"host_monotonic_ms")
+        self.assertLessEqual(clock["received_ms"],clock["sent_ms"])
+        delivery = self.call("GET","/api/preview-performance")[2]
+        self.assertEqual(delivery["cache_entries"],0)
+        self.assertFalse(self.session.status()["running"])
+
     def test_summary_status_omits_failure_records_without_losing_counters(self):
         # UI polling must avoid copying the full loss history, while the normal
         # diagnostic endpoint and saved report preserve all original evidence.

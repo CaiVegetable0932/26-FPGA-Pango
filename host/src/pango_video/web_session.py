@@ -35,6 +35,10 @@ def public_config(config):
 
 def frame_info(frame, run_id, source_mode):
     h = frame.header
+    # These are host monotonic timestamps, never camera/FPGA capture times.
+    # Milliseconds remain exactly representable in browser JSON numbers.
+    first = getattr(frame, "first_receive_ns", None)
+    complete = getattr(frame, "complete_ns", None)
     return dict(run_id=run_id, source_mode=source_mode,
         frame_id=str(h.frame_id), stream_epoch=str(h.stream_epoch),
         descriptor_id=h.descriptor_id, param_version=h.param_version,
@@ -43,7 +47,11 @@ def frame_info(frame, run_id, source_mode):
         bayer_code=h.bayer_code, packet_count=h.packet_count,
         key=f"{run_id}:{h.stream_epoch}:{h.frame_id}:{h.packet_type}:{h.descriptor_id}",
         source_stage=source_stage(h),
-        transport_complete=True, measurement_ready=False)
+        transport_complete=True, measurement_ready=False,
+        host_timing=dict(clock="host_monotonic_ms",
+            first_receive_ms=None if first is None else first / 1_000_000,
+            complete_ms=None if complete is None else complete / 1_000_000,
+            assembly_ms=None if first is None or complete is None else (complete-first)/1_000_000))
 
 
 class WebSession:

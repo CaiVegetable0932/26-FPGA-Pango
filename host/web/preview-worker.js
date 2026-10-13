@@ -11,7 +11,7 @@ self.onmessage=function(event){
   if(event.data.type==="init-live"){
     bitmapMode=event.data.bitmap;if(bitmapMode)prepareSurface();return;
   }
-  const {buffer,meta,mode,target,displayWidth,fetchMs}=event.data;
+  const {buffer,meta,mode,target,displayWidth,fetchMs,queueMs}=event.data;
   try{
     const start=performance.now();
     // Purpose: let pure pixel conversion choose Bayer-cell anti-aliasing only
@@ -40,13 +40,13 @@ self.onmessage=function(event){
         liveContext.putImageData(new ImageData(new Uint8ClampedArray(result.pixels),result.width,result.height),0,0);
       }
       const bitmap=liveSurface.transferToImageBitmap();
-      self.postMessage({width:result.width,height:result.height,bitmap,meta,target,fetchMs,convertMs,
+      self.postMessage({width:result.width,height:result.height,bitmap,meta,target,fetchMs,queueMs,convertMs,
         workerPaintMs:performance.now()-paintStart,renderer:gpu?"worker-webgl":"worker-2d"},[bitmap]);
       return;
     }
     const result=self.PangoPixels.renderPixels(buffer,renderMeta,mode,{displayWidth});
     // Stage timings support real browser bottleneck checks, independent of
     // the frame-rate badges and without modifying original source evidence.
-    self.postMessage({...result,meta,target,fetchMs,convertMs:performance.now()-start},[result.pixels]);
+    self.postMessage({...result,meta,target,fetchMs,queueMs,convertMs:performance.now()-start},[result.pixels]);
   }catch(error){self.postMessage({error:error.message,target});}
 };

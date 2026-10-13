@@ -80,6 +80,7 @@ class UDPReceiver:
         self.socket_receive_buffer_reported = 0
         self.receive_batch_size = 1
         self.native_batch_parser = False
+        self.native_parser_status = dict(enabled=False, reason="receiver_not_started")
 
     def _failure(self, event: dict):
         if len(self.failures) == self.failures.maxlen:
@@ -148,6 +149,7 @@ class UDPReceiver:
         # handovers while HTTP/video threads run. Other platforms retain the
         # portable receive path and identical validation/peer filtering.
         batch = None
+        self.native_parser_status = dict(enabled=False, reason="platform_without_recvmmsg")
         if sys.platform.startswith("linux"):
             try:
                 from .linux_udp import LinuxDatagramBatch
@@ -156,6 +158,8 @@ class UDPReceiver:
                 pass  # libc/platform without recvmmsg uses recvfrom_into.
         self.receive_batch_size = batch.SIZE if batch else 1
         self.native_batch_parser = bool(batch and batch.native)
+        if batch:
+            self.native_parser_status = dict(batch.native_status)
         deadline = None if duration is None else time.monotonic() + duration
         try:
             while not stop.is_set() and (deadline is None or time.monotonic() < deadline):
@@ -215,7 +219,8 @@ class UDPReceiver:
     def status(self) -> dict:
         """Read after run() returns, or inside the owner-thread on_status callback."""
         return {"bind": self.bind, "peer": self.peer, "counters": dict(self.stats),
-                "backend": dict(receive_batch_size=self.receive_batch_size, native_batch_parser=self.native_batch_parser),
+                "backend": dict(receive_batch_size=self.receive_batch_size, native_batch_parser=self.native_batch_parser,
+                                native_parser_status=dict(self.native_parser_status)),
                 "socket_receive_buffer_requested": self.receive_buffer_bytes,
                 "socket_receive_buffer_reported": self.socket_receive_buffer_reported,
                 "assembly": self.assembler.status(), "preview_queue": self.live_frames.status(),

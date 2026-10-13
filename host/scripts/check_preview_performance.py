@@ -18,7 +18,8 @@ URL = "http://127.0.0.1:8765/"
 
 def snapshot(page):
     """Keep kernel drops separate from board frame gaps and complete frames."""
-    status = api("/api/status")
+    # Long observations retain counters, not a repeated copy of every failure.
+    status = api("/api/status?summary=1")
     counts = status["metrics"].get("assembly", {}).get("counters", {})
     nic = {}
     for name in ("rx_packets", "rx_bytes", "rx_dropped", "rx_errors"):
@@ -39,7 +40,8 @@ def snapshot(page):
         receiver_features=status["metrics"].get("backend", {}),
         canvas=page.locator("#live-canvas").evaluate("c=>({...c.dataset,width:c.width,height:c.height})"),
         network_display=page.locator("#preview-rate").inner_text(),
-        hdmi_display=page.locator("#capture-preview-rate").inner_text() if page.locator("#capture-preview-rate").count() else None)
+        hdmi_display=page.locator("#capture-preview-rate").inner_text() if page.locator("#capture-preview-rate").count() else None,
+        diagnostics=page.evaluate("() => window.pangoPreviewDiagnostics?.() || null"))
 
 
 def main():
@@ -53,9 +55,11 @@ def main():
                         help="测量指定模式；未指定时在刷新后保留当前模式")
     parser.add_argument("--verify-renderer", action="store_true", help="测量前核对独立软件样本的 GPU/Worker 像素一致性")
     parser.add_argument("--save-evidence", action="store_true", help="测量后保存完整 RAW 和原生解码 RGB，不影响测量窗口")
+    parser.add_argument("--latency-budget-ms", type=float, default=150,
+                        help="本次预先约定的接收完成至 Canvas 提交年龄预算，非光学延迟承诺")
     args = parser.parse_args()
-    if not 5 <= args.seconds <= 120:
-        parser.error("seconds must be between 5 and 120")
+    if not 5 <= args.seconds <= 3600 or not 0 < args.latency_budget_ms <= 10000:
+        parser.error("seconds must be 5..3600; latency budget must be 0..10000 ms")
     device = linux_hagibis()
     if args.restart_service:
         # The normal service drains its current run before restarting; the
@@ -163,6 +167,20 @@ def main():
             nic_delta={k:last["nic"][k]-first["nic"][k] for k in first["nic"]})
         report["evidence"] = evidence
         report["renderer_checks"] = renderer_checks
+        # Publish explicit criteria separately from script execution success.
+        # No callback count can prove unique FPGA results or optical latency.
+        age = last.get("diagnostics", {}).get("stages", {}).get("frame_age_estimate_ms", {}) if last.get("diagnostics") else {}
+        uncertainty = (last.get("diagnostics") or {}).get("clock")
+        report["latency_budget_ms"] = args.latency_budget_ms
+        report["software_checks"] = dict(
+            stable_lossless_receive=(report["socket_drops"] == 0 and
+                not any(v for k,v in delta.items() if k.startswith("frames_failed_") or k=="live_frames_missing")),
+            # Conservatively include the clock uncertainty in the budget test.
+            recent_submission_age_within_budget=None if age.get("p99") is None or not uncertainty else
+                age["p99"]+uncertainty["uncertainty_ms"] <= args.latency_budget_ms,
+            optical_latency_verified=False, hdmi_source_identity_verified=False,
+            cold_start_tested=False)
+        report["host_preview_delivery"] = api("/api/preview-performance") if last.get("diagnostics") else None
         (folder / "performance.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
         print(json.dumps({k:report[k] for k in ("label", "elapsed_seconds", "complete_fps", "observed_network_ids_fps", "hdmi_browser_total_fps", "hdmi_observed_preview_fps", "network_canvas_fps", "socket_drops", "nic_delta", "delta", "page_errors")}, ensure_ascii=False))
         print(f"Report: {folder}")
