@@ -19,6 +19,7 @@ from .calibration import CalibrationStore
 from .board_link import BoardLink
 from .board_autoload import BoardAutoLoader
 from .preview_delivery import PreviewDelivery
+from .preview_socket import accept_key, read_message, write_message, Duplex, SocketProtocolError
 
 ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.html","text/html; charset=utf-8"),
     "app.css":("app.css","text/css; charset=utf-8"), "app.js":("app.js","text/javascript; charset=utf-8"),
@@ -115,6 +116,9 @@ class LocalServer(ThreadingHTTPServer):
 
 
 class Handler(BaseHTTPRequestHandler):
+    # Finite responses carry Content-Length and reuse one TCP connection. A
+    # credit request no longer creates a connection/HTTP thread for each frame.
+    protocol_version = "HTTP/1.1"
     # A frame response sends short headers followed by a large RAW body.
     # Disable Nagle so delayed ACKs cannot add ~40 ms to each local preview.
     disable_nagle_algorithm = True
@@ -128,6 +132,47 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, *args):
         pass
 
+    def _preview_socket(self):
+        """One consumer credit selects one latest frame on a persistent channel."""
+        key = accept_key(self.headers)
+        self.send_response(101)
+        self.send_header("Upgrade","websocket")
+        self.send_header("Connection","Upgrade")
+        self.send_header("Sec-WebSocket-Accept",key)
+        self.end_headers()
+        self.close_connection=True
+        stream=Duplex(self.rfile,self.wfile)
+        prefix=Struct("<II")
+        try:
+            while True:
+                message=read_message(stream)
+                if message is None:
+                    return
+                credit=json.loads(message)
+                if not isinstance(credit,dict) or set(credit)!={"mode","downscale","after"} or \
+                    credit["mode"] not in ("raw","gray","color") or type(credit["downscale"]) is not int or \
+                    credit["downscale"] not in (1,2) or not isinstance(credit["after"],str) or len(credit["after"])>512:
+                    raise SocketProtocolError("invalid preview credit")
+                latest=self.server.session.latest(credit["after"],.5)
+                if latest is None or latest[1]["key"]==credit["after"]:
+                    write_message(stream,1,b'{"waiting":true}')
+                    continue
+                frame,info=latest
+                pixels,info=self.server.preview_delivery.payload(frame,info,credit["mode"],credit["downscale"])
+                sent=time.monotonic_ns()/1_000_000
+                info["host_timing"]["send_start_ms"]=sent
+                metadata=json.dumps(info,ensure_ascii=True).encode()
+                # Only a complete immutable preview is transmitted. The browser
+                # grants another credit after drawing, so transport cannot get
+                # ahead of the single consumer or accumulate stale RAW frames.
+                write_message(stream,2,prefix.pack(len(metadata),len(pixels))+metadata+pixels)
+                self.server.preview_delivery.sent(sent)
+        except (OSError, EOFError):
+            pass
+        except (SocketProtocolError, ValueError, KeyError, TypeError):
+            try:write_message(stream,8,bytes((3,234)))  # 1002: protocol error.
+            except OSError:pass
+
     def _preview_stream(self, query):
         """One loopback connection follows new complete frames, without copies
         of the original RAW or a growing queue when the display is slower.
@@ -139,9 +184,11 @@ class Handler(BaseHTTPRequestHandler):
             raise ValueError("invalid preview mode/scale")
         if limit not in (0,1,2):
             raise ValueError("preview credit must be 1 or 2 (0 is legacy streaming)")
-        # HTTP/1.0 closes this lengthless binary body at stream end. Bound each
-        # write with the existing socket timeout; a closed view releases its slot.
+        # Legacy lengthless streams explicitly close, even on the otherwise
+        # persistent server. New browsers use finite /api/preview responses.
+        self.close_connection = True
         self.send_response(200)
+        self.send_header("Connection", "close")
         self.send_header("Content-Type", "application/octet-stream")
         self.send_header("Cache-Control", "no-store")
         self.send_header("X-Content-Type-Options", "nosniff")
@@ -188,6 +235,10 @@ class Handler(BaseHTTPRequestHandler):
 
     def _send(self, code, body=b"", content_type="application/json; charset=utf-8", extra=None):
         self.send_response(code)
+        # A rejected POST may leave its body unread. Advertise the close so
+        # HTTP/1.1 clients reconnect rather than reuse this exhausted socket.
+        if self.close_connection:
+            self.send_header("Connection","close")
         self.send_header("Content-Type",content_type)
         self.send_header("Content-Length",str(len(body)))
         self.send_header("Cache-Control","no-store")
@@ -196,7 +247,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Cross-Origin-Resource-Policy","same-origin")
         self.send_header("Content-Security-Policy",
             "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; "
-            "connect-src 'self'; worker-src 'self'; media-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'none'")
+            f"connect-src 'self' ws://127.0.0.1:{self.server.server_port} ws://localhost:{self.server.server_port}; "
+            "worker-src 'self'; media-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'none'")
         for key,value in (extra or {}).items():
             self.send_header(key,value)
         self.end_headers()
@@ -226,6 +278,8 @@ class Handler(BaseHTTPRequestHandler):
                                           sent_ms=time.monotonic_ns()/1_000_000))
             if route == "/api/preview-performance":
                 return self._json(200, self.server.preview_delivery.status())
+            if route == "/api/preview-socket":
+                return self._preview_socket()
             if route == "/api/session":
                 return self._json(200,dict(token=self.server.token,status=self.server.session.status()))
             if route == "/api/status":
@@ -277,8 +331,16 @@ class Handler(BaseHTTPRequestHandler):
                     # /api/frame and archives always expose original RAW bytes.
                     pixels, info = self.server.preview_delivery.payload(frame, info, query.get("mode", ["raw"])[0],
                                                                        int(query.get("downscale", ["2"])[0]))
-                return self._send(200,pixels,"application/octet-stream",
+                # Bracket host socket submission separately from conversion;
+                # completion is aggregated, never forged into capture identity.
+                send_ms=time.monotonic_ns()/1_000_000
+                if route == "/api/preview":
+                    info["host_timing"]["send_start_ms"] = send_ms
+                result=self._send(200,pixels,"application/octet-stream",
                     {"X-Frame-Info":json.dumps(info,ensure_ascii=True)})
+                if route == "/api/preview":
+                    self.server.preview_delivery.sent(send_ms)
+                return result
             if route == "/api/records":
                 return self._json(200,self.server.session.records())
             if route == "/api/artifact":
@@ -316,6 +378,9 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(400,dict(error=str(error)))
 
     def do_POST(self):
+        # Mutations are infrequent and may reject a body before consuming it.
+        # Close these connections so rejected JSON cannot become a next request.
+        self.close_connection=True
         if not self._trusted(mutate=True):
             return self._json(403,dict(error="请求来源或会话凭据不允许"))
         try:

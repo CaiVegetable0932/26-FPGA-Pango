@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import subprocess
 import time
+import re
 
 from check_hardware_inputs import api, linux_hagibis
 from open_browser import endpoint, page_key
@@ -23,7 +24,12 @@ def main():
     """Copy original 1080p MJPEG, then test the available native JPEG decoder."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--restore-only',action='store_true',help='只恢复此前保存的 Hagibis 网页预览')
+    parser.add_argument('--seconds',type=int,default=10,help='原始 MJPEG 传输窗口，5..120 秒')
+    parser.add_argument('--decoder',choices=('nvjpegdec','nvv4l2decoder'),default='nvjpegdec')
+    parser.add_argument('--live-decode',action='store_true',help='另外测试原生实时解码至 fakesink，不接回网页')
     args = parser.parse_args()
+    if not 5 <= args.seconds <= 120:
+        parser.error('seconds must be 5..120')
     name = "hdmi-transport-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     report_dir, data_dir = HOST / "reports" / name, HOST / "data" / name
     report_dir.mkdir(); data_dir.mkdir()
@@ -32,28 +38,31 @@ def main():
     with sync_playwright() as automation:
         browser = automation.chromium.connect_over_cdp(endpoint(), no_defaults=True)
         page = next(p for p in browser.contexts[0].pages if page_key(p.url) == page_key(URL))
-        page.bring_to_front()
-        page.locator('nav button[data-view="live"]').click()
+        # Use the real DOM handler without pointer/focus waits on an occluded
+        # remote desktop; this experiment measures transport, not UI latency.
+        def click(selector):
+            page.evaluate("s=>document.querySelector(s).click()",selector)
+        click('nav button[data-view="live"]')
         if args.restore_only:
-            if not page.locator('#capture-video').evaluate("v=>v.srcObject?.getVideoTracks()[0]?.readyState==='live'"):
-                page.locator('#capture-preview-open').click()
-            page.wait_for_function("() => document.querySelector('#capture-video').srcObject?.getVideoTracks()[0]?.readyState==='live'",timeout=30000)
+            if not page.evaluate("()=>document.querySelector('#capture-video').srcObject?.getVideoTracks()[0]?.readyState==='live'"):
+                click('#capture-preview-open')
+            page.wait_for_function("() => document.querySelector('#capture-video').srcObject?.getVideoTracks()[0]?.readyState==='live'",timeout=30000,polling=100)
             print('Saved Hagibis preview restored',flush=True)
             return
-        settings = page.locator('#capture-video').evaluate("v=>({settings:v.srcObject?.getVideoTracks()[0]?.getSettings(),label:v.srcObject?.getVideoTracks()[0]?.label})")
+        settings = page.evaluate("()=>{const v=document.querySelector('#capture-video');return {settings:v.srcObject?.getVideoTracks()[0]?.getSettings(),label:v.srcObject?.getVideoTracks()[0]?.label}}")
         if settings.get("label") != "Hagibis" or settings["settings"]["width"] != 1920 or settings["settings"]["height"] != 1080:
             raise RuntimeError("Expected existing native 1080p Hagibis track")
         report["browser_before"] = settings
-        page.locator('#capture-preview-close').click()
-        page.wait_for_function("() => !document.querySelector('#capture-video').srcObject")
+        click('#capture-preview-close')
+        page.wait_for_function("() => !document.querySelector('#capture-video').srcObject",polling=100)
         try:
-            page.wait_for_timeout(1000)
+            time.sleep(1)
             before = api('/api/status')
             start = time.monotonic()
             run = subprocess.run([str(HOST/'build/environment/bin/ffmpeg'), '-hide_banner', '-nostdin',
                 '-f','v4l2','-input_format','mjpeg','-framerate','30','-video_size','1920x1080',
-                '-i',device['device_path'],'-t','10','-an','-c:v','copy',str(data_dir/'transport.mkv')],
-                capture_output=True,text=True,timeout=30)
+                '-i',device['device_path'],'-t',str(args.seconds),'-an','-c:v','copy',str(data_dir/'transport.mkv')],
+                capture_output=True,text=True,timeout=args.seconds+30)
             elapsed = time.monotonic()-start
             (report_dir/'copy.log').write_text(run.stderr,encoding='utf-8')
             if run.returncode:
@@ -80,28 +89,40 @@ def main():
             report['tests']['mjpeg_copy']['steady_fps'] = (len(steady)-1)/(steady[-1]-steady[0]) if len(steady)>1 else None
             # Installed plugin introspection precedes the test. Pipeline state
             # and all output stay project-local; fakesink performs no preview.
-            subprocess.run(['gst-inspect-1.0','nvjpegdec'],stdout=subprocess.DEVNULL,check=True,timeout=10)
-            start = time.monotonic()
-            try:
-                # Isolate decoding from UVC allocation/caps changes: use the
-                # untouched local packets and the installed JPEG parser.
-                run = subprocess.run(['gst-launch-1.0','-e','filesrc','location='+str(data_dir/'transport.mkv'),
-                    '!','matroskademux','!','jpegparse','!','nvjpegdec','!','fakesink','sync=false'],
-                    capture_output=True,text=True,timeout=20)
-            except subprocess.TimeoutExpired as error:
-                run = subprocess.CompletedProcess([],124,(error.stdout or b'').decode(errors='replace'),
-                    (error.stderr or b'').decode(errors='replace')+'\nDecoder timed out; no driver changes attempted.')
-            elapsed = time.monotonic()-start
-            (report_dir/'nvjpeg.log').write_text(run.stdout+'\n'+run.stderr,encoding='utf-8')
-            report['tests']['nvjpeg_decode'] = dict(returncode=run.returncode,wall_seconds=elapsed,
-                input_packets=frames,wall_fps=frames/elapsed if run.returncode == 0 else None,
-                note='Wall interval includes startup; fakesink does not prove browser display.')
-            print(json.dumps(report['tests']['nvjpeg_decode']),flush=True)
+            inspected=subprocess.run(['gst-inspect-1.0',args.decoder],capture_output=True,text=True,check=True,timeout=10)
+            (report_dir/(args.decoder+'-plugin.txt')).write_text(inspected.stdout)
+            property_name='mjpegdecode' if args.decoder=='nvjpegdec' else 'mjpeg'
+            if property_name not in inspected.stdout or 'image/jpeg' not in inspected.stdout:
+                raise RuntimeError('Installed decoder does not confirm MJPEG support')
+            # Inspect the locally installed plugin before selecting the MJPEG
+            # property. Count actual identity outputs, not just input packets.
+            tail=['!','jpegparse','!',args.decoder,property_name+'=true',
+                  '!','identity','name=decoded','silent=false','!','fakesink','sync=false']
+            sources=[('file_decode',['filesrc','location='+str(data_dir/'transport.mkv'),'!','matroskademux'],max(30,args.seconds*2))]
+            if args.live_decode:
+                sources.append(('live_decode',['v4l2src','device='+device['device_path'],'io-mode=2',
+                    'num-buffers='+str(args.seconds*30),'!','image/jpeg,width=1920,height=1080,framerate=30/1'],args.seconds*2+30))
+            for name,source,timeout in sources:
+                start=time.monotonic()
+                command=['gst-launch-1.0','-e','-v',*source,*tail]
+                try:
+                    run=subprocess.run(command,capture_output=True,text=True,timeout=timeout)
+                except subprocess.TimeoutExpired as error:
+                    run=subprocess.CompletedProcess(command,124,(error.stdout or b'').decode(errors='replace'),
+                        (error.stderr or b'').decode(errors='replace')+'\nDecoder timed out; no driver changes attempted.')
+                elapsed=time.monotonic()-start
+                (report_dir/(name+'.log')).write_text(run.stdout+'\n'+run.stderr,encoding='utf-8')
+                decoded=len(re.findall(r'GstIdentity:decoded: last-message = chain',run.stdout))
+                report['tests'][name]=dict(decoder=args.decoder,command=command,returncode=run.returncode,
+                    wall_seconds=elapsed,decoded_outputs=decoded,input_packets=frames if name=='file_decode' else None,
+                    decoded_wall_fps=decoded/elapsed if decoded else None,
+                    note='Diagnostic identity notifications add overhead. Native fakesink is not browser or optical acceptance.')
+                print(json.dumps(report['tests'][name]),flush=True)
         finally:
             report_dir.joinpath('measurement.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-            page.locator('#capture-preview-open').click()
-            page.wait_for_function("() => document.querySelector('#capture-video').srcObject?.getVideoTracks()[0]?.readyState==='live'",timeout=30000)
-            page.locator('nav button[data-view="live"]').click()
+            click('#capture-preview-open')
+            page.wait_for_function("() => document.querySelector('#capture-video').srcObject?.getVideoTracks()[0]?.readyState==='live'",timeout=30000,polling=100)
+            click('nav button[data-view="live"]')
     print('Report: '+str(report_dir),flush=True)
 
 

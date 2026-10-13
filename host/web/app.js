@@ -36,6 +36,7 @@
   const bitmapContext=typeof OffscreenCanvas!=="undefined"&&
     typeof OffscreenCanvas.prototype.transferToImageBitmap==="function"?liveCanvas.getContext("bitmaprenderer"):null;
   const liveContext=bitmapContext?null:liveCanvas.getContext("2d",{alpha:false});
+  const workerPull=!!bitmapContext&&typeof WebSocket!=="undefined";
   // Cache preview geometry on resize instead of forcing a layout read for
   // every frame. A hidden view keeps its last nonzero display width.
   const videoSurface=$("video-surface");
@@ -60,7 +61,7 @@
   let recordsLastRefresh=0;
   const archiveWorker=new Worker("/preview-worker.js");
   const worker=new Worker("/preview-worker.js"), title={live:"实时采集",records:"采集记录",settings:"连接设置"};
-  worker.postMessage({type:"init-live",bitmap:!!bitmapContext});
+  worker.postMessage({type:"init-live",bitmap:!!bitmapContext,pull:workerPull});
   // Repeated stage/status labels should not invalidate layout while both
   // video surfaces are being composited. Changed values still update normally.
   function text(id,value){const node=$(id),next=String(value);if(node.textContent!==next)node.textContent=next;}
@@ -91,6 +92,7 @@
   }
   function update(state){
     const sessionChanged=status&&(status.running!==state.running||status.run_id!==state.run_id);
+    if(status?.running&&!state.running)invalidatePreview();
     if(status&&status.run_id!==state.run_id){invalidatePreview();latestStage=null;$("live-canvas").hidden=true;$("video-empty").hidden=false;videoInputUI.setNetworkFrame(null);rendered=0;renderStart=performance.now();}
     status=state;
     if(state.signal!=="live")boardGeometry.setNetworkFrame(null);
@@ -154,7 +156,7 @@
       const result=await request("/api/session");api.token=result.token;online=true;$("connection-alert").hidden=true;text("server-health","服务已连接");update(result.status);fillConfig(result.status.config);refreshRecords();
     }catch(error){offline();}
   }
-  function offline(){online=false;recordUI.sync();$("connection-alert").hidden=false;text("server-health","服务未连接");$("start").disabled=true;$("stop").disabled=true;$("save-current").disabled=true;if(!$("live-canvas").hidden){$("stale-label").hidden=false;text("stale-label","服务连接已中断");}}
+  function offline(){online=false;invalidatePreview();recordUI.sync();$("connection-alert").hidden=false;text("server-health","服务未连接");$("start").disabled=true;$("stop").disabled=true;$("save-current").disabled=true;if(!$("live-canvas").hidden){$("stale-label").hidden=false;text("stale-label","服务连接已中断");}}
   async function poll(){
     // UI polls need counters, not the full diagnostic loss history.
     if(!document.hidden){try{const state=await request("/api/status?summary=1");if(!online){await init();}else update(state);}catch(error){offline();}}
@@ -163,6 +165,16 @@
   }
   async function framePoll(){
     if(closed||frameFetching)return;
+    if(workerPull){
+      // Fetch/parsing and GPU preparation stay in a Worker. The UI owns the
+      // final bitmap handoff and acknowledges it before the next credit.
+      if(online&&status?.signal==="live"&&!document.hidden&&activeView==="live"){
+        frameFetching=true;
+        worker.postMessage({type:"start-live",mode:color,scale:previewScale(),displayWidth,
+          run_id:status.run_id,generation:previewGeneration});
+      }else frameTimer=setTimeout(framePoll,100);
+      return;
+    }
     frameFetching=true;
     try{
       if(online&&status?.signal==="live"&&!document.hidden&&activeView==="live"){
@@ -172,24 +184,20 @@
         streamAbort=new AbortController();
         const streamMode=color,streamScale=previewScale();
         streamConfig={mode:streamMode,scale:streamScale,generation};
-        // Finite credits stop TCP/browser buffering beyond two frames. Wait
-        // for the prior execution/pending pair before granting more credits.
-        if(workerBusy||pendingPreview)await new Promise(resolve=>{drainWait=resolve;});
+        // One finite credit uses a persistent HTTP connection. It overlaps
+        // conversion while maintaining only one executing and one pending job.
+        if(workerBusy&&pendingPreview)await new Promise(resolve=>{drainWait=resolve;});
         if(generation!==previewGeneration||closed||document.hidden||activeView!=="live")return;
-        const response=await fetch(`/api/preview-stream?limit=2&after=${encodeURIComponent(lastKey)}&mode=${streamMode}&downscale=${streamScale}`,{cache:"no-store",signal:streamAbort.signal});
+        const response=await fetch(`/api/preview?wait=500&after=${encodeURIComponent(lastKey)}&mode=${streamMode}&downscale=${streamScale}`,{cache:"no-store",signal:streamAbort.signal});
+        if(response.status===204)return;
         if(!response.ok)throw Error("预览读取失败");
-        const decoder=window.PangoPreviewStream.createDecoder(job=>{
-          if(generation!==previewGeneration||job.meta.run_id!==status?.run_id||job.meta.key===lastKey)return;
-          previewErrors=0;lastKey=job.meta.key;
-          Object.assign(job,{mode:streamMode,target:"live",displayWidth,receivedMs:performance.now(),generation});
-          if(workerBusy){if(pendingPreview)previewDiagnostics.replace();pendingPreview=job;}else submitPreview(job);
-        });
-        const reader=response.body.getReader();
-        try{
-          while(!closed&&!document.hidden&&activeView==="live"&&generation===previewGeneration){
-            const {done,value}=await reader.read();if(done){decoder.finish();break;}decoder.push(value);
-          }
-        }finally{await reader.cancel().catch(()=>{});}
+        const readStart=performance.now(),meta=JSON.parse(response.headers.get("X-Frame-Info"));
+        const buffer=await response.arrayBuffer();
+        if(generation!==previewGeneration||meta.run_id!==status?.run_id||meta.key===lastKey)return;
+        previewErrors=0;lastKey=meta.key;
+        const job={buffer,meta,mode:streamMode,target:"live",displayWidth,receivedMs:performance.now(),
+          fetchMs:performance.now()-readStart,generation};
+        if(workerBusy){if(pendingPreview)previewDiagnostics.replace();pendingPreview=job;}else submitPreview(job);
       }
     }catch(error){if(error.name!=="AbortError"){previewErrors++;if(previewErrors===3)toast("预览暂时无法读取；接收状态仍独立更新",true);}}
     finally{frameFetching=false;streamConfig=null;
@@ -202,15 +210,30 @@
   function invalidatePreview(){
     previewGeneration++;lastKey="";pendingPreview=null;streamAbort?.abort();
     drainWait?.();drainWait=null;previewDiagnostics.reset();
+    if(workerPull){
+      worker.postMessage({type:"stop-live"});frameFetching=false;
+      clearTimeout(frameTimer);if(!closed)frameTimer=setTimeout(framePoll,0);
+    }
   }
-  function submitPreview(job){workerBusy=true;job.queueMs=performance.now()-job.receivedMs;worker.postMessage(job,[job.buffer]);}
+  function submitPreview(job){
+    workerBusy=true;job.queueMs=performance.now()-job.receivedMs;
+    // timeOrigin translates Window/Worker clocks onto the browser's shared
+    // epoch timeline. It is never directly paired with the host clock.
+    job.postedEpochMs=performance.timeOrigin+performance.now();
+    worker.postMessage(job,[job.buffer]);
+  }
   document.addEventListener("visibilitychange",()=>{if(document.hidden)invalidatePreview();});
   worker.onmessage=event=>{
     const result=event.data;workerBusy=false;
+    if(result.type==="stream-end"){
+      if(result.generation===previewGeneration){frameFetching=false;clearTimeout(frameTimer);if(!closed)frameTimer=setTimeout(framePoll,100);}
+      return;
+    }
     if(pendingPreview&&!closed){const job=pendingPreview;pendingPreview=null;
       if(job.meta.run_id===status?.run_id&&job.generation===previewGeneration)submitPreview(job);
     }
-    if(!workerBusy){drainWait?.();drainWait=null;}
+    // A consumed pending job frees one credit even while its conversion runs.
+    drainWait?.();drainWait=null;
     if(result.error){toast(result.error,true);return;}
     if(result.target==="live"&&(result.meta.run_id!==status?.run_id||result.generation!==previewGeneration||document.hidden||activeView!=="live")){
       result.bitmap?.close();previewDiagnostics.reject();return;
@@ -251,8 +274,10 @@
       canvas.dataset.renderer=result.renderer||"main-2d";
       previewDiagnostics.record({meta:result.meta,mode:color,width:result.width,height:result.height,
         fetchMs:result.fetchMs,convertMs:result.convertMs,workerPaintMs:result.workerPaintMs||0,
-        queueMs:result.queueMs,paintMs:performance.now()-paintStart,renderer:canvas.dataset.renderer,
+        queueMs:result.queueMs,workerWaitMs:result.workerWaitMs,paintMs:performance.now()-paintStart,renderer:canvas.dataset.renderer,
         uploadBytes:result.uploadBytes,directTexture:result.directTexture,generation:result.generation});
+      // The producer cannot deliver another bitmap until this one was painted.
+      if(workerPull)worker.postMessage({type:"preview-painted",generation:result.generation});
     }
   };
   archiveWorker.onmessage=event=>{const r=event.data;if(r.meta&&r.meta.key!==archiveKey)return;if(r.error){text("archive-detail",r.error);return;}const canvas=$("archive-canvas");canvas.width=r.width;canvas.height=r.height;canvas.getContext("2d").putImageData(new ImageData(new Uint8ClampedArray(r.pixels),r.width,r.height),0,0);canvas.hidden=false;};
@@ -260,7 +285,9 @@
   worker.onerror=()=>{workerBusy=false;pendingPreview=null;drainWait?.();drainWait=null;toast("预览转换失败，请刷新页面重试",true);};
   // A timer expires the FPS to zero during stalls, even if no new frame arrives.
   previewRateTimer=setInterval(()=>{const now=performance.now(),dt=(now-renderStart)/1000;
-    text("preview-rate",`显示 ${(rendered/dt).toFixed(1)} FPS`);rendered=0;renderStart=now;},1000);
+    text("preview-rate",`绘制 ${(rendered/dt).toFixed(1)} FPS`);
+    $("preview-rate").title="完整帧提交 Canvas 的速率；不证明显示器发光、远程桌面或 FPGA 唯一结果帧率";
+    rendered=0;renderStart=now;},1000);
   async function action(path,data={}){
     if(busy)throw Error("上一项操作仍在处理");
     busy=true;if(status)update(status);

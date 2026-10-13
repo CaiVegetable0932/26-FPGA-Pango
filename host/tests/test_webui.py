@@ -40,6 +40,59 @@ class WebTests(unittest.TestCase):
         self.assertEqual(delivery["cache_entries"],0)
         self.assertFalse(self.session.status()["running"])
 
+    def test_finite_preview_reuses_http_connection_and_next_credit_is_latest(self):
+        """A client can wait between credits without collecting old TCP frames."""
+        self.start();self.send(frame_id=1);until(self.session.latest)
+        connection=http.client.HTTPConnection("127.0.0.1",self.server.server_port,timeout=3)
+        try:
+            connection.request("GET","/api/preview?downscale=1")
+            response=connection.getresponse();first=json.loads(response.getheader("X-Frame-Info"))
+            response.read();sock=connection.sock
+            self.send(frame_id=2);self.send(frame_id=3)
+            until(lambda:self.session.latest()[1]["frame_id"]=="3")
+            connection.request("GET","/api/preview?after="+first["key"])
+            response=connection.getresponse();latest=json.loads(response.getheader("X-Frame-Info"))
+            response.read()
+            self.assertIs(connection.sock,sock)
+            self.assertEqual(latest["frame_id"],"3")
+            self.assertIn("send_start_ms",latest["host_timing"])
+        finally:
+            connection.close()
+
+    def test_socket_preview_requires_credit_and_resumes_with_latest_frame(self):
+        """A slow real socket sees one response, then newest data on its next credit."""
+        from struct import unpack
+        from test_preview_socket import masked
+        self.start();self.send(frame_id=1);until(self.session.latest)
+        sock=socket.create_connection(("127.0.0.1",self.server.server_port),timeout=3)
+        reader=sock.makefile("rb")
+        def credit(after):
+            sock.sendall(masked(json.dumps(dict(mode="raw",downscale=2,after=after)).encode()))
+            head=reader.read(2);self.assertEqual(head[0],0x82)
+            length=head[1]
+            if length==126:length=unpack("!H",reader.read(2))[0]
+            elif length==127:length=unpack("!Q",reader.read(8))[0]
+            payload=reader.read(length);meta_len,pixel_len=unpack("<II",payload[:8])
+            self.assertEqual(len(payload),8+meta_len+pixel_len)
+            return json.loads(payload[8:8+meta_len])
+        try:
+            sock.sendall((f"GET /api/preview-socket HTTP/1.1\r\nHost: 127.0.0.1:{self.server.server_port}\r\n"
+                "Upgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Version: 13\r\n"
+                "Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\n\r\n").encode())
+            self.assertIn(b"101",reader.readline())
+            while reader.readline()!=b"\r\n":pass
+            first=credit("")
+            sock.settimeout(.05)
+            with self.assertRaises(socket.timeout):sock.recv(1)
+            sock.settimeout(3)
+            self.send(frame_id=2);self.send(frame_id=3)
+            until(lambda:self.session.latest()[1]["frame_id"]=="3")
+            self.assertEqual(credit(first["key"])["frame_id"],"3")
+            sock.sendall(masked(b"",opcode=8))
+            self.assertEqual(reader.read(2),b"\x88\x00")
+        finally:
+            reader.close();sock.close()
+
     def test_summary_status_omits_failure_records_without_losing_counters(self):
         # UI polling must avoid copying the full loss history, while the normal
         # diagnostic endpoint and saved report preserve all original evidence.

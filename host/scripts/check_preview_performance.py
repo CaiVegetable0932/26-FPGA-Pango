@@ -16,6 +16,14 @@ HOST = Path(__file__).resolve().parents[1]
 URL = "http://127.0.0.1:8765/"
 
 
+def source_version():
+    """Record dirty core hashes as well as HEAD; exclude runtime evidence."""
+    root=HOST.parent
+    paths=sorted((HOST/"web").glob("*.js"))+sorted((HOST/"src/pango_video").glob("*.py"))
+    return dict(commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip(),
+        core_sha256={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths})
+
+
 def snapshot(page):
     """Keep kernel drops separate from board frame gaps and complete frames."""
     # Long observations retain counters, not a repeated copy of every failure.
@@ -29,19 +37,24 @@ def snapshot(page):
         fields = line.split()
         if fields[1].endswith(":C350"):
             drops = int(fields[-1])
-    video = page.locator("#capture-video").evaluate("""v => ({width:v.videoWidth,height:v.videoHeight,
-        frames:v.getVideoPlaybackQuality().totalVideoFrames,dropped:v.getVideoPlaybackQuality().droppedVideoFrames,
-        observed:Number(v.dataset.framesObserved||0),settings:v.srcObject?.getVideoTracks()[0]?.getSettings(),label:v.srcObject?.getVideoTracks()[0]?.label})""")
+    # Direct snapshot avoids selector polling through animation frames, which
+    # can be throttled by desktop occlusion independently of video reception.
+    ui=page.evaluate("""() => {const v=document.querySelector("#capture-video"),c=document.querySelector("#live-canvas");return {
+      video:{width:v.videoWidth,height:v.videoHeight,frames:v.getVideoPlaybackQuality().totalVideoFrames,
+        dropped:v.getVideoPlaybackQuality().droppedVideoFrames,observed:Number(v.dataset.framesObserved||0),
+        settings:v.srcObject?.getVideoTracks()[0]?.getSettings(),label:v.srcObject?.getVideoTracks()[0]?.label},
+      canvas:{...c.dataset,width:c.width,height:c.height},network_display:document.querySelector("#preview-rate").textContent,
+      hdmi_display:document.querySelector("#capture-preview-rate")?.textContent,
+      diagnostics:window.pangoPreviewDiagnostics?.()||null};}""")
+    video=ui["video"]
     return dict(now=time.monotonic(), running=status["running"], config=status["config"],
         run_id=status["run_id"], frame=status["frame"], counters=counts, nic=nic, socket_drops=drops,
         assembly=status["metrics"].get("assembly", {}), video=video,
         # Preserve receive/consumer queue counters independently of assembly.
         receiver_counters=status["metrics"].get("counters", {}),
         receiver_features=status["metrics"].get("backend", {}),
-        canvas=page.locator("#live-canvas").evaluate("c=>({...c.dataset,width:c.width,height:c.height})"),
-        network_display=page.locator("#preview-rate").inner_text(),
-        hdmi_display=page.locator("#capture-preview-rate").inner_text() if page.locator("#capture-preview-rate").count() else None,
-        diagnostics=page.evaluate("() => window.pangoPreviewDiagnostics?.() || null"))
+        canvas=ui["canvas"],network_display=ui["network_display"],hdmi_display=ui["hdmi_display"],
+        diagnostics=ui["diagnostics"])
 
 
 def main():
@@ -77,24 +90,32 @@ def main():
             raise RuntimeError("Saved board setup did not resume after service restart")
     folder = HOST / "reports" / ("preview-performance-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ"))
     folder.mkdir()
+    version_before=source_version()
     errors = []
     with sync_playwright() as automation:
+        print("Connecting to the existing preview",flush=True)
         browser = automation.chromium.connect_over_cdp(endpoint(), timeout=10000, no_defaults=True)
         page = next(p for p in browser.contexts[0].pages if page_key(p.url) == page_key(URL))
         page.on("pageerror", lambda error: errors.append(str(error)))
         # Reloading product code must not silently change color to the default
         # RAW view and make before/after timings incomparable.
-        preview_mode = args.preview_mode or page.locator("[data-color].selected").get_attribute("data-color")
+        preview_mode = args.preview_mode or page.evaluate("() => document.querySelector('[data-color].selected').dataset.color")
         if args.reload or args.restart_service:
             page.reload(wait_until="domcontentloaded")
-        page.locator(f"[data-color='{preview_mode}']").click()
-        page.bring_to_front()
+        # Avoid injecting a redundant pointer action into an already selected
+        # view; direct DOM activation still exercises the real button handler.
+        if page.evaluate("() => document.querySelector('[data-color].selected').dataset.color") != preview_mode:
+            page.evaluate("mode => document.querySelector('[data-color='+mode+']').click()", preview_mode)
+        # Observe the user's visible tab without a focus request to the desktop
+        # window manager. Hidden tabs cannot establish display performance.
+        if page.evaluate("() => document.visibilityState") != "visible":
+            raise RuntimeError("Preview tab must be visible before measurement")
         deadline = time.monotonic() + 45
         while time.monotonic() < deadline:
-            ready = page.locator("#capture-video").evaluate("v => v.readyState>=2&&v.videoWidth>0")
+            ready = page.evaluate("() => {const v=document.querySelector('#capture-video');return v?.readyState>=2&&v.videoWidth>0}")
             if ready:
                 break
-            page.wait_for_timeout(500)
+            time.sleep(.5)
         else:
             raise RuntimeError("Hagibis did not begin decoding")
         if "Hagibis" not in snapshot(page)["video"]["label"]:
@@ -105,14 +126,16 @@ def main():
             # replace the user's live image or contribute to hardware counters.
             from check_preview_renderer import verify_renderer
             renderer_checks = verify_renderer(page)
-        page.wait_for_timeout(5000)
+        print("Preview ready; sampling both paths",flush=True)
+        time.sleep(5)
         first = snapshot(page)
         samples = []
         start = time.monotonic()
         while time.monotonic() - start < args.seconds:
-            page.wait_for_timeout(1000)
+            time.sleep(1)
             samples.append(snapshot(page))
         last = samples[-1]
+        print("Sampling complete; saving bounded report",flush=True)
         elapsed = last["now"] - first["now"]
         delta = {k:last["counters"].get(k, 0)-first["counters"].get(k, 0)
                  for k in set(first["counters"]) | set(last["counters"])}
@@ -131,7 +154,14 @@ def main():
                 hdmi_browser_total_fps=(b["video"]["frames"]-a["video"]["frames"])/dt,
                 hdmi_observed_preview_fps=(b['video']['observed']-a['video']['observed'])/dt,
                 complete_fps=(b["counters"].get("live_frames_complete",0)-a["counters"].get("live_frames_complete",0))/dt))
-        page.screenshot(path=str(folder / "dual-preview.png"), full_page=True)
+        # Screenshots are optional evidence. Occluded desktop windows can
+        # suppress animation-frame callbacks; retain metrics on timeout.
+        screenshot_error=None
+        if args.save_evidence:
+            try:
+                page.screenshot(path=str(folder / "dual-preview.png"), full_page=True,timeout=10000)
+            except Exception as error:
+                screenshot_error=type(error).__name__
         evidence = {}
         if args.save_evidence:
             # Preserve one original full RAW via the receiver's archive path.
@@ -167,6 +197,10 @@ def main():
             nic_delta={k:last["nic"][k]-first["nic"][k] for k in first["nic"]})
         report["evidence"] = evidence
         report["renderer_checks"] = renderer_checks
+        version_after=source_version()
+        report["source_version"]=version_before
+        report["source_unchanged_during_measurement"]=version_before==version_after
+        report["screenshot_error"]=screenshot_error
         # Publish explicit criteria separately from script execution success.
         # No callback count can prove unique FPGA results or optical latency.
         age = last.get("diagnostics", {}).get("stages", {}).get("frame_age_estimate_ms", {}) if last.get("diagnostics") else {}

@@ -29,10 +29,14 @@
       reset(){samples=[];last=null;},
       snapshot(queue={}){
         const stages={};
-        for(const name of ["interval_ms","fetchMs","convertMs","workerPaintMs","queueMs","paintMs","frame_age_estimate_ms"])
+        for(const name of ["interval_ms","fetchMs","convertMs","workerPaintMs","queueMs","workerWaitMs","paintMs","frame_age_estimate_ms"])
           stages[name]=distribution(samples.map(s=>s[name]));
         return {scope:"host_receive_to_canvas_submission_not_optical_latency",window_limit:512,
           stages,latest:samples.at(-1)||null,latest_submission_age_ms:last===null?null:now()-last,
+          // During a source stall, picture age must continue rising even when
+          // the last measured submission itself was fast.
+          latest_frame_age_estimate_ms:last===null||!Number.isFinite(samples.at(-1)?.frame_age_estimate_ms)?null:
+            samples.at(-1).frame_age_estimate_ms+now()-last,
           clock:clock&&now()-clock.synced_at<60000?clock:null,
           preview_replaced:replaced,stale_results_rejected:rejected,queue,
           long_tasks_ms:distribution(longTasks)};

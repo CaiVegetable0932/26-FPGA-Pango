@@ -1,5 +1,7 @@
 # 上位机开发区
 
+2026-10-13：按 `fbccd8b8d` 实现 Jetson 预览阶段统计、原生接收诊断、原尺寸 RAW 单通道 GPU 路径及 Worker 额度通道，使用方法和验收边界见 [Jetson 预览更新与复验](docs/Jetson预览更新与复验.md)。不修改 JetPack、驱动或电源管理；实测与浏览器会话仅留本机。
+
 2026-10-11：基于 `fd3335ab` 新增[后台上电自动恢复 FPGA 矫正参数](docs/板卡上电自动恢复矫正.md)。默认关闭，首次选择并成功保存板卡连接后明确启用；后台检测真实 UART 应答、恢复网口、加载独立参数文件并验证活动及 HDMI 已显示版本，支持无浏览器运行、热重开不重复上传及手动控制优先。不改 FPGA/MCU/RAW8 字节；软件验证和实板边界见[本轮报告](reports/board-autoload-20261011/README.md)。
 
 2026-10-10：新增[RGB33 实测标定交付包](reports/rgb33-calibration-20261010/README.md)与[Jetson 最终上位机/控制器接入说明](docs/Jetson_RGB33标定接入说明.md)。推荐后续使用[鱼眼 FPGA 参数记录](config/calibration/fpga-fisheye-rgb33-20261010.json)（1920×1080、100°输出），明确区分原标定候选、当前 model=2 编码及未执行的硬件验证；旧手填预置不会隐式替换，本次未下发板卡。
