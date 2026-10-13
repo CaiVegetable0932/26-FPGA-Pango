@@ -15,13 +15,17 @@
     const doc=environment.document,$=id=>doc.getElementById(id),svg=$("fpga-source-markers"),surface=$("video-surface");
     let ended=false,busy=false,metadata=null,frame=null,boardMode=true,timer=null;
     let frameAt=0,metadataAt=0,key="";
+    // Surface geometry changes on resize, not on every new video frame.
+    // Reading it after a canvas/label write forces synchronous page layout.
+    let bounds=surface.getBoundingClientRect();
     const now=()=>environment.performance.now();
     const controls=["fpga-refresh","fpga-view-apply","fpga-parameters-apply"];
     function message(value){$("fpga-control-status").textContent=value;}
     function draw(){
       const fresh=now()-frameAt<1500&&now()-metadataAt<6000;
-      const points=boardMode&&fresh?sourceMarkers(metadata,frame):[];
-      const bounds=surface.getBoundingClientRect(),next=JSON.stringify([points,bounds.width,bounds.height,metadata?.diameter,frame?.width,frame?.height]);
+      const points=boardMode&&fresh&&bounds.width>0&&bounds.height>0?sourceMarkers(metadata,frame):[];
+      const next=points.length?JSON.stringify([points,bounds.width,bounds.height,metadata?.diameter,
+        metadata?.revision,metadata?.generation,frame?.width,frame?.height]):"empty";
       if(next===key)return;key=next;
       svg.toggleAttribute("hidden",!points.length);svg.replaceChildren();
       if(!points.length)return;
@@ -98,8 +102,10 @@
       boardMode=$("geometry-display-owner").value==="fpga";
       videoUI.setBoardMode(boardMode,metadata);draw();
     });
-    const observer=typeof environment.ResizeObserver==="function"?new environment.ResizeObserver(draw):null;
+    function measure(){bounds=surface.getBoundingClientRect();draw();}
+    const observer=typeof environment.ResizeObserver==="function"?new environment.ResizeObserver(measure):null;
     observer?.observe(surface);
+    if(!observer)environment.addEventListener?.("resize",measure);
     // Periodic readback also detects changes made by a different browser tab.
     // No hardware present is an explicit unavailable state, never a mock success.
     async function poll(){if(ended)return;if(boardMode&&!doc.hidden&&!busy)await refresh();draw();
@@ -107,7 +113,7 @@
     $("fpga-parameters").value=JSON.stringify({parameters:environment.PangoFisheyePreview.preset()},null,2);
     videoUI.setBoardMode(true,null);
     return {init:poll,refresh,setNetworkFrame(value){frame=value;frameAt=now();draw();},
-      destroy(){ended=true;environment.clearTimeout(timer);observer?.disconnect();svg.replaceChildren();svg.toggleAttribute("hidden",true);
+      destroy(){ended=true;environment.clearTimeout(timer);observer?.disconnect();if(!observer)environment.removeEventListener?.("resize",measure);svg.replaceChildren();svg.toggleAttribute("hidden",true);
         for(const [id,event,fn] of listeners)$(id).removeEventListener(event,fn);}};
   }
   const api={create,sourceMarkers};root.PangoBoardGeometry=api;

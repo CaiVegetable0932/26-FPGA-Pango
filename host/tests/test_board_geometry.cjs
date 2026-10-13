@@ -13,18 +13,20 @@ const frame=()=>({source_mode:"hardware_unverified",stream_epoch:"123",sourceWid
 // Small DOM fixture records SVG geometry, forms and requests; it has no video
 // opener or restart API, so unrelated actions fail immediately.
 function fixture(){
+  let layoutReads=0,bounds={width:640,height:480},resize=null;
   class Node{
     constructor(){this.value="";this.checked=false;this.disabled=false;this.dataset={};this.children=[];this.attrs={};this.listeners={};}
     addEventListener(event,fn){this.listeners[event]=fn;}removeEventListener(event){delete this.listeners[event];}
     setAttribute(key,value){this.attrs[key]=value;}toggleAttribute(key,on){if(on)this.attrs[key]="";else delete this.attrs[key];}
     append(node){this.children.push(node);}replaceChildren(...nodes){this.children=nodes;}
-    getBoundingClientRect(){return {width:640,height:480};}
+    getBoundingClientRect(){layoutReads++;return {...bounds};}
     fire(event="click"){return this.listeners[event]?.();}
   }
   const nodes=new Map(),$=id=>{if(!nodes.has(id))nodes.set(id,new Node());return nodes.get(id);};
   const calls=[],owners=[];let current=metadata(),failure=null,clock=0,timer=null,write=null;
   const environment={document:{getElementById:$,createElementNS:()=>new Node(),hidden:false},performance:{now:()=>clock},
-    PangoFisheyePreview:math,localStorage:{getItem:()=>null},setTimeout(fn){timer=fn;return 1;},clearTimeout(){timer=null;}};
+    PangoFisheyePreview:math,localStorage:{getItem:()=>null},setTimeout(fn){timer=fn;return 1;},clearTimeout(){timer=null;},
+    ResizeObserver:class{constructor(fn){resize=fn;}observe(){}disconnect(){resize=null;}}};
   $("fpga-rotation").value="0";$("fpga-enhance").checked=true;
   const app=create({environment,videoUI:{setBoardMode(...args){owners.push(args);}},request:async(path,data)=>{
     calls.push({path,data});if(failure)throw Error(failure);
@@ -34,8 +36,23 @@ function fixture(){
     throw Error("Unexpected restart/capture request: "+path);
   }});
   return {app,$,calls,owners,set(value){current=value;},fail(value){failure=value;},at(value){clock=value;},
-    tick:()=>timer?.(),defer(fn){write=fn;}};
+    tick:()=>timer?.(),defer(fn){write=fn;},layoutReads:()=>layoutReads,
+    resize(width,height){bounds={width,height};resize?.();}};
 }
+
+test("Frame updates avoid layout reads while resize and stale overlays remain correct",async()=>{
+  const f=fixture();await f.app.init();f.app.setNetworkFrame(frame());
+  const reads=f.layoutReads();
+  for(let i=0;i<60;i++)f.app.setNetworkFrame(frame());
+  assert.equal(f.layoutReads(),reads);
+  f.resize(1280,720);assert.equal(f.layoutReads(),reads+1);
+  assert.equal(Number(f.$('fpga-source-markers').children[0].attrs.cx),7);
+  f.set({...metadata(),markers:false});await f.app.refresh();
+  for(let i=0;i<60;i++)f.app.setNetworkFrame(frame());
+  assert.equal(f.layoutReads(),reads+1);
+  assert.equal(f.$('fpga-source-markers').children.length,0);
+  f.app.destroy();
+});
 
 test("FPGA source overlay uses source pixels, returned colors/mask and exact epoch only",()=>{
   const result=sourceMarkers(metadata(),frame());

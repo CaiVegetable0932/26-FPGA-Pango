@@ -17,7 +17,10 @@
   // Keep only bounded aggregates. No per-frame disk log or GPU readback runs
   // in the live path; clock estimates always retain their RTT uncertainty.
   const previewDiagnostics=window.PangoPreviewDiagnostics.create();
-  window.pangoPreviewDiagnostics=()=>previewDiagnostics.snapshot({executing:Number(workerBusy),pending:Number(!!pendingPreview)});
+  let workerQueue={executing:0,pending:0,networkCredit:0,pendingBytes:0},workerQueueAt=performance.now();
+  window.pangoPreviewDiagnostics=()=>previewDiagnostics.snapshot(workerPull?
+    {...workerQueue,scope:"last_observed_worker_state",sampleAgeMs:performance.now()-workerQueueAt}:
+    {executing:Number(workerBusy),pending:Number(!!pendingPreview),scope:"main_thread"});
   let clockTimer=null,longTaskObserver=null;
   async function syncPreviewClock(){
     try{for(let i=0;i<3;i++){
@@ -209,6 +212,7 @@
   function previewScale(){return color==="raw"&&displayWidth>=(status?.config.width||1920)?1:2;}
   function invalidatePreview(){
     previewGeneration++;lastKey="";pendingPreview=null;streamAbort?.abort();
+    workerQueue={executing:0,pending:0,networkCredit:0,pendingBytes:0};workerQueueAt=performance.now();
     drainWait?.();drainWait=null;previewDiagnostics.reset();
     if(workerPull){
       worker.postMessage({type:"stop-live"});frameFetching=false;
@@ -224,7 +228,15 @@
   }
   document.addEventListener("visibilitychange",()=>{if(document.hidden)invalidatePreview();});
   worker.onmessage=event=>{
+    const arrivedEpochMs=performance.timeOrigin+performance.now();
     const result=event.data;workerBusy=false;
+    if(result.type==="preview-queue"){
+      if(result.generation===previewGeneration){
+        workerQueue={executing:result.executing,pending:result.pending,networkCredit:result.networkCredit,pendingBytes:result.pendingBytes};
+        workerQueueAt=performance.now();
+      }
+      return;
+    }
     if(result.type==="stream-end"){
       if(result.generation===previewGeneration){frameFetching=false;clearTimeout(frameTimer);if(!closed)frameTimer=setTimeout(framePoll,100);}
       return;
@@ -275,6 +287,9 @@
       previewDiagnostics.record({meta:result.meta,mode:color,width:result.width,height:result.height,
         fetchMs:result.fetchMs,convertMs:result.convertMs,workerPaintMs:result.workerPaintMs||0,
         queueMs:result.queueMs,workerWaitMs:result.workerWaitMs,paintMs:performance.now()-paintStart,renderer:canvas.dataset.renderer,
+        bitmapTransferMs:result.bitmapTransferMs,
+        previewDroppedBeforeGpu:result.previewDroppedBeforeGpu,
+        workerToMainMs:Number.isFinite(result.bitmapPostedEpochMs)?Math.max(0,arrivedEpochMs-result.bitmapPostedEpochMs):null,
         uploadBytes:result.uploadBytes,directTexture:result.directTexture,generation:result.generation});
       // The producer cannot deliver another bitmap until this one was painted.
       if(workerPull)worker.postMessage({type:"preview-painted",generation:result.generation});

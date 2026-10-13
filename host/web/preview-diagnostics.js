@@ -29,7 +29,7 @@
       reset(){samples=[];last=null;},
       snapshot(queue={}){
         const stages={};
-        for(const name of ["interval_ms","fetchMs","convertMs","workerPaintMs","queueMs","workerWaitMs","paintMs","frame_age_estimate_ms"])
+        for(const name of ["interval_ms","fetchMs","convertMs","workerPaintMs","bitmapTransferMs","workerToMainMs","queueMs","workerWaitMs","paintMs","frame_age_estimate_ms"])
           stages[name]=distribution(samples.map(s=>s[name]));
         return {scope:"host_receive_to_canvas_submission_not_optical_latency",window_limit:512,
           stages,latest:samples.at(-1)||null,latest_submission_age_ms:last===null?null:now()-last,

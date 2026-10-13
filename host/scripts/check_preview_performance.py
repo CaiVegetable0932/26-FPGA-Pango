@@ -9,8 +9,7 @@ import subprocess
 import time
 
 from check_hardware_inputs import api, linux_hagibis
-from open_browser import endpoint, page_key
-from playwright.sync_api import sync_playwright
+from browser_probe import BrowserProbe
 
 HOST = Path(__file__).resolve().parents[1]
 URL = "http://127.0.0.1:8765/"
@@ -40,9 +39,10 @@ def snapshot(page):
     # Direct snapshot avoids selector polling through animation frames, which
     # can be throttled by desktop occlusion independently of video reception.
     ui=page.evaluate("""() => {const v=document.querySelector("#capture-video"),c=document.querySelector("#live-canvas");return {
-      video:{width:v.videoWidth,height:v.videoHeight,frames:v.getVideoPlaybackQuality().totalVideoFrames,
-        dropped:v.getVideoPlaybackQuality().droppedVideoFrames,observed:Number(v.dataset.framesObserved||0),
-        settings:v.srcObject?.getVideoTracks()[0]?.getSettings(),label:v.srcObject?.getVideoTracks()[0]?.label},
+      video:{width:v.videoWidth,height:v.videoHeight,frames:Number(v.dataset.qualityFramesTotal||0),
+        dropped:Number(v.dataset.qualityDroppedTotal||0),observed:Number(v.dataset.framesObserved||0),
+        quality_sample_ms:Number(v.dataset.qualitySampleMs||0),quality_from_cached_one_second_observer:true,
+        settings:JSON.parse(v.dataset.captureSettings||'{}'),label:v.srcObject?.getVideoTracks()[0]?.label},
       canvas:{...c.dataset,width:c.width,height:c.height},network_display:document.querySelector("#preview-rate").textContent,
       hdmi_display:document.querySelector("#capture-preview-rate")?.textContent,
       diagnostics:window.pangoPreviewDiagnostics?.()||null};}""")
@@ -92,10 +92,10 @@ def main():
     folder.mkdir()
     version_before=source_version()
     errors = []
-    with sync_playwright() as automation:
+    # A general browser automation client enables Network on dedicated workers
+    # and observes RAW WebSocket payloads. Measure without that extra traffic.
+    with BrowserProbe() as page:
         print("Connecting to the existing preview",flush=True)
-        browser = automation.chromium.connect_over_cdp(endpoint(), timeout=10000, no_defaults=True)
-        page = next(p for p in browser.contexts[0].pages if page_key(p.url) == page_key(URL))
         page.on("pageerror", lambda error: errors.append(str(error)))
         # Reloading product code must not silently change color to the default
         # RAW view and make before/after timings incomparable.
@@ -169,7 +169,7 @@ def main():
             # this is browser-decoded UVC evidence, never paired sensor RAW.
             saved = api("/api/save", {})
             evidence["raw_save"] = saved
-            decoded = page.locator("#capture-video").evaluate("""v=>{
+            decoded = page.evaluate("""()=>{const v=document.querySelector('#capture-video');
                 const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;
                 const ctx=c.getContext('2d');ctx.drawImage(v,0,0);
                 const rgba=ctx.getImageData(0,0,c.width,c.height).data,rgb=new Uint8Array(c.width*c.height*3);
@@ -199,6 +199,7 @@ def main():
         report["renderer_checks"] = renderer_checks
         version_after=source_version()
         report["source_version"]=version_before
+        report["browser_probe_network_monitoring"]=False
         report["source_unchanged_during_measurement"]=version_before==version_after
         report["screenshot_error"]=screenshot_error
         # Publish explicit criteria separately from script execution success.

@@ -16,6 +16,8 @@
 
 ## 先核对版本与参考
 
+Jetson 后续补充的分路 CPU/接收/显示对照见 [帧率瓶颈复验](../../host/docs/帧率瓶颈复验说明.md)。使用 Runtime-only 观察器，避免整帧 WebSocket 调试流量污染结果；新增位图导出、主线程等待及真实 Worker 队列统计。临时原图/矫正对照不更改参数与位流，返回原模式。当前实测文件继续只在 Jetson 本机留存，不把网页优化当作板端吞吐问题已解决。
+
 - Git 拉取 main 前检查本机未提交文件，保留 Windows 标定和开发成果。起始核心版本包含 `17af7a4ce` 的 Windows 标定成果和后续 Jetson 接入。
 - 当前发布镜像为 `fpga/release/geometry_20261007_e4dd5bbb06e6/mini_raw8_geometry.sfc`，SHA-256：`E4DD5BBB06E659C55ECB87B7A4F66385D0680A2D1C4DE46F838830B7AFA180A2`。文件身份不等于板上 Flash 回读证明；实测前仍核对所烧镜像。
 - 当前关键处理 RTL 的文件哈希已与该发布目录 `source_manifest.json` 对照一致。发布 README 的历史离线 STA/仿真记录不能替代本次硬件帧率测试。

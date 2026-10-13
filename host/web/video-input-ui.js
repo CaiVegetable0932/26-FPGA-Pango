@@ -207,6 +207,10 @@
       text("capture-selected",state.selected?.label||"尚未选择");
       text("capture-preview-device",state.selected?.label||"尚未选择设备");
       const f=state.settings,format=f.width&&f.height?`${f.width} × ${f.height}`:"设备默认格式";
+      // Capture settings are negotiated once by the device controller. Cache
+      // its state for probes rather than ask the live track on every sample.
+      const settingsKey=JSON.stringify(f);
+      if($("capture-video").dataset.captureSettings!==settingsKey)$("capture-video").dataset.captureSettings=settingsKey;
       text("capture-format",state.stream_open?format+(f.frameRate?` · 协商 ${Number(f.frameRate.toFixed(2))} FPS`:""):"采集格式 —");
       $("capture-video").hidden=!state.stream_open||state.status==="waiting";
       correction?.setSource(!$("capture-video").hidden);

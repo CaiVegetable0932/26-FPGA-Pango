@@ -2,7 +2,7 @@ importScripts("/pixels.js","/preview-renderer.js","/preview-stream.js");
 // A live bitmap keeps both pixel conversion and canvas uploads off the main
 // thread. Archives and browsers without bitmap support retain the byte path.
 let liveSurface=null,gpu=null,liveContext=null,bitmapMode=false;
-let pullController=null,pullGeneration=0,pullMode=false,pendingGrant=null;
+let pullController=null,pullGeneration=0,pendingGrant=null;
 function prepareSurface(){
   liveSurface=new OffscreenCanvas(1,1);
   try{gpu=self.PangoPreviewRenderer.create(liveSurface);}catch{gpu=null;}
@@ -39,10 +39,14 @@ function render(job){
       }
       const output={width:result.width,height:result.height,meta,target,mode,fetchMs,queueMs,workerWaitMs,generation,convertMs,
         workerPaintMs:performance.now()-paintStart,renderer:gpu?"worker-webgl":"worker-2d",
+        previewDroppedBeforeGpu:job.previewDroppedBeforeGpu||0,
         uploadBytes:gpu?(direct?bytes.byteLength:result.pixels.byteLength):0,
         directTexture:!!direct};
-      const bitmap=liveSurface.transferToImageBitmap();
-      self.postMessage({...output,bitmap},[bitmap]);return output;
+      // Bitmap export may synchronize the driver even when draw submission
+      // was cheap. Measure it separately from GL calls and UI delivery delay.
+      const bitmapStart=performance.now(),bitmap=liveSurface.transferToImageBitmap();
+      self.postMessage({...output,bitmap,bitmapTransferMs:performance.now()-bitmapStart,
+        bitmapPostedEpochMs:performance.timeOrigin+performance.now()},[bitmap]);return output;
     }
     const result=self.PangoPixels.renderPixels(buffer,renderMeta,mode,{displayWidth});
     // Stage timings support real browser bottleneck checks, independent of
@@ -52,7 +56,7 @@ function render(job){
 }
 async function pull(config){
   const controller=new AbortController();pullController?.abort();pullController=controller;
-  const generation=++pullGeneration;let after="";
+  const generation=++pullGeneration;let after="",pending=null,awaitingPaint=false,creditPending=false,droppedBeforeGpu=0,lastQueue="";
   const url=new URL("/api/preview-socket",self.location.href);url.protocol=url.protocol==="https:"?"wss:":"ws:";
   const socket=new WebSocket(url);socket.binaryType="arraybuffer";
   controller.signal.addEventListener("abort",()=>socket.close(),{once:true});
@@ -60,11 +64,39 @@ async function pull(config){
     await new Promise((resolve,reject)=>{
       let creditStarted=0;
       const active=()=>!controller.signal.aborted&&generation===pullGeneration;
+      function reportQueue(){
+        // Tiny state-change messages describe this worker's real ownership,
+        // rather than misreport its pending RAW as an empty main-thread queue.
+        const value={executing:Number(awaitingPaint),pending:Number(!!pending),networkCredit:Number(creditPending),
+          pendingBytes:pending?.buffer.byteLength||0},key=JSON.stringify(value);
+        if(key!==lastQueue){lastQueue=key;self.postMessage({type:"preview-queue",generation:config.generation,...value});}
+      }
       async function grant(){
-        if(!active()||socket.readyState!==WebSocket.OPEN)return;
-        // Exactly one credit is outstanding on this persistent connection.
+        if(!active()||socket.readyState!==WebSocket.OPEN||creditPending||pending)return;
+        // One network credit overlaps one bitmap owned by the UI. At most one
+        // unrendered RAW is held while waiting for its paint acknowledgement.
+        creditPending=true;
         creditStarted=performance.now();
         socket.send(JSON.stringify({mode:config.mode,downscale:config.scale,after}));
+        reportQueue();
+      }
+      function consume(job){
+        const waited=performance.now()-job.receivedMs;
+        // A delayed UI recovers to a fresh source frame instead of painting
+        // a prefetched RAW that waited another tenth of a second for ACK.
+        if(waited>100){droppedBeforeGpu++;void grant().catch(reject);return;}
+        awaitingPaint=true;
+        render({...job,mode:config.mode,target:"live",displayWidth:config.displayWidth,
+          queueMs:waited,previewDroppedBeforeGpu:droppedBeforeGpu,generation:config.generation});
+        pendingGrant={generation:config.generation,grant:()=>{
+          if(!active())return;
+          awaitingPaint=false;
+          if(pending){const next=pending;pending=null;consume(next);}
+          else void grant().catch(reject);
+        }};
+        // Receiving the next RAW need not wait for main-thread scheduling.
+        // Rendering waits for ACK, so image bitmaps never queue up.
+        void grant().catch(reject);
       }
       socket.onopen=()=>{void grant().catch(reject);};
       socket.onerror=()=>reject(Error("预览通道连接失败"));
@@ -72,6 +104,8 @@ async function pull(config){
       socket.onmessage=event=>{
         if(!active())return;
         try{
+          if(!creditPending)throw Error("未请求的预览响应");
+          creditPending=false;
           if(typeof event.data==="string"){
             if(!JSON.parse(event.data).waiting)throw Error("非法预览控制消息");
             setTimeout(()=>{void grant().catch(reject);},100);return;
@@ -83,22 +117,21 @@ async function pull(config){
           if(job.meta.run_id!==config.run_id){socket.close();return;}
           // Fetch/framing and GPU preparation stay off the main UI thread.
           // The UI acknowledges its final bitmap handoff before a new credit.
-          const output=render({...job,mode:config.mode,target:"live",displayWidth:config.displayWidth,
-            fetchMs:performance.now()-creditStarted,queueMs:0,generation:config.generation});
-          if(output)after=job.meta.key;
-          if(output&&pullMode)pendingGrant={generation:config.generation,grant:()=>{void grant().catch(reject);}};
-          else if(output)void grant().catch(reject);
-          else setTimeout(()=>{void grant().catch(reject);},50);
+          after=job.meta.key;
+          const next={...job,receivedMs:performance.now(),fetchMs:performance.now()-creditStarted};
+          if(awaitingPaint){pending=next;reportQueue();}
+          else consume(next);
         }catch(error){reject(error);}
       };
     });
   }catch(error){if(error.name!=="AbortError"&&generation===pullGeneration)self.postMessage({error:error.message,target:"live",generation:config.generation});}
-  finally{socket.close();self.postMessage({type:"stream-end",generation:config.generation});}
+  finally{pending=null;socket.close();self.postMessage({type:"preview-queue",generation:config.generation,
+    executing:0,pending:0,networkCredit:0,pendingBytes:0});self.postMessage({type:"stream-end",generation:config.generation});}
 }
 self.onmessage=function(event){
   const value=event.data;
   if(value.type==="init-live"){
-    bitmapMode=value.bitmap;pullMode=!!value.pull;
+    bitmapMode=value.bitmap;
     if(bitmapMode)prepareSurface();return;
   }
   if(value.type==="start-live"){void pull(value);return;}

@@ -74,7 +74,14 @@
       if(!active){info.fps=info.submittedFps=info.maxGapMs=info.ageMs=0;info.frames=info.skipped=info.repeated=0;}
       // Diagnostics sample the existing observer's cumulative count instead
       // of creating a competing callback or treating quality totals as frames.
-      if(video.dataset)video.dataset.framesObserved=String(info.totalFrames);
+      if(video.dataset){
+        video.dataset.framesObserved=String(info.totalFrames);
+        // Reuse the existing one-second observation for external diagnostics;
+        // another synchronous media query can itself disturb a loaded browser.
+        video.dataset.qualityFramesTotal=current?String(current.totalVideoFrames):"";
+        video.dataset.qualityDroppedTotal=current?String(current.droppedVideoFrames):"";
+        video.dataset.qualitySampleMs=String(time);
+      }
       onRate(hasCallback?info.fps:null,info);
     },1000);
     return {destroy(){stopped=true;clearInterval(timer);if(callback!==null)video.cancelVideoFrameCallback?.(callback);
