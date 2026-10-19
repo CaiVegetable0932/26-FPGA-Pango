@@ -55,6 +55,10 @@ def main():
                         help='Measure this frozen proof-bound writer instead of live main RTL')
     parser.add_argument('--span-proof', type=Path,
                         help='Full-product/four-state proof required for the signed span rewrite')
+    parser.add_argument('--reference-source',type=Path,
+                        help='Explicit frozen baseline when a proof closure contains several historical originals')
+    parser.add_argument('--startup-latency-cycles',type=int,choices=(0,2),default=0,
+                        help='Only the reviewed two-cycle admission pipeline may use semantic instead of cycle proof')
     parser.add_argument('--tiled', type=int, choices=(0, 1), default=0)
     parser.add_argument('--board-rgb-context', action='store_true',
                         help='Use the actual fixed ISP writer geometry/stride/RGB connections')
@@ -64,11 +68,22 @@ def main():
     if not proof.is_relative_to(fpga/'build'):
         raise ValueError('Frozen writer proof required')
     checked = json.loads((proof/'result.json').read_text())
-    if not all(checked.get(k) for k in ('passed', 'cycle_equivalent', 'inputs_intact', 'storage_edges')):
+    if args.startup_latency_cycles:
+        required=('passed','inputs_intact','semantic_equivalent','independent_byte_scoreboards','range_and_abort_tests')
+        if not all(checked.get(k) for k in required) or checked.get('measured_legal_and_invalid_startup_extra_cycles')!=2 or len(checked.get('tests',[]))!=50:
+            raise ValueError('Complete two-cycle admission/independent byte proof required')
+        if checked.get('cycle_equivalent') is not False or not args.candidate_source:
+            raise ValueError('Intentional latency must be explicit and bound to a frozen candidate')
+    elif not all(checked.get(k) for k in ('passed', 'cycle_equivalent', 'inputs_intact', 'storage_edges')):
         raise ValueError('Storage-edge differential proof required')
     if any(digest(Path(p)) != h for p, h in checked['inputs'].items()):
         raise ValueError('Writer proof input drift')
     originals = [Path(p) for p in checked['inputs'] if Path(p).name == 'original_frame_pixel_writer.sv']
+    if args.reference_source:
+        reference=args.reference_source.resolve()
+        if not reference.is_relative_to(fpga/'build') or checked['inputs'].get(str(reference))!=digest(reference):
+            raise ValueError('Explicit baseline is not in the proof closure')
+        originals=[reference]
     if len(originals) != 1:
         raise ValueError('Unique original writer required')
     current = fpga/'rtl/memory/frame_pixel_writer.sv'
@@ -80,6 +95,13 @@ def main():
         pack = current.with_name('dma_pixel_pack.v')
     if any(digest(p) not in checked['inputs'].values() for p in (current, pack)):
         raise ValueError('Current writer/packer bytes are not proven')
+    pipelined='CHECK_SUM=7,CHECK_RANGE=8' in current.read_text(encoding='utf-8')
+    if pipelined!=bool(args.startup_latency_cycles):
+        raise ValueError('Admission-pipeline source and explicit latency allowance differ')
+    if pipelined:
+        from prepare_writer_span_pipeline import pipeline
+        if current.read_text(encoding='utf-8')!=pipeline(originals[0].read_text(encoding='utf-8')):
+            raise ValueError('Reviewed two-cycle transformation drift')
     span_checked = None
     if 'wire signed [49:0] row_span=' in current.read_text(encoding='utf-8'):
         if not args.span_proof:
@@ -92,7 +114,8 @@ def main():
             raise ValueError('Complete span arithmetic proof required')
         if any(digest(Path(p))!=h for p,h in span_checked['inputs'].items()):
             raise ValueError('Span proof drift')
-        if any(digest(p) not in span_checked['inputs'].values() for p in (current,originals[0])):
+        math_sources=(originals[0],) if pipelined else (current,originals[0])
+        if any(digest(p) not in span_checked['inputs'].values() for p in math_sources):
             raise ValueError('Span proof does not bind both writer implementations')
     label = 'writer_candidate_screen_' if args.candidate_source else 'writer_bram_screen_'
     candidate = fpga/'build/route_optimization'/datetime.now().strftime(label+'%Y%m%d_%H%M%S_%f')
@@ -129,7 +152,9 @@ def main():
         inputs[str(dest)] = digest(dest)
     result = dict(passed=False, routed=False, board_timing_signoff=False,
                   proof=str(proof), inputs=inputs, tiled=args.tiled,
-                  board_rgb_context=args.board_rgb_context, jobs=[])
+                  board_rgb_context=args.board_rgb_context,
+                  extra_frame_startup_cycles=args.startup_latency_cycles,
+                  cycle_equivalent=not pipelined,jobs=[])
     print('WRITER_UNIT_SCREEN', run, flush=True)
     try:
         for label, writer in sources.items():

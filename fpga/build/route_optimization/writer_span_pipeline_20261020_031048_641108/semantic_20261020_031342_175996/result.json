@@ -1,0 +1,233 @@
+{
+  "passed": true,
+  "cycle_equivalent": false,
+  "semantic_equivalent": true,
+  "four_state": true,
+  "extra_frame_startup_cycles": 2,
+  "declared_per_segment_added_cycles": 0,
+  "independent_byte_scoreboards": true,
+  "range_and_abort_tests": true,
+  "upstream_full_product_proof": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\span_math_20261020_022607_651887",
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_pipeline_20261020_031048_641108\\original_frame_pixel_writer.sv": "5e42697282088256cc05be52d8fce86a2fab2022bce938444487fc872b8faf3c",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_pipeline_20261020_031048_641108\\source\\rtl\\memory\\frame_pixel_writer.sv": "dd089551cc79309e5175536c53f8efed36bfad7dba9438104365c6a1b5425f41",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_pipeline_20261020_031048_641108\\source\\rtl\\memory\\dma_pixel_pack.v": "30014fc3090a62b36d64bf9aa268749faa66df0d4171e1498cc403de30f813ca",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_pipeline_20261020_031048_641108\\source\\rtl\\memory\\ddr_native_dma.v": "52f12a6f4110cf99b87dbdfdecf62dd75a8b31d0f00e815e2598cdec2481ea30",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_writer_admission_pipeline.sv": "5e71ab1486916008a879eec41323a98db9406150476fd964b5991ac71a53cf8f",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\differential_20261020_022451_842405\\tb_frame_pixel_writer.sv": "ee4012f887f92fedbd9232f0d1b69956580b9c18960600f401b98ed831c0b00e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\differential_20261020_022451_842405\\result.json": "58a9916458b6042d45330adc37edbb1b79c948a528d4a9d50985400caf6153bf",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\span_math_20261020_022607_651887\\result.json": "b103342c7cb315f4ba724bed10b014a179d8915522730f7802311e1393bf126d",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\original_frame_pixel_writer.sv": "9df2baf37afaac48cc79f37a9e11ab54d3356ecf5909d0b41f304c60dd61a8aa",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\original_geometry_tile_refill.sv": "3ef62065fbe12306a62d809f09b0ee5556f1741d8b17d508e300d3b35bc8bb94",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\source\\rtl\\memory\\frame_pixel_writer.sv": "5e42697282088256cc05be52d8fce86a2fab2022bce938444487fc872b8faf3c",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\source\\rtl\\memory\\geometry_tile_refill.sv": "3ef62065fbe12306a62d809f09b0ee5556f1741d8b17d508e300d3b35bc8bb94",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\source\\rtl\\memory\\ddr_native_dma.v": "52f12a6f4110cf99b87dbdfdecf62dd75a8b31d0f00e815e2598cdec2481ea30",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\source\\rtl\\memory\\dma_pixel_pack.v": "30014fc3090a62b36d64bf9aa268749faa66df0d4171e1498cc403de30f813ca",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_frame_pixel_writer.sv": "a5a39c25d96c3678b02f60b089ec3851ecae95bcf1141fee62602eb8b96bf5e0",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_geometry_tile_refill.sv": "b2c4e9c1582e130be20243976fe4a1a82b43024790a92575cb99cd6c22b4cf8a"
+  },
+  "tests": [
+    {
+      "name": "baseline_bytes_0_1_1",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_10_7",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_11_8",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_21_9",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_22_17",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_31_9",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_32_17",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_33_8",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_35_9",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_64_17",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_65_9",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_0_1920_9",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_1_1",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_10_7",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_11_8",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_21_9",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_22_17",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_31_9",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_32_17",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_33_8",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_35_9",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_64_17",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_65_9",
+      "passed": true
+    },
+    {
+      "name": "baseline_bytes_1_1920_9",
+      "passed": true
+    },
+    {
+      "name": "baseline_admission",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_1_1",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_10_7",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_11_8",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_21_9",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_22_17",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_31_9",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_32_17",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_33_8",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_35_9",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_64_17",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_65_9",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_0_1920_9",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_1_1",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_10_7",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_11_8",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_21_9",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_22_17",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_31_9",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_32_17",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_33_8",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_35_9",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_64_17",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_65_9",
+      "passed": true
+    },
+    {
+      "name": "candidate_bytes_1_1920_9",
+      "passed": true
+    },
+    {
+      "name": "candidate_admission",
+      "passed": true
+    }
+  ],
+  "measured_legal_and_invalid_startup_extra_cycles": 2,
+  "inputs_intact": true
+}

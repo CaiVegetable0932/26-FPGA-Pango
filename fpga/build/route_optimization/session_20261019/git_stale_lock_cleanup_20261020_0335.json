@@ -1,0 +1,81 @@
+{
+  "at": 1792438511.5593698,
+  "bytes": 0,
+  "reason": "Original owner exited; every non-daemon Git process created after unchanged empty lock",
+  "processes": [
+    {
+      "pid": 11392,
+      "created": 1792438509.7749183,
+      "cmd": [
+        "git.exe",
+        "-c",
+        "diff.mnemonicPrefix=false",
+        "-c",
+        "diff.noprefix=false",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "safe.bareRepository=explicit",
+        "-c",
+        "core.hooksPath=NUL",
+        "-c",
+        "core.fsmonitor=true",
+        "diff",
+        "--no-ext-diff",
+        "--no-textconv",
+        "--color=never",
+        "--src-prefix=a/",
+        "--dst-prefix=b/",
+        "6fc951b3cb7a9d367b6d3c293a3e9efbb1f2c483",
+        "--find-renames",
+        "--raw",
+        "--no-abbrev",
+        "--numstat",
+        "-z"
+      ]
+    },
+    {
+      "pid": 22076,
+      "created": 1792414575.233104,
+      "cmd": [
+        "git",
+        "fsmonitor--daemon",
+        "run",
+        "--detach",
+        "--ipc-threads=8"
+      ]
+    },
+    {
+      "pid": 34780,
+      "created": 1792438509.7273705,
+      "cmd": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "-c",
+        "diff.mnemonicPrefix=false",
+        "-c",
+        "diff.noprefix=false",
+        "-c",
+        "core.quotePath=false",
+        "-c",
+        "safe.bareRepository=explicit",
+        "-c",
+        "core.hooksPath=NUL",
+        "-c",
+        "core.fsmonitor=true",
+        "diff",
+        "--no-ext-diff",
+        "--no-textconv",
+        "--color=never",
+        "--src-prefix=a/",
+        "--dst-prefix=b/",
+        "6fc951b3cb7a9d367b6d3c293a3e9efbb1f2c483",
+        "--find-renames",
+        "--raw",
+        "--no-abbrev",
+        "--numstat",
+        "-z"
+      ]
+    }
+  ],
+  "processes_terminated": false
+}

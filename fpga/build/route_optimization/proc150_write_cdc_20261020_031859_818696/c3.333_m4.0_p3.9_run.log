@@ -1,0 +1,2 @@
+WRITE_CDC_PASS cases=32 requests=28 beats=200 errors=5 cancels=4 stalls=45
+tb_dma_write_cdc.sv:161: $finish called at 9955900 (1ps)

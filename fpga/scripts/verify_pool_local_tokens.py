@@ -27,9 +27,18 @@ module frame_pool_bank #(
   if(reset_n)begin
    checks=checks+1;
    if(rsp !== reference_rsp) $fatal(1,"POOL_DIFF response (including invalid fields)");
+`ifdef CHECK_LOCAL_FLAGS
    for(s=0;s<SLOTS;s=s+1)for(t=0;t<TXNS;t=t+1)
     if(candidate.slot_token_active[s][t] !== (candidate.token_busy[t] && candidate.token_slot[t]==s))
      $fatal(1,"POOL_DIFF token mirror s=%0d t=%0d",s,t);
+`endif
+`ifdef CHECK_COUNTER_STATE
+   if(candidate.next_order !== reference_impl.next_order)
+    $fatal(1,"POOL_DIFF full 64-bit order counter");
+   for(t=0;t<TXNS;t=t+1)
+    if(candidate.ticket[t] !== reference_impl.ticket[t] || candidate.token_busy[t] !== reference_impl.token_busy[t])
+     $fatal(1,"POOL_DIFF full ticket/busy state t=%0d",t);
+`endif
   end
  end endtask
  always @(posedge clk)begin #2;compare;end
@@ -64,10 +73,54 @@ module tb_pool_random;
 endmodule
 '''
 
+COUNTER_TB = '''`timescale 1ns/1ps
+import frame_manager_pkg::*;
+module tb_pool_counter_fences;
+ reg clk=0,reset_n=0;always #5 clk=~clk;
+ frame_cmd_t cmd;frame_rsp_t rsp;
+ reg [63:0] seeds[0:4],held_ticket;integer i;
+ frame_pool_bank #(.SLOTS(1),.TXNS(1)) dut(clk,reset_n,1'b1,1'b1,cmd,rsp);
+ initial begin
+  seeds[0]=64'hffff;seeds[1]=64'hffffffff;seeds[2]=64'hffffffffffff;
+  seeds[3]=64'hfffffffffffffffe;seeds[4]=64'hffffffffffffffff;
+  cmd='0;
+  for(i=0;i<5;i=i+1)begin
+   reset_n=0;cmd='0;repeat(3)@(negedge clk);reset_n=1;@(negedge clk);
+   // Identical test-only deposits in independent implementations avoid
+   // billions of transactions. Public operation/response checks remain live.
+   dut.candidate.next_order=seeds[i];dut.reference_impl.next_order=seeds[i];
+   dut.candidate.ticket[0]=seeds[i];dut.reference_impl.ticket[0]=seeds[i];
+   cmd.alloc=1;cmd.meta.width=35;cmd.meta.height=33;cmd.meta.stride=6144;cmd.meta.format=2;
+   cmd.meta.epoch=1;cmd.meta.frame_id=1;cmd.meta.capture_first=10;
+   #1;
+   if(i==4)begin
+    if(rsp.alloc_ready)$fatal(1,"Order counter exhaustion wrapped");
+    @(posedge clk);#3;
+    if(dut.candidate.next_order!==seeds[i])$fatal(1,"Exhausted order counter changed");
+   end else begin
+    if(!rsp.alloc_ready)$fatal(1,"Boundary allocation not accepted");
+    @(posedge clk);#3;
+    if(dut.candidate.next_order!==(seeds[i]+64'd1))$fatal(1,"Order chunk carry");
+    @(negedge clk);cmd='0;cmd.issue=1;cmd.issue_slot=0;cmd.issue_gen=1;cmd.issue_owner=0;
+    #1;if(!rsp.issue_ready || rsp.issue_ticket!==(seeds[i]+64'd1))$fatal(1,"Ticket chunk carry response");
+    held_ticket=rsp.issue_ticket;@(posedge clk);#3;
+    if(dut.candidate.ticket[0]!==held_ticket)$fatal(1,"Ticket chunk state");
+    @(negedge clk);cmd='0;cmd.complete=1;cmd.complete_ticket=held_ticket;cmd.complete_token=0;
+    #1;if(!rsp.complete_ok)$fatal(1,"Boundary ticket did not retire");
+    @(negedge clk);cmd='0;
+   end
+  end
+  $display("POOL_COUNTER_FENCES_PASS");$finish;
+ end
+endmodule
+'''
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--candidate', type=Path, required=True)
+    parser.add_argument('--counter-state',action='store_true',
+                        help='Compare full internal counters and test chunk carry/exhaustion boundaries')
     args = parser.parse_args()
     fpga = Path(__file__).resolve().parents[1]
     candidate = args.candidate.resolve()
@@ -105,17 +158,26 @@ def main():
     p.write_text(text,encoding='utf-8')
     (run/'wrapper.sv').write_text(WRAPPER,encoding='utf-8')
     (run/'tb_pool_random.sv').write_text(RANDOM_TB,encoding='utf-8')
+    has_flags='slot_token_active' in (run/'candidate.sv').read_text(encoding='utf-8')
+    if not has_flags and not args.counter_state:
+        raise ValueError('Counter candidate requires full counter-state checking')
+    if args.counter_state:
+        (run/'tb_pool_counter_fences.sv').write_text(COUNTER_TB,encoding='utf-8')
     shutil.copyfile(__file__,run/'verification_script.py')
     runtime = fpga/'build/ov5640_pwm_20261012/tools/iverilog/app/bin'
     result = dict(passed=False,inputs=inputs,four_state=True,all_response_bits_compared=True,
-                  mirror_checked_on_both_edges=True,fixture_ticket_deposits_mirrored=count,tests=[])
+                  mirror_checked_on_both_edges=has_flags,internal_counter_state_compared=args.counter_state,
+                  fixture_ticket_deposits_mirrored=count,tests=[])
     tests = [(n,n,[]) for n in fixtures]
+    if args.counter_state:tests.append(('counter_fences','tb_pool_counter_fences',[]))
     tests += [('random_%s_%s_%s'%(s,t,seed),'tb_pool_random',
                ['-Ptb_pool_random.SLOTS='+str(s),'-Ptb_pool_random.TXNS='+str(t),'+SEED='+str(seed)])
               for s,t in [(1,1),(3,2),(3,3),(3,8)] for seed in [177,2718]]
     try:
         for name,top,options in tests:
             compile_args = [x for x in options if x.startswith('-P')]
+            if has_flags:compile_args.append('-DCHECK_LOCAL_FLAGS')
+            if args.counter_state:compile_args.append('-DCHECK_COUNTER_STATE')
             runtime_args = [x for x in options if x.startswith('+')]
             commands = [('compile',[str(runtime/'iverilog.exe'),'-g2012','-I',str(run),'-s',top,
                 *compile_args,'-o',name+'.vvp','frame_manager_pkg.sv','original.sv','candidate.sv','wrapper.sv',top+'.sv']),

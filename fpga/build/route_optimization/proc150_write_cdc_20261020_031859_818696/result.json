@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "experimental": true,
+  "production_instantiated": false,
+  "hardware_tested": false,
+  "timing_signed_off": false,
+  "cdc_constraints_signed_off": false,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\experiments\\proc150\\rtl\\dma_write_cdc.sv": "2c2aa5f0cb1d984667973266021e3ac8a35d141451c2708e6a12fb9ab7754a27",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\experiments\\proc150\\sim\\tb_dma_write_cdc.sv": "2806e8416c8505d9cb4849136950c8f9727258ecf29f0bff6f27682b8a326d9a"
+  },
+  "tests": [
+    {
+      "client_half_ns": 3.333,
+      "memory_half_ns": 4.0,
+      "phase_ns": 0.7,
+      "counts": {
+        "cases": 32,
+        "requests": 28,
+        "beats": 199,
+        "errors": 5,
+        "cancels": 4,
+        "stalls": 40
+      }
+    },
+    {
+      "client_half_ns": 4.0,
+      "memory_half_ns": 3.333,
+      "phase_ns": 1.1,
+      "counts": {
+        "cases": 32,
+        "requests": 28,
+        "beats": 198,
+        "errors": 5,
+        "cancels": 4,
+        "stalls": 27
+      }
+    },
+    {
+      "client_half_ns": 5.0,
+      "memory_half_ns": 3.1,
+      "phase_ns": 0.0,
+      "counts": {
+        "cases": 32,
+        "requests": 28,
+        "beats": 199,
+        "errors": 5,
+        "cancels": 4,
+        "stalls": 49
+      }
+    },
+    {
+      "client_half_ns": 3.333,
+      "memory_half_ns": 4.0,
+      "phase_ns": 3.9,
+      "counts": {
+        "cases": 32,
+        "requests": 28,
+        "beats": 200,
+        "errors": 5,
+        "cancels": 4,
+        "stalls": 45
+      }
+    }
+  ],
+  "inputs_intact": true
+}

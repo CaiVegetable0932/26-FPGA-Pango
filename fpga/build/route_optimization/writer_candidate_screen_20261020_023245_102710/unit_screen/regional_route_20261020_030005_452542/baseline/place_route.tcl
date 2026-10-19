@@ -1,0 +1,9 @@
+set_dir -impl_directory {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_023245_102710/unit_screen/regional_route_20261020_030005_452542/baseline}
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+add_design {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_023245_102710/unit_screen/regional_route_20261020_030005_452542/baseline/writer.sv}
+add_design {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_023245_102710/unit_screen/regional_route_20261020_030005_452542/baseline/dma_pixel_pack.v}
+add_constraint {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_023245_102710/unit_screen/regional_route_20261020_030005_452542/baseline/clock.fdc}
+add_design {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_023245_102710/unit_screen/regional_route_20261020_030005_452542/baseline/regional_wrapper.sv}
+add_constraint {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_023245_102710/unit_screen/regional_route_20261020_030005_452542/baseline/scan_pins.fdc}
+add_constraint {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_023245_102710/unit_screen/regional_route_20261020_030005_452542/baseline/device_map/regional_wrapper.pcf}
+pnr -force_to_run -input_db_file {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_023245_102710/unit_screen/regional_route_20261020_030005_452542/baseline/device_map/regional_wrapper_map.adf} -action_timeout 20 -gplace_seed 11 -plc_decongestion 1 -max_ctrl_chain_length 500 -mode normal -congest_overlap_limit 200 -dump_router_congestion_plot TRUE

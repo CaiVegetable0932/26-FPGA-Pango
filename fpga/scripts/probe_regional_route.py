@@ -1,4 +1,4 @@
-"""Route only a proof-checked isolated DMA/boot pair; never generate bitstreams.
+"""Route only reviewed, proof-checked isolated regions; never generate bitstreams.
 
 Installed PDS User Guide pp111-118, 249 and 251-254 and the frozen
 PG2L100H pnr help define this bounded flow. Dynamic boundary ports use an
@@ -33,6 +33,8 @@ def main():
     parser.add_argument('--timeout-minutes', type=int, default=20)
     # Only the plan's finite reproducibility set is permitted; no seed sweep.
     parser.add_argument('--seed', type=int, choices=(11, 7, 13), default=11)
+    parser.add_argument('--decongestion',type=int,choices=(1,2),default=1,
+                        help='Reviewed single-variable comparison; no effort or seed sweep')
     parser.add_argument('--phase-budgets', action='store_true',
                         help='Separately cap preparation at 20 min, PnR at selected allowance, STA at 2 min')
     parser.add_argument('--only-label',choices=('baseline','candidate'),
@@ -165,6 +167,7 @@ def main():
     shutil.copyfile(pin_configuration,run/'regional_scan_pins.json')
     labels=(args.only_label,) if args.only_label else ('baseline','candidate')
     result = dict(scope='isolated_region', top=top, source_screen=str(screen),
+                  placement_decongestion=args.decongestion,
                   labels_requested=list(labels),comparison_complete=False,
                   board_timing_signoff=False, bitstream_generated=False,
                   hardware_tested=False, clock_period_ns=8.0, seed=args.seed,
@@ -203,7 +206,7 @@ def main():
             flow=flow.replace(' -disable_io_insertion','')
             flow += 'dev_map\n'
             flow += (f'pnr -action_timeout {args.timeout_minutes} -gplace_seed {args.seed} '
-                     '-plc_decongestion 1 -max_ctrl_chain_length 500 '
+                     f'-plc_decongestion {args.decongestion} -max_ctrl_chain_length 500 '
                      '-mode normal -congest_overlap_limit 200 '
                      '-dump_router_congestion_plot TRUE\n')
             flow += 'report_timing -delay_type min_max -max_path 30 -report_exception TRUE\n'

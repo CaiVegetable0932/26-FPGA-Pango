@@ -1,0 +1,14 @@
+{
+  "baseline": {
+    "netlist_sha256": "4a9a6d93b9c8a9034aa469f2c997ae74691307a8124678332c4a0b53126dd94f",
+    "counter_flipflop_types": {
+      "GTP_DFF_CE": 256
+    }
+  },
+  "candidate": {
+    "netlist_sha256": "3e0fbd30bb41b6e82c4d129f109bada4212dbb4f07bbd1eebe22049afb3d9c24",
+    "counter_flipflop_types": {
+      "GTP_DFF_C": 256
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "passed": true,
+  "routed": false,
+  "board_timing_signoff": false,
+  "proof": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_pipeline_20261020_031048_641108\\semantic_20261020_031342_175996",
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_pipeline_20261020_031048_641108\\original_frame_pixel_writer.sv": "5e42697282088256cc05be52d8fce86a2fab2022bce938444487fc872b8faf3c",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_pipeline_20261020_031048_641108\\source\\rtl\\memory\\frame_pixel_writer.sv": "dd089551cc79309e5175536c53f8efed36bfad7dba9438104365c6a1b5425f41",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_pipeline_20261020_031048_641108\\source\\rtl\\memory\\dma_pixel_pack.v": "30014fc3090a62b36d64bf9aa268749faa66df0d4171e1498cc403de30f813ca",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_pipeline_20261020_031048_641108\\source\\rtl\\memory\\ddr_native_dma.v": "52f12a6f4110cf99b87dbdfdecf62dd75a8b31d0f00e815e2598cdec2481ea30",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_writer_admission_pipeline.sv": "5e71ab1486916008a879eec41323a98db9406150476fd964b5991ac71a53cf8f",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\differential_20261020_022451_842405\\tb_frame_pixel_writer.sv": "ee4012f887f92fedbd9232f0d1b69956580b9c18960600f401b98ed831c0b00e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\differential_20261020_022451_842405\\result.json": "58a9916458b6042d45330adc37edbb1b79c948a528d4a9d50985400caf6153bf",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\span_math_20261020_022607_651887\\result.json": "b103342c7cb315f4ba724bed10b014a179d8915522730f7802311e1393bf126d",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\original_frame_pixel_writer.sv": "9df2baf37afaac48cc79f37a9e11ab54d3356ecf5909d0b41f304c60dd61a8aa",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\original_geometry_tile_refill.sv": "3ef62065fbe12306a62d809f09b0ee5556f1741d8b17d508e300d3b35bc8bb94",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\source\\rtl\\memory\\frame_pixel_writer.sv": "5e42697282088256cc05be52d8fce86a2fab2022bce938444487fc872b8faf3c",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\source\\rtl\\memory\\geometry_tile_refill.sv": "3ef62065fbe12306a62d809f09b0ee5556f1741d8b17d508e300d3b35bc8bb94",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\source\\rtl\\memory\\ddr_native_dma.v": "52f12a6f4110cf99b87dbdfdecf62dd75a8b31d0f00e815e2598cdec2481ea30",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_product_20261020_022443_046453\\source\\rtl\\memory\\dma_pixel_pack.v": "30014fc3090a62b36d64bf9aa268749faa66df0d4171e1498cc403de30f813ca",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_frame_pixel_writer.sv": "a5a39c25d96c3678b02f60b089ec3851ecae95bcf1141fee62602eb8b96bf5e0",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_geometry_tile_refill.sv": "b2c4e9c1582e130be20243976fe4a1a82b43024790a92575cb99cd6c22b4cf8a",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_candidate_screen_20261020_032507_179978\\original_frame_pixel_writer.sv": "5e42697282088256cc05be52d8fce86a2fab2022bce938444487fc872b8faf3c",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_candidate_screen_20261020_032507_179978\\source\\rtl\\memory\\frame_pixel_writer.sv": "dd089551cc79309e5175536c53f8efed36bfad7dba9438104365c6a1b5425f41",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_candidate_screen_20261020_032507_179978\\source\\rtl\\memory\\dma_pixel_pack.v": "30014fc3090a62b36d64bf9aa268749faa66df0d4171e1498cc403de30f813ca",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_span_pipeline_20261020_031048_641108\\semantic_20261020_031342_175996\\result.json": "6f0ab496bf8ca4c17c887566c11435d6f0b31d18d1080dfe4b6a31a593cebc02"
+  },
+  "tiled": 0,
+  "board_rgb_context": false,
+  "extra_frame_startup_cycles": 2,
+  "cycle_equivalent": false,
+  "jobs": [
+    {
+      "label": "baseline",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 30.04699999999866,
+        "pid": 42488,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_candidate_screen_20261020_032507_179978\\unit_screen\\baseline\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "errors": []
+    },
+    {
+      "label": "candidate",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 30.0470000000023,
+        "pid": 46240,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_candidate_screen_20261020_032507_179978\\unit_screen\\candidate\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "errors": []
+    }
+  ],
+  "baseline": {
+    "resources": {
+      "LUT": 1247,
+      "FF": 595,
+      "controlsets": 13,
+      "DRM": 4.0
+    },
+    "report_sha256": "ea71e8d7f7db699c77b4f501f192a9b21b2f4663d1f26c51f3a314048bf2bdd2"
+  },
+  "candidate": {
+    "resources": {
+      "LUT": 1264,
+      "FF": 700,
+      "controlsets": 15,
+      "DRM": 4.0
+    },
+    "report_sha256": "854571934f19b95fe0446aae9083e80b140eb4ba6216fa3983dd87a0e459e6d0"
+  },
+  "inputs_intact": true
+}

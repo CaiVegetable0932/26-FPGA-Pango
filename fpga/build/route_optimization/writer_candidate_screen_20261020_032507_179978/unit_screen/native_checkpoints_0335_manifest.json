@@ -1,0 +1,37 @@
+{
+  "archive_sha256": "f59526bef7cbfd6c73e9bc60f4a2dcace8cde141cee210290db2ed7b649da054",
+  "members": {
+    "baseline/compile/frame_pixel_writer_comp.adf": {
+      "bytes": 210211,
+      "sha256": "815765f99b4a50b1b9cb471df6b8cb5d4cc40c51715dd935536e4df41f698cfa"
+    },
+    "baseline/synthesize/frame_pixel_writer.snr": {
+      "bytes": 106014,
+      "sha256": "ea71e8d7f7db699c77b4f501f192a9b21b2f4663d1f26c51f3a314048bf2bdd2"
+    },
+    "baseline/synthesize/frame_pixel_writer_syn.adf": {
+      "bytes": 259267,
+      "sha256": "6f52d536ed57acb7b916df4fed3c1c9b889f7af73c081a7a42480026f1242d82"
+    },
+    "baseline/synthesize/frame_pixel_writer_syn.vm": {
+      "bytes": 966599,
+      "sha256": "a7b7fb24acd5e4a03ae757dda7be4a702fd37de721f788c7e043cdea0a4b28f9"
+    },
+    "candidate/compile/frame_pixel_writer_comp.adf": {
+      "bytes": 218757,
+      "sha256": "2c98ef1de6d41b2b3b44ce15792ee7fbca17f591ccde269e8d0e252ca233008f"
+    },
+    "candidate/synthesize/frame_pixel_writer.snr": {
+      "bytes": 79415,
+      "sha256": "854571934f19b95fe0446aae9083e80b140eb4ba6216fa3983dd87a0e459e6d0"
+    },
+    "candidate/synthesize/frame_pixel_writer_syn.adf": {
+      "bytes": 269201,
+      "sha256": "5fc82510398168ea904d51e28101d0f32b06167754d0e0cdc60a23278523757d"
+    },
+    "candidate/synthesize/frame_pixel_writer_syn.vm": {
+      "bytes": 1004519,
+      "sha256": "46cd7e874404f225fd9761d3456eb274c985178c82348d55d5ebac95775af096"
+    }
+  }
+}

@@ -1,0 +1,104 @@
+[
+  {
+    "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\pool_unit_screen_20261020_022717_960101\\regional_route_20261020_023832_501786",
+    "decision": "REJECT_TIMING",
+    "promoted": false,
+    "result_sha256": "e5ba2e0e37cfb61c7e98a45af1e8b68113541474623f4fec42fa7c220c05eebc",
+    "jobs": [
+      {
+        "label": "baseline",
+        "completed": true,
+        "timing_clean": false,
+        "slow_setup_ns": -0.45,
+        "slow_hold_ns": 0.027,
+        "native_pnr_seconds": 368,
+        "wirelength": [
+          "150121"
+        ],
+        "fixed_pins_verified": true,
+        "inputs_intact": true
+      },
+      {
+        "label": "candidate",
+        "completed": true,
+        "timing_clean": false,
+        "slow_setup_ns": -0.687,
+        "slow_hold_ns": 0.03,
+        "native_pnr_seconds": 278,
+        "wirelength": [
+          "130782"
+        ],
+        "fixed_pins_verified": true,
+        "inputs_intact": true
+      }
+    ]
+  },
+  {
+    "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\snapshot_local_capture_20261020_015904_151226\\unit_screen_20261020_022959_667704\\regional_route_20261020_025528_002166",
+    "decision": "KEEP_ORIGINAL_NO_ROUTING_GAIN",
+    "promoted": false,
+    "result_sha256": "9f7771acf9187606d50d9527f3b37974a558fb1974730fde9a7e0106f91687fb",
+    "jobs": [
+      {
+        "label": "baseline",
+        "completed": true,
+        "timing_clean": true,
+        "slow_setup_ns": 2.234,
+        "slow_hold_ns": 0.158,
+        "native_pnr_seconds": 37,
+        "wirelength": [
+          "10539"
+        ],
+        "fixed_pins_verified": true,
+        "inputs_intact": true
+      },
+      {
+        "label": "candidate",
+        "completed": true,
+        "timing_clean": true,
+        "slow_setup_ns": 2.842,
+        "slow_hold_ns": 0.157,
+        "native_pnr_seconds": 38,
+        "wirelength": [
+          "11165"
+        ],
+        "fixed_pins_verified": true,
+        "inputs_intact": true
+      }
+    ]
+  },
+  {
+    "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_candidate_screen_20261020_023245_102710\\unit_screen\\regional_route_20261020_030005_452542",
+    "decision": "NOT_PROMOTED_TIMING_FAILURE_PIPELINE_FOLLOWUP",
+    "promoted": false,
+    "result_sha256": "b13a6fd444be4d3f14d5501740e171cb4f88d84781cd1c9b124c832ecfafd7db",
+    "jobs": [
+      {
+        "label": "baseline",
+        "completed": true,
+        "timing_clean": false,
+        "slow_setup_ns": -7.796,
+        "slow_hold_ns": 0.158,
+        "native_pnr_seconds": 51,
+        "wirelength": [
+          "24000"
+        ],
+        "fixed_pins_verified": true,
+        "inputs_intact": true
+      },
+      {
+        "label": "candidate",
+        "completed": true,
+        "timing_clean": false,
+        "slow_setup_ns": -1.649,
+        "slow_hold_ns": 0.188,
+        "native_pnr_seconds": 47,
+        "wirelength": [
+          "22532"
+        ],
+        "fixed_pins_verified": true,
+        "inputs_intact": true
+      }
+    ]
+  }
+]

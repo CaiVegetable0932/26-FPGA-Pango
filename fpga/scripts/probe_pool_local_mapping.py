@@ -1,4 +1,4 @@
-"""Screen proof-checked slot-local token flags using actual RAW-pool capacity.
+"""Screen proof-checked pool control changes using actual RAW-pool capacity.
 
 Use the installed ADS settings already documented in the regional flow.
 This SYN-only probe adds no latency, physical constraints or bitstream steps.
@@ -31,14 +31,18 @@ def main():
     parser.add_argument('--proof', type=Path, required=True)
     parser.add_argument('--regression', type=Path, required=True)
     parser.add_argument('--pause-file', type=Path, required=True)
+    parser.add_argument('--mode', choices=('flags','counters'), default='flags')
     args = parser.parse_args()
     fpga = Path(__file__).resolve().parents[1]
     candidate,proof,regression = [x.resolve() for x in (args.candidate,args.proof,args.regression)]
     if not all(x.is_relative_to(fpga/'build') for x in [candidate,proof,regression]):
         raise ValueError('Frozen FPGA paths required')
     checked = json.loads((proof/'result.json').read_text())
-    if not all(checked.get(k) for k in ['passed','inputs_intact','all_response_bits_compared','mirror_checked_on_both_edges']):
+    if not all(checked.get(k) for k in ['passed','inputs_intact','all_response_bits_compared']):
         raise ValueError('Complete strict differential proof required')
+    required='mirror_checked_on_both_edges' if args.mode=='flags' else 'internal_counter_state_compared'
+    if not checked.get(required):
+        raise ValueError('The selected control change requires its internal-state invariant')
     if any(sha(Path(p))!=h for p,h in checked['inputs'].items()):
         raise ValueError('Proof drift')
     reg = json.loads((regression/'result.json').read_text())
@@ -46,6 +50,14 @@ def main():
     if not reg.get('passed') or len(reg.get('tests',[]))!=20 or sha(regression/'source/frame_pool_bank.sv')!=sha(target):
         raise ValueError('Complete regression must bind the pool candidate')
     sources = dict(baseline=candidate/'original_frame_pool_bank.sv',candidate=target)
+    if args.mode=='counters':
+        from prepare_pool_chunk_counters import localize
+        metadata=json.loads((candidate/'candidate.json').read_text())
+        chunk=metadata.get('chunk_bits')
+        if chunk not in (8,16) or metadata.get('counter_bits')!=64:
+            raise ValueError('Only reviewed full-width counter chunks are allowed')
+        if target.read_text(encoding='utf-8')!=localize(sources['baseline'].read_text(encoding='utf-8'),chunk):
+            raise ValueError('Counter transformation drift')
     if any(checked['inputs'].get(str(p))!=sha(p) for p in sources.values()):
         raise ValueError('Both source identities must be in strict proof')
     dependencies = [candidate/'source/rtl/memory'/n for n in ['frame_manager_pkg.sv','frame_manager_layout.vh']]
@@ -55,7 +67,7 @@ def main():
     for name in ['probe_pool_local_mapping.py','route_supervisor.py']:
         shutil.copyfile(Path(__file__).with_name(name),run/name)
     result = dict(passed=False,inputs=inputs,proof=str(proof),regression=str(regression),
-                  slots=3,transactions=3,routed=False,jobs=[])
+                  slots=3,transactions=3,routed=False,control_mode=args.mode,jobs=[])
     print('POOL_UNIT_SCREEN',run,flush=True)
     try:
         for label,path in sources.items():
