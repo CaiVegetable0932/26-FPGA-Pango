@@ -1,3 +1,14 @@
+
+## 2026-10-20 05:15 检查点
+
+主设计已选择14项修改，仍为125MHz；最后单文件修正上一帧cache fault残留导致下一帧误报失败。20项回归、完整1080p控制/快照/显示、主机8888报文/12441600图像字节通过，原始datagrams和descriptor哈希均与旧基线一致。六类完成故障及逐帧恢复同步1组/双时钟3组通过。来源与备份见session_20261019/geometry_recovery_promotion_20261020和recovery_finalist。
+
+150MHz最终无帧池候选20项回归sim_20261020_050821_373307通过，完整模型verilator_20261020_044250_609135仍运行，不能计为PASS。上一未修复tile全帧verilator_20261020_042011_025150实际2400秒TIMEOUT，保留失败结果。
+
+板级board_20261020_044551_218517总预算1200秒TIMEOUT：Compile完成12m31s，综合进入保存DB但未完成。未经完整保存的syn.adf不复用、不计通过。安装版help确认force_to_run/input_db_file后，从完整Compile DB启动proc150_board_mapping_20261020_050951_080852，仅SYN固定1200秒、MAP固定600秒，不含PnR/位流。初次SNR仅诊断，不作为完整MAP签核。
+
+真实账户最近剩余34%；到10%停止优化。整体PnR和位流门槛保持关闭。最新已推送bc533f84；本检查点提交/推送成功后以Git回执为准。下一小时汇报05:48。
+
 # FPGA 布线专项优化进度
 
 项目：`D:\XDU\concept\26-FPGA-Pango`  

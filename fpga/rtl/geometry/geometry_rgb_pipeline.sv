@@ -141,7 +141,10 @@ module geometry_rgb_pipeline #(parameter FRAME_TAG_BITS=160,parameter SET_BITS=5
       {1'b0,width_m1[TILE_X_BITS-1:0]}+1'b1 : TILE_W;
     end
    end
-   if(busy && (cache_fault || (map_v && map_r && !map_ok))) frame_failed<=1;
+   // cache_start is deliberately delayed one edge after frame admission.
+   // Until that edge clears the cache's previous frame_error, it belongs to
+   // the retired job. No new ray can reach the cache during initialization.
+   if(busy && !cache_start && (cache_fault || (map_v && map_r && !map_ok))) frame_failed<=1;
    if(out_valid && out_ready) begin
     outputs<=outputs+1'b1;
     if(outputs==expected-1'b1) ending<=1;

@@ -44,7 +44,17 @@ def main():
         expected=json.loads((origin.parent/'sources.json').read_text())
         if not all(hashlib.sha256((origin/n).read_bytes()).hexdigest()==h for n,h in expected.items()):
             raise ValueError('Candidate source closure drift')
-    ips=['video_pll','ddr3_controller']+(['sys_pll'] if options.experimental_proc150 else [])
+    # A selected production architecture must carry its explicit clock/reset
+    # profile. The experimental flag remains restricted to compile/SYN/MAP,
+    # while ordinary whole routing still requires the separate readiness gate.
+    profile_path=origin/'config/integration/processing_domain.json'
+    processing_profile=json.loads(profile_path.read_text()) if profile_path.exists() else None
+    if processing_profile is not None:
+        if (processing_profile.get('architecture')!='tile_refill_boundary' or
+            processing_profile.get('processing_mhz')!=150 or processing_profile.get('memory_mhz')!=125):
+            raise ValueError('Unknown processing-domain integration profile')
+    proc150_enabled=options.experimental_proc150 or processing_profile is not None
+    ips=['video_pll','ddr3_controller']+(['sys_pll'] if proc150_enabled else [])
     run = fpga / 'build/full_integration_20261013' / datetime.now().strftime('board_%Y%m%d_%H%M%S_%f')
     source = run / 'source'
     source.mkdir(parents=True)
@@ -58,13 +68,13 @@ def main():
                 names.append(path.relative_to(origin).as_posix())
     names += ['rtl/board/' + n for n in ['reset_sync.v', 'video_clock_start.v', 'rgmii_phy_io.v',
               'tmds_serializer.v', 'video_memory_core.sv', 'pango_video_system.sv']]
-    if options.experimental_proc150:names.append('rtl/board/processing_domain_reset.sv')
+    if proc150_enabled:names.append('rtl/board/processing_domain_reset.sv')
     names += ['rtl/mini_camera_diag/vendor/camera/SCCB.v', 'rtl/mini_camera_diag/vendor/camera/data_init.v',
               'rtl/mini_camera_diag/vendor/hdmi/tmds_encoder.v']
     constraints = ['constraints/ddr_native.fdc', 'constraints/ddr_board_pins.fdc',
                    'constraints/video_system/board_pins.fdc', 'constraints/video_system/clocks_cdc.fdc',
                    'constraints/placement.fdc', 'constraints/routing.rcf']
-    if options.experimental_proc150:constraints.append('constraints/video_system/processing_cdc.fdc')
+    if proc150_enabled:constraints.append('constraints/video_system/processing_cdc.fdc')
     for name in [*names, *constraints]:
         dest = source / name
         dest.parent.mkdir(parents=True, exist_ok=True)

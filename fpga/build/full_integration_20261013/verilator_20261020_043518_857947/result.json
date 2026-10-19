@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "full_frame": true,
+  "network_test": false,
+  "rtl_snapshot": "fpga\\build\\route_optimization\\geometry_recovery_20261020_042541_182177\\source",
+  "snapshot_test": true,
+  "control_test": true,
+  "hardware_tested": false,
+  "board_integrated": false,
+  "compiler": "Verilator 5.052 / GCC 13.1.0",
+  "build_jobs": 3,
+  "fixture_snapshot": null,
+  "display_test": true,
+  "run_timeout_seconds": 2400,
+  "proof_phases": [
+    {
+      "phase": "configure",
+      "at": "2026-10-19T20:35:27.198181+00:00",
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 8.1720000000023,
+      "pid": 16360
+    },
+    {
+      "phase": "build",
+      "at": "2026-10-19T20:36:07.628948+00:00",
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 40.43699999999808,
+      "pid": 11112
+    },
+    {
+      "phase": "run",
+      "at": "2026-10-19T20:59:41.165720+00:00",
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 1413.530999999999,
+      "pid": 11136
+    }
+  ],
+  "snapshot_intact": true
+}

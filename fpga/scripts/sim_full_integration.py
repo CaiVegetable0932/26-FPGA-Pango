@@ -10,6 +10,7 @@ import argparse
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--rtl-snapshot', type=Path, help='Read immutable source directory from a board build')
+    parser.add_argument('--fixture-snapshot',type=Path,help='Use frozen candidate fixtures where present')
     parser.add_argument('--cases', nargs='+')
     parser.add_argument('--control-test', action='store_true')
     parser.add_argument('--snapshot-test', action='store_true')
@@ -64,10 +65,23 @@ def main():
     names += ['rtl/control/uart_8n1.sv', 'rtl/control/uart_v2_parser.sv', 'rtl/control/pc_video_boot.sv',
               'rtl/video/display_frame_cdc.sv', 'sim/tb_pc_runtime_control.sv', 'sim/tb_pc_video_boot.sv', 'sim/tb_board_service_cdc.sv', 'sim/tb_perspective_domain.sv','sim/tb_wide_multipliers.sv','sim/tb_projective_ray_stepper.sv', 'sim/tb_frame_ticket_rollover.sv']
     hashes = {}
+    # Two-clock candidate dependencies are explicit and collected only when
+    # present in the selected RTL origin. Existing single-clock proofs retain
+    # their exact source list and independent golden scoreboards.
+    rtl_origin=options.rtl_snapshot or fpga
+    for dependency in ['geometry/geometry_frame_processor_external_refill.sv',
+                       'geometry/geometry_processing_domain_external_refill.sv',
+                       'memory/processing_job_cdc.sv','memory/tile_refill_cdc.sv',
+                       'memory/dma_write_cdc.sv']:
+        if (rtl_origin/'rtl'/dependency).is_file():names.append('rtl/'+dependency)
     for name in names:
         # Select the actual immutable bitstream-build RTL, retaining live test
         # fixtures only. No source copy or generated IP is edited in place.
         origin = (options.rtl_snapshot / name) if options.rtl_snapshot and name.startswith('rtl/') else (fpga / name)
+        # A frozen two-clock integration fixture contains clock generation and
+        # latency-aware admission stimulus; never silently replace its oracle.
+        if name.startswith('sim/') and options.fixture_snapshot and (options.fixture_snapshot/name).is_file():
+            origin=options.fixture_snapshot/name
         data = origin.read_bytes()
         # Exercise the capacity specialization in standalone fabric/ownership
         # fixtures as well as the real board core. Preserve independent drain

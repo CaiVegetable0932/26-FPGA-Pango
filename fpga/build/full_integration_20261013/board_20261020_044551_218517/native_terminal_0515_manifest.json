@@ -1,0 +1,20 @@
+{
+  "archive_sha256": "d847e55a799775c3dc522e6f0c59ffccc0d4f29e1f6d9d4a202d94f2ef0356a5",
+  "members": {
+    "compile/pango_video_system_comp.adf": {
+      "sha256": "ebc915b832b899068c92ce90694b355029d70fc9f91ffe7bbf7c86f30dce465e",
+      "bytes": 26345125,
+      "completion": "COMPLETE_COMPILE"
+    },
+    "synthesize/pango_video_system.snr": {
+      "sha256": "a61588204a783fd30c80e6aaef05365b616a2847028bd27f201604520456bb70",
+      "bytes": 143362,
+      "completion": "INCOMPLETE_TIMEOUT_DIAGNOSTIC"
+    },
+    "synthesize/pango_video_system_syn.adf": {
+      "sha256": "af2596ad4510b585d17947cc182c7918dae0cb784b05b8be673697434ae3bbf7",
+      "bytes": 5369856,
+      "completion": "INCOMPLETE_TIMEOUT_DIAGNOSTIC"
+    }
+  }
+}

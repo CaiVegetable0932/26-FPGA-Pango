@@ -1,33 +1,36 @@
-# 150 MHz 处理域接口实验
+# 150 MHz 处理域设计实验
 
-2026-10-20 03:22。项目 `D:\XDU\concept\26-FPGA-Pango`，分支 `codex/fpga-pds-project`。本目录不在生产 RTL 收集目录内，未连接 `pango_video_system`，不能称为已实现 150 MHz 处理域。
+2026-10-20 05:15。项目 `D:\XDU\concept\26-FPGA-Pango`，分支 `codex/fpga-pds-project`，云端 <https://github.com/CaiVegetable0932/26-FPGA-Pango>。生产主设计仍125MHz、14项选定修改；本目录未接入生产RTL收集路径。整体PnR和位流门槛关闭。
 
-已有 `fpga/ip/sys_pll` 的配置与历史时钟报告标注 125 MHz 参考、OUT1 150 MHz；真实视频顶层当前仍全部使用 DDR 125 MHz。历史集成库的 150 MHz 证明不能替代真实几何流水。官方 DDR PHY 不改频、不改语义。
+## 当前待选边界
 
-## 写 CDC 原型
+`rtl/geometry_processing_domain_external_refill.sv`：DDR域保持scheduler/帧池、输入ISP、网络、显示、逐行tile回填；150MHz域运行实际几何/四bank缓存/双线性/pre或post Gamma以及结果writer。
 
-`rtl/dma_write_cdc.sv` 是单事务、完整 burst 存储后转发原型。请求和状态通过双级同步 toggle 与保持总线跨域，数据/掩码保存在 16×288 位双时钟 RAM；没有 RAM 数据复位。最后一次客户端写入之后才发请求，原生写入/读回验证完成、客户端消费完成状态之后才释放存储，两个 RAM 端口不会同时操作同一事务。
+- `processing_job_cdc.sv`：单作业toggle邮箱，借用调度器持有到作业完成的原始总线，处理器原有准入寄存器捕获；不额外复制整份宽描述符。返回失败位后DDR域才退休源/结果引用。
+- `tile_refill_cdc.sv`：tile坐标保持总线/双级toggle跨域，130位quad流通过既有 `async_stream_fifo(WIDTH=130,ADDRESS_BITS=4)`。每项包含96位RGB、last、error、32位实际bus字节计数。一个32×8 tile正常64个quad。每行通常仅3个DDR beat，留在DDR域可消除逐行CDC往返；没有增加native在途事务。
+- `geometry_frame_processor_external_refill.sv`：由当前处理器窄变换产生，只把refill实例移到外部接口；数值流水、缓存、增强顺序、writer和排空逻辑保留。
+- `dma_write_cdc.sv`：1～16拍完整burst收集后转发，数据/掩码双时钟RAM；内存侧连续预取II=1，错误/取消/坏tag计数检查完整。共同冷复位必需。
+- `processing_domain_reset.sv`：native初始化不等待processing PLL锁定；所有health同步后先arm再开放业务。arm后任一失锁同时断言controller和所有客户冷复位，fault锁存至外部板复位。native reset必须异步清初始化ready，独立行为模型验证此既有控制器契约，不等于官方PHY硬件验证。
 
-- 尚未发出原生请求时，取消可在本地完成；不能泄漏半个 burst。
-- 请求一旦在内存侧呈现，即使取消也保持 VALID 和描述符直到接受。
-- 内存侧预取支持连续一拍一个数据 beat；背压保持数据与掩码。
-- 原生错误/取消允许提前排空；正常完成必须验证完整接受数和原始 tag。完成状态在客户端背压期间保持。
-- 两个域与原生控制器必须共同异步断言冷复位，各自同步释放；不支持只复位处理器而遗忘原生未完成事务。
+实际板级候选 `fpga/build/route_optimization/proc150_board_20261020_044427_625524` 包含已有125MHz参考的sys_pll OUT1 150MHz、CLKBUFG、共同复位与窄CDC约束；官方DDR IP未改。`board_20261020_044551_218517` 原生任务只Compile/SYN/MAP，原20分钟总预算TIMEOUT，Compile完整、SYN数据库未保存完整；复用完整Compile单独SYN1200秒/MAP600秒，当前仍未终结。
 
-`verify_proc150_write_cdc.py` 的独立记分板通过四组时钟/相位（含约 150/125 MHz、反向比例、快慢偏移），每组 32 场景、28 次原生请求，覆盖 1～16 拍、数据/掩码顺序、请求/数据背压、本地取消、等待接收时取消、传输中取消、错误 tag、错误完成、提前成功 ACK、非法拍数以及收集中/原生传输中的共同复位。证据：
+## 已有证明与待验收
 
-`fpga/build/route_optimization/proc150_write_cdc_20261020_031859_818696`
+- 写CDC四组时钟/相位各32场景通过；作业邮箱四组各82作业通过；quad CDC四组比例/相位×有无背压，共八组、每组21个tile通过，含停止客户钟/错误末拍/带未读数据共同复位。
+- 真实几何+native DDR字节模型三组通过，每组三种增强模式608256结果/保护区字节。六类完成错误/取消/坏tag和逐帧恢复模型另列，九个好帧每字节检查、六个坏帧排空失败。
+- 该故障恢复模型暴露原125MHz设计的上一帧cache fault残留竞态。单行 `!cache_start` 修正已让同步原版及三组双时钟15帧恢复检查通过；05:07已单文件合入主设计；原帧池组成20项回归、完整1080p/主机解码与原始快照字节一致性均通过。
+- 最终不含帧池优化候选、包含恢复修正的输入闭包：`proc150_video_model_20261020_043529_242103`；小模型 `verilator_20261020_043626_233147` PASS；全1080p控制/同帧快照/真实显示模型 `verilator_20261020_044250_609135` 正在运行，预算预先3600秒，可随账户reserve停止。
+- 首个tile域全帧实测几何作业3948091 DDR周期，低于旧同场景4073517及每帧4166666.67周期预算；三个完整场景尚未终结，不作整机1080p30结论。
+- projective原生子系统SYN `proc150_mapping_20261020_043616_243611` PASS：LUT10975、FF9043、APM117、物理DRM41。它是动态端口子系统，不是整机预算，也没有routed/STA/CDC或硬件签核。
 
-仿真通过不是 RAM 原语、CDC 静态约束、布局布线或硬件签核。尚未做原型的原生 SYN/MAP；实际 DRM 数、读模式和复位映射仍待检查。
+所有上述短名均位于 `fpga/build/route_optimization/`，仿真`verilator_*`、`board_*`位于 `fpga/build/full_integration_20261013/`。详细证据以progress/handoff及对应manifest/result为准。
 
-## 接入前必须完成
+## 已拒绝替代
 
-1. 冻结该原型输入，检查双时钟 RAM 的实际映射及无碰撞前提；不使用 `no_rw_check` 掩盖语义。
-2. 定义完整几何 job 的一次性命令/完成邮箱，原子保持源/目标 base、generation、slot、完整 metadata、系数和增强参数；父级帧池引用保持到所有读写排空。
-3. 复用或审查读 CDC 的完整 burst/状态语义，评估其存储转发和逐拍装载延迟。写原型有额外收集/跨域往返，不能默认吞吐无损。
-4. LUT 启动加载在处理域内完成，再允许该域开始作业；不能逐位直接跨域传递写入/提交脉冲。
-5. 新 PLL 失锁必须与原生控制器/全部客户共同冷复位并隔离，不能只清处理域。核对已有 PLL 无缓冲输出到全局时钟网络的连接和器件预算。
-6. 对 toggle 到第一级同步器、保持数据到捕获寄存器逐路径设置真实 max-delay/hold 例外；保留第二级到业务状态的普通时序，不增加宽泛 false path。
-7. 在干净组合快照上用独立双时钟后端验证取消、迟到响应、复位、帧身份和 1080p30 最坏服务期限，计入全部启动和 burst 往返；之后再做真实 150 MHz 相关时序/资源验证。
+`geometry_processing_domain.sv`、`dma_read_cdc_prefetch.sv` 保留低层读burst CDC的两种历史实验。整段转发首个作业4470577 DDR周期；逐拍预取4323516，均慢于原设计且超服务预算。后者完整模型2400秒TIMEOUT，不重标PASS。不要将这些模块误选为当前tile边界方案。
 
-本实验不改变当前主设计的 12 项选择，不解除整体布线或完整位流的停止门槛。
+## 接入门槛
+
+先完成实际板级PLL/时钟网和MAP资源核对、CDC非空匹配/首级连接与其后普通计时、精确150MHz三个全帧期限及主机原始字节/身份，再选择最终文件组合。UCE安装版手册印刷p83确认max-delay支持clock端点；仅从命名的DDR作业保持寄存器到处理捕获域应用6ns界限和该跨域hold例外，不做整域false path。Gray与toggle仅到首级，保持总线到捕获端；不能把FDC草案当签核。
+
+最终设计/仿真通过后通知用户，由用户安排其他智能体监控整体布线。本实验没有下载硬件或生成完整位流。

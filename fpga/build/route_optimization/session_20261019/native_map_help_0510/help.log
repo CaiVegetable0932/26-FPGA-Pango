@@ -1,0 +1,160 @@
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+W: Warning : The license will invalid in 14 days. In order not to affect your usage, please update the license in time.
+
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/session_20261019/native_map_help_0510/help.pds'.
+Executing : help synthesize
+H: synthesize : Synthesize user design (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -of_flow string ]
+        Specify the flow which will be run
+    [ -force_to_run  ]
+        Run this action without checking the status.
+    [ -input_db_file file string ]
+        Specify the Input Design DB File Name Directives
+    [ -dir string ]
+        Synplify Pro
+    [ -synplify_pro  ]
+        Synplify Pro Tool
+    [ -ads  ]
+        Pango Synthesize Tool
+    [ -fanout_guide integer_number ]
+        Fanout Guide
+    [ -disable_io_insertion  ]
+        Disable I/O Insertion
+    [ -update_compile_timing_data  ]
+        Update Compile Point Timing Data
+    [ -rw_check_on_ram  ]
+        Automatic Read/Write Check Insertion for RAM
+    [ -annotated_properties_for_analyst Boolean_value (TRUE/FALSE) ]
+        Annotated Properties for Analyst
+    [ -resolve_mixed_drivers  ]
+        Resolve Mixed Drivers
+    [ -enable_prepacking Boolean_value (TRUE/FALSE) ]
+        Enable Advanced LUT Combining
+    [ -critical_paths_number integer_number ]
+        Total Number of Paths  (Number of Critical Paths)
+    [ -max_path integer_number ]
+        Total Number of Paths (-max_path)
+    [ -nworst integer_number ]
+        Number of Paths per Endpoint (-nworst)
+    [ -path_logic_level_gt_than integer_number ]
+        Report Paths with Logic levels >
+    [ -carry_number_as_one_logic_level integer_number ]
+        Number of Carry Instance as One Logic Level
+    [ -clock_group_limit { string string ... } ]
+        Limit Paths by Clock Group
+    [ -report_exception Boolean_value (TRUE/FALSE) ]
+        Report Exception
+    [ -automatic_compile_point Boolean_value (TRUE/FALSE) ]
+        Automatic Compile Point
+    [ -max_parallel_jobs integer_number ]
+        Maximum number of parallel synthesis jobs
+    [ -fsm_compiler string ]
+        FSM Compiler
+    [ -resource_sharing Boolean_value (TRUE/FALSE) ]
+        Resource Sharing
+    [ -pipelining Boolean_value (TRUE/FALSE) ]
+        Pipelining
+    [ -retiming  ]
+        Retiming
+    [ -min_controlset_size integer_number ]
+        Minimum Control-set Size
+    [ -frequency string ]
+        Frequency (MHz)
+    [ -use_clocked_period_for_unconstraint_io  ]
+        Use Clock Period for Unconstrained IO
+    [ -write_verilog Boolean_value (TRUE/FALSE) ]
+        Write Mapped Verilog Netlist
+    [ -write_vendor_constraint Boolean_value (TRUE/FALSE) ]
+        Write Vendor Constraint File
+    [ -start_end_points_number integer_number ]
+        Number of Start/End Points
+    [ -top_module string ]
+        Top Module
+    [ -verilog_2001 Boolean_value (TRUE/FALSE) ]
+        Verilog 2001
+    [ -system_verilog  ]
+        SystemVerilog
+    [ -push_tristates Boolean_value (TRUE/FALSE) ]
+        Push Tristates
+    [ -allow_duplicate_modules  ]
+        Allow Duplicate Modules
+    [ -multi_file_compilation_unit Boolean_value (TRUE/FALSE) ]
+        Multiple File Compilation Unit
+    [ -beta_feature_for_verilog  ]
+        Beta Features for Verilog
+    [ -loop_limit integer_number ]
+        Loop Limit
+    [ -include_path { string string ... } ]
+        Include Path Order: 
+ (Relative to Verilog File)
+    [ -library_path { string string ... } ]
+        Library Directories or Files
+    [ -library_extension string ]
+        Library Extensions
+    [ -defined_parameters { string string ... } ]
+        Generics
+    [ -compiler_directives string ]
+        Compiler Directives
+    [ -default_enum_encoding string ]
+        Default Enum Encoding
+    [ -synthesis_onoff_pragma Boolean_value (TRUE/FALSE) ]
+        Synthesize On/Off Implemented as Translate On/Off
+    [ -vhdl2008 Boolean_value (TRUE/FALSE) ]
+        VHDL 2008
+    [ -vhdl2019 Boolean_value (TRUE/FALSE) ]
+        VHDL 2019
+    [ -support_type_default  ]
+        Implicit Initial Values Support
+    [ -expand_complex_ports  ]
+        Expand Complex Ports
+    [ -beta_vh_features  ]
+        Beta Features For VHDL
+    [ -clock_conversion Boolean_value (TRUE/FALSE) ]
+        Clock Conversion
+    [ -from { string string ... } ]
+        Specify Timing Path From points
+    [ -to { string string ... } ]
+        Specify Timing Path To points
+    [ -through Unknown ]
+        Specify Timing Path through points
+
+
+Executing : help synthesize successfully.
+Executing : help dev_map
+H: dev_map : Map design to architecture (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -of_flow string ]
+        Specify the flow which will be run
+    [ -force_to_run  ]
+        Run this action without checking the status.
+    [ -input_db_file file string ]
+        Specify the input design DB file name
+    [ -top_module string ]
+        Top Module
+    [ -packing_io  ]
+        Packing IOs with Flip-Flops
+    [ -detail  ]
+        Generate Detailed Map Report(-detail)
+    [ -fanout integer_number ]
+        Minimum Fanout To Report
+    [ -fanout_number integer_number ]
+        Number of Nets(Fanout >= Min Fanout) To Report
+    [ -override_pcf Boolean_value (TRUE/FALSE) ]
+        Override .pcf
+    [ -enable_timing_commands Boolean_value (TRUE/FALSE) ]
+        Enable timing commands commented by Synplify Pro
+    [ -devmap_control_set_num integer_number ]
+        Minimum Number of Register in a Control Set
+    [ -devmap_const_prop integer_number ]
+        Optimize Logic with Constant Input
+    [ -devmap_remove_dups integer_number ]
+        Remove Duplicated Logic
+    [ -devmap_infer_internal_clock Boolean_value (TRUE/FALSE) ]
+        Infer Internal Clock
+
+
+Executing : help dev_map successfully.

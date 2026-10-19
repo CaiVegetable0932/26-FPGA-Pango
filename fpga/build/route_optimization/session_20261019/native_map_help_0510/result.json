@@ -1,0 +1,21 @@
+{
+  "status": "COMPLETED",
+  "returncode": 0,
+  "elapsed_seconds": 30.06300000000192,
+  "pid": 27140,
+  "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\session_20261019\\native_map_help_0510\\monitor.jsonl",
+  "policy": {
+    "timeout_seconds": 120,
+    "warning_seconds": 96.0,
+    "requested_timeout_seconds": 120,
+    "poll_seconds": 30,
+    "stall_enabled": false,
+    "stall_window": 5,
+    "stall_minimum_unrouted": 1000,
+    "stall_minimum_improvement": 0.01,
+    "warmup_rounds": 5,
+    "baseline_success_seconds": null,
+    "baseline_acceleration_claim": false,
+    "no_log_investigation_seconds": 600
+  }
+}

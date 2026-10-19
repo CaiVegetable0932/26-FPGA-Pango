@@ -1,0 +1,37 @@
+{
+  "stage": "dev_map",
+  "native_exit": 1,
+  "errors": [],
+  "snapshot_intact": true,
+  "rtl_snapshot": "fpga\\build\\route_optimization\\proc150_board_20261020_044427_625524\\source",
+  "experimental_proc150": true,
+  "internal_timing_met": false,
+  "full_function_release": false,
+  "hardware_tested": false,
+  "programmed": false,
+  "external_timing_verified": false,
+  "download_approved": false,
+  "supervision": {
+    "status": "TIMEOUT",
+    "returncode": 1,
+    "elapsed_seconds": 1200.7969999999987,
+    "pid": 42740,
+    "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261020_044551_218517\\native_monitor.jsonl",
+    "policy": {
+      "timeout_seconds": 1200,
+      "warning_seconds": 960.0,
+      "requested_timeout_seconds": 1200,
+      "poll_seconds": 30,
+      "stall_enabled": false,
+      "stall_window": 5,
+      "stall_minimum_unrouted": 1000,
+      "stall_minimum_improvement": 0.01,
+      "warmup_rounds": 5,
+      "baseline_success_seconds": null,
+      "baseline_acceleration_claim": false,
+      "no_log_investigation_seconds": 600
+    }
+  },
+  "optimization_status": "TIMEOUT",
+  "placement_seed": 11
+}

@@ -1,0 +1,925 @@
+﻿{
+    "checked_at":  "2026-10-20T05:13:11.7677684+08:00",
+    "lock_modified":  "2026-10-20T05:09:45.2525335+08:00",
+    "lock_bytes":  0,
+    "processes":  [
+                      {
+                          "CimClass":  {
+                                           "CimSuperClassName":  "CIM_Process",
+                                           "CimSuperClass":  {
+                                                                 "CimSuperClassName":  "CIM_LogicalElement",
+                                                                 "CimSuperClass":  "ROOT/cimv2:CIM_LogicalElement",
+                                                                 "CimClassProperties":  "Caption Description InstallDate Name Status CreationClassName CreationDate CSCreationClassName CSName ExecutionState Handle KernelModeTime OSCreationClassName OSName Priority TerminationDate UserModeTime WorkingSetSize",
+                                                                 "CimClassQualifiers":  "Locale = 1033 UUID = \"{8502C566-5FBB-11D2-AAC1-006008C78BC7}\" Abstract = True",
+                                                                 "CimClassMethods":  "",
+                                                                 "CimSystemProperties":  "Microsoft.Management.Infrastructure.CimSystemProperties"
+                                                             },
+                                           "CimClassProperties":  [
+                                                                      "Caption",
+                                                                      "Description",
+                                                                      "InstallDate",
+                                                                      "Name",
+                                                                      "Status",
+                                                                      "CreationClassName",
+                                                                      "CreationDate",
+                                                                      "CSCreationClassName",
+                                                                      "CSName",
+                                                                      "ExecutionState",
+                                                                      "Handle",
+                                                                      "KernelModeTime",
+                                                                      "OSCreationClassName",
+                                                                      "OSName",
+                                                                      "Priority",
+                                                                      "TerminationDate",
+                                                                      "UserModeTime",
+                                                                      "WorkingSetSize",
+                                                                      "CommandLine",
+                                                                      "ExecutablePath",
+                                                                      "HandleCount",
+                                                                      "MaximumWorkingSetSize",
+                                                                      "MinimumWorkingSetSize",
+                                                                      "OtherOperationCount",
+                                                                      "OtherTransferCount",
+                                                                      "PageFaults",
+                                                                      "PageFileUsage",
+                                                                      "ParentProcessId",
+                                                                      "PeakPageFileUsage",
+                                                                      "PeakVirtualSize",
+                                                                      "PeakWorkingSetSize",
+                                                                      "PrivatePageCount",
+                                                                      "ProcessId",
+                                                                      "QuotaNonPagedPoolUsage",
+                                                                      "QuotaPagedPoolUsage",
+                                                                      "QuotaPeakNonPagedPoolUsage",
+                                                                      "QuotaPeakPagedPoolUsage",
+                                                                      "ReadOperationCount",
+                                                                      "ReadTransferCount",
+                                                                      "SessionId",
+                                                                      "ThreadCount",
+                                                                      "VirtualSize",
+                                                                      "WindowsVersion",
+                                                                      "WriteOperationCount",
+                                                                      "WriteTransferCount"
+                                                                  ],
+                                           "CimClassQualifiers":  [
+                                                                      "Locale = 1033",
+                                                                      "UUID = \"{8502C4DC-5FBB-11D2-AAC1-006008C78BC7}\"",
+                                                                      "CreateBy = \"Create\"",
+                                                                      "DeleteBy = \"DeleteInstance\"",
+                                                                      "dynamic = True",
+                                                                      "provider = \"CIMWin32\"",
+                                                                      "SupportsCreate = True",
+                                                                      "SupportsDelete = True"
+                                                                  ],
+                                           "CimClassMethods":  [
+                                                                   "Create",
+                                                                   "Terminate",
+                                                                   "GetOwner",
+                                                                   "GetOwnerSid",
+                                                                   "SetPriority",
+                                                                   "AttachDebugger",
+                                                                   "GetAvailableVirtualSize"
+                                                               ],
+                                           "CimSystemProperties":  {
+                                                                       "Namespace":  "root/cimv2",
+                                                                       "ServerName":  "LAPTOP-B7VM7LU4",
+                                                                       "ClassName":  "Win32_Process",
+                                                                       "Path":  null
+                                                                   }
+                                       },
+                          "CimInstanceProperties":  [
+                                                        {
+                                                            "Name":  "Caption",
+                                                            "Value":  "git.exe",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "Description",
+                                                            "Value":  "git.exe",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "InstallDate",
+                                                            "Value":  null,
+                                                            "CimType":  13,
+                                                            "Flags":  "Property, ReadOnly, NotModified, NullValue",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "Name",
+                                                            "Value":  "git.exe",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "Status",
+                                                            "Value":  null,
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified, NullValue",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "CreationClassName",
+                                                            "Value":  "Win32_Process",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "CreationDate",
+                                                            "Value":  "\/Date(1792444391513)\/",
+                                                            "CimType":  13,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "CSCreationClassName",
+                                                            "Value":  "Win32_ComputerSystem",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "CSName",
+                                                            "Value":  "LAPTOP-B7VM7LU4",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ExecutionState",
+                                                            "Value":  null,
+                                                            "CimType":  4,
+                                                            "Flags":  "Property, ReadOnly, NotModified, NullValue",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "Handle",
+                                                            "Value":  "47016",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, Key, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "KernelModeTime",
+                                                            "Value":  468750,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "OSCreationClassName",
+                                                            "Value":  "Win32_OperatingSystem",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "OSName",
+                                                            "Value":  "Microsoft Windows 11 家庭版 中文版|C:\\WINDOWS|\\Device\\Harddisk0\\Partition3",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "Priority",
+                                                            "Value":  8,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "TerminationDate",
+                                                            "Value":  null,
+                                                            "CimType":  13,
+                                                            "Flags":  "Property, ReadOnly, NotModified, NullValue",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "UserModeTime",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "WorkingSetSize",
+                                                            "Value":  7004160,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "CommandLine",
+                                                            "Value":  "\"C:\\Program Files\\Git\\cmd\\git.exe\" -c diff.mnemonicPrefix=false -c diff.noprefix=false -c core.quotePath=false -c safe.bareRepository=explicit -c core.hooksPath=NUL -c core.fsmonitor=true diff --no-ext-diff --no-textconv --color=never --src-prefix=a/ --dst-prefix=b/ 6fc951b3cb7a9d367b6d3c293a3e9efbb1f2c483 --find-renames --raw --no-abbrev --numstat -z",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ExecutablePath",
+                                                            "Value":  "C:\\Program Files\\Git\\cmd\\git.exe",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "HandleCount",
+                                                            "Value":  116,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "MaximumWorkingSetSize",
+                                                            "Value":  1380,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "MinimumWorkingSetSize",
+                                                            "Value":  200,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "OtherOperationCount",
+                                                            "Value":  135,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "OtherTransferCount",
+                                                            "Value":  2068,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PageFaults",
+                                                            "Value":  1780,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PageFileUsage",
+                                                            "Value":  1584,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ParentProcessId",
+                                                            "Value":  3724,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PeakPageFileUsage",
+                                                            "Value":  1584,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PeakVirtualSize",
+                                                            "Value":  4394409984,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PeakWorkingSetSize",
+                                                            "Value":  6840,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PrivatePageCount",
+                                                            "Value":  1622016,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ProcessId",
+                                                            "Value":  47016,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "QuotaNonPagedPoolUsage",
+                                                            "Value":  25,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "QuotaPagedPoolUsage",
+                                                            "Value":  148,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "QuotaPeakNonPagedPoolUsage",
+                                                            "Value":  25,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "QuotaPeakPagedPoolUsage",
+                                                            "Value":  148,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ReadOperationCount",
+                                                            "Value":  2,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ReadTransferCount",
+                                                            "Value":  5324688,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "SessionId",
+                                                            "Value":  1,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ThreadCount",
+                                                            "Value":  4,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "VirtualSize",
+                                                            "Value":  4394409984,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "WindowsVersion",
+                                                            "Value":  "10.0.26200",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "WriteOperationCount",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "WriteTransferCount",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        }
+                                                    ],
+                          "CimSystemProperties":  {
+                                                      "Namespace":  "root/cimv2",
+                                                      "ServerName":  "LAPTOP-B7VM7LU4",
+                                                      "ClassName":  "Win32_Process",
+                                                      "Path":  null
+                                                  },
+                          "ProcessName":  "git.exe",
+                          "Handles":  116,
+                          "VM":  4394409984,
+                          "WS":  7004160,
+                          "Path":  "C:\\Program Files\\Git\\cmd\\git.exe",
+                          "Caption":  "git.exe",
+                          "Description":  "git.exe",
+                          "InstallDate":  null,
+                          "Name":  "git.exe",
+                          "Status":  null,
+                          "CreationClassName":  "Win32_Process",
+                          "CreationDate":  "\/Date(1792444391513)\/",
+                          "CSCreationClassName":  "Win32_ComputerSystem",
+                          "CSName":  "LAPTOP-B7VM7LU4",
+                          "ExecutionState":  null,
+                          "Handle":  "47016",
+                          "KernelModeTime":  468750,
+                          "OSCreationClassName":  "Win32_OperatingSystem",
+                          "OSName":  "Microsoft Windows 11 家庭版 中文版|C:\\WINDOWS|\\Device\\Harddisk0\\Partition3",
+                          "Priority":  8,
+                          "TerminationDate":  null,
+                          "UserModeTime":  0,
+                          "WorkingSetSize":  7004160,
+                          "CommandLine":  "\"C:\\Program Files\\Git\\cmd\\git.exe\" -c diff.mnemonicPrefix=false -c diff.noprefix=false -c core.quotePath=false -c safe.bareRepository=explicit -c core.hooksPath=NUL -c core.fsmonitor=true diff --no-ext-diff --no-textconv --color=never --src-prefix=a/ --dst-prefix=b/ 6fc951b3cb7a9d367b6d3c293a3e9efbb1f2c483 --find-renames --raw --no-abbrev --numstat -z",
+                          "ExecutablePath":  "C:\\Program Files\\Git\\cmd\\git.exe",
+                          "HandleCount":  116,
+                          "MaximumWorkingSetSize":  1380,
+                          "MinimumWorkingSetSize":  200,
+                          "OtherOperationCount":  135,
+                          "OtherTransferCount":  2068,
+                          "PageFaults":  1780,
+                          "PageFileUsage":  1584,
+                          "ParentProcessId":  3724,
+                          "PeakPageFileUsage":  1584,
+                          "PeakVirtualSize":  4394409984,
+                          "PeakWorkingSetSize":  6840,
+                          "PrivatePageCount":  1622016,
+                          "ProcessId":  47016,
+                          "QuotaNonPagedPoolUsage":  25,
+                          "QuotaPagedPoolUsage":  148,
+                          "QuotaPeakNonPagedPoolUsage":  25,
+                          "QuotaPeakPagedPoolUsage":  148,
+                          "ReadOperationCount":  2,
+                          "ReadTransferCount":  5324688,
+                          "SessionId":  1,
+                          "ThreadCount":  4,
+                          "VirtualSize":  4394409984,
+                          "WindowsVersion":  "10.0.26200",
+                          "WriteOperationCount":  0,
+                          "WriteTransferCount":  0,
+                          "PSComputerName":  null
+                      },
+                      {
+                          "CimClass":  {
+                                           "CimSuperClassName":  "CIM_Process",
+                                           "CimSuperClass":  {
+                                                                 "CimSuperClassName":  "CIM_LogicalElement",
+                                                                 "CimSuperClass":  "ROOT/cimv2:CIM_LogicalElement",
+                                                                 "CimClassProperties":  "Caption Description InstallDate Name Status CreationClassName CreationDate CSCreationClassName CSName ExecutionState Handle KernelModeTime OSCreationClassName OSName Priority TerminationDate UserModeTime WorkingSetSize",
+                                                                 "CimClassQualifiers":  "Locale = 1033 UUID = \"{8502C566-5FBB-11D2-AAC1-006008C78BC7}\" Abstract = True",
+                                                                 "CimClassMethods":  "",
+                                                                 "CimSystemProperties":  "Microsoft.Management.Infrastructure.CimSystemProperties"
+                                                             },
+                                           "CimClassProperties":  [
+                                                                      "Caption",
+                                                                      "Description",
+                                                                      "InstallDate",
+                                                                      "Name",
+                                                                      "Status",
+                                                                      "CreationClassName",
+                                                                      "CreationDate",
+                                                                      "CSCreationClassName",
+                                                                      "CSName",
+                                                                      "ExecutionState",
+                                                                      "Handle",
+                                                                      "KernelModeTime",
+                                                                      "OSCreationClassName",
+                                                                      "OSName",
+                                                                      "Priority",
+                                                                      "TerminationDate",
+                                                                      "UserModeTime",
+                                                                      "WorkingSetSize",
+                                                                      "CommandLine",
+                                                                      "ExecutablePath",
+                                                                      "HandleCount",
+                                                                      "MaximumWorkingSetSize",
+                                                                      "MinimumWorkingSetSize",
+                                                                      "OtherOperationCount",
+                                                                      "OtherTransferCount",
+                                                                      "PageFaults",
+                                                                      "PageFileUsage",
+                                                                      "ParentProcessId",
+                                                                      "PeakPageFileUsage",
+                                                                      "PeakVirtualSize",
+                                                                      "PeakWorkingSetSize",
+                                                                      "PrivatePageCount",
+                                                                      "ProcessId",
+                                                                      "QuotaNonPagedPoolUsage",
+                                                                      "QuotaPagedPoolUsage",
+                                                                      "QuotaPeakNonPagedPoolUsage",
+                                                                      "QuotaPeakPagedPoolUsage",
+                                                                      "ReadOperationCount",
+                                                                      "ReadTransferCount",
+                                                                      "SessionId",
+                                                                      "ThreadCount",
+                                                                      "VirtualSize",
+                                                                      "WindowsVersion",
+                                                                      "WriteOperationCount",
+                                                                      "WriteTransferCount"
+                                                                  ],
+                                           "CimClassQualifiers":  [
+                                                                      "Locale = 1033",
+                                                                      "UUID = \"{8502C4DC-5FBB-11D2-AAC1-006008C78BC7}\"",
+                                                                      "CreateBy = \"Create\"",
+                                                                      "DeleteBy = \"DeleteInstance\"",
+                                                                      "dynamic = True",
+                                                                      "provider = \"CIMWin32\"",
+                                                                      "SupportsCreate = True",
+                                                                      "SupportsDelete = True"
+                                                                  ],
+                                           "CimClassMethods":  [
+                                                                   "Create",
+                                                                   "Terminate",
+                                                                   "GetOwner",
+                                                                   "GetOwnerSid",
+                                                                   "SetPriority",
+                                                                   "AttachDebugger",
+                                                                   "GetAvailableVirtualSize"
+                                                               ],
+                                           "CimSystemProperties":  {
+                                                                       "Namespace":  "root/cimv2",
+                                                                       "ServerName":  "LAPTOP-B7VM7LU4",
+                                                                       "ClassName":  "Win32_Process",
+                                                                       "Path":  null
+                                                                   }
+                                       },
+                          "CimInstanceProperties":  [
+                                                        {
+                                                            "Name":  "Caption",
+                                                            "Value":  "git.exe",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "Description",
+                                                            "Value":  "git.exe",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "InstallDate",
+                                                            "Value":  null,
+                                                            "CimType":  13,
+                                                            "Flags":  "Property, ReadOnly, NotModified, NullValue",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "Name",
+                                                            "Value":  "git.exe",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "Status",
+                                                            "Value":  null,
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified, NullValue",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "CreationClassName",
+                                                            "Value":  "Win32_Process",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "CreationDate",
+                                                            "Value":  "\/Date(1792444391565)\/",
+                                                            "CimType":  13,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "CSCreationClassName",
+                                                            "Value":  "Win32_ComputerSystem",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "CSName",
+                                                            "Value":  "LAPTOP-B7VM7LU4",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ExecutionState",
+                                                            "Value":  null,
+                                                            "CimType":  4,
+                                                            "Flags":  "Property, ReadOnly, NotModified, NullValue",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "Handle",
+                                                            "Value":  "28160",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, Key, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "KernelModeTime",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "OSCreationClassName",
+                                                            "Value":  "Win32_OperatingSystem",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "OSName",
+                                                            "Value":  "Microsoft Windows 11 家庭版 中文版|C:\\WINDOWS|\\Device\\Harddisk0\\Partition3",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "Priority",
+                                                            "Value":  8,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "TerminationDate",
+                                                            "Value":  null,
+                                                            "CimType":  13,
+                                                            "Flags":  "Property, ReadOnly, NotModified, NullValue",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "UserModeTime",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "WorkingSetSize",
+                                                            "Value":  2048000,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "CommandLine",
+                                                            "Value":  "git.exe -c diff.mnemonicPrefix=false -c diff.noprefix=false -c core.quotePath=false -c safe.bareRepository=explicit -c core.hooksPath=NUL -c core.fsmonitor=true diff --no-ext-diff --no-textconv --color=never --src-prefix=a/ --dst-prefix=b/ 6fc951b3cb7a9d367b6d3c293a3e9efbb1f2c483 --find-renames --raw --no-abbrev --numstat -z",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ExecutablePath",
+                                                            "Value":  "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "HandleCount",
+                                                            "Value":  41,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "MaximumWorkingSetSize",
+                                                            "Value":  1380,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "MinimumWorkingSetSize",
+                                                            "Value":  200,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "OtherOperationCount",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "OtherTransferCount",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PageFaults",
+                                                            "Value":  523,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PageFileUsage",
+                                                            "Value":  680,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ParentProcessId",
+                                                            "Value":  47016,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PeakPageFileUsage",
+                                                            "Value":  680,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PeakVirtualSize",
+                                                            "Value":  11591680,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PeakWorkingSetSize",
+                                                            "Value":  2000,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "PrivatePageCount",
+                                                            "Value":  696320,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ProcessId",
+                                                            "Value":  28160,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "QuotaNonPagedPoolUsage",
+                                                            "Value":  2,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "QuotaPagedPoolUsage",
+                                                            "Value":  58,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "QuotaPeakNonPagedPoolUsage",
+                                                            "Value":  2,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "QuotaPeakPagedPoolUsage",
+                                                            "Value":  58,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ReadOperationCount",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ReadTransferCount",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "SessionId",
+                                                            "Value":  1,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "ThreadCount",
+                                                            "Value":  1,
+                                                            "CimType":  6,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "VirtualSize",
+                                                            "Value":  11591680,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "WindowsVersion",
+                                                            "Value":  "10.0.26200",
+                                                            "CimType":  14,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "WriteOperationCount",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        },
+                                                        {
+                                                            "Name":  "WriteTransferCount",
+                                                            "Value":  0,
+                                                            "CimType":  8,
+                                                            "Flags":  "Property, ReadOnly, NotModified",
+                                                            "IsValueModified":  false
+                                                        }
+                                                    ],
+                          "CimSystemProperties":  {
+                                                      "Namespace":  "root/cimv2",
+                                                      "ServerName":  "LAPTOP-B7VM7LU4",
+                                                      "ClassName":  "Win32_Process",
+                                                      "Path":  null
+                                                  },
+                          "ProcessName":  "git.exe",
+                          "Handles":  41,
+                          "VM":  11591680,
+                          "WS":  2048000,
+                          "Path":  "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+                          "Caption":  "git.exe",
+                          "Description":  "git.exe",
+                          "InstallDate":  null,
+                          "Name":  "git.exe",
+                          "Status":  null,
+                          "CreationClassName":  "Win32_Process",
+                          "CreationDate":  "\/Date(1792444391565)\/",
+                          "CSCreationClassName":  "Win32_ComputerSystem",
+                          "CSName":  "LAPTOP-B7VM7LU4",
+                          "ExecutionState":  null,
+                          "Handle":  "28160",
+                          "KernelModeTime":  0,
+                          "OSCreationClassName":  "Win32_OperatingSystem",
+                          "OSName":  "Microsoft Windows 11 家庭版 中文版|C:\\WINDOWS|\\Device\\Harddisk0\\Partition3",
+                          "Priority":  8,
+                          "TerminationDate":  null,
+                          "UserModeTime":  0,
+                          "WorkingSetSize":  2048000,
+                          "CommandLine":  "git.exe -c diff.mnemonicPrefix=false -c diff.noprefix=false -c core.quotePath=false -c safe.bareRepository=explicit -c core.hooksPath=NUL -c core.fsmonitor=true diff --no-ext-diff --no-textconv --color=never --src-prefix=a/ --dst-prefix=b/ 6fc951b3cb7a9d367b6d3c293a3e9efbb1f2c483 --find-renames --raw --no-abbrev --numstat -z",
+                          "ExecutablePath":  "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+                          "HandleCount":  41,
+                          "MaximumWorkingSetSize":  1380,
+                          "MinimumWorkingSetSize":  200,
+                          "OtherOperationCount":  0,
+                          "OtherTransferCount":  0,
+                          "PageFaults":  523,
+                          "PageFileUsage":  680,
+                          "ParentProcessId":  47016,
+                          "PeakPageFileUsage":  680,
+                          "PeakVirtualSize":  11591680,
+                          "PeakWorkingSetSize":  2000,
+                          "PrivatePageCount":  696320,
+                          "ProcessId":  28160,
+                          "QuotaNonPagedPoolUsage":  2,
+                          "QuotaPagedPoolUsage":  58,
+                          "QuotaPeakNonPagedPoolUsage":  2,
+                          "QuotaPeakPagedPoolUsage":  58,
+                          "ReadOperationCount":  0,
+                          "ReadTransferCount":  0,
+                          "SessionId":  1,
+                          "ThreadCount":  1,
+                          "VirtualSize":  11591680,
+                          "WindowsVersion":  "10.0.26200",
+                          "WriteOperationCount":  0,
+                          "WriteTransferCount":  0,
+                          "PSComputerName":  null
+                      }
+                  ]
+}

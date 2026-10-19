@@ -1,0 +1,16 @@
+-- The CXX compiler identification is GNU 13.1.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: D:/C Tool Chains/mingw64/bin/g++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Warning at D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/tools/verilator-wheel/unpacked/verilator/verilator-config.cmake:285 (message):
+  Specify PREFIX if there are multiple SOURCES
+Call Stack (most recent call first):
+  CMakeLists.txt:7 (verilate)
+
+
+-- Executing Verilator...
+-- Configuring done (6.6s)
+-- Generating done (0.0s)
+-- Build files have been written to: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_043518_857947/cpp
