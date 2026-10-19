@@ -18,6 +18,8 @@
 
 原整机 seed 11 在 10 月 19 日 21:46 按用户要求停止；整体停止文件保留，旧自动队列已停止。旧结果的 `stage=gen_bit_stream` 是历史脚本固定标签，真实 `native_runs` 为 PnR/PAUSED，没有执行 bitgen。后续脚本已修正阶段标签。
 
+00:56 入口补查：当前便携构建脚本的 full/route-map/route-placement 也在创建目录或 native 启动前检查门槛，三项真实 CLI 拒绝检查通过。未来打包会携带门槛记录和依赖助手。历史便携包未改写、不作为本轮实现入口；不要用旧 runner 绕开当前监督、限时和设计完成门槛。
+
 ## 当前主设计与验证
 
 主设计共 12 项选定修改：writer BRAM 等已验证基线 11 项，加 `rtl/memory/dma_byte_unpack.v` 的局部捕获控制。第一轮 grouped DMA、boot 局部捕获均已回退。任何实验 source 目录都不能整体覆盖主工程。
@@ -74,7 +76,7 @@
 - 整体停止：`session_20261019/stop_requested.json`；区域停止：`regional_stop_requested.json`。原整体停止标记不得删除。监督器每 30 秒检查；已有停止标记会阻止进程创建。
 - 区域物理每侧总上限 20 分钟，包含新鲜 compile/SYN/MAP/PnR/STA。有合格成功基线时执行原方案自适应上限；停滞门槛不因 CPU 忙而取消。
 - 互斥锁：`fpga/build/route_optimization/native_phase.lock`。只停止自己的 PID 树，不按进程名杀 PDS；正常结束必须检查残留。`Saving design to DB` 可能耗时数分钟，应结合 CPU/内存与硬上限调查。
-- 23:48 已按小时汇报，下一次约 00:48。可运行 `python fpga/scripts/optimization_status.py --session fpga/build/route_optimization/session_20261019` 查看状态；原 watcher 在后台运行。
+- 00:48 已按小时汇报，下一次约 01:48。可运行 `python fpga/scripts/optimization_status.py --session fpga/build/route_optimization/session_20261019` 查看状态；原 watcher 在后台运行。
 - 最新源码/完整功能证据检查点：`20f5269f66d33b647cdd64dd10a720bb19e76cfe`，已核对远端。之前为 `29265c6f`、`482ac2f7`、`cd78b6a2`、`0b45b46a` 等。后续文档以 `git log` 为准。
 - 初始工作区有 212 项 tracked 修改及大量构建文件，清单在 `initial_git_status.txt`。只能按本轮 scope 暂存；禁止全量 add 或新增忽略项。
 - 原生数据库/拥塞文本压缩归档带逐成员哈希；冻结证据 manifest 按对应检查点 commit 校验。已验证的历史输入不覆盖。`fpga/.gitattributes` 和选定 host 报告规则仅关闭换行转换，不忽略文件。

@@ -221,8 +221,8 @@
     },
     "b_synthesis_slack_ns": 0.427
   },
-  "latest_hourly_report": "2026-10-19T23:48:00+08:00",
-  "next_hourly_report": "2026-10-20T00:48:00+08:00",
+  "latest_hourly_report": "2026-10-20T00:48:00+08:00",
+  "next_hourly_report": "2026-10-20T01:48:00+08:00",
   "writer_regional": {
     "generic_screen": "writer_bram_screen_20261020_001142_389407/unit_screen",
     "both_routed": true,
@@ -245,5 +245,7 @@
     ],
     "time_improvement_significant": false
   },
-  "current_handoff": "fpga/reports/route_optimization_handoff_20261020.md"
+  "current_handoff": "fpga/reports/route_optimization_handoff_20261020.md",
+  "latest_verified_source_commit": "20f5269f66d33b647cdd64dd10a720bb19e76cfe",
+  "latest_verified_handoff_commit": "045c28040dc7254a52b572e204b9e9480ae81f3a"
 }
