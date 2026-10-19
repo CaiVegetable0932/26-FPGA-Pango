@@ -1,0 +1,29 @@
+{
+  "at": "2026-10-19T17:35:24.328344+08:00",
+  "map_build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261019_163458_368603",
+  "model": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261019_170927_184682",
+  "model_pending": false,
+  "regression": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261019_173205_708461",
+  "differential": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\writer_bram_20261019_163131_838002\\differential_20261019_173328_720902",
+  "additional_differentials": [
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\pixel_pack_lanes_20261015_201817_101429",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\differential_20261016_000927_310553",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\differential_20261016_000925_393109",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\retire_differential_20261016_000738_398288",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\uart_deadline_repair_20261016_012302_468792\\uart_differential_20261016_012553_986714"
+  ],
+  "proof_inputs_verified": true,
+  "host_report": "D:\\XDU\\concept\\26-FPGA-Pango\\host\\reports\\fpga_rgb_vectors_20261019_173129_570922.json",
+  "launch_ready": true,
+  "seed": 11,
+  "decongestion": 1,
+  "macro": "Global",
+  "planning_before_place": true,
+  "campaign": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch02\\attempt02_writer_bram_seed11",
+  "candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\writer_bram_20261019_163131_838002",
+  "launch_condition": "Only after the current complete route reaches an authoritative terminal state; keep one full route at a time",
+  "qualified_bitstream": false,
+  "launch_authorized": false,
+  "new_builds_allowed": false,
+  "pause_request": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch02\\current_pause_request.json"
+}

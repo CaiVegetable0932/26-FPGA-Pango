@@ -34,6 +34,7 @@ def main():
     parser.add_argument('--decongestion', type=int, choices=range(5), default=1)
     parser.add_argument('--seed', type=int, default=11)
     parser.add_argument('--timeout-minutes', type=int, default=20)
+    parser.add_argument('--pause-file', type=Path)
     parser.add_argument('--planning-before-place', action='store_true',
                         help='Enable documented module planning; requires installed target help evidence')
     parser.add_argument('--installed-pnr-help', type=Path,
@@ -116,7 +117,8 @@ def main():
         print('PLACE_ONLY', build, args.macro, flush=True)
         # Placement-only screening shares the single native implementation slot.
         supervised = run_supervised(command, cwd=build, log_path=log_path,
-            timeout_seconds=args.timeout_minutes*60, monitor_path=evidence/'placement_monitor.jsonl')
+            timeout_seconds=args.timeout_minutes*60, monitor_path=evidence/'placement_monitor.jsonl',
+            pause_path=args.pause_file)
         child = subprocess.CompletedProcess(command, supervised['returncode'])
         result['supervision'] = supervised
         content = log_path.read_text(encoding='utf-8', errors='replace')

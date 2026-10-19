@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "cycle_equivalent": true,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\source\\rtl\\memory\\frame_manager_pkg.sv": "4d93591a7cd365243bad3347165a6ed9708fdd0ce5a6daa84470fe8c744a6f2e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\source\\rtl\\memory\\frame_manager_layout.vh": "729ae9f63f1cccdcb244dbad3fc5eafe59ce5ee11ea4da0aa69cb18d037c2973",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\source\\rtl\\memory\\frame_pool_bank.sv": "f445700f24a71e203e31fe20849965ccb15885d4b17fe383e39fc3ecf5f8b1b1",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\source\\rtl\\memory\\frame_manager.sv": "b2211c685d787f7c0e105aac6dcf6e821293899e0065561422a7bc05ed6c2165",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\source\\rtl\\memory\\frame_snapshot_pair.sv": "9987619e6af2217a93e76b56c92e0f8ed93774a88ca4b326577d5317be2aadde",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\original_frame_snapshot_pair.sv": "120ef0e1e1381731ea80da58ec12e943fb70744e682042561845ac03e5b84969",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261016_000755_546946\\source\\tb_frame_snapshot_pair.sv": "4e56a69cad2abaaec5511afeeb75e9b96056ccc4d2d79862e642a4a6aba40a3f"
+  },
+  "tests": [
+    "pause_0",
+    "pause_1",
+    "pause_2",
+    "pause_3"
+  ],
+  "reference_board_client_limits": true,
+  "scope": "Snapshot control payload gating only; common frame-bank implementation is separately validated for accepted metadata and bounded latency",
+  "inputs_intact": true
+}

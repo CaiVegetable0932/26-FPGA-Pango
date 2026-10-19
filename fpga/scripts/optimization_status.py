@@ -14,24 +14,38 @@ from route_supervisor import process_resources
 def latest_quota(sessions):
     """Return the newest explicit account limit event, never a token estimate."""
     records = []
-    files = sorted(sessions.rglob('*.jsonl'), key=lambda p: p.stat().st_mtime, reverse=True)[:3]
+    # Tool/background surfaces can create several newer rollouts without an
+    # account event. Include their parent session rather than inspecting only
+    # the three most recently touched files.
+    files = sorted(sessions.rglob('*.jsonl'), key=lambda p: p.stat().st_mtime, reverse=True)[:20]
     for path in files:
         with path.open('rb') as stream:
-            stream.seek(max(0, path.stat().st_size-512_000))
-            for line in stream:
-                if b'"rate_limits"' not in line:
-                    continue
-                try:
-                    event = json.loads(line)
-                    limits = event.get('payload', {}).get('rate_limits')
-                    if event.get('type') != 'event_msg' or not limits:
+            size = path.stat().st_size
+            # Large native reports can occupy more than one tail block. Grow
+            # the read window until a real quota event is found, bounded at
+            # 16 MB; never mistake a truncated JSON/tool message for telemetry.
+            window = 512_000
+            while True:
+                stream.seek(max(0, size-window))
+                found = False
+                for line in stream:
+                    if b'"rate_limits"' not in line:
                         continue
-                    windows = {key: limits[key] for key in ('primary', 'secondary')
-                               if limits.get(key) is not None}
-                    if windows:
-                        records.append(dict(at=event['timestamp'], windows=windows))
-                except (ValueError, KeyError):
-                    continue
+                    try:
+                        event = json.loads(line)
+                        limits = event.get('payload', {}).get('rate_limits')
+                        if event.get('type') != 'event_msg' or not limits:
+                            continue
+                        windows = {key: limits[key] for key in ('primary', 'secondary')
+                                   if limits.get(key) is not None}
+                        if windows:
+                            records.append(dict(at=event['timestamp'], windows=windows))
+                            found = True
+                    except (ValueError, KeyError):
+                        continue
+                if found or window >= size or window >= 16_384_000:
+                    break
+                window *= 2
     if not records:
         return dict(available=False, remaining_percent=None)
     record = max(records, key=lambda r: r['at'])

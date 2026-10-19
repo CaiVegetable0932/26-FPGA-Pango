@@ -1,0 +1,14 @@
+[
+  {
+    "ProcessId": 93940,
+    "ParentProcessId": 103672,
+    "CreationDate": "2026-10-19T16:34:58.766964+08:00",
+    "CommandLine": "E:/PDS_Pangu/PDS_2022.2-SP6.4/bin/pds_shell.exe -file D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261019_163458_368603\\flow.tcl -work_dir D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261019_163458_368603"
+  },
+  {
+    "ProcessId": 108232,
+    "ParentProcessId": 93940,
+    "CreationDate": "2026-10-19T16:35:03.934612+08:00",
+    "CommandLine": "E:\\PDS_Pangu\\PDS_2022.2-SP6.4\\bin\\pds_shell.exe  -action compile -part Logos2-PG2L100H-FBG676-6 -project_file D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/delay_20261019_163458_368603/flow.pds -extract_data_key 817024609 -shared_mem_key 78992b81-ad9f-4066-a259-ebe55414212093940 -parent_process_key 93940"
+  }
+]

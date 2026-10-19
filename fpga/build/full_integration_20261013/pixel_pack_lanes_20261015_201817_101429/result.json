@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "cycle_equivalent": true,
+  "board_timing_signoff": false,
+  "baseline": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\metadata_broadcast_repair_20261015_200110_657013",
+  "jobs": [
+    {
+      "name": "compile",
+      "exit": 0,
+      "errors": []
+    },
+    {
+      "name": "seed_42",
+      "exit": 0,
+      "errors": []
+    },
+    {
+      "name": "seed_177",
+      "exit": 0,
+      "errors": []
+    },
+    {
+      "name": "seed_2718",
+      "exit": 0,
+      "errors": []
+    },
+    {
+      "name": "syn",
+      "exit": 0,
+      "errors": []
+    },
+    {
+      "name": "syn",
+      "exit": 0,
+      "errors": []
+    }
+  ],
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\pixel_pack_lanes_20261015_201817_101429\\source\\rtl\\memory\\dma_pixel_pack.v": "30014fc3090a62b36d64bf9aa268749faa66df0d4171e1498cc403de30f813ca",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\pixel_pack_lanes_20261015_201817_101429\\original_dma_pixel_pack.v": "19ba96de4d8fc9cc91dbf9403275909131b68d830fe04383cef3f6066983c867",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_dma_pixel_pack_differential.sv": "6c0de65bcc27f893f19a9aa46d0ef077b5bce558d9b8baf74f35927cda8995fe"
+  },
+  "baseline_resources": {
+    "LUT": 926,
+    "FF": 319,
+    "controlsets": 2
+  },
+  "candidate_resources": {
+    "LUT": 688,
+    "FF": 315,
+    "controlsets": 2
+  },
+  "inputs_intact": true
+}

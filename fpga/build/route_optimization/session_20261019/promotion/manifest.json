@@ -1,0 +1,62 @@
+{
+  "source_build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261019_163458_368603",
+  "changes": [
+    {
+      "path": "fpga/rtl/board/video_memory_core.sv",
+      "before": "6739552fd0a18ecbde87fabe914fa0c5d817cf896f9cea06d659df05a23defe7",
+      "after": "10badf7a3e9b026d82406286896bf4082a4c4d9db6cc46ebd47ad05799d3cb7c"
+    },
+    {
+      "path": "fpga/rtl/control/uart_v2_parser.sv",
+      "before": "6aef5a520d279a9309ae9774f1ba885c0a71b2ac082f08888b181ab4de24bef3",
+      "after": "c3d60dc3bafc90725e5b3153ecd7374859ebe49d9a9ca7e2109e385c4f015e19"
+    },
+    {
+      "path": "fpga/rtl/geometry/perspective_divide.sv",
+      "before": "ae97be62c7f686c625b8b7a94d9b69440720607f2bdfe677147d86091ccf9e66",
+      "after": "7284d8bb312cad515d08795383435472a84988b5b946dd80daa5609e1f890ec4"
+    },
+    {
+      "path": "fpga/rtl/isp/rgb_frame_statistics.sv",
+      "before": "c59a44dd3019b9fbde5dadd2cbbdc06de2781ee77736ca585f3590209046fc7f",
+      "after": "c0f7a5f931a6c8aca3ff0fa79febd0654f145847305f51d591e21d5eefc62af2"
+    },
+    {
+      "path": "fpga/rtl/memory/ddr_native_dma.v",
+      "before": "c37df13fbb531215dc2c20f17872f851b5f90cfd6ee5c737cd3f7e291e01a259",
+      "after": "52f12a6f4110cf99b87dbdfdecf62dd75a8b31d0f00e815e2598cdec2481ea30"
+    },
+    {
+      "path": "fpga/rtl/memory/dma_pixel_pack.v",
+      "before": "70e71888a48d9c5cc3ce2b7a831b99f4e9a561b8abfef375adc6bc0725c5688d",
+      "after": "30014fc3090a62b36d64bf9aa268749faa66df0d4171e1498cc403de30f813ca"
+    },
+    {
+      "path": "fpga/rtl/memory/frame_manager.sv",
+      "before": "a58ba8935a421fa5bea31a5e97902b792b05e8c8bf1f18515c86d36de547b6a3",
+      "after": "b2211c685d787f7c0e105aac6dcf6e821293899e0065561422a7bc05ed6c2165"
+    },
+    {
+      "path": "fpga/rtl/memory/frame_memory_fabric.sv",
+      "before": "d4937b0cc5f1fd7840e6abfae37ee7bc0293e2671a1a6114d0cc7d9c2da777cd",
+      "after": "a8b7c7d403eb9d69f3677dc5ab21ad4f65e159aab140c9631a4fb272e481c37d"
+    },
+    {
+      "path": "fpga/rtl/memory/frame_pixel_writer.sv",
+      "before": "4116b7d90801cca7d62e3971c8a04553f6aca1fc2705075de5ce9b756abbcf26",
+      "after": "9df2baf37afaac48cc79f37a9e11ab54d3356ecf5909d0b41f304c60dd61a8aa"
+    },
+    {
+      "path": "fpga/rtl/memory/frame_snapshot_pair.sv",
+      "before": "120ef0e1e1381731ea80da58ec12e943fb70744e682042561845ac03e5b84969",
+      "after": "9987619e6af2217a93e76b56c92e0f8ed93774a88ca4b326577d5317be2aadde"
+    },
+    {
+      "path": "fpga/rtl/memory/geometry_tile_refill.sv",
+      "before": "6a0294d06cea6ee045dfd315ab04cc6f0b435e8a5de566abaf17b3520d8f5492",
+      "after": "3ef62065fbe12306a62d809f09b0ee5556f1741d8b17d508e300d3b35bc8bb94"
+    }
+  ],
+  "functional_evidence": "Existing source-bound full-frame/control/snapshot/display model and 12-case regression; fresh live regression required",
+  "physical_acceptance": false
+}

@@ -1,0 +1,15 @@
+{
+  "baseline": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261019_163458_368603",
+  "changed": [
+    "rtl/memory/ddr_native_dma.v"
+  ],
+  "source_count": 290,
+  "intended_added_cycles": 0,
+  "intended_added_ff": 6,
+  "official_reference": "E:/PDS_Pangu/PDS_2022.2-SP6.4/doc/ADS_Synthesis_User_Guide.pdf section 5.15",
+  "strategy": "binary two-client groups; not the rejected one-hot OR reduction",
+  "functional_pass": false,
+  "physical_benefit_verified": false,
+  "routed": false,
+  "programmed": false
+}

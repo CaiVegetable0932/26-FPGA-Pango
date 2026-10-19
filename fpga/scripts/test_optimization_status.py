@@ -33,6 +33,14 @@ class QuotaTests(unittest.TestCase):
                 payload=dict(rate_limits=dict(primary=dict(used_percent=0))))))
             self.assertFalse(latest_quota(Path(directory))['available'])
 
+    def test_large_native_output_does_not_hide_last_account_event(self):
+        with tempfile.TemporaryDirectory() as directory:
+            event = dict(type='event_msg', timestamp='2026-10-19T12:00:00Z',
+                         payload=dict(rate_limits=dict(primary=dict(used_percent=60))))
+            (Path(directory)/'events.jsonl').write_text(
+                json.dumps(event)+'\n'+json.dumps(dict(type='response_item', output='x'*600_000)))
+            self.assertEqual(latest_quota(Path(directory))['remaining_percent'], 40)
+
 
 if __name__ == '__main__':
     unittest.main()

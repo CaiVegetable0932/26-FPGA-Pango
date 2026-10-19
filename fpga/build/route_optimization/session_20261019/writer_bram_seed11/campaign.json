@@ -1,0 +1,28 @@
+{
+  "started_at": "2026-10-19T20:55:44.841568+08:00",
+  "minimum_corrected_fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "review_interval": "five complete place-and-route attempts",
+  "attempts": [
+    {
+      "number": 1,
+      "started_at": "2026-10-19T20:55:45.740763+08:00",
+      "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261019_205545_289460",
+      "source_build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261019_163458_368603",
+      "options": {
+        "seed": 11,
+        "decongestion": 1,
+        "macro": "Global",
+        "duplication": "default",
+        "planning_before_place": true
+      },
+      "phase": "route_sta_bitgen",
+      "complete": false,
+      "passed": false
+    }
+  ],
+  "passed": false,
+  "updated_at": "2026-10-19T20:55:45.740763+08:00",
+  "phase": "route_sta_bitgen"
+}

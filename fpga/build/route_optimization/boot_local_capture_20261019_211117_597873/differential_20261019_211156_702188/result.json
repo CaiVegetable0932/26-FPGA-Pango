@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "cycle_equivalent": true,
+  "four_state": true,
+  "all_external_bits_compared": 903,
+  "all_internal_snapshot_bits_compared": 1536,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\original_pc_video_boot.sv": "663a237b8b6a68848da1751744af5717fd610b547bf399e575c27919c354ecb8",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\source\\rtl\\control\\pc_video_boot.sv": "82f19a6c4330d326d76ad56e7fb481d5b9a81e59102314e4cbc561c07a731486",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_pc_boot_capture_equivalence.sv": "ea43c7950fcfaff19217ba0feee3ef7070e67f2dd703f5ab8311befee983df88",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\source\\rtl\\control\\uart_8n1.sv": "538ae808275cbcd8ac109ee2b1e34b8b0e24b2db3767709956e445e0053f940e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\source\\rtl\\control\\uart_v2_parser.sv": "c3d60dc3bafc90725e5b3153ecd7374859ebe49d9a9ca7e2109e385c4f015e19",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\source\\rtl\\control\\parameter_entity_guard.sv": "7c723831f831e85726c5a098b3be90b70fb43cd77b934ff68209d76e16d0b1ed"
+  },
+  "tests": [
+    "all_outputs_and_snapshot_pages"
+  ],
+  "counts": {
+    "cycles": 332580,
+    "public_bits": 903,
+    "replies": 53,
+    "captures": 6,
+    "busy_cycles": 217499,
+    "resets": 3,
+    "mode": 1,
+    "geometry": 1,
+    "snapshot": 1
+  },
+  "inputs_intact": true
+}

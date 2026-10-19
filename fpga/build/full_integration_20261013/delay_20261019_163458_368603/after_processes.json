@@ -1,0 +1,14 @@
+[
+  {
+    "ProcessId": 72284,
+    "ParentProcessId": 93976,
+    "CreationDate": "2026-10-18T22:39:33.903847+08:00",
+    "CommandLine": "E:/PDS_Pangu/PDS_2022.2-SP6.4/bin/pds_shell.exe -file D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261018_223932_310478\\resume_20261018_223933_893650\\place_route.tcl -work_dir D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261018_223932_310478"
+  },
+  {
+    "ProcessId": 88252,
+    "ParentProcessId": 72284,
+    "CreationDate": "2026-10-18T22:39:38.832668+08:00",
+    "CommandLine": "E:\\PDS_Pangu\\PDS_2022.2-SP6.4\\bin\\pds_shell.exe  -action place_route -dump_router_congestion_plot true -early_block_placement Global -force_to_run \"\" -gplace_seed 11 -input_db_file D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/phys_20261018_223932_310478/device_map/pango_video_system_map.adf -planning_before_place true -project_file D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/phys_20261018_223932_310478/place_route.pds -extract_data_key 817094460 -shared_mem_key 75d50d99-e8b2-4667-98d0-3b3ec15362bf72284 -parent_process_key 72284"
+  }
+]

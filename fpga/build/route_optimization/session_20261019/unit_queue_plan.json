@@ -1,0 +1,29 @@
+{
+  "wait_for_campaign": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\session_20261019\\writer_bram_seed11\\campaign.json",
+  "jobs": [
+    {
+      "id": "dma_grouped_unit",
+      "script": "probe_dma_owner_mapping.py",
+      "arguments": [
+        "--candidate",
+        "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923",
+        "--proof",
+        "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\differential_20261019_210254_623005",
+        "--timeout-minutes",
+        "20"
+      ]
+    },
+    {
+      "id": "boot_local_capture_unit",
+      "script": "probe_boot_capture_mapping.py",
+      "arguments": [
+        "--candidate",
+        "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873",
+        "--proof",
+        "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\differential_20261019_211156_702188",
+        "--timeout-minutes",
+        "20"
+      ]
+    }
+  ]
+}

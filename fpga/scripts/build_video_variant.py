@@ -26,6 +26,7 @@ def main():
     parser.add_argument('--relative-source', action='append', required=True)
     parser.add_argument('--replacement', type=Path, action='append', required=True)
     parser.add_argument('--timeout-minutes', type=int, default=60)
+    parser.add_argument('--pause-file', type=Path)
     args = parser.parse_args()
     if not 1 <= args.timeout_minutes <= 240:
         parser.error('compile/SYN/MAP budget must be 1..240 minutes')
@@ -78,7 +79,8 @@ def main():
             ['E:/PDS_Pangu/PDS_2022.2-SP6.4/bin/pds_shell.exe',
              '-file',str(target/'flow.tcl'),'-work_dir',str(target)],
             cwd=target, log_path=target/'console.log',
-            timeout_seconds=args.timeout_minutes*60, monitor_path=target/'map_monitor.jsonl')
+            timeout_seconds=args.timeout_minutes*60, monitor_path=target/'map_monitor.jsonl',
+            pause_path=args.pause_file)
         result['supervision'] = supervised
         result['native_exit'] = supervised['returncode']
         result['errors'] = re.findall(r'^E:.*', (target / 'console.log').read_text(errors='replace'), re.M)

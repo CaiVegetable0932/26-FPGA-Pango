@@ -81,6 +81,15 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(result['status'], 'STALLED')
         self.assertEqual(len(rows[-1]['rounds']), 10)
 
+    def test_native_root_cannot_leave_an_observed_worker(self):
+        """A successful launcher exit cannot conceal a still-running worker."""
+        result, rows = self.run_child(
+            'import subprocess,sys,time; '
+            'subprocess.Popen([sys.executable,"-c","import time; time.sleep(60)"]); '
+            'time.sleep(0.3)')
+        self.assertEqual(result['status'], 'ORPHANED')
+        self.assertEqual(rows[-1]['status'], 'ORPHANED')
+
 
 if __name__ == '__main__':
     unittest.main()

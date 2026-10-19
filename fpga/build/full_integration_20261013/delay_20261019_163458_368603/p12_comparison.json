@@ -1,0 +1,22 @@
+{
+  "baseline": {
+    "synthesis": {
+      "luts": 41664,
+      "registers": 40456,
+      "lutram": 2097,
+      "drm": 86.0
+    },
+    "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261018_212631_898400"
+  },
+  "candidate": {
+    "synthesis": {
+      "luts": 41349,
+      "registers": 40441,
+      "lutram": 1665,
+      "drm": 98.0
+    },
+    "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261019_163458_368603"
+  },
+  "physical_benefit_proven": false,
+  "routed": false
+}

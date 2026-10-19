@@ -26,6 +26,7 @@ def main():
     parser.add_argument('--candidate', type=Path, required=True)
     parser.add_argument('--proof', type=Path, required=True)
     parser.add_argument('--timeout-minutes', type=int, default=20)
+    parser.add_argument('--pause-file', type=Path)
     args = parser.parse_args()
     if not 1 <= args.timeout_minutes <= 60:
         parser.error('unit synthesis budget must be 1..60 minutes')
@@ -73,7 +74,7 @@ def main():
                 ['E:/PDS_Pangu/PDS_2022.2-SP6.4/bin/pds_shell.exe',
                  '-file',str(build/'flow.tcl'),'-work_dir',str(build)],
                 cwd=build, log_path=build/'syn.log', timeout_seconds=args.timeout_minutes*60,
-                monitor_path=build/'synthesis_monitor.jsonl')
+                monitor_path=build/'synthesis_monitor.jsonl', pause_path=args.pause_file)
             proc = subprocess.CompletedProcess([], supervised['returncode'])
             errors = re.findall(r'^E:.*', (build / 'syn.log').read_text(errors='replace'), re.M)
             # Natural completion must not leave an orphaned native child.

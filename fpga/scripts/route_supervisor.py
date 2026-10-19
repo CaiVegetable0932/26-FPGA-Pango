@@ -54,14 +54,14 @@ def route_iterations(content):
             for n, i, cpu in matches]
 
 
-def stalled(rounds, window=5, minimum=1000, improvement=0.01):
+def stalled(rounds, window=5, minimum=1000, improvement=0.01, warmup=5):
     """Compare five completed transitions after the first five warmup rounds.
 
     Use the best value in the window rather than just the last round, so a
     temporary regression cannot hide real progress. Near convergence retains
     the hard timeout but does not use this percentage threshold.
     """
-    if len(rounds) < 5 + window:
+    if len(rounds) < warmup + window:
         return False
     recent = rounds[-(window + 1):]
     start = recent[0]['unrouted']
@@ -69,23 +69,48 @@ def stalled(rounds, window=5, minimum=1000, improvement=0.01):
     return best > minimum and (start - best) / start < improvement
 
 
-def stop_owned(child):
-    """Terminate only the process tree created here, then reap its root."""
-    if child.poll() is not None:
-        return
-    if os.name == 'nt':
+def live_descendants(known):
+    """Revalidate PID plus creation time before acting on a prior descendant."""
+    try:
+        import psutil
+    except ImportError:
+        return []
+    alive = []
+    for row in known.values():
+        try:
+            process = psutil.Process(row['pid'])
+            if process.create_time() == row['created_at'] and process.status() != psutil.STATUS_ZOMBIE:
+                alive.append(process)
+        except psutil.Error:
+            continue
+    return alive
+
+
+def stop_owned(child, known=None):
+    """Reap the root and only identity-checked descendants observed here."""
+    if child.poll() is None and os.name == 'nt':
         stopped = subprocess.run(['taskkill', '/PID', str(child.pid), '/T', '/F'],
                                  capture_output=True, creationflags=0x08000000)
         if stopped.returncode and child.poll() is None:
             raise RuntimeError('Unable to stop owned native tree: '+str(child.pid))
-    else:
+    elif child.poll() is None:
         os.killpg(child.pid, signal.SIGTERM)
     child.wait(timeout=30)
+    # A native root can exit before its worker. Do not release the shared slot
+    # while such a worker survives; stale PID reuse must never target a user job.
+    for process in live_descendants(known or {}):
+        import psutil
+        try:
+            process.kill()
+            process.wait(timeout=30)
+        except (ProcessLookupError, ChildProcessError, psutil.NoSuchProcess):
+            continue
 
 
 def run_supervised(command, *, cwd, log_path, timeout_seconds,
                    monitor_path, poll_seconds=30, watch_stall=False,
-                   pause_path=None):
+                   pause_path=None, stall_window=5, stall_minimum=1000,
+                   stall_improvement=0.01, warmup_rounds=5):
     """Run one bounded native phase and persist observations before returning.
 
     Native logs are kept verbatim. The JSONL stream records all completed
@@ -94,9 +119,22 @@ def run_supervised(command, *, cwd, log_path, timeout_seconds,
     """
     if timeout_seconds <= 0 or poll_seconds <= 0:
         raise ValueError('A positive host timeout and polling interval are required')
+    if stall_window < 1 or warmup_rounds < 1 or stall_minimum < 0 or not 0 < stall_improvement < 1:
+        raise ValueError('Invalid convergence policy')
     log_path, monitor_path = Path(log_path), Path(monitor_path)
+    # Freeze numeric rules before launch. These are project management
+    # thresholds, not vendor guarantees or a replacement for routed STA.
+    policy = dict(timeout_seconds=timeout_seconds, warning_seconds=timeout_seconds*0.8,
+                  poll_seconds=poll_seconds, stall_enabled=watch_stall,
+                  stall_window=stall_window, stall_minimum_unrouted=stall_minimum,
+                  stall_minimum_improvement=stall_improvement, warmup_rounds=warmup_rounds,
+                  baseline_success_seconds=None, baseline_acceleration_claim=False,
+                  no_log_investigation_seconds=600)
+    monitor_path.with_suffix('.policy.json').write_text(json.dumps(policy, indent=2)+'\n')
     started = time.monotonic()
     state = 'RUNNING'
+    known = {}
+    last_log_bytes, last_log_change = None, started
     options = dict(creationflags=0x08000000) if os.name == 'nt' else dict(start_new_session=True)
     with native_slot(), log_path.open('wb') as log, monitor_path.open('a', encoding='utf-8') as monitor:
         child = subprocess.Popen(command, cwd=cwd, stdout=log,
@@ -107,35 +145,46 @@ def run_supervised(command, *, cwd, log_path, timeout_seconds,
                 content = log_path.read_text(errors='replace')
                 rounds = route_iterations(content)
                 exit_code = child.poll()
+                resources = process_resources(child.pid)
+                for process in resources.get('processes', []):
+                    if process['pid'] != child.pid:
+                        known[process['pid']] = process
+                log_bytes = log_path.stat().st_size
+                if log_bytes != last_log_bytes:
+                    last_log_bytes, last_log_change = log_bytes, time.monotonic()
                 # Native completion wins over a simultaneous observation cutoff.
                 if exit_code is not None:
-                    state = 'COMPLETED' if exit_code == 0 else 'FAILED'
+                    state = ('ORPHANED' if live_descendants(known) else
+                             'COMPLETED' if exit_code == 0 else 'FAILED')
                 elif pause_path and Path(pause_path).exists():
                     state = 'PAUSED'
                 elif elapsed >= timeout_seconds:
                     state = 'TIMEOUT'
-                elif watch_stall and stalled(rounds):
+                elif watch_stall and stalled(rounds, stall_window, stall_minimum,
+                                              stall_improvement, warmup_rounds):
                     state = 'STALLED'
                 row = dict(at=datetime.now(timezone.utc).isoformat(), pid=child.pid,
                            elapsed_seconds=elapsed, status=state,
                            warning=elapsed >= timeout_seconds * 0.8,
                            timeout_seconds=timeout_seconds, rounds=rounds,
-                           log_bytes=log_path.stat().st_size,
+                           log_bytes=log_bytes,
+                           log_idle_seconds=time.monotonic()-last_log_change,
+                           investigation_required=time.monotonic()-last_log_change >= 600,
                            best_unrouted=min((r['unrouted'] for r in rounds), default=None),
-                           resources=process_resources(child.pid))
+                           resources=resources)
                 monitor.write(json.dumps(row)+'\n')
                 monitor.flush()
                 if state != 'RUNNING':
-                    if exit_code is None:
-                        stop_owned(child)
+                    if exit_code is None or state == 'ORPHANED':
+                        stop_owned(child, known)
                     return dict(status=state, returncode=child.returncode,
                                 elapsed_seconds=time.monotonic()-started,
-                                pid=child.pid, monitor=str(monitor_path))
+                                pid=child.pid, monitor=str(monitor_path), policy=policy)
                 time.sleep(min(poll_seconds, max(0.01, timeout_seconds-elapsed)))
         except BaseException:
             # Reaping on interruption prevents a hidden implementation from
             # surviving an aborted driver and colliding with the next attempt.
-            stop_owned(child)
+            stop_owned(child, known)
             raise
 @contextmanager
 def native_slot():
@@ -147,5 +196,10 @@ def native_slot():
         json.dump(dict(owner_pid=os.getpid(), at=datetime.now(timezone.utc).isoformat()), stream)
     try:
         yield
-    finally:
+    except BaseException:
+        # Unhandled launch/cleanup errors require identity review before the
+        # machine slot can be reused. Normal failed native results return
+        # explicitly and release it through the success path below.
+        raise
+    else:
         lock.unlink()

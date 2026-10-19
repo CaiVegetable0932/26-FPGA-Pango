@@ -1,0 +1,69 @@
+{
+  "passed": true,
+  "cycle_equivalent": true,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\uart_deadline_repair_20261016_012302_468792\\source\\rtl\\control\\uart_v2_parser.sv": "c3d60dc3bafc90725e5b3153ecd7374859ebe49d9a9ca7e2109e385c4f015e19",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\uart_deadline_repair_20261016_012302_468792\\original_uart_v2_parser.sv": "6aef5a520d279a9309ae9774f1ba885c0a71b2ac082f08888b181ab4de24bef3",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_uart_v2_parser.sv": "feb950f6eba53faf8fbe8d1ad8f87ec9b0d8c2dc37caa285b656f62aa4d1ce38",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_uart_deadline_stress.sv": "e37f80ffcbaa7db1a8c72f072e525c4e95fdef634757f4495470c8a48c098050",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\vectors\\network_control\\state.hex": "5756e85c83eb8dc047d96f7c2492326d871a1c1d41f49bedf86f873ee064d6dc",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\vectors\\network_control\\nested_bad_crc.hex": "e93a176712dab9d9e5462175b2937ca55552e2c85711f7a4eca704285564c061",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\vectors\\network_control\\bad_length_then_state.hex": "8ce5aa087bd3b268ac74630df6b37e1a6bf2bbcd806dc1e488cd307493e5477b",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\vectors\\network_control\\bad_version_then_state.hex": "da3aceb7db6f411edd01594d9b31a6f64c94cbfbda6da4af7743a09aeb919ee3",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\vectors\\network_control\\payload_magic.hex": "267f80c24b84002a8c40a20c651c18e1dcf9a517e54832417f83ec0883eb42ce"
+  },
+  "tests": [
+    {
+      "name": "golden",
+      "timeout_override": null,
+      "seed": 42
+    },
+    {
+      "name": "rollover_golden",
+      "timeout_override": null,
+      "seed": 42
+    },
+    {
+      "name": "boundary_2",
+      "timeout_override": "0",
+      "seed": 177
+    },
+    {
+      "name": "boundary_3",
+      "timeout_override": "1",
+      "seed": 177
+    },
+    {
+      "name": "boundary_4",
+      "timeout_override": "30000",
+      "seed": 177
+    },
+    {
+      "name": "boundary_5",
+      "timeout_override": "32'h7fffffff",
+      "seed": 177
+    },
+    {
+      "name": "boundary_6",
+      "timeout_override": "32'h80000000",
+      "seed": 177
+    },
+    {
+      "name": "boundary_7",
+      "timeout_override": "32'hffffffff",
+      "seed": 177
+    },
+    {
+      "name": "boundary_8",
+      "timeout_override": "-1",
+      "seed": 177
+    },
+    {
+      "name": "boundary_9",
+      "timeout_override": "64'h100000000",
+      "seed": 177
+    }
+  ],
+  "scope": "All public parser outputs each active cycle, independent firmware vectors and parameter/boundary stress; no full-board timing claim",
+  "inputs_intact": true
+}
