@@ -1,0 +1,18 @@
+{
+  "completed": true,
+  "all_internal_constraints_met": true,
+  "inputs_intact": true,
+  "fixed_pin_map_verified": true,
+  "report_sha256": "da352d45f4271a776f3e72cb6c7798b38ad3422409e24f4e5e8e64e8847a7e8f",
+  "routed_db_sha256": "6394ceccb1b8e37663cfd3434babcbb1a6ebf4dc72316ebe143e31b01c601b95",
+  "wirelength": [
+    "213555"
+  ],
+  "seed": 11,
+  "promoted": false,
+  "setup_slack_ns": 0.14,
+  "hold_slack_ns": 0.122,
+  "comparison_complete": false,
+  "why_no_speedup_ratio": "No completed timing-clean reference under the same phase budget",
+  "pending": "seed7, seed13, full-frame functional proof"
+}

@@ -1,0 +1,98 @@
+{
+  "passed": true,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\snapshot_local_capture_20261020_015904_151226\\original_snapshot_copy_dma.sv": "be917abc58652f892a596270f3d40156344e611a7159431526b89d13833168bf",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\snapshot_local_capture_20261020_015904_151226\\source\\rtl\\memory\\snapshot_copy_dma.sv": "5bd4bad096b56180501938f47844af255dcf5194b9df9e9a7af615d28eeb97ee"
+  },
+  "all_public_bits_compared": true,
+  "inactive_metadata_compared": true,
+  "same_edge_idle_invariant": true,
+  "four_state": true,
+  "tests": [
+    {
+      "width": 1,
+      "height": 2,
+      "seed": 177,
+      "checks": 39942,
+      "completions": 1497
+    },
+    {
+      "width": 1,
+      "height": 2,
+      "seed": 2718,
+      "checks": 39942,
+      "completions": 1534
+    },
+    {
+      "width": 10,
+      "height": 2,
+      "seed": 177,
+      "checks": 39942,
+      "completions": 1497
+    },
+    {
+      "width": 10,
+      "height": 2,
+      "seed": 2718,
+      "checks": 39942,
+      "completions": 1534
+    },
+    {
+      "width": 11,
+      "height": 2,
+      "seed": 177,
+      "checks": 39942,
+      "completions": 1406
+    },
+    {
+      "width": 11,
+      "height": 2,
+      "seed": 2718,
+      "checks": 39942,
+      "completions": 1426
+    },
+    {
+      "width": 32,
+      "height": 2,
+      "seed": 177,
+      "checks": 39942,
+      "completions": 1378
+    },
+    {
+      "width": 32,
+      "height": 2,
+      "seed": 2718,
+      "checks": 39942,
+      "completions": 1396
+    },
+    {
+      "width": 33,
+      "height": 2,
+      "seed": 177,
+      "checks": 39942,
+      "completions": 1364
+    },
+    {
+      "width": 33,
+      "height": 2,
+      "seed": 2718,
+      "checks": 39942,
+      "completions": 1382
+    },
+    {
+      "width": 1920,
+      "height": 1,
+      "seed": 177,
+      "checks": 39942,
+      "completions": 1320
+    },
+    {
+      "width": 1920,
+      "height": 1,
+      "seed": 2718,
+      "checks": 39942,
+      "completions": 1338
+    }
+  ],
+  "inputs_intact": true
+}

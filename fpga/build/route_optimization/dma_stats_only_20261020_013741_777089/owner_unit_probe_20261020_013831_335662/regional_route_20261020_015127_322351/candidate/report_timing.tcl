@@ -1,0 +1,8 @@
+set_dir -impl_directory {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate}
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+add_design {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate/dma.v}
+add_constraint {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate/clock.fdc}
+add_design {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate/regional_wrapper.sv}
+add_constraint {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate/scan_pins.fdc}
+add_constraint {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate/device_map/regional_wrapper.pcf}
+report_timing -force_to_run -input_db_file {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate/place_route/regional_wrapper_pnr.adf} -delay_type min_max -max_path 30 -report_exception TRUE

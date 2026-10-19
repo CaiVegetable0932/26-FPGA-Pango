@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "hardware_tested": false,
+  "board_integrated": false,
+  "full_frame_simulation": false,
+  "rtl_snapshot": "fpga\\build\\route_optimization\\snapshot_local_capture_20261020_015904_151226\\source",
+  "snapshot_test": false,
+  "control_test": false,
+  "tests": [
+    "tb_frame_manager_pressure",
+    "tb_frame_snapshot_pair",
+    "tb_perspective_domain",
+    "tb_wide_multipliers",
+    "tb_pc_runtime_control",
+    "tb_frame_ticket_rollover",
+    "tb_projective_ray_stepper",
+    "tb_pc_video_boot",
+    "tb_board_service_cdc",
+    "tb_camera_frame_cdc",
+    "tb_video_memory_core",
+    "tb_frame_memory_fabric",
+    "tb_frame_pixel_writer",
+    "tb_dma_read_cdc",
+    "tb_geometry_tile_refill",
+    "tb_geometry_native_integration",
+    "tb_geometry_frame_processor",
+    "tb_ddr_native_dma",
+    "tb_ov5640_raw8_mode",
+    "tb_ov5640_integrated_startup"
+  ],
+  "acquire_wait_cycles": 0,
+  "board_client_limits": true
+}

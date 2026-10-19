@@ -1,0 +1,9 @@
+set_dir -impl_directory {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate}
+set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+add_design {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate/dma.v}
+add_constraint {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate/clock.fdc}
+add_design {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate/regional_wrapper.sv}
+add_constraint {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/dma_stats_only_20261020_013741_777089/owner_unit_probe_20261020_013831_335662/regional_route_20261020_015127_322351/candidate/scan_pins.fdc}
+compile -top_module regional_wrapper -system_verilog
+synthesize -ads -fanout_guide 64 -rw_check_on_ram -resource_sharing false -selected_syn_tool_opt 2
+dev_map

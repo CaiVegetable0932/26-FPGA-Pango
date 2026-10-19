@@ -1,0 +1,114 @@
+{
+  "schema": "algorithm06.offline.coefficients.v1",
+  "source_original_path": "D:\\XDU\\concept\\26-FPGA-Pango\\host\\reports\\rgb33-calibration-20261010\\pinhole_k1_k2_p1_p2.json",
+  "source_sha256": "03cfa2872a1b0f331eceeafea6eaac052732d12f57f0b57277ea8f073a69af54",
+  "source_status": "candidate_unverified",
+  "source_stage": "unverified",
+  "hardware_applied": false,
+  "measurement_ready": false,
+  "image_size": [
+    1920,
+    1080
+  ],
+  "pixel_centres": "integer",
+  "bayer": null,
+  "intrinsic_float": {
+    "fx": 852.237825886163,
+    "fy": 846.8493177487433,
+    "cx": 947.4214189950438,
+    "cy": 582.2631923208444
+  },
+  "distortion_float": {
+    "k1": -0.25293223333471904,
+    "k2": 0.04752252980279253,
+    "p1": -0.0014616301819675237,
+    "p2": -0.00025182660541714217
+  },
+  "fixed": {
+    "a00": {
+      "signed_bits": 32,
+      "fraction_bits": 26,
+      "value": 78744,
+      "hex": "00013398"
+    },
+    "a01": {
+      "signed_bits": 32,
+      "fraction_bits": 26,
+      "value": 0,
+      "hex": "00000000"
+    },
+    "a02": {
+      "signed_bits": 32,
+      "fraction_bits": 26,
+      "value": -74604029,
+      "hex": "fb8da203"
+    },
+    "a10": {
+      "signed_bits": 32,
+      "fraction_bits": 26,
+      "value": 0,
+      "hex": "00000000"
+    },
+    "a11": {
+      "signed_bits": 32,
+      "fraction_bits": 26,
+      "value": 79245,
+      "hex": "0001358d"
+    },
+    "a12": {
+      "signed_bits": 32,
+      "fraction_bits": 26,
+      "value": -46141646,
+      "hex": "fd3fef32"
+    },
+    "k1": {
+      "signed_bits": 32,
+      "fraction_bits": 26,
+      "value": -16973995,
+      "hex": "fefcff55"
+    },
+    "k2": {
+      "signed_bits": 32,
+      "fraction_bits": 26,
+      "value": 3189183,
+      "hex": "0030a9bf"
+    },
+    "p1": {
+      "signed_bits": 32,
+      "fraction_bits": 26,
+      "value": -98088,
+      "hex": "fffe80d8"
+    },
+    "p2": {
+      "signed_bits": 32,
+      "fraction_bits": 26,
+      "value": -16900,
+      "hex": "ffffbdfc"
+    },
+    "fx": {
+      "signed_bits": 32,
+      "fraction_bits": 16,
+      "value": 55852258,
+      "hex": "03543ce2"
+    },
+    "fy": {
+      "signed_bits": 32,
+      "fraction_bits": 16,
+      "value": 55499117,
+      "hex": "034ed96d"
+    },
+    "cx": {
+      "signed_bits": 32,
+      "fraction_bits": 16,
+      "value": 62090210,
+      "hex": "03b36be2"
+    },
+    "cy": {
+      "signed_bits": 32,
+      "fraction_bits": 16,
+      "value": 38159201,
+      "hex": "02464361"
+    }
+  },
+  "note": "Offline inverse affine for Kout=K, zero screen rotation; original calibration remains candidate_unverified. This is not an external UART payload schema."
+}
