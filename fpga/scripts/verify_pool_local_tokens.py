@@ -78,13 +78,14 @@ import frame_manager_pkg::*;
 module tb_pool_counter_fences;
  reg clk=0,reset_n=0;always #5 clk=~clk;
  frame_cmd_t cmd;frame_rsp_t rsp;
- reg [63:0] seeds[0:4],held_ticket;integer i;
+ reg [63:0] seeds[0:8],held_ticket;integer i;
  frame_pool_bank #(.SLOTS(1),.TXNS(1)) dut(clk,reset_n,1'b1,1'b1,cmd,rsp);
  initial begin
-  seeds[0]=64'hffff;seeds[1]=64'hffffffff;seeds[2]=64'hffffffffffff;
-  seeds[3]=64'hfffffffffffffffe;seeds[4]=64'hffffffffffffffff;
+  // Every eight-bit boundary covers both reviewed 8- and 16-bit chunkings.
+  for(i=0;i<7;i=i+1)seeds[i]=(64'd1<<((i+1)*8))-1;
+  seeds[7]=64'hfffffffffffffffe;seeds[8]=64'hffffffffffffffff;
   cmd='0;
-  for(i=0;i<5;i=i+1)begin
+  for(i=0;i<9;i=i+1)begin
    reset_n=0;cmd='0;repeat(3)@(negedge clk);reset_n=1;@(negedge clk);
    // Identical test-only deposits in independent implementations avoid
    // billions of transactions. Public operation/response checks remain live.
@@ -93,7 +94,7 @@ module tb_pool_counter_fences;
    cmd.alloc=1;cmd.meta.width=35;cmd.meta.height=33;cmd.meta.stride=6144;cmd.meta.format=2;
    cmd.meta.epoch=1;cmd.meta.frame_id=1;cmd.meta.capture_first=10;
    #1;
-   if(i==4)begin
+   if(i==8)begin
     if(rsp.alloc_ready)$fatal(1,"Order counter exhaustion wrapped");
     @(posedge clk);#3;
     if(dut.candidate.next_order!==seeds[i])$fatal(1,"Exhausted order counter changed");

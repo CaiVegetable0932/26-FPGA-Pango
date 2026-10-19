@@ -12,6 +12,8 @@ import subprocess
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--rtl-snapshot', type=Path, help='Read immutable source directory from a board build')
+    parser.add_argument('--fixture-snapshot', type=Path,
+                        help='Explicit frozen experimental sim/ fixture directory; hashes remain recorded')
     parser.add_argument('--full-frame', action='store_true')
     parser.add_argument('--control-test', action='store_true')
     parser.add_argument('--snapshot-test', action='store_true')
@@ -46,7 +48,8 @@ def main():
         dest.parent.mkdir(parents=True, exist_ok=True)
         # RTL bytes come from the exact native build; stimulus remains the
         # independent live SV fixture with its own recorded source hash.
-        origin = (rtl_origin / name) if name.startswith('rtl/') else (fpga / name)
+        fixture_origin = options.fixture_snapshot.resolve() if options.fixture_snapshot else fpga
+        origin = (rtl_origin / name) if name.startswith('rtl/') else (fixture_origin / name)
         shutil.copyfile(origin, dest)
     hashes = {n: hashlib.sha256((source / n).read_bytes()).hexdigest() for n in names}
     (run / 'sources.json').write_text(json.dumps(hashes, indent=2), encoding='utf-8')
@@ -90,6 +93,7 @@ def main():
               'rtl_snapshot': str(options.rtl_snapshot) if options.rtl_snapshot else None, 'snapshot_test': options.snapshot_test, 'control_test': options.control_test,
               'hardware_tested': False, 'board_integrated': False, 'compiler': 'Verilator 5.052 / GCC 13.1.0'}
     result['build_jobs'] = options.build_jobs
+    result['fixture_snapshot'] = str(options.fixture_snapshot) if options.fixture_snapshot else None
     result['display_test'] = options.display_test
     print('VERILATOR_START', run, flush=True)
     try:

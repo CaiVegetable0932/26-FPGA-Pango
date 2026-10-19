@@ -1,0 +1,2294 @@
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+W: Warning : The license will invalid in 14 days. In order not to affect your usage, please update the license in time.
+
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/prepare.pds'.
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate successfully.
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676 successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/frame_manager_pkg.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/frame_manager_pkg.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/clock.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/clock.fdc successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc successfully.
+
+
+Executing : compile -top_module regional_wrapper -system_verilog
+
+
+Process "Compile" started.
+Current time: Tue Oct 20 03:31:58 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/prepare.pds'.
+License checkout: fabric_ads from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling verification operator library.
+Loading technology operator library.
+Compiling technology operator library.
+Compiling technology operator (valence) library.
+I: Enable SystemVerilog features and keywords
+Start rtl-analyze.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/frame_manager_pkg.sv
+I: Verilog-0001: Analyzing file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/frame_manager_pkg.sv
+Parsing done.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/frame_manager_pkg.sv successfully.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv
+I: Verilog-0001: Analyzing file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv
+I: Found Verilog include file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/frame_manager_layout.vh
+I: Verilog-0002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 8)] Analyzing module frame_pool_bank (library work)
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 271)] Convert attribute name from syn_ramstyle to PAP_RAM_STYLE
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 285)] Convert attribute name from syn_ramstyle to PAP_RAM_STYLE
+Parsing done.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv successfully.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv
+I: Verilog-0001: Analyzing file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv
+I: Verilog-0002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv(line number: 2)] Analyzing module regional_wrapper (library work)
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv(line number: 4)] Convert attribute name from syn_preserve to PAP_PRESERVE
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv(line number: 6)] Convert attribute name from syn_preserve to PAP_PRESERVE
+Parsing done.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv successfully.
+I: Module "regional_wrapper" is set as top module.
+Executing : rtl-analyze successfully. Time elapsed: 1.590s wall, 0.016s user + 0.016s system = 0.031s CPU (2.0%)
+
+Start rtl-elaborate.
+I: Verilog-0003: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv(line number: 2)] Elaborating module regional_wrapper
+I: Verilog-0004: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv(line number: 10)] Elaborating instance dut
+I: Verilog-0003: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 8)] Elaborating module frame_pool_bank
+I: Module instance {regional_wrapper/dut} parameter value:
+    SLOTS = 32'b00000000000000000000000000000011
+    BASE = 32'b00000000000000000000000000000000
+    SLOT_BYTES = 32'b00000000100000000000000000000000
+    TXNS = 32'b00000000000000000000000000000011
+    STRIDE = 32'b00000000000000000001100000000000
+Executing : rtl-elaborate successfully. Time elapsed: 0.035s wall, 0.016s user + 0.016s system = 0.031s CPU (89.4%)
+
+Start rtl-prep.
+Executing : rtl-prep successfully. Time elapsed: 0.147s wall, 0.141s user + 0.000s system = 0.141s CPU (95.5%)
+
+Start rtl-infer.
+Start DFF-inference.
+Executing : DFF-inference successfully.
+W: Sdm-2000: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 402)] Removed register node dut/older[0] that is stuck at constant 0.
+W: Sdm-2000: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 402)] Removed register node dut/older[4] that is stuck at constant 0.
+W: Sdm-2000: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 402)] Removed register node dut/older[8] that is stuck at constant 0.
+I: Sdm-0001: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 295)] Found Ram multi_slot_metadata.storage, depth=4, width=520.
+I: Sdm-0001: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 295)] Found Ram multi_slot_metadata.storage, depth=4, width=520.
+I: Sdm-0001: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 295)] Found Ram multi_slot_metadata.storage, depth=4, width=64.
+I: Sdm-0001: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 295)] Found Ram multi_slot_metadata.storage, depth=4, width=520.
+I: Sdm-0001: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv(line number: 295)] Found Ram multi_slot_metadata.storage, depth=4, width=520.
+Executing : rtl-infer successfully. Time elapsed: 2.119s wall, 1.875s user + 0.156s system = 2.031s CPU (95.8%)
+
+Start rtl-control-opt.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+Executing : rtl-control-opt successfully. Time elapsed: 0.253s wall, 0.234s user + 0.016s system = 0.250s CPU (99.0%)
+
+Start rtl-data-opt.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+Executing : rtl-data-opt successfully. Time elapsed: 2.027s wall, 1.938s user + 0.047s system = 1.984s CPU (97.9%)
+
+Start FSM inference.
+Executing : FSM inference successfully. Time elapsed: 0.161s wall, 0.156s user + 0.000s system = 0.156s CPU (97.0%)
+
+Start sdm2adm.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+I: Constant propagation done on N132 (bmsWIDEMUX).
+I: Constant propagation done on N405 (bmsWIDEMUX).
+I: Constant propagation done on N40[0] (bmsWIDEMUX).
+I: Constant propagation done on N1697[2820] (bmsWIDEMUX).
+I: Constant propagation done on N1983 (bmsWIDEMUX).
+I: Constant propagation done on N1697[2821] (bmsWIDEMUX).
+I: Constant propagation done on N2744 (bmsWIDEMUX).
+I: Constant propagation done on N329[2][1] (bmsWIDEMUX).
+I: Constant propagation done on N2743 (bmsWIDEMUX).
+I: Constant propagation done on N2679_0 (bmsREDOR).
+Executing : sdm2adm successfully. Time elapsed: 1.653s wall, 1.609s user + 0.031s system = 1.641s CPU (99.3%)
+
+Saving design to DB.
+Action compile: Real time elapsed is 0h:0m:11s
+Action compile: CPU time elapsed is 0h:0m:8s
+Action compile: Process CPU time elapsed is 0h:0m:8s
+Current time: Tue Oct 20 03:32:08 2026
+Action compile: Peak memory pool usage is 183 MB
+Action from compile to compile: Total Real Time elapsed is 0h:0m:11s
+Action from compile to compile: Total CPU time elapsed is 0h:0m:8s
+Action from compile to compile: Total Process CPU Time elapsed is 0h:0m:8s
+Process "Compile" done.
+Executing : compile -top_module regional_wrapper -system_verilog successfully.
+
+
+Executing : synthesize -ads -fanout_guide 64 -rw_check_on_ram -resource_sharing false -selected_syn_tool_opt 2
+
+
+Process "Synthesize" started.
+Current time: Tue Oct 20 03:32:09 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/prepare.pds'.
+License checkout: fabric_ads from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling verification operator library.
+Compiling common defs.
+Loading technology operator library.
+Compiling technology operator library.
+Compiling technology operator (valence) library.
+Reading design from compile DB
+Reading design from compile DB successfully.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 148538
+
+Constraint check start.
+Compiling prim grid devices.
+Building architecture model.
+Loading device packaging model.
+Building architecture floorplan logic view.
+Executing : get_ports clk
+Executing : get_ports clk successfully.
+Executing : create_clock -name clk -period 8.000 [get_ports clk]
+Executing : create_clock -name clk -period 8.000 [get_ports clk] successfully.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 93)] | Port scan_in[16] has been placed at location H24, whose type is share pin.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 103)] | Port scan_in[18] has been placed at location E23, whose type is share pin.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 108)] | Port scan_in[19] has been placed at location J24, whose type is share pin.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 173)] | Port scan_out[0] has been placed at location N16, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[0] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[0] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 178)] | Port scan_out[1] has been placed at location J25, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[1] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[1] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 183)] | Port scan_out[2] has been placed at location N18, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[2] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[2] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 188)] | Port scan_out[3] has been placed at location R17, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[3] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[3] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[4] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[4] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 198)] | Port scan_out[5] has been placed at location G26, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[5] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[5] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[6] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[6] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 208)] | Port scan_out[7] has been placed at location E25, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[7] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[7] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 213)] | Port scan_out[8] has been placed at location F23, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[8] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[8] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 218)] | Port scan_out[9] has been placed at location G24, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[9] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[9] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 223)] | Port scan_out[10] has been placed at location N17, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[10] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[10] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 228)] | Port scan_out[11] has been placed at location P14, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[11] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[11] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[12] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[12] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 238)] | Port scan_out[13] has been placed at location D25, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[13] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[13] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 243)] | Port scan_out[14] has been placed at location K23, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[14] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[14] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 248)] | Port scan_out[15] has been placed at location G25, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[15] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[15] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 253)] | Port scan_out[16] has been placed at location F24, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[16] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[16] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 258)] | Port scan_out[17] has been placed at location P16, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[17] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[17] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[18] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[18] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 268)] | Port scan_out[19] has been placed at location R14, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[19] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[19] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[20] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[20] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 278)] | Port scan_out[21] has been placed at location H26, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[21] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[21] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 283)] | Port scan_out[22] has been placed at location J26, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[22] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[22] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[23] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[23] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 293)] | Port scan_out[24] has been placed at location P18, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[24] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[24] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[25] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[25] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 303)] | Port scan_out[26] has been placed at location R15, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[26] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[26] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 308)] | Port scan_out[27] has been placed at location N14, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[27] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[27] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[28] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[28] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[29] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[29] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc(line number: 323)] | Port scan_out[30] has been placed at location R16, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[30] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[30] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[31] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[31] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+Constraint check end.
+
+Start pre-mapping.
+I: Constant propagation done on dut/N5422 (bmsWIDEINV).
+I: Constant propagation done on dut/N5423 (bmsWIDEINV).
+I: Constant propagation done on dut/N5424 (bmsWIDEINV).
+I: Constant propagation done on dut/N5425 (bmsWIDEINV).
+I: Constant propagation done on dut/N5426 (bmsWIDEINV).
+I: Constant propagation done on dut/N5427 (bmsWIDEINV).
+I: Constant propagation done on dut/N5428 (bmsWIDEINV).
+I: Constant propagation done on dut/N5429 (bmsWIDEINV).
+I: Constant propagation done on dut/N5430 (bmsWIDEINV).
+I: Constant propagation done on dut/N5431 (bmsWIDEINV).
+Executing : pre-mapping successfully. Time elapsed: 0.102s wall, 0.094s user + 0.000s system = 0.094s CPU (92.3%)
+
+Start mod-gen.
+Executing : mod-gen successfully. Time elapsed: 1.071s wall, 1.234s user + 0.266s system = 1.500s CPU (140.0%)
+
+Start logic-optimization.
+W: Public-4008: Instance 'dut/older[1]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Removed bmsWIDEDFFCPE inst dut/peak_slots[2:0] at 2 that is stuck at constant 0.
+W: Public-4008: Instance 'dut/older[2]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+Executing : logic-optimization successfully. Time elapsed: 4.147s wall, 3.484s user + 0.406s system = 3.891s CPU (93.8%)
+
+Start tech-mapping phase 1.
+W: Public-4008: Instance 'dut/peak_slots[2]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+Executing : tech-mapping phase 1 successfully. Time elapsed: 0.756s wall, 0.641s user + 0.062s system = 0.703s CPU (93.1%)
+
+Start tech-mapping phase 2.
+Executing : tech-mapping phase 2 successfully. Time elapsed: 7.194s wall, 6.734s user + 0.656s system = 7.391s CPU (102.7%)
+
+Start tech-optimization.
+W: Public-4008: Instance 'dut/older[5]' of 'GTP_DFF_RE' unit is dangling and will be cleaned.
+W: Unable to honor max fanout constraint for gtp_inv driven net dut/N1988
+W: syn_maxfan of lutcarry dut/N8106_4 is more than 64 on net dut/selected[2] [0], but wasn't replicated.
+W: syn_maxfan of lutcarry dut/N991[2][1] is more than 64 on net dut/selected[2] [1], but wasn't replicated.
+W: Unable to honor max fanout constraint for gtp_inv driven net dut/N1988
+W: syn_maxfan of lutcarry dut/N8106_4 is more than 64 on net dut/selected[2] [0], but wasn't replicated.
+W: syn_maxfan of lutcarry dut/N991[2][1] is more than 64 on net dut/selected[2] [1], but wasn't replicated.
+Executing : tech-optimization successfully. Time elapsed: 2.603s wall, 2.438s user + 0.375s system = 2.812s CPU (108.0%)
+
+Start phys-optimization.
+Executing : phys-optimization successfully. Time elapsed: 0.000s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start restore-hierarchy.
+Executing : restore-hierarchy successfully. Time elapsed: 0.210s wall, 0.203s user + 0.000s system = 0.203s CPU (96.6%)
+
+W: syn_maxfan of lutcarry N991[2][1] is more than 64 on net selected[2] [1], but wasn't replicated.
+W: syn_maxfan of lutcarry N8106_4 is more than 64 on net selected[2] [0], but wasn't replicated.
+W: Unable to honor max fanout constraint for gtp_inv driven net N1988
+W: syn_maxfan of lutcarry N991[2][1] is more than 64 on net selected[2] [1], but wasn't replicated.
+W: syn_maxfan of lutcarry N8106_4 is more than 64 on net selected[2] [0], but wasn't replicated.
+W: Unable to honor max fanout constraint for gtp_inv driven net N1988
+W: prevent name conflict by renaming net dut/N656 to dut/N656_rnmt
+W: prevent name conflict by renaming net dut/N832 to dut/N832_rnmt
+W: prevent name conflict by renaming net dut/N1216 to dut/N1216_rnmt
+W: prevent name conflict by renaming net dut/N1621 to dut/N1621_rnmt
+W: prevent name conflict by renaming net dut/N8298 to dut/N8298_rnmt
+W: prevent name conflict by renaming net dut/N8362 to dut/N8362_rnmt
+W: prevent name conflict by renaming net dut/acq_slots_25 to dut/acq_slots_25_rnmt
+W: prevent name conflict by renaming net dut/acq_slots_15 to dut/acq_slots_15_rnmt
+W: prevent name conflict by renaming net dut/N1007_3 to dut/N1007_3_rnmt
+W: prevent name conflict by renaming net dut/N8684_inv to dut/N8684_inv_rnmt
+W: prevent name conflict by renaming net dut/N8687_inv to dut/N8687_inv_rnmt
+
+Cell Usage:
+GTP_DFF                    1296 uses
+GTP_DFF_C                   268 uses
+GTP_DFF_CE                  256 uses
+GTP_DFF_E                   303 uses
+GTP_DFF_R                  2709 uses
+GTP_GRS                       1 use
+GTP_INV                       2 uses
+GTP_LUT1                     34 uses
+GTP_LUT2                     10 uses
+GTP_LUT3                     17 uses
+GTP_LUT4                   1150 uses
+GTP_LUT5                    481 uses
+GTP_LUT6                   1286 uses
+GTP_LUT6CARRY              1022 uses
+GTP_LUT6D                   663 uses
+GTP_MUX2LUT7                354 uses
+GTP_MUX2LUT8                129 uses
+GTP_RAM32X2DP              1072 uses
+
+I/O ports: 73
+GTP_INBUF                  41 uses
+GTP_OUTBUF                 32 uses
+
+Mapping Summary:
+Total LUTs: 5735 of 66600 (8.61%)
+	LUTs as dram: 1072 of 19900 (5.39%)
+	LUTs as logic: 4663
+Total Registers: 4832 of 133200 (3.63%)
+Total Latches: 0
+
+DRM36K/FIFO:
+Total DRM = 0.0 of 155 (0.00%)
+
+APMs:
+Total APMs = 0.00 of 240 (0.00%)
+
+Total I/O ports = 73 of 300 (24.33%)
+
+
+Overview of Control Sets:
+
+Number of unique control sets : 21
+
+Histogram:
+**************************************************************
+  Fanout      | Count    | Sync Set/Reset    Async Set/Reset
+--------------------------------------------------------------
+  [0, 2)      | 0        | 0                 0
+  [2, 4)      | 2        | 1                 1
+  [4, 6)      | 3        | 3                 0
+  [6, 8)      | 0        | 0                 0
+  [8, 10)     | 0        | 0                 0
+  [10, 12)    | 0        | 0                 0
+  [12, 14)    | 0        | 0                 0
+  [14, 16)    | 0        | 0                 0
+  [16, Inf)   | 16       | 10                6
+--------------------------------------------------------------
+  The maximum fanout: 2611
+==============================================================
+
+Flip-Flop Distribution:
+************************************************************************
+  Clock Enable    Sync Set/Reset    Async Set/Reset    Total Registers
+------------------------------------------------------------------------
+  NO              NO                NO                 1296
+  NO              NO                YES                268
+  NO              YES               NO                 2709
+  YES             NO                NO                 303
+  YES             NO                YES                256
+  YES             YES               NO                 0
+========================================================================
+
+Latch Distribution:
+************************************************
+  Gate Enable    Preset/Clear    Total Latches
+************************************************
+  NO             NO              0
+  NO             YES             0
+  YES            NO              0
+  YES            YES             0
+************************************************
+
+Design 'regional_wrapper' has been successfully synthesized to architecture-specific objects.
+Saving design to DB.
+Saving design to regional_wrapper_syn.vm
+Constructing timing graph ...
+Timing graph has been constructed successfully
+W: Timing-4087: Port 'scan_out[0]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[1]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[2]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[3]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[4]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[5]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[6]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[7]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[8]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[9]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[10]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[11]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[12]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[13]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[14]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[15]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[16]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[17]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[18]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[19]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[20]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[21]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[22]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[23]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[24]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[25]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[26]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[27]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[28]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[29]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[30]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[31]' is not constrained, it is treated as combinational output.
+W: Timing-4086: Port 'rst_n' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[0]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[1]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[2]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[3]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[4]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[5]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[6]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[0]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[1]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[2]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[3]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[4]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[5]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[6]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[7]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[8]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[9]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[10]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[11]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[12]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[13]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[14]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[15]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[16]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[17]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[18]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[19]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[20]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[21]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[22]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[23]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[24]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[25]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[26]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[27]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[28]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[29]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[30]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[31]' is not constrained, it is treated as combinational input.
+Action synthesize: Real time elapsed is 0h:0m:28s
+Action synthesize: CPU time elapsed is 0h:0m:24s
+Action synthesize: Process CPU time elapsed is 0h:0m:25s
+Current time: Tue Oct 20 03:32:36 2026
+Action synthesize: Peak memory pool usage is 525 MB
+Action from compile to synthesize: Total Real Time elapsed is 0h:0m:39s
+Action from compile to synthesize: Total CPU time elapsed is 0h:0m:32s
+Action from compile to synthesize: Total Process CPU Time elapsed is 0h:0m:33s
+Process "Synthesize" done.
+Executing : synthesize -ads -fanout_guide 64 -rw_check_on_ram -resource_sharing false -selected_syn_tool_opt 2 successfully.
+
+
+Executing : dev_map
+
+
+Process "Device Map" started.
+Current time: Tue Oct 20 03:32:37 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/prepare.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Loading technology operator library.
+Compiling technology operator library.
+Compiling technology operator (valence) library.
+Compiling operator packing rules.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Compiling tech operator impls.
+Building architecture model.
+Loading device packaging model.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 148538
+
+Flattening design 'regional_wrapper'
+W: Public-4008: Instance 'scan_inputs[1080]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[1081]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[1082]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[1083]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[1084]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[1085]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[1086]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[1087]' of 'GTP_DFF' unit is dangling and will be cleaned.
+Device mapping started.
+Optimizing circuit logic.
+Checking design netlist.
+Processing tech operator.
+I: The instance clkbufg_0(GTP_CLKBUFG) has been inserted on the net nt_clk in design, driver pin O(instance clk_ibuf) -> load pin CLK(instance dut/announced).
+Converting tech operator to gate operator.
+Processing gate operator.
+I: Infer CARRY group, base inst: dut/N33.eq_0/gateop, insts:32.
+I: Infer CARRY group, base inst: dut/N66.eq_0/gateop, insts:32.
+I: Infer CARRY group, base inst: dut/N99.eq_0/gateop, insts:32.
+I: Infer CARRY group, base inst: dut/N298[2]/gateop, insts:3.
+I: Infer CARRY group, base inst: dut/N502_0_0/gateop, insts:32.
+I: Infer CARRY group, base inst: dut/N519.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N529.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N542.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N552.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N565.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N575.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N702.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N717.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N732.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N878.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N893.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N908.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N991[2][1]/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N1053.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1076.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1099.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1131.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1156.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1181.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1262.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1285.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1308.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1325[3]_2/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N1340.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1433.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1519_14/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N1526.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N1629_0_0/gateop, insts:64.
+I: Infer CARRY group, base inst: dut/N1893.lt_0/gateop, insts:32.
+I: Infer CARRY group, base inst: dut/N3000_0_1/gateop, insts:31.
+I: Infer CARRY group, base inst: dut/N3071_0/gateop, insts:33.
+I: Infer CARRY group, base inst: dut/N3072_1/gateop, insts:32.
+I: Infer CARRY group, base inst: dut/N3073_1/gateop, insts:32.
+I: Infer CARRY group, base inst: dut/N3093_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3101_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3109_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3117_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3130_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3134_26/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N3138_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3146_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3154_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3167_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3171_26/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N3175_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3183_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3191_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3204_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3208_26/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N3212_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3220_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N3228_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N7844_1/gateop, insts:3.
+I: Infer CARRY group, base inst: dut/N7845_1/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N7898_5/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N8106_3/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N8554_3/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N8622_2/gateop, insts:2.
+I: Infer CARRY group, base inst: dut/N8690_2/gateop, insts:2.
+Device Utilization Summary:
++------------------------------------------------------------------------+
+| Logic Utilization     | Used     | Available     | Utilization(%)     
++------------------------------------------------------------------------+
+| APM                   | 0        | 240           | 0                  
+| FF                    | 4824     | 133200        | 4                  
+| LUT                   | 5719     | 66600         | 9                  
+| Distributed RAM       | 1072     | 19900         | 6                  
+| DRM                   | 0        | 155           | 0                  
+| IO                    | 73       | 300           | 25                 
+| RCKB                  | 0        | 24            | 0                  
+| SCANCHAIN             | 0        | 1             | 0                  
+| USCM                  | 1        | 32            | 4                  
+| CCS                   | 1        | 1             | 100                
+| ADC                   | 0        | 1             | 0                  
+| DDR_PHY               | 0        | 24            | 0                  
+| HSSTLP                | 0        | 2             | 0                  
+| GPLL                  | 0        | 6             | 0                  
+| PPLL                  | 0        | 6             | 0                  
+| DDRPHY_CPD            | 0        | 12            | 0                  
+| HCKB                  | 0        | 96            | 0                  
+| IOCKB                 | 0        | 24            | 0                  
+| MRCKB                 | 0        | 12            | 0                  
+| PCIE                  | 0        | 1             | 0                  
+| DDRPHY_IOCLK_DIV      | 0        | 6             | 0                  
+| ANALOG                | 0        | 1             | 0                  
+| TSERDES               | 0        | 48            | 0                  
+| KEYRAM                | 0        | 1             | 0                  
++------------------------------------------------------------------------+
+
+Device mapping done.
+Total device mapping takes 0.83 sec.
+
+Design 'regional_wrapper' has been successfully mapped to architecture-specific objects.
+Saving design to DB.
+Action dev_map: Real time elapsed is 0h:0m:14s
+Action dev_map: CPU time elapsed is 0h:0m:10s
+Action dev_map: Process CPU time elapsed is 0h:0m:10s
+Current time: Tue Oct 20 03:32:50 2026
+Action dev_map: Peak memory pool usage is 413 MB
+Action from compile to dev_map: Total Real Time elapsed is 0h:0m:53s
+Action from compile to dev_map: Total CPU time elapsed is 0h:0m:42s
+Action from compile to dev_map: Total Process CPU Time elapsed is 0h:0m:43s
+Process "Device Map" done.
+Executing : dev_map successfully.
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+W: Warning : The license will invalid in 14 days. In order not to affect your usage, please update the license in time.
+
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/place_route.pds'.
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate successfully.
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676 successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/frame_manager_pkg.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/frame_manager_pkg.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/clock.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/clock.fdc successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf successfully.
+
+
+Executing : pnr -force_to_run -input_db_file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper_map.adf -action_timeout 20 -gplace_seed 11 -plc_decongestion 2 -max_ctrl_chain_length 500 -mode normal -congest_overlap_limit 200 -dump_router_congestion_plot TRUE
+
+
+Process "Place & Route" started.
+Current time: Tue Oct 20 03:32:58 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/place_route.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Building architecture model.
+Loading device packaging model.
+pnr strategy configuration : 
+strategy name : 0
+Building architecture floorplan logic view.
+Constraint check start.
+Executing : def_port {scan_out[0]} LOC=N16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[0] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[0] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 3)] | Port scan_out[0] has been placed at location N16, whose type is share pin.
+Executing : def_port {scan_out[0]} LOC=N16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[1]} LOC=J25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[1] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[1] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 4)] | Port scan_out[1] has been placed at location J25, whose type is share pin.
+Executing : def_port {scan_out[1]} LOC=J25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[2]} LOC=N18 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[2] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[2] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 5)] | Port scan_out[2] has been placed at location N18, whose type is share pin.
+Executing : def_port {scan_out[2]} LOC=N18 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[3]} LOC=R17 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[3] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[3] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 6)] | Port scan_out[3] has been placed at location R17, whose type is share pin.
+Executing : def_port {scan_out[3]} LOC=R17 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[4]} LOC=L5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[4] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[4] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {scan_out[4]} LOC=L5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[5]} LOC=G26 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[5] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[5] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 8)] | Port scan_out[5] has been placed at location G26, whose type is share pin.
+Executing : def_port {scan_out[5]} LOC=G26 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[6]} LOC=K3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[6] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[6] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {scan_out[6]} LOC=K3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[7]} LOC=E25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[7] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[7] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 10)] | Port scan_out[7] has been placed at location E25, whose type is share pin.
+Executing : def_port {scan_out[7]} LOC=E25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[8]} LOC=F23 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[8] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[8] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 11)] | Port scan_out[8] has been placed at location F23, whose type is share pin.
+Executing : def_port {scan_out[8]} LOC=F23 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[9]} LOC=G24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[9] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[9] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 12)] | Port scan_out[9] has been placed at location G24, whose type is share pin.
+Executing : def_port {scan_out[9]} LOC=G24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[10]} LOC=N17 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[10] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[10] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 13)] | Port scan_out[10] has been placed at location N17, whose type is share pin.
+Executing : def_port {scan_out[10]} LOC=N17 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[11]} LOC=P14 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[11] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[11] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 14)] | Port scan_out[11] has been placed at location P14, whose type is share pin.
+Executing : def_port {scan_out[11]} LOC=P14 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[12]} LOC=L19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[12] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[12] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {scan_out[12]} LOC=L19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[13]} LOC=D25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[13] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[13] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 16)] | Port scan_out[13] has been placed at location D25, whose type is share pin.
+Executing : def_port {scan_out[13]} LOC=D25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[14]} LOC=K23 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[14] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[14] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 17)] | Port scan_out[14] has been placed at location K23, whose type is share pin.
+Executing : def_port {scan_out[14]} LOC=K23 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[15]} LOC=G25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[15] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[15] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 18)] | Port scan_out[15] has been placed at location G25, whose type is share pin.
+Executing : def_port {scan_out[15]} LOC=G25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[16]} LOC=F24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[16] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[16] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 19)] | Port scan_out[16] has been placed at location F24, whose type is share pin.
+Executing : def_port {scan_out[16]} LOC=F24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[17]} LOC=P16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[17] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[17] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 20)] | Port scan_out[17] has been placed at location P16, whose type is share pin.
+Executing : def_port {scan_out[17]} LOC=P16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[18]} LOC=J3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[18] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[18] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {scan_out[18]} LOC=J3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[19]} LOC=R14 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[19] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[19] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 22)] | Port scan_out[19] has been placed at location R14, whose type is share pin.
+Executing : def_port {scan_out[19]} LOC=R14 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[20]} LOC=E2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[20] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[20] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {scan_out[20]} LOC=E2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[21]} LOC=H26 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[21] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[21] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 24)] | Port scan_out[21] has been placed at location H26, whose type is share pin.
+Executing : def_port {scan_out[21]} LOC=H26 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[22]} LOC=J26 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[22] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[22] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 25)] | Port scan_out[22] has been placed at location J26, whose type is share pin.
+Executing : def_port {scan_out[22]} LOC=J26 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[23]} LOC=K5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[23] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[23] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {scan_out[23]} LOC=K5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[24]} LOC=P18 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[24] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[24] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 27)] | Port scan_out[24] has been placed at location P18, whose type is share pin.
+Executing : def_port {scan_out[24]} LOC=P18 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[25]} LOC=P15 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[25] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[25] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {scan_out[25]} LOC=P15 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[26]} LOC=R15 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[26] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[26] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 29)] | Port scan_out[26] has been placed at location R15, whose type is share pin.
+Executing : def_port {scan_out[26]} LOC=R15 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[27]} LOC=N14 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[27] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[27] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 30)] | Port scan_out[27] has been placed at location N14, whose type is share pin.
+Executing : def_port {scan_out[27]} LOC=N14 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[28]} LOC=N8 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[28] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[28] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {scan_out[28]} LOC=N8 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[29]} LOC=M7 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[29] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[29] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {scan_out[29]} LOC=M7 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[30]} LOC=R16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[30] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[30] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 33)] | Port scan_out[30] has been placed at location R16, whose type is share pin.
+Executing : def_port {scan_out[30]} LOC=R16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_out[31]} LOC=M19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: scan_out[31] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: scan_out[31] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {scan_out[31]} LOC=M19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {clk} LOC=M2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {clk} LOC=M2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {rst_n} LOC=K1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {rst_n} LOC=K1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_addr[0]} LOC=N7 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_addr[0]} LOC=N7 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_addr[1]} LOC=M6 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_addr[1]} LOC=M6 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_addr[2]} LOC=N6 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_addr[2]} LOC=N6 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_addr[3]} LOC=M5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_addr[3]} LOC=M5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_addr[4]} LOC=J1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_addr[4]} LOC=J1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_addr[5]} LOC=L4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_addr[5]} LOC=L4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_addr[6]} LOC=M4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_addr[6]} LOC=M4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[0]} LOC=A5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[0]} LOC=A5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[1]} LOC=B4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[1]} LOC=B4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[2]} LOC=C2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[2]} LOC=C2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[3]} LOC=A2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[3]} LOC=A2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[4]} LOC=G5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[4]} LOC=G5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[5]} LOC=C4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[5]} LOC=C4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[6]} LOC=G2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[6]} LOC=G2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[7]} LOC=A3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[7]} LOC=A3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[8]} LOC=L7 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[8]} LOC=L7 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[9]} LOC=G4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[9]} LOC=G4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[10]} LOC=C3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[10]} LOC=C3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[11]} LOC=D1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[11]} LOC=D1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[12]} LOC=D5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[12]} LOC=D5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[13]} LOC=D3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[13]} LOC=D3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[14]} LOC=B5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[14]} LOC=B5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[15]} LOC=F5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[15]} LOC=F5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[16]} LOC=H24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 60)] | Port scan_in[16] has been placed at location H24, whose type is share pin.
+Executing : def_port {scan_in[16]} LOC=H24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[17]} LOC=G22 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[17]} LOC=G22 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[18]} LOC=E23 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 62)] | Port scan_in[18] has been placed at location E23, whose type is share pin.
+Executing : def_port {scan_in[18]} LOC=E23 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[19]} LOC=J24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf(line number: 63)] | Port scan_in[19] has been placed at location J24, whose type is share pin.
+Executing : def_port {scan_in[19]} LOC=J24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[20]} LOC=A4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[20]} LOC=A4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[21]} LOC=D4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[21]} LOC=D4 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[22]} LOC=E5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[22]} LOC=E5 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[23]} LOC=B2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[23]} LOC=B2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[24]} LOC=E3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[24]} LOC=E3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[25]} LOC=F3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[25]} LOC=F3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[26]} LOC=C1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[26]} LOC=C1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[27]} LOC=E1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[27]} LOC=E1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[28]} LOC=F2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[28]} LOC=F2 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[29]} LOC=H3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[29]} LOC=H3 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[30]} LOC=G1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[30]} LOC=G1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {scan_in[31]} LOC=B1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {scan_in[31]} LOC=B1 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Constraint check end.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 5993935
+
+I: Column Clock Check open.
+Read Column Clock Map.
+
+Placement started.
+Phase 1 Pre global placement started.
+Mapping instance GRS_INST/grs_ccs to CCS_87_316.
+Phase 1.1 1st GP placement started.
+Design Utilization : 9%.
+First map gop timing takes 1.20 sec
+Worst slack after clock region global placement is 1225
+Wirelength after clock region global placement is 127839 and checksum is 93133CBDE8722700.
+1st GP placement takes 8.28 sec.
+
+Phase 1.2 Clock placement started.
+Mapping instance clkbufg_0/gopclkbufg to USCM_215_576.
+Clock placement takes 0.17 sec.
+
+Wirelength after Pre Global Placement is 127839 and checksum is 93133CBDE8722700.
+Pre global placement takes 9.03 sec.
+
+Phase 2 Global placement started.
+Phase 2.1 Fixed placement started.
+Placed fixed group with base inst clk_ibuf/opit_1 on IOLHR_364_480.
+Placed fixed group with base inst rst_n_ibuf/opit_1 on IOLHR_364_528.
+Placed fixed group with base inst scan_addr_ibuf[0]/opit_1 on IOLHR_364_552.
+Placed fixed group with base inst scan_addr_ibuf[1]/opit_1 on IOLHR_364_540.
+Placed fixed group with base inst scan_addr_ibuf[2]/opit_1 on IOLHR_364_546.
+Placed fixed group with base inst scan_addr_ibuf[3]/opit_1 on IOLHR_364_534.
+Placed fixed group with base inst scan_addr_ibuf[4]/opit_1 on IOLHR_364_522.
+Placed fixed group with base inst scan_addr_ibuf[5]/opit_1 on IOLHR_364_570.
+Placed fixed group with base inst scan_addr_ibuf[6]/opit_1 on IOLHR_364_576.
+Placed fixed group with base inst scan_in_ibuf[0]/opit_1 on IOLHR_364_726.
+Placed fixed group with base inst scan_in_ibuf[1]/opit_1 on IOLHR_364_720.
+Placed fixed group with base inst scan_in_ibuf[2]/opit_1 on IOLHR_364_684.
+Placed fixed group with base inst scan_in_ibuf[3]/opit_1 on IOLHR_364_666.
+Placed fixed group with base inst scan_in_ibuf[4]/opit_1 on IOLHR_364_774.
+Placed fixed group with base inst scan_in_ibuf[5]/opit_1 on IOLHR_364_738.
+Placed fixed group with base inst scan_in_ibuf[6]/opit_1 on IOLHR_364_624.
+Placed fixed group with base inst scan_in_ibuf[7]/opit_1 on IOLHR_364_672.
+Placed fixed group with base inst scan_in_ibuf[8]/opit_1 on IOLHR_364_582.
+Placed fixed group with base inst scan_in_ibuf[9]/opit_1 on IOLHR_364_786.
+Placed fixed group with base inst scan_in_ibuf[10]/opit_1 on IOLHR_364_702.
+Placed fixed group with base inst scan_in_ibuf[11]/opit_1 on IOLHR_364_630.
+Placed fixed group with base inst scan_in_ibuf[12]/opit_1 on IOLHR_364_750.
+Placed fixed group with base inst scan_in_ibuf[13]/opit_1 on IOLHR_364_708.
+Placed fixed group with base inst scan_in_ibuf[14]/opit_1 on IOLHR_364_732.
+Placed fixed group with base inst scan_in_ibuf[15]/opit_1 on IOLHR_364_768.
+Placed fixed group with base inst scan_in_ibuf[16]/opit_1 on IOLHR_16_714.
+Placed fixed group with base inst scan_in_ibuf[17]/opit_1 on IOLHR_16_732.
+Placed fixed group with base inst scan_in_ibuf[18]/opit_1 on IOLHR_16_702.
+Placed fixed group with base inst scan_in_ibuf[19]/opit_1 on IOLHR_16_720.
+Placed fixed group with base inst scan_in_ibuf[20]/opit_1 on IOLHR_364_714.
+Placed fixed group with base inst scan_in_ibuf[21]/opit_1 on IOLHR_364_744.
+Placed fixed group with base inst scan_in_ibuf[22]/opit_1 on IOLHR_364_756.
+Placed fixed group with base inst scan_in_ibuf[23]/opit_1 on IOLHR_364_678.
+Placed fixed group with base inst scan_in_ibuf[24]/opit_1 on IOLHR_364_690.
+Placed fixed group with base inst scan_in_ibuf[25]/opit_1 on IOLHR_364_696.
+Placed fixed group with base inst scan_in_ibuf[26]/opit_1 on IOLHR_364_660.
+Placed fixed group with base inst scan_in_ibuf[27]/opit_1 on IOLHR_364_636.
+Placed fixed group with base inst scan_in_ibuf[28]/opit_1 on IOLHR_364_648.
+Placed fixed group with base inst scan_in_ibuf[29]/opit_1 on IOLHR_364_612.
+Placed fixed group with base inst scan_in_ibuf[30]/opit_1 on IOLHR_364_618.
+Placed fixed group with base inst scan_in_ibuf[31]/opit_1 on IOLHR_364_654.
+Placed fixed group with base inst scan_out_obuf[0]/opit_1 on IOLHR_16_564.
+Placed fixed group with base inst scan_out_obuf[1]/opit_1 on IOLHR_16_624.
+Placed fixed group with base inst scan_out_obuf[2]/opit_1 on IOLHR_16_534.
+Placed fixed group with base inst scan_out_obuf[3]/opit_1 on IOLHR_16_546.
+Placed fixed group with base inst scan_out_obuf[4]/opit_1 on IOLHR_364_564.
+Placed fixed group with base inst scan_out_obuf[5]/opit_1 on IOLHR_16_642.
+Placed fixed group with base inst scan_out_obuf[6]/opit_1 on IOLHR_364_600.
+Placed fixed group with base inst scan_out_obuf[7]/opit_1 on IOLHR_16_672.
+Placed fixed group with base inst scan_out_obuf[8]/opit_1 on IOLHR_16_708.
+Placed fixed group with base inst scan_out_obuf[9]/opit_1 on IOLHR_16_684.
+Placed fixed group with base inst scan_out_obuf[10]/opit_1 on IOLHR_16_558.
+Placed fixed group with base inst scan_out_obuf[11]/opit_1 on IOLHR_16_588.
+Placed fixed group with base inst scan_out_obuf[12]/opit_1 on IOLHR_16_612.
+Placed fixed group with base inst scan_out_obuf[13]/opit_1 on IOLHR_16_666.
+Placed fixed group with base inst scan_out_obuf[14]/opit_1 on IOLHR_16_690.
+Placed fixed group with base inst scan_out_obuf[15]/opit_1 on IOLHR_16_636.
+Placed fixed group with base inst scan_out_obuf[16]/opit_1 on IOLHR_16_678.
+Placed fixed group with base inst scan_out_obuf[17]/opit_1 on IOLHR_16_570.
+Placed fixed group with base inst scan_out_obuf[18]/opit_1 on IOLHR_364_594.
+Placed fixed group with base inst scan_out_obuf[19]/opit_1 on IOLHR_16_600.
+Placed fixed group with base inst scan_out_obuf[20]/opit_1 on IOLHR_364_642.
+Placed fixed group with base inst scan_out_obuf[21]/opit_1 on IOLHR_16_648.
+Placed fixed group with base inst scan_out_obuf[22]/opit_1 on IOLHR_16_618.
+Placed fixed group with base inst scan_out_obuf[23]/opit_1 on IOLHR_364_558.
+Placed fixed group with base inst scan_out_obuf[24]/opit_1 on IOLHR_16_540.
+Placed fixed group with base inst scan_out_obuf[25]/opit_1 on IOLHR_16_576.
+Placed fixed group with base inst scan_out_obuf[26]/opit_1 on IOLHR_16_594.
+Placed fixed group with base inst scan_out_obuf[27]/opit_1 on IOLHR_16_582.
+Placed fixed group with base inst scan_out_obuf[28]/opit_1 on IOLHR_364_606.
+Placed fixed group with base inst scan_out_obuf[29]/opit_1 on IOLHR_364_588.
+Placed fixed group with base inst scan_out_obuf[30]/opit_1 on IOLHR_16_552.
+Placed fixed group with base inst scan_out_obuf[31]/opit_1 on IOLHR_16_606.
+Placed fixed instance GRS_INST/grs_ccs on CCS_87_316.
+Placed fixed instance clkbufg_0/gopclkbufg on USCM_215_576.
+Placed fixed instance BKCL_auto_0 on BKCL_1_646.
+Placed fixed instance BKCL_auto_1 on BKCL_1_340.
+Placed fixed instance BKCL_auto_2 on BKCL_373_646.
+Placed fixed instance BKCL_auto_3 on BKCL_373_340.
+Fixed placement takes 0.33 sec.
+
+Phase 2.2 Process placement started.
+Process placement takes 0.00 sec.
+
+Phase 2.3 IO placement started.
+IO placement takes 0.06 sec.
+
+Phase 2.4 2nd GP placement started.
+Run super clustering :
+	Initial slack -5769.
+	18 iterations finished.
+	Final slack -963.
+Super clustering done.
+Design Utilization : 9%.
+Worst slack after global placement is 273
+2nd GP placement takes 9.61 sec.
+
+Wirelength after global placement is 141190 and checksum is 52FBDCB4A0A998E1.
+Global placement takes 10.00 sec.
+
+Phase 3 Post global placement started.
+Packing LUT6D started.
+I: LUT6D pack result: There are 2255 LUT6 in collection, pack success:552
+Packing LUT6D takes 0.86 sec.
+Phase 3.1 Macro cell placement started.
+I: Process macros using "Greedy".
+Wirelength after macro cell placement is 141546 and checksum is 50DAF728C5E1B7CE.
+Macro cell placement takes 0.02 sec.
+
+Phase 3.2 3rd GP placement started.
+Run super clustering :
+	Initial slack -5861.
+	18 iterations finished.
+	Final slack -993.
+Super clustering done.
+Design Utilization : 8%.
+Worst slack after post global placement is -1600
+3rd GP placement takes 6.84 sec.
+
+Wirelength after post global placement is 151619 and checksum is 7E8A2BAD77C9F681.
+Packing LUT6D started.
+I: LUT6D pack result: There are 1035 LUT6 in collection, pack success:15
+Packing LUT6D takes 0.55 sec.
+Post global placement takes 8.28 sec.
+
+Phase 4 Legalization started.
+The average distance in LP is 0.946567.
+Wirelength after legalization is 165013 and checksum is CEDAC5FC56822432.
+Legalization takes 0.58 sec.
+
+Phase 5 Timing-driven detailed placement started.
+Phase 5.1 Replication placement started.
+Worst slack before Replication Place is -172.
+Replication placement takes 11.94 sec.
+
+Wirelength after replication placement is 171908 and checksum is 5F8A2CD89EEEA2B9.
+Phase 5.2 Swapping placement started.
+Worst slack before detailed placement is 477, TNS before detailed placement is 0. 
+Cost at Swap iteration 0 : 477, wslk 627, tns 0, takes 1.20 sec.
+Cost at DP iteration 0 : 627, wslk 958, tns 0, takes 0.86 sec.
+Cost at Swap iteration 1 : 958, wslk 1051, tns 0, takes 0.06 sec.
+Worst slack after detailed placement is 1051, TNS after detailed placement is 0. 
+Swapping placement takes 2.44 sec.
+
+I: Place-6001: Add the new FF instances CLMA_267_612(/FF3/FF) CLMS_285_637(/FF1/FF) replicated by the FF instance CLMA_201_690(/FF0/FF) .
+Origin dut/generation[0][5]/opit_0_inv replicates:
+    CLMA_267_612(/FF3/FF)  : dut/generation[0][5]/opit_0_inv_1(gopQ)
+    CLMS_285_637(/FF1/FF)  : dut/generation[0][5]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new LUT instances CLMS_267_637(/devBL6_S) replicated by the LUT instance CLMA_261_636(/devDL6).
+Origin dut/N1134_8/LUT6_inst replicates:
+    CLMS_267_637(/devBL6_S) : dut/N1134_8/LUT6_inst_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_219_637(/devAL6L5Q) CLMA_219_679(/devDL6L5Q) CLMS_285_631(/devDL6L5Q_S) CLMA_273_697(/devBL6L5Q) replicated by the LUT instance CLMS_309_685(/devCL6L5Q_S).
+Origin dut/N1252_103/gateop_LUT6DL5 replicates:
+    CLMA_219_637(/devAL6L5Q) : dut/N1252_103/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_219_679(/devDL6L5Q) : dut/N1252_103/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMS_285_631(/devDL6L5Q_S) : dut/N1252_103/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMA_273_697(/devBL6L5Q) : dut/N1252_103/gateop_LUT6DL5_4(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMS_189_625(/devAL6L5Q_S) CLMA_219_564(/devDL6L5Q) CLMA_231_624(/devDL6L5Q) CLMS_63_649(/devBL6L5Q_S) CLMA_189_576(/devDL6L5Q) CLMA_189_618(/devDL6L5Q) replicated by the LUT instance CLMA_309_678(/devAL6L5Q).
+Origin dut/N1252_132_copy_3/gateop_LUT6DL5 replicates:
+    CLMS_189_625(/devAL6L5Q_S) : dut/N1252_132_copy_3/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_219_564(/devDL6L5Q) : dut/N1252_132_copy_3/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMA_231_624(/devDL6L5Q) : dut/N1252_132_copy_3/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMS_63_649(/devBL6L5Q_S) : dut/N1252_132_copy_3/gateop_LUT6DL5_4(gopLUT6L5)
+    CLMA_189_576(/devDL6L5Q) : dut/N1252_132_copy_3/gateop_LUT6DL5_5(gopLUT6L5)
+    CLMA_189_618(/devDL6L5Q) : dut/N1252_132_copy_3/gateop_LUT6DL5_6(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMS_285_661(/devBL6_S) replicated by the LUT instance CLMS_267_625(/devCL6_S).
+Origin dut/N7852_4/LUT6_inst replicates:
+    CLMS_285_661(/devBL6_S) : dut/N7852_4/LUT6_inst_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_309_564(/devDL6) replicated by the LUT instance CLMA_315_643(/devBL6).
+Origin dut/N1426_6/LUT6_inst replicates:
+    CLMA_309_564(/devDL6) : dut/N1426_6/LUT6_inst_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_267_606(/devCL6) CLMA_315_601(/devDL6) replicated by the LUT instance CLMA_333_600(/devBL6).
+Origin dut/N1612_16/gateop replicates:
+    CLMA_267_606(/devCL6) : dut/N1612_16/gateop_1(gopLUT6)
+    CLMA_315_601(/devDL6) : dut/N1612_16/gateop_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMS_267_613(/devCL6_S) CLMS_291_625(/devCL6_S) replicated by the LUT instance CLMA_267_606(/devDL6).
+Origin dut/N3163/LUT6_inst replicates:
+    CLMS_267_613(/devCL6_S) : dut/N3163/LUT6_inst_1(gopLUT6)
+    CLMS_291_625(/devCL6_S) : dut/N3163/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_195_618(/devBL6L5Q) CLMA_81_702(/devDL6L5Q) CLMA_243_564(/devBL6L5Q) CLMA_231_642(/devDL6L5Q) CLMA_159_624(/devDL6L5Q) CLMA_261_576(/devBL6L5Q) CLMS_243_625(/devCL6L5Q_S) replicated by the LUT instance CLMA_261_571(/devDL6L5Q).
+Origin dut/N1252_132_copy_8/gateop_LUT6DL5 replicates:
+    CLMA_195_618(/devBL6L5Q) : dut/N1252_132_copy_8/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_81_702(/devDL6L5Q) : dut/N1252_132_copy_8/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMA_243_564(/devBL6L5Q) : dut/N1252_132_copy_8/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMA_231_642(/devDL6L5Q) : dut/N1252_132_copy_8/gateop_LUT6DL5_4(gopLUT6L5)
+    CLMA_159_624(/devDL6L5Q) : dut/N1252_132_copy_8/gateop_LUT6DL5_5(gopLUT6L5)
+    CLMA_261_576(/devBL6L5Q) : dut/N1252_132_copy_8/gateop_LUT6DL5_6(gopLUT6L5)
+    CLMS_243_625(/devCL6L5Q_S) : dut/N1252_132_copy_8/gateop_LUT6DL5_7(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_195_571(/devAL6L5Q) CLMS_309_679(/devBL6L5Q_S) CLMA_219_559(/devDL6L5Q) CLMS_207_625(/devAL6L5Q_S) CLMA_165_625(/devBL6L5Q) CLMA_201_558(/devDL6L5Q) CLMA_189_612(/devCL6L5Q) replicated by the LUT instance CLMA_195_558(/devCL6L5Q).
+Origin dut/N1252_132_copy_5/gateop_LUT6DL5 replicates:
+    CLMA_195_571(/devAL6L5Q) : dut/N1252_132_copy_5/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMS_309_679(/devBL6L5Q_S) : dut/N1252_132_copy_5/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMA_219_559(/devDL6L5Q) : dut/N1252_132_copy_5/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMS_207_625(/devAL6L5Q_S) : dut/N1252_132_copy_5/gateop_LUT6DL5_4(gopLUT6L5)
+    CLMA_165_625(/devBL6L5Q) : dut/N1252_132_copy_5/gateop_LUT6DL5_5(gopLUT6L5)
+    CLMA_201_558(/devDL6L5Q) : dut/N1252_132_copy_5/gateop_LUT6DL5_6(gopLUT6L5)
+    CLMA_189_612(/devCL6L5Q) : dut/N1252_132_copy_5/gateop_LUT6DL5_7(gopLUT6L5)
+I: Place-6001: Add the new FF instances CLMS_285_595(/FF3/FF) replicated by the FF instance CLMA_207_576(/FF2/FF) .
+Origin dut/generation[0][0]/opit_0_inv replicates:
+    CLMS_285_595(/FF3/FF)  : dut/generation[0][0]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMS_243_613(/FF3/FF) CLMS_291_607(/FF3/FF) replicated by the FF instance CLMS_201_637(/FF3/FF) .
+Origin dut/generation[0][4]/opit_0_inv replicates:
+    CLMS_243_613(/FF3/FF)  : dut/generation[0][4]/opit_0_inv_1(gopQ)
+    CLMS_291_607(/FF3/FF)  : dut/generation[0][4]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMS_225_637(/FFAPP3/FF) CLMS_285_637(/FF3/FF) replicated by the FF instance CLMA_201_690(/FF1/FF) .
+Origin dut/generation[0][14]/opit_0_inv replicates:
+    CLMS_225_637(/FFAPP3/FF)  : dut/generation[0][14]/opit_0_inv_1(gopQ)
+    CLMS_285_637(/FF3/FF)  : dut/generation[0][14]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMS_243_631(/FFAPP0/FF) CLMS_285_637(/FFAPP2/FF) replicated by the FF instance CLMA_219_678(/FF0/FF) .
+Origin dut/generation[0][12]/opit_0_inv replicates:
+    CLMS_243_631(/FFAPP0/FF)  : dut/generation[0][12]/opit_0_inv_1(gopQ)
+    CLMS_285_637(/FFAPP2/FF)  : dut/generation[0][12]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMA_231_637(/FF0/FF) CLMA_261_625(/FF0/FF) replicated by the FF instance CLMS_207_673(/FF3/FF) .
+Origin dut/generation[1][5]/opit_0_inv replicates:
+    CLMA_231_637(/FF0/FF)  : dut/generation[1][5]/opit_0_inv_1(gopQ)
+    CLMA_261_625(/FF0/FF)  : dut/generation[1][5]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMA_243_594(/FF2/FF) CLMA_273_594(/FFAPP0/FF) replicated by the FF instance CLMA_231_619(/FF1/FF) .
+Origin dut/generation[0][6]/opit_0_inv replicates:
+    CLMA_243_594(/FF2/FF)  : dut/generation[0][6]/opit_0_inv_1(gopQ)
+    CLMA_273_594(/FFAPP0/FF)  : dut/generation[0][6]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMA_231_637(/FF3/FF) replicated by the FF instance CLMS_243_643(/FF3/FF) .
+Origin dut/generation[1][12]/opit_0_inv replicates:
+    CLMA_231_637(/FF3/FF)  : dut/generation[1][12]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMA_243_594(/FFAPP0/FF) CLMA_225_624(/FF3/FF) replicated by the FF instance CLMA_315_606(/FF2/FF) .
+Origin dut/generation[0][7]/opit_0_inv replicates:
+    CLMA_243_594(/FFAPP0/FF)  : dut/generation[0][7]/opit_0_inv_1(gopQ)
+    CLMA_225_624(/FF3/FF)  : dut/generation[0][7]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMA_219_631(/FF3/FF) CLMA_243_642(/FF0/FF) replicated by the FF instance CLMS_201_673(/FF2/FF) .
+Origin dut/generation[2][14]/opit_0_inv replicates:
+    CLMA_219_631(/FF3/FF)  : dut/generation[2][14]/opit_0_inv_1(gopQ)
+    CLMA_243_642(/FF0/FF)  : dut/generation[2][14]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMA_219_637(/FF2/FF) replicated by the FF instance CLMA_243_648(/FF0/FF) .
+Origin dut/generation[1][14]/opit_0_inv replicates:
+    CLMA_219_637(/FF2/FF)  : dut/generation[1][14]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMS_243_631(/FFAPP3/FF) CLMS_291_607(/FF1/FF) replicated by the FF instance CLMA_267_612(/FF2/FF) .
+Origin dut/generation[0][3]/opit_0_inv replicates:
+    CLMS_243_631(/FFAPP3/FF)  : dut/generation[0][3]/opit_0_inv_1(gopQ)
+    CLMS_291_607(/FF1/FF)  : dut/generation[0][3]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMA_267_612(/FFAPP0/FF) CLMA_303_595(/FF3/FF) CLMS_291_607(/FF2/FF) replicated by the FF instance CLMA_195_594(/FF0/FF) .
+Origin dut/generation[0][1]/opit_0_inv replicates:
+    CLMA_267_612(/FFAPP0/FF)  : dut/generation[0][1]/opit_0_inv_1(gopQ)
+    CLMA_303_595(/FF3/FF)  : dut/generation[0][1]/opit_0_inv_2(gopQ)
+    CLMS_291_607(/FF2/FF)  : dut/generation[0][1]/opit_0_inv_3(gopQ)
+I: Place-6001: Add the new FF instances CLMS_267_607(/FF3/FF) replicated by the FF instance CLMA_219_637(/FFAPP1/FF) .
+Origin dut/generation[1][4]/opit_0_inv replicates:
+    CLMS_267_607(/FF3/FF)  : dut/generation[1][4]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMA_231_642(/FF0/FF) replicated by the FF instance CLMA_309_600(/FFAPP1/FF) .
+Origin dut/generation[0][13]/opit_0_inv replicates:
+    CLMA_231_642(/FF0/FF)  : dut/generation[0][13]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMS_285_595(/FF2/FF) replicated by the FF instance CLMA_315_649(/FF0/FF) .
+Origin dut/generation[0][11]/opit_0_inv replicates:
+    CLMS_285_595(/FF2/FF)  : dut/generation[0][11]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new LUT instances CLMA_231_648(/devDL6) CLMA_219_679(/devAL6) CLMA_303_637(/devCL6) replicated by the LUT instance CLMA_309_678(/devDL6).
+Origin dut/N1200[3][1]/gateop replicates:
+    CLMA_231_648(/devDL6) : dut/N1200[3][1]/gateop_0(gopLUT6)
+    CLMA_219_679(/devAL6) : dut/N1200[3][1]/gateop_1(gopLUT6)
+    CLMA_303_637(/devCL6) : dut/N1200[3][1]/gateop_2(gopLUT6)
+I: Place-6001: Add the new FF instances CLMA_273_589(/FF1/FF) replicated by the FF instance CLMA_225_576(/FFAPP2/FF) .
+Origin dut/generation[1][3]/opit_0_inv replicates:
+    CLMA_273_589(/FF1/FF)  : dut/generation[1][3]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMS_243_595(/FF3/FF) replicated by the FF instance CLMS_183_595(/FF3/FF) .
+Origin dut/generation[2][6]/opit_0_inv replicates:
+    CLMS_243_595(/FF3/FF)  : dut/generation[2][6]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMA_261_613(/FF1/FF) CLMA_195_661(/FF0/FF) replicated by the FF instance CLMA_327_648(/FF0/FF) .
+Origin dut/generation[2][11]/opit_0_inv replicates:
+    CLMA_261_613(/FF1/FF)  : dut/generation[2][11]/opit_0_inv_1(gopQ)
+    CLMA_195_661(/FF0/FF)  : dut/generation[2][11]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMA_285_594(/FF0/FF) replicated by the FF instance CLMA_219_577(/FF0/FF) .
+Origin dut/generation[0][27]/opit_0_inv replicates:
+    CLMA_285_594(/FF0/FF)  : dut/generation[0][27]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMA_231_619(/FFAPP0/FF) replicated by the FF instance CLMA_207_576(/FF1/FF) .
+Origin dut/generation[0][31]/opit_0_inv replicates:
+    CLMA_231_619(/FFAPP0/FF)  : dut/generation[0][31]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new LUT instances CLMA_189_666(/devAL6L5Q) CLMA_231_642(/devBL6L5Q) CLMA_189_654(/devDL6L5Q) CLMA_261_649(/devCL6L5Q) replicated by the LUT instance CLMA_249_571(/devDL6L5Q).
+Origin dut/N1252_132_copy_7/gateop_LUT6DL5 replicates:
+    CLMA_189_666(/devAL6L5Q) : dut/N1252_132_copy_7/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_231_642(/devBL6L5Q) : dut/N1252_132_copy_7/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMA_189_654(/devDL6L5Q) : dut/N1252_132_copy_7/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMA_261_649(/devCL6L5Q) : dut/N1252_132_copy_7/gateop_LUT6DL5_4(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_171_600(/devCL6L5Q) CLMA_159_684(/devBL6L5Q) CLMS_207_643(/devBL6L5Q_S) CLMS_207_673(/devAL6L5Q_S) CLMA_75_606(/devBL6L5Q) CLMA_183_636(/devBL6L5Q) CLMA_183_690(/devBL6L5Q) replicated by the LUT instance CLMA_81_691(/devAL6L5Q).
+Origin dut/N1697_1_copy[1]_10/gateop_LUT6DL5 replicates:
+    CLMA_171_600(/devCL6L5Q) : dut/N1697_1_copy[1]_10/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_159_684(/devBL6L5Q) : dut/N1697_1_copy[1]_10/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMS_207_643(/devBL6L5Q_S) : dut/N1697_1_copy[1]_10/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMS_207_673(/devAL6L5Q_S) : dut/N1697_1_copy[1]_10/gateop_LUT6DL5_4(gopLUT6L5)
+    CLMA_75_606(/devBL6L5Q) : dut/N1697_1_copy[1]_10/gateop_LUT6DL5_5(gopLUT6L5)
+    CLMA_183_636(/devBL6L5Q) : dut/N1697_1_copy[1]_10/gateop_LUT6DL5_6(gopLUT6L5)
+    CLMA_183_690(/devBL6L5Q) : dut/N1697_1_copy[1]_10/gateop_LUT6DL5_7(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_219_541(/devBL6) CLMS_225_547(/devCL6_S) replicated by the LUT instance CLMA_219_529(/devDL6).
+Origin dut/N3105_31/LUT6_inst replicates:
+    CLMA_219_541(/devBL6) : dut/N3105_31/LUT6_inst_1(gopLUT6)
+    CLMS_225_547(/devCL6_S) : dut/N3105_31/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_219_589(/devBL6L5Q) replicated by the LUT instance CLMS_207_577(/devBL6L5Q_S).
+Origin scan_addr_ibuf_buf[3]/gateop_LUT6DL5 replicates:
+    CLMA_219_589(/devBL6L5Q) : scan_addr_ibuf_buf[3]/gateop_LUT6DL5_1(gopLUT6L5)
+I: Place-6001: Add the new FF instances CLMA_261_606(/FF0/FF) replicated by the FF instance CLMA_219_589(/FF0/FF) .
+Origin dut/generation[2][1]/opit_0_inv replicates:
+    CLMA_261_606(/FF0/FF)  : dut/generation[2][1]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMA_231_631(/FF2/FF) replicated by the FF instance CLMA_225_582(/FF0/FF) .
+Origin dut/generation[0][30]/opit_0_inv replicates:
+    CLMA_231_631(/FF2/FF)  : dut/generation[0][30]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMA_261_613(/FF0/FF) replicated by the FF instance CLMS_225_625(/FF1/FF) .
+Origin dut/generation[2][10]/opit_0_inv replicates:
+    CLMA_261_613(/FF0/FF)  : dut/generation[2][10]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMA_309_600(/FFAPP0/FF) replicated by the FF instance CLMA_231_607(/FF2/FF) .
+Origin dut/generation[0][9]/opit_0_inv replicates:
+    CLMA_309_600(/FFAPP0/FF)  : dut/generation[0][9]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMA_231_642(/FFAPP2/FF) replicated by the FF instance CLMS_201_601(/FF1/FF) .
+Origin dut/generation[0][22]/opit_0_inv replicates:
+    CLMA_231_642(/FFAPP2/FF)  : dut/generation[0][22]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new LUT instances CLMA_201_642(/devDL6) replicated by the LUT instance CLMS_309_673(/devCL6_S).
+Origin dut/N1252_132_copy_6/gateop replicates:
+    CLMA_201_642(/devDL6) : dut/N1252_132_copy_6/gateop_1(gopLUT6)
+I: Place-6001: Add the new FF instances CLMA_261_612(/FF0/FF) CLMA_261_625(/FF1/FF) replicated by the FF instance CLMA_327_630(/FF0/FF) .
+Origin dut/generation[1][10]/opit_0_inv replicates:
+    CLMA_261_612(/FF0/FF)  : dut/generation[1][10]/opit_0_inv_1(gopQ)
+    CLMA_261_625(/FF1/FF)  : dut/generation[1][10]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMS_243_607(/FF3/FF) replicated by the FF instance CLMS_201_595(/FF3/FF) .
+Origin dut/generation[2][22]/opit_0_inv replicates:
+    CLMS_243_607(/FF3/FF)  : dut/generation[2][22]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMA_261_625(/FF2/FF) CLMS_207_673(/FF2/FF) replicated by the FF instance CLMS_327_643(/FF3/FF) .
+Origin dut/generation[1][11]/opit_0_inv replicates:
+    CLMA_261_625(/FF2/FF)  : dut/generation[1][11]/opit_0_inv_1(gopQ)
+    CLMS_207_673(/FF2/FF)  : dut/generation[1][11]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new LUT instances CLMA_81_612(/devDL6L5Q) CLMA_195_625(/devCL6L5Q) CLMA_195_673(/devBL6L5Q) CLMA_75_618(/devDL6L5Q) CLMA_177_613(/devCL6L5Q) CLMA_183_672(/devBL6L5Q) replicated by the LUT instance CLMA_81_660(/devDL6L5Q).
+Origin dut/N1697_1_copy[1]_5/gateop_LUT6DL5 replicates:
+    CLMA_81_612(/devDL6L5Q) : dut/N1697_1_copy[1]_5/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_195_625(/devCL6L5Q) : dut/N1697_1_copy[1]_5/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMA_195_673(/devBL6L5Q) : dut/N1697_1_copy[1]_5/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMA_75_618(/devDL6L5Q) : dut/N1697_1_copy[1]_5/gateop_LUT6DL5_4(gopLUT6L5)
+    CLMA_177_613(/devCL6L5Q) : dut/N1697_1_copy[1]_5/gateop_LUT6DL5_5(gopLUT6L5)
+    CLMA_183_672(/devBL6L5Q) : dut/N1697_1_copy[1]_5/gateop_LUT6DL5_6(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_249_630(/devCL6L5Q) replicated by the LUT instance CLMA_249_642(/devAL6L5Q).
+Origin dut/N8694_3_3/LUT6D_inst replicates:
+    CLMA_249_630(/devCL6L5Q) : dut/N8694_3_3/LUT6D_inst_1(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMS_243_631(/devBL6L5Q_S) CLMA_243_654(/devBL6L5Q) replicated by the LUT instance CLMA_267_570(/devAL6L5Q).
+Origin dut/N1200[3]_copy[1]_3/gateop_LUT6DL5 replicates:
+    CLMS_243_631(/devBL6L5Q_S) : dut/N1200[3]_copy[1]_3/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_243_654(/devBL6L5Q) : dut/N1200[3]_copy[1]_3/gateop_LUT6DL5_2(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMS_267_577(/devCL6L5Q_S) CLMA_219_630(/devCL6L5Q) CLMA_219_654(/devCL6L5Q) replicated by the LUT instance CLMA_207_582(/devAL6L5Q).
+Origin dut/N1252_103_copy_3/gateop_LUT6DL5 replicates:
+    CLMS_267_577(/devCL6L5Q_S) : dut/N1252_103_copy_3/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_219_630(/devCL6L5Q) : dut/N1252_103_copy_3/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMA_219_654(/devCL6L5Q) : dut/N1252_103_copy_3/gateop_LUT6DL5_3(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_249_630(/devBL6L5Q) replicated by the LUT instance CLMA_231_642(/devAL6L5Q).
+Origin dut/N8694_4_3/LUT6D_inst replicates:
+    CLMA_249_630(/devBL6L5Q) : dut/N8694_4_3/LUT6D_inst_1(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_249_655(/devAL6L5Q) replicated by the LUT instance CLMS_267_619(/devCL6L5Q_S).
+Origin scan_addr_ibuf_buf[1]_10/gateop_LUT6DL5 replicates:
+    CLMA_249_655(/devAL6L5Q) : scan_addr_ibuf_buf[1]_10/gateop_LUT6DL5_1(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_243_636(/devDL6L5Q) CLMA_231_654(/devCL6L5Q) replicated by the LUT instance CLMA_333_667(/devBL6L5Q).
+Origin dut/N696_86_copy_3/gateop_LUT6DL5 replicates:
+    CLMA_243_636(/devDL6L5Q) : dut/N696_86_copy_3/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_231_654(/devCL6L5Q) : dut/N696_86_copy_3/gateop_LUT6DL5_2(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_249_654(/devBL6L5Q) CLMA_249_654(/devCL6L5Q) replicated by the LUT instance CLMA_333_660(/devCL6L5Q).
+Origin dut/N696_86_copy_4/gateop_LUT6DL5 replicates:
+    CLMA_249_654(/devBL6L5Q) : dut/N696_86_copy_4/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_249_654(/devCL6L5Q) : dut/N696_86_copy_4/gateop_LUT6DL5_2(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_267_636(/devCL6L5Q) CLMA_267_636(/devDL6L5Q) replicated by the LUT instance CLMA_261_684(/devBL6L5Q).
+Origin dut/N696_86_copy/gateop_LUT6DL5 replicates:
+    CLMA_267_636(/devCL6L5Q) : dut/N696_86_copy/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_267_636(/devDL6L5Q) : dut/N696_86_copy/gateop_LUT6DL5_2(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_261_643(/devDL6) CLMA_273_685(/devCL6) CLMA_309_678(/devBL6) replicated by the LUT instance CLMA_333_625(/devAL6).
+Origin dut/N8692_0/gateop replicates:
+    CLMA_261_643(/devDL6) : dut/N8692_0/gateop_1(gopLUT6)
+    CLMA_273_685(/devCL6) : dut/N8692_0/gateop_2(gopLUT6)
+    CLMA_309_678(/devBL6) : dut/N8692_0/gateop_3(gopLUT6)
+I: Place-6001: Add the new FF instances CLMA_249_643(/FFAPP2/FF) replicated by the FF instance CLMA_303_642(/FFAPP2/FF) .
+Origin dut/sealed/opit_0_inv_L5Q replicates:
+    CLMA_249_643(/FFAPP2/FF)  : dut/sealed/opit_0_inv_L5Q_1(gopLUT6L5Q)
+I: Place-6001: Add the new LUT instances CLMA_231_642(/devCL6) replicated by the LUT instance CLMA_225_714(/devAL6).
+Origin dut/N1251_copy[6]_8/LUT6_inst replicates:
+    CLMA_231_642(/devCL6) : dut/N1251_copy[6]_8/LUT6_inst_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMS_243_631(/devCL6L5Q_S) CLMA_249_643(/devDL6L5Q) replicated by the LUT instance CLMA_261_589(/devDL6L5Q).
+Origin dut/N696_86_copy_1/gateop_LUT6DL5 replicates:
+    CLMS_243_631(/devCL6L5Q_S) : dut/N696_86_copy_1/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_249_643(/devDL6L5Q) : dut/N696_86_copy_1/gateop_LUT6DL5_2(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMS_243_631(/devDL6_S) CLMA_243_696(/devDL6) replicated by the LUT instance CLMA_219_709(/devCL6).
+Origin dut/N1251_copy[6]_7/LUT6_inst replicates:
+    CLMS_243_631(/devDL6_S) : dut/N1251_copy[6]_7/LUT6_inst_1(gopLUT6)
+    CLMA_243_696(/devDL6) : dut/N1251_copy[6]_7/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_195_702(/devDL6) CLMA_243_648(/devBL6) CLMA_249_703(/devDL6) replicated by the LUT instance CLMA_225_714(/devBL6).
+Origin dut/N1251_copy[7]/LUT6_inst replicates:
+    CLMA_195_702(/devDL6) : dut/N1251_copy[7]/LUT6_inst_1(gopLUT6)
+    CLMA_243_648(/devBL6) : dut/N1251_copy[7]/LUT6_inst_2(gopLUT6)
+    CLMA_249_703(/devDL6) : dut/N1251_copy[7]/LUT6_inst_3(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_273_648(/devDL6L5Q) CLMS_285_667(/devBL6L5Q_S) replicated by the LUT instance CLMA_333_672(/devCL6L5Q).
+Origin dut/N696_86/gateop_LUT6DL5 replicates:
+    CLMA_273_648(/devDL6L5Q) : dut/N696_86/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMS_285_667(/devBL6L5Q_S) : dut/N696_86/gateop_LUT6DL5_2(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_195_690(/devBL6) CLMA_243_618(/devCL6) replicated by the LUT instance CLMA_219_703(/devCL6).
+Origin dut/N1251_copy[7]_4/LUT6_inst replicates:
+    CLMA_195_690(/devBL6) : dut/N1251_copy[7]_4/LUT6_inst_1(gopLUT6)
+    CLMA_243_618(/devCL6) : dut/N1251_copy[7]_4/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_195_691(/devBL6) CLMA_243_642(/devAL6) CLMA_249_678(/devBL6) replicated by the LUT instance CLMA_219_703(/devBL6).
+Origin dut/N1251_copy[6]_1/LUT6_inst replicates:
+    CLMA_195_691(/devBL6) : dut/N1251_copy[6]_1/LUT6_inst_1(gopLUT6)
+    CLMA_243_642(/devAL6) : dut/N1251_copy[6]_1/LUT6_inst_2(gopLUT6)
+    CLMA_249_678(/devBL6) : dut/N1251_copy[6]_1/LUT6_inst_3(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_219_619(/devDL6L5Q) CLMA_225_612(/devCL6L5Q) replicated by the LUT instance CLMA_243_618(/devDL6L5Q).
+Origin dut/N696_86_copy_2/gateop_LUT6DL5 replicates:
+    CLMA_219_619(/devDL6L5Q) : dut/N696_86_copy_2/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_225_612(/devCL6L5Q) : dut/N696_86_copy_2/gateop_LUT6DL5_2(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_231_649(/devDL6) CLMA_243_690(/devBL6) replicated by the LUT instance CLMA_219_715(/devCL6).
+Origin dut/N1251_copy[6]/LUT6_inst replicates:
+    CLMA_231_649(/devDL6) : dut/N1251_copy[6]/LUT6_inst_1(gopLUT6)
+    CLMA_243_690(/devBL6) : dut/N1251_copy[6]/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_249_606(/devBL6) replicated by the LUT instance CLMA_219_678(/devCL6).
+Origin dut/N1251_copy[6]_4/LUT6_inst replicates:
+    CLMA_249_606(/devBL6) : dut/N1251_copy[6]_4/LUT6_inst_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_225_594(/devDL6) replicated by the LUT instance CLMA_219_678(/devAL6).
+Origin dut/N1251_copy[7]_2/LUT6_inst replicates:
+    CLMA_225_594(/devDL6) : dut/N1251_copy[7]_2/LUT6_inst_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_201_600(/devDL6) replicated by the LUT instance CLMA_219_678(/devBL6).
+Origin dut/N1251_copy[6]_2/LUT6_inst replicates:
+    CLMA_201_600(/devDL6) : dut/N1251_copy[6]_2/LUT6_inst_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_249_606(/devAL6) CLMA_261_672(/devDL6) replicated by the LUT instance CLMA_219_690(/devDL6).
+Origin dut/N1251_copy[7]_3/LUT6_inst replicates:
+    CLMA_249_606(/devAL6) : dut/N1251_copy[7]_3/LUT6_inst_1(gopLUT6)
+    CLMA_261_672(/devDL6) : dut/N1251_copy[7]_3/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_207_642(/devAL6L5Q) CLMA_201_660(/devDL6L5Q) CLMA_249_565(/devCL6L5Q) CLMA_195_624(/devDL6L5Q) CLMA_195_654(/devAL6L5Q) CLMA_249_606(/devCL6L5Q) CLMA_261_667(/devBL6L5Q) replicated by the LUT instance CLMS_309_643(/devAL6L5Q_S).
+Origin dut/N2097/gateop_LUT6DL5 replicates:
+    CLMA_207_642(/devAL6L5Q) : dut/N2097/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_201_660(/devDL6L5Q) : dut/N2097/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMA_249_565(/devCL6L5Q) : dut/N2097/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMA_195_624(/devDL6L5Q) : dut/N2097/gateop_LUT6DL5_4(gopLUT6L5)
+    CLMA_195_654(/devAL6L5Q) : dut/N2097/gateop_LUT6DL5_5(gopLUT6L5)
+    CLMA_249_606(/devCL6L5Q) : dut/N2097/gateop_LUT6DL5_6(gopLUT6L5)
+    CLMA_261_667(/devBL6L5Q) : dut/N2097/gateop_LUT6DL5_7(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_219_601(/devCL6L5Q) CLMA_219_637(/devDL6L5Q) CLMA_303_637(/devDL6L5Q) CLMA_207_582(/devBL6L5Q) CLMA_219_654(/devBL6L5Q) CLMA_315_655(/devBL6L5Q) replicated by the LUT instance CLMA_333_595(/devAL6L5Q).
+Origin dut/N868_83_copy/gateop_LUT6DL5 replicates:
+    CLMA_219_601(/devCL6L5Q) : dut/N868_83_copy/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_219_637(/devDL6L5Q) : dut/N868_83_copy/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMA_303_637(/devDL6L5Q) : dut/N868_83_copy/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMA_207_582(/devBL6L5Q) : dut/N868_83_copy/gateop_LUT6DL5_4(gopLUT6L5)
+    CLMA_219_654(/devBL6L5Q) : dut/N868_83_copy/gateop_LUT6DL5_5(gopLUT6L5)
+    CLMA_315_655(/devBL6L5Q) : dut/N868_83_copy/gateop_LUT6DL5_6(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_243_606(/devDL6) CLMA_249_678(/devCL6) replicated by the LUT instance CLMS_207_679(/devCL6_S).
+Origin dut/N1251_copy[6]_3/LUT6_inst replicates:
+    CLMA_243_606(/devDL6) : dut/N1251_copy[6]_3/LUT6_inst_1(gopLUT6)
+    CLMA_249_678(/devCL6) : dut/N1251_copy[6]_3/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMS_285_637(/devCL6_S) CLMA_249_666(/devAL6) replicated by the LUT instance CLMA_219_690(/devCL6).
+Origin dut/N1251_copy[7]_1/LUT6_inst replicates:
+    CLMS_285_637(/devCL6_S) : dut/N1251_copy[7]_1/LUT6_inst_1(gopLUT6)
+    CLMA_249_666(/devAL6) : dut/N1251_copy[7]_1/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_165_600(/devDL6L5Q) CLMA_159_660(/devDL6L5Q) CLMA_291_588(/devDL6L5Q) CLMA_177_600(/devBL6L5Q) CLMA_171_642(/devBL6L5Q) CLMA_243_594(/devBL6L5Q) CLMA_219_648(/devBL6L5Q) replicated by the LUT instance CLMA_261_648(/devDL6L5Q).
+Origin dut/N1697_1_copy[1]_13/gateop_LUT6DL5 replicates:
+    CLMA_165_600(/devDL6L5Q) : dut/N1697_1_copy[1]_13/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_159_660(/devDL6L5Q) : dut/N1697_1_copy[1]_13/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMA_291_588(/devDL6L5Q) : dut/N1697_1_copy[1]_13/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMA_177_600(/devBL6L5Q) : dut/N1697_1_copy[1]_13/gateop_LUT6DL5_4(gopLUT6L5)
+    CLMA_171_642(/devBL6L5Q) : dut/N1697_1_copy[1]_13/gateop_LUT6DL5_5(gopLUT6L5)
+    CLMA_243_594(/devBL6L5Q) : dut/N1697_1_copy[1]_13/gateop_LUT6DL5_6(gopLUT6L5)
+    CLMA_219_648(/devBL6L5Q) : dut/N1697_1_copy[1]_13/gateop_LUT6DL5_7(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMS_243_571(/devCL6_S) CLMA_267_684(/devDL6) replicated by the LUT instance CLMA_231_690(/devBL6).
+Origin dut/N1251[6]/LUT6_inst replicates:
+    CLMS_243_571(/devCL6_S) : dut/N1251[6]/LUT6_inst_1(gopLUT6)
+    CLMA_267_684(/devDL6) : dut/N1251[6]/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_189_600(/devAL6L5Q) CLMA_189_666(/devBL6L5Q) CLMA_171_582(/devDL6L5Q) CLMA_171_642(/devCL6L5Q) replicated by the LUT instance CLMA_63_624(/devAL6L5Q).
+Origin dut/N815[1]_copy[1]_1/gateop_LUT6DL5 replicates:
+    CLMA_189_600(/devAL6L5Q) : dut/N815[1]_copy[1]_1/gateop_LUT6DL5_1(gopLUT6L5)
+    CLMA_189_666(/devBL6L5Q) : dut/N815[1]_copy[1]_1/gateop_LUT6DL5_2(gopLUT6L5)
+    CLMA_171_582(/devDL6L5Q) : dut/N815[1]_copy[1]_1/gateop_LUT6DL5_3(gopLUT6L5)
+    CLMA_171_642(/devCL6L5Q) : dut/N815[1]_copy[1]_1/gateop_LUT6DL5_4(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_261_678(/devCL6) replicated by the LUT instance CLMA_231_690(/devCL6).
+Origin dut/N1251[7]/LUT6_inst replicates:
+    CLMA_261_678(/devCL6) : dut/N1251[7]/LUT6_inst_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_201_588(/devAL6) CLMA_195_595(/devAL6) replicated by the LUT instance CLMA_57_607(/devCL6).
+Origin dut/N868_102_copy_10/LUT6_inst replicates:
+    CLMA_201_588(/devAL6) : dut/N868_102_copy_10/LUT6_inst_1(gopLUT6)
+    CLMA_195_595(/devAL6) : dut/N868_102_copy_10/LUT6_inst_2(gopLUT6)
+Wirelength after detailed placement is 187979 and checksum is 92F0835FD5DB7804.
+Timing-driven detailed placement takes 14.48 sec.
+
+Worst slack is 1044, TNS after placement is 0.
+Placement done.
+Total placement takes 44.25 sec.
+Finished placement.
+
+Routing started.
+Building routing graph takes 3.66 sec.
+Worst slack is 1044, TNS before global route is 0.
+Processing design graph takes 1.17 sec.
+Total memory for routing:
+	222.983451 M.
+Total nets for routing : 10462.
+Global Routing step 1 processed 0 nets, it takes 1.84 sec.
+Rcf routing step 1 processed 0 nets, it takes 0.00 sec.
+Rcf routing step 2 processed 0 nets, it takes 0.00 sec.
+Rcf routing step 3 processed 0 nets, it takes 0.00 sec.
+Unrouted nets 0 at the end of iteration 0.
+Global Routing step 1 processed 36 nets, it takes 0.03 sec.
+Unrouted nets 279 at the end of iteration 0.
+Unrouted nets 204 at the end of iteration 1.
+Unrouted nets 179 at the end of iteration 2.
+Unrouted nets 132 at the end of iteration 3.
+Unrouted nets 92 at the end of iteration 4.
+Unrouted nets 69 at the end of iteration 5.
+Unrouted nets 61 at the end of iteration 6.
+Unrouted nets 47 at the end of iteration 7.
+Unrouted nets 39 at the end of iteration 8.
+Unrouted nets 32 at the end of iteration 9.
+Unrouted nets 24 at the end of iteration 10.
+Unrouted nets 21 at the end of iteration 11.
+Unrouted nets 20 at the end of iteration 12.
+Unrouted nets 20 at the end of iteration 13.
+Unrouted nets 15 at the end of iteration 14.
+Unrouted nets 8 at the end of iteration 15.
+Unrouted nets 6 at the end of iteration 16.
+Unrouted nets 6 at the end of iteration 17.
+Unrouted nets 6 at the end of iteration 18.
+Unrouted nets 4 at the end of iteration 19.
+Unrouted nets 4 at the end of iteration 20.
+Unrouted nets 2 at the end of iteration 21.
+Unrouted nets 2 at the end of iteration 22.
+Unrouted nets 2 at the end of iteration 23.
+Unrouted nets 2 at the end of iteration 24.
+Unrouted nets 2 at the end of iteration 25.
+Unrouted nets 2 at the end of iteration 26.
+Unrouted nets 2 at the end of iteration 27.
+Unrouted nets 2 at the end of iteration 28.
+Unrouted nets 2 at the end of iteration 29.
+Unrouted nets 2 at the end of iteration 30.
+Unrouted nets 3 at the end of iteration 31.
+Unrouted nets 0 at the end of iteration 32.
+Global Routing step 2 processed 564 nets, it takes 3.53 sec.
+Unrouted nets 4 at the end of iteration 0.
+Unrouted nets 0 at the end of iteration 1.
+Global Routing step 3 processed 4 nets, it takes 0.06 sec.
+Unrouted nets 316 at the end of iteration 0.
+Unrouted nets 262 at the end of iteration 1.
+Unrouted nets 227 at the end of iteration 2.
+Unrouted nets 199 at the end of iteration 3.
+Unrouted nets 167 at the end of iteration 4.
+Unrouted nets 143 at the end of iteration 5.
+Unrouted nets 139 at the end of iteration 6.
+Unrouted nets 125 at the end of iteration 7.
+Unrouted nets 86 at the end of iteration 8.
+Unrouted nets 79 at the end of iteration 9.
+Unrouted nets 64 at the end of iteration 10.
+Unrouted nets 58 at the end of iteration 11.
+Unrouted nets 47 at the end of iteration 12.
+Unrouted nets 30 at the end of iteration 13.
+Unrouted nets 20 at the end of iteration 14.
+Unrouted nets 19 at the end of iteration 15.
+Unrouted nets 9 at the end of iteration 16.
+Unrouted nets 4 at the end of iteration 17.
+Unrouted nets 2 at the end of iteration 18.
+Unrouted nets 0 at the end of iteration 19.
+Global Routing step 4 processed 451 nets, it takes 6.72 sec.
+Global routing takes 10.42 sec.
+Total 13402 subnets.
+    forward max bucket size 241 , backward 408.
+        Unrouted nets 10203 at the end of iteration 0.
+    route iteration 0, CPU time elapsed 3.000000 sec.
+    forward max bucket size 328 , backward 340.
+        Unrouted nets 9532 at the end of iteration 1.
+    route iteration 1, CPU time elapsed 2.703125 sec.
+    forward max bucket size 361 , backward 477.
+        Unrouted nets 9266 at the end of iteration 2.
+    route iteration 2, CPU time elapsed 3.000000 sec.
+    forward max bucket size 1142 , backward 840.
+        Unrouted nets 8803 at the end of iteration 3.
+    route iteration 3, CPU time elapsed 3.375000 sec.
+    forward max bucket size 2852 , backward 1773.
+        Unrouted nets 8367 at the end of iteration 4.
+    route iteration 4, CPU time elapsed 3.484375 sec.
+    forward max bucket size 7263 , backward 1754.
+        Unrouted nets 7975 at the end of iteration 5.
+    route iteration 5, CPU time elapsed 4.093750 sec.
+    forward max bucket size 8896 , backward 3000.
+        Unrouted nets 7717 at the end of iteration 6.
+    route iteration 6, CPU time elapsed 4.671875 sec.
+    forward max bucket size 6782 , backward 2085.
+        Unrouted nets 7299 at the end of iteration 7.
+    route iteration 7, CPU time elapsed 4.781250 sec.
+    forward max bucket size 6767 , backward 2500.
+        Unrouted nets 6878 at the end of iteration 8.
+    route iteration 8, CPU time elapsed 5.453125 sec.
+    forward max bucket size 7553 , backward 1228.
+        Unrouted nets 6523 at the end of iteration 9.
+    route iteration 9, CPU time elapsed 6.187500 sec.
+    forward max bucket size 6501 , backward 1642.
+        Unrouted nets 6157 at the end of iteration 10.
+    route iteration 10, CPU time elapsed 6.265625 sec.
+    forward max bucket size 8196 , backward 1986.
+        Unrouted nets 5933 at the end of iteration 11.
+    route iteration 11, CPU time elapsed 7.468750 sec.
+    forward max bucket size 7430 , backward 1521.
+        Unrouted nets 5659 at the end of iteration 12.
+    route iteration 12, CPU time elapsed 6.265625 sec.
+    forward max bucket size 4766 , backward 1445.
+        Unrouted nets 5504 at the end of iteration 13.
+    route iteration 13, CPU time elapsed 6.515625 sec.
+    forward max bucket size 4823 , backward 1017.
+        Unrouted nets 5224 at the end of iteration 14.
+    route iteration 14, CPU time elapsed 6.125000 sec.
+    forward max bucket size 6086 , backward 1144.
+        Unrouted nets 4924 at the end of iteration 15.
+    route iteration 15, CPU time elapsed 6.187500 sec.
+    forward max bucket size 5772 , backward 1009.
+        Unrouted nets 4691 at the end of iteration 16.
+    route iteration 16, CPU time elapsed 5.578125 sec.
+    forward max bucket size 7233 , backward 636.
+        Unrouted nets 4486 at the end of iteration 17.
+    route iteration 17, CPU time elapsed 5.625000 sec.
+    forward max bucket size 6478 , backward 1350.
+        Unrouted nets 4402 at the end of iteration 18.
+    route iteration 18, CPU time elapsed 5.328125 sec.
+    forward max bucket size 4804 , backward 669.
+        Unrouted nets 4204 at the end of iteration 19.
+    route iteration 19, CPU time elapsed 5.328125 sec.
+    forward max bucket size 5395 , backward 819.
+        Unrouted nets 4099 at the end of iteration 20.
+    route iteration 20, CPU time elapsed 4.250000 sec.
+    forward max bucket size 2457 , backward 776.
+        Unrouted nets 3963 at the end of iteration 21.
+    route iteration 21, CPU time elapsed 5.078125 sec.
+    forward max bucket size 4748 , backward 976.
+        Unrouted nets 3846 at the end of iteration 22.
+    route iteration 22, CPU time elapsed 4.859375 sec.
+    forward max bucket size 3880 , backward 996.
+        Unrouted nets 3694 at the end of iteration 23.
+    route iteration 23, CPU time elapsed 4.421875 sec.
+    forward max bucket size 4152 , backward 1368.
+        Unrouted nets 3474 at the end of iteration 24.
+    route iteration 24, CPU time elapsed 4.343750 sec.
+    forward max bucket size 4582 , backward 1151.
+        Unrouted nets 3393 at the end of iteration 25.
+    route iteration 25, CPU time elapsed 4.203125 sec.
+    forward max bucket size 4550 , backward 1016.
+        Unrouted nets 3236 at the end of iteration 26.
+    route iteration 26, CPU time elapsed 4.015625 sec.
+    forward max bucket size 3087 , backward 666.
+        Unrouted nets 3096 at the end of iteration 27.
+    route iteration 27, CPU time elapsed 4.109375 sec.
+    forward max bucket size 3133 , backward 1232.
+        Unrouted nets 3061 at the end of iteration 28.
+    route iteration 28, CPU time elapsed 3.656250 sec.
+    forward max bucket size 3614 , backward 982.
+        Unrouted nets 2937 at the end of iteration 29.
+    route iteration 29, CPU time elapsed 3.421875 sec.
+    forward max bucket size 2372 , backward 785.
+        Unrouted nets 2719 at the end of iteration 30.
+    route iteration 30, CPU time elapsed 3.406250 sec.
+    forward max bucket size 2731 , backward 909.
+        Unrouted nets 2617 at the end of iteration 31.
+    route iteration 31, CPU time elapsed 3.078125 sec.
+    forward max bucket size 2903 , backward 652.
+        Unrouted nets 2617 at the end of iteration 32.
+    route iteration 32, CPU time elapsed 2.890625 sec.
+    forward max bucket size 2276 , backward 1325.
+        Unrouted nets 2471 at the end of iteration 33.
+    route iteration 33, CPU time elapsed 3.250000 sec.
+    forward max bucket size 3847 , backward 298.
+        Unrouted nets 2466 at the end of iteration 34.
+    route iteration 34, CPU time elapsed 2.656250 sec.
+    forward max bucket size 1967 , backward 1135.
+        Unrouted nets 2420 at the end of iteration 35.
+    route iteration 35, CPU time elapsed 2.953125 sec.
+    forward max bucket size 3069 , backward 968.
+        Unrouted nets 2352 at the end of iteration 36.
+    route iteration 36, CPU time elapsed 2.953125 sec.
+    forward max bucket size 3544 , backward 1093.
+        Unrouted nets 2357 at the end of iteration 37.
+    route iteration 37, CPU time elapsed 2.875000 sec.
+    forward max bucket size 3002 , backward 986.
+        Unrouted nets 2236 at the end of iteration 38.
+    route iteration 38, CPU time elapsed 2.703125 sec.
+    forward max bucket size 2683 , backward 545.
+        Unrouted nets 2198 at the end of iteration 39.
+    route iteration 39, CPU time elapsed 2.609375 sec.
+    forward max bucket size 3727 , backward 1142.
+        Unrouted nets 2114 at the end of iteration 40.
+    route iteration 40, CPU time elapsed 2.890625 sec.
+    forward max bucket size 1393 , backward 756.
+        Unrouted nets 2060 at the end of iteration 41.
+    route iteration 41, CPU time elapsed 2.062500 sec.
+    forward max bucket size 2860 , backward 634.
+        Unrouted nets 1932 at the end of iteration 42.
+    route iteration 42, CPU time elapsed 2.265625 sec.
+    forward max bucket size 2775 , backward 517.
+        Unrouted nets 1860 at the end of iteration 43.
+    route iteration 43, CPU time elapsed 2.125000 sec.
+    forward max bucket size 3199 , backward 811.
+        Unrouted nets 1854 at the end of iteration 44.
+    route iteration 44, CPU time elapsed 2.203125 sec.
+    forward max bucket size 1982 , backward 542.
+        Unrouted nets 1776 at the end of iteration 45.
+    route iteration 45, CPU time elapsed 2.078125 sec.
+    forward max bucket size 1721 , backward 1473.
+        Unrouted nets 1649 at the end of iteration 46.
+    route iteration 46, CPU time elapsed 2.406250 sec.
+    forward max bucket size 1869 , backward 346.
+        Unrouted nets 1656 at the end of iteration 47.
+    route iteration 47, CPU time elapsed 1.921875 sec.
+    forward max bucket size 2080 , backward 510.
+        Unrouted nets 1569 at the end of iteration 48.
+    route iteration 48, CPU time elapsed 2.015625 sec.
+    forward max bucket size 2430 , backward 606.
+        Unrouted nets 1506 at the end of iteration 49.
+    route iteration 49, CPU time elapsed 1.796875 sec.
+    forward max bucket size 2754 , backward 583.
+        Unrouted nets 1532 at the end of iteration 50.
+    route iteration 50, CPU time elapsed 1.890625 sec.
+    forward max bucket size 1351 , backward 1029.
+        Unrouted nets 1522 at the end of iteration 51.
+    route iteration 51, CPU time elapsed 1.953125 sec.
+    forward max bucket size 2647 , backward 1206.
+        Unrouted nets 1455 at the end of iteration 52.
+    route iteration 52, CPU time elapsed 2.078125 sec.
+    forward max bucket size 2553 , backward 440.
+        Unrouted nets 1411 at the end of iteration 53.
+    route iteration 53, CPU time elapsed 1.953125 sec.
+    forward max bucket size 3400 , backward 496.
+        Unrouted nets 1348 at the end of iteration 54.
+    route iteration 54, CPU time elapsed 1.859375 sec.
+    forward max bucket size 2109 , backward 368.
+        Unrouted nets 1233 at the end of iteration 55.
+    route iteration 55, CPU time elapsed 1.828125 sec.
+    forward max bucket size 2006 , backward 747.
+        Unrouted nets 1241 at the end of iteration 56.
+    route iteration 56, CPU time elapsed 1.437500 sec.
+    forward max bucket size 1262 , backward 277.
+        Unrouted nets 1164 at the end of iteration 57.
+    route iteration 57, CPU time elapsed 1.765625 sec.
+    forward max bucket size 1844 , backward 764.
+        Unrouted nets 1172 at the end of iteration 58.
+    route iteration 58, CPU time elapsed 1.578125 sec.
+    forward max bucket size 1679 , backward 331.
+        Unrouted nets 1094 at the end of iteration 59.
+    route iteration 59, CPU time elapsed 1.625000 sec.
+    forward max bucket size 1275 , backward 517.
+        Unrouted nets 1046 at the end of iteration 60.
+    route iteration 60, CPU time elapsed 1.640625 sec.
+    forward max bucket size 845 , backward 415.
+        Unrouted nets 995 at the end of iteration 61.
+    route iteration 61, CPU time elapsed 1.203125 sec.
+    forward max bucket size 1459 , backward 456.
+        Unrouted nets 975 at the end of iteration 62.
+    route iteration 62, CPU time elapsed 1.218750 sec.
+    forward max bucket size 1573 , backward 294.
+        Unrouted nets 943 at the end of iteration 63.
+    route iteration 63, CPU time elapsed 1.250000 sec.
+    forward max bucket size 3593 , backward 478.
+        Unrouted nets 891 at the end of iteration 64.
+    route iteration 64, CPU time elapsed 1.390625 sec.
+    forward max bucket size 1227 , backward 413.
+        Unrouted nets 848 at the end of iteration 65.
+    route iteration 65, CPU time elapsed 1.250000 sec.
+    forward max bucket size 1810 , backward 289.
+        Unrouted nets 838 at the end of iteration 66.
+    route iteration 66, CPU time elapsed 1.171875 sec.
+    forward max bucket size 863 , backward 682.
+        Unrouted nets 769 at the end of iteration 67.
+    route iteration 67, CPU time elapsed 1.062500 sec.
+    forward max bucket size 1305 , backward 746.
+        Unrouted nets 739 at the end of iteration 68.
+    route iteration 68, CPU time elapsed 1.187500 sec.
+    forward max bucket size 2057 , backward 303.
+        Unrouted nets 711 at the end of iteration 69.
+    route iteration 69, CPU time elapsed 1.250000 sec.
+    forward max bucket size 1126 , backward 697.
+        Unrouted nets 668 at the end of iteration 70.
+    route iteration 70, CPU time elapsed 1.031250 sec.
+    forward max bucket size 1146 , backward 377.
+        Unrouted nets 589 at the end of iteration 71.
+    route iteration 71, CPU time elapsed 0.921875 sec.
+    forward max bucket size 1084 , backward 464.
+        Unrouted nets 571 at the end of iteration 72.
+    route iteration 72, CPU time elapsed 0.671875 sec.
+    forward max bucket size 1099 , backward 159.
+        Unrouted nets 564 at the end of iteration 73.
+    route iteration 73, CPU time elapsed 0.750000 sec.
+    forward max bucket size 1389 , backward 126.
+        Unrouted nets 564 at the end of iteration 74.
+    route iteration 74, CPU time elapsed 0.828125 sec.
+    forward max bucket size 2020 , backward 458.
+        Unrouted nets 567 at the end of iteration 75.
+    route iteration 75, CPU time elapsed 0.687500 sec.
+    forward max bucket size 858 , backward 421.
+        Unrouted nets 539 at the end of iteration 76.
+    route iteration 76, CPU time elapsed 0.593750 sec.
+    forward max bucket size 2017 , backward 844.
+        Unrouted nets 505 at the end of iteration 77.
+    route iteration 77, CPU time elapsed 0.578125 sec.
+    forward max bucket size 1725 , backward 963.
+        Unrouted nets 525 at the end of iteration 78.
+    route iteration 78, CPU time elapsed 0.546875 sec.
+    forward max bucket size 2612 , backward 678.
+        Unrouted nets 521 at the end of iteration 79.
+    route iteration 79, CPU time elapsed 0.718750 sec.
+    forward max bucket size 1546 , backward 440.
+        Unrouted nets 544 at the end of iteration 80.
+    route iteration 80, CPU time elapsed 0.656250 sec.
+    forward max bucket size 342 , backward 246.
+        Unrouted nets 587 at the end of iteration 81.
+    route iteration 81, CPU time elapsed 0.625000 sec.
+    forward max bucket size 834 , backward 957.
+        Unrouted nets 590 at the end of iteration 82.
+    route iteration 82, CPU time elapsed 0.968750 sec.
+    forward max bucket size 479 , backward 286.
+        Unrouted nets 635 at the end of iteration 83.
+    route iteration 83, CPU time elapsed 0.781250 sec.
+    forward max bucket size 845 , backward 322.
+        Unrouted nets 562 at the end of iteration 84.
+    route iteration 84, CPU time elapsed 0.703125 sec.
+    forward max bucket size 791 , backward 246.
+        Unrouted nets 519 at the end of iteration 85.
+    route iteration 85, CPU time elapsed 0.828125 sec.
+    forward max bucket size 288 , backward 937.
+        Unrouted nets 559 at the end of iteration 86.
+    route iteration 86, CPU time elapsed 0.843750 sec.
+    forward max bucket size 1497 , backward 603.
+        Unrouted nets 537 at the end of iteration 87.
+    route iteration 87, CPU time elapsed 0.671875 sec.
+    forward max bucket size 2196 , backward 229.
+        Unrouted nets 516 at the end of iteration 88.
+    route iteration 88, CPU time elapsed 0.703125 sec.
+    forward max bucket size 1036 , backward 1047.
+        Unrouted nets 513 at the end of iteration 89.
+    route iteration 89, CPU time elapsed 0.750000 sec.
+    forward max bucket size 523 , backward 736.
+        Unrouted nets 504 at the end of iteration 90.
+    route iteration 90, CPU time elapsed 0.687500 sec.
+    forward max bucket size 2788 , backward 483.
+        Unrouted nets 450 at the end of iteration 91.
+    route iteration 91, CPU time elapsed 0.843750 sec.
+    forward max bucket size 1247 , backward 471.
+        Unrouted nets 489 at the end of iteration 92.
+    route iteration 92, CPU time elapsed 0.656250 sec.
+    forward max bucket size 361 , backward 389.
+        Unrouted nets 473 at the end of iteration 93.
+    route iteration 93, CPU time elapsed 0.671875 sec.
+    forward max bucket size 758 , backward 400.
+        Unrouted nets 465 at the end of iteration 94.
+    route iteration 94, CPU time elapsed 0.703125 sec.
+    forward max bucket size 662 , backward 384.
+        Unrouted nets 445 at the end of iteration 95.
+    route iteration 95, CPU time elapsed 0.828125 sec.
+    forward max bucket size 1657 , backward 384.
+        Unrouted nets 424 at the end of iteration 96.
+    route iteration 96, CPU time elapsed 0.781250 sec.
+    forward max bucket size 1366 , backward 526.
+        Unrouted nets 404 at the end of iteration 97.
+    route iteration 97, CPU time elapsed 0.671875 sec.
+    forward max bucket size 859 , backward 382.
+        Unrouted nets 348 at the end of iteration 98.
+    route iteration 98, CPU time elapsed 0.515625 sec.
+    forward max bucket size 1751 , backward 960.
+        Unrouted nets 339 at the end of iteration 99.
+    route iteration 99, CPU time elapsed 0.671875 sec.
+    forward max bucket size 618 , backward 374.
+        Unrouted nets 343 at the end of iteration 100.
+    route iteration 100, CPU time elapsed 0.562500 sec.
+    forward max bucket size 602 , backward 797.
+        Unrouted nets 332 at the end of iteration 101.
+    route iteration 101, CPU time elapsed 0.531250 sec.
+    forward max bucket size 668 , backward 886.
+        Unrouted nets 299 at the end of iteration 102.
+    route iteration 102, CPU time elapsed 0.468750 sec.
+    forward max bucket size 950 , backward 373.
+        Unrouted nets 299 at the end of iteration 103.
+    route iteration 103, CPU time elapsed 0.453125 sec.
+    forward max bucket size 212 , backward 164.
+        Unrouted nets 289 at the end of iteration 104.
+    route iteration 104, CPU time elapsed 0.500000 sec.
+    forward max bucket size 452 , backward 148.
+        Unrouted nets 269 at the end of iteration 105.
+    route iteration 105, CPU time elapsed 0.515625 sec.
+    forward max bucket size 317 , backward 439.
+        Unrouted nets 283 at the end of iteration 106.
+    route iteration 106, CPU time elapsed 0.406250 sec.
+    forward max bucket size 249 , backward 196.
+        Unrouted nets 265 at the end of iteration 107.
+    route iteration 107, CPU time elapsed 0.578125 sec.
+    forward max bucket size 530 , backward 317.
+        Unrouted nets 218 at the end of iteration 108.
+    route iteration 108, CPU time elapsed 0.421875 sec.
+    forward max bucket size 236 , backward 198.
+        Unrouted nets 196 at the end of iteration 109.
+    route iteration 109, CPU time elapsed 0.375000 sec.
+    forward max bucket size 2219 , backward 268.
+        Unrouted nets 198 at the end of iteration 110.
+    route iteration 110, CPU time elapsed 0.375000 sec.
+    forward max bucket size 225 , backward 167.
+        Unrouted nets 195 at the end of iteration 111.
+    route iteration 111, CPU time elapsed 0.343750 sec.
+    forward max bucket size 815 , backward 550.
+        Unrouted nets 199 at the end of iteration 112.
+    route iteration 112, CPU time elapsed 0.390625 sec.
+    forward max bucket size 420 , backward 219.
+        Unrouted nets 214 at the end of iteration 113.
+    route iteration 113, CPU time elapsed 0.468750 sec.
+    forward max bucket size 716 , backward 170.
+        Unrouted nets 178 at the end of iteration 114.
+    route iteration 114, CPU time elapsed 0.562500 sec.
+    forward max bucket size 608 , backward 138.
+        Unrouted nets 183 at the end of iteration 115.
+    route iteration 115, CPU time elapsed 0.359375 sec.
+    forward max bucket size 575 , backward 263.
+        Unrouted nets 178 at the end of iteration 116.
+    route iteration 116, CPU time elapsed 0.437500 sec.
+    forward max bucket size 290 , backward 106.
+        Unrouted nets 164 at the end of iteration 117.
+    route iteration 117, CPU time elapsed 0.296875 sec.
+    forward max bucket size 271 , backward 225.
+        Unrouted nets 154 at the end of iteration 118.
+    route iteration 118, CPU time elapsed 0.312500 sec.
+    forward max bucket size 775 , backward 226.
+        Unrouted nets 151 at the end of iteration 119.
+    route iteration 119, CPU time elapsed 0.406250 sec.
+    forward max bucket size 368 , backward 145.
+        Unrouted nets 152 at the end of iteration 120.
+    route iteration 120, CPU time elapsed 0.421875 sec.
+    forward max bucket size 848 , backward 227.
+        Unrouted nets 167 at the end of iteration 121.
+    route iteration 121, CPU time elapsed 0.500000 sec.
+    forward max bucket size 1550 , backward 187.
+        Unrouted nets 171 at the end of iteration 122.
+    route iteration 122, CPU time elapsed 0.656250 sec.
+    forward max bucket size 1687 , backward 346.
+        Unrouted nets 157 at the end of iteration 123.
+    route iteration 123, CPU time elapsed 0.390625 sec.
+    forward max bucket size 169 , backward 158.
+        Unrouted nets 138 at the end of iteration 124.
+    route iteration 124, CPU time elapsed 0.265625 sec.
+    forward max bucket size 1062 , backward 158.
+        Unrouted nets 151 at the end of iteration 125.
+    route iteration 125, CPU time elapsed 0.281250 sec.
+    forward max bucket size 188 , backward 378.
+        Unrouted nets 151 at the end of iteration 126.
+    route iteration 126, CPU time elapsed 0.234375 sec.
+    forward max bucket size 324 , backward 152.
+        Unrouted nets 132 at the end of iteration 127.
+    route iteration 127, CPU time elapsed 0.312500 sec.
+    forward max bucket size 138 , backward 131.
+        Unrouted nets 121 at the end of iteration 128.
+    route iteration 128, CPU time elapsed 0.296875 sec.
+    forward max bucket size 1703 , backward 396.
+        Unrouted nets 151 at the end of iteration 129.
+    route iteration 129, CPU time elapsed 0.281250 sec.
+    forward max bucket size 242 , backward 636.
+        Unrouted nets 162 at the end of iteration 130.
+    route iteration 130, CPU time elapsed 0.390625 sec.
+    forward max bucket size 565 , backward 668.
+        Unrouted nets 146 at the end of iteration 131.
+    route iteration 131, CPU time elapsed 0.296875 sec.
+    forward max bucket size 463 , backward 591.
+        Unrouted nets 155 at the end of iteration 132.
+    route iteration 132, CPU time elapsed 0.296875 sec.
+    forward max bucket size 384 , backward 134.
+        Unrouted nets 143 at the end of iteration 133.
+    route iteration 133, CPU time elapsed 0.250000 sec.
+    forward max bucket size 986 , backward 239.
+        Unrouted nets 139 at the end of iteration 134.
+    route iteration 134, CPU time elapsed 0.359375 sec.
+    forward max bucket size 493 , backward 135.
+        Unrouted nets 171 at the end of iteration 135.
+    route iteration 135, CPU time elapsed 0.312500 sec.
+    forward max bucket size 1149 , backward 388.
+        Unrouted nets 158 at the end of iteration 136.
+    route iteration 136, CPU time elapsed 0.296875 sec.
+    forward max bucket size 214 , backward 168.
+        Unrouted nets 141 at the end of iteration 137.
+    route iteration 137, CPU time elapsed 0.281250 sec.
+    forward max bucket size 151 , backward 225.
+        Unrouted nets 153 at the end of iteration 138.
+    route iteration 138, CPU time elapsed 0.281250 sec.
+    forward max bucket size 300 , backward 121.
+        Unrouted nets 160 at the end of iteration 139.
+    route iteration 139, CPU time elapsed 0.421875 sec.
+    forward max bucket size 472 , backward 213.
+        Unrouted nets 145 at the end of iteration 140.
+    route iteration 140, CPU time elapsed 0.343750 sec.
+    forward max bucket size 874 , backward 568.
+        Unrouted nets 132 at the end of iteration 141.
+    route iteration 141, CPU time elapsed 0.265625 sec.
+    forward max bucket size 321 , backward 118.
+        Unrouted nets 138 at the end of iteration 142.
+    route iteration 142, CPU time elapsed 0.296875 sec.
+    forward max bucket size 248 , backward 115.
+        Unrouted nets 120 at the end of iteration 143.
+    route iteration 143, CPU time elapsed 0.406250 sec.
+    forward max bucket size 258 , backward 119.
+        Unrouted nets 111 at the end of iteration 144.
+    route iteration 144, CPU time elapsed 0.250000 sec.
+    forward max bucket size 136 , backward 66.
+        Unrouted nets 87 at the end of iteration 145.
+    route iteration 145, CPU time elapsed 0.234375 sec.
+    forward max bucket size 140 , backward 143.
+        Unrouted nets 73 at the end of iteration 146.
+    route iteration 146, CPU time elapsed 0.187500 sec.
+    forward max bucket size 241 , backward 65.
+        Unrouted nets 58 at the end of iteration 147.
+    route iteration 147, CPU time elapsed 0.187500 sec.
+    forward max bucket size 1961 , backward 106.
+        Unrouted nets 38 at the end of iteration 148.
+    route iteration 148, CPU time elapsed 0.218750 sec.
+    forward max bucket size 101 , backward 119.
+        Unrouted nets 40 at the end of iteration 149.
+    route iteration 149, CPU time elapsed 0.171875 sec.
+    forward max bucket size 231 , backward 120.
+        Unrouted nets 45 at the end of iteration 150.
+    route iteration 150, CPU time elapsed 0.171875 sec.
+    forward max bucket size 186 , backward 153.
+        Unrouted nets 41 at the end of iteration 151.
+    route iteration 151, CPU time elapsed 0.265625 sec.
+    forward max bucket size 104 , backward 246.
+        Unrouted nets 32 at the end of iteration 152.
+    route iteration 152, CPU time elapsed 0.140625 sec.
+    forward max bucket size 74 , backward 282.
+        Unrouted nets 25 at the end of iteration 153.
+    route iteration 153, CPU time elapsed 0.078125 sec.
+    forward max bucket size 74 , backward 300.
+        Unrouted nets 30 at the end of iteration 154.
+    route iteration 154, CPU time elapsed 0.109375 sec.
+    forward max bucket size 73 , backward 58.
+        Unrouted nets 25 at the end of iteration 155.
+    route iteration 155, CPU time elapsed 0.140625 sec.
+    forward max bucket size 73 , backward 67.
+        Unrouted nets 19 at the end of iteration 156.
+    route iteration 156, CPU time elapsed 0.109375 sec.
+    forward max bucket size 50 , backward 128.
+        Unrouted nets 14 at the end of iteration 157.
+    route iteration 157, CPU time elapsed 0.109375 sec.
+    forward max bucket size 33 , backward 13.
+        Unrouted nets 10 at the end of iteration 158.
+    route iteration 158, CPU time elapsed 0.093750 sec.
+    forward max bucket size 16 , backward 19.
+        Unrouted nets 13 at the end of iteration 159.
+    route iteration 159, CPU time elapsed 0.109375 sec.
+    forward max bucket size 130 , backward 21.
+        Unrouted nets 15 at the end of iteration 160.
+    route iteration 160, CPU time elapsed 0.125000 sec.
+    forward max bucket size 122 , backward 41.
+        Unrouted nets 15 at the end of iteration 161.
+    route iteration 161, CPU time elapsed 0.125000 sec.
+    forward max bucket size 122 , backward 39.
+        Unrouted nets 10 at the end of iteration 162.
+    route iteration 162, CPU time elapsed 0.109375 sec.
+    forward max bucket size 25 , backward 23.
+        Unrouted nets 13 at the end of iteration 163.
+    route iteration 163, CPU time elapsed 0.093750 sec.
+    forward max bucket size 62 , backward 29.
+        Unrouted nets 12 at the end of iteration 164.
+    route iteration 164, CPU time elapsed 0.109375 sec.
+    forward max bucket size 122 , backward 41.
+        Unrouted nets 12 at the end of iteration 165.
+    route iteration 165, CPU time elapsed 0.109375 sec.
+    forward max bucket size 80 , backward 130.
+        Unrouted nets 15 at the end of iteration 166.
+    route iteration 166, CPU time elapsed 0.140625 sec.
+    forward max bucket size 196 , backward 130.
+        Unrouted nets 21 at the end of iteration 167.
+    route iteration 167, CPU time elapsed 0.171875 sec.
+    forward max bucket size 187 , backward 130.
+        Unrouted nets 20 at the end of iteration 168.
+    route iteration 168, CPU time elapsed 0.203125 sec.
+    forward max bucket size 30 , backward 52.
+        Unrouted nets 20 at the end of iteration 169.
+    route iteration 169, CPU time elapsed 0.125000 sec.
+    forward max bucket size 40 , backward 48.
+        Unrouted nets 12 at the end of iteration 170.
+    route iteration 170, CPU time elapsed 0.109375 sec.
+    forward max bucket size 28 , backward 38.
+        Unrouted nets 9 at the end of iteration 171.
+    route iteration 171, CPU time elapsed 0.109375 sec.
+    forward max bucket size 35 , backward 47.
+        Unrouted nets 12 at the end of iteration 172.
+    route iteration 172, CPU time elapsed 0.109375 sec.
+    forward max bucket size 36 , backward 62.
+        Unrouted nets 6 at the end of iteration 173.
+    route iteration 173, CPU time elapsed 0.109375 sec.
+    forward max bucket size 35 , backward 69.
+        Unrouted nets 5 at the end of iteration 174.
+    route iteration 174, CPU time elapsed 0.093750 sec.
+    forward max bucket size 49 , backward 88.
+        Unrouted nets 11 at the end of iteration 175.
+    route iteration 175, CPU time elapsed 0.093750 sec.
+    forward max bucket size 53 , backward 70.
+        Unrouted nets 6 at the end of iteration 176.
+    route iteration 176, CPU time elapsed 0.125000 sec.
+    forward max bucket size 10 , backward 8.
+        Unrouted nets 0 at the end of iteration 177.
+    route iteration 177, CPU time elapsed 0.093750 sec.
+Detailed routing takes 177 iterations
+Detailed routing takes 287.28 sec.
+Start fix hold violation.
+Build tmp routing results takes 0.27 sec.
+Timing analysis takes 0.19 sec.
+Hold violation fix iter 0 takes 8.19 sec, total_step_forward 864392.
+Incremental timing analysis takes 0.16 sec.
+Hold violation fix iter 1 takes 4.30 sec, total_step_forward 389127.
+Incremental timing analysis takes 0.19 sec.
+Hold violation fix iter 2 takes 3.02 sec, total_step_forward 288277.
+Incremental timing analysis takes 0.16 sec.
+Hold violation fix iter 3 takes 2.48 sec, total_step_forward 300277.
+Incremental timing analysis takes 0.16 sec.
+Hold violation fix iter 4 takes 3.22 sec, total_step_forward 312299.
+Incremental timing analysis takes 0.14 sec.
+Hold violation fix iter 5 takes 3.36 sec, total_step_forward 324311.
+Hold Violation Fix in router takes 6 iterations.
+Fix hold violation Finished.
+Hold Violation Fix in router takes 27.02 sec.
+
+Dispose routing result:
+    Collect routing result.
+    Delete unused device instances.
+    Annotate routing result.
+    Change LUT configuration.
+    Dispose misc instances.
+    Annotate routing result again.
+Finish routing takes 1.12 sec.
+Used SRB routing arc is 135799.
+Cleanup routing takes 0.06 sec.
+Routing done.
+Total routing takes 333.92 sec.
+
+
+Device Utilization Summary :
++------------------------------------------------------------------------------+
+| Logic Utilization           | Used     | Available     | Utilization(%)     
++------------------------------------------------------------------------------+
+| Use of ADC                  | 0        | 1             | 0                  
+| Use of ANALOG               | 0        | 1             | 0                  
+| Use of APM                  | 0        | 240           | 0                  
+| Use of BKCL                 | 4        | 6             | 67                 
+| Use of CCS                  | 1        | 1             | 100                
+| Use of CLMA                 | 1194     | 11675         | 11                 
+|   FF                        | 4025     | 93400         | 5                  
+|   LUT                       | 3745     | 46700         | 9                  
+|   LUT-FF pairs              | 1987     | 46700         | 5                  
+| Use of CLMS                 | 631      | 4975          | 13                 
+|   FF                        | 843      | 39800         | 3                  
+|   LUT                       | 1537     | 19900         | 8                  
+|   LUT-FF pairs              | 349      | 19900         | 2                  
+|   Distributed RAM           | 1072     | 19900         | 6                  
+| Use of DDRPHY_CPD           | 0        | 12            | 0                  
+| Use of DDRPHY_IOCLK_DIV     | 0        | 6             | 0                  
+| Use of DDR_PHY              | 0        | 24            | 0                  
+| Use of DRM                  | 0        | 155           | 0                  
+| Use of GPLL                 | 0        | 6             | 0                  
+| Use of GSEB                 | 0        | 218           | 0                  
+| Use of HARD0                | 929      | 10550         | 9                  
+| Use of HCKB                 | 5        | 96            | 6                  
+|  HCKB dataused              | 1        | 96            | 2                  
+| Use of HCKMUX_TEST          | 0        | 8             | 0                  
+| Use of HSSTLP               | 0        | 2             | 0                  
+| Use of IO                   | 73       | 300           | 25                 
+|   IOBD                      | 36       | 144           | 25                 
+|   IOBS                      | 37       | 156           | 24                 
+| Use of IOCKB                | 0        | 24            | 0                  
+| Use of IOCKMUX_TEST         | 0        | 6             | 0                  
+| Use of IOLHR                | 73       | 300           | 25                 
+| Use of KEYRAM               | 0        | 1             | 0                  
+| Use of MFG_TEST             | 0        | 1             | 0                  
+| Use of MRCKB                | 0        | 12            | 0                  
+| Use of MRCKMUX_TEST         | 0        | 6             | 0                  
+| Use of MRPOSTMUX_TEST       | 0        | 6             | 0                  
+| Use of PCIE                 | 0        | 1             | 0                  
+| Use of PCKMUX_TEST          | 0        | 12            | 0                  
+| Use of PLLMRMUX_TEST        | 0        | 6             | 0                  
+| Use of PLLREFMUX_TEST       | 0        | 6             | 0                  
+| Use of PPLL                 | 0        | 6             | 0                  
+| Use of PREGMUXC_TEST        | 0        | 4             | 0                  
+| Use of PREGMUXLR_TEST       | 0        | 6             | 0                  
+| Use of RCKB                 | 3        | 24            | 13                 
+|  RCKB dataused              | 3        | 24            | 13                 
+| Use of RCKMUX_TEST          | 0        | 6             | 0                  
+| Use of SCANCHAIN            | 0        | 1             | 0                  
+| Use of SCKMUX_TEST          | 0        | 12            | 0                  
+| Use of SFB                  | 0        | 2225          | 0                  
+| Use of SPAD                 | 0        | 8             | 0                  
+| Use of TSERDES              | 0        | 48            | 0                  
+| Use of USCM                 | 1        | 32            | 4                  
+|  USCM dataused              | 0        | 32            | 0                  
+| Use of USCMMUX_TEST         | 0        | 32            | 0                  
++------------------------------------------------------------------------------+
+
+Finished routing.
+Design 'regional_wrapper' has been placed and routed successfully.
+Saving design to DB.
+Finished placement and routing.
+Action pnr: Real time elapsed is 0h:7m:33s
+Action pnr: CPU time elapsed is 0h:6m:51s
+Action pnr: Process CPU time elapsed is 0h:7m:8s
+Current time: Tue Oct 20 03:40:30 2026
+Action pnr: Peak memory pool usage is 1,402 MB
+Action from pnr to pnr: Total Real Time elapsed is 0h:7m:33s
+Action from pnr to pnr: Total CPU time elapsed is 0h:6m:51s
+Action from pnr to pnr: Total Process CPU Time elapsed is 0h:7m:8s
+Process "Place & Route" done.
+Executing : pnr -force_to_run -input_db_file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper_map.adf -action_timeout 20 -gplace_seed 11 -plc_decongestion 2 -max_ctrl_chain_length 500 -mode normal -congest_overlap_limit 200 -dump_router_congestion_plot TRUE successfully.
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+W: Warning : The license will invalid in 14 days. In order not to affect your usage, please update the license in time.
+
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/report_timing.pds'.
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate successfully.
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676 successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/frame_manager_pkg.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/frame_manager_pkg.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/pool.sv successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/clock.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/clock.fdc successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/regional_wrapper.sv successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/scan_pins.fdc successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/device_map/regional_wrapper.pcf successfully.
+
+
+Executing : report_timing -force_to_run -input_db_file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/place_route/regional_wrapper_pnr.adf -delay_type min_max -max_path 30 -report_exception TRUE
+
+
+Process "Report Timing" started.
+Current time: Tue Oct 20 03:40:58 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/report_timing.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Building architecture model.
+Loading device packaging model.
+Reading design from pnr DB.
+Start Report Post-PnR timing.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 5993935
+
+Constructing timing graph ...
+Timing graph has been constructed successfully
+W: Timing-4087: Port 'scan_out[0]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[1]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[2]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[3]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[4]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[5]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[6]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[7]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[8]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[9]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[10]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[11]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[12]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[13]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[14]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[15]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[16]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[17]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[18]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[19]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[20]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[21]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[22]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[23]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[24]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[25]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[26]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[27]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[28]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[29]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[30]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[31]' is not constrained, it is treated as combinational output.
+W: Timing-4086: Port 'rst_n' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[0]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[1]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[2]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[3]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[4]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[5]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[6]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[0]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[1]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[2]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[3]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[4]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[5]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[6]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[7]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[8]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[9]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[10]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[11]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[12]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[13]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[14]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[15]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[16]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[17]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[18]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[19]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[20]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[21]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[22]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[23]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[24]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[25]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[26]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[27]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[28]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[29]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[30]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[31]' is not constrained, it is treated as combinational input.
+Report timing is finished successfully.
+Action report_timing: Real time elapsed is 0h:0m:21s
+Action report_timing: CPU time elapsed is 0h:0m:17s
+Action report_timing: Process CPU time elapsed is 0h:0m:18s
+Current time: Tue Oct 20 03:41:19 2026
+Action report_timing: Peak memory pool usage is 1,181 MB
+Action from report_timing to report_timing: Total Real Time elapsed is 0h:0m:21s
+Action from report_timing to report_timing: Total CPU time elapsed is 0h:0m:17s
+Action from report_timing to report_timing: Total Process CPU Time elapsed is 0h:0m:18s
+Process "Report Timing" done.
+Executing : report_timing -force_to_run -input_db_file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk16_20261020_025740_906990/pool_unit_screen_20261020_030600_250387/regional_route_20261020_033156_803361/candidate/place_route/regional_wrapper_pnr.adf -delay_type min_max -max_path 30 -report_exception TRUE successfully.

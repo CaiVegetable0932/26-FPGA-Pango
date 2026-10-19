@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "production_instantiated": false,
+  "timing_signed_off": false,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\experiments\\proc150\\rtl\\processing_job_cdc.sv": "cdd0ab9aa6a19e59f9f8ed65f5d0eed9cd7721d3acea9ac354dfb224ecf7c389",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\experiments\\proc150\\sim\\tb_processing_job_cdc.sv": "cb965cef9de87c9d6775a69dbe8ce00de456869e82c8c53bef6196c077cc640e"
+  },
+  "tests": [
+    {
+      "source_half_ns": 4,
+      "processing_half_ns": 3.333,
+      "phase_ns": 0.7,
+      "passed": true,
+      "cases": 82
+    },
+    {
+      "source_half_ns": 3.333,
+      "processing_half_ns": 4,
+      "phase_ns": 1.1,
+      "passed": true,
+      "cases": 82
+    },
+    {
+      "source_half_ns": 5,
+      "processing_half_ns": 3.1,
+      "phase_ns": 0,
+      "passed": true,
+      "cases": 82
+    },
+    {
+      "source_half_ns": 4,
+      "processing_half_ns": 3.333,
+      "phase_ns": 3.9,
+      "passed": true,
+      "cases": 82
+    }
+  ],
+  "inputs_intact": true
+}

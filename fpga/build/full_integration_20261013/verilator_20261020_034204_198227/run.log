@@ -1,0 +1,6 @@
+FRAME_GEOMETRY job=1 geometry_cycles=4217
+FRAME_GEOMETRY job=2 geometry_cycles=3499
+FRAME_GEOMETRY job=3 geometry_cycles=3422
+[295256000] %Fatal: tb_video_memory_core.sv:198: Assertion failed in tb_video_memory_core: New source geometry entity was not applied
+%Error: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_034204_198227/source/sim\tb_video_memory_core.sv:198: Verilog $stop
+Aborting...
