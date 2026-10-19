@@ -1,0 +1,373 @@
+{
+  "pins": {
+    "baseline": {
+      "clk": [
+        "input",
+        "M2",
+        "BANKR5"
+      ],
+      "rst_n": [
+        "input",
+        "K1",
+        "BANKR5"
+      ],
+      "scan_addr[0]": [
+        "input",
+        "N7",
+        "BANKR5"
+      ],
+      "scan_addr[1]": [
+        "input",
+        "M6",
+        "BANKR5"
+      ],
+      "scan_addr[2]": [
+        "input",
+        "N6",
+        "BANKR5"
+      ],
+      "scan_addr[3]": [
+        "input",
+        "M5",
+        "BANKR5"
+      ],
+      "scan_addr[4]": [
+        "input",
+        "J1",
+        "BANKR5"
+      ],
+      "scan_addr[5]": [
+        "input",
+        "L4",
+        "BANKR5"
+      ],
+      "scan_addr[6]": [
+        "input",
+        "M4",
+        "BANKR5"
+      ],
+      "scan_in[0]": [
+        "input",
+        "A5",
+        "BANKR4"
+      ],
+      "scan_in[10]": [
+        "input",
+        "C3",
+        "BANKR4"
+      ],
+      "scan_in[11]": [
+        "input",
+        "D1",
+        "BANKR4"
+      ],
+      "scan_in[12]": [
+        "input",
+        "D5",
+        "BANKR4"
+      ],
+      "scan_in[13]": [
+        "input",
+        "D3",
+        "BANKR4"
+      ],
+      "scan_in[14]": [
+        "input",
+        "B5",
+        "BANKR4"
+      ],
+      "scan_in[15]": [
+        "input",
+        "F5",
+        "BANKR4"
+      ],
+      "scan_in[16]": [
+        "input",
+        "H24",
+        "BANKL4"
+      ],
+      "scan_in[17]": [
+        "input",
+        "G22",
+        "BANKL4"
+      ],
+      "scan_in[18]": [
+        "input",
+        "E23",
+        "BANKL4"
+      ],
+      "scan_in[19]": [
+        "input",
+        "J24",
+        "BANKL4"
+      ],
+      "scan_in[1]": [
+        "input",
+        "B4",
+        "BANKR4"
+      ],
+      "scan_in[20]": [
+        "input",
+        "A4",
+        "BANKR4"
+      ],
+      "scan_in[21]": [
+        "input",
+        "D4",
+        "BANKR4"
+      ],
+      "scan_in[22]": [
+        "input",
+        "E5",
+        "BANKR4"
+      ],
+      "scan_in[23]": [
+        "input",
+        "B2",
+        "BANKR4"
+      ],
+      "scan_in[24]": [
+        "input",
+        "E3",
+        "BANKR4"
+      ],
+      "scan_in[25]": [
+        "input",
+        "F3",
+        "BANKR4"
+      ],
+      "scan_in[26]": [
+        "input",
+        "C1",
+        "BANKR4"
+      ],
+      "scan_in[27]": [
+        "input",
+        "E1",
+        "BANKR4"
+      ],
+      "scan_in[28]": [
+        "input",
+        "F2",
+        "BANKR4"
+      ],
+      "scan_in[29]": [
+        "input",
+        "H3",
+        "BANKR4"
+      ],
+      "scan_in[2]": [
+        "input",
+        "C2",
+        "BANKR4"
+      ],
+      "scan_in[30]": [
+        "input",
+        "G1",
+        "BANKR4"
+      ],
+      "scan_in[31]": [
+        "input",
+        "B1",
+        "BANKR4"
+      ],
+      "scan_in[3]": [
+        "input",
+        "A2",
+        "BANKR4"
+      ],
+      "scan_in[4]": [
+        "input",
+        "G5",
+        "BANKR4"
+      ],
+      "scan_in[5]": [
+        "input",
+        "C4",
+        "BANKR4"
+      ],
+      "scan_in[6]": [
+        "input",
+        "G2",
+        "BANKR4"
+      ],
+      "scan_in[7]": [
+        "input",
+        "A3",
+        "BANKR4"
+      ],
+      "scan_in[8]": [
+        "input",
+        "L7",
+        "BANKR5"
+      ],
+      "scan_in[9]": [
+        "input",
+        "G4",
+        "BANKR4"
+      ],
+      "scan_out[0]": [
+        "output",
+        "N16",
+        "BANKL5"
+      ],
+      "scan_out[10]": [
+        "output",
+        "N17",
+        "BANKL5"
+      ],
+      "scan_out[11]": [
+        "output",
+        "P14",
+        "BANKL5"
+      ],
+      "scan_out[12]": [
+        "output",
+        "L19",
+        "BANKL4"
+      ],
+      "scan_out[13]": [
+        "output",
+        "D25",
+        "BANKL4"
+      ],
+      "scan_out[14]": [
+        "output",
+        "K23",
+        "BANKL4"
+      ],
+      "scan_out[15]": [
+        "output",
+        "G25",
+        "BANKL4"
+      ],
+      "scan_out[16]": [
+        "output",
+        "F24",
+        "BANKL4"
+      ],
+      "scan_out[17]": [
+        "output",
+        "P16",
+        "BANKL5"
+      ],
+      "scan_out[18]": [
+        "output",
+        "J3",
+        "BANKR5"
+      ],
+      "scan_out[19]": [
+        "output",
+        "R14",
+        "BANKL5"
+      ],
+      "scan_out[1]": [
+        "output",
+        "J25",
+        "BANKL4"
+      ],
+      "scan_out[20]": [
+        "output",
+        "E2",
+        "BANKR4"
+      ],
+      "scan_out[21]": [
+        "output",
+        "H26",
+        "BANKL4"
+      ],
+      "scan_out[22]": [
+        "output",
+        "J26",
+        "BANKL4"
+      ],
+      "scan_out[23]": [
+        "output",
+        "K5",
+        "BANKR5"
+      ],
+      "scan_out[24]": [
+        "output",
+        "P18",
+        "BANKL5"
+      ],
+      "scan_out[25]": [
+        "output",
+        "P15",
+        "BANKL5"
+      ],
+      "scan_out[26]": [
+        "output",
+        "R15",
+        "BANKL5"
+      ],
+      "scan_out[27]": [
+        "output",
+        "N14",
+        "BANKL5"
+      ],
+      "scan_out[28]": [
+        "output",
+        "N8",
+        "BANKR5"
+      ],
+      "scan_out[29]": [
+        "output",
+        "M7",
+        "BANKR5"
+      ],
+      "scan_out[2]": [
+        "output",
+        "N18",
+        "BANKL5"
+      ],
+      "scan_out[30]": [
+        "output",
+        "R16",
+        "BANKL5"
+      ],
+      "scan_out[31]": [
+        "output",
+        "M19",
+        "BANKL5"
+      ],
+      "scan_out[3]": [
+        "output",
+        "R17",
+        "BANKL5"
+      ],
+      "scan_out[4]": [
+        "output",
+        "L5",
+        "BANKR5"
+      ],
+      "scan_out[5]": [
+        "output",
+        "G26",
+        "BANKL4"
+      ],
+      "scan_out[6]": [
+        "output",
+        "K3",
+        "BANKR5"
+      ],
+      "scan_out[7]": [
+        "output",
+        "E25",
+        "BANKL4"
+      ],
+      "scan_out[8]": [
+        "output",
+        "F23",
+        "BANKL4"
+      ],
+      "scan_out[9]": [
+        "output",
+        "G24",
+        "BANKL4"
+      ]
+    },
+    "candidate": {}
+  },
+  "actual_pin_maps_identical": false
+}

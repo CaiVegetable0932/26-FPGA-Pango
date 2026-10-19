@@ -9,11 +9,14 @@ import shutil
 import subprocess
 from native_bitgen import generate_from_timed_database
 from implementation_readiness import require_whole_design_ready
+from route_supervisor import run_supervised
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--overall-timeout-minutes', type=int, default=120, help='Whole native flow allowance; leaves per-action limits intact')
+    parser.add_argument('--overall-timeout-minutes', type=int, default=60, help='Bounded whole native flow allowance')
+    parser.add_argument('--pause-file',type=Path,help='Explicit stop request for this owned build')
+    parser.add_argument('--placement-seed',type=int,choices=(11,7,13),default=11)
     parser.add_argument('--pnr-timeout-minutes', type=int, default=30, help='Native per-action limit, not a timing exception')
     parser.add_argument('--control-chain-length', type=int, default=500,
                         help='Official CE/RS routing chain default; independent of STA acceptance')
@@ -23,8 +26,8 @@ def main():
     # until the user's whole-design readiness record has been reviewed.
     if options.stage in ('report_timing','gen_bit_stream'):
         require_whole_design_ready()
-    if not 1 <= options.overall_timeout_minutes <= 240:
-        parser.error('overall native allowance must be 1..240 minutes')
+    if not 1 <= options.overall_timeout_minutes <= 60:
+        parser.error('overall native allowance must be 1..60 minutes')
     if not 1 <= options.pnr_timeout_minutes <= 60:
         parser.error('PDS action timeout must be 1..60 minutes')
     if not 1 <= options.control_chain_length <= 500:
@@ -60,6 +63,8 @@ def main():
     (run / 'sources.json').write_text(json.dumps(hashes, indent=2), encoding='utf-8')
     shutil.copyfile(Path(__file__), run / 'build_script.py')
     shutil.copyfile(Path(__file__).with_name('native_bitgen.py'), run / 'native_bitgen.py')
+    for helper in ('route_supervisor.py','implementation_readiness.py'):
+        shutil.copyfile(Path(__file__).with_name(helper),run/helper)
     # Native task commands follow the installed PDS 2022.2-SP6.4 flow. Full
     # board timing is a distinct gate; unit-wide abstract ports are not routed.
     flow = '# Offline MINI video integration candidate; no programmer.\n'
@@ -84,7 +89,7 @@ def main():
         # defaults in the Logos column: CE/RS chain500, congestion iterations200.
         # Physical diagnosis/new expansion/seeds are configurable in the resume
         # driver. These settings never change timing constraints or STA gates.
-        flow += f'pnr -congest_overlap_limit 200 -action_timeout {options.pnr_timeout_minutes} -max_ctrl_chain_length {options.control_chain_length} -gplace_seed 7\n'
+        flow += f'pnr -congest_overlap_limit 200 -action_timeout {options.pnr_timeout_minutes} -max_ctrl_chain_length {options.control_chain_length} -gplace_seed {options.placement_seed}\n'
         flow += 'report_timing -delay_type min_max -max_path 30 -report_exception TRUE\n'
     if options.stage == 'gen_bit_stream':
         # Native options are stored in the project. Ordinary Tcl file reads
@@ -96,25 +101,27 @@ def main():
     generate = run / 'create_project.tcl'
     generate.write_text(f'tcl2prj -tcl {{{(run / "flow.tcl").as_posix()}}}\n', encoding='utf-8')
     shell = 'E:/PDS_Pangu/PDS_2022.2-SP6.4/bin/pds_shell.exe'
-    with (run / 'generation.log').open('wb') as log:
-        generated = subprocess.run([shell, '-file', str(generate), '-work_dir', str(run)], cwd=run,
-                                   stdout=log, stderr=subprocess.STDOUT, creationflags=0x08000000, timeout=120)
+    # Every native phase shares the same lock and owned-tree cleanup policy.
+    generated=run_supervised([shell,'-file',str(generate),'-work_dir',str(run)],
+        cwd=run,log_path=run/'generation.log',monitor_path=run/'generation_monitor.jsonl',
+        timeout_seconds=120,pause_path=options.pause_file)
     generation_text = (run / 'generation.log').read_text(errors='replace')
-    if generated.returncode or re.search(r'^E:', generation_text, re.M):
+    if generated['status']!='COMPLETED' or generated['returncode'] or re.search(r'^E:', generation_text, re.M):
         raise RuntimeError('PDS project generation failed: '+generation_text[-3000:])
     native_stage = 'report_timing' if options.stage == 'gen_bit_stream' else options.stage
-    with (run / 'console.log').open('wb') as log:
-        process = subprocess.run([shell, '-project', str(run / 'flow.pds'), '-run', native_stage,
-                                  '-work_dir', str(run)], cwd=run, stdout=log, stderr=subprocess.STDOUT,
-                                 creationflags=0x08000000, timeout=options.overall_timeout_minutes*60)
+    supervised=run_supervised([shell,'-project',str(run/'flow.pds'),'-run',native_stage,
+        '-work_dir',str(run)],cwd=run,log_path=run/'console.log',
+        monitor_path=run/'native_monitor.jsonl',timeout_seconds=options.overall_timeout_minutes*60,
+        pause_path=options.pause_file,watch_stall=native_stage=='report_timing')
+    process=subprocess.CompletedProcess([],supervised['returncode'])
     if options.stage == 'gen_bit_stream':
         report_path = run / 'report_timing/pango_video_system.rtr'
         timing_text = report_path.read_text(errors='replace') if report_path.exists() else ''
         stage_errors = re.findall(r'^E:.*', (run / 'console.log').read_text(errors='replace'), re.M)
-        if process.returncode == 0 and not stage_errors and re.search(r'^Design Summary\s*:\s*All Constraints Met\.', timing_text, re.M):
+        if supervised['status']=='COMPLETED' and process.returncode == 0 and not stage_errors and re.search(r'^Design Summary\s*:\s*All Constraints Met\.', timing_text, re.M):
             # The documented explicit DB action reads the SAME routed image;
             # re-opening a full project can otherwise re-run its prior tasks.
-            process = generate_from_timed_database(run, shell, run / 'bitgen_console.log')
+            process = generate_from_timed_database(run, shell, run / 'bitgen_console.log',pause_path=options.pause_file)
     console = (run / 'console.log').read_text(errors='replace')
     if (run / 'bitgen_console.log').exists():
         console += (run / 'bitgen_console.log').read_text(errors='replace')
@@ -126,13 +133,14 @@ def main():
               'internal_timing_met': bool(match and match[1].strip() == 'All Constraints Met.'),
               'full_function_release': False, 'hardware_tested': False, 'programmed': False,
               'external_timing_verified': False, 'download_approved': False}
+    result.update(supervision=supervised,optimization_status=supervised['status'],placement_seed=options.placement_seed)
     bitstream = run / 'generate_bitstream/pango_video_system.sbit'
     if bitstream.is_file():
         result.update(bitstream=str(bitstream), bitstream_bytes=bitstream.stat().st_size,
                       bitstream_sha256=hashlib.sha256(bitstream.read_bytes()).hexdigest())
     (run / 'result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
     print(json.dumps(result), flush=True)
-    if process.returncode or errors or not intact:
+    if supervised['status']!='COMPLETED' or process.returncode or errors or not intact:
         raise SystemExit(1)
     if options.stage in ('report_timing', 'gen_bit_stream') and not result['internal_timing_met']:
         raise SystemExit(2)

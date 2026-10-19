@@ -6,6 +6,7 @@ timeout or convergence stall is a failed experiment, never routed signoff.
 from datetime import datetime, timezone
 from contextlib import contextmanager
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -107,10 +108,23 @@ def stop_owned(child, known=None):
             continue
 
 
+def phase_budget(timeout_seconds, baseline_success_seconds=None):
+    """Apply the plan's successful-baseline stop and early-warning rules."""
+    if not math.isfinite(timeout_seconds) or timeout_seconds<=0:
+        raise ValueError('Positive finite phase allowance required')
+    if baseline_success_seconds is None:
+        return timeout_seconds,timeout_seconds*0.8
+    if not math.isfinite(baseline_success_seconds) or baseline_success_seconds<=0:
+        raise ValueError('Successful baseline duration must be positive and finite')
+    stop=min(timeout_seconds,2*baseline_success_seconds+300)
+    return stop,min(stop*0.8,1.5*baseline_success_seconds)
+
+
 def run_supervised(command, *, cwd, log_path, timeout_seconds,
                    monitor_path, poll_seconds=30, watch_stall=False,
                    pause_path=None, stall_window=5, stall_minimum=1000,
-                   stall_improvement=0.01, warmup_rounds=5):
+                   stall_improvement=0.01, warmup_rounds=5,
+                   baseline_success_seconds=None):
     """Run one bounded native phase and persist observations before returning.
 
     Native logs are kept verbatim. The JSONL stream records all completed
@@ -121,14 +135,17 @@ def run_supervised(command, *, cwd, log_path, timeout_seconds,
         raise ValueError('A positive host timeout and polling interval are required')
     if stall_window < 1 or warmup_rounds < 1 or stall_minimum < 0 or not 0 < stall_improvement < 1:
         raise ValueError('Invalid convergence policy')
+    requested_timeout_seconds=timeout_seconds
+    timeout_seconds,warning_seconds=phase_budget(timeout_seconds,baseline_success_seconds)
     log_path, monitor_path = Path(log_path), Path(monitor_path)
     # Freeze numeric rules before launch. These are project management
     # thresholds, not vendor guarantees or a replacement for routed STA.
-    policy = dict(timeout_seconds=timeout_seconds, warning_seconds=timeout_seconds*0.8,
+    policy = dict(timeout_seconds=timeout_seconds,warning_seconds=warning_seconds,
+                  requested_timeout_seconds=requested_timeout_seconds,
                   poll_seconds=poll_seconds, stall_enabled=watch_stall,
                   stall_window=stall_window, stall_minimum_unrouted=stall_minimum,
                   stall_minimum_improvement=stall_improvement, warmup_rounds=warmup_rounds,
-                  baseline_success_seconds=None, baseline_acceleration_claim=False,
+                  baseline_success_seconds=baseline_success_seconds, baseline_acceleration_claim=False,
                   no_log_investigation_seconds=600)
     monitor_path.with_suffix('.policy.json').write_text(json.dumps(policy, indent=2)+'\n')
     started = time.monotonic()
@@ -165,7 +182,7 @@ def run_supervised(command, *, cwd, log_path, timeout_seconds,
                     state = 'STALLED'
                 row = dict(at=datetime.now(timezone.utc).isoformat(), pid=child.pid,
                            elapsed_seconds=elapsed, status=state,
-                           warning=elapsed >= timeout_seconds * 0.8,
+                           warning=elapsed >= warning_seconds,
                            timeout_seconds=timeout_seconds, rounds=rounds,
                            log_bytes=log_bytes,
                            log_idle_seconds=time.monotonic()-last_log_change,

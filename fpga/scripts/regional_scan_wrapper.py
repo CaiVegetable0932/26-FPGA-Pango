@@ -89,3 +89,24 @@ def make_wrapper(port_list,top):
     return '\n'.join(code),dict(input_bits=ni,input_padded_bits=pi,output_bits=no,
                                 output_padded_bits=po,read_address_bits=ab,
                                 package_ports=2+32+ab+32)
+
+
+def fixed_pin_constraints(metadata,configuration):
+    """Anchor identical fixture interfaces; never use as real-board pin data."""
+    required=dict(clk='input',rst_n='input')
+    for prefix,count,direction in (('scan_in',32,'input'),('scan_out',32,'output'),
+                                  ('scan_addr',metadata['read_address_bits'],'input')):
+        required.update({f'{prefix}[{i}]':direction for i in range(count)})
+    selected={};lines=['# Offline scan fixture ONLY; no production or bitstream use.']
+    for name,direction in required.items():
+        value=configuration['pins'][name]
+        if (value['direction']!=direction or not re.fullmatch(r'[A-Z]+\d+',value['pin']) or
+                value['vccio']!='3.3' or value['standard']!='LVCMOS33'):
+            raise ValueError('Unexpected diagnostic pin anchor: '+name)
+        selected[name]=dict(value)
+        for attribute,setting in (('DIRECTION',direction.upper()),('LOC',value['pin']),
+                                  ('VCCIO','3.3'),('STANDARD','LVCMOS33'),('NONE','TRUE')):
+            lines.append('define_attribute {p:'+name+'} {PAP_IO_'+attribute+'} {'+setting+'}')
+    if len({p['pin'] for p in selected.values()})!=len(required):
+        raise ValueError('Duplicate diagnostic package pins')
+    return '\n'.join(lines)+'\n',selected

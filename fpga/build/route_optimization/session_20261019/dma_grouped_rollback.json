@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-19T22:35:07.467696+08:00",
+  "action": "restore_main_dma_to_writer_baseline",
+  "reason": "Standalone grouped selector physical screen STALLED; no physical win accepted",
+  "rejected_sha256": "bb8d1423bb9015941d88ffee29db74241bb9d0d22b8f3e812259bacb071caa97",
+  "restored_sha256": "52f12a6f4110cf99b87dbdfdecf62dd75a8b31d0f00e815e2598cdec2481ea30",
+  "evidence": "fpga/build/route_optimization/dma_grouped_20261019_210245_219923/owner_unit_probe_20261019_214842_425939/regional_route_20261019_220909_372573/result.json",
+  "round2_stats_candidate": "retains grouped ancestor plus a new locally compared statistics structure; experimental only"
+}

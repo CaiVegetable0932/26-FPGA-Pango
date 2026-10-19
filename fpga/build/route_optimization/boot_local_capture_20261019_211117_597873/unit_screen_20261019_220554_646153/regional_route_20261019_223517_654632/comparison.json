@@ -1,0 +1,80 @@
+{
+  "scope": "isolated_registered_scan_fixture",
+  "board_timing_signoff": false,
+  "baseline": {
+    "all_constraints_met": true,
+    "setup_hold_slow_fast": [
+      [
+        "1.863",
+        "0.000",
+        "0",
+        "19035"
+      ],
+      [
+        "0.158",
+        "0.000",
+        "0",
+        "19035"
+      ],
+      [
+        "4.310",
+        "0.000",
+        "0",
+        "19035"
+      ],
+      [
+        "0.105",
+        "0.000",
+        "0",
+        "19035"
+      ]
+    ],
+    "cumulative_native_seconds": {
+      "compile": 9,
+      "synthesize": 33,
+      "dev_map": 46,
+      "pnr": 155,
+      "report_timing": 175
+    },
+    "pnr_seconds": 109,
+    "wirelength": 98225
+  },
+  "candidate": {
+    "all_constraints_met": true,
+    "setup_hold_slow_fast": [
+      [
+        "1.683",
+        "0.000",
+        "0",
+        "19017"
+      ],
+      [
+        "0.156",
+        "0.000",
+        "0",
+        "19017"
+      ],
+      [
+        "3.958",
+        "0.000",
+        "0",
+        "19017"
+      ],
+      [
+        "0.109",
+        "0.000",
+        "0",
+        "19017"
+      ]
+    ],
+    "cumulative_native_seconds": {
+      "compile": 8,
+      "synthesize": 31,
+      "dev_map": 44,
+      "pnr": 165,
+      "report_timing": 185
+    },
+    "pnr_seconds": 121,
+    "wirelength": 112005
+  }
+}

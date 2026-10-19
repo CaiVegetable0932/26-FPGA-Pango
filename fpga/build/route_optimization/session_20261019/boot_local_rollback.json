@@ -1,0 +1,7 @@
+{
+  "at": "2026-10-19T22:44:36.769033+08:00",
+  "action": "restore_main_boot_to_writer_baseline",
+  "reason": "Local capture CE split passes timing but worsens isolated PnR 109 to 121 seconds, wirelength 98225 to 112005 and slow setup WNS 1.863 to 1.683 ns.",
+  "rejected_sha256": "82f19a6c4330d326d76ad56e7fb481d5b9a81e59102314e4cbc561c07a731486",
+  "restored_sha256": "663a237b8b6a68848da1751744af5717fd610b547bf399e575c27919c354ecb8"
+}

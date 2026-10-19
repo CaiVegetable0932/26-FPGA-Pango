@@ -5,9 +5,10 @@ from pathlib import Path
 import re
 import subprocess
 from implementation_readiness import require_whole_design_ready
+from route_supervisor import run_supervised
 
 
-def generate_from_timed_database(run: Path, shell: str, log_path: Path):
+def generate_from_timed_database(run: Path, shell: str, log_path: Path, *, pause_path=None):
     """Keep the routed database/report immutable across the standalone action.
 
     Installed PDS gen_bit_stream help documents force_to_run/input_db_file.
@@ -32,14 +33,18 @@ def generate_from_timed_database(run: Path, shell: str, log_path: Path):
         'set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676\n'
         f'gen_bit_stream -force_to_run -input_db_file {{{database.as_posix()}}} -scbv {{High Voltage}}\n',
         encoding='utf-8')
-    with log_path.open('wb') as log:
-        child = subprocess.run([shell, '-file', str(tcl), '-work_dir', str(run)], cwd=run,
-                               stdout=log, stderr=subprocess.STDOUT, timeout=300, creationflags=0x08000000)
+    # Offline bit generation also owns its native process tree and is bounded.
+    supervised=run_supervised([shell,'-file',str(tcl),'-work_dir',str(run)],
+        cwd=run,log_path=log_path,monitor_path=log_path.with_suffix('.monitor.jsonl'),
+        timeout_seconds=300,pause_path=pause_path)
+    child=subprocess.CompletedProcess([],supervised['returncode'])
     after = {name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in paths.items()}
     (run / 'bitgen_checkpoint.json').write_text(json.dumps({
         'schema': 'native_bitgen_checkpoint.v1', 'before': before, 'after': after,
-        'native_exit': child.returncode, 'checkpoint_intact': before == after,
+        'native_exit': child.returncode, 'supervision':supervised,'checkpoint_intact': before == after,
         'hardware_tested': False, 'programmed': False}, indent=2)+'\n', encoding='utf-8')
     if before != after:
         raise RuntimeError('routed database or completed STA report changed during bitgen')
+    if supervised['status']!='COMPLETED':
+        raise RuntimeError('Offline bitgen did not complete: '+supervised['status'])
     return child

@@ -182,7 +182,7 @@ def main():
             print('RESUME', phase, run, flush=True)
             log_path = evidence / (phase+'.log')
             if phase == 'gen_bit_stream':
-                child = generate_from_timed_database(run, shell, log_path)
+                child = generate_from_timed_database(run, shell, log_path,pause_path=args.pause_file)
             else:
                 # Preserve the original RTL/IP registrations and constraint
                 # order. The DDR IDF carries its fixed PHY/SERDES placement

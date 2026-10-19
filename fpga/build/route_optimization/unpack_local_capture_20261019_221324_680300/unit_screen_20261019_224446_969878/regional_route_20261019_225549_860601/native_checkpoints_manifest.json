@@ -1,0 +1,213 @@
+{
+  "archive_sha256": "5e38e5f54e70d6412989346f6c9819b1f3d85d6dc22f365e7a2c97e51775a088",
+  "members": {
+    "baseline/compile/regional_wrapper_comp.adf": {
+      "bytes": 90741,
+      "sha256": "f2aa09a3d07b811ddfd75c744b4e69eb85e9e45cb62ce2b9f1bc8e49ecef08a6"
+    },
+    "baseline/device_map/regional_wrapper.dmr": {
+      "bytes": 56979,
+      "sha256": "ed6aee084464ebb1903898ab6f87089157703edaccd6bdf64fac8d65e43e3284"
+    },
+    "baseline/device_map/regional_wrapper_dmr.prt": {
+      "bytes": 14217,
+      "sha256": "57892c884c1032e62c0991d6b893c199aeec35c0ababe64c9cf7988b8a18aa00"
+    },
+    "baseline/device_map/regional_wrapper_map.adf": {
+      "bytes": 134115,
+      "sha256": "c8dd6ce4eecb2677c20a404fedf70d25a0ba9a84e857885f2d0c6b4903058106"
+    },
+    "baseline/place_route/regional_wrapper.prr": {
+      "bytes": 38304,
+      "sha256": "f793bdb788784a24d8d098b0726fb604c85b993d16432fb06c70612524bdc3be"
+    },
+    "baseline/place_route/regional_wrapper_plc.adf": {
+      "bytes": 161505,
+      "sha256": "5be3fd2f425a2432e8e601732467191f4243f4c7cf839cddfeda5c80a8af5fb0"
+    },
+    "baseline/place_route/regional_wrapper_pnr.adf": {
+      "bytes": 468884,
+      "sha256": "2223dbfea85f23212873b4d0ecbce1f5c84cb3550f63d76bbd8df2f0a439719f"
+    },
+    "baseline/place_route/regional_wrapper_pnr.netlist": {
+      "bytes": 232813,
+      "sha256": "87987393e8910cf85aa996e3e5b5fc353ce20c0f468f1646233f3557a3e96990"
+    },
+    "baseline/place_route/regional_wrapper_prr.prt": {
+      "bytes": 15371,
+      "sha256": "2ae93629fe26ea989d2eb26b0064feba9d4c4b86bfbaac2926956673802a25a9"
+    },
+    "baseline/report_timing/regional_wrapper.rtr": {
+      "bytes": 978762,
+      "sha256": "02f4e6ee61eb799f924f1d7de40a31fcdc49f713132dbe78d58b09f14646d63b"
+    },
+    "baseline/report_timing/regional_wrapper_rtp.adf": {
+      "bytes": 10452,
+      "sha256": "e31806a904e47f9244ab642c8cfc9c7628566a8d6d0ac4f065a5bd6b89243377"
+    },
+    "baseline/synthesize/regional_wrapper.snr": {
+      "bytes": 58514,
+      "sha256": "358f936636de06cd19813cf45719e3022cd967b99fd7fd0dfaf06ef827c7c12a"
+    },
+    "baseline/synthesize/regional_wrapper_syn.adf": {
+      "bytes": 148150,
+      "sha256": "f4caaeeabc37aded0182ee4d6a6fc140bc0739521cef4bb271e4d6134abe7835"
+    },
+    "baseline/synthesize/regional_wrapper_syn.vm": {
+      "bytes": 423384,
+      "sha256": "6e0bf8f7d46ba6f15180da7215eb9e29b10f2f86329286b751db61f5acb85854"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_0.txt": {
+      "bytes": 30232,
+      "sha256": "4431032b5385c489109c86d818a8469b00671afb4b06a441ce624d8abb8ca748"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_1.txt": {
+      "bytes": 20297,
+      "sha256": "e3638ef5410172edf502f4acecc8bb3d7e2f671d4788da4c3aa1d4c53a1c45a6"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_10.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_2.txt": {
+      "bytes": 22317,
+      "sha256": "85598e80e9d7a3cbabdecc121c4d85db55f411f6cbf37ca90dd25af906b6ad3a"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_3.txt": {
+      "bytes": 15520,
+      "sha256": "5e22bdbe6a0477ee06e0d165ce3ea712fd32e70fe4e2fa8fd418c1473ce73036"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_4.txt": {
+      "bytes": 12121,
+      "sha256": "b6a141a21deddc82b3cb230fb0eaf94875e85e93db0e7f28925f4d78a824df7c"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_5.txt": {
+      "bytes": 7796,
+      "sha256": "9c3ea2c86b69184d77e9b5c67da4db0416b079d7ee3aa28fe8fc71fe924c2fed"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_6.txt": {
+      "bytes": 6393,
+      "sha256": "5925293d49f48f44ea37dac607ba196acb7c08897230baaf4a8d4d8c19d5e041"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_7.txt": {
+      "bytes": 4245,
+      "sha256": "d7f3edab0c7ab22e0c334ad9a2d300c500a84e8463fd2f48c403cef1f8e37513"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_8.txt": {
+      "bytes": 2312,
+      "sha256": "1db88492431a8a14cf57315111aa221f5c09cd51afc58ccf5f3491519af0bbf0"
+    },
+    "baseline/place_route/CongestionNetInfo/CongestionNetInfo_9.txt": {
+      "bytes": 1104,
+      "sha256": "f876683ddf60dde6eea329ec19d09d3db9bfb3a45b8b3823636e40f44a093035"
+    },
+    "candidate/compile/regional_wrapper_comp.adf": {
+      "bytes": 95378,
+      "sha256": "55189d26daff215a26088571a453efb3d1b97da3bc2b0e8f435ce879259bff81"
+    },
+    "candidate/device_map/regional_wrapper.dmr": {
+      "bytes": 59880,
+      "sha256": "38deacbb470cd0a0f2965fc705ab14936ca5931cc45841457ea8f5c0b250a7b7"
+    },
+    "candidate/device_map/regional_wrapper_dmr.prt": {
+      "bytes": 14217,
+      "sha256": "57892c884c1032e62c0991d6b893c199aeec35c0ababe64c9cf7988b8a18aa00"
+    },
+    "candidate/device_map/regional_wrapper_map.adf": {
+      "bytes": 137535,
+      "sha256": "67ccc47cdf7b00a6b81ebfa1ebbe18774d8f61d81bd8163570901f793df0cf61"
+    },
+    "candidate/place_route/regional_wrapper.prr": {
+      "bytes": 38317,
+      "sha256": "8cf5f2bec5bb6a88801bf494977099aa33c8cb6f56419c0d094ff8b38b79bb9f"
+    },
+    "candidate/place_route/regional_wrapper_plc.adf": {
+      "bytes": 165239,
+      "sha256": "44234ff0482c81ca3a814ae2877a2ff0a1f00ac8c457d32523ca027964860f9b"
+    },
+    "candidate/place_route/regional_wrapper_pnr.adf": {
+      "bytes": 485356,
+      "sha256": "29d6557070ee5dd796646a47208de985a860ec2f3fdbc61c20a8c040d91b639e"
+    },
+    "candidate/place_route/regional_wrapper_pnr.netlist": {
+      "bytes": 235826,
+      "sha256": "24c03a99ec221295198da40651cf6e190444ec113f7eab94c2b4b9e7911fe3f7"
+    },
+    "candidate/place_route/regional_wrapper_prr.prt": {
+      "bytes": 15371,
+      "sha256": "2ae93629fe26ea989d2eb26b0064feba9d4c4b86bfbaac2926956673802a25a9"
+    },
+    "candidate/report_timing/regional_wrapper.rtr": {
+      "bytes": 993819,
+      "sha256": "f84f908218fe93883cf6260a9b3409f93ebf569d1063bf4aa540701439c0db8b"
+    },
+    "candidate/report_timing/regional_wrapper_rtp.adf": {
+      "bytes": 11907,
+      "sha256": "47ead6ffbb59f7010978e8c847510a4739ef635db12a607965852137ee9a0cd6"
+    },
+    "candidate/synthesize/regional_wrapper.snr": {
+      "bytes": 59141,
+      "sha256": "795cb911509b6bde9a15fd4b0de4d396eb9eb693853f261bd7ca5aa59677eaa8"
+    },
+    "candidate/synthesize/regional_wrapper_syn.adf": {
+      "bytes": 150515,
+      "sha256": "bb9f9391caace838bf7f8dfc4267f130d2607ac0286b50b12a738823dc9e7592"
+    },
+    "candidate/synthesize/regional_wrapper_syn.vm": {
+      "bytes": 443908,
+      "sha256": "8435abad411c6da1fc2be799f50c796c6f2cf44391c951e007001a37768097e8"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_0.txt": {
+      "bytes": 29071,
+      "sha256": "581a29ee4f5f13558aaf1dbc1739e59c201ec3cb3343a77408bcc32a1de079ec"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_1.txt": {
+      "bytes": 24148,
+      "sha256": "e8d90da6d16f6cd9bd9730b3dd8f554e719c8626628c51b9556791257ec49979"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_10.txt": {
+      "bytes": 521,
+      "sha256": "dc045ad043ee4cd41ad0e570155df6ff71337950129449d574e02364a3d0ef94"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_11.txt": {
+      "bytes": 175,
+      "sha256": "6ee2ac4cd9c162ea2c87f4a249124cc66f1dbf2e74a95bfccd47deec5163dbd6"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_12.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_2.txt": {
+      "bytes": 20392,
+      "sha256": "709af8c035bc3886a58ce493a6c83aa03066743adb7c12188294367e1bd36584"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_3.txt": {
+      "bytes": 18371,
+      "sha256": "bc55c9b0568900996042f0104b2e19a616f978c6febde04044d2d4669cd6d7ed"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_4.txt": {
+      "bytes": 15201,
+      "sha256": "28fb398dffe09c12fc0fd4c0e9c758295bb26055d8145e52e8fc215e9390772f"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_5.txt": {
+      "bytes": 11309,
+      "sha256": "709b182edda2bd454c9c7b6f1238335ab2b5cc31247f781db2d339fddb83b6a4"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_6.txt": {
+      "bytes": 8008,
+      "sha256": "e846534048a3545628e2d855c8543a632956685050b937f85476c7e053be8d83"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_7.txt": {
+      "bytes": 4639,
+      "sha256": "6d3839305578655fc736f33eea064a803f9cec202a1374ab3601a3173b4c6914"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_8.txt": {
+      "bytes": 2430,
+      "sha256": "9a9e60d5cc5cf58517fa0a1843bc6cc5c4f634c92916df86abc0cf158a5644a6"
+    },
+    "candidate/place_route/CongestionNetInfo/CongestionNetInfo_9.txt": {
+      "bytes": 1117,
+      "sha256": "08ce3537c5b957ee607adb55a7da3a8649673df725fd922f20cc85000291401a"
+    }
+  }
+}

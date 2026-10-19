@@ -1,0 +1,1318 @@
+{
+  "scope": "isolated_region",
+  "top": "dma_byte_unpack",
+  "source_screen": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\unit_screen_20261019_224446_969878",
+  "labels_requested": [
+    "baseline",
+    "candidate"
+  ],
+  "comparison_complete": true,
+  "board_timing_signoff": false,
+  "bitstream_generated": false,
+  "hardware_tested": false,
+  "clock_period_ns": 8.0,
+  "seed": 11,
+  "boundary": "identical registered scan wrapper with legal IO buffers",
+  "wrapper_metadata": {
+    "input_bits": 296,
+    "input_padded_bits": 320,
+    "output_bits": 266,
+    "output_padded_bits": 288,
+    "read_address_bits": 4,
+    "package_ports": 70
+  },
+  "wrapper_sha256": "248f5068d9aa71ec092adca0913378ed45efea2f69af51ae0e9ace28f5a50c11",
+  "fixed_pin_configuration_sha256": "bf9951536b1eae729d5ae07115110b42779e5b0718a4dc2f65574aebc8d3c36f",
+  "pin_mapping": {
+    "clk": {
+      "direction": "input",
+      "pin": "M2",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "rst_n": {
+      "direction": "input",
+      "pin": "K1",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[0]": {
+      "direction": "input",
+      "pin": "A5",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[1]": {
+      "direction": "input",
+      "pin": "B4",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[2]": {
+      "direction": "input",
+      "pin": "C2",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[3]": {
+      "direction": "input",
+      "pin": "A2",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[4]": {
+      "direction": "input",
+      "pin": "G5",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[5]": {
+      "direction": "input",
+      "pin": "C4",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[6]": {
+      "direction": "input",
+      "pin": "G2",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[7]": {
+      "direction": "input",
+      "pin": "A3",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[8]": {
+      "direction": "input",
+      "pin": "L7",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[9]": {
+      "direction": "input",
+      "pin": "G4",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[10]": {
+      "direction": "input",
+      "pin": "C3",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[11]": {
+      "direction": "input",
+      "pin": "D1",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[12]": {
+      "direction": "input",
+      "pin": "D5",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[13]": {
+      "direction": "input",
+      "pin": "D3",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[14]": {
+      "direction": "input",
+      "pin": "B5",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[15]": {
+      "direction": "input",
+      "pin": "F5",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[16]": {
+      "direction": "input",
+      "pin": "H24",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[17]": {
+      "direction": "input",
+      "pin": "G22",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[18]": {
+      "direction": "input",
+      "pin": "E23",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[19]": {
+      "direction": "input",
+      "pin": "J24",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[20]": {
+      "direction": "input",
+      "pin": "A4",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[21]": {
+      "direction": "input",
+      "pin": "D4",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[22]": {
+      "direction": "input",
+      "pin": "E5",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[23]": {
+      "direction": "input",
+      "pin": "B2",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[24]": {
+      "direction": "input",
+      "pin": "E3",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[25]": {
+      "direction": "input",
+      "pin": "F3",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[26]": {
+      "direction": "input",
+      "pin": "C1",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[27]": {
+      "direction": "input",
+      "pin": "E1",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[28]": {
+      "direction": "input",
+      "pin": "F2",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[29]": {
+      "direction": "input",
+      "pin": "H3",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[30]": {
+      "direction": "input",
+      "pin": "G1",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_in[31]": {
+      "direction": "input",
+      "pin": "B1",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[0]": {
+      "direction": "output",
+      "pin": "N16",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[1]": {
+      "direction": "output",
+      "pin": "J25",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[2]": {
+      "direction": "output",
+      "pin": "N18",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[3]": {
+      "direction": "output",
+      "pin": "R17",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[4]": {
+      "direction": "output",
+      "pin": "L5",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[5]": {
+      "direction": "output",
+      "pin": "G26",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[6]": {
+      "direction": "output",
+      "pin": "K3",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[7]": {
+      "direction": "output",
+      "pin": "E25",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[8]": {
+      "direction": "output",
+      "pin": "F23",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[9]": {
+      "direction": "output",
+      "pin": "G24",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[10]": {
+      "direction": "output",
+      "pin": "N17",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[11]": {
+      "direction": "output",
+      "pin": "P14",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[12]": {
+      "direction": "output",
+      "pin": "L19",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[13]": {
+      "direction": "output",
+      "pin": "D25",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[14]": {
+      "direction": "output",
+      "pin": "K23",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[15]": {
+      "direction": "output",
+      "pin": "G25",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[16]": {
+      "direction": "output",
+      "pin": "F24",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[17]": {
+      "direction": "output",
+      "pin": "P16",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[18]": {
+      "direction": "output",
+      "pin": "J3",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[19]": {
+      "direction": "output",
+      "pin": "R14",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[20]": {
+      "direction": "output",
+      "pin": "E2",
+      "bank": "BANKR4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[21]": {
+      "direction": "output",
+      "pin": "H26",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[22]": {
+      "direction": "output",
+      "pin": "J26",
+      "bank": "BANKL4",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[23]": {
+      "direction": "output",
+      "pin": "K5",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[24]": {
+      "direction": "output",
+      "pin": "P18",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[25]": {
+      "direction": "output",
+      "pin": "P15",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[26]": {
+      "direction": "output",
+      "pin": "R15",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[27]": {
+      "direction": "output",
+      "pin": "N14",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[28]": {
+      "direction": "output",
+      "pin": "N8",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[29]": {
+      "direction": "output",
+      "pin": "M7",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[30]": {
+      "direction": "output",
+      "pin": "R16",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_out[31]": {
+      "direction": "output",
+      "pin": "M19",
+      "bank": "BANKL5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_addr[0]": {
+      "direction": "input",
+      "pin": "N7",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_addr[1]": {
+      "direction": "input",
+      "pin": "M6",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_addr[2]": {
+      "direction": "input",
+      "pin": "N6",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    },
+    "scan_addr[3]": {
+      "direction": "input",
+      "pin": "M5",
+      "bank": "BANKR5",
+      "vccio": "3.3",
+      "standard": "LVCMOS33"
+    }
+  },
+  "clean_build": true,
+  "jobs": [
+    {
+      "label": "baseline",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 90.09300000000076,
+        "pid": 15152,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\unit_screen_20261019_224446_969878\\regional_route_20261019_225549_860601\\baseline\\physical_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": true,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "error_count": 0,
+      "errors": [],
+      "inputs": {
+        "clock.fdc": "a8d9d83f728da5053aa0754073af2b4d936a97127213f8fb4c2fef44c920e968",
+        "unpack.v": "dbffcaafb2b79bd6fe52475b96d439e775792e0b4baf073e36f54c21ffb5bea8",
+        "regional_wrapper.sv": "248f5068d9aa71ec092adca0913378ed45efea2f69af51ae0e9ace28f5a50c11",
+        "scan_pins.fdc": "bc8e7194414874a9c3ca4a104e9785d8f3c1e3308d5cc202f44619269532c738"
+      },
+      "inputs_intact": true,
+      "completed": true,
+      "fixed_pin_map_verified": true,
+      "actual_pins": {
+        "clk": {
+          "direction": "input",
+          "pin": "M2",
+          "bank": "BANKR5"
+        },
+        "rst_n": {
+          "direction": "input",
+          "pin": "K1",
+          "bank": "BANKR5"
+        },
+        "scan_addr[0]": {
+          "direction": "input",
+          "pin": "N7",
+          "bank": "BANKR5"
+        },
+        "scan_addr[1]": {
+          "direction": "input",
+          "pin": "M6",
+          "bank": "BANKR5"
+        },
+        "scan_addr[2]": {
+          "direction": "input",
+          "pin": "N6",
+          "bank": "BANKR5"
+        },
+        "scan_addr[3]": {
+          "direction": "input",
+          "pin": "M5",
+          "bank": "BANKR5"
+        },
+        "scan_in[0]": {
+          "direction": "input",
+          "pin": "A5",
+          "bank": "BANKR4"
+        },
+        "scan_in[10]": {
+          "direction": "input",
+          "pin": "C3",
+          "bank": "BANKR4"
+        },
+        "scan_in[11]": {
+          "direction": "input",
+          "pin": "D1",
+          "bank": "BANKR4"
+        },
+        "scan_in[12]": {
+          "direction": "input",
+          "pin": "D5",
+          "bank": "BANKR4"
+        },
+        "scan_in[13]": {
+          "direction": "input",
+          "pin": "D3",
+          "bank": "BANKR4"
+        },
+        "scan_in[14]": {
+          "direction": "input",
+          "pin": "B5",
+          "bank": "BANKR4"
+        },
+        "scan_in[15]": {
+          "direction": "input",
+          "pin": "F5",
+          "bank": "BANKR4"
+        },
+        "scan_in[16]": {
+          "direction": "input",
+          "pin": "H24",
+          "bank": "BANKL4"
+        },
+        "scan_in[17]": {
+          "direction": "input",
+          "pin": "G22",
+          "bank": "BANKL4"
+        },
+        "scan_in[18]": {
+          "direction": "input",
+          "pin": "E23",
+          "bank": "BANKL4"
+        },
+        "scan_in[19]": {
+          "direction": "input",
+          "pin": "J24",
+          "bank": "BANKL4"
+        },
+        "scan_in[1]": {
+          "direction": "input",
+          "pin": "B4",
+          "bank": "BANKR4"
+        },
+        "scan_in[20]": {
+          "direction": "input",
+          "pin": "A4",
+          "bank": "BANKR4"
+        },
+        "scan_in[21]": {
+          "direction": "input",
+          "pin": "D4",
+          "bank": "BANKR4"
+        },
+        "scan_in[22]": {
+          "direction": "input",
+          "pin": "E5",
+          "bank": "BANKR4"
+        },
+        "scan_in[23]": {
+          "direction": "input",
+          "pin": "B2",
+          "bank": "BANKR4"
+        },
+        "scan_in[24]": {
+          "direction": "input",
+          "pin": "E3",
+          "bank": "BANKR4"
+        },
+        "scan_in[25]": {
+          "direction": "input",
+          "pin": "F3",
+          "bank": "BANKR4"
+        },
+        "scan_in[26]": {
+          "direction": "input",
+          "pin": "C1",
+          "bank": "BANKR4"
+        },
+        "scan_in[27]": {
+          "direction": "input",
+          "pin": "E1",
+          "bank": "BANKR4"
+        },
+        "scan_in[28]": {
+          "direction": "input",
+          "pin": "F2",
+          "bank": "BANKR4"
+        },
+        "scan_in[29]": {
+          "direction": "input",
+          "pin": "H3",
+          "bank": "BANKR4"
+        },
+        "scan_in[2]": {
+          "direction": "input",
+          "pin": "C2",
+          "bank": "BANKR4"
+        },
+        "scan_in[30]": {
+          "direction": "input",
+          "pin": "G1",
+          "bank": "BANKR4"
+        },
+        "scan_in[31]": {
+          "direction": "input",
+          "pin": "B1",
+          "bank": "BANKR4"
+        },
+        "scan_in[3]": {
+          "direction": "input",
+          "pin": "A2",
+          "bank": "BANKR4"
+        },
+        "scan_in[4]": {
+          "direction": "input",
+          "pin": "G5",
+          "bank": "BANKR4"
+        },
+        "scan_in[5]": {
+          "direction": "input",
+          "pin": "C4",
+          "bank": "BANKR4"
+        },
+        "scan_in[6]": {
+          "direction": "input",
+          "pin": "G2",
+          "bank": "BANKR4"
+        },
+        "scan_in[7]": {
+          "direction": "input",
+          "pin": "A3",
+          "bank": "BANKR4"
+        },
+        "scan_in[8]": {
+          "direction": "input",
+          "pin": "L7",
+          "bank": "BANKR5"
+        },
+        "scan_in[9]": {
+          "direction": "input",
+          "pin": "G4",
+          "bank": "BANKR4"
+        },
+        "scan_out[0]": {
+          "direction": "output",
+          "pin": "N16",
+          "bank": "BANKL5"
+        },
+        "scan_out[10]": {
+          "direction": "output",
+          "pin": "N17",
+          "bank": "BANKL5"
+        },
+        "scan_out[11]": {
+          "direction": "output",
+          "pin": "P14",
+          "bank": "BANKL5"
+        },
+        "scan_out[12]": {
+          "direction": "output",
+          "pin": "L19",
+          "bank": "BANKL4"
+        },
+        "scan_out[13]": {
+          "direction": "output",
+          "pin": "D25",
+          "bank": "BANKL4"
+        },
+        "scan_out[14]": {
+          "direction": "output",
+          "pin": "K23",
+          "bank": "BANKL4"
+        },
+        "scan_out[15]": {
+          "direction": "output",
+          "pin": "G25",
+          "bank": "BANKL4"
+        },
+        "scan_out[16]": {
+          "direction": "output",
+          "pin": "F24",
+          "bank": "BANKL4"
+        },
+        "scan_out[17]": {
+          "direction": "output",
+          "pin": "P16",
+          "bank": "BANKL5"
+        },
+        "scan_out[18]": {
+          "direction": "output",
+          "pin": "J3",
+          "bank": "BANKR5"
+        },
+        "scan_out[19]": {
+          "direction": "output",
+          "pin": "R14",
+          "bank": "BANKL5"
+        },
+        "scan_out[1]": {
+          "direction": "output",
+          "pin": "J25",
+          "bank": "BANKL4"
+        },
+        "scan_out[20]": {
+          "direction": "output",
+          "pin": "E2",
+          "bank": "BANKR4"
+        },
+        "scan_out[21]": {
+          "direction": "output",
+          "pin": "H26",
+          "bank": "BANKL4"
+        },
+        "scan_out[22]": {
+          "direction": "output",
+          "pin": "J26",
+          "bank": "BANKL4"
+        },
+        "scan_out[23]": {
+          "direction": "output",
+          "pin": "K5",
+          "bank": "BANKR5"
+        },
+        "scan_out[24]": {
+          "direction": "output",
+          "pin": "P18",
+          "bank": "BANKL5"
+        },
+        "scan_out[25]": {
+          "direction": "output",
+          "pin": "P15",
+          "bank": "BANKL5"
+        },
+        "scan_out[26]": {
+          "direction": "output",
+          "pin": "R15",
+          "bank": "BANKL5"
+        },
+        "scan_out[27]": {
+          "direction": "output",
+          "pin": "N14",
+          "bank": "BANKL5"
+        },
+        "scan_out[28]": {
+          "direction": "output",
+          "pin": "N8",
+          "bank": "BANKR5"
+        },
+        "scan_out[29]": {
+          "direction": "output",
+          "pin": "M7",
+          "bank": "BANKR5"
+        },
+        "scan_out[2]": {
+          "direction": "output",
+          "pin": "N18",
+          "bank": "BANKL5"
+        },
+        "scan_out[30]": {
+          "direction": "output",
+          "pin": "R16",
+          "bank": "BANKL5"
+        },
+        "scan_out[31]": {
+          "direction": "output",
+          "pin": "M19",
+          "bank": "BANKL5"
+        },
+        "scan_out[3]": {
+          "direction": "output",
+          "pin": "R17",
+          "bank": "BANKL5"
+        },
+        "scan_out[4]": {
+          "direction": "output",
+          "pin": "L5",
+          "bank": "BANKR5"
+        },
+        "scan_out[5]": {
+          "direction": "output",
+          "pin": "G26",
+          "bank": "BANKL4"
+        },
+        "scan_out[6]": {
+          "direction": "output",
+          "pin": "K3",
+          "bank": "BANKR5"
+        },
+        "scan_out[7]": {
+          "direction": "output",
+          "pin": "E25",
+          "bank": "BANKL4"
+        },
+        "scan_out[8]": {
+          "direction": "output",
+          "pin": "F23",
+          "bank": "BANKL4"
+        },
+        "scan_out[9]": {
+          "direction": "output",
+          "pin": "G24",
+          "bank": "BANKL4"
+        }
+      },
+      "all_internal_constraints_met": true,
+      "wirelength": [
+        "9203"
+      ],
+      "estimated_placement_slack_ps": [
+        "4348",
+        "4348"
+      ],
+      "report_sha256": "02f4e6ee61eb799f924f1d7de40a31fcdc49f713132dbe78d58b09f14646d63b",
+      "routed_db_sha256": "2223dbfea85f23212873b4d0ecbce1f5c84cb3550f63d76bbd8df2f0a439719f"
+    },
+    {
+      "label": "candidate",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 90.0619999999999,
+        "pid": 8608,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\unit_screen_20261019_224446_969878\\regional_route_20261019_225549_860601\\candidate\\physical_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 370,
+          "warning_seconds": 52.5,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": true,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": 35,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "error_count": 0,
+      "errors": [],
+      "inputs": {
+        "clock.fdc": "a8d9d83f728da5053aa0754073af2b4d936a97127213f8fb4c2fef44c920e968",
+        "unpack.v": "debee5f2b4066c10ef0300800ee6b88b626ac72b02989f091a13159fb7861a96",
+        "regional_wrapper.sv": "248f5068d9aa71ec092adca0913378ed45efea2f69af51ae0e9ace28f5a50c11",
+        "scan_pins.fdc": "bc8e7194414874a9c3ca4a104e9785d8f3c1e3308d5cc202f44619269532c738"
+      },
+      "inputs_intact": true,
+      "completed": true,
+      "fixed_pin_map_verified": true,
+      "actual_pins": {
+        "clk": {
+          "direction": "input",
+          "pin": "M2",
+          "bank": "BANKR5"
+        },
+        "rst_n": {
+          "direction": "input",
+          "pin": "K1",
+          "bank": "BANKR5"
+        },
+        "scan_addr[0]": {
+          "direction": "input",
+          "pin": "N7",
+          "bank": "BANKR5"
+        },
+        "scan_addr[1]": {
+          "direction": "input",
+          "pin": "M6",
+          "bank": "BANKR5"
+        },
+        "scan_addr[2]": {
+          "direction": "input",
+          "pin": "N6",
+          "bank": "BANKR5"
+        },
+        "scan_addr[3]": {
+          "direction": "input",
+          "pin": "M5",
+          "bank": "BANKR5"
+        },
+        "scan_in[0]": {
+          "direction": "input",
+          "pin": "A5",
+          "bank": "BANKR4"
+        },
+        "scan_in[10]": {
+          "direction": "input",
+          "pin": "C3",
+          "bank": "BANKR4"
+        },
+        "scan_in[11]": {
+          "direction": "input",
+          "pin": "D1",
+          "bank": "BANKR4"
+        },
+        "scan_in[12]": {
+          "direction": "input",
+          "pin": "D5",
+          "bank": "BANKR4"
+        },
+        "scan_in[13]": {
+          "direction": "input",
+          "pin": "D3",
+          "bank": "BANKR4"
+        },
+        "scan_in[14]": {
+          "direction": "input",
+          "pin": "B5",
+          "bank": "BANKR4"
+        },
+        "scan_in[15]": {
+          "direction": "input",
+          "pin": "F5",
+          "bank": "BANKR4"
+        },
+        "scan_in[16]": {
+          "direction": "input",
+          "pin": "H24",
+          "bank": "BANKL4"
+        },
+        "scan_in[17]": {
+          "direction": "input",
+          "pin": "G22",
+          "bank": "BANKL4"
+        },
+        "scan_in[18]": {
+          "direction": "input",
+          "pin": "E23",
+          "bank": "BANKL4"
+        },
+        "scan_in[19]": {
+          "direction": "input",
+          "pin": "J24",
+          "bank": "BANKL4"
+        },
+        "scan_in[1]": {
+          "direction": "input",
+          "pin": "B4",
+          "bank": "BANKR4"
+        },
+        "scan_in[20]": {
+          "direction": "input",
+          "pin": "A4",
+          "bank": "BANKR4"
+        },
+        "scan_in[21]": {
+          "direction": "input",
+          "pin": "D4",
+          "bank": "BANKR4"
+        },
+        "scan_in[22]": {
+          "direction": "input",
+          "pin": "E5",
+          "bank": "BANKR4"
+        },
+        "scan_in[23]": {
+          "direction": "input",
+          "pin": "B2",
+          "bank": "BANKR4"
+        },
+        "scan_in[24]": {
+          "direction": "input",
+          "pin": "E3",
+          "bank": "BANKR4"
+        },
+        "scan_in[25]": {
+          "direction": "input",
+          "pin": "F3",
+          "bank": "BANKR4"
+        },
+        "scan_in[26]": {
+          "direction": "input",
+          "pin": "C1",
+          "bank": "BANKR4"
+        },
+        "scan_in[27]": {
+          "direction": "input",
+          "pin": "E1",
+          "bank": "BANKR4"
+        },
+        "scan_in[28]": {
+          "direction": "input",
+          "pin": "F2",
+          "bank": "BANKR4"
+        },
+        "scan_in[29]": {
+          "direction": "input",
+          "pin": "H3",
+          "bank": "BANKR4"
+        },
+        "scan_in[2]": {
+          "direction": "input",
+          "pin": "C2",
+          "bank": "BANKR4"
+        },
+        "scan_in[30]": {
+          "direction": "input",
+          "pin": "G1",
+          "bank": "BANKR4"
+        },
+        "scan_in[31]": {
+          "direction": "input",
+          "pin": "B1",
+          "bank": "BANKR4"
+        },
+        "scan_in[3]": {
+          "direction": "input",
+          "pin": "A2",
+          "bank": "BANKR4"
+        },
+        "scan_in[4]": {
+          "direction": "input",
+          "pin": "G5",
+          "bank": "BANKR4"
+        },
+        "scan_in[5]": {
+          "direction": "input",
+          "pin": "C4",
+          "bank": "BANKR4"
+        },
+        "scan_in[6]": {
+          "direction": "input",
+          "pin": "G2",
+          "bank": "BANKR4"
+        },
+        "scan_in[7]": {
+          "direction": "input",
+          "pin": "A3",
+          "bank": "BANKR4"
+        },
+        "scan_in[8]": {
+          "direction": "input",
+          "pin": "L7",
+          "bank": "BANKR5"
+        },
+        "scan_in[9]": {
+          "direction": "input",
+          "pin": "G4",
+          "bank": "BANKR4"
+        },
+        "scan_out[0]": {
+          "direction": "output",
+          "pin": "N16",
+          "bank": "BANKL5"
+        },
+        "scan_out[10]": {
+          "direction": "output",
+          "pin": "N17",
+          "bank": "BANKL5"
+        },
+        "scan_out[11]": {
+          "direction": "output",
+          "pin": "P14",
+          "bank": "BANKL5"
+        },
+        "scan_out[12]": {
+          "direction": "output",
+          "pin": "L19",
+          "bank": "BANKL4"
+        },
+        "scan_out[13]": {
+          "direction": "output",
+          "pin": "D25",
+          "bank": "BANKL4"
+        },
+        "scan_out[14]": {
+          "direction": "output",
+          "pin": "K23",
+          "bank": "BANKL4"
+        },
+        "scan_out[15]": {
+          "direction": "output",
+          "pin": "G25",
+          "bank": "BANKL4"
+        },
+        "scan_out[16]": {
+          "direction": "output",
+          "pin": "F24",
+          "bank": "BANKL4"
+        },
+        "scan_out[17]": {
+          "direction": "output",
+          "pin": "P16",
+          "bank": "BANKL5"
+        },
+        "scan_out[18]": {
+          "direction": "output",
+          "pin": "J3",
+          "bank": "BANKR5"
+        },
+        "scan_out[19]": {
+          "direction": "output",
+          "pin": "R14",
+          "bank": "BANKL5"
+        },
+        "scan_out[1]": {
+          "direction": "output",
+          "pin": "J25",
+          "bank": "BANKL4"
+        },
+        "scan_out[20]": {
+          "direction": "output",
+          "pin": "E2",
+          "bank": "BANKR4"
+        },
+        "scan_out[21]": {
+          "direction": "output",
+          "pin": "H26",
+          "bank": "BANKL4"
+        },
+        "scan_out[22]": {
+          "direction": "output",
+          "pin": "J26",
+          "bank": "BANKL4"
+        },
+        "scan_out[23]": {
+          "direction": "output",
+          "pin": "K5",
+          "bank": "BANKR5"
+        },
+        "scan_out[24]": {
+          "direction": "output",
+          "pin": "P18",
+          "bank": "BANKL5"
+        },
+        "scan_out[25]": {
+          "direction": "output",
+          "pin": "P15",
+          "bank": "BANKL5"
+        },
+        "scan_out[26]": {
+          "direction": "output",
+          "pin": "R15",
+          "bank": "BANKL5"
+        },
+        "scan_out[27]": {
+          "direction": "output",
+          "pin": "N14",
+          "bank": "BANKL5"
+        },
+        "scan_out[28]": {
+          "direction": "output",
+          "pin": "N8",
+          "bank": "BANKR5"
+        },
+        "scan_out[29]": {
+          "direction": "output",
+          "pin": "M7",
+          "bank": "BANKR5"
+        },
+        "scan_out[2]": {
+          "direction": "output",
+          "pin": "N18",
+          "bank": "BANKL5"
+        },
+        "scan_out[30]": {
+          "direction": "output",
+          "pin": "R16",
+          "bank": "BANKL5"
+        },
+        "scan_out[31]": {
+          "direction": "output",
+          "pin": "M19",
+          "bank": "BANKL5"
+        },
+        "scan_out[3]": {
+          "direction": "output",
+          "pin": "R17",
+          "bank": "BANKL5"
+        },
+        "scan_out[4]": {
+          "direction": "output",
+          "pin": "L5",
+          "bank": "BANKR5"
+        },
+        "scan_out[5]": {
+          "direction": "output",
+          "pin": "G26",
+          "bank": "BANKL4"
+        },
+        "scan_out[6]": {
+          "direction": "output",
+          "pin": "K3",
+          "bank": "BANKR5"
+        },
+        "scan_out[7]": {
+          "direction": "output",
+          "pin": "E25",
+          "bank": "BANKL4"
+        },
+        "scan_out[8]": {
+          "direction": "output",
+          "pin": "F23",
+          "bank": "BANKL4"
+        },
+        "scan_out[9]": {
+          "direction": "output",
+          "pin": "G24",
+          "bank": "BANKL4"
+        }
+      },
+      "all_internal_constraints_met": true,
+      "wirelength": [
+        "9009"
+      ],
+      "estimated_placement_slack_ps": [
+        "4123",
+        "4123"
+      ],
+      "report_sha256": "f84f908218fe93883cf6260a9b3409f93ebf569d1063bf4aa540701439c0db8b",
+      "routed_db_sha256": "29d6557070ee5dd796646a47208de985a860ec2f3fdbc61c20a8c040d91b639e"
+    }
+  ],
+  "completed": true,
+  "successful_baseline_pnr_seconds": 35,
+  "finished_at": "2026-10-19T22:58:50.051712+08:00"
+}

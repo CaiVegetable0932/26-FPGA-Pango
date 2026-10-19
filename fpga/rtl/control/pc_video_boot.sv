@@ -78,7 +78,7 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200)(
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin state<=IDLE;index<=0;waiting<=0;tx_index<=0;tx_active<=0;accepted<=0;
    received<=0;reply<=0;reply_seq<=0;reply_cmd<=0;tx_crc<=16'hffff;configured<=0;
-   collect_length<=0;operation<=0;have_snapshot<=0;snapshot_operation<=0;
+   collect_length<=0;operation<=0;status_snapshot<=0;have_snapshot<=0;snapshot_operation<=0;
    epoch<=0;local_mac<=0;peer_mac<=0;local_ip<=0;peer_ip<=0;local_port<=0;peer_port<=0;us_divider<=0;now_us<=0;end
   else begin
    if(us_divider==124)begin us_divider<=0;now_us<=now_us+1'b1;end else us_divider<=us_divider+1'b1;
@@ -110,7 +110,7 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200)(
       if(received[7:0]>=(operation==8'h96 ? 8:4) || (received[7:0]!=0 && (!have_snapshot || snapshot_operation!=operation)))begin reply[7:0]<=11;reply_cmd<=8'h81;end
       else begin
        reply[7:0]<=0;reply_cmd<=8'h80;
-       if(received[7:0]==0)begin have_snapshot<=1;snapshot_operation<=operation;reply[223:32]<=operation==8'h96 ? snapshot_s1_status[0+:192]:(operation==8'h95 ? geometry_status[0+:192]:(operation==8'h97 ? snapshot_geometry_status[0+:192]:control_status[0+:192]));end
+       if(received[7:0]==0)begin status_snapshot<=operation==8'h96 ? {snapshot_result_status,snapshot_s1_status}:{768'd0,(operation==8'h95 ? geometry_status:(operation==8'h97 ? snapshot_geometry_status:control_status))};have_snapshot<=1;snapshot_operation<=operation;reply[223:32]<=operation==8'h96 ? snapshot_s1_status[0+:192]:(operation==8'h95 ? geometry_status[0+:192]:(operation==8'h97 ? snapshot_geometry_status[0+:192]:control_status[0+:192]));end
        else reply[223:32]<=status_snapshot[received[2:0]*192+:192];
       end
      end else if(operation==8'h93)begin
@@ -147,29 +147,4 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200)(
    endcase
   end
  end
-
- // The final payload response precedes CHECK by exactly one edge. For the
- // one-byte status commands the incoming byte is the complete page number;
- // retain the collected-byte form too so the predecode states its semantics.
- wire status_operation=operation==8'h90 || operation==8'h95 || operation==8'h96 || operation==8'h97;
- wire last_status_page_zero=read_response && index==collect_length-1'b1 &&
-  status_operation && ((index==0) ? read_data==0 : received[7:0]==0);
- // ADS guide 5.15: preserve just the eight intentionally local enable copies.
- // Reset clears copies and all payload pages, matching original cold/mid-job
- // behavior. No new UART, reply, snapshot or command state is introduced.
- reg [7:0] status_capture_page /* synthesis syn_preserve=1 */;
- always @(posedge clk or negedge rst_n)begin
-  if(!rst_n)status_capture_page<=0;
-  else status_capture_page<={8{last_status_page_zero}};
- end
- wire [1535:0] status_capture_data=operation==8'h96 ? {snapshot_result_status,snapshot_s1_status}:
-  {768'd0,(operation==8'h95 ? geometry_status:(operation==8'h97 ? snapshot_geometry_status:control_status))};
- genvar status_page;
- generate for(status_page=0;status_page<8;status_page=status_page+1)begin: local_status_page
-  always @(posedge clk or negedge rst_n)begin
-   if(!rst_n)status_snapshot[status_page*192+:192]<=0;
-   else if(status_capture_page[status_page])
-    status_snapshot[status_page*192+:192]<=status_capture_data[status_page*192+:192];
-  end
- end endgenerate
 endmodule

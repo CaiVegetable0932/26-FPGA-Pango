@@ -1,0 +1,17 @@
+DDR_METRIC client=0 max_wait_cycles=69 max_grant_gap=6 bus_bytes=11616 useful_write_bytes=10560
+DDR_METRIC client=1 max_wait_cycles=67 max_grant_gap=5 bus_bytes=7168 useful_write_bytes=6029
+DDR_METRIC client=2 max_wait_cycles=249 max_grant_gap=15 bus_bytes=4288 useful_write_bytes=3056
+DDR_METRIC client=3 max_wait_cycles=47 max_grant_gap=6 bus_bytes=11136 useful_write_bytes=10304
+DDR_METRIC client=4 max_wait_cycles=238 max_grant_gap=15 bus_bytes=2752 useful_write_bytes=1904
+DDR_METRIC client=5 max_wait_cycles=244 max_grant_gap=15 bus_bytes=1824 useful_write_bytes=1092
+DDR_METRIC client=6 max_wait_cycles=233 max_grant_gap=15 bus_bytes=3136 useful_write_bytes=2176
+DDR_MIXED_METRIC burst_cap=16 cycles=4296 bus_bytes=88320
+DDR_MIXED_CLIENT client=0 max_wait_cycles=77
+DDR_MIXED_CLIENT client=1 max_wait_cycles=137
+DDR_MIXED_CLIENT client=2 max_wait_cycles=322
+DDR_MIXED_CLIENT client=3 max_wait_cycles=158
+DDR_MIXED_CLIENT client=4 max_wait_cycles=398
+DDR_MIXED_CLIENT client=5 max_wait_cycles=383
+DDR_MIXED_CLIENT client=6 max_wait_cycles=408
+DDR_DMA_PASS tests=396 native_transactions=389 native_beats=4072 cycles=7373
+D:\XDU\concept\26-FPGA-Pango\fpga\build\full_integration_20261013\sim_20261019_224436_927540\source\tb_ddr_native_dma.sv:232: $finish called at 58984000 (1ps)

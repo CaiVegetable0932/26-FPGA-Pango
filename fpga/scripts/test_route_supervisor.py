@@ -7,11 +7,19 @@ import tempfile
 import unittest
 from contextlib import nullcontext
 from unittest.mock import patch
-from route_supervisor import route_iterations, run_supervised, stalled
+from route_supervisor import route_iterations, run_supervised, stalled,phase_budget
 
 
 class SupervisorTests(unittest.TestCase):
     """Small subprocess fixtures cover behavior that protects long builds."""
+    def test_successful_baseline_budget_and_warning(self):
+        self.assertEqual(phase_budget(1200,60),(420,90))
+        self.assertEqual(phase_budget(120,60),(120,90))
+        self.assertEqual(phase_budget(1200),(1200,960))
+
+    def test_invalid_baseline_cannot_extend_or_disable_timeout(self):
+        for value in (0,-1,float('inf'),float('nan')):
+            with self.assertRaises(ValueError):phase_budget(1200,value)
     def run_child(self, text, timeout=5, watch_stall=False, pause=False):
         """Isolate evidence in the FPGA build tree, never in vendor folders."""
         root = Path(__file__).resolve().parents[1]/'build/route_optimization'

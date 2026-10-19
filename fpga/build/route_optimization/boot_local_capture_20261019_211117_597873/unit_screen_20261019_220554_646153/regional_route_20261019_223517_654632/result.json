@@ -1,0 +1,118 @@
+{
+  "scope": "isolated_region",
+  "top": "pc_video_boot",
+  "source_screen": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\unit_screen_20261019_220554_646153",
+  "labels_requested": [
+    "baseline",
+    "candidate"
+  ],
+  "comparison_complete": true,
+  "board_timing_signoff": false,
+  "bitstream_generated": false,
+  "hardware_tested": false,
+  "clock_period_ns": 8.0,
+  "seed": 11,
+  "boundary": "identical registered scan wrapper with legal IO buffers",
+  "wrapper_metadata": {
+    "input_bits": 3844,
+    "input_padded_bits": 3872,
+    "output_bits": 903,
+    "output_padded_bits": 928,
+    "read_address_bits": 5,
+    "package_ports": 71
+  },
+  "wrapper_sha256": "b2b9f25a210b533cef421c4ccd88b25afd0353c72a53789ad6f1e7c6d1ebf266",
+  "clean_build": true,
+  "jobs": [
+    {
+      "label": "baseline",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 180.17199999999957,
+        "pid": 2884,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\unit_screen_20261019_220554_646153\\regional_route_20261019_223517_654632\\baseline\\physical_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "poll_seconds": 30,
+          "stall_enabled": true,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "error_count": 0,
+      "errors": [],
+      "inputs": {
+        "clock.fdc": "a8d9d83f728da5053aa0754073af2b4d936a97127213f8fb4c2fef44c920e968",
+        "parameter_entity_guard.sv": "7c723831f831e85726c5a098b3be90b70fb43cd77b934ff68209d76e16d0b1ed",
+        "pc_video_boot.sv": "663a237b8b6a68848da1751744af5717fd610b547bf399e575c27919c354ecb8",
+        "uart_8n1.sv": "538ae808275cbcd8ac109ee2b1e34b8b0e24b2db3767709956e445e0053f940e",
+        "uart_v2_parser.sv": "c3d60dc3bafc90725e5b3153ecd7374859ebe49d9a9ca7e2109e385c4f015e19",
+        "regional_wrapper.sv": "b2b9f25a210b533cef421c4ccd88b25afd0353c72a53789ad6f1e7c6d1ebf266"
+      },
+      "inputs_intact": true,
+      "completed": true,
+      "wirelength": [
+        "98225"
+      ],
+      "estimated_placement_slack_ps": [
+        "2429",
+        "2429"
+      ],
+      "report_sha256": "3d2cd133f75eca32db5838e1d2d7318e6ee92e3b5b86e5b620ffdedd307e05e3",
+      "routed_db_sha256": "d41f65f7aa31ad7e844951e11912008d1ab6eefa59be57cac1a007a5e9e14b11"
+    },
+    {
+      "label": "candidate",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 210.14099999999962,
+        "pid": 25452,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\unit_screen_20261019_220554_646153\\regional_route_20261019_223517_654632\\candidate\\physical_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "poll_seconds": 30,
+          "stall_enabled": true,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "error_count": 0,
+      "errors": [],
+      "inputs": {
+        "clock.fdc": "a8d9d83f728da5053aa0754073af2b4d936a97127213f8fb4c2fef44c920e968",
+        "parameter_entity_guard.sv": "7c723831f831e85726c5a098b3be90b70fb43cd77b934ff68209d76e16d0b1ed",
+        "pc_video_boot.sv": "82f19a6c4330d326d76ad56e7fb481d5b9a81e59102314e4cbc561c07a731486",
+        "uart_8n1.sv": "538ae808275cbcd8ac109ee2b1e34b8b0e24b2db3767709956e445e0053f940e",
+        "uart_v2_parser.sv": "c3d60dc3bafc90725e5b3153ecd7374859ebe49d9a9ca7e2109e385c4f015e19",
+        "regional_wrapper.sv": "b2b9f25a210b533cef421c4ccd88b25afd0353c72a53789ad6f1e7c6d1ebf266"
+      },
+      "inputs_intact": true,
+      "completed": true,
+      "wirelength": [
+        "112005"
+      ],
+      "estimated_placement_slack_ps": [
+        "2256",
+        "2256"
+      ],
+      "report_sha256": "ca85d701fe16d0a522c26b80bd8d6167dd7b91b292d3800c26f82e4d71aa6124",
+      "routed_db_sha256": "296ef0a9e47cb327ccdbb3e035aae2b4a93563d8fc746d3e5d692cc81904270e"
+    }
+  ],
+  "completed": true,
+  "finished_at": "2026-10-19T22:41:48.004203+08:00"
+}
