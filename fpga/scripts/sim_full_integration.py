@@ -189,9 +189,19 @@ def main():
             if top == 'tb_ov5640_raw8_mode':
                 compile_cmd[1:1] = ['-Ptb_ov5640_raw8_mode.RAW_OUTPUT_SELECT=3']
             for phase, command in [('compile', compile_cmd), ('run', [str(runtime / 'vvp.exe'), str(image)])]:
-                completed = subprocess.run(command, cwd=run, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=1200 if options.full_frame else 180)
-                (run / (top + '.' + phase + '.log')).write_bytes(completed.stdout)
-                log = completed.stdout.decode(errors='replace')
+                # Stream phase output to disk so bounded full-frame timeouts
+                # retain partial evidence rather than losing a PIPE buffer.
+                log_path=run/(top+'.'+phase+'.log')
+                try:
+                    with log_path.open('wb') as stream:
+                        completed = subprocess.run(command,cwd=run,stdout=stream,
+                            stderr=subprocess.STDOUT,timeout=1200 if options.full_frame else 180)
+                except subprocess.TimeoutExpired:
+                    result['failure']=dict(top=top,phase=phase,status='TIMEOUT',
+                        timeout_seconds=1200 if options.full_frame else 180,
+                        partial_log=log_path.name)
+                    raise
+                log = log_path.read_text(errors='replace')
                 if completed.returncode or (phase == 'run' and ('_PASS' not in log or 'FATAL' in log)):
                     raise RuntimeError(f'{top} {phase}: {log[-4500:]}')
             result['tests'].append(top)

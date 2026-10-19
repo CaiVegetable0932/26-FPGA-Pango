@@ -1,76 +1,77 @@
 # FPGA 布线专项优化交接
 
-状态：实施中，非最终验收。最后更新时间：2026-10-19 21:24（北京时间）。
+更新时间：2026-10-19 22:31（北京时间）。状态：设计优化与分区域验证进行中，整个方案尚未完成。
 
-## 项目与入口
+## 项目和当前授权
 
-- 本地：`D:\XDU\concept\26-FPGA-Pango`
-- 远端：<https://github.com/CaiVegetable0932/26-FPGA-Pango>
+- 项目：`D:\XDU\concept\26-FPGA-Pango`
 - 分支：`codex/fpga-pds-project`
-- 方案：`output/FPGA布线效率与拥塞专项优化方案.md`
-- 会话账本：`fpga/build/route_optimization/session_20261019/session.json`
-- 进度：`fpga/reports/route_optimization_progress_20261019.md`
-- 新构建命令留档：`session_20261019/launch_command.json`；通过既有 `run_video_route_attempt.py` 调用，不恢复旧暂停任务。
-- 状态与额度检查：`python fpga/scripts/optimization_status.py --session fpga/build/route_optimization/session_20261019`
+- 远端：<https://github.com/CaiVegetable0932/26-FPGA-Pango>
+- 原始任务方案：`output/FPGA布线效率与拥塞专项优化方案.md`
+- 当前区域矩阵：`fpga/reports/regional_verification_plan_20261019.md`
+- 历史进展与证据说明：`fpga/reports/route_optimization_progress_20261019.md`
 
-## 当前进展与证据
+用户最新要求：允许分区域综合和局部布线 A/B；整个设计方案完成之前禁止整体布线、完整位流生成。设计文件仿真通过后通知用户，由用户安排其他智能体监控整体布线。22:19 已通知当前合并版本的功能仿真通过；这不表示整个优化方案已完成。
 
-已将完整 writer BRAM 候选的 11 项未推广 RTL 变更审查后同步至主源码，修改前文件与补丁归档在 `fpga/build/route_optimization/session_20261019/promotion/`。主源码 12 项集成回归通过；既有全帧模型及差分通过现有入口重新校验，不能把局部回归当作硬件验收。
+整体停止标记 `fpga/build/route_optimization/session_20261019/stop_requested.json` 保留。原整机 seed 11 在 21:46 按用户要求停止，账本为 `writer_bram_seed11/campaign.json`，真实停止阶段为 PnR。旧结果中固定的 `stage=gen_bit_stream` 是历史脚本标签，不能据此认为执行过 bitgen；以 native_runs 和 PAUSED 记录为准。脚本已修正后续阶段标签。
 
-活动完整工程：`fpga/build/full_integration_20261013/phys_20261019_205545_289460`。seed=11，decongestion=1，macro=Global，planning=true。每阶段默认 60 分钟外部时限，当前处于布局。尚无合格 routed、STA 或位流发布结论。
+`fpga/config/implementation_readiness.json` 的设计完成、最终源码仿真、资源约束审查及整体放行标志均保持 false。常用整机启动、恢复和直接位流入口已检查该门槛；不得为了运行而直接改 true。区域入口白名单只有已审查的 DMA、boot、unpack 顶层，不生成位流。
 
-暂停当前会话：在 `fpga/build/route_optimization/session_20261019/stop_requested.json` 写入原因；监督器下一次检查会停止其拥有的 native 进程树并保留证据。不要按进程名杀所有 PDS。`fpga/build/route_optimization/native_phase.lock` 是本轮重型阶段互斥锁；如异常遗留，核对 PID/创建时间后再处理，不自动删除。
+## 主设计源码和功能证据
 
-## 额度与汇报约定
+主设计当前包含 writer-BRAM 基线的 11 项修改，另合入 DMA 分组二进制选择和 boot 分区状态捕获，共 13 个变更文件。前 11 项回退字节与补丁在 `session_20261019/promotion/`；后两项回退字节与哈希在 `session_20261019/simulation_only_promotion/`。
 
-用户指定 Codex **账户**剩余额度 10% 为停止线。本地本次会话 `rate_limits` 事件可提供实际百分比，状态脚本只导出额度字段与时间，不导出会话内容或认证文件。20:58 最近观察剩余 52%；该数字随执行变化，以最新带时间戳观察为准。缺失或过期事件必须标明不可确认。
+| 验证 | 结果和位置 |
+| --- | --- |
+| 合并后完整 20 项集成回归 | PASS，`fpga/build/full_integration_20261013/sim_20261019_214617_365522` |
+| 运行时控制场景 | PASS，`sim_20261019_214713_180909` |
+| 1080p 全帧、控制、同帧快照、真实显示 RTL 模型 | PASS，`verilator_20261019_215712_138161` |
+| 显示逐像素检查 | 22,809,600 像素，失败 0，下溢 0；3 新帧、8 重复帧 |
+| 几何作业周期 | 4,073,517 / 3,796,435 / 4,114,261，与原基线一致 |
+| 真实主机解码器离线验证 | PASS，8,888 报文、12,441,600 图像字节；`host/reports/fpga_rgb_vectors_20261019_221953_362056.json` |
+| 快照字节与描述符对照 | 与原基线 SHA-256 完全一致，见模型目录 `snapshot_baseline_comparison.json` |
+| 独立 Icarus 全帧补充场景 | TIMEOUT，1,200 秒，`sim_20261019_214646_986066`；不得算通过 |
+| 仿真日志保存修正后回归 | boot、DMA 两项 PASS，`sim_20261019_220955_128002` |
 
-用户要求每小时汇报；本轮开始约 20:48，下一小时汇报约 21:48。常规检查和阶段进展可以更频繁更新。
+上表未写绝对前缀的仿真目录均位于 `fpga/build/full_integration_20261013/`。这是合成测试夹具与模型证据，没有实板下载或硬件验收。现有真实整机处理时钟为 125 MHz，最坏模型作业低于该时钟下 30 FPS 的周期预算；方案的 150 MHz 目标仍未验收，不能混淆。
 
-## Git 与未完成工作
+## 第一轮区域结果与活动任务
 
-初始 HEAD：`6fc951b3cb7a9d367b6d3c293a3e9efbb1f2c483`。工作区历史未提交内容很多，原始清单保存在会话目录。只能暂存本轮改动及必要运行依赖，不应将整个工作区全部提交。不得新增忽略项。
+区域根目录：`fpga/build/route_optimization/`。
 
-首批提交 `3540e9e8b7afc0c8e9fc5ba2fd6a1c0a3bdf6477` 已推送并核对。GitHub 的 Schannel 连接被重置，使用单次 `git -c http.sslBackend=openssl -c http.version=HTTP/1.1 ...` 成功；不需要关闭证书验证或修改全局设置。后续证据与候选准备仍需追加提交。
+| 候选 | 综合结果 | 物理结果 |
+| --- | --- | --- |
+| `dma_grouped_20261019_210245_219923` | LUT 3950→4047，FF 1508→1512，DRM 28 不变，控制集 51 不变 | 当前 A/B 在 `owner_unit_probe_20261019_214842_425939/regional_route_20261019_220909_372573`；基线布通并完成 STA，候选正在布线 |
+| `boot_local_capture_20261019_211117_597873` | LUT 3726→3709，FF 3771→3776，DRM 3 不变，控制集 39→47 | 尚未局部布线；须评估增加控制集的代价 |
 
-中间证据文件清单：`session_20261019/evidence_scope.txt`；哈希清单：`session_20261019/evidence_manifest.json`，为冻结的中间快照，不包含活动布线的最终结果。1,442 个输入的 Git 暂存字节 SHA-256 已全部核对。完整本机历史产物仍保留，没有将约九万项无关工作区内容混入本轮提交。
+DMA 基线新鲜完整诊断流程耗时约 17 分 15 秒，布局线长 232,083。慢角 setup WNS −0.950 ns，hold WHS −0.029 ns，未通过时序；不是合格成功基线，不计算合格构建加速比。最差 setup 在 DUT 内部，从 `done[0]` 经仲裁与统计选择到其他客户端的 `max_wait_cycles` 使能。候选布局线长 203,137，预估 slack +1.007 ns，但仍在详细布线，不能当作最终 STA。
 
-两个待综合的独立候选位于 `fpga/build/route_optimization/dma_grouped_20261019_210245_219923` 和 `boot_local_capture_20261019_211117_597873`。前者通过 10 项周期级差分及 12 组参数回归；后者通过 332,580 周期的串口与完整快照差分。队列账本为 `session_20261019/unit_queue.json`；等待当前完整工程终态后才运行两个 20 分钟限时单位综合。没有自动推广权限扩大：单位综合结果仍须审查后再选择完整工程候选。
+boot 网表确认旧单一捕获 CE 驱动 1,545 个寄存器，新八组分别驱动 192；证据 `unit_screen_20261019_220554_646153/capture_fanout_diagnosis.json`。隔离消费者与整机不同，不将该扇出数冒充整机数值。
 
-注意本轮保持现有整机 125 MHz 真实约束；方案提出的初始 150 MHz 处理目标尚未验收，不能把本轮同约束比较当作 150 MHz 签核。
+首个 DMA 物理夹具 `regional_route_20261019_215701_945412` 在映射阶段因关闭 IO 插入而 DRC 失败，没有开始 DUT 布线；不是结构候选布线失败。修正后的物理夹具采用相同扫描输入／独立寻址捕获输出寄存器和真实 IO buffer（DMA 73 引脚，boot 71）。夹具可控、可观测、捕获顺序、所有读出字与越界读出仿真通过。夹具逻辑必须单列，不能计入生产模块增量。比较内部 DUT 路径和夹具路径，不能宣称板级签核。
 
-剩余验收：当前完整布线终态、setup/hold STA、外部/CDC 约束核对、有效候选的有限三 seed 稳定性、真实性能与效率比较。原基线从未合格完成时不计算加速比。没有实板测试、没有下载授权，不声称 1080p30 硬件已通过。
+## 第二轮候选：尚未推广
 
+1. `unpack_local_capture_20261019_221324_680300`：对齐解包缓存四组本地捕获控制，保留所有载荷复位，不加周期。`differential_20261019_221418_033659` 两种参数、三种种子共 300,000 次严格输出比较通过。尚待单位综合与局部物理比较；入口 `probe_unpack_capture_mapping.py`。
+2. `dma_local_wait_stats_20261019_222919_171043`：针对已实测关键锥，将等待统计比较放到客户端本地，保持所有 32 位统计、仲裁和更新周期。`differential_20261019_222931_122700` 十项差分 PASS；`generic_parameters_20261019_223036_902398` 十二组 CLIENTS/VERIFY 参数 PASS。尚待综合与物理比较。基于当前分组 DMA 源码，若第一轮分组结构被拒绝，必须重新基于选定版本生成并重跑证明，不能复用漂移后的输入哈希。
 
-## 2026-10-19 21:48 ? user scope update (authoritative)
+本轮只比较这两个结构候选，不自动增加第三个或扫描 seed。不要把它们的局部差分通过冒充主设计已合入或已完成全帧模型。
 
-Project: `D:\XDU\concept\26-FPGA-Pango`; branch: `codex/fpga-pds-project`.
-Remote: https://github.com/CaiVegetable0932/26-FPGA-Pango.git
+## 运行、停止和续接
 
-The user now requests design-file edits and functional simulation first. Whole-design placement/routing, bitstream generation and the queued native unit screens have been stopped. Do not restart them automatically. `stop_requested.json` is intentional; the next agent must obtain the user's routing assignment before starting a separate supervised campaign. The existing campaign ended PAUSED at 21:46; it is not a successful routed result and did not generate a qualified bitstream. The unit queue is STOPPED with zero jobs launched.
+- 重型 PDS 同时仅一个，互斥锁：`fpga/build/route_optimization/native_phase.lock`。
+- 区域停止文件：`session_20261019/regional_stop_requested.json`；监督器每 30 秒检查并只停止自有 PID 树，不按进程名杀所有 PDS。
+- 区域物理每侧 20 分钟；当前脚本总限时包含新鲜 compile/SYN/MAP/PnR/STA。保留失败、超时、原始日志、逐轮剩余数和资源记录。
+- 账户剩余达到 10% 时，活动额度监控同时写整体与区域停止文件。最近观测约 49% 剩余，以 `quota_observations.jsonl` 的带时间戳账户事件为准，不能用上下文 token 估算。
+- 每小时汇报；下一次约 22:48。`optimization_status.py --session fpga/build/route_optimization/session_20261019` 可查看账户观察。
+- 第一轮 DMA 候选终态后审查 STA 和内部关键路径，再串行安排 boot 物理比较、第二轮两个候选的综合与局部物理比较。主设计每次推广后重新冻结输入、跑相关回归及必要全帧模型。
+- 最终复核整机资源预算、真实时钟、IO/CDC 和区域矩阵。设计未完成就保持整体门槛关闭。整体三 seed、最终 setup/hold 与硬件 1080p30 均未完成。
+- 官方 `E:\PDS_Pangu\PDS_2022.2-SP6.4\doc` 保持只读。不得修改 DDR PHY、扩大 false path、放宽时钟或降低功能精度。
 
-Canonical RTL now includes the grouped binary DMA selection and the boot status snapshot local capture enables, in addition to the previous 11-file writer-BRAM baseline. Both new candidates passed independent cycle-level proofs before integration. Their combined canonical RTL passed all 20 default integration tests at `fpga/build/full_integration_20261013/sim_20261019_214617_365522`. Full-frame snapshot and runtime-control supplementary simulations are pending at this timestamp. Physical resource, congestion and timing benefits of these two changes remain UNVERIFIED; simulation equivalence does not establish those benefits.
+## Git 和证据
 
-Promotion backup and SHA-256 manifest: `fpga/build/route_optimization/session_20261019/simulation_only_promotion/`. Candidate-specific proofs and combined evidence are listed in `composed_evidence_manifest.json`. Earlier checkpoint `7ffb6639dd6b47bf309c40336676e9b2d807da9c` was pushed successfully. Account quota observed at 21:47: approximately 50% remaining (weekly primary window). Preserve the 10% reserve policy if optimization resumes.
+已推送：`3540e9e8b7afc0c8e9fc5ba2fd6a1c0a3bdf6477`、`7ffb6639dd6b47bf309c40336676e9b2d807da9c`、`0e9e4755751abfd25f70389c7ef991749a8ca469`、`ed4c0a16a63296ade5775ba337547111db476878`。22:23 冻结的功能／区域证据已暂存，631 个清单成员的 Git 暂存字节 SHA-256 全部匹配；后续追加提交中，最新以 Git 为准。
 
-The real existing board processing constraint remains 125 MHz. The plan's 150 MHz target, routed setup/hold, three-seed stability and physical 1080p30 acceptance are still outstanding. No hardware programming was performed.
+工作区有大量此前未提交内容，初始清单 `session_20261019/initial_git_status.txt`，不得全量 add。只暂存本轮源码、脚本、证明闭包和清单列出的证据。不得新增忽略项。当前 `host/reports/.gitattributes` 仅为选定的冻结证明闭包关闭换行转换，保证哈希与云端字节一致。
 
-Git transport uses per-command `-c http.proxy=http://127.0.0.1:7897 -c http.sslBackend=openssl -c http.version=HTTP/1.1`; no global Git settings or certificate validation were changed. Historical unrelated workspace changes must not be included in a broad add/commit.
-
-
-## 2026-10-19 21:48 ? regional verification authorized
-
-This later instruction supersedes the simulation-only restriction above: regional synthesis and isolated regional placement/routing A/B tests are authorized. Whole-design routing and bitstream generation remain forbidden until the entire design plan is complete. Keep the whole-design stop file intact. Regional jobs use `regional_stop_requested.json`; at the account reserve threshold both kinds of jobs must stop. Do not restart the old automatic queue. Run regional screens sequentially under the native-slot supervisor, compare identical boundaries/constraints, and report results as isolated evidence rather than board signoff.
-
-Combined canonical 20-case regression passed; additional runtime-control scenario passed at `fpga/build/full_integration_20261013/sim_20261019_214713_180909`. The 1920x1080 snapshot simulation remains running. DMA baseline/candidate regional synthesis started in `fpga/build/route_optimization/dma_grouped_20261019_210245_219923/owner_unit_probe_20261019_214842_425939`.
-
-
-## 2026-10-19 22:03 regional checkpoint
-
-Whole-design entry points now enforce `fpga/config/implementation_readiness.json` before starting or resuming physical work. Its completion/review/permission flags remain false. A real invocation of the resume entry point was rejected before any build mutation or native launch. Regional physical probes only allow `ddr_native_dma` and `pc_video_boot`; they cannot generate bitstreams.
-
-Regional verification matrix: `fpga/reports/regional_verification_plan_20261019.md`. DMA A/B synthesis completed with inputs intact: baseline LUT 3950 / FF 1508 / DRM 28 / controlsets 51; grouped candidate LUT 4047 / FF 1512 / DRM 28 / controlsets 51. Synthesis clock slack estimate changed 0.216 to 0.211 ns (slow row), with 0.552 ns unchanged in the second row. This is not routed timing and does not yet establish a locality benefit. Do not add isolated resources to board totals.
-
-DMA isolated physical A/B is running under `owner_unit_probe_20261019_214842_425939/regional_route_20261019_215701_945412`, bounded to 20 minutes per side including fresh compile/synthesis/map/PnR/STA. Its dynamic boundary has no diagnostic IO insertion; raw internal reports must be reviewed. No whole-design PnR is running. Combined-source Verilator model at `verilator_20261019_215712_138161` is checking full-frame control, snapshot and actual display RTL with one C++ build job. Both this model and the separate full-frame Icarus snapshot simulation remain pending.
-
-Quota monitor tests: 6 passed, including the shared 10% stop for regional and whole-design jobs. Its active watcher was restarted after the regional reserve change. Supplemental evidence in commit `0e9e4755751abfd25f70389c7ef991749a8ca469` was pushed and all 344 frozen supplementary file hashes match Git objects.
+Git 推送使用单次参数 `-c http.proxy=http://127.0.0.1:7897 -c http.sslBackend=openssl -c http.version=HTTP/1.1`；未关闭证书校验或修改全局设置。GUI 只读差异扫描曾留下零字节索引锁；仅在核对原持有进程已退出、所有活动 Git 进程创建时间晚于锁且锁已老化后清理，不删除活动锁、不终止用户写入。

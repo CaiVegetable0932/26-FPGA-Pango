@@ -1,0 +1,150 @@
+{
+  "scope": "isolated_pc_video_boot_synthesis_only",
+  "whole_design_fanout_claim": false,
+  "interpretation": "All eight 192-bit local capture enables survive synthesis. Increased control-set count still requires physical evaluation. Unit consumer loads differ from the integrated netlist.",
+  "baseline": {
+    "source_vm_sha256": "c442e932398a882fdd232cceaf5ee8e680e078cccfe3c546665bd95ee82833db",
+    "largest_ce_loads": [
+      [
+        "N2726",
+        1545
+      ],
+      [
+        "read_response",
+        655
+      ],
+      [
+        "N2358",
+        254
+      ],
+      [
+        "N2354",
+        202
+      ],
+      [
+        "N2119",
+        37
+      ],
+      [
+        "N1252",
+        32
+      ],
+      [
+        "N2009",
+        16
+      ],
+      [
+        "N2643",
+        16
+      ],
+      [
+        "N2116",
+        15
+      ],
+      [
+        "N3216",
+        12
+      ],
+      [
+        "N3160",
+        8
+      ],
+      [
+        "N2264",
+        8
+      ],
+      [
+        "N2435",
+        4
+      ],
+      [
+        "N2567",
+        2
+      ],
+      [
+        "N2654",
+        1
+      ]
+    ],
+    "local_capture_ce_loads": {}
+  },
+  "candidate": {
+    "source_vm_sha256": "517a4655404fea818a14cb9c86f771e804d823f691a8719d8e544d0a3ba00451",
+    "largest_ce_loads": [
+      [
+        "read_response",
+        655
+      ],
+      [
+        "N2454",
+        254
+      ],
+      [
+        "N2450",
+        202
+      ],
+      [
+        "status_capture_page[0]",
+        192
+      ],
+      [
+        "status_capture_page[1]",
+        192
+      ],
+      [
+        "status_capture_page[2]",
+        192
+      ],
+      [
+        "status_capture_page[3]",
+        192
+      ],
+      [
+        "status_capture_page[4]",
+        192
+      ],
+      [
+        "status_capture_page[5]",
+        192
+      ],
+      [
+        "status_capture_page[6]",
+        192
+      ],
+      [
+        "status_capture_page[7]",
+        192
+      ],
+      [
+        "N2215",
+        34
+      ],
+      [
+        "N1318",
+        32
+      ],
+      [
+        "N2105",
+        16
+      ],
+      [
+        "N2697",
+        16
+      ],
+      [
+        "N2212",
+        15
+      ]
+    ],
+    "local_capture_ce_loads": {
+      "status_capture_page[0]": 192,
+      "status_capture_page[1]": 192,
+      "status_capture_page[2]": 192,
+      "status_capture_page[3]": 192,
+      "status_capture_page[4]": 192,
+      "status_capture_page[5]": 192,
+      "status_capture_page[6]": 192,
+      "status_capture_page[7]": 192
+    }
+  }
+}

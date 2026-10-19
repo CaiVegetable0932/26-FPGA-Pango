@@ -1,0 +1,11 @@
+{
+  "review_round": 2,
+  "status": "FUNCTIONAL_PROOF_REQUIRED_NOT_PROMOTED",
+  "changed_files": [
+    "rtl/memory/dma_byte_unpack.v"
+  ],
+  "expected_added_ff": 12,
+  "extra_latency_cycles": 0,
+  "production_reset_preserved": true,
+  "physical_benefit_verified": false
+}

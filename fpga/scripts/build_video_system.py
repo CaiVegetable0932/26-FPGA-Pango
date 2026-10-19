@@ -8,6 +8,7 @@ import re
 import shutil
 import subprocess
 from native_bitgen import generate_from_timed_database
+from implementation_readiness import require_whole_design_ready
 
 
 def main():
@@ -18,6 +19,10 @@ def main():
                         help='Official CE/RS routing chain default; independent of STA acceptance')
     parser.add_argument('--stage', choices=['compile', 'synthesize', 'dev_map', 'report_timing', 'gen_bit_stream'], default='report_timing')
     options = parser.parse_args()
+    # Compile/SYN/MAP remain available for design review; complete PnR waits
+    # until the user's whole-design readiness record has been reviewed.
+    if options.stage in ('report_timing','gen_bit_stream'):
+        require_whole_design_ready()
     if not 1 <= options.overall_timeout_minutes <= 240:
         parser.error('overall native allowance must be 1..240 minutes')
     if not 1 <= options.pnr_timeout_minutes <= 60:

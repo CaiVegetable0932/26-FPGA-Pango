@@ -155,7 +155,7 @@ def main():
         (evidence / 'placement_input.sha256').write_text(
             hashlib.sha256(placement.read_bytes()).hexdigest()+'  '+placement.name+'\n', encoding='ascii')
     report = run / 'report_timing/pango_video_system.rtr'
-    result = {'stage': 'gen_bit_stream', 'native_exit': None, 'errors': [], 'snapshot_intact': True,
+    result = {'stage': 'not_started', 'native_exit': None, 'errors': [], 'snapshot_intact': True,
               'internal_timing_met': False, 'full_function_release': False, 'hardware_tested': False,
               'programmed': False, 'external_timing_verified': False, 'download_approved': False,
               'resumed_project': str(run / 'flow.pds'), 'resume_evidence': str(evidence), 'native_runs': []}
@@ -174,6 +174,8 @@ def main():
     }
     try:
         for phase in ('place_route', 'report_timing', 'gen_bit_stream'):
+            # Describe the phase actually attempted, including an early pause.
+            result['stage']=phase
             # Explicit input_db_file/force_to_run are documented by this exact
             # installed version. A standalone action avoids re-running compile
             # and synthesis; Python gates bitgen only after the NEW STA returns.

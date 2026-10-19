@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+from implementation_readiness import require_whole_design_ready
 
 
 def generate_from_timed_database(run: Path, shell: str, log_path: Path):
@@ -13,6 +14,8 @@ def generate_from_timed_database(run: Path, shell: str, log_path: Path):
     The status override permits a standalone project; it never substitutes
     for the explicit completed min/max STA gate below. No programmer is used.
     """
+    # A historical routed checkpoint cannot bypass the user's design gate.
+    require_whole_design_ready()
     report = run / 'report_timing/pango_video_system.rtr'
     database = run / 'place_route/pango_video_system_pnr.adf'
     if not report.is_file() or not database.is_file():

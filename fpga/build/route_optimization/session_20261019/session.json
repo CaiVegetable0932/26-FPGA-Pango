@@ -8,7 +8,7 @@
   "authorization": "User explicitly requested implementation, hourly reports, stop at 10 percent Codex account remaining, commit and push. Prior paused campaign remains archived; new bounded campaign only.",
   "quota_stop_remaining_percent": 10,
   "report_interval_seconds": 3600,
-  "status": "regional_validation_only",
+  "status": "combined_canonical_full_frame_passed_regional_optimization_in_progress",
   "updated_at": "2026-10-19T21:41:51.829151+08:00",
   "active_campaign": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\session_20261019\\writer_bram_seed11\\campaign.json",
   "unit_queue": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\session_20261019\\unit_queue.json",
@@ -35,6 +35,10 @@
     },
     {
       "commit": "0e9e4755751abfd25f70389c7ef991749a8ca469",
+      "pushed": true
+    },
+    {
+      "commit": "ed4c0a16a63296ade5775ba337547111db476878",
       "pushed": true
     }
   ],
@@ -71,6 +75,44 @@
       "DRM": 0,
       "controlsets": 0
     },
-    "full_frame_model": "fpga/build/full_integration_20261013/verilator_20261019_215712_138161"
+    "full_frame_model": "fpga/build/full_integration_20261013/verilator_20261019_215712_138161",
+    "boot_synthesis": {
+      "path": "fpga/build/route_optimization/boot_local_capture_20261019_211117_597873/unit_screen_20261019_220554_646153",
+      "LUT_delta": -17,
+      "FF_delta": 5,
+      "controlsets_delta": 8,
+      "baseline_capture_ce_loads": 1545,
+      "candidate_capture_ce_loads": [
+        192,
+        192,
+        192,
+        192,
+        192,
+        192,
+        192,
+        192
+      ]
+    },
+    "first_dma_route_fixture_failed": true,
+    "active_dma_route": "fpga/build/route_optimization/dma_grouped_20261019_210245_219923/owner_unit_probe_20261019_214842_425939/regional_route_20261019_220909_372573"
+  },
+  "round2_unpack": {
+    "candidate": "fpga/build/route_optimization/unpack_local_capture_20261019_221324_680300",
+    "proof": "differential_20261019_221418_033659",
+    "passed": true,
+    "checks": 300000,
+    "promoted": false
+  },
+  "icarus_full_frame_supplement": {
+    "path": "fpga/build/full_integration_20261013/sim_20261019_214646_986066",
+    "status": "TIMEOUT",
+    "timeout_seconds": 1200
+  },
+  "combined_full_frame_model": {
+    "path": "fpga/build/full_integration_20261013/verilator_20261019_215712_138161",
+    "passed": true,
+    "display_pixels_checked": 22809600,
+    "display_underflows": 0,
+    "host_report": "host/reports/fpga_rgb_vectors_20261019_221953_362056.json"
   }
 }

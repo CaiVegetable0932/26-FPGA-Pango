@@ -1,0 +1,8 @@
+{
+  "classification": "PHYSICAL_FIXTURE_DRC_FAILURE",
+  "cause": "Wide raw top ports synthesized without IO insertion are illegal at physical mapping.",
+  "dut_routing_started": false,
+  "whole_design_routing_started": false,
+  "structural_candidate_route_failure": false,
+  "action": "Use identical scan shift/capture boundaries with real IO buffers; retain complete source controllability and independent output observability."
+}

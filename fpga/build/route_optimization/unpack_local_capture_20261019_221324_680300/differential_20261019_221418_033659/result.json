@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "cycle_equivalent": true,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\original_dma_byte_unpack.v": "a27750d08200708e596a0eab39df18aab2e5f610aa096b9a72f56ab7db9094df",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\source\\rtl\\memory\\dma_byte_unpack.v": "b1f42994faa79f7e6ca7ee1ce9c8b34f2707c4b4a9110fdaf919b4a5c7b56592",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_unpack_local_capture_equivalence.sv": "bf49477dbe475e776a73ec51043c5b60f5793ffbfabb3a3888da0568b849955e"
+  },
+  "tests": [
+    {
+      "aligned_rows": 0,
+      "seed": 42,
+      "checks": 50000
+    },
+    {
+      "aligned_rows": 0,
+      "seed": 177,
+      "checks": 50000
+    },
+    {
+      "aligned_rows": 0,
+      "seed": 2718,
+      "checks": 50000
+    },
+    {
+      "aligned_rows": 1,
+      "seed": 42,
+      "checks": 50000
+    },
+    {
+      "aligned_rows": 1,
+      "seed": 177,
+      "checks": 50000
+    },
+    {
+      "aligned_rows": 1,
+      "seed": 2718,
+      "checks": 50000
+    }
+  ],
+  "inputs_intact": true
+}
