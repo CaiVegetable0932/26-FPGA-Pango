@@ -1,0 +1,37 @@
+{
+  "archive_sha256": "915878ff3c101d519ae729e1ac43c6fdb2eff7a501d4ce706797ef5be625a433",
+  "members": {
+    "baseline/compile/frame_pixel_writer_comp.adf": {
+      "bytes": 213837,
+      "sha256": "b3eb39f2d750bb761ef140eb1b006cc8849cec7c8a72b3ec789b861371472112"
+    },
+    "baseline/synthesize/frame_pixel_writer.snr": {
+      "bytes": 123972,
+      "sha256": "414746a150db99b4f633d21b03aa59f036368920d9186905c6d5af2ac8161411"
+    },
+    "baseline/synthesize/frame_pixel_writer_syn.adf": {
+      "bytes": 273793,
+      "sha256": "2ff2d131a367927c94bcacc9478facfe1b68110d13c9768666a67a83ecafa28a"
+    },
+    "baseline/synthesize/frame_pixel_writer_syn.vm": {
+      "bytes": 1032327,
+      "sha256": "8c3deab17e14afb81371b648f848bb585892094ae2b7f5c19fc122dd00aac990"
+    },
+    "candidate/compile/frame_pixel_writer_comp.adf": {
+      "bytes": 210155,
+      "sha256": "1cb5c2c96b65a9c755f255bdaf13f7454f7d0a650b8487efeafd8520dcaeec05"
+    },
+    "candidate/synthesize/frame_pixel_writer.snr": {
+      "bytes": 106025,
+      "sha256": "9ea0470e4bbe4bbd4340fcb32679b9b3ae9ecd81e3f888aa29188f34acd0ae36"
+    },
+    "candidate/synthesize/frame_pixel_writer_syn.adf": {
+      "bytes": 259271,
+      "sha256": "e5084c50b2626781b7a811b9a01a46c44458b454981c698a3d9c975e92b812f6"
+    },
+    "candidate/synthesize/frame_pixel_writer_syn.vm": {
+      "bytes": 966600,
+      "sha256": "3955de654c0a7789d05a039db9111a5bc21bd0b88b7085df50753325b71b9f03"
+    }
+  }
+}

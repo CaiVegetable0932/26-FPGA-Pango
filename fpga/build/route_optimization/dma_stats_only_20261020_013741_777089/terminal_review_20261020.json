@@ -1,0 +1,33 @@
+{
+  "status": "NOT_PROMOTED_STABILITY_FAILURE",
+  "tested_seeds": [
+    11,
+    7
+  ],
+  "seed13_not_launched": "Stop finite sample after seed7 stall; no seed search",
+  "same_inputs_and_boundary": true,
+  "comparison_complete": false,
+  "acceleration_ratio": null,
+  "full_model_passed": true,
+  "host_decode_passed": true,
+  "snapshot_bytes_identical": true,
+  "whole_design_route_allowed": false,
+  "jobs": [
+    {
+      "seed": 11,
+      "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_stats_only_20261020_013741_777089\\owner_unit_probe_20261020_013831_335662\\regional_route_20261020_015127_322351",
+      "completed": true,
+      "timing_clean": true,
+      "status": "COMPLETED",
+      "result_sha256": "ac363303bfe87db4743301cc42b03712ab226b9adcf46f2d0d117993873b8d33"
+    },
+    {
+      "seed": 7,
+      "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_stats_only_20261020_013741_777089\\owner_unit_probe_20261020_013831_335662\\regional_route_20261020_020455_952987",
+      "completed": false,
+      "timing_clean": null,
+      "status": "STALLED",
+      "result_sha256": "4231efb48865382ec596757de08b8d838cee34f18b807bda1ef42edb150ad0c0"
+    }
+  ]
+}

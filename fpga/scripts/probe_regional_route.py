@@ -16,6 +16,7 @@ import shutil
 from route_supervisor import run_supervised
 from regional_scan_wrapper import ports,make_wrapper,fixed_pin_constraints
 from probe_writer_bram_mapping import diagnostic_writer
+from probe_pool_local_mapping import diagnostic_pool
 from regional_phase_budget import run_regional_phases,native_pnr_seconds
 
 
@@ -50,16 +51,25 @@ def main():
         raise ValueError('Synthesis input drift')
     top_match = re.search(r'compile -top_module (\w+) ',
                          (screen/'baseline/flow.tcl').read_text(encoding='utf-8'))
-    if not top_match or top_match[1] not in ('ddr_native_dma','pc_video_boot','dma_byte_unpack','raw_dma_reader','frame_pixel_writer'):
+    if not top_match or top_match[1] not in ('ddr_native_dma','pc_video_boot','dma_byte_unpack','raw_dma_reader','frame_pixel_writer','frame_pool_bank','snapshot_copy_dma'):
         raise ValueError('Only the reviewed isolated tops are authorized')
     top = top_match[1]
     port_lists=[]
     for label in ('baseline','candidate'):
         filename={'ddr_native_dma':'dma.v','pc_video_boot':'pc_video_boot.sv',
                   'dma_byte_unpack':'unpack.v','raw_dma_reader':'reader.sv',
-                  'frame_pixel_writer':'writer.sv'}[top]
-        port_lists.append(ports((screen/label/filename).read_text(encoding='utf-8'),
-                                top,dict(CLIENTS=7,TAG_BITS=32)))
+                  'frame_pixel_writer':'writer.sv','frame_pool_bank':'pool.sv',
+                  'snapshot_copy_dma':'snapshot_copy_dma.sv'}[top]
+        port_text=(screen/label/filename).read_text(encoding='utf-8')
+        if top=='frame_pool_bank':
+            # Resolve only the two port-width macros for the parser. Actual
+            # native RTL and its generated layout header stay byte-identical.
+            layout=(screen/label/'frame_manager_layout.vh').read_text(encoding='utf-8')
+            for name in ('FM_CMD_BITS','FM_RSP_BITS'):
+                value=re.search(r'^`define '+name+r' (\d+)\s*$',layout,re.M)
+                if not value: raise ValueError('Unresolved pool port width')
+                port_text=port_text.replace('`'+name,value[1])
+        port_lists.append(ports(port_text,top,dict(CLIENTS=7,TAG_BITS=32)))
     if port_lists[0]!=port_lists[1]:
         raise ValueError('A/B DUT port boundaries differ')
     wrapper,wrapper_metadata=make_wrapper(port_lists[0],top)
@@ -120,6 +130,19 @@ def main():
                     parent=parent.replace(before,after,1)
                 if (source/'reader.sv').read_text(encoding='utf-8')!=parent:
                     raise ValueError('Diagnostic reader source drift')
+        elif top=='frame_pool_bank':
+            original=(candidate/'original_frame_pool_bank.sv' if label=='baseline' else
+                      candidate/'source/rtl/memory/frame_pool_bank.sv')
+            if (source/'pool.sv').read_text(encoding='utf-8')!=diagnostic_pool(original.read_text(encoding='utf-8')):
+                raise ValueError('Diagnostic pool drift')
+            for name in ('frame_manager_pkg.sv','frame_manager_layout.vh'):
+                if digest(source/name)!=digest(candidate/'source/rtl/memory'/name):
+                    raise ValueError('Pool dependency drift')
+        elif top=='snapshot_copy_dma':
+            original=(candidate/'original_snapshot_copy_dma.sv' if label=='baseline' else
+                      candidate/'source/rtl/memory/snapshot_copy_dma.sv')
+            if digest(source/'snapshot_copy_dma.sv')!=digest(original):
+                raise ValueError('Snapshot-copy source drift')
         else:
             original = (candidate/'original_pc_video_boot.sv' if label=='baseline' else
                         candidate/'source/rtl/control/pc_video_boot.sv')
@@ -134,6 +157,7 @@ def main():
     run.mkdir()
     # Preserve the exact diagnostic transformation helper with each result.
     shutil.copyfile(Path(__file__).with_name('probe_writer_bram_mapping.py'),run/'probe_writer_bram_mapping.py')
+    shutil.copyfile(Path(__file__).with_name('probe_pool_local_mapping.py'),run/'probe_pool_local_mapping.py')
     shutil.copyfile(Path(__file__).with_name('regional_phase_budget.py'),run/'regional_phase_budget.py')
     shutil.copyfile(__file__,run/'probe_script.py')
     shutil.copyfile(Path(__file__).with_name('route_supervisor.py'),run/'route_supervisor.py')
@@ -160,7 +184,7 @@ def main():
             build.mkdir()
             # Use a fresh isolated project and byte-identical diagnostic RTL.
             # Keep compile time separate in the native logs; no cache-speed claim.
-            files = [p for p in source.iterdir() if p.suffix in ('.v','.sv','.fdc')]
+            files = [p for p in source.iterdir() if p.suffix in ('.v','.sv','.vh','.fdc')]
             for p in files:
                 shutil.copyfile(p,build/p.name)
             wrapper_path=build/'regional_wrapper.sv'

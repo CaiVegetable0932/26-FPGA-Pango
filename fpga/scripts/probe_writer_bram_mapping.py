@@ -1,7 +1,8 @@
-"""Screen the existing cycle-proven writer BRAM change in isolation.
+"""Screen a cycle-proven writer change in isolation.
 
 Installed ADS guide pp19-20 and 69-72 define the unchanged synthesis/RAM
-settings. This measures an existing selected change, not a new candidate.
+settings. Default to the selected BRAM change; an explicit frozen candidate
+must bind both measured source identities to the strict functional proof.
 """
 import argparse
 from datetime import datetime
@@ -50,6 +51,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--proof', type=Path, required=True)
     parser.add_argument('--pause-file', type=Path, required=True)
+    parser.add_argument('--candidate-source', type=Path,
+                        help='Measure this frozen proof-bound writer instead of live main RTL')
+    parser.add_argument('--span-proof', type=Path,
+                        help='Full-product/four-state proof required for the signed span rewrite')
     parser.add_argument('--tiled', type=int, choices=(0, 1), default=0)
     parser.add_argument('--board-rgb-context', action='store_true',
                         help='Use the actual fixed ISP writer geometry/stride/RGB connections')
@@ -68,9 +73,29 @@ def main():
         raise ValueError('Unique original writer required')
     current = fpga/'rtl/memory/frame_pixel_writer.sv'
     pack = fpga/'rtl/memory/dma_pixel_pack.v'
+    if args.candidate_source:
+        current = args.candidate_source.resolve()
+        if not current.is_relative_to(fpga/'build') or current.name!='frame_pixel_writer.sv':
+            raise ValueError('Frozen writer source required')
+        pack = current.with_name('dma_pixel_pack.v')
     if any(digest(p) not in checked['inputs'].values() for p in (current, pack)):
         raise ValueError('Current writer/packer bytes are not proven')
-    candidate = fpga/'build/route_optimization'/datetime.now().strftime('writer_bram_screen_%Y%m%d_%H%M%S_%f')
+    span_checked = None
+    if 'wire signed [49:0] row_span=' in current.read_text(encoding='utf-8'):
+        if not args.span_proof:
+            raise ValueError('The signed span product requires its arithmetic proof')
+        span_path = args.span_proof.resolve()
+        if not span_path.is_relative_to(fpga/'build'):
+            raise ValueError('Frozen span proof required')
+        span_checked = json.loads((span_path/'result.json').read_text())
+        if not all(span_checked.get(k) for k in ('passed','inputs_intact','full_height_sweep','four_state')):
+            raise ValueError('Complete span arithmetic proof required')
+        if any(digest(Path(p))!=h for p,h in span_checked['inputs'].items()):
+            raise ValueError('Span proof drift')
+        if any(digest(p) not in span_checked['inputs'].values() for p in (current,originals[0])):
+            raise ValueError('Span proof does not bind both writer implementations')
+    label = 'writer_candidate_screen_' if args.candidate_source else 'writer_bram_screen_'
+    candidate = fpga/'build/route_optimization'/datetime.now().strftime(label+'%Y%m%d_%H%M%S_%f')
     source = candidate/'source/rtl/memory'
     source.mkdir(parents=True)
     shutil.copyfile(originals[0], candidate/'original_frame_pixel_writer.sv')
@@ -83,6 +108,9 @@ def main():
     sources = dict(baseline=candidate/'original_frame_pixel_writer.sv',
                    candidate=source/'frame_pixel_writer.sv')
     inputs = dict(checked['inputs'])
+    if span_checked:
+        inputs.update(span_checked['inputs'])
+        inputs[str(span_path/'result.json')] = digest(span_path/'result.json')
     for p in [*sources.values(), source/'dma_pixel_pack.v', proof/'result.json']:
         inputs[str(p)] = digest(p)
     if args.board_rgb_context:

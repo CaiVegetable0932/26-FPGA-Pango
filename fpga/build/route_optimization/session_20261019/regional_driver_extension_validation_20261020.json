@@ -1,0 +1,14 @@
+{
+  "wrapper_tests_passed": 3,
+  "actual_iverilog_reset_and_scan_tests": true,
+  "source_sha256": {
+    "prepare_writer_span_product.py": "7c04538539d7d5652d91d6d9c657fb02b1443ab1ee775c1e5ee120c703f24c8b",
+    "verify_writer_span_math.py": "a96ca77d4816e69d1e2b704adb384309e237824ad292669241043da3d7d2c761",
+    "probe_writer_bram_mapping.py": "3acf9b8daab69f1fb68487b10f860c02e4a092459367f8996061ab686026c24c",
+    "probe_regional_route.py": "7526c0e96b5e82f95a11cffe5e4b048d150299488a7e743351e3a395838e51d9",
+    "regional_scan_wrapper.py": "23617e425499d314a9eaf835ef2a3d6007ff67366d2298861f8b6df3f12f9a02",
+    "test_regional_scan_wrapper.py": "cbe9e7612c1210ed4f7b7a46ebf02c89316b6026b85a3d34ccc2b0803791e60c"
+  },
+  "pool_frontend_native_passed": true,
+  "whole_design_route_allowed": false
+}

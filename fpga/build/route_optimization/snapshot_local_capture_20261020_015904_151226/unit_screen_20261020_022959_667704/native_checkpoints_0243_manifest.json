@@ -1,0 +1,37 @@
+{
+  "archive_sha256": "ea9241f92b0e8c875fd08e63416949f5b70ba00efcf2a36b10527c4eb05ac146",
+  "members": {
+    "baseline/compile/snapshot_copy_dma_comp.adf": {
+      "bytes": 69408,
+      "sha256": "16be221822e4106df7c3d3c62f9ac27a4702eec68d4d1e2e394c4e62c5004580"
+    },
+    "baseline/synthesize/snapshot_copy_dma.snr": {
+      "bytes": 77703,
+      "sha256": "f146f18a630c9656196a8cabc7b12e7461e12ba169ef9224fcf90a6dee0c1c3c"
+    },
+    "baseline/synthesize/snapshot_copy_dma_syn.adf": {
+      "bytes": 96978,
+      "sha256": "9b3900cf991e5c4dab5366a0b2f6170caf152d75c0a4a4a83f433e56b97d5223"
+    },
+    "baseline/synthesize/snapshot_copy_dma_syn.vm": {
+      "bytes": 244730,
+      "sha256": "e83d977dd2623082c9c54b624f06c111c726a98bfdd9cb1c72e4c09560e1197d"
+    },
+    "candidate/compile/snapshot_copy_dma_comp.adf": {
+      "bytes": 71072,
+      "sha256": "95d3ad40f758b5ce25a4437ff3ac695073b46354724caadcf6b25c415a57eda1"
+    },
+    "candidate/synthesize/snapshot_copy_dma.snr": {
+      "bytes": 77811,
+      "sha256": "911886b1a54fbe64db8384e29e48c3382b9a40c0fa253ad6618e90de21391152"
+    },
+    "candidate/synthesize/snapshot_copy_dma_syn.adf": {
+      "bytes": 98930,
+      "sha256": "e7968c14c8c04fb9edda92c84833a03839c3cbd70e903db049b1670a849c95e0"
+    },
+    "candidate/synthesize/snapshot_copy_dma_syn.vm": {
+      "bytes": 250342,
+      "sha256": "ff469013a64db05d3d1502f405c0a9475a44ba2a0e7a875d062f642386337fa0"
+    }
+  }
+}

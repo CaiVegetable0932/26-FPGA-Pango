@@ -1,0 +1,39 @@
+{
+  "baseline": {
+    "netlist_sha256": "931651ce71778a5e9bb408f94c547f5072ee03cce5aec065553ccdf18316a113",
+    "primitive_input_pin_counts": {
+      "token_busy[0]": 11,
+      "token_busy[1]": 13,
+      "token_busy[2]": 14
+    },
+    "local_flag_flipflop_outputs": []
+  },
+  "candidate": {
+    "netlist_sha256": "4b0e2957a5724ec9ff29f7a22a1e94a745422bd7225fc811cba5c8eaaa4e83a4",
+    "primitive_input_pin_counts": {
+      "slot_token_active[0][0]": 4,
+      "slot_token_active[0][1]": 3,
+      "slot_token_active[0][2]": 4,
+      "slot_token_active[1][0]": 3,
+      "slot_token_active[1][1]": 3,
+      "slot_token_active[1][2]": 4,
+      "slot_token_active[2][0]": 3,
+      "slot_token_active[2][1]": 3,
+      "slot_token_active[2][2]": 3,
+      "token_busy[0]": 4,
+      "token_busy[1]": 4,
+      "token_busy[2]": 3
+    },
+    "local_flag_flipflop_outputs": [
+      "slot_token_active[0][0]",
+      "slot_token_active[0][1]",
+      "slot_token_active[0][2]",
+      "slot_token_active[1][0]",
+      "slot_token_active[1][1]",
+      "slot_token_active[1][2]",
+      "slot_token_active[2][0]",
+      "slot_token_active[2][1]",
+      "slot_token_active[2][2]"
+    ]
+  }
+}

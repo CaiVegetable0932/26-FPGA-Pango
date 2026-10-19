@@ -1,0 +1,84 @@
+{
+  "passed": true,
+  "routed": false,
+  "timing_signoff": false,
+  "jobs": [
+    {
+      "label": "baseline",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 30.04699999999866,
+        "pid": 8068,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\snapshot_local_capture_20261020_015904_151226\\unit_screen_20261020_022959_667704\\baseline\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "errors": []
+    },
+    {
+      "label": "candidate",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 30.03099999999904,
+        "pid": 46464,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\snapshot_local_capture_20261020_015904_151226\\unit_screen_20261020_022959_667704\\candidate\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "errors": []
+    }
+  ],
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\snapshot_local_capture_20261020_015904_151226\\original_snapshot_copy_dma.sv": "be917abc58652f892a596270f3d40156344e611a7159431526b89d13833168bf",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\snapshot_local_capture_20261020_015904_151226\\source\\rtl\\memory\\snapshot_copy_dma.sv": "5bd4bad096b56180501938f47844af255dcf5194b9df9e9a7af615d28eeb97ee"
+  },
+  "proof": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\snapshot_local_capture_20261020_015904_151226\\differential_20261020_015947_497639",
+  "clock_period_ns": 8.0,
+  "baseline": {
+    "resources": {
+      "LUT": 235,
+      "FF": 435,
+      "controlsets": 7,
+      "LUTRAM": 0,
+      "DRM": 0.0
+    },
+    "report_sha256": "f146f18a630c9656196a8cabc7b12e7461e12ba169ef9224fcf90a6dee0c1c3c"
+  },
+  "candidate": {
+    "resources": {
+      "LUT": 245,
+      "FF": 441,
+      "controlsets": 12,
+      "LUTRAM": 0,
+      "DRM": 0.0
+    },
+    "report_sha256": "911886b1a54fbe64db8384e29e48c3382b9a40c0fa253ad6618e90de21391152"
+  },
+  "inputs_intact": true
+}

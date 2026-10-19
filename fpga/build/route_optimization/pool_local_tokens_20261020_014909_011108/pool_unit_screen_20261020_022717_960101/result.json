@@ -1,0 +1,113 @@
+{
+  "passed": true,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\original_frame_pool_bank.sv": "f445700f24a71e203e31fe20849965ccb15885d4b17fe383e39fc3ecf5f8b1b1",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\source\\rtl\\memory\\frame_pool_bank.sv": "88438b7986441cc5b8e67fba929561e495ddf2e285404082642ec09337dd5716",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\source\\rtl\\memory\\frame_manager_pkg.sv": "4d93591a7cd365243bad3347165a6ed9708fdd0ce5a6daa84470fe8c744a6f2e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\source\\rtl\\memory\\frame_manager_layout.vh": "729ae9f63f1cccdcb244dbad3fc5eafe59ce5ee11ea4da0aa69cb18d037c2973",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\differential_20261020_015058_388147\\result.json": "98edbd6067477eaa7543dbbef75a88d6b00d557be209717e9abd5346485056fe",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261020_015148_979126\\result.json": "7522f4a7cc4726e2011b339c204ce6914ee60babc61d25cfe112396456146a8d"
+  },
+  "proof": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\differential_20261020_015058_388147",
+  "regression": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261020_015148_979126",
+  "slots": 3,
+  "transactions": 3,
+  "routed": false,
+  "jobs": [
+    {
+      "label": "baseline",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 60.0779999999977,
+        "pid": 43436,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\pool_unit_screen_20261020_022717_960101\\baseline\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "errors": []
+    },
+    {
+      "label": "candidate",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 60.06299999999828,
+        "pid": 40440,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\pool_unit_screen_20261020_022717_960101\\candidate\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "errors": []
+    }
+  ],
+  "baseline": {
+    "resources": {
+      "LUT": 4190,
+      "FF": 831,
+      "controlsets": 25
+    },
+    "report_sha256": "3000753402f01c80f04f4a698df9146fba0af85cdb33adbd2570d13896725c7c",
+    "timing_rows": [
+      [
+        "1.219",
+        "0.000",
+        "0",
+        "4728"
+      ],
+      [
+        "0.758",
+        "0.000",
+        "0",
+        "4728"
+      ]
+    ]
+  },
+  "candidate": {
+    "resources": {
+      "LUT": 4199,
+      "FF": 839,
+      "controlsets": 28
+    },
+    "report_sha256": "bba87d995b6b785ceccce0d3132ad222cda575b09b6681e6a46e2ed3d763095c",
+    "timing_rows": [
+      [
+        "1.414",
+        "0.000",
+        "0",
+        "4747"
+      ],
+      [
+        "0.758",
+        "0.000",
+        "0",
+        "4747"
+      ]
+    ]
+  },
+  "inputs_intact": true
+}

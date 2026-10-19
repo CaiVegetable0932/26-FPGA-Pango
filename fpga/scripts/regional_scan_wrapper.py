@@ -50,7 +50,8 @@ def ports(text,top,parameters):
         else: raise ValueError('Unsupported ANSI port: '+item)
         result.append((direction,name,width))
     if len({name for _,name,_ in result})!=len(result): raise ValueError('Duplicate port')
-    if not all(('input',name,1) in result for name in ('clk','rst_n')):
+    resets=[name for name in ('rst_n','reset_n') if ('input',name,1) in result]
+    if ('input','clk',1) not in result or len(resets)!=1:
         raise ValueError('Expected single-bit clock and reset')
     return result
 
@@ -63,7 +64,10 @@ def make_wrapper(port_list,top):
     simulation; the DUT itself retains its real reset pin and all reset logic.
     Indexed reads, rather than XOR compression, prevent output cancellation.
     """
-    inputs=[p for p in port_list if p[0]=='input' and p[1] not in ('clk','rst_n')]
+    resets=[name for name in ('rst_n','reset_n') if ('input',name,1) in port_list]
+    if len(resets)!=1: raise ValueError('One reviewed active-low reset required')
+    reset_name=resets[0]
+    inputs=[p for p in port_list if p[0]=='input' and p[1] not in ('clk',reset_name)]
     outputs=[p for p in port_list if p[0]=='output']
     ni=sum(p[2] for p in inputs);no=sum(p[2] for p in outputs)
     if not ni or not no: raise ValueError('Dynamic input and output bits required')
@@ -78,7 +82,7 @@ def make_wrapper(port_list,top):
     code += [f' always @(posedge clk) scan_inputs <= {shift};',
              f" always @(posedge clk) scan_outputs <= {{{{{po-no}{{1'b0}}}},dut_outputs}};",
              f" assign scan_out=scan_addr<{words} ? scan_outputs[scan_addr*32+:32] : 32'd0;"]
-    mapping=dict(clk='clk',rst_n='rst_n');offset=0
+    mapping={'clk':'clk',reset_name:'rst_n'};offset=0
     for _,name,width in inputs:
         mapping[name]=f'scan_inputs[{offset}+:{width}]';offset+=width
     offset=0
