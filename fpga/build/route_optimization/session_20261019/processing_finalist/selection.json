@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-20T05:25:30.295103+08:00",
+  "selected_change_count": 15,
+  "changed_files": [
+    "rtl/board/pango_video_system.sv",
+    "rtl/board/video_memory_core.sv",
+    "constraints/video_system/clocks_cdc.fdc",
+    "constraints/video_system/processing_cdc.fdc",
+    "rtl/board/processing_domain_reset.sv",
+    "rtl/geometry/geometry_frame_processor_external_refill.sv",
+    "rtl/geometry/geometry_processing_domain.sv",
+    "rtl/geometry/geometry_processing_domain_external_refill.sv",
+    "rtl/memory/dma_write_cdc.sv",
+    "rtl/memory/processing_job_cdc.sv",
+    "rtl/memory/tile_refill_cdc.sv",
+    "sim/tb_video_memory_core.sv"
+  ],
+  "profile": "config/integration/processing_domain.json",
+  "board_candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\proc150_board_20261020_044427_625524",
+  "full_model": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261020_044250_609135",
+  "host_report": "D:\\XDU\\concept\\26-FPGA-Pango\\host\\reports\\fpga_rgb_vectors_20261020_052259_836952.json",
+  "mapping": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\proc150_board_mapping_20261020_050951_080852",
+  "native_sources_bound": 305,
+  "selected_source_files": 308,
+  "geometry_ddr_cycles": [
+    3948091,
+    3972204,
+    3962298
+  ],
+  "per_frame_budget_cycles": 4166666.6666666665,
+  "worst_case_headroom_cycles": 194462.6666666665,
+  "worst_case_headroom_percent": 4.667104,
+  "mapped_resources": {
+    "LUT": 41477.0,
+    "FF": 42053.0,
+    "APM": 118.0,
+    "DRM36_equivalent": 103.5
+  },
+  "legacy_critical_warnings": 61,
+  "new_critical_warnings": 0,
+  "snapshot_bytes_identical": true,
+  "whole_design_routed": false,
+  "bitstream_generated": false,
+  "routed_timing_signed_off": false,
+  "physical_validation_owner": "User-designated routing agent"
+}

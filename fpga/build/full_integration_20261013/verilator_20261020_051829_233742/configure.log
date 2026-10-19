@@ -1,0 +1,147 @@
+-- The CXX compiler identification is GNU 13.1.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: D:/C Tool Chains/mingw64/bin/g++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Warning at D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/tools/verilator-wheel/unpacked/verilator/verilator-config.cmake:285 (message):
+  Specify PREFIX if there are multiple SOURCES
+Call Stack (most recent call first):
+  CMakeLists.txt:7 (verilate)
+
+
+-- Executing Verilator...
+Verilator command: "E:/STM32CubeCLT/STM32CubeCLT_1.18.0/CMake/bin/cmake.exe -E env VERILATOR_ROOT=D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/tools/verilator-wheel/unpacked/verilator D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/tools/verilator-wheel/unpacked/verilator/bin/verilator_bin.exe --compiler gcc --prefix Vframe_manager_pkg --Mdir D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/cpp/CMakeFiles/video_sim.dir/Vframe_manager_pkg.dir --make json --top tb_video_memory_core --cc -y D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory --timing --main -Wno-fatal -GNETWORK_TEST=1 D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/frame_manager_pkg.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/async_stream_fifo.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/ddr_native_dma.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/dma_byte_unpack.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/dma_pixel_pack.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/dma_read_cdc.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/dma_row_plan.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/dma_write_cdc.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/frame_manager.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/frame_memory_fabric.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/frame_pixel_writer.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/frame_pool_bank.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/frame_snapshot_pair.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/frame_writer_buffer.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/geometry_tile_refill.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/processing_job_cdc.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/snapshot_copy_dma.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory/tile_refill_cdc.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input/camera_frame_cdc.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input/dvp_clock_watchdog.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input/dvp_frame_receiver.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input/dvp_raw8_fanout.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input/ov5640_integrated_startup.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input/ov5640_raw8_mode.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input/ov5640_reference_profile.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input/ov5640_register_service.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/isp/isp_line_store.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/isp/raw8_isp.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/isp/rgb_colour_matrix.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/isp/rgb_frame_statistics.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/affine_ray_stepper.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/gamma_lut_bank.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/geometry_frame_processor.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/geometry_frame_processor_external_refill.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/geometry_processing_domain.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/geometry_processing_domain_external_refill.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/geometry_rgb_pipeline.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/legacy_tone_lut.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/lens_inverse_map.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/perspective_divide.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/projective_ray_stepper.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/rgb_bilinear.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/rgb_cache_bank.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/rgb_enhance.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/rgb_tile_cache.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/signed_mult32_pipe.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/signed_mult40_unsigned40_pipe.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry/unsigned_mult32_pipe.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/arp_peer.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/ethernet_mac_rx.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/ethernet_mac_tx.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/ethernet_packet_mux.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/gmii_receive_cdc.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/mdio_clause22.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/mini_phy_startup.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/praw_udp_tx.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/raw_dma_reader.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/raw_frame_tx.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network/raw_network_service.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/control/counter_snapshot_cdc.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/control/frame_parameter_bank.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/control/mcu_readonly_client.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/control/parameter_entity_guard.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/control/pc_video_boot.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/control/pose_frame_selector.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/control/uart_8n1.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/control/uart_v2_parser.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/control/video_frame_scheduler.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/control/video_snapshot_service.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/video/display_frame_cdc.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/video/hdmi_display.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/video/hdmi_rgb888_tx.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/video/rgb888_line_prefetch.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/video/video_raster.v D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/board/video_memory_core.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/sim/tb_video_memory_core.sv D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/sim/video_core_display_fixture.sv"
+Output:
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input\ov5640_integrated_startup.v:37:88: Instance has missing pin: 'cmd_rejected'
+   37 |   .STRETCH_TIMEOUT(SYS_CLK/10),.SERVICE_TIMEOUT(SERVICE_TIMEOUT),.INIT_READ_ENABLE(1)) service(
+      |                                                                                        ^~~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input\ov5640_register_service.v:17:13: ... Location of port declaration
+   17 |  output reg cmd_rejected,rsp_valid,output reg [2:0] rsp_status,
+      |             ^~~~~~~~~~~~
+                     ... For warning description see https://verilator.org/warn/PINMISSING?v=0.000
+                     ... Use "/* verilator lint_off PINMISSING */" and lint_on around source to disable this message.
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input\ov5640_integrated_startup.v:37:88: Instance has missing pin: 'rsp_addr'
+   37 |   .STRETCH_TIMEOUT(SYS_CLK/10),.SERVICE_TIMEOUT(SERVICE_TIMEOUT),.INIT_READ_ENABLE(1)) service(
+      |                                                                                        ^~~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input\ov5640_register_service.v:18:47: ... Location of port declaration
+   18 |  output reg [7:0] rsp_value,output reg [15:0] rsp_addr,output reg [31:0] rsp_cookie,
+      |                                               ^~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input\ov5640_integrated_startup.v:48:78: Instance has missing pin: 'rejected'
+   48 |  ov5640_raw8_mode #(.RAW_OUTPUT_SELECT(8'h03),.GROUP_TIMEOUT(GROUP_TIMEOUT)) mode(
+      |                                                                              ^~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/input\ov5640_raw8_mode.v:17:18: ... Location of port declaration
+   17 |  output reg done,rejected,output reg [2:0] status,output reg mode_ready,
+      |                  ^~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_frame_processor.sv:37:78: Instance has missing pin: 'out_frame_tag'
+   37 |  geometry_rgb_pipeline #(.FRAME_TAG_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) geometry(
+      |                                                                              ^~~~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_rgb_pipeline.sv:17:56: ... Location of port declaration
+   17 |  output [15:0] out_u,out_v,output [FRAME_TAG_BITS-1:0] out_frame_tag,
+      |                                                        ^~~~~~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_frame_processor.sv:37:78: Instance has missing pin: 'active_lut_version'
+   37 |  geometry_rgb_pipeline #(.FRAME_TAG_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) geometry(
+      |                                                                              ^~~~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_rgb_pipeline.sv:22:16: ... Location of port declaration
+   22 |  output [31:0] active_lut_version,output [31:0] cache_misses,cache_stalls,
+      |                ^~~~~~~~~~~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_frame_processor.sv:37:78: Instance has missing pin: 'queue_peak'
+   37 |  geometry_rgb_pipeline #(.FRAME_TAG_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) geometry(
+      |                                                                              ^~~~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_rgb_pipeline.sv:23:46: ... Location of port declaration
+   23 |  output [63:0] cache_bus_bytes,output [15:0] queue_peak
+      |                                              ^~~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_frame_processor.sv:47:23: Instance has missing pin: 'req_write'
+   47 |  geometry_tile_refill refill(.clk(clk),.rst_n(rst_n),.fill_req_valid(fill_req_valid),.fill_req_ready(fill_req_ready),
+      |                       ^~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory\geometry_tile_refill.sv:16:32: ... Location of port declaration
+   16 |  output [4:0] req_beats,output req_write,output dma_cancel,
+      |                                ^~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_frame_processor.sv:55:35: Instance has missing pin: 'req_write'
+   55 |  frame_writer_buffer #(.TILED(1)) writer(.clk(clk),.rst_n(rst_n),.frame_valid(start),.frame_ready(writer_ready),
+      |                                   ^~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory\frame_writer_buffer.sv:11:42: ... Location of port declaration
+   11 |  output req_valid,input req_ready,output req_write,output [31:0] req_addr,req_tag,output [4:0] req_beats,
+      |                                          ^~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_frame_processor_external_refill.sv:36:78: Instance has missing pin: 'out_frame_tag'
+   36 |  geometry_rgb_pipeline #(.FRAME_TAG_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) geometry(
+      |                                                                              ^~~~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_rgb_pipeline.sv:17:56: ... Location of port declaration
+   17 |  output [15:0] out_u,out_v,output [FRAME_TAG_BITS-1:0] out_frame_tag,
+      |                                                        ^~~~~~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_frame_processor_external_refill.sv:36:78: Instance has missing pin: 'active_lut_version'
+   36 |  geometry_rgb_pipeline #(.FRAME_TAG_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) geometry(
+      |                                                                              ^~~~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_rgb_pipeline.sv:22:16: ... Location of port declaration
+   22 |  output [31:0] active_lut_version,output [31:0] cache_misses,cache_stalls,
+      |                ^~~~~~~~~~~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_frame_processor_external_refill.sv:36:78: Instance has missing pin: 'queue_peak'
+   36 |  geometry_rgb_pipeline #(.FRAME_TAG_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) geometry(
+      |                                                                              ^~~~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_rgb_pipeline.sv:23:46: ... Location of port declaration
+   23 |  output [63:0] cache_bus_bytes,output [15:0] queue_peak
+      |                                              ^~~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_frame_processor_external_refill.sv:47:35: Instance has missing pin: 'req_write'
+   47 |  frame_writer_buffer #(.TILED(1)) writer(.clk(clk),.rst_n(rst_n),.frame_valid(start),.frame_ready(writer_ready),
+      |                                   ^~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory\frame_writer_buffer.sv:11:42: ... Location of port declaration
+   11 |  output req_valid,input req_ready,output req_write,output [31:0] req_addr,req_tag,output [4:0] req_beats,
+      |                                          ^~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_rgb_pipeline.sv:75:50: Instance has missing pin: 'out_q0'
+   75 |  affine_ray_stepper #(.TAG_BITS(FRAME_TAG_BITS)) u_step(
+      |                                                  ^~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\affine_ray_stepper.sv:14:27: ... Location of port declaration
+   14 |  output reg signed [39:0] out_q0,out_q1,
+      |                           ^~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\geometry_rgb_pipeline.sv:75:50: Instance has missing pin: 'out_q1'
+   75 |  affine_ray_stepper #(.TAG_BITS(FRAME_TAG_BITS)) u_step(
+      |                                                  ^~~~~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/geometry\affine_ray_stepper.sv:14:34: ... Location of port declaration
+   14 |  output reg signed [39:0] out_q0,out_q1,
+      |                                  ^~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network\raw_network_service.sv:54:93: Instance has missing pin: 'frame_type'
+   54 |  raw_frame_tx #(.WIDTH(WIDTH),.HEIGHT(HEIGHT),.EXTERNAL_MAC(1),.PACKET_BANKS(PACKET_BANKS)) raw(
+      |                                                                                             ^~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/network\raw_frame_tx.sv:14:66: ... Location of port declaration
+   14 |  input [31:0] param_version,descriptor_id,input [7:0] bayer_code,frame_type,
+      |                                                                  ^~~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/sim\tb_video_memory_core.sv:69:164: Instance has missing pin: 'snapshot_s1_status'
+   69 |  video_memory_core #(.WIDTH(W),.HEIGHT(H),.STATIC_ENDPOINTS((NETWORK_TEST || SNAPSHOT_TEST)?0:1),.SUPPORT_CONTROLS(CONTROL_TEST),.SUPPORT_SNAPSHOT(SNAPSHOT_TEST)) dut(.clk(clk),.rst_n(rst_n),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),.controller_ready(1'b1),
+      |                                                                                                                                                                    ^~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/board\video_memory_core.sv:13:32: ... Location of port declaration
+   13 |  output [767:0] control_status,snapshot_s1_status,snapshot_result_status,snapshot_geometry_status,input snapshot_arm,output snapshot_arm_ready,
+      |                                ^~~~~~~~~~~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/sim\tb_video_memory_core.sv:69:164: Instance has missing pin: 'snapshot_result_status'
+   69 |  video_memory_core #(.WIDTH(W),.HEIGHT(H),.STATIC_ENDPOINTS((NETWORK_TEST || SNAPSHOT_TEST)?0:1),.SUPPORT_CONTROLS(CONTROL_TEST),.SUPPORT_SNAPSHOT(SNAPSHOT_TEST)) dut(.clk(clk),.rst_n(rst_n),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),.controller_ready(1'b1),
+      |                                                                                                                                                                    ^~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/board\video_memory_core.sv:13:51: ... Location of port declaration
+   13 |  output [767:0] control_status,snapshot_s1_status,snapshot_result_status,snapshot_geometry_status,input snapshot_arm,output snapshot_arm_ready,
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~
+%Warning-PINMISSING: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/sim\tb_video_memory_core.sv:69:164: Instance has missing pin: 'snapshot_geometry_status'
+   69 |  video_memory_core #(.WIDTH(W),.HEIGHT(H),.STATIC_ENDPOINTS((NETWORK_TEST || SNAPSHOT_TEST)?0:1),.SUPPORT_CONTROLS(CONTROL_TEST),.SUPPORT_SNAPSHOT(SNAPSHOT_TEST)) dut(.clk(clk),.rst_n(rst_n),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),.controller_ready(1'b1),
+      |                                                                                                                                                                    ^~~
+                     D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/board\video_memory_core.sv:13:74: ... Location of port declaration
+   13 |  output [767:0] control_status,snapshot_s1_status,snapshot_result_status,snapshot_geometry_status,input snapshot_arm,output snapshot_arm_ready,
+      |                                                                          ^~~~~~~~~~~~~~~~~~~~~~~~
+%Warning-TIMESCALEMOD: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory\frame_manager_pkg.sv:4:9: Timescale missing on this module as other modules have it (IEEE 1800-2023 3.14.2.3)
+    4 | package frame_manager_pkg;
+      |         ^~~~~~~~~~~~~~~~~
+                       D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/rtl/memory\async_stream_fifo.sv:6:8: ... Location of module with timescale
+    6 | module async_stream_fifo #(parameter WIDTH=8,ADDRESS_BITS=13)(
+      |        ^~~~~~~~~~~~~~~~~
+                       ... For warning description see https://verilator.org/warn/TIMESCALEMOD?v=0.000
+                       ... Use "/* verilator lint_off TIMESCALEMOD */" and lint_on around source to disable this message.
+%Error: D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_051829_233742/source/sim\tb_video_memory_core.sv:161:46: Can't find definition of 'snapshot_output'
+                                                                                                                                                    : ... note: In instance 'tb_video_memory_core'
+  161 |    wait(dut.network.snapshot_output.snapshot.complete_frames==2);wait(snapshot_arm_ready);repeat(20)@(negedge clk);
+      |                                              ^~~~~~~~~~~~~~~
+        ... See the manual at https://verilator.org/verilator_doc.html?v=0.000 for more assistance.
+%Error: Exiting due to 1 error(s)
+
+CMake Error at D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/tools/verilator-wheel/unpacked/verilator/verilator-config.cmake:447 (message):
+  Verilator command failed (return code=1)
+Call Stack (most recent call first):
+  CMakeLists.txt:7 (verilate)
+
+
+-- Configuring incomplete, errors occurred!

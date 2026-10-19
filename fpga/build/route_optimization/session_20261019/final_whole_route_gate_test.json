@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "tests": [
+    {
+      "command": [
+        "build_video_system.py",
+        "--stage",
+        "report_timing"
+      ],
+      "rejected_before_native": true
+    },
+    {
+      "command": [
+        "resume_video_system.py",
+        "--build",
+        "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\handoff_20261020_053147_229875",
+        "--stop-after-timing"
+      ],
+      "rejected_before_native": true
+    }
+  ]
+}

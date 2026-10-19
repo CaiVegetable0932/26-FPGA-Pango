@@ -1,0 +1,501 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "check": "processing PLL and global buffer retained",
+      "passed": true
+    },
+    {
+      "check": "PLL OUT1 drives processing global network",
+      "passed": true
+    },
+    {
+      "check": "processing PLL parameter CLKIN_FREQ",
+      "passed": true
+    },
+    {
+      "check": "processing PLL parameter STATIC_RATIOI",
+      "passed": true
+    },
+    {
+      "check": "processing PLL parameter STATIC_RATIOM",
+      "passed": true
+    },
+    {
+      "check": "processing PLL parameter STATIC_RATIOF",
+      "passed": true
+    },
+    {
+      "check": "processing PLL parameter STATIC_RATIO1",
+      "passed": true
+    },
+    {
+      "check": "no broad clock-group exception",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.scheduler.geometry_source_base* core.scheduler.geometry_source_gen* core.scheduler.geometry_result_base* core.scheduler.geometry_result_gen* core.scheduler.geometry_saved* core.source_geometry*",
+      "passed": true
+    },
+    {
+      "check": "held job sources all outside processing domain",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.job_mailbox.request_toggle",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.job_mailbox.free_toggle",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.job_mailbox.response_toggle",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.job_mailbox.failed_held",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.refill_bridge.request_toggle",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.refill_bridge.tile_held*",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.refill_bridge.quads.write_gray*",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.refill_bridge.quads.read_gray*",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.result_bridge.request_toggle",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.result_bridge.free_toggle",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.result_bridge.cancel_held",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.result_bridge.response_toggle",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.result_bridge.descriptor_held*",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.processor.result_bridge.status_held*",
+      "passed": true
+    },
+    {
+      "check": "nonempty CDC endpoints: core.tone_cursor* core.tone_commit",
+      "passed": true
+    },
+    {
+      "check": "retained connected synchronization stages: core.processor.job_mailbox.request_meta",
+      "passed": true
+    },
+    {
+      "check": "second stage unexcepted: core.processor.job_mailbox.request_sync",
+      "passed": true
+    },
+    {
+      "check": "retained connected synchronization stages: core.processor.job_mailbox.response_meta",
+      "passed": true
+    },
+    {
+      "check": "second stage unexcepted: core.processor.job_mailbox.response_sync",
+      "passed": true
+    },
+    {
+      "check": "retained connected synchronization stages: core.processor.job_mailbox.free_meta",
+      "passed": true
+    },
+    {
+      "check": "second stage unexcepted: core.processor.job_mailbox.free_sync",
+      "passed": true
+    },
+    {
+      "check": "retained connected synchronization stages: core.processor.result_bridge.request_meta",
+      "passed": true
+    },
+    {
+      "check": "second stage unexcepted: core.processor.result_bridge.request_sync",
+      "passed": true
+    },
+    {
+      "check": "retained connected synchronization stages: core.processor.result_bridge.response_meta",
+      "passed": true
+    },
+    {
+      "check": "second stage unexcepted: core.processor.result_bridge.response_sync",
+      "passed": true
+    },
+    {
+      "check": "retained connected synchronization stages: core.processor.result_bridge.free_meta",
+      "passed": true
+    },
+    {
+      "check": "second stage unexcepted: core.processor.result_bridge.free_sync",
+      "passed": true
+    },
+    {
+      "check": "retained connected synchronization stages: core.processor.result_bridge.cancel_meta",
+      "passed": true
+    },
+    {
+      "check": "second stage unexcepted: core.processor.result_bridge.cancel_sync",
+      "passed": true
+    },
+    {
+      "check": "retained connected synchronization stages: core.processor.refill_bridge.request_meta",
+      "passed": true
+    },
+    {
+      "check": "second stage unexcepted: core.processor.refill_bridge.request_sync",
+      "passed": true
+    },
+    {
+      "check": "retained connected synchronization stages: core.tone_ready_meta",
+      "passed": true
+    },
+    {
+      "check": "second stage unexcepted: core.tone_ready_ddr",
+      "passed": true
+    },
+    {
+      "check": "quad FIFO write Gray cells retained",
+      "passed": true
+    },
+    {
+      "check": "quad Gray source/meta/sync connected: core.processor.refill_bridge.quads.write_meta[0]",
+      "passed": true
+    },
+    {
+      "check": "quad Gray source/meta/sync connected: core.processor.refill_bridge.quads.write_meta[1]",
+      "passed": true
+    },
+    {
+      "check": "quad Gray source/meta/sync connected: core.processor.refill_bridge.quads.write_meta[2]",
+      "passed": true
+    },
+    {
+      "check": "quad Gray source/meta/sync connected: core.processor.refill_bridge.quads.write_meta[3]",
+      "passed": true
+    },
+    {
+      "check": "quad Gray source/meta/sync connected: core.processor.refill_bridge.quads.write_meta[4]",
+      "passed": true
+    },
+    {
+      "check": "quad FIFO read Gray cells retained",
+      "passed": true
+    },
+    {
+      "check": "quad Gray source/meta/sync connected: core.processor.refill_bridge.quads.read_meta[0]",
+      "passed": true
+    },
+    {
+      "check": "quad Gray source/meta/sync connected: core.processor.refill_bridge.quads.read_meta[1]",
+      "passed": true
+    },
+    {
+      "check": "quad Gray source/meta/sync connected: core.processor.refill_bridge.quads.read_meta[2]",
+      "passed": true
+    },
+    {
+      "check": "quad Gray source/meta/sync connected: core.processor.refill_bridge.quads.read_meta[3]",
+      "passed": true
+    },
+    {
+      "check": "quad Gray source/meta/sync connected: core.processor.refill_bridge.quads.read_meta[4]",
+      "passed": true
+    },
+    {
+      "check": "selected board synthesis within starting budgets",
+      "passed": true
+    },
+    {
+      "check": "selected board MAP within starting budgets",
+      "passed": true
+    },
+    {
+      "check": "61 inherited board/PHY critical warnings unchanged",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "bindings": [
+    {
+      "source_pattern": "core.scheduler.geometry_source_base* core.scheduler.geometry_source_gen* core.scheduler.geometry_result_base* core.scheduler.geometry_result_gen* core.scheduler.geometry_saved* core.source_geometry*",
+      "target_pattern": "CLOCK:processing_clk",
+      "source_count": 2104,
+      "target_count": 0,
+      "target_clock": true
+    },
+    {
+      "source_pattern": "core.processor.job_mailbox.request_toggle",
+      "target_pattern": "core.processor.job_mailbox.request_meta",
+      "source_count": 1,
+      "target_count": 1,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.job_mailbox.free_toggle",
+      "target_pattern": "core.processor.job_mailbox.free_meta",
+      "source_count": 1,
+      "target_count": 1,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.job_mailbox.response_toggle",
+      "target_pattern": "core.processor.job_mailbox.response_meta",
+      "source_count": 1,
+      "target_count": 1,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.job_mailbox.failed_held",
+      "target_pattern": "core.processor.job_mailbox.source_failed",
+      "source_count": 1,
+      "target_count": 1,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.refill_bridge.request_toggle",
+      "target_pattern": "core.processor.refill_bridge.request_meta",
+      "source_count": 1,
+      "target_count": 1,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.refill_bridge.tile_held*",
+      "target_pattern": "core.processor.refill_bridge.memory_tile_*",
+      "source_count": 23,
+      "target_count": 23,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.refill_bridge.quads.write_gray*",
+      "target_pattern": "core.processor.refill_bridge.quads.write_meta*",
+      "source_count": 5,
+      "target_count": 5,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.refill_bridge.quads.read_gray*",
+      "target_pattern": "core.processor.refill_bridge.quads.read_meta*",
+      "source_count": 5,
+      "target_count": 5,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.result_bridge.request_toggle",
+      "target_pattern": "core.processor.result_bridge.request_meta",
+      "source_count": 1,
+      "target_count": 1,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.result_bridge.free_toggle",
+      "target_pattern": "core.processor.result_bridge.free_meta",
+      "source_count": 1,
+      "target_count": 1,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.result_bridge.cancel_held",
+      "target_pattern": "core.processor.result_bridge.cancel_meta",
+      "source_count": 1,
+      "target_count": 1,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.result_bridge.response_toggle",
+      "target_pattern": "core.processor.result_bridge.response_meta",
+      "source_count": 1,
+      "target_count": 1,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.result_bridge.descriptor_held*",
+      "target_pattern": "core.processor.result_bridge.memory_req_*",
+      "source_count": 64,
+      "target_count": 64,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.processor.result_bridge.status_held*",
+      "target_pattern": "core.processor.result_bridge.done_tag* core.processor.result_bridge.error core.processor.result_bridge.cancelled",
+      "source_count": 34,
+      "target_count": 34,
+      "target_clock": false
+    },
+    {
+      "source_pattern": "core.tone_cursor* core.tone_commit",
+      "target_pattern": "core.tone_ready_meta",
+      "source_count": 19,
+      "target_count": 1,
+      "target_clock": false
+    }
+  ],
+  "synchronizers": [
+    {
+      "first": "core.processor.job_mailbox.request_meta",
+      "second": "core.processor.job_mailbox.request_sync",
+      "connected": true,
+      "clock": "processing_clk"
+    },
+    {
+      "first": "core.processor.job_mailbox.response_meta",
+      "second": "core.processor.job_mailbox.response_sync",
+      "connected": true,
+      "clock": "ddr_clk"
+    },
+    {
+      "first": "core.processor.job_mailbox.free_meta",
+      "second": "core.processor.job_mailbox.free_sync",
+      "connected": true,
+      "clock": "processing_clk"
+    },
+    {
+      "first": "core.processor.result_bridge.request_meta",
+      "second": "core.processor.result_bridge.request_sync",
+      "connected": true,
+      "clock": "ddr_clk"
+    },
+    {
+      "first": "core.processor.result_bridge.response_meta",
+      "second": "core.processor.result_bridge.response_sync",
+      "connected": true,
+      "clock": "processing_clk"
+    },
+    {
+      "first": "core.processor.result_bridge.free_meta",
+      "second": "core.processor.result_bridge.free_sync",
+      "connected": true,
+      "clock": "ddr_clk"
+    },
+    {
+      "first": "core.processor.result_bridge.cancel_meta",
+      "second": "core.processor.result_bridge.cancel_sync",
+      "connected": true,
+      "clock": "ddr_clk"
+    },
+    {
+      "first": "core.processor.refill_bridge.request_meta",
+      "second": "core.processor.refill_bridge.request_sync",
+      "connected": true,
+      "clock": "ddr_clk"
+    },
+    {
+      "first": "core.tone_ready_meta",
+      "second": "core.tone_ready_ddr",
+      "connected": true,
+      "clock": "ddr_clk"
+    }
+  ],
+  "gray": [
+    {
+      "first": "core.processor.refill_bridge.quads.write_meta[0]",
+      "second": "core.processor.refill_bridge.quads.write_sync[0]",
+      "direct_source": true,
+      "second_connected": true
+    },
+    {
+      "first": "core.processor.refill_bridge.quads.write_meta[1]",
+      "second": "core.processor.refill_bridge.quads.write_sync[1]",
+      "direct_source": true,
+      "second_connected": true
+    },
+    {
+      "first": "core.processor.refill_bridge.quads.write_meta[2]",
+      "second": "core.processor.refill_bridge.quads.write_sync[2]",
+      "direct_source": true,
+      "second_connected": true
+    },
+    {
+      "first": "core.processor.refill_bridge.quads.write_meta[3]",
+      "second": "core.processor.refill_bridge.quads.write_sync[3]",
+      "direct_source": true,
+      "second_connected": true
+    },
+    {
+      "first": "core.processor.refill_bridge.quads.write_meta[4]",
+      "second": "core.processor.refill_bridge.quads.write_sync[4]",
+      "direct_source": true,
+      "second_connected": true
+    },
+    {
+      "first": "core.processor.refill_bridge.quads.read_meta[0]",
+      "second": "core.processor.refill_bridge.quads.read_sync[0]",
+      "direct_source": true,
+      "second_connected": true
+    },
+    {
+      "first": "core.processor.refill_bridge.quads.read_meta[1]",
+      "second": "core.processor.refill_bridge.quads.read_sync[1]",
+      "direct_source": true,
+      "second_connected": true
+    },
+    {
+      "first": "core.processor.refill_bridge.quads.read_meta[2]",
+      "second": "core.processor.refill_bridge.quads.read_sync[2]",
+      "direct_source": true,
+      "second_connected": true
+    },
+    {
+      "first": "core.processor.refill_bridge.quads.read_meta[3]",
+      "second": "core.processor.refill_bridge.quads.read_sync[3]",
+      "direct_source": true,
+      "second_connected": true
+    },
+    {
+      "first": "core.processor.refill_bridge.quads.read_meta[4]",
+      "second": "core.processor.refill_bridge.quads.read_sync[4]",
+      "direct_source": true,
+      "second_connected": true
+    }
+  ],
+  "resources": {
+    "LUT": 41484.0,
+    "FF": 42064.0,
+    "APM": 118.0,
+    "DRM36_equivalent": 103.5
+  },
+  "mapped_resources": {
+    "LUT": 41477.0,
+    "FF": 42053.0,
+    "APM": 118.0,
+    "DRM36_equivalent": 103.5
+  },
+  "starting_budgets": {
+    "LUT": 50000,
+    "FF": 95000,
+    "APM": 180,
+    "DRM36_equivalent": 120
+  },
+  "netlist_sha256": "41d05c5254efd001ad25e3cc64efb92883aec40f1c4bea16914142fc932fc423",
+  "report_sha256": "3c0ec89987a764b72b410869b2f8da83b853a685474c81dd98ded20a773e9855",
+  "source_build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261020_044551_218517",
+  "map_report_sha256": "a4befe91010220e69d1cc86e582768daf63b40ba3a14ef37eac834683bbe18ae",
+  "constraint_check_sha256": "176670ec7c69cf03779f3605a226eb3ab3d0dcdd178388441fd2f4943405ddc1",
+  "legacy_critical_warning_count": 61,
+  "new_critical_warnings": [],
+  "processing_clock_target_mhz": 150,
+  "processing_clock_net": "processing_clk",
+  "structural_audit_only": true,
+  "routed_timing_signed_off": false,
+  "bundled_data_full_electrical_graph_checked": false,
+  "limitation": "Cell binding and scalar synchronization checks do not establish routed max/hold delay, MTBF or every wide-bus/dual-clock RAM arc."
+}

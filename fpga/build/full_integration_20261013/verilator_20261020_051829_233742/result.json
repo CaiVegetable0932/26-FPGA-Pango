@@ -1,0 +1,26 @@
+{
+  "passed": false,
+  "full_frame": false,
+  "network_test": true,
+  "rtl_snapshot": "fpga\\build\\route_optimization\\proc150_video_model_20261020_043529_242103\\source",
+  "snapshot_test": false,
+  "control_test": false,
+  "hardware_tested": false,
+  "board_integrated": false,
+  "compiler": "Verilator 5.052 / GCC 13.1.0",
+  "build_jobs": 3,
+  "fixture_snapshot": "fpga\\build\\route_optimization\\proc150_video_model_20261020_043529_242103\\source",
+  "display_test": false,
+  "run_timeout_seconds": 1200,
+  "proof_phases": [
+    {
+      "phase": "configure",
+      "at": "2026-10-19T21:18:33.534093+00:00",
+      "status": "FAILED",
+      "returncode": 1,
+      "elapsed_seconds": 4.10899999999674,
+      "pid": 37900
+    }
+  ],
+  "snapshot_intact": true
+}

@@ -1,11 +1,14 @@
 {
-  "design_complete": false,
-  "selected_source_simulation_passed": false,
-  "resource_and_constraints_reviewed": false,
+  "design_complete": true,
+  "selected_source_simulation_passed": true,
+  "resource_and_constraints_reviewed": true,
   "whole_design_route_allowed": false,
   "regional_physical_checks_allowed": true,
-  "reason": "User requires the entire design plan to be complete before whole-design routing; regional validation is authorized.",
+  "reason": "Design/functional simulation phase completed. User assigns whole routing monitoring to other agents; this agent does not authorize or launch it.",
   "review_document": "fpga/reports/regional_verification_plan_20261019.md",
-  "simulation_note": "Canonical 14-change 125MHz design passed 20-case regression, full 1080p control/snapshot/display and host decoding with unchanged raw snapshot bytes. Six completion fault types and subsequent frame recovery passed. Experimental 150MHz final composition and board resource/CDC review remain incomplete; no whole routing.",
-  "updated_at": "2026-10-20T05:07:47.385118+08:00"
+  "simulation_note": "Selected 15-change 150MHz tile-boundary design passed source-bound full 1080p control/snapshot/display and host raw-byte identity; root 20-case regression and control/snapshot model passed after promotion. Actual board MAP and structural CDC audit passed. Routed setup/hold, CDC physical delays and external hardware remain unsigned.",
+  "updated_at": "2026-10-20T05:33:42.746188+08:00",
+  "physical_signoff_pending": true,
+  "legacy_board_phy_critical_warnings": 61,
+  "handoff_project": "fpga/build/full_integration_20261013/handoff_20261020_053147_229875"
 }

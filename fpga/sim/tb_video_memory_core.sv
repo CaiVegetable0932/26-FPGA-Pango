@@ -1,8 +1,13 @@
-`timescale 1ns/1ps
+`timescale 1ns/1fs
 // Purpose: real RAW8 -> ISP -> verified SRC -> geometry/refill -> verified DST
 // with scheduler/fabric ownership and a native memory model. This synthetic
 // small frame checks integration, not physical camera or 1080p30 performance.
 module tb_video_memory_core #(parameter WIDTH=35,HEIGHT=33,NETWORK_TEST=0,CONTROL_TEST=0,SNAPSHOT_TEST=0,DISPLAY_TEST=0);
+ reg processing_clk=0,processing_rst_n=0;
+ initial begin #0.7;forever #3.333333333 processing_clk=~processing_clk;end
+ always @(negedge rst_n)processing_rst_n<=0;
+ always @(negedge processing_clk)processing_rst_n<=rst_n;
+
  localparam W=WIDTH,H=HEIGHT;
  reg clk=0,rst_n=0;always #4 clk=~clk;
  reg cv=0,ce=0,legal=1,abort_frame=0,iv=0,rv=0;
@@ -61,7 +66,7 @@ module tb_video_memory_core #(parameter WIDTH=35,HEIGHT=33,NETWORK_TEST=0,CONTRO
    end
   end
  end
- video_memory_core #(.WIDTH(W),.HEIGHT(H),.STATIC_ENDPOINTS((NETWORK_TEST || SNAPSHOT_TEST)?0:1),.SUPPORT_CONTROLS(CONTROL_TEST),.SUPPORT_SNAPSHOT(SNAPSHOT_TEST)) dut(.clk(clk),.rst_n(rst_n),.controller_ready(1'b1),
+ video_memory_core #(.WIDTH(W),.HEIGHT(H),.STATIC_ENDPOINTS((NETWORK_TEST || SNAPSHOT_TEST)?0:1),.SUPPORT_CONTROLS(CONTROL_TEST),.SUPPORT_SNAPSHOT(SNAPSHOT_TEST)) dut(.clk(clk),.rst_n(rst_n),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),.controller_ready(1'b1),
   .geometry_coefficients(coefficients),.enhancement(2'd0),.capture_valid(cv),.capture_ready(cr),.capture_complete(cc),
   .snapshot_arm(snapshot_arm),.snapshot_arm_ready(snapshot_arm_ready),.geometry_submit_valid(geometry_valid),.geometry_submit_ready(geometry_ready),.geometry_submit(geometry_entity),.geometry_version(geometry_version),.geometry_entity_id(geometry_version),.geometry_status(geometry_status),.mode_submit_valid(mode_valid),.mode_submit_ready(mode_ready),.mode_submit(mode),.mode_version(mode_version),.control_status(status),
   .capture_epoch(64'hf123456789abcdef),.capture_id(fid),.capture_first(64'd100),.capture_last(64'd10000),
@@ -133,6 +138,12 @@ module tb_video_memory_core #(parameter WIDTH=35,HEIGHT=33,NETWORK_TEST=0,CONTRO
    ce=1;wait(cc);@(negedge clk);ce=0;
   end
  endtask
+ wire [31:0] snapshot_complete_frames_for_test;
+ generate if(SNAPSHOT_TEST)begin: snapshot_counter_probe
+  assign snapshot_complete_frames_for_test=dut.network.snapshot_output.snapshot.complete_frames;
+ end else begin: no_snapshot_counter_probe
+  assign snapshot_complete_frames_for_test=0;
+ end endgenerate
  initial begin
   if(SNAPSHOT_TEST)snapshot_file=$fopen("snapshot_datagrams.bin","wb");
   coefficients[0+:32]=65536;coefficients[128+:32]=65536;coefficients[320+:32]=32'h04000000;coefficients[352+:32]=32'h04000000;
@@ -153,7 +164,7 @@ module tb_video_memory_core #(parameter WIDTH=35,HEIGHT=33,NETWORK_TEST=0,CONTRO
    checks=checks+1;
   end
   if(SNAPSHOT_TEST)begin
-   wait(dut.network.snapshot_output.snapshot.complete_frames==2);wait(snapshot_arm_ready);repeat(20)@(negedge clk);
+   wait(snapshot_complete_frames_for_test==2);wait(snapshot_arm_ready);repeat(20)@(negedge clk);
    if(snapshot_bytes_s1!=W*H*3 || snapshot_bytes_result!=W*H*3)$fatal(1,"Snapshot wire coverage mismatch");
    for(y=0;y<H;y=y+1)for(x=0;x<W*3;x=x+1)begin
     if(memory[location(32'h03c00000+y*6144+x)][(x%32)*8+:8]!==73 || memory[location(32'h04400000+y*6144+x)][(x%32)*8+:8]!==73)
@@ -177,8 +188,9 @@ module tb_video_memory_core #(parameter WIDTH=35,HEIGHT=33,NETWORK_TEST=0,CONTRO
    mode=1;mode_version=2;wait(mode_ready);@(negedge clk);mode_valid=1;@(negedge clk);mode_valid=0;
    geometry_entity={32'h04000000,64'd0,coefficients};geometry_entity[0+:32]=32768;geometry_version=2;
    wait(geometry_ready);geometry_valid=1;@(negedge clk);geometry_valid=0;
-   next_normal_frame(3,81);wait(dut.geo_valid && dut.geo_ready);@(posedge clk);@(negedge clk);
-   if(dut.processor.geometry.coefficients[0+:32]!=32768 || dut.processor_meta.geometry_version!=2)$fatal(1,"Old source geometry entity was not retained a00=%0d version=%0d",dut.processor.geometry.coefficients[0+:32],dut.processor_meta.geometry_version);
+   next_normal_frame(3,81);wait(dut.geo_valid && dut.geo_ready);@(posedge clk);
+   wait(dut.processor.pv && dut.processor.pr);@(posedge processing_clk);@(negedge processing_clk);@(negedge clk);
+   if(dut.processor.processor.geometry.coefficients[0+:32]!=32768 || dut.processor_meta.geometry_version!=2)$fatal(1,"Old source geometry entity was not retained a00=%0d version=%0d",dut.processor.processor.geometry.coefficients[0+:32],dut.processor_meta.geometry_version);
    geometry_entity={32'h04000000,64'd0,coefficients};geometry_version=3;
    wait(geometry_ready);geometry_valid=1;@(negedge clk);geometry_valid=0;
    // Change the pending mode while the older job runs. Its immutable SRC
@@ -189,7 +201,7 @@ module tb_video_memory_core #(parameter WIDTH=35,HEIGHT=33,NETWORK_TEST=0,CONTRO
     if(memory[location(32'h02000000+y*6144+x)][(x%32)*8+:8]!==165)$fatal(1,"Old frame's pre mode changed");
     if(memory[location(32'h02800000+y*6144+x)][(x%32)*8+:8]!==173)$fatal(1,"New frame's post mode failed");
    end
-   if(geometry_status[576+:32]!=3 || dut.processor.geometry.coefficients[0+:32]!=65536)$fatal(1,"New source geometry entity was not applied");
+   if(geometry_status[576+:32]!=3 || dut.processor.processor.geometry.coefficients[0+:32]!=65536)$fatal(1,"New source geometry entity was not applied");
    if(status[320+:32]!=3 || status[256+:64]!=4 || status[384+:64]!=4 || status[528+:32]!=0 || status[632+:8]!=0)
     $fatal(1,"Applied/source statistics identity differs");
   end

@@ -16,6 +16,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--rtl-snapshot',type=Path,help='Explicit intact candidate source directory')
     parser.add_argument('--experimental-proc150',action='store_true',help='Compile/SYN/MAP-only two-clock board candidate')
+    parser.add_argument('--snapshot-only',action='store_true',help='Freeze selected sources and flow without launching native tools')
     parser.add_argument('--overall-timeout-minutes', type=int, default=60, help='Bounded whole native flow allowance')
     parser.add_argument('--pause-file',type=Path,help='Explicit stop request for this owned build')
     parser.add_argument('--placement-seed',type=int,choices=(11,7,13),default=11)
@@ -122,6 +123,14 @@ def main():
         flow += 'gen_bit_stream -scbv {High Voltage}\n'
     (run / 'flow.tcl').write_text(flow, encoding='utf-8')
     print('BOARD_START', run, flush=True)
+    if options.snapshot_only:
+        # This is entry-point/source collection verification only. It never
+        # reports synthesis, physical timing or bitstream generation as passed.
+        (run/'snapshot_result.json').write_text(json.dumps(dict(source_snapshot_complete=True,
+            native_launched=False,stage=options.stage,processing_domain_enabled=proc150_enabled,
+            processing_profile=processing_profile,source_count=len(hashes),
+            whole_design_routed=False,bitstream_generated=False),indent=2))
+        return
     generate = run / 'create_project.tcl'
     generate.write_text(f'tcl2prj -tcl {{{(run / "flow.tcl").as_posix()}}}\n', encoding='utf-8')
     shell = 'E:/PDS_Pangu/PDS_2022.2-SP6.4/bin/pds_shell.exe'

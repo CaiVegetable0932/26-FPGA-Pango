@@ -34,7 +34,7 @@ def main():
             d['phases'].append(dict(action=action,**s))
             log=(r/(action+'.log')).read_text(errors='replace')
             if s['status']!='COMPLETED' or s['returncode'] or re.search(r'^E:',log,re.M):raise RuntimeError(action+' failed')
-            db=r/action/('pango_video_system_'+('syn' if action=='synthesize' else 'map')+'.adf')
+            db=r/('synthesize' if action=='synthesize' else 'device_map')/('pango_video_system_'+('syn' if action=='synthesize' else 'map')+'.adf')
             assert db.is_file() and not db.with_suffix('.adf.lock').exists()
             d[action+'_db_sha256']=sha(db)
         d['passed']=True

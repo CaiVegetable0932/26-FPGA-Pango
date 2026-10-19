@@ -1,0 +1,11 @@
+{
+  "architecture": "tile_refill_boundary",
+  "processing_mhz": 150,
+  "memory_mhz": 125,
+  "selected_change_count": 15,
+  "model_proof": "fpga\\build\\full_integration_20261013\\verilator_20261020_044250_609135",
+  "mapping_proof": "fpga\\build\\route_optimization\\proc150_board_mapping_20261020_050951_080852",
+  "common_controller_and_client_cold_reset": true,
+  "whole_design_route_allowed": false,
+  "unused_reference_adapter": "geometry_processing_domain retained for frozen source coherence; not instantiated"
+}

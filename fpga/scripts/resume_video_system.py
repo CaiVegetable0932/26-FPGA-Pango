@@ -35,6 +35,8 @@ def main():
     """Preserve earlier failed results; never modify the frozen source tree."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--build', type=Path, required=True)
+    parser.add_argument('--stop-after-timing',action='store_true',
+                        help='Route and min/max STA only; never enter bitstream generation')
     parser.add_argument('--pnr-timeout-minutes', type=int, default=60,
                         help='Native placement/routing allowance; does not relax clock constraints')
     parser.add_argument('--from-placement', action='store_true',
@@ -173,7 +175,12 @@ def main():
         'pin_cost_increasing_speed': args.pin_cost_increasing_speed,
     }
     try:
-        for phase in ('place_route', 'report_timing', 'gen_bit_stream'):
+        # The handoff can request physical validation without authorizing a
+        # bitstream. This branch omits bitgen entirely, including its final
+        # artifact requirement; all whole-design readiness checks still apply.
+        phases=('place_route','report_timing') if args.stop_after_timing else ('place_route','report_timing','gen_bit_stream')
+        result['stop_after_timing']=args.stop_after_timing
+        for phase in phases:
             # Describe the phase actually attempted, including an early pause.
             result['stage']=phase
             # Explicit input_db_file/force_to_run are documented by this exact
@@ -257,11 +264,12 @@ def main():
             if (child.returncode or errors or not intact() or
                     (phase != 'place_route' and not result['internal_timing_met'])):
                 raise RuntimeError('native '+phase+' did not meet its gate')
-        stream = run / 'generate_bitstream/pango_video_system.sbit'
-        if not stream.is_file():
-            raise RuntimeError('native bitstream absent after bitgen')
-        result.update(bitstream=str(stream), bitstream_bytes=stream.stat().st_size,
-                      bitstream_sha256=hashlib.sha256(stream.read_bytes()).hexdigest())
+        if not args.stop_after_timing:
+            stream = run / 'generate_bitstream/pango_video_system.sbit'
+            if not stream.is_file():
+                raise RuntimeError('native bitstream absent after bitgen')
+            result.update(bitstream=str(stream), bitstream_bytes=stream.stat().st_size,
+                          bitstream_sha256=hashlib.sha256(stream.read_bytes()).hexdigest())
     finally:
         result['snapshot_intact'] = intact()
         (evidence / 'result.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')

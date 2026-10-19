@@ -1,3 +1,5 @@
+> 2026-10-20 05:35：以下为历史审查/实验过程；最终15项设计已完成仿真与MAP结构审查，真实处理域150MHz，整体布线尚未授权。各区域最终处置及入口以[最新交接](route_optimization_handoff_20261020.md)为准。
+
 # 分区域验证与整体布线放行条件
 
 项目：`D:\XDU\concept\26-FPGA-Pango`。分支：`codex/fpga-pds-project`。

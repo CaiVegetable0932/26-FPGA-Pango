@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\XDU\concept\26-FPGA-Pango\fpga\scripts\resume_video_system.py", line 281, in <module>
+    main()
+  File "D:\XDU\concept\26-FPGA-Pango\fpga\scripts\resume_video_system.py", line 78, in main
+    require_whole_design_ready()
+  File "D:\XDU\concept\26-FPGA-Pango\fpga\scripts\implementation_readiness.py", line 18, in require_whole_design_ready
+    raise ValueError('Whole-design implementation is blocked by the user design-completion gate: '
+ValueError: Whole-design implementation is blocked by the user design-completion gate: whole_design_route_allowed. See D:\XDU\concept\26-FPGA-Pango\fpga\config\implementation_readiness.json

@@ -5,7 +5,7 @@ import frame_manager_pkg::*;
 // mailboxes and the pixel-domain display adapter. Processing throughput must
 // be measured for this shared clock/bus; no 1080p30 timing claim is inferred.
 module video_memory_core #(parameter WIDTH=1920,HEIGHT=1080,STATIC_ENDPOINTS=1,PROJECTIVE=1,SUPPORT_CONTROLS=0,SUPPORT_SNAPSHOT=0)(
- input clk,rst_n,controller_ready,input [447:0] geometry_coefficients,input [1:0] enhancement,
+ input clk,rst_n,processing_clk,processing_rst_n,controller_ready,input [447:0] geometry_coefficients,input [1:0] enhancement,
  input capture_valid,output capture_ready,output capture_complete,
  input mode_submit_valid,output mode_submit_ready,input [1:0] mode_submit,input [31:0] mode_version,
  input geometry_submit_valid,output geometry_submit_ready,input [543:0] geometry_submit,
@@ -220,13 +220,21 @@ module video_memory_core #(parameter WIDTH=1920,HEIGHT=1080,STATIC_ENDPOINTS=1,P
  reg [8:0] tone_cursor;reg tone_commit;
  wire [7:0] tone_value;wire tone_loading=SUPPORT_CONTROLS && !tone_cursor[8];
  legacy_tone_lut tone(.address(tone_cursor[7:0]),.value(tone_value));
- always @(posedge clk or negedge rst_n)begin
-  if(!rst_n)begin tone_cursor<=0;tone_commit<=0;end
+ always @(posedge processing_clk or negedge processing_rst_n)begin
+  if(!processing_rst_n)begin tone_cursor<=0;tone_commit<=0;end
   else begin tone_commit<=0;if(tone_loading)begin tone_cursor<=tone_cursor+1'b1;if(tone_cursor==255)tone_commit<=1;end end
  end
+ // Processing-side LUT completion crosses as a single synchronized bit.
+ (* syn_preserve=1 *) reg tone_ready_meta,tone_ready_ddr;
+ always @(posedge clk or negedge rst_n)begin
+  if(!rst_n)begin tone_ready_meta<=0;tone_ready_ddr<=0;end
+  else begin tone_ready_meta<=!SUPPORT_CONTROLS || (tone_cursor[8] && !tone_commit);tone_ready_ddr<=tone_ready_meta;end
+ end
+ wire mailbox_ready;
+ assign geo_ready=mailbox_ready && tone_ready_ddr;
  frame_meta_t processor_meta;wire [7:0] processor_enhancement;
  assign processor_meta=geo_metadata;assign processor_enhancement=processor_meta.enhancement_stage;
- geometry_frame_processor #(.META_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) processor(.clk(clk),.rst_n(rst_n),.job_valid(geo_valid),.job_ready(geo_ready),
+ geometry_processing_domain_external_refill #(.META_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) processor(.clk(clk),.rst_n(rst_n),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),.job_valid(geo_valid && tone_ready_ddr),.job_ready(mailbox_ready),
   .source_base(geo_src_base),.source_generation(geo_src_gen),.result_base(geo_dst_base),.result_generation(geo_dst_gen),
   .width(WIDTH[15:0]),.height(HEIGHT[15:0]),.coefficients(source_geometry[geo_src_slot][447:0]),.metadata(geo_metadata),.projective(source_geometry[geo_src_slot][543:448]),.enhancement(SUPPORT_CONTROLS?processor_enhancement[1:0]:enhancement),.lut_version(SUPPORT_CONTROLS?32'd1:32'd0),
   .lut_write(tone_loading),.lut_addr(tone_cursor[7:0]),.lut_data(tone_value),.lut_commit(tone_commit),.job_done(geo_done),.job_failed(geo_failed),.result_metadata(),
@@ -237,7 +245,7 @@ module video_memory_core #(parameter WIDTH=1920,HEIGHT=1080,STATIC_ENDPOINTS=1,P
   .result_req_valid(req_valid[3]),.result_req_ready(req_ready[3]),.result_req_addr(req_addr[96+:32]),.result_req_tag(req_tag[96+:32]),
   .result_req_beats(req_beats[15+:5]),.result_cancel(cancel[3]),.result_w_valid(w_valid[3]),.result_w_ready(w_ready[3]),
   .result_w_data(w_data[768+:256]),.result_w_strb(w_strb[96+:32]),.result_done(done[3]),.result_done_ready(done_ready[3]),
-  .result_error(error[3]),.result_cancelled(cancelled[3]),.result_done_tag(done_tag[96+:32]),.cache_misses(),.cache_stalls(),.cache_bus_bytes());
+  .result_error(error[3]),.result_cancelled(cancelled[3]),.result_done_tag(done_tag[96+:32]));
 
  // The network starts the byte reader on the exact frame handshake. Reader
  // drain is retained until MAC cancellation/last-packet drain also completes.

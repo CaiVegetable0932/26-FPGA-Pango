@@ -1,0 +1,33 @@
+{
+  "prepared": true,
+  "routed": false,
+  "bitstream_generated": false,
+  "mapping": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\proc150_board_mapping_20261020_050951_080852",
+  "source_snapshot": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261020_052640_715990",
+  "source_files": 308,
+  "native_inputs_identical": true,
+  "map_sha256": "6f71a296eced5942389318ef043689795626f16854cf868983e6c0e31da88474",
+  "physical_constraints_sha256": "6076ff6f14da06bcd4b01755dad9e909e7355e183d2ca5e4f583019965bc1428",
+  "supervision": {
+    "status": "COMPLETED",
+    "returncode": 0,
+    "elapsed_seconds": 30.07800000000134,
+    "pid": 28916,
+    "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\handoff_20261020_053147_229875\\generation_monitor.jsonl",
+    "policy": {
+      "timeout_seconds": 120,
+      "warning_seconds": 96.0,
+      "requested_timeout_seconds": 120,
+      "poll_seconds": 30,
+      "stall_enabled": false,
+      "stall_window": 5,
+      "stall_minimum_unrouted": 1000,
+      "stall_minimum_improvement": 0.01,
+      "warmup_rounds": 5,
+      "baseline_success_seconds": null,
+      "baseline_acceleration_claim": false,
+      "no_log_investigation_seconds": 600
+    }
+  },
+  "route_still_requires_current_readiness_gate": true
+}

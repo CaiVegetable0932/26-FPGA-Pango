@@ -17,17 +17,22 @@ module pango_video_system(
  inout [31:0] mem_dq,output [3:0] mem_dm
 );
  wire ref_clk,ddr_clk,ddr_lock,ddr_ready;
+ wire processing_raw_clk,processing_clk,processing_lock,processing_reset_n;
  wire video_lock,serial_clk,pixel_clk,pixel_div_clk,hdmi_serial_clk,div_reset_n,video_ref_reset_n,video_ready,video_pixel_reset_n;
  wire core_reset_n,camera_domain_reset_n,pixel_domain_reset_n,ctrl_reset_n,rx_reset_n;
  wire core_fault,camera_ready,camera_failed,camera_lost;
- reg fault_latched,memory_armed;
- (* syn_preserve=1 *) reg memory_ready_meta,memory_ready_sync;
- // After the first successful initialization, loss of DDR ready/lock asserts
- // the SAME cold reset at controller and clients immediately. A latched fault
- // then prevents an automatic restart from accepting old responses/toggles.
- wire joint_reset_n=reset_n && video_lock && !fault_latched &&
-  (!memory_armed || (ddr_ready && ddr_lock));
+ // Native initialization is independent of processing PLL startup. After
+ // arming, controller and all ownership clients share immediate cold reset.
+ wire fault_latched,memory_armed,joint_reset_n,fabric_async_reset_n;
+ processing_domain_reset processing_safety(.control_clk(clk_27m),.external_reset_n(reset_n),
+  .video_lock(video_lock),.processing_lock(processing_lock),.memory_lock(ddr_lock),.memory_ready(ddr_ready),
+  .business_fault(core_fault),.camera_lost(camera_lost),.joint_reset_n(joint_reset_n),
+  .fabric_async_reset_n(fabric_async_reset_n),.fault_latched(fault_latched),.memory_armed(memory_armed));
  GTP_INBUFDS #(.IOSTANDARD("DEFAULT")) u_ref_input(.I(ref_clk_p),.IB(ref_clk_n),.O(ref_clk));
+ // Existing MINI reference is 125MHz (native DDR ref constraint). OUT1
+ // is 125*6/5=150MHz; NOBUF output is promoted onto a real global network.
+ sys_pll u_processing_pll(.clkin1(ref_clk),.clkout0(),.clkout1(processing_raw_clk),.clkout2(),.lock(processing_lock));
+ GTP_CLKBUFG u_processing_global(.CLKIN(processing_raw_clk),.CLKOUT(processing_clk));
  video_pll u_video_pll(.clkin1(clk_27m),.clkout1(serial_clk),.lock(video_lock));
  GTP_IOCLKBUF u_hdmi_serial_clock(.CLKIN(serial_clk),.DI(1'b1),.CLKOUT(hdmi_serial_clk));
  GTP_IOCLKDIV_E2 #(.DIV_FACTOR("5")) u_hdmi_pixel_div(.CLKIN(serial_clk),.RST_N(div_reset_n),.CE(1'b1),.CLKDIVOUT(pixel_div_clk));
@@ -43,19 +48,11 @@ module pango_video_system(
  reset_sync rs_ctrl(clk_27m,reset_n,ctrl_reset_n);
  // All ownership/storage CDC clients share the controller cold-reset request.
  // Native fault or stopped PCLK quarantines them until a board reset.
- wire fabric_async_reset_n=joint_reset_n && ddr_lock && ddr_ready;
+ reset_sync rs_processing(processing_clk,fabric_async_reset_n,processing_reset_n);
  reset_sync rs_core(ddr_clk,fabric_async_reset_n,core_reset_n);
  reset_sync rs_camera(camera_pclk,fabric_async_reset_n,camera_domain_reset_n);
  reset_sync rs_pixel(pixel_clk,fabric_async_reset_n && video_pixel_reset_n,pixel_domain_reset_n);
- (* syn_preserve=1 *) reg fault_meta,fault_sync;
- always @(posedge clk_27m or negedge ctrl_reset_n)begin
-  if(!ctrl_reset_n)begin fault_meta<=0;fault_sync<=0;fault_latched<=0;memory_armed<=0;memory_ready_meta<=0;memory_ready_sync<=0;end
-  else begin
-   fault_meta<=core_fault;fault_sync<=fault_meta;memory_ready_meta<=ddr_ready && ddr_lock;memory_ready_sync<=memory_ready_meta;
-   if(memory_ready_sync)memory_armed<=1;
-   if(fault_sync || camera_lost || (memory_armed && !memory_ready_sync))fault_latched<=1;
-  end
- end
+ // Fault synchronization and sticky cold-reset arming live in processing_safety.
  dvp_clock_watchdog watchdog(.pclk(camera_pclk),.pclk_reset_n(camera_domain_reset_n),.ctrl_clk(clk_27m),
   .ctrl_reset_n(ctrl_reset_n),.enable(camera_ready),.clock_lost(camera_lost),.loss_event());
  ov5640_integrated_startup camera_init(.clk(clk_27m),.rst_n(ctrl_reset_n),.sensor_reset_n(camera_reset_n),
@@ -165,7 +162,7 @@ module pango_video_system(
  // Existing calibration report supplies these coefficients. Its source stage
  // remains unverified; optical accuracy is not established by offline routing.
  localparam [447:0] CANDIDATE_COEFFICIENTS=448'h0246436103b36be2034ed96d03543ce2ffffbdfcfffe80d80030a9bffefcff55fd3fef320001358d00000000fb8da2030000000000013398;
- video_memory_core #(.STATIC_ENDPOINTS(0),.SUPPORT_CONTROLS(1),.SUPPORT_SNAPSHOT(1)) core(.clk(ddr_clk),.rst_n(core_reset_n),.controller_ready(ddr_ready),.geometry_coefficients(CANDIDATE_COEFFICIENTS),.enhancement(2'd0),
+ video_memory_core #(.STATIC_ENDPOINTS(0),.SUPPORT_CONTROLS(1),.SUPPORT_SNAPSHOT(1)) core(.clk(ddr_clk),.rst_n(core_reset_n),.processing_clk(processing_clk),.processing_rst_n(processing_reset_n),.controller_ready(ddr_ready),.geometry_coefficients(CANDIDATE_COEFFICIENTS),.enhancement(2'd0),
   .capture_valid(capture_valid),.capture_ready(capture_ready),.capture_complete(capture_complete),
   .snapshot_arm(snapshot_arm),.snapshot_arm_ready(snapshot_arm_ready),.snapshot_geometry_status(snapshot_geometry_status),.snapshot_s1_status(snapshot_s1_status),.snapshot_result_status(snapshot_result_status),.geometry_status(geometry_status),.geometry_submit_valid(geometry_submit_valid),.geometry_submit_ready(geometry_submit_ready),.geometry_submit(geometry_submit),.geometry_version(geometry_version),.geometry_entity_id(geometry_entity_id),
   .control_status(control_status),.mode_submit_valid(mode_submit_valid),.mode_submit_ready(mode_submit_ready),.mode_submit(mode_submit),.mode_version(mode_version),

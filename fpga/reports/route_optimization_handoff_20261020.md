@@ -1,108 +1,70 @@
+# FPGA 布线优化设计阶段交接
 
-## 2026-10-20 05:15 检查点
+更新：2026-10-20 05:35（亚洲/上海）。设计文件修改、候选筛选、最终功能仿真与板级MAP/结构审查已完成；**整机布线、routed STA、完整位流和硬件验收未完成**，由用户另行安排智能体。
 
-主设计已选择14项修改，仍为125MHz；最后单文件修正上一帧cache fault残留导致下一帧误报失败。20项回归、完整1080p控制/快照/显示、主机8888报文/12441600图像字节通过，原始datagrams和descriptor哈希均与旧基线一致。六类完成故障及逐帧恢复同步1组/双时钟3组通过。来源与备份见session_20261019/geometry_recovery_promotion_20261020和recovery_finalist。
+## 项目与接手入口
 
-150MHz最终无帧池候选20项回归sim_20261020_050821_373307通过，完整模型verilator_20261020_044250_609135仍运行，不能计为PASS。上一未修复tile全帧verilator_20261020_042011_025150实际2400秒TIMEOUT，保留失败结果。
+- 本地：`D:\XDU\concept\26-FPGA-Pango`。
+- 云端：<https://github.com/CaiVegetable0932/26-FPGA-Pango>，分支 `codex/fpga-pds-project`。最终提交以该分支 `git log -1` 核对；此前检查点 `aebdfbca0` 已推送，最终检查点在本交接生成后提交/推送。
+- 原方案：`output/FPGA布线效率与拥塞专项优化方案.md`。实现/证据归 `fpga/`、`host/`，未改厂商安装目录。
+- 最终选择：15项累计设计修改，DDR/帧池/ISP/网络/显示125MHz，几何/缓存/Gamma/结果writer150MHz。`config/integration/processing_domain.json` 是默认构建入口的实际架构配置。
+- 冻结选择：`fpga/build/route_optimization/session_20261019/processing_finalist/sources.json`（308项，含最终测试夹具/配置），`selection.json` 记录资源、期限、来源及限制。修改前备份在同会话 `processing_promotion_20261020/before/`，恢复修复前备份另在 `geometry_recovery_promotion_20261020/`。
 
-板级board_20261020_044551_218517总预算1200秒TIMEOUT：Compile完成12m31s，综合进入保存DB但未完成。未经完整保存的syn.adf不复用、不计通过。安装版help确认force_to_run/input_db_file后，从完整Compile DB启动proc150_board_mapping_20261020_050951_080852，仅SYN固定1200秒、MAP固定600秒，不含PnR/位流。初次SNR仅诊断，不作为完整MAP签核。
+## 最终验证
 
-真实账户最近剩余34%；到10%停止优化。整体PnR和位流门槛保持关闭。最新已推送bc533f84；本检查点提交/推送成功后以Git回执为准。下一小时汇报05:48。
+完整帧：`fpga/build/full_integration_20261013/verilator_20261020_044250_609135` PASS，1920×1080，控制提交/同帧快照/实际显示均打开；检查22,809,600个显示像素，3新帧、8重复帧，失败0、下溢0。三个几何作业3,948,091 / 3,972,204 / 3,962,298个DDR周期；最坏比4,166,666.67周期模型预算余194,462.67（4.6671%）。这只是当前独立DDR行为模型/场景，不是任意硬件仲裁的保证。软件运行2343.531秒，预先预算3600秒。
 
-# FPGA 布线优化交接
+主机：`host/reports/fpga_rgb_vectors_20261020_052259_836952.json` PASS，8888报文、12,441,600图像字节。原始datagrams SHA256 `f42a234194de8b85d182f6e4d1ae089d3f02266d8e1918fb0a027853e5c01669`，descriptors `1f7791da07114603493586ee16181dae243ab13a38b9085d15da53d887666366`，均与原125MHz基线逐字节相同；HDMI硬件身份仍unverified。
 
-更新时间：2026-10-20 04:48，北京时间。项目尚未全部设计完成。
+最终候选20项回归 `sim_20261020_050821_373307`；可选快照关闭夹具20项 `sim_20261020_052124_365537`；合入后主目录20项 `sim_20261020_052620_282958`；合入后控制/快照小模型 `verilator_20261020_052630_443140` 全部PASS（均位于同full_integration根）。可选实例引用仅增加generate保护，快照启用分支观察/独立断言未改，变换记录 `proc150_fixture_20261020_052157_013140`。
 
+链路断开/取消排空/恢复：`verilator_20261020_051856_347330`（含快照）及 `verilator_20261020_052214_318729`（不含快照）PASS。写CDC四时钟组每组32场景、作业邮箱四组每组82作业、quad CDC八组每组21 tile、共同冷复位7场景通过。六类源/结果完成错误、取消、坏tag及逐帧恢复在同步1组/双时钟3组通过；旧125MHz恢复竞态已修复，未牺牲位精度或代次。
 
-## 2026-10-20 04:48 小时进度
+## 区域处置已收敛
 
-当前主设计仍为13项，最近已推送 `cd9ce316`；290项输入的工作树与HEAD绑定核对通过。整体方案未完成，整体PnR及位流继续关闭。最近真实账户额度剩余35%，到10%停止优化并保存交接。下次小时汇报05:48。
+| 区域 | 最终处置 |
+| --- | --- |
+| writer | 保留BRAM/递推基线，合入完整signed乘积与两拍帧入口流水；50语义/范围/取消测试、413798算术检查、3 seed候选STA通过。多2拍/帧、0拍/段；参考A时序失败，不报加速比 |
+| unpack/RGB reader | 合入局部捕获；三个seed两侧STA通过，PnR中位44→38秒，改善13.64%，不宣称达到30%或整机同幅收益 |
+| DMA | 分组、游标/统计候选未形成稳定合格物理收益，全部不合入；统计only seed7 STALLED，未继续扫seed。保留原native事务、返回标识和排空契约 |
+| boot / snapshot-copy | boot原局部捕获回退；snapshot局部捕获37→38秒且线长增加，保留原版 |
+| 帧池/广播 | slot-local flags时序失败；16位分块hold失败，单变量d2复核setup仍失败；8位分块2/3 seed通过、seed13 setup−0.135ns，均不合入，完整64位代次/耗尽语义保留 |
+| refill/cache/Gamma/APM | 保留位精确算术、本地tag与四bank采样/12个pre Gamma读端口；最终只在tile边界跨域，逐行DDR refill留125MHz，消除逐行CDC往返 |
+| 150MHz架构 | 低层读burst两候选超服务预算，不采用；最终tile域完成全帧、故障恢复和板级MAP审查后合入。旧低层adapter仅为冻结闭包一致性保留，未实例化 |
+| PHY/IO | DDR IP与原DDR/引脚约束保持原字节。新增sys_pll OUT1、全局buffer、共同冷复位及窄CDC约束；未修改官方PHY |
 
-本小时结论：
+未开展的DMA浅缓存/LUTRAM等后备研究是后续可选研究，不是本次已选设计的未完成代码，也不得当作已优化成果。所有失败/超时保留原始状态。
 
-- 帧池8位计数分块：seed11/7内部STA通过，seed13 setup−0.135ns（2端点），三次仅2次通过。稳定性不合格，未合入，不再扫描seed。其组成版本正常全帧功能通过也不能替代物理稳定性；后续选定组合已改回原帧池。
-- 新故障恢复测试暴露旧125MHz设计的问题：源读错误之后首个正常帧仍失败，事务已排空。同步原版复现 `proc150_tile_faults_20261020_042448_053067`。原因是cache_start延后一拍清旧cache fault，新帧busy提前看到旧标志。
-- 单行恢复修正只在既有cache初始化拍屏蔽旧fault，不增加延迟/改变精度。修正后同步参考及三组双时钟的15帧测试均通过：6类源/结果完成错误、取消、坏tag；每个坏作业后跟一个独立字节验证的好帧。证据 `proc150_tile_faults_20261020_042552_100909` 与 `proc150_tile_faults_20261020_042552_140908`。尚未合入，不能把当前主设计13项说成已通过新增恢复场景。
-- 恢复修正、原帧池组成版本：`geometry_recovery_20261020_042541_182177`；20回归 `sim_20261020_043508_583868` PASS，全1080p模型 `verilator_20261020_043518_857947` 运行中。
-- 150MHz低层burst CDC方案A首个作业4470577 DDR周期，功能全帧PASS但服务期限不合格。读预取方案B首个4323516周期，仍不合格，其全帧模型 `verilator_20261020_035853_729207` 在原2400秒预算TIMEOUT，未延时/未补签PASS。
-- 新一轮改在tile/四像素流边界跨域：逐行3beat请求保留DDR域，64个完整quad经既有异步FIFO交给处理域；不增加native在途事务。八组独立CDC测试、三组真实几何字节模型、控制/同帧快照小模型通过。首个全帧作业3948091 DDR周期，低于旧同场景4073517及4166666.67周期服务预算，其他场景仍待结束。
-- 最终待选处理组合已排除帧池候选并包含恢复修正：`proc150_video_model_20261020_043529_242103`；小模型 `verilator_20261020_043626_233147` PASS；完整1080p控制/快照/实际显示 `verilator_20261020_044250_609135` 运行中，软件预算预先设3600秒（旧双时钟实测2337.9秒），观察额度停止文件，未改变任何活动旧预算。
-- projective处理子系统原生SYN `proc150_mapping_20261020_043616_243611` PASS：LUT10975、FF9043、APM117、物理DRM41；不是整机资源，不能与旧MAP直接相加，无150MHz物理签核。
-- 实际板级接入候选 `proc150_board_20261020_044427_625524` 准备完成：已有125MHz参考的sys_pll OUT1 150MHz、真实CLKBUFG、共同冷复位、窄CDC界限。共同复位原型7场景通过（含停时钟及短失锁）。原生 `board_20261020_044551_218517` 只运行Compile/SYN/MAP，当前活动中，固定20分钟；没有整体布线或位流。
-- 安装版UCE手册印刷p83确认max-delay端点支持get_clocks。新增作业总线约束从命名的、持有到作业完成的DDR寄存器出发，到处理时钟捕获端；同步器只界定首级，后续级普通计时。实际非空匹配、映射与资源仍需原生核对，不能把草案当CDC签核。
+## 实际板级MAP、约束与限制
 
-未选定实验、失败记录、原始数据库均保留。`fpga/experiments/proc150/`仍不在生产RTL收集目录；主设计时钟仍125MHz，恢复修正和150MHz接入均未合入。设计与仿真完成后通知用户，由用户安排其他智能体监控整体布线。
+`fpga/build/route_optimization/proc150_board_mapping_20261020_050951_080852`：SYN8m42s、MAP2m21s完整结束。实际MAP LUT41,477 / FF42,053 / APM118 / DRM等效103.5（启动预算50,000 /95,000 /180 /120）。报告18K/36K折算不等于任意物理硬块均可自由组合。
 
-## 项目地址和授权
+`mapping_validation.json` 校验完整数据库；`processing_mapping_audit.json` 检查实际PLL 125×6/5、真实CLKBUFG、16类非空CDC端点、9组双级链与10个Gray位的直接连接/第二级保留。DMR实际processing_clk fanout8573；保持源寄存器到首次捕获的6ns约束，不放宽处理域内部路径。该审查不等于每条宽总线/双时钟RAM电气图或routed max/hold/MTBF签核。
 
-- 本地：`D:\XDU\concept\26-FPGA-Pango`
-- 分支：`codex/fpga-pds-project`
-- 云端：<https://github.com/CaiVegetable0932/26-FPGA-Pango>
-- 原方案：`output/FPGA布线效率与拥塞专项优化方案.md`
-- 连续进度：`fpga/reports/route_optimization_progress_20261019.md`
-- 会话：`fpga/build/route_optimization/session_20261019`
+约束检查0 error、61 critical warning；与旧板级基线61条完全相同，未新增，主要共享DDR引脚与IO drive/slew缺省。不为消警猜测电气参数，接手者需结合真实板卡资料审查。原厂DDR时钟组等例外保留，新增processing_cdc无全域clock-group/false-path。
 
-用户允许分区域验证，要求先完成设计文件/仿真；整个方案未完成前禁止整体布线和完整位流。整体任务已于10月19日21:46停止，没有恢复；`stop_requested.json`保留。`fpga/config/implementation_readiness.json`整机门槛均关闭，不得为运行而设true。设计仿真通过后通知用户，由用户安排其他智能体监控整机布线。本轮没有子智能体或硬件下载。
+首次`board_20261020_044551_218517`总预算1200秒TIMEOUT：Compile12m31s完整、SYN保存未完成；只复用完整Compile DB。之后SYN1200秒/MAP600秒独立预算均完成。旧监督脚本把device_map写成dev_map，原`result.json`保留host断言失败；旁证`mapping_validation.json`独立核验两原生阶段退出0、成功日志、DB无锁及哈希，不把超时结果改标PASS。脚本已修正。
 
+## 交给布线智能体
 
-## 2026-10-20 03:58 写入器单文件合入
+**已准备可接续工程**：`fpga/build/full_integration_20261013/handoff_20261020_053147_229875`，含`flow.pds`、308项源清单、完整`device_map/pango_video_system_map.adf`和`pango_video_system.pcf`，实际305项原生输入与MAP逐项相同。只生成项目，未启动compile/SYN/MAP/PnR/STA或位流。`handoff_preparation.json`与最终归档成员哈希可核验。
 
-主设计从12项增加到13项：只合入 `fpga/rtl/memory/frame_pixel_writer.sv`，哈希 `dd089551cc79309e5175536c53f8efed36bfad7dba9438104365c6a1b5425f41`。完整signed乘积与两拍入口流水共同组成此候选；完整64位范围检查、像素精度、字节掩码、取消/排空均保留。每帧入口增加2拍，分段增加0拍。主设计实际时钟仍125MHz，整体布线/位流全部门槛未放行，整个方案尚未完成。
+当前`fpga/config/implementation_readiness.json`前三项设计/仿真/资源审查true，`whole_design_route_allowed`仍false。最终两次真实CLI拒绝检查证明从新建及resume入口均不能自动整体布线。新智能体获得用户分派、审查上述限制后才更新这个单独门槛；不要删除已有整体停止文件或冒用旧任务停止文件。
 
-- 功能：50组独立语义/字节/范围/取消/延迟检查、20项回归全部通过。
-- 三个区域seed11/7/13全部布通且内部多角STA通过，PnR分别50/63/58秒；没有时序合格的原始参考，不计算加速比。报告 `session_20261019/writer_three_seed_0358.json`。
-- 完整1080p控制/快照/实际显示 `verilator_20261020_033308_185785` PASS，22809600显示像素失败0/下溢0，3新帧8重复帧；几何周期4073517/3796435/4114261与旧主设计相同。
-- 主机报告 `host/reports/fpga_rgb_vectors_20261020_035641_996920.json` PASS，8888报文、12441600图像字节。datagrams/descriptor均与旧主设计逐字节相同，比较文件在模型目录 `snapshot_baseline_comparison.json`。
-- 合入前逐项核对290项当前输入、候选、回归、模型、主机伴随源码和区域输入；只原子替换writer，保留 `session_20261019/writer_pipeline_promotion_20261020/before_frame_pixel_writer.sv` 及 `promotion.json`。新主输入清单 `session_20261019/writer_pipeline_finalist/sources.json`，其源码实体仍位于writer候选的冻结 `source/`。
+接手授权后，可使用下列命令复用MAP进行PnR及min/max STA，**不生成位流**（本轮没有执行）：
 
-150MHz实验第一组合的首个几何作业4470577个DDR周期，比125MHz基线更慢，不能采用；完整模型仍在收集后续场景。第二组合只把实验读CDC改为连续预取，生产显示读桥不变。八组读桥测试、三组真实几何字节检查及整机控制/快照小模型通过；精确150MHz完整帧模型 `verilator_20261020_035853_729207` 正在运行，未合入。
+```powershell
+python fpga/scripts/resume_video_system.py --build fpga/build/full_integration_20261013/handoff_20261020_053147_229875 --stop-after-timing --placement-seed 11 --placement-decongestion 1 --phase-timeout-minutes 60 --pnr-timeout-minutes 60 --dump-congestion --pause-file fpga/build/route_optimization/session_NEXT/stop_requested.json
+```
 
-第二组合闭包 `proc150_video_model_20261020_035612_841416`，模型将TB时间精度提高到1fs，避免旧3.333ns半周期实际约150.015MHz造成期限口径误差。旧模型保留其真实周期与结果，不追溯重标。原型原生affine SYN LUT8846/FF7055/APM85/物理DRM43，读/写CDC各DRM4、邮箱19FF；不是projective配置或整机预算，尚无该域物理/CDC签核。
+`--stop-after-timing`明确省略bitgen阶段。默认只运行一个PDS；PG2L100H单线程路由按安装版Logos对应参数，固定seed11、7、13有限复现，不自动扫seed。每30秒监控；60分钟上限及方案停滞规则不变。必须核对slow/fast setup/hold、所有CDC的真实6ns路径、第二级普通时序、generated clock与复位、外部DDR/HDMI/RGMII/相机时序；任何未布通/TIMEOUT/STALLED或时序失败均不算完成。
 
-帧池8位计数分块11组差分及20回归通过，SYN LUT4190→4434、FF831→830、控制集25→21；区域A/B正在运行。其输入仍基于旧12项，后续若合入必须重新组成13项主设计并做完整验证，不能混用当前writer模型冒充组合通过。
+如需重新构建，默认`build_video_system.py --stage dev_map`已自动读取生产processing profile；实际全帧证明输入与最终原生305项逐一绑定。`board_20261020_052640_715990`是默认入口snapshot-only验证，未调用native。
 
-## 主设计旧12项基线与完整证明
+## 本地、云端与监督收尾
 
-下述为03:58之前的12项基线：writer BRAM等11项加unpack局部捕获；主设计合入点`20f5269f`，03:58已按上述证明再合入writer，主设计现为13项。DMA分组、boot捕获及后续所有候选未合入。当前主设计实际处理/DDR时钟125MHz，150MHz尚未实现，6份约束与186项DDR IP输入未改。
+初始已有212项tracked修改和大量产物，不属于本轮；清单`session_20261019/initial_git_status.txt`。最终只精确scope暂存，逐文件核对工作树/暂存区SHA，不使用git add .，不增加忽略规则。原生数据库/网表/PCF用带逐成员SHA的ZIP归档，恢复先校验，不覆盖旧失败证据。
 
-- 冻结290输入：`session_20261019/unpack_finalist/sources.json`；工作树/HEAD逐项绑定核对无不同或缺失，见`head_source_coherence_20261020.json`。
-- 20项回归：`fpga/build/full_integration_20261013/sim_20261020_001153_047628`，PASS。
-- 完整1080p控制/快照/实际显示：同build根下`verilator_20261020_001232_095496`，PASS；22809600像素，失败0/下溢0，3新帧8重复帧；几何周期4073517/3796435/4114261。
-- 主机解码：`host/reports/fpga_rgb_vectors_20261020_003432_815058.json`，8888报文、12441600图像字节，PASS。
-- unpack区域seed11/7/13两侧均时序通过，PnR44/45/44→36/38/39秒，中位改善13.64%，未达30%建议目标；不能推断整机收益。
-- 第四轮DMA统计局部化：功能/全帧/主机字节通过，但seed7 STALLED、最优剩余1487，不合入、不跑seed13。终结记录在`dma_stats_only_20261020_013741_777089/terminal_review_20261020.json`。
-- Icarus旧全帧`sim_20261019_214646_986066` TIMEOUT保留，不能改为PASS。旧11项MAP LUT41341/FF40430/APM117/DRM98不是当前12项或后续组合实测资源。
+账户实测剩余约34%，未触及10%停止线；本次停止原因是用户要求的设计/仿真阶段完成并交接布线，而非额度耗尽。小时报告已发至04:48，05:35提前完成交接；工作期间的30秒quota记录保留。`session_complete.json`通知本轮watcher正常退出；没有拥有的PDS/软件模型继续运行，不创建子智能体。
 
-以下实验路径均相对于`fpga/build/route_optimization/`，仿真路径相对于`fpga/build/full_integration_20261013/`。
-
-## 2026-10-20 03:48 小时进度
-
-本小时主设计仍是通过完整功能验证的12项选择，整个方案尚未完成；整体PnR/位流继续停止。03:47账户额度剩余36%，到10%停止优化并交接。当前已推送检查点 `0586a64ff`；本小时证据将另行精确暂存提交，不能把未提交产物称为已上云。
-
-- writer两拍入口流水：50组语义/范围/取消/延迟测试、20项集成回归通过，seed11/7区域时序均通过，slow setup分别+2.726/+2.419 ns。seed13正在运行。每帧启动多2拍，分段延迟多0拍。完整1080p控制/快照/显示模型仍在运行，未合入主设计；参考A时序失败，不计算加速比。
-- 帧池16位计数分块：decongestion1有fast hold−0.001ns；仅改decongestion2后hold改善，但setup−0.333ns/14端点，仍失败。该结构不合入、不再扫seed。开始本轮最后一个结构候选8位分块，保留64位计数、原耗尽/代次规则；补测全部8位边界。20项回归通过，严格差分尚在运行，物理未启动。
-- 帧池slot-local flags和writer仅算术A因时序失败拒绝，snapshot local capture无布线收益保留原版；原始结果与数据库已归档。
-- 150MHz接口实验：写CDC四组异步时钟测试每组32场景通过；作业邮箱四组每组82作业通过。真实几何+读写CDC+native DDR模型三组测试通过，每组608256结果/保护区字节、三种增强模式。
-- 双时钟整机小模型控制/快照通过：`verilator_20261020_034331_201913`。初次模型 `verilator_20261020_034204_198227` 失败已保留；测试从处理时钟返回后，控制提交未对齐DDR采样边沿。只修正激励时钟对齐、保留原身份/系数断言，新建快照重跑通过。
-- 双时钟完整1080p控制/快照/实际显示模型 `verilator_20261020_034441_923014` 正在运行。生产PLL/125MHz/DDR PHY未改；150MHz目标尚缺原生映射、实际PLL/联合冷复位、CDC约束及完整服务期限验收，不能称为已实现。
-
-当前唯一PDS为writer seed13；两个完整帧软件模型并行，不启动第二个PDS。实验目录 `fpga/experiments/proc150/` 不在生产RTL收集路径内。新模型闭包 `proc150_video_model_20261020_034322_763921` 位于 `fpga/build/route_optimization/`；所有未完成结果保持pending。
-
-## 续接顺序
-
-1. 先查真实quota和native_phase.lock。唯一PDS是上述板级候选MAP；等待终结并检查DDR/PLL时钟、资源、约束匹配及全部输入哈希。严格禁止PnR/位流。
-2. 恢复修正的原帧池125MHz完整模型结束后，核对主机解码与快照原始字节，再考虑单文件合入；保留13项备份。当前13项有已复现的失败后恢复问题，不能直接发布。
-3. 等待最终无帧池候选的150MHz tile域全帧模型，检查全部3个几何作业服务预算、22809600显示像素、同帧控制/快照及主机原始字节。其他含帧池候选或未修复版本只作实验记录，不能混签。
-4. 板级候选MAP和CDC核对合格后，才选择实际板级接入；生成精确最终来源清单和组成验证，不能整目录覆盖主设计。处理域尚无routed/STA或硬件签核，交接中必须保留此限制。
-5. 额度到10%停止新增及拥有的任务，保存进度/交接、精确scope提交和推送。每小时汇报；没有创建子智能体。
-
-## 监督、额度与Git
-
-- watcher `optimization_status.py --session fpga/build/route_optimization/session_20261019 --watch` 每30秒观察真实Codex账户额度，10%写入整体及区域停止文件。不是上下文token额度；新鲜程度见`quota_observations.jsonl`。停止优化后保存进度、交接、提交和推送。
-- 区域用`regional_stop_requested.json`，不得删除整体停止文件。显式分阶段预算prepare/PnR/STA为20/20/2分钟；有合格参考时PnR按2T+300秒与上限较小值。历史旧总流程预算不改写。TIMEOUT/STALLED不算成功，不承诺从最后路由迭代精确续跑。
-- 只停止拥有的PID树，不按进程名杀PDS。原始参考及`E:\PDS_Pangu\PDS_2022.2-SP6.4\doc`只读，厂商专有模型不复制到公开Git。
-- 每小时已汇报至03:48；下一次04:48。最近已推送`0586a64ff`，本次新增证明以随后commit/push核对为准。
-- 初始存在212项tracked修改和大量产物，见`initial_git_status.txt`。必须精确scope暂存，禁止`git add .`，不增加忽略规则、不夹带无关修改。
-- 冻结ZIP含逐成员SHA/PCF/原生依赖，不能覆盖；旧pending选择保留原字节，新终结另记。可变进度/交接以各Git提交字节为准。用`audit_staged_checkpoint.py <manifest>`核对工作树与暂存区每项哈希。
-- 推送单次参数：`-c http.proxy=http://127.0.0.1:7897 -c http.sslBackend=openssl -c http.version=HTTP/1.1 -c http.postBuffer=104857600`；TLS偶发EOF可重试，不关闭证书检查/改全局设置。
-- GUI曾遗留空`.git/index.lock`。只有确认原持有者退出、锁老化且当前进程均非持有者才清理，并保存审计，不能删除活动锁。
+云端恢复原生大文件：校验`proc150_board_mapping_20261020_050951_080852/native_mapping_0535.zip`及其manifest，解压到该mapping目录，再按handoff工程`restore_native_artifacts.json`核验并复制device_map成员到handoff的device_map目录。已有文件须先核对哈希，不能覆盖不同的运行结果。源码、工程、日志及小型证明直接随Git保存。
