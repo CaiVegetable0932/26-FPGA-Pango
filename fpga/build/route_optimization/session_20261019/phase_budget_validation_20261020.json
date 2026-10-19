@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-10-20T01:31:00.958705+08:00",
+  "unit_checks": {
+    "test_regional_phase_budget.py": 3,
+    "test_route_supervisor.py": 10
+  },
+  "all_passed": true,
+  "source_sha256": {
+    "fpga/scripts/regional_phase_budget.py": "98c9774dedde33fc0bee496d7ae00b932b144b5bde3b560aba159cbd5e5ff157",
+    "fpga/scripts/test_regional_phase_budget.py": "871cc42c3bb3241a6c147f7c2b8035f2c7d864367091bb6f6de89089a1df2fe8",
+    "fpga/scripts/route_supervisor.py": "e0b3d03684907a07b1d93e34f88c10f46b7fe2f31804a2385b2688a221aeeddd",
+    "fpga/scripts/test_route_supervisor.py": "03a81140ea7acb3a3c274eee67c300bf187e694466bf5e837fb2ed2702f98dc5"
+  },
+  "native_smoke": "fpga/build/route_optimization/unpack_local_capture_20261019_221324_680300/unit_screen_20261019_233122_395009/regional_route_20261020_012009_332864/driver_validation.json",
+  "native_pnr_and_sta_passed": true
+}

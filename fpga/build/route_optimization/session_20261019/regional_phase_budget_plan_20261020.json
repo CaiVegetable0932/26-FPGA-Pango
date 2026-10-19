@@ -1,0 +1,20 @@
+{
+  "reason": "Prior full-flow 1200-second cap included 382 seconds of compile/SYN/MAP, leaving about 818 seconds for PnR; preserve old results and validate per-phase plan budgets separately.",
+  "prior_review": "fpga\\build\\route_optimization\\session_20261019\\dma_round3_first_budget_review.json",
+  "prepare_timeout_seconds": 1200,
+  "pnr_timeout_seconds": 1200,
+  "sta_timeout_seconds": 120,
+  "maximum_side_total_seconds": 2520,
+  "seed": 11,
+  "clock_period_ns": 8.0,
+  "decongestion": 1,
+  "control_chain_length": 500,
+  "congestion_iterations_option": 200,
+  "candidate_source": "fpga\\build\\route_optimization\\dma_cursor_stats_20261019_234450_843063\\source\\rtl\\memory\\ddr_native_dma.v",
+  "candidate_sha256": "8ef833eab5c7c9a02465a5328895168beb98c51a3f919c04898171017fa6d7d1",
+  "pin_configuration_sha256": "bf9951536b1eae729d5ae07115110b42779e5b0718a4dc2f65574aebc8d3c36f",
+  "validated_driver_smoke": "unpack_local_capture_20261019_221324_680300/unit_screen_20261019_233122_395009/regional_route_20261020_012009_332864",
+  "scope": "B CANDIDATE ONLY; no qualifying same-budget reference; no acceleration ratio claim",
+  "prior_results_relabelled": false,
+  "whole_design_route_allowed": false
+}

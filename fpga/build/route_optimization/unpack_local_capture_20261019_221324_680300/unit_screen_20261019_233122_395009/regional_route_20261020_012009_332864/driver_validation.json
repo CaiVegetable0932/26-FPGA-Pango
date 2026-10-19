@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "purpose": "SEPARATE_PHASE_DRIVER_SMOKE_NOT_OPTIMIZATION_SAMPLE",
+  "excluded_from_three_seed_statistics": true,
+  "internal_sta_pass": true,
+  "fixed_pins_verified": true,
+  "checkpoint_inputs_intact": true,
+  "phases": [
+    {
+      "phase": "prepare",
+      "status": "COMPLETED",
+      "elapsed_seconds": 30.04699999999866
+    },
+    {
+      "phase": "place_route",
+      "status": "COMPLETED",
+      "elapsed_seconds": 60.0470000000023
+    },
+    {
+      "phase": "report_timing",
+      "status": "COMPLETED",
+      "elapsed_seconds": 30.04699999999866
+    }
+  ]
+}

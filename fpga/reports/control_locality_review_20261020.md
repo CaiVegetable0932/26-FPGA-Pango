@@ -46,6 +46,16 @@
 
 ## 时钟、资源与停止条件
 
+### DMA 浅缓存的后备测量方向
+
+若当前第三轮仍无法在限时内得到合格局部结果，可单独审查 DMA payload 存储组织，而不是重跑相同 seed。现有七客户端、16 拍、256 位 payload 只有 28,672 位（3.5 KiB），但独立综合实际占用 28 个 DRM36K；masks 已是本地 LUTRAM，报告 LUTRAM 112。宽端口和物理硬块分布可能影响互连，这是待验证原因，不是已证明的拥塞归因。
+
+后续可先比较 payload 的 block_ram 与 lut_ram 属性，保持同一个同步预读模板、原 RAM 读写边界、MAX_BEATS、读回验证和未复位 payload。不能把属性在 RTL 仿真中被忽略后的“输出相同”当作 RAM 原语语义证明；必须检查实际映射、read-during-write 行为、同地址冲突、输出寄存周期及掩码。不得增加 no_rw_check。新增 LUTRAM/输出 FF 数量必须由实际综合确认，不能直接按位数宣称资源可用。
+
+若需要原语仿真，安装版模型位于 `E:/PDS_Pangu/PDS_2022.2-SP6.4/arch/vendor/pango/verilog/simulation/`。仅只读引用匹配版本并记录路径/哈希；模型含专有版权声明，不把厂商模型或工具密钥复制到公开 Git。存在 GTP_RAM16X*、GTP_DRM36K_E1 和 GTP_GRS 模型；还需正确处理全局初始化与已有运行时 reset 的区别。
+
+属性变体若表现出新的宽 WE 热点，再以单独第二变体比较局部 WE；不要同时改变 RAM 类型、仲裁编码、额外延迟和工具策略。保持 writer BRAM 与 tag LUTRAM 当前独立处置，不能把本提案扩展成全工程统一 RAM 类型。该后备方向尚未启动任何新候选或 native 作业。
+
 实际生产 `pango_video_system` 从 DDR controller core_clk 驱动 `video_memory_core`，为 125 MHz。仓库其他历史 FDC 中存在 proc_clk 150 MHz，不代表当前生产连接已经使用它。当前选定 6 份约束未更改，DDR PHY 保持原字节；新 150 MHz 处理域需要独立 CDC/服务期限设计，仍待范围明确。
 
 旧 11 项基线 MAP：LUT 41,341、FF 40,430、APM 117、DRM 98。与启动预算 50,000/95,000/180/120 的差额不是可任意花费的余额，还需承诺功能与调试预留；当前新 12 项设计尚待最终整机 SYN/MAP 复核。不可将本报告的 FF 理论数量或独立夹具资源简单加到旧 MAP 后声称通过资源验收。

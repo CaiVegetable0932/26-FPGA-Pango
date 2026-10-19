@@ -196,7 +196,7 @@
     "transport_tests_each": 10,
     "parameter_tests_each": 12,
     "promoted": false,
-    "status": "A_FIXED_PIN_PHYSICAL_RUNNING_B_SYNTHESIS_PASS",
+    "status": "B_CANDIDATE_ONLY_SEPARATE_PHASES_RUNNING",
     "a_resources": {
       "baseline": {
         "LUT": 3950,
@@ -219,7 +219,18 @@
       "DRM": 28,
       "controlsets": 57
     },
-    "b_synthesis_slack_ns": 0.427
+    "b_synthesis_slack_ns": 0.427,
+    "reference_timeout_seconds": 1200.641,
+    "reference_best_unrouted": 94,
+    "reference_last_unrouted": 105,
+    "reference_last_iteration": 402,
+    "reference_actual_pin_map_verified": false,
+    "candidate_only_required": true,
+    "acceleration_claim_allowed": false,
+    "a_candidate_status": "TIMEOUT_NOT_PROMOTED",
+    "a_candidate_best_unrouted": 3563,
+    "a_candidate_last_unrouted": 3600,
+    "a_candidate_last_iteration": 53
   },
   "latest_hourly_report": "2026-10-20T00:48:00+08:00",
   "next_hourly_report": "2026-10-20T01:48:00+08:00",
@@ -247,5 +258,13 @@
   },
   "current_handoff": "fpga/reports/route_optimization_handoff_20261020.md",
   "latest_verified_source_commit": "20f5269f66d33b647cdd64dd10a720bb19e76cfe",
-  "latest_verified_handoff_commit": "045c28040dc7254a52b572e204b9e9480ae81f3a"
+  "latest_verified_handoff_commit": "045c28040dc7254a52b572e204b9e9480ae81f3a",
+  "separate_phase_budget": {
+    "driver_smoke_passed": true,
+    "prepare_seconds": 1200,
+    "pnr_seconds": 1200,
+    "sta_seconds": 120,
+    "maximum_total_per_side_seconds": 2520,
+    "current_old_results_not_relabelled": true
+  }
 }

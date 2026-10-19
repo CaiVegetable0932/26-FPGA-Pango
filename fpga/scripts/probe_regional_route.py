@@ -16,6 +16,7 @@ import shutil
 from route_supervisor import run_supervised
 from regional_scan_wrapper import ports,make_wrapper,fixed_pin_constraints
 from probe_writer_bram_mapping import diagnostic_writer
+from regional_phase_budget import run_regional_phases,native_pnr_seconds
 
 
 def digest(path):
@@ -31,6 +32,8 @@ def main():
     parser.add_argument('--timeout-minutes', type=int, default=20)
     # Only the plan's finite reproducibility set is permitted; no seed sweep.
     parser.add_argument('--seed', type=int, choices=(11, 7, 13), default=11)
+    parser.add_argument('--phase-budgets', action='store_true',
+                        help='Separately cap preparation at 20 min, PnR at selected allowance, STA at 2 min')
     parser.add_argument('--only-label',choices=('baseline','candidate'),
                         help='One reviewed side only; never implies a completed A/B pair')
     args = parser.parse_args()
@@ -131,6 +134,7 @@ def main():
     run.mkdir()
     # Preserve the exact diagnostic transformation helper with each result.
     shutil.copyfile(Path(__file__).with_name('probe_writer_bram_mapping.py'),run/'probe_writer_bram_mapping.py')
+    shutil.copyfile(Path(__file__).with_name('regional_phase_budget.py'),run/'regional_phase_budget.py')
     shutil.copyfile(__file__,run/'probe_script.py')
     shutil.copyfile(Path(__file__).with_name('route_supervisor.py'),run/'route_supervisor.py')
     shutil.copyfile(Path(__file__).with_name('regional_scan_wrapper.py'),run/'regional_scan_wrapper.py')
@@ -144,7 +148,8 @@ def main():
                   wrapper_metadata=wrapper_metadata,
                   wrapper_sha256=hashlib.sha256(wrapper.encode()).hexdigest(),
                   fixed_pin_configuration_sha256=digest(pin_configuration),pin_mapping=pin_mapping,
-                  clean_build=True, jobs=[], completed=False)
+                  clean_build=True, jobs=[], completed=False,
+                  budget_mode='SEPARATE_PHASES' if args.phase_budgets else 'FULL_FLOW_20_MINUTES')
     baseline_success_seconds=None
     try:
         for label in labels:
@@ -183,14 +188,19 @@ def main():
             inputs = {p.name:digest(build/p.name) for p in files}
             inputs[wrapper_path.name]=digest(wrapper_path)
             inputs[pins_path.name]=digest(pins_path)
-            supervised = run_supervised(
-                ['E:/PDS_Pangu/PDS_2022.2-SP6.4/bin/pds_shell.exe',
-                 '-file',str(script),'-work_dir',str(build)],
-                cwd=build,log_path=build/'physical.log',
-                timeout_seconds=args.timeout_minutes*60,
-                monitor_path=build/'physical_monitor.jsonl',
-                pause_path=args.pause_file,watch_stall=True,
-                baseline_success_seconds=baseline_success_seconds)
+            if args.phase_budgets:
+                supervised=run_regional_phases(build,flow,
+                    timeout_seconds=args.timeout_minutes*60,pause_path=args.pause_file,
+                    baseline_success_seconds=baseline_success_seconds)
+            else:
+                supervised = run_supervised(
+                    ['E:/PDS_Pangu/PDS_2022.2-SP6.4/bin/pds_shell.exe',
+                     '-file',str(script),'-work_dir',str(build)],
+                    cwd=build,log_path=build/'physical.log',
+                    timeout_seconds=args.timeout_minutes*60,
+                    monitor_path=build/'physical_monitor.jsonl',
+                    pause_path=args.pause_file,watch_stall=True,
+                    baseline_success_seconds=baseline_success_seconds)
             text = (build/'physical.log').read_text(errors='replace')
             errors = re.findall(r'^E:.*',text,re.M)
             routed = build/'place_route/regional_wrapper_pnr.adf'
@@ -216,13 +226,12 @@ def main():
                           routed_db_sha256=digest(routed) if routed.exists() else None)
             result['jobs'].append(record)
             # Only a fully routed, timing-clean baseline establishes a budget.
-            # Use native cumulative phase deltas for PnR itself. Applying that
-            # stop to the whole fresh flow is deliberately conservative.
+            # The action's own duration works for both legacy combined flows
+            # and separate processes; preparation time is never counted as PnR.
             if label=='baseline' and complete and record['all_internal_constraints_met']:
-                times={name:int(h)*3600+int(m)*60+int(s) for name,h,m,s in re.findall(
-                    r'Action from compile to (\w+): Total Real Time elapsed is (\d+)h:(\d+)m:(\d+)s',text)}
-                if times.get('pnr',0)>times.get('dev_map',float('inf')):
-                    baseline_success_seconds=times['pnr']-times['dev_map']
+                duration=native_pnr_seconds(text)
+                if duration is not None and duration>0:
+                    baseline_success_seconds=duration
                     result['successful_baseline_pnr_seconds']=baseline_success_seconds
             print(label,json.dumps(dict(completed=complete,status=supervised['status'],
                 error_count=len(errors),first_errors=errors[:3],wirelength=record['wirelength'])),flush=True)

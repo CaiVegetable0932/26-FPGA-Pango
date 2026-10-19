@@ -1,0 +1,45 @@
+{
+  "old_budget_mode": "FULL_FLOW_1200_SECONDS",
+  "results": [
+    {
+      "path": "fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\owner_unit_probe_20261019_235108_893996\\regional_route_20261020_003911_499310",
+      "label": "baseline",
+      "status": "TIMEOUT",
+      "total_seconds": 1200.0160000000014,
+      "native_prefix_cumulative_seconds": {
+        "compile": 335,
+        "synthesize": 367,
+        "dev_map": 382
+      },
+      "pnr_available_seconds_approx": 818.0160000000014,
+      "last_round": {
+        "iteration": 402,
+        "unrouted": 105,
+        "cpu_seconds": 0.265625
+      },
+      "best_remaining": 94,
+      "actual_pins_verified": false
+    },
+    {
+      "path": "fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\owner_unit_probe_20261019_235108_893996\\regional_route_20261020_005929_844858",
+      "label": "candidate",
+      "status": "TIMEOUT",
+      "total_seconds": 1200.0149999999976,
+      "native_prefix_cumulative_seconds": {
+        "compile": 335,
+        "synthesize": 367,
+        "dev_map": 382
+      },
+      "pnr_available_seconds_approx": 818.0149999999976,
+      "last_round": {
+        "iteration": 53,
+        "unrouted": 3600,
+        "cpu_seconds": 13.40625
+      },
+      "best_remaining": 3563,
+      "actual_pins_verified": false
+    }
+  ],
+  "decision": "DO_NOT_PROMOTE_A; VALIDATE_PHASE_BUDGET_DRIVER_THEN_MEASURE_B",
+  "acceleration_claim": false
+}
