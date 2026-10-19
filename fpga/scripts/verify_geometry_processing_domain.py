@@ -7,7 +7,9 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--regression',type=Path,required=True)
     parser.add_argument('--read-prefetch-proof',type=Path)
+    parser.add_argument('--tile-refill-proof',type=Path)
     args=parser.parse_args();fpga=Path(__file__).resolve().parents[1]
+    if args.read_prefetch_proof and args.tile_refill_proof:raise ValueError('Select one CDC round')
     original=args.regression.resolve()
     if not original.is_relative_to(fpga/'build') or not json.loads((original/'result.json').read_text())['passed']:
         raise ValueError('Passed frozen regression required')
@@ -28,6 +30,18 @@ def main():
         shutil.copyfile(candidate,source/candidate.name)
         adapter=source/'geometry_processing_domain.sv';adapter.write_text(adapter.read_text().replace(
             'dma_read_cdc source_bridge(','dma_read_cdc_prefetch source_bridge('),encoding='utf-8',newline='\n')
+    adapter_module='geometry_processing_domain'
+    if args.tile_refill_proof:
+        from prepare_tile_refill_domain import external_processor,external_adapter
+        checked=json.loads((args.tile_refill_proof/'result.json').read_text())
+        if not checked.get('passed') or len(checked.get('tests',[]))!=8 or any(
+            hashlib.sha256(Path(p).read_bytes()).hexdigest()!=h for p,h in checked['inputs'].items()):
+            raise ValueError('Complete intact quad CDC proof required')
+        for name in ['tile_refill_cdc.sv','geometry_frame_processor_external_refill.sv','geometry_processing_domain_external_refill.sv']:
+            shutil.copyfile(fpga/'experiments/proc150/rtl'/name,source/name)
+        assert (source/'geometry_frame_processor_external_refill.sv').read_text()==external_processor((source/'geometry_frame_processor.sv').read_text())
+        assert (source/'geometry_processing_domain_external_refill.sv').read_text()==external_adapter((source/'geometry_processing_domain.sv').read_text())
+        adapter_module='geometry_processing_domain_external_refill'
     fixture=original/'source/tb_geometry_frame_processor.sv'
     shutil.copyfile(fixture,run/'original_tb_geometry_frame_processor.sv')
     text=fixture.read_text(encoding='utf-8')
@@ -36,7 +50,7 @@ def main():
     # remain intact. Source scheduling and DDR still run at the original 125M.
     replacements={
         'geometry_frame_processor processor(.clk(clk),.rst_n(rst_n),':
-        'geometry_processing_domain processor(.clk(clk),.rst_n(rst_n),.processing_clk(pclk),.processing_rst_n(prst_n),',
+        adapter_module+' processor(.clk(clk),.rst_n(rst_n),.processing_clk(pclk),.processing_rst_n(prst_n),',
         'reg clk=0,rst_n=0,job_valid=0;always #4 clk=~clk;':
         'parameter real PROC_HALF=3.333,PROC_PHASE=0.7;\n reg pclk=0,prst_n=0;\n initial begin #PROC_PHASE;forever #PROC_HALF pclk=~pclk;end\n reg clk=0,rst_n=0,job_valid=0;always #4 clk=~clk;',
         'repeat(4)@(negedge clk);rst_n=1;':
@@ -55,6 +69,7 @@ def main():
     modules=['source/frame_manager_pkg.sv']+['source/'+n for n in hashes if n.endswith(('.v','.sv')) and n!='frame_manager_pkg.sv']
     result=dict(passed=False,production_instantiated=False,full_frame=False,physical_signed_off=False,
         read_prefetch_proof=str(args.read_prefetch_proof) if args.read_prefetch_proof else None,
+        tile_refill_proof=str(args.tile_refill_proof) if args.tile_refill_proof else None,
         reference_regression=str(original),reference_fixture_sha256=hashlib.sha256(fixture.read_bytes()).hexdigest(),tests=[])
     try:
         for half,phase in [(3.333,.7),(3.333,3.9),(4.7,1.1)]:

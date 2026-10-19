@@ -14,6 +14,8 @@ from route_supervisor import run_supervised
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--rtl-snapshot',type=Path,help='Explicit intact candidate source directory')
+    parser.add_argument('--experimental-proc150',action='store_true',help='Compile/SYN/MAP-only two-clock board candidate')
     parser.add_argument('--overall-timeout-minutes', type=int, default=60, help='Bounded whole native flow allowance')
     parser.add_argument('--pause-file',type=Path,help='Explicit stop request for this owned build')
     parser.add_argument('--placement-seed',type=int,choices=(11,7,13),default=11)
@@ -22,6 +24,8 @@ def main():
                         help='Official CE/RS routing chain default; independent of STA acceptance')
     parser.add_argument('--stage', choices=['compile', 'synthesize', 'dev_map', 'report_timing', 'gen_bit_stream'], default='report_timing')
     options = parser.parse_args()
+    if options.experimental_proc150 and (not options.rtl_snapshot or options.stage not in ('compile','synthesize','dev_map')):
+        parser.error('experimental processing board supports explicit-snapshot compile/SYN/MAP only')
     # Compile/SYN/MAP remain available for design review; complete PnR waits
     # until the user's whole-design readiness record has been reviewed.
     if options.stage in ('report_timing','gen_bit_stream'):
@@ -33,6 +37,14 @@ def main():
     if not 1 <= options.control_chain_length <= 500:
         parser.error('control routing chain length must be 1..500')
     fpga = Path(__file__).resolve().parents[1]
+    # A frozen candidate is a review input, never an alternative release gate.
+    origin=options.rtl_snapshot.resolve() if options.rtl_snapshot else fpga
+    if options.rtl_snapshot:
+        if not origin.is_relative_to(fpga/'build'):raise ValueError('Candidate must be frozen under fpga/build')
+        expected=json.loads((origin.parent/'sources.json').read_text())
+        if not all(hashlib.sha256((origin/n).read_bytes()).hexdigest()==h for n,h in expected.items()):
+            raise ValueError('Candidate source closure drift')
+    ips=['video_pll','ddr3_controller']+(['sys_pll'] if options.experimental_proc150 else [])
     run = fpga / 'build/full_integration_20261013' / datetime.now().strftime('board_%Y%m%d_%H%M%S_%f')
     source = run / 'source'
     source.mkdir(parents=True)
@@ -40,24 +52,26 @@ def main():
     # full and never regenerated/modified in the original or official directory.
     names = ['rtl/memory/frame_manager_pkg.sv']
     for group in ['memory', 'input', 'isp', 'geometry', 'network', 'control', 'video']:
-        for path in sorted((fpga / 'rtl' / group).glob('*')):
+        for path in sorted((origin / 'rtl' / group).glob('*')):
             if path.suffix in ('.v', '.sv', '.vh') and path.name not in (
                     'frame_manager_pkg.sv', 'ip_integration_bank.v', 'algorithm_timing_top.sv', 'hdmi_display_pnr_probe.v'):
-                names.append(path.relative_to(fpga).as_posix())
+                names.append(path.relative_to(origin).as_posix())
     names += ['rtl/board/' + n for n in ['reset_sync.v', 'video_clock_start.v', 'rgmii_phy_io.v',
               'tmds_serializer.v', 'video_memory_core.sv', 'pango_video_system.sv']]
+    if options.experimental_proc150:names.append('rtl/board/processing_domain_reset.sv')
     names += ['rtl/mini_camera_diag/vendor/camera/SCCB.v', 'rtl/mini_camera_diag/vendor/camera/data_init.v',
               'rtl/mini_camera_diag/vendor/hdmi/tmds_encoder.v']
     constraints = ['constraints/ddr_native.fdc', 'constraints/ddr_board_pins.fdc',
                    'constraints/video_system/board_pins.fdc', 'constraints/video_system/clocks_cdc.fdc',
                    'constraints/placement.fdc', 'constraints/routing.rcf']
+    if options.experimental_proc150:constraints.append('constraints/video_system/processing_cdc.fdc')
     for name in [*names, *constraints]:
         dest = source / name
         dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(fpga / name, dest)
-    for name in ['video_pll', 'ddr3_controller']:
-        shutil.copytree(fpga / 'ip' / name, source / 'ip' / name)
-    shutil.copytree(fpga / 'config', source / 'config')
+        shutil.copyfile(origin / name, dest)
+    for name in ips:
+        shutil.copytree(origin / 'ip' / name, source / 'ip' / name)
+    shutil.copytree(origin / 'config', source / 'config')
     hashes = {p.relative_to(source).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
               for p in source.rglob('*') if p.is_file()}
     (run / 'sources.json').write_text(json.dumps(hashes, indent=2), encoding='utf-8')
@@ -73,7 +87,7 @@ def main():
     for name in names:
         if not name.endswith('.vh'):
             flow += f'add_design {{{(source / name).as_posix()}}}\n'
-    for name in ['video_pll', 'ddr3_controller']:
+    for name in ips:
         flow += f'add_design {{{(source / "ip" / name / (name + ".idf")).as_posix()}}}\n'
     for name in constraints:
         flow += f'add_constraint {{{(source / name).as_posix()}}}\n'
@@ -130,6 +144,8 @@ def main():
     match = re.search(r'^Design Summary\s*:\s*(.+)$', report.read_text(errors='replace'), re.M) if report.exists() else None
     intact = all(hashlib.sha256((source / name).read_bytes()).hexdigest() == digest for name, digest in hashes.items())
     result = {'stage': options.stage, 'native_exit': process.returncode, 'errors': errors, 'snapshot_intact': intact,
+              'rtl_snapshot':str(options.rtl_snapshot) if options.rtl_snapshot else None,
+              'experimental_proc150':options.experimental_proc150,
               'internal_timing_met': bool(match and match[1].strip() == 'All Constraints Met.'),
               'full_function_release': False, 'hardware_tested': False, 'programmed': False,
               'external_timing_verified': False, 'download_approved': False}

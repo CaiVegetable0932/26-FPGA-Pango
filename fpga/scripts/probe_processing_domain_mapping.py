@@ -13,12 +13,15 @@ def main():
     parser.add_argument('--projective',type=int,choices=(0,1),default=0)
     parser.add_argument('--integration-proof',type=Path,
                         help='Passed projective control/snapshot model binding the same adapter')
+    parser.add_argument('--top',choices=('geometry_processing_domain','geometry_processing_domain_external_refill'),default='geometry_processing_domain')
     args=parser.parse_args();fpga=Path(__file__).resolve().parents[1];proof=args.proof.resolve()
     if not proof.is_relative_to(fpga/'build'):raise ValueError('Frozen experimental proof required')
     result=json.loads((proof/'result.json').read_text());hashes=json.loads((proof/'sources.json').read_text())
     if not result.get('passed') or not result.get('inputs_intact') or len(result.get('tests',[]))!=3:
         raise ValueError('Three complete native byte-scoreboard cases required')
     if not all(sha(proof/'source'/n)==h for n,h in hashes.items()):raise ValueError('Proof closure drift')
+    if args.top.endswith('_external_refill') and not result.get('tile_refill_proof'):
+        raise ValueError('External refill top requires its quad bridge proof')
     if args.projective:
         if not args.integration_proof:raise ValueError('Projective mapping requires its integration proof')
         integrated=args.integration_proof.resolve()
@@ -30,12 +33,22 @@ def main():
             if sha(integrated/'source/rtl'/group/name)!=hashes[name]:raise ValueError('Integration source mismatch: '+name)
         if 'dma_read_cdc_prefetch.sv' in hashes and sha(integrated/'source/rtl/memory/dma_read_cdc_prefetch.sv')!=hashes['dma_read_cdc_prefetch.sv']:
             raise ValueError('Integration prefetch bridge mismatch')
+        # Compare every module shared with the integrated source closure,
+        # including the geometry fault gate and the external refill/FIFO.
+        for name,h in hashes.items():
+            # This two-clock integration parent is not instantiated by the
+            # isolated processing top. Its deliberate adapter change is
+            # verified separately in the full parent simulation/board MAP.
+            if name=='video_memory_core.sv':continue
+            found=list((integrated/'source/rtl').rglob(name))
+            if found:
+                if len(found)!=1 or sha(found[0])!=h:raise ValueError('Shared integration input mismatch: '+name)
     run=fpga/'build/route_optimization'/datetime.now().strftime('proc150_mapping_%Y%m%d_%H%M%S_%f')
     build=run/'source';shutil.copytree(proof/'source',build)
     # This isolated top has no parent to specialize PROJECTIVE. Change only
     # its compile-time default, preserving the recorded proof-source identity.
     if args.projective:
-        top=build/'geometry_processing_domain.sv';text=top.read_text(encoding='utf-8')
+        top=build/(args.top+'.sv');text=top.read_text(encoding='utf-8')
         old='parameter META_BITS=616,PROJECTIVE=0'
         if text.count(old)!=1:raise ValueError('Unexpected isolated top parameters')
         top.write_text(text.replace(old,'parameter META_BITS=616,PROJECTIVE=1'),encoding='utf-8',newline='\n')
@@ -47,12 +60,14 @@ def main():
     modules=['frame_manager_pkg.sv']+[n for n in hashes if n.endswith(('.v','.sv')) and n not in ['frame_manager_pkg.sv','tb_geometry_frame_processor.sv']]
     flow='set_dir -impl_directory {'+run.as_posix()+'}\nset_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676\n'
     flow+=''.join('add_design {'+(build/n).as_posix()+'}\n' for n in modules)
-    flow+='add_constraint {'+clock.as_posix()+'}\ncompile -top_module geometry_processing_domain -system_verilog\n'
+    flow+='add_constraint {'+clock.as_posix()+'}\ncompile -top_module '+args.top+' -system_verilog\n'
     flow+='synthesize -ads -disable_io_insertion -fanout_guide 64 -rw_check_on_ram -resource_sharing false -selected_syn_tool_opt 2\n'
     (run/'flow.tcl').write_text(flow);shutil.copyfile(__file__,run/'probe_script.py')
     shutil.copyfile(Path(__file__).with_name('route_supervisor.py'),run/'route_supervisor.py')
     out=dict(passed=False,proof=str(proof),proof_source_hashes=hashes,source_hashes=mapped_hashes,
              projective=args.projective,integration_proof=str(args.integration_proof) if args.integration_proof else None,
+             top=args.top,
+             shared_input_excluded_parent=['video_memory_core.sv'],
              production_instantiated=False,
              routed=False,timing_signed_off=False,cdc_constraints_signed_off=False,bitstream_generated=False)
     print('PROCESSING_DOMAIN_MAPPING',run,flush=True)
@@ -62,7 +77,7 @@ def main():
         log=(run/'syn.log').read_text(errors='replace');out['supervision']=supervision
         out['errors']=re.findall(r'^E:.*',log,re.M)
         if supervision['status']!='COMPLETED' or out['errors']:raise RuntimeError('Experimental synthesis did not complete')
-        report=run/'synthesize/geometry_processing_domain.snr';text=report.read_text(errors='replace')
+        report=run/'synthesize'/(args.top+'.snr');text=report.read_text(errors='replace')
         out['resources']={k:int(re.search(pattern,text)[1]) for k,pattern in [('LUT',r'Total LUTs: (\d+)'),('FF',r'Total Registers: (\d+)'),('controlsets',r'Number of unique control sets : (\d+)')]}
         out['report_sha256']=sha(report);out['passed']=True
     finally:

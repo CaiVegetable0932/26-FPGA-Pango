@@ -1,0 +1,131 @@
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+W: Warning : The license will invalid in 14 days. In order not to affect your usage, please update the license in time.
+
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/report_timing.pds'.
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline successfully.
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676 successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/frame_manager_pkg.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/frame_manager_pkg.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/pool.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/pool.sv successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/clock.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/clock.fdc successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/regional_wrapper.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/regional_wrapper.sv successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/scan_pins.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/scan_pins.fdc successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/device_map/regional_wrapper.pcf
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/device_map/regional_wrapper.pcf successfully.
+
+
+Executing : report_timing -force_to_run -input_db_file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/place_route/regional_wrapper_pnr.adf -delay_type min_max -max_path 30 -report_exception TRUE
+
+
+Process "Report Timing" started.
+Current time: Tue Oct 20 04:01:30 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/report_timing.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Building architecture model.
+Loading device packaging model.
+Reading design from pnr DB.
+Start Report Post-PnR timing.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 5993935
+
+Constructing timing graph ...
+Timing graph has been constructed successfully
+W: Timing-4087: Port 'scan_out[0]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[1]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[2]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[3]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[4]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[5]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[6]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[7]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[8]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[9]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[10]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[11]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[12]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[13]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[14]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[15]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[16]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[17]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[18]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[19]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[20]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[21]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[22]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[23]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[24]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[25]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[26]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[27]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[28]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[29]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[30]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[31]' is not constrained, it is treated as combinational output.
+W: Timing-4086: Port 'rst_n' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[0]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[1]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[2]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[3]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[4]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[5]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[6]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[0]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[1]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[2]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[3]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[4]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[5]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[6]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[7]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[8]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[9]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[10]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[11]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[12]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[13]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[14]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[15]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[16]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[17]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[18]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[19]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[20]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[21]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[22]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[23]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[24]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[25]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[26]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[27]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[28]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[29]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[30]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[31]' is not constrained, it is treated as combinational input.
+Report timing is finished successfully.
+Action report_timing: Real time elapsed is 0h:0m:22s
+Action report_timing: CPU time elapsed is 0h:0m:18s
+Action report_timing: Process CPU time elapsed is 0h:0m:19s
+Current time: Tue Oct 20 04:01:51 2026
+Action report_timing: Peak memory pool usage is 1,171 MB
+Action from report_timing to report_timing: Total Real Time elapsed is 0h:0m:22s
+Action from report_timing to report_timing: Total CPU time elapsed is 0h:0m:18s
+Action from report_timing to report_timing: Total Process CPU Time elapsed is 0h:0m:19s
+Process "Report Timing" done.
+Executing : report_timing -force_to_run -input_db_file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/pool_chunk8_20261020_034402_468921/pool_unit_screen_20261020_035039_067599/regional_route_20261020_035328_393663/baseline/place_route/regional_wrapper_pnr.adf -delay_type min_max -max_path 30 -report_exception TRUE successfully.

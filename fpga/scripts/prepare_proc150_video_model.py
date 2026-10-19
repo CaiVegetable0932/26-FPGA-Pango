@@ -11,8 +11,10 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--baseline',type=Path,required=True)
     parser.add_argument('--read-prefetch-proof',type=Path)
+    parser.add_argument('--tile-refill-proof',type=Path)
     parser.add_argument('--exact-clock',action='store_true',help='Use femtosecond precision for the 150MHz model')
     args=parser.parse_args();fpga=Path(__file__).resolve().parents[1];baseline=args.baseline.resolve()
+    if args.read_prefetch_proof and args.tile_refill_proof:raise ValueError('Select one CDC round')
     names=json.loads((baseline/'sources.json').read_text())
     if len(names)!=290 or not all(hashlib.sha256((baseline/'source'/n).read_bytes()).hexdigest()==h for n,h in names.items()):
         raise ValueError('Intact 290-input baseline required')
@@ -31,6 +33,16 @@ def main():
         adapter=source/'rtl/geometry/geometry_processing_domain.sv'
         adapter.write_text(replace_once(adapter.read_text(),'dma_read_cdc source_bridge(',
             'dma_read_cdc_prefetch source_bridge('),encoding='utf-8',newline='\n')
+    if args.tile_refill_proof:
+        from prepare_tile_refill_domain import external_processor,external_adapter
+        checked=json.loads((args.tile_refill_proof/'result.json').read_text())
+        if not checked.get('passed') or len(checked.get('tests',[]))!=8 or any(
+            hashlib.sha256(Path(p).read_bytes()).hexdigest()!=h for p,h in checked['inputs'].items()):
+            raise ValueError('Complete intact quad CDC proof required')
+        for name,group in [('tile_refill_cdc.sv','memory'),('geometry_frame_processor_external_refill.sv','geometry'),('geometry_processing_domain_external_refill.sv','geometry')]:
+            n='rtl/'+group+'/'+name;extra_names.append(n);shutil.copyfile(fpga/'experiments/proc150/rtl'/name,source/n)
+        assert (source/'rtl/geometry/geometry_frame_processor_external_refill.sv').read_text()==external_processor((source/'rtl/geometry/geometry_frame_processor.sv').read_text())
+        assert (source/'rtl/geometry/geometry_processing_domain_external_refill.sv').read_text()==external_adapter((source/'rtl/geometry/geometry_processing_domain.sv').read_text())
     core=source/'rtl/board/video_memory_core.sv';text=core.read_text(encoding='utf-8')
     text=replace_once(text,' input clk,rst_n,controller_ready,',' input clk,rst_n,processing_clk,processing_rst_n,controller_ready,')
     # Move the immutable LUT boot writer as one local unit. Only its ready bit
@@ -49,6 +61,8 @@ def main():
     text=text[:start]+tone+text[end:]
     text=replace_once(text,'geometry_frame_processor #(.META_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) processor(.clk(clk),.rst_n(rst_n),.job_valid(geo_valid),.job_ready(geo_ready),',
         'geometry_processing_domain #(.META_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) processor(.clk(clk),.rst_n(rst_n),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),.job_valid(geo_valid && tone_ready_ddr),.job_ready(mailbox_ready),')
+    if args.tile_refill_proof:
+        text=replace_once(text,'geometry_processing_domain #(','geometry_processing_domain_external_refill #(')
     text=replace_once(text,',.cache_misses(),.cache_stalls(),.cache_bus_bytes());',');')
     core.write_text(text,encoding='utf-8',newline='\n')
     (source/'sim').mkdir(exist_ok=True)
@@ -86,6 +100,7 @@ def main():
     (run/'candidate.json').write_text(json.dumps(dict(experimental_only=True,production_instantiated=False,
         baseline=str(baseline),processing_clock_period_ns=6.666666666 if args.exact_clock else 6.666,ddr_clock_period_ns=8,
         exact_clock=args.exact_clock,read_prefetch_proof=str(args.read_prefetch_proof) if args.read_prefetch_proof else None,
+        tile_refill_proof=str(args.tile_refill_proof) if args.tile_refill_proof else None,
         common_reset_assertion_required=True,pll_hardware_integrated=False,
         changed_production_files=[],input_count=len(hashes)),indent=2))
     shutil.copyfile(__file__,run/'prepare_script.py');print('PROC150_VIDEO_MODEL',run)

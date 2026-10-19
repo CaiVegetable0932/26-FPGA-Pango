@@ -7,6 +7,7 @@ import json
 import os
 import shutil
 import subprocess
+from proof_supervisor import run_proof
 
 
 def main():
@@ -14,6 +15,8 @@ def main():
     parser.add_argument('--rtl-snapshot', type=Path, help='Read immutable source directory from a board build')
     parser.add_argument('--fixture-snapshot', type=Path,
                         help='Explicit frozen experimental sim/ fixture directory; hashes remain recorded')
+    parser.add_argument('--run-timeout-seconds',type=int,help='Explicit prelaunch software simulation allowance, at most 3600 seconds')
+    parser.add_argument('--pause-file',type=Path,help='Owned proof stop file; defaults to the regional/account reserve')
     parser.add_argument('--full-frame', action='store_true')
     parser.add_argument('--control-test', action='store_true')
     parser.add_argument('--snapshot-test', action='store_true')
@@ -24,6 +27,8 @@ def main():
     options = parser.parse_args()
     if not 1 <= options.build_jobs <= 8:
         parser.error('build jobs must be 1..8')
+    if options.run_timeout_seconds is not None and not 0<options.run_timeout_seconds<=3600:
+        parser.error('software run allowance must be 1..3600 seconds')
     # Link-loss and control fixtures use independent frame identities and
     # display-release schedules; snapshots can accompany either scenario.
     if options.network_test and options.control_test:
@@ -31,6 +36,8 @@ def main():
     if options.display_test and (not options.full_frame or options.network_test):
         parser.error('display test requires full-frame; use the control/snapshot scenario, not link-loss stimulus')
     fpga = Path(__file__).resolve().parents[1]
+    pause=options.pause_file or fpga/'build/route_optimization/session_20261019/regional_stop_requested.json'
+    if pause.exists():raise RuntimeError('Proof launch prevented by regional/account reserve stop')
     run = fpga / 'build/full_integration_20261013' / datetime.now().strftime('verilator_%Y%m%d_%H%M%S_%f')
     source = run / 'source'
     source.mkdir(parents=True)
@@ -54,6 +61,8 @@ def main():
     hashes = {n: hashlib.sha256((source / n).read_bytes()).hexdigest() for n in names}
     (run / 'sources.json').write_text(json.dumps(hashes, indent=2), encoding='utf-8')
     shutil.copyfile(Path(__file__), run / 'simulation_script.py')
+    for helper in ['proof_supervisor.py','route_supervisor.py']:
+        shutil.copyfile(Path(__file__).with_name(helper),run/helper)
     toolkit = fpga / 'build/full_integration_20261013/tools/verilator-wheel/unpacked/verilator'
     # CMake's native Verilator integration avoids shell-generated make commands
     # and preserves the installed Windows C++ compiler/toolchain configuration.
@@ -95,6 +104,8 @@ def main():
     result['build_jobs'] = options.build_jobs
     result['fixture_snapshot'] = str(options.fixture_snapshot) if options.fixture_snapshot else None
     result['display_test'] = options.display_test
+    result['run_timeout_seconds']=options.run_timeout_seconds or (2400 if options.display_test else 1200)
+    result['proof_phases']=[]
     print('VERILATOR_START', run, flush=True)
     try:
         commands = [
@@ -107,14 +118,14 @@ def main():
         ]
         for phase, command in commands:
             print('VERILATOR', phase, flush=True)
-            with (run / (phase + '.log')).open('wb') as log:
-                process = subprocess.run(command, cwd=run, env=environment, stdout=log, stderr=subprocess.STDOUT,
-                                         # Two real clock domains and scanout of
-                                         # every produced frame add host work,
-                                         # without changing RTL clock deadlines.
-                                         timeout=2400 if options.display_test and phase=='run' else 1200, creationflags=0x08000000)
+            # Software jobs do not consume the native PDS slot. They still
+            # observe quota/user stop, have a fixed prelaunch allowance and
+            # reap owned compiler/simulation descendants on interruption.
+            process=run_proof(command,cwd=run,environment=environment,log_path=run/(phase+'.log'),
+                timeout_seconds=result['run_timeout_seconds'] if phase=='run' else 1200,pause_path=pause)
+            result['proof_phases'].append(dict(phase=phase,**process))
             output = (run / (phase + '.log')).read_text(errors='replace')
-            if process.returncode or (phase == 'run' and ('TB_VIDEO_MEMORY_CORE_PASS' not in output or 'FATAL' in output)):
+            if process['returncode'] or (phase == 'run' and ('TB_VIDEO_MEMORY_CORE_PASS' not in output or 'FATAL' in output)):
                 raise RuntimeError(phase + ': ' + output[-5000:])
         result['passed'] = True
     finally:

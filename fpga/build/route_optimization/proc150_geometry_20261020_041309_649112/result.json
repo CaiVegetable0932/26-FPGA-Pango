@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "production_instantiated": false,
+  "full_frame": false,
+  "physical_signed_off": false,
+  "read_prefetch_proof": null,
+  "tile_refill_proof": "fpga\\build\\route_optimization\\proc150_tile_cdc_20261020_041054_271536",
+  "reference_regression": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261020_031100_679289",
+  "reference_fixture_sha256": "97cd11de4d0eb78a8a21c7b7cc6da68ff1d06dfe55ba21fc1706d29b90c85d6f",
+  "tests": [
+    {
+      "processing_half_ns": 3.333,
+      "phase_ns": 0.7,
+      "passed": true,
+      "summary": "GEOMETRY_FRAME_PROCESSOR_PASS frames=3 verified_result_bytes=608256 cycles=9209\r\nsource/tb_geometry_frame_processor.sv:106: $finish called at 73672000 (1ps)"
+    },
+    {
+      "processing_half_ns": 3.333,
+      "phase_ns": 3.9,
+      "passed": true,
+      "summary": "GEOMETRY_FRAME_PROCESSOR_PASS frames=3 verified_result_bytes=608256 cycles=9234\r\nsource/tb_geometry_frame_processor.sv:106: $finish called at 73872000 (1ps)"
+    },
+    {
+      "processing_half_ns": 4.7,
+      "phase_ns": 1.1,
+      "passed": true,
+      "summary": "GEOMETRY_FRAME_PROCESSOR_PASS frames=3 verified_result_bytes=608256 cycles=11120\r\nsource/tb_geometry_frame_processor.sv:106: $finish called at 88960000 (1ps)"
+    }
+  ],
+  "inputs_intact": true
+}

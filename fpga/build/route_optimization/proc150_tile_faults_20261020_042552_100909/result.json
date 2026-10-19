@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "production_instantiated": false,
+  "reference_proof": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\proc150_geometry_20261020_041309_649112",
+  "completion_fault_kinds": 6,
+  "synchronous_reference": true,
+  "pipeline_source": "fpga\\build\\route_optimization\\geometry_recovery_20261020_042541_182177\\source\\rtl\\geometry\\geometry_rgb_pipeline.sv",
+  "independent_recovery_byte_scoreboard": true,
+  "tests": [
+    {
+      "processing_half_ns": 4.0,
+      "phase_ns": 0.0,
+      "passed": true,
+      "summary": "GEOMETRY_FRAME_PROCESSOR_PASS frames=15 faults=6 verified_result_bytes=1824768 cycles=37606\r\nsource/tb_geometry_frame_processor.sv:119: $finish called at 300848000 (1ps)"
+    }
+  ],
+  "inputs_intact": true
+}

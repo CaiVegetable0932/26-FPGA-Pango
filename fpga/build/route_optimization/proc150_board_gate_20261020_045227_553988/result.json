@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "tests": [
+    {
+      "stage": "report_timing",
+      "rejected_before_native_launch": true
+    },
+    {
+      "stage": "gen_bit_stream",
+      "rejected_before_native_launch": true
+    }
+  ],
+  "no_new_board_build": true,
+  "readiness_unchanged": true
+}

@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "production_instantiated": false,
+  "independent_quad_and_metadata_scoreboard": true,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\experiments\\proc150\\rtl\\tile_refill_cdc.sv": "089dcb1654781277c0708e40df017176112610c23e1e388840808917a8960145",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\experiments\\proc150\\sim\\tb_tile_refill_cdc.sv": "f20f35d3f399c9417ac47e0c425fde27e14b18284d5dd2cdfb3b3d2c6c498c2e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\memory\\async_stream_fifo.sv": "2268ab1e0694c4e0654afa98a5914cfbbd526f04878f73b512f2a6507c7d1bf8"
+  },
+  "tests": [
+    {
+      "processing_half_ns": 3.333,
+      "memory_half_ns": 4,
+      "phase_ns": 0.7,
+      "always_ready": 0,
+      "cases": 21,
+      "quads": 2434,
+      "stalls": 53
+    },
+    {
+      "processing_half_ns": 3.333,
+      "memory_half_ns": 4,
+      "phase_ns": 0.7,
+      "always_ready": 1,
+      "cases": 21,
+      "quads": 2434,
+      "stalls": 53
+    },
+    {
+      "processing_half_ns": 4,
+      "memory_half_ns": 3.333,
+      "phase_ns": 1.1,
+      "always_ready": 0,
+      "cases": 21,
+      "quads": 2434,
+      "stalls": 54
+    },
+    {
+      "processing_half_ns": 4,
+      "memory_half_ns": 3.333,
+      "phase_ns": 1.1,
+      "always_ready": 1,
+      "cases": 21,
+      "quads": 2434,
+      "stalls": 54
+    },
+    {
+      "processing_half_ns": 5,
+      "memory_half_ns": 3.1,
+      "phase_ns": 0,
+      "always_ready": 0,
+      "cases": 21,
+      "quads": 2434,
+      "stalls": 167
+    },
+    {
+      "processing_half_ns": 5,
+      "memory_half_ns": 3.1,
+      "phase_ns": 0,
+      "always_ready": 1,
+      "cases": 21,
+      "quads": 2434,
+      "stalls": 56
+    },
+    {
+      "processing_half_ns": 3.333,
+      "memory_half_ns": 4,
+      "phase_ns": 3.9,
+      "always_ready": 0,
+      "cases": 21,
+      "quads": 2434,
+      "stalls": 52
+    },
+    {
+      "processing_half_ns": 3.333,
+      "memory_half_ns": 4,
+      "phase_ns": 3.9,
+      "always_ready": 1,
+      "cases": 21,
+      "quads": 2434,
+      "stalls": 53
+    }
+  ],
+  "inputs_intact": true
+}

@@ -1,0 +1,33 @@
+{
+  "decision": "NOT_PROMOTED_STABILITY_FAILURE",
+  "sample_count": 3,
+  "passed_count": 2,
+  "failed_count": 1,
+  "records": [
+    {
+      "seed": 11,
+      "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\pool_unit_screen_20261020_035039_067599\\regional_route_20261020_035328_393663",
+      "timing_clean": true,
+      "wirelength": [
+        "122124"
+      ]
+    },
+    {
+      "seed": 7,
+      "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\pool_unit_screen_20261020_035039_067599\\regional_route_20261020_041205_454885",
+      "timing_clean": true,
+      "wirelength": [
+        "118146"
+      ]
+    },
+    {
+      "seed": 13,
+      "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\pool_unit_screen_20261020_035039_067599\\regional_route_20261020_042420_436996",
+      "timing_clean": false,
+      "wirelength": [
+        "129349"
+      ]
+    }
+  ],
+  "additional_seed_scan": false
+}

@@ -1,0 +1,114 @@
+{
+  "passed": true,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\original_frame_pool_bank.sv": "f445700f24a71e203e31fe20849965ccb15885d4b17fe383e39fc3ecf5f8b1b1",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\source\\rtl\\memory\\frame_pool_bank.sv": "bfb80219cd360a9392cd0e4f324629f7fdb82f95501193c20214164a0ecb492c",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\source\\rtl\\memory\\frame_manager_pkg.sv": "4d93591a7cd365243bad3347165a6ed9708fdd0ce5a6daa84470fe8c744a6f2e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\source\\rtl\\memory\\frame_manager_layout.vh": "729ae9f63f1cccdcb244dbad3fc5eafe59ce5ee11ea4da0aa69cb18d037c2973",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\differential_20261020_034414_100718\\result.json": "2c52400fec072cfa184a9a79f8703d4ab33d3cd9af43e05bab291f5a543becd9",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261020_034431_720936\\result.json": "95e5ab3480b4e6bcaf8d5ec8185aea69fcde2cc66965f47e7e6ee6399881082d"
+  },
+  "proof": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\differential_20261020_034414_100718",
+  "regression": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261020_034431_720936",
+  "slots": 3,
+  "transactions": 3,
+  "routed": false,
+  "control_mode": "counters",
+  "jobs": [
+    {
+      "label": "baseline",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 60.0779999999977,
+        "pid": 3948,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\pool_unit_screen_20261020_035039_067599\\baseline\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "errors": []
+    },
+    {
+      "label": "candidate",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 60.06300000000192,
+        "pid": 2904,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_chunk8_20261020_034402_468921\\pool_unit_screen_20261020_035039_067599\\candidate\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "errors": []
+    }
+  ],
+  "baseline": {
+    "resources": {
+      "LUT": 4190,
+      "FF": 831,
+      "controlsets": 25
+    },
+    "report_sha256": "69329796f939e5041d308d4f818ff4a4aa3985a843a03fdb515b55d0e5ad0624",
+    "timing_rows": [
+      [
+        "1.219",
+        "0.000",
+        "0",
+        "4728"
+      ],
+      [
+        "0.758",
+        "0.000",
+        "0",
+        "4728"
+      ]
+    ]
+  },
+  "candidate": {
+    "resources": {
+      "LUT": 4434,
+      "FF": 830,
+      "controlsets": 21
+    },
+    "report_sha256": "82a7d0681bc4aa147cc437dbabf2a11d5c5b1295cb4e8349a1cdc40d43858586",
+    "timing_rows": [
+      [
+        "1.336",
+        "0.000",
+        "0",
+        "4470"
+      ],
+      [
+        "0.758",
+        "0.000",
+        "0",
+        "4470"
+      ]
+    ]
+  },
+  "inputs_intact": true
+}

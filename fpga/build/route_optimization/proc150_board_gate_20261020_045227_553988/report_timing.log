@@ -1,0 +1,9 @@
+usage: build_video_system.py [-h] [--rtl-snapshot RTL_SNAPSHOT]
+                             [--experimental-proc150]
+                             [--overall-timeout-minutes OVERALL_TIMEOUT_MINUTES]
+                             [--pause-file PAUSE_FILE]
+                             [--placement-seed {11,7,13}]
+                             [--pnr-timeout-minutes PNR_TIMEOUT_MINUTES]
+                             [--control-chain-length CONTROL_CHAIN_LENGTH]
+                             [--stage {compile,synthesize,dev_map,report_timing,gen_bit_stream}]
+build_video_system.py: error: experimental processing board supports explicit-snapshot compile/SYN/MAP only

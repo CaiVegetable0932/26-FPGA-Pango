@@ -1,0 +1,37 @@
+{
+  "archive_sha256": "528656a777e00b825d153be32d4279e578626347de4cdf065d212c86751b0d93",
+  "members": {
+    "baseline/compile/frame_pool_bank_comp.adf": {
+      "bytes": 798639,
+      "sha256": "342e6a3065ca789683c3b1be0818fefa92b977c223b9b20da3e55386f8740104"
+    },
+    "baseline/synthesize/frame_pool_bank.snr": {
+      "bytes": 124464,
+      "sha256": "69329796f939e5041d308d4f818ff4a4aa3985a843a03fdb515b55d0e5ad0624"
+    },
+    "baseline/synthesize/frame_pool_bank_syn.adf": {
+      "bytes": 744018,
+      "sha256": "ecb44fd3bdd0f64242f0f5a2857d164f9aa68d1541d518a90497c93144f850a5"
+    },
+    "baseline/synthesize/frame_pool_bank_syn.vm": {
+      "bytes": 2478099,
+      "sha256": "44087ae616d2f2d483cfa1a1cd4b52b852ba3d9bab179dbe6cd870f88438adaf"
+    },
+    "candidate/compile/frame_pool_bank_comp.adf": {
+      "bytes": 806894,
+      "sha256": "f4f43d120b3a9d710c727d09c6a171749f7ba1ed68dd7639a99e3ead315e4fc9"
+    },
+    "candidate/synthesize/frame_pool_bank.snr": {
+      "bytes": 183565,
+      "sha256": "82a7d0681bc4aa147cc437dbabf2a11d5c5b1295cb4e8349a1cdc40d43858586"
+    },
+    "candidate/synthesize/frame_pool_bank_syn.adf": {
+      "bytes": 762910,
+      "sha256": "756f4081974f55584f36fcf1ba4af363f24187781a56a350d9a047bd07b42127"
+    },
+    "candidate/synthesize/frame_pool_bank_syn.vm": {
+      "bytes": 2570391,
+      "sha256": "abc5b9155121f3069bea1c4b6d50e38eefe16073f326d44fff8383c65af023d2"
+    }
+  }
+}

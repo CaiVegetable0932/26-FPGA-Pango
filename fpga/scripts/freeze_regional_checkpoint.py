@@ -11,6 +11,7 @@ def main():
     parser.add_argument('--proof',type=Path,nargs='*',default=[])
     parser.add_argument('--native-case',type=Path,nargs='*',default=[])
     parser.add_argument('--native-synthesis',type=Path,nargs='*',default=[])
+    parser.add_argument('--native-screen',type=Path,nargs='*',default=[])
     parser.add_argument('--input-tree',type=Path,nargs='*',default=[])
     parser.add_argument('--file',type=Path,nargs='*',default=[])
     args=parser.parse_args();root=Path(__file__).resolve().parents[2]
@@ -21,15 +22,28 @@ def main():
     def small(folder):
         for p in folder.rglob('*'):
             if p.is_file() and p.suffix.lower() in suffixes:files.add(p)
+    def closure(folder):
+        # Manifests, not extension guesses, define complete frozen inputs.
+        # This also preserves encrypted project IP and legacy flat snapshots.
+        manifest=folder/'sources.json'
+        if not manifest.is_file() or not (folder/'source').is_dir():return
+        entries=json.loads(manifest.read_text())
+        for name,digest in entries.items():
+            if not isinstance(digest,str) or len(digest)!=64:raise ValueError('Unexpected source manifest')
+            p=folder/'source'/name
+            if not p.exists():p=folder/'source'/Path(name).name
+            if sha(p)!=digest:raise ValueError('Frozen source drift: '+str(p))
+            files.add(p)
     for folder in args.proof:
         folder=folder.resolve();d=json.loads((folder/'result.json').read_text())
         if not isinstance(d.get('passed'),bool):raise ValueError('Proof must have a terminal pass/fail record')
-        small(folder)
-    for folder in args.input_tree:small(folder.resolve())
-    for case in [*args.native_case,*args.native_synthesis]:
+        small(folder);closure(folder)
+    for folder in args.input_tree:small(folder.resolve());closure(folder.resolve())
+    for case in [*args.native_case,*args.native_synthesis,*args.native_screen]:
         case=case.resolve();d=json.loads((case/'result.json').read_text())
         synthesis=case in [p.resolve() for p in args.native_synthesis]
-        if not (d.get('passed') if synthesis else d.get('completed')):
+        screen=case in [p.resolve() for p in args.native_screen]
+        if not (d.get('passed') if synthesis or screen else d.get('completed')):
             raise ValueError('Native case must be terminal and complete')
         small(case);target=case/('native_checkpoints_'+args.label+'.zip');members={}
         if target.exists():raise ValueError('Never overwrite frozen archives')
