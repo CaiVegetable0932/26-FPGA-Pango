@@ -6,6 +6,6 @@
   "regional_physical_checks_allowed": true,
   "reason": "User requires the entire design plan to be complete before whole-design routing; regional validation is authorized.",
   "review_document": "fpga/reports/regional_verification_plan_20261019.md",
-  "simulation_note": "Canonical source restored to the 11-file writer baseline after withholding first-round candidates. Fresh 20-case regression PASS; all 72 inputs match the prior passing full-frame baseline model. Round-2 optimized source not yet selected/frozen.",
-  "updated_at": "2026-10-19T23:22:43.860947+08:00"
+  "simulation_note": "Canonical 12-file design includes the single-file unpack improvement. 20-case regression and full 1080p control/snapshot/actual-display model passed; all 290 sources match verified finalist. DMA design optimization remains in progress; final entire design is not selected/frozen.",
+  "updated_at": "2026-10-20T00:36:24.052911+08:00"
 }

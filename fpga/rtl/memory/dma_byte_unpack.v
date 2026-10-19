@@ -18,6 +18,39 @@ module dma_byte_unpack #(parameter ALIGNED_ROWS=0)(
   reg active,held_valid,held_last;
   reg [31:0] left;
   reg [255:0] held_data;
+  // Four physically distinct local state copies feed 64-bit capture groups.
+  // Copies reflect the SAME next state as the authoritative handshake state;
+  // no speculative ready, payload delay, reset removal or extra FIFO is used.
+  reg [3:0] capture_active /* synthesis syn_preserve=1 */;
+  reg [3:0] capture_nonzero /* synthesis syn_preserve=1 */;
+  reg [3:0] capture_held_valid /* synthesis syn_preserve=1 */;
+  wire start_fire=start_valid && start_ready;
+  wire input_fire=beat_valid && beat_ready;
+  wire output_fire=chunk_valid && chunk_ready;
+  wire active_after=start_fire ? row_bytes!=0 :
+    (output_fire && held_last ? 1'b0 : active);
+  wire nonzero_after=start_fire ? row_bytes!=0 :
+    (input_fire ? left>32 : left!=0);
+  wire held_after=start_fire ? 1'b0 :
+    (input_fire ? 1'b1 : (output_fire ? 1'b0 : held_valid));
+  always @(posedge clk or negedge rst_n)begin
+   if(!rst_n)begin capture_active<=0;capture_nonzero<=0;capture_held_valid<=0;end
+   else begin
+    capture_active<={4{active_after}};
+    capture_nonzero<={4{nonzero_after}};
+    capture_held_valid<={4{held_after}};
+   end
+  end
+  genvar capture_group;
+  for(capture_group=0;capture_group<4;capture_group=capture_group+1)begin: local_capture
+   wire capture_enable=beat_valid && capture_active[capture_group] &&
+    capture_nonzero[capture_group] && (!capture_held_valid[capture_group] || chunk_ready);
+   // Preserve original asynchronous payload reset in every group.
+   always @(posedge clk or negedge rst_n)begin
+    if(!rst_n)held_data[capture_group*64+:64]<=0;
+    else if(capture_enable)held_data[capture_group*64+:64]<=beat_data[capture_group*64+:64];
+   end
+  end
   reg [5:0] held_bytes;
   wire [5:0] take=left<32 ? left[5:0] : 6'd32;
   assign start_ready=!active && !held_valid;
@@ -28,13 +61,13 @@ module dma_byte_unpack #(parameter ALIGNED_ROWS=0)(
    assign chunk_data[byte_lane*8+:8]=byte_lane<held_bytes ? held_data[byte_lane*8+:8] : 8'd0;
   end
   always @(posedge clk or negedge rst_n)begin
-   if(!rst_n)begin active<=0;held_valid<=0;held_last<=0;left<=0;held_data<=0;held_bytes<=0;end
+   if(!rst_n)begin active<=0;held_valid<=0;held_last<=0;left<=0;held_bytes<=0;end
    else if(start_valid && start_ready)begin
     active<=row_bytes!=0;left<=row_bytes;held_valid<=0;held_last<=0;
    end else begin
     if(chunk_valid && chunk_ready)begin held_valid<=0;if(held_last)active<=0;end
     if(beat_valid && beat_ready)begin
-     held_data<=beat_data;held_bytes<=take;held_last<=left<=32;
+     held_bytes<=take;held_last<=left<=32;
      left<=left-take;held_valid<=1;
     end
    end

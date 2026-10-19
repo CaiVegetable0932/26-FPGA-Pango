@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-20T00:35:27.074274+08:00",
+  "promoted_file": "rtl/memory/dma_byte_unpack.v",
+  "before_sha256": "a27750d08200708e596a0eab39df18aab2e5f610aa096b9a72f56ab7db9094df",
+  "after_sha256": "b1f42994faa79f7e6ca7ee1ce9c8b34f2707c4b4a9110fdaf919b4a5c7b56592",
+  "source_files_bound": 290,
+  "model_inputs_bound": 72,
+  "model": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261020_001232_095496",
+  "regression": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261020_001153_047628",
+  "host_report": "D:\\XDU\\concept\\26-FPGA-Pango\\host\\reports\\fpga_rgb_vectors_20261020_003432_815058.json",
+  "median_pnr_reduction_percent": 13.636363636363635,
+  "target_30_percent_met": false,
+  "whole_design_route_allowed": false,
+  "reason": "Modest consistent three-seed real-reader improvement, full functional and byte proofs passed"
+}

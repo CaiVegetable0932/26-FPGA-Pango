@@ -1,0 +1,39 @@
+{
+  "constraints": [
+    {
+      "file": "constraints/ddr_native.fdc",
+      "sha256": "576123be6bfc7adf772f11134181d33c2c9aefa1c99a16880dd956b0dc2f8cc4",
+      "matches_validated_baseline": true
+    },
+    {
+      "file": "constraints/ddr_board_pins.fdc",
+      "sha256": "dd1b6f82d3f984747b2d3486247c1ef593c2e2cf52d2592f2dcd531ed0134135",
+      "matches_validated_baseline": true
+    },
+    {
+      "file": "constraints/video_system/board_pins.fdc",
+      "sha256": "f6057521a813d53e05da2eecc1f297de4bdf513fd315e8d3535550f43d4796a3",
+      "matches_validated_baseline": true
+    },
+    {
+      "file": "constraints/video_system/clocks_cdc.fdc",
+      "sha256": "ecce7782818ac02c24a39bb539c12654227f4f61e0494a9d9c27aeeb81f078b6",
+      "matches_validated_baseline": true
+    },
+    {
+      "file": "constraints/placement.fdc",
+      "sha256": "e7c714fc82724777101e1a2891a77765aeefce26c65ee69696f60248d6d6c17b",
+      "matches_validated_baseline": true
+    },
+    {
+      "file": "constraints/routing.rcf",
+      "sha256": "11d36709811515e7c7bfc8855548e53dee85074e9187a8918702ae8db24600e8",
+      "matches_validated_baseline": true
+    }
+  ],
+  "processing_clock_mhz": 125,
+  "target_150_mhz_signed_off": false,
+  "source_clock_connection": "pango_video_system.core.clk=ddr_clk from I_ips_ddr_top.core_clk",
+  "official_phy_modified": false,
+  "board_io_timing_signed_off": false
+}

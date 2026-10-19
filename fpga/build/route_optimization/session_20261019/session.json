@@ -105,10 +105,10 @@
     "proof": "differential_20261019_221418_033659",
     "passed": true,
     "checks": 300000,
-    "promoted": false,
+    "promoted": true,
     "unit_screen": "fpga/build/route_optimization/unpack_local_capture_20261019_221324_680300/unit_screen_20261019_224446_969878",
     "fixed_pin_route": "regional_route_20261019_225549_860601",
-    "decision": "CLEAN_FINALIST_FULL_FRAME_PENDING",
+    "decision": "PROMOTED_SINGLE_FILE_AFTER_COMPLETE_FUNCTIONAL_PROOF",
     "reader_context_route": "unit_screen_20261019_233122_395009/regional_route_20261019_234111_668461",
     "reader_wirelength": [
       10613,
@@ -135,7 +135,10 @@
     "target_30_percent_met": false,
     "clean_snapshot": "session_20261019/unpack_finalist/source",
     "regression": "sim_20261020_001153_047628",
-    "full_frame_model": "verilator_20261020_001232_095496"
+    "full_frame_model": "verilator_20261020_001232_095496",
+    "full_frame_passed": true,
+    "host_report": "host/reports/fpga_rgb_vectors_20261020_003432_815058.json",
+    "snapshot_bytes_identical_to_baseline": true
   },
   "icarus_full_frame_supplement": {
     "path": "fpga/build/full_integration_20261013/sim_20261019_214646_986066",
@@ -149,16 +152,20 @@
     "display_underflows": 0,
     "host_report": "host/reports/fpga_rgb_vectors_20261019_221953_362056.json"
   },
-  "canonical_rtl_change_count": 11,
+  "canonical_rtl_change_count": 12,
   "canonical_regression": {
-    "path": "fpga/build/full_integration_20261013/sim_20261019_224436_927540",
+    "path": "fpga/build/full_integration_20261013/sim_20261020_001153_047628",
     "passed": true,
-    "tests": 20
+    "tests": 20,
+    "binding": "all 290 main sources match tested finalist"
   },
   "canonical_full_model_binding": {
-    "path": "fpga/build/full_integration_20261013/verilator_20261019_170927_184682",
-    "all_72_inputs_match": true,
-    "passed": true
+    "path": "fpga/build/full_integration_20261013/verilator_20261020_001232_095496",
+    "all_inputs_match": true,
+    "passed": true,
+    "display_pixels": 22809600,
+    "display_failed": 0,
+    "display_underflow": 0
   },
   "first_round_selection": {
     "dma_grouped": "WITHHELD_STALLED_IN_AUTO_PIN_FIXTURE",
