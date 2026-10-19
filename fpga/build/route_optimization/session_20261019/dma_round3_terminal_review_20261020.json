@@ -1,0 +1,17 @@
+{
+  "candidate": "round3_B_cursor_plus_stats",
+  "result": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_cursor_stats_20261019_234450_843063\\owner_unit_probe_20261020_002531_993874\\regional_route_20261020_012352_959075\\result.json",
+  "completed": true,
+  "timing_clean": false,
+  "setup_slack_ns": -0.482,
+  "hold_slack_ns": -0.029,
+  "fixed_pins_verified": true,
+  "inputs_intact": true,
+  "wirelength": [
+    "213971"
+  ],
+  "promoted": false,
+  "decision": "REJECT_TIMING_FAILURE",
+  "no_acceleration_ratio": true,
+  "reason": "No same-budget completed timing-clean baseline; critical path local cursor through mask and useful_write_bytes accounting."
+}

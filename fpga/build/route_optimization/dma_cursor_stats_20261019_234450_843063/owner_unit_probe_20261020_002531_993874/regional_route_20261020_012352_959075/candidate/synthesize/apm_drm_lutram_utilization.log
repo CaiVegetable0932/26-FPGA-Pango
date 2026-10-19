@@ -1,0 +1,83 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+Detailed RTL Component Info :
+-----Module Name :
+                    regional_wrapper
+
+-----RAMs :
+            512 Bit    (16 x 32 bit)          RAMs := 7
+            4K Bit    (16 x 256 bit)          RAMs := 7
+
+Distributed RAM and Block RAM: Final Mapping Report
+|------------------------------|------------------------|-------------------|---------|
+| DPRAM Inst Name              | Size (Depth x Width)   | Primitives        | Count   |
+|------------------------------|------------------------|-------------------|---------|
+| dut/client_bank[0].masks     | 16 x 32                |                   |         |
+|                              | 16 x 2                 | GTP_RAM32X2DP     | 16      |
+|------------------------------|------------------------|-------------------|---------|
+| dut/client_bank[1].masks     | 16 x 32                |                   |         |
+|                              | 16 x 2                 | GTP_RAM32X2DP     | 16      |
+|------------------------------|------------------------|-------------------|---------|
+| dut/client_bank[2].masks     | 16 x 32                |                   |         |
+|                              | 16 x 2                 | GTP_RAM32X2DP     | 16      |
+|------------------------------|------------------------|-------------------|---------|
+| dut/client_bank[3].masks     | 16 x 32                |                   |         |
+|                              | 16 x 2                 | GTP_RAM32X2DP     | 16      |
+|------------------------------|------------------------|-------------------|---------|
+| dut/client_bank[4].masks     | 16 x 32                |                   |         |
+|                              | 16 x 2                 | GTP_RAM32X2DP     | 16      |
+|------------------------------|------------------------|-------------------|---------|
+| dut/client_bank[5].masks     | 16 x 32                |                   |         |
+|                              | 16 x 2                 | GTP_RAM32X2DP     | 16      |
+|------------------------------|------------------------|-------------------|---------|
+| dut/client_bank[6].masks     | 16 x 32                |                   |         |
+|                              | 16 x 2                 | GTP_RAM32X2DP     | 16      |
+|------------------------------|------------------------|-------------------|---------|
+
+|--------------------------------|------------------------|-------------------|-------------------|-------------------|-------------------|
+| Inst Name                      | Size (Depth x Width)   | Write_Mode_A      | Write_Mode_B      | Ram_Mode          | Primitives        |
+|--------------------------------|------------------------|-------------------|-------------------|-------------------|-------------------|
+| dut/client_bank[0].payload     | 16 x 256               |                   |                   |                   |                   |
+|     client_bank[0].payload_0   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[0].payload_1   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[0].payload_2   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[0].payload_3   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|--------------------------------|------------------------|-------------------|-------------------|-------------------|-------------------|
+| dut/client_bank[1].payload     | 16 x 256               |                   |                   |                   |                   |
+|     client_bank[1].payload_0   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[1].payload_1   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[1].payload_2   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[1].payload_3   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|--------------------------------|------------------------|-------------------|-------------------|-------------------|-------------------|
+| dut/client_bank[2].payload     | 16 x 256               |                   |                   |                   |                   |
+|     client_bank[2].payload_0   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[2].payload_1   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[2].payload_2   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[2].payload_3   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|--------------------------------|------------------------|-------------------|-------------------|-------------------|-------------------|
+| dut/client_bank[3].payload     | 16 x 256               |                   |                   |                   |                   |
+|     client_bank[3].payload_2   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[3].payload_0   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[3].payload_3   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[3].payload_1   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|--------------------------------|------------------------|-------------------|-------------------|-------------------|-------------------|
+| dut/client_bank[4].payload     | 16 x 256               |                   |                   |                   |                   |
+|     client_bank[4].payload_0   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[4].payload_1   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[4].payload_2   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[4].payload_3   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|--------------------------------|------------------------|-------------------|-------------------|-------------------|-------------------|
+| dut/client_bank[5].payload     | 16 x 256               |                   |                   |                   |                   |
+|     client_bank[5].payload_0   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[5].payload_1   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[5].payload_2   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[5].payload_3   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|--------------------------------|------------------------|-------------------|-------------------|-------------------|-------------------|
+| dut/client_bank[6].payload     | 16 x 256               |                   |                   |                   |                   |
+|     client_bank[6].payload_0   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[6].payload_1   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[6].payload_2   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|     client_bank[6].payload_3   | 16 x 64                | NORMAL_WRITE      | NORMAL_WRITE      | SIMPLE_DUAL_PORT  | GTP_DRM36K_E1     |
+|--------------------------------|------------------------|-------------------|-------------------|-------------------|-------------------|
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
