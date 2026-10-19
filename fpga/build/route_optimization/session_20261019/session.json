@@ -196,7 +196,7 @@
     "transport_tests_each": 10,
     "parameter_tests_each": 12,
     "promoted": false,
-    "status": "B_SYNTHESIS_RUNNING_A_PHYSICAL_PENDING",
+    "status": "A_FIXED_PIN_PHYSICAL_RUNNING_B_SYNTHESIS_PASS",
     "a_resources": {
       "baseline": {
         "LUT": 3950,
@@ -212,7 +212,14 @@
       }
     },
     "all_35_cursor_copies_preserved": true,
-    "cursor_invariant_proof_passed_both": true
+    "cursor_invariant_proof_passed_both": true,
+    "b_resources": {
+      "LUT": 3599,
+      "FF": 1535,
+      "DRM": 28,
+      "controlsets": 57
+    },
+    "b_synthesis_slack_ns": 0.427
   },
   "latest_hourly_report": "2026-10-19T23:48:00+08:00",
   "next_hourly_report": "2026-10-20T00:48:00+08:00",
@@ -237,5 +244,6 @@
       3.09
     ],
     "time_improvement_significant": false
-  }
+  },
+  "current_handoff": "fpga/reports/route_optimization_handoff_20261020.md"
 }
