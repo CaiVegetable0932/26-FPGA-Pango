@@ -224,3 +224,20 @@ Added 17 tiny PCF dependencies as a supplemental native-checkpoint closure witho
 - 双时钟完整1080p控制/快照/实际显示模型 `verilator_20261020_034441_923014` 正在运行。生产PLL/125MHz/DDR PHY未改；150MHz目标尚缺原生映射、实际PLL/联合冷复位、CDC约束及完整服务期限验收，不能称为已实现。
 
 当前唯一PDS为writer seed13；两个完整帧软件模型并行，不启动第二个PDS。实验目录 `fpga/experiments/proc150/` 不在生产RTL收集路径内。新模型闭包 `proc150_video_model_20261020_034322_763921` 位于 `fpga/build/route_optimization/`；所有未完成结果保持pending。
+
+
+## 2026-10-20 03:58 写入器单文件合入
+
+主设计从12项增加到13项：只合入 `fpga/rtl/memory/frame_pixel_writer.sv`，哈希 `dd089551cc79309e5175536c53f8efed36bfad7dba9438104365c6a1b5425f41`。完整signed乘积与两拍入口流水共同组成此候选；完整64位范围检查、像素精度、字节掩码、取消/排空均保留。每帧入口增加2拍，分段增加0拍。主设计实际时钟仍125MHz，整体布线/位流全部门槛未放行，整个方案尚未完成。
+
+- 功能：50组独立语义/字节/范围/取消/延迟检查、20项回归全部通过。
+- 三个区域seed11/7/13全部布通且内部多角STA通过，PnR分别50/63/58秒；没有时序合格的原始参考，不计算加速比。报告 `session_20261019/writer_three_seed_0358.json`。
+- 完整1080p控制/快照/实际显示 `verilator_20261020_033308_185785` PASS，22809600显示像素失败0/下溢0，3新帧8重复帧；几何周期4073517/3796435/4114261与旧主设计相同。
+- 主机报告 `host/reports/fpga_rgb_vectors_20261020_035641_996920.json` PASS，8888报文、12441600图像字节。datagrams/descriptor均与旧主设计逐字节相同，比较文件在模型目录 `snapshot_baseline_comparison.json`。
+- 合入前逐项核对290项当前输入、候选、回归、模型、主机伴随源码和区域输入；只原子替换writer，保留 `session_20261019/writer_pipeline_promotion_20261020/before_frame_pixel_writer.sv` 及 `promotion.json`。新主输入清单 `session_20261019/writer_pipeline_finalist/sources.json`，其源码实体仍位于writer候选的冻结 `source/`。
+
+150MHz实验第一组合的首个几何作业4470577个DDR周期，比125MHz基线更慢，不能采用；完整模型仍在收集后续场景。第二组合只把实验读CDC改为连续预取，生产显示读桥不变。八组读桥测试、三组真实几何字节检查及整机控制/快照小模型通过；精确150MHz完整帧模型 `verilator_20261020_035853_729207` 正在运行，未合入。
+
+第二组合闭包 `proc150_video_model_20261020_035612_841416`，模型将TB时间精度提高到1fs，避免旧3.333ns半周期实际约150.015MHz造成期限口径误差。旧模型保留其真实周期与结果，不追溯重标。原型原生affine SYN LUT8846/FF7055/APM85/物理DRM43，读/写CDC各DRM4、邮箱19FF；不是projective配置或整机预算，尚无该域物理/CDC签核。
+
+帧池8位计数分块11组差分及20回归通过，SYN LUT4190→4434、FF831→830、控制集25→21；区域A/B正在运行。其输入仍基于旧12项，后续若合入必须重新组成13项主设计并做完整验证，不能混用当前writer模型冒充组合通过。

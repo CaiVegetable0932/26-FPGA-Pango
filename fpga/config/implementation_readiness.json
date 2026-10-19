@@ -6,6 +6,6 @@
   "regional_physical_checks_allowed": true,
   "reason": "User requires the entire design plan to be complete before whole-design routing; regional validation is authorized.",
   "review_document": "fpga/reports/regional_verification_plan_20261019.md",
-  "simulation_note": "Canonical 12-file design includes the single-file unpack improvement. 20-case regression and full 1080p control/snapshot/actual-display model passed; all 290 sources match verified finalist. DMA design optimization remains in progress; final entire design is not selected/frozen.",
-  "updated_at": "2026-10-20T00:36:24.052911+08:00"
+  "simulation_note": "Canonical 13-change design includes unpack locality and the writer two-cycle admission pipeline. 20-case regression, full 1080p control/snapshot/actual-display model and host decoding passed with identical snapshot bytes. Three isolated writer seeds met internal timing. Entire plan, actual 150MHz integration and final composition are incomplete; whole routing remains prohibited.",
+  "updated_at": "2026-10-20T03:58:02.946637+08:00"
 }

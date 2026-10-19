@@ -10,6 +10,8 @@ def replace_once(text,old,new):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--baseline',type=Path,required=True)
+    parser.add_argument('--read-prefetch-proof',type=Path)
+    parser.add_argument('--exact-clock',action='store_true',help='Use femtosecond precision for the 150MHz model')
     args=parser.parse_args();fpga=Path(__file__).resolve().parents[1];baseline=args.baseline.resolve()
     names=json.loads((baseline/'sources.json').read_text())
     if len(names)!=290 or not all(hashlib.sha256((baseline/'source'/n).read_bytes()).hexdigest()==h for n,h in names.items()):
@@ -18,6 +20,17 @@ def main():
     shutil.copytree(baseline/'source',run/'source');source=run/'source'
     for n,d in [('geometry_processing_domain.sv','geometry'),('processing_job_cdc.sv','memory'),('dma_write_cdc.sv','memory')]:
         shutil.copyfile(fpga/'experiments/proc150/rtl'/n,source/'rtl'/d/n)
+    extra_names=[]
+    if args.read_prefetch_proof:
+        checked=json.loads((args.read_prefetch_proof/'result.json').read_text())
+        if not checked.get('passed') or len(checked.get('tests',[]))!=8 or any(
+            hashlib.sha256(Path(p).read_bytes()).hexdigest()!=h for p,h in checked['inputs'].items()):
+            raise ValueError('Complete intact prefetch proof required')
+        name='rtl/memory/dma_read_cdc_prefetch.sv';extra_names.append(name)
+        shutil.copyfile(fpga/'experiments/proc150/rtl/dma_read_cdc_prefetch.sv',source/name)
+        adapter=source/'rtl/geometry/geometry_processing_domain.sv'
+        adapter.write_text(replace_once(adapter.read_text(),'dma_read_cdc source_bridge(',
+            'dma_read_cdc_prefetch source_bridge('),encoding='utf-8',newline='\n')
     core=source/'rtl/board/video_memory_core.sv';text=core.read_text(encoding='utf-8')
     text=replace_once(text,' input clk,rst_n,controller_ready,',' input clk,rst_n,processing_clk,processing_rst_n,controller_ready,')
     # Move the immutable LUT boot writer as one local unit. Only its ready bit
@@ -51,6 +64,11 @@ def main():
  always @(negedge rst_n)processing_rst_n<=0;
  always @(negedge processing_clk)processing_rst_n<=rst_n;
 '''+text[pos:]
+    if args.exact_clock:
+        # A 1ps unit would round every half-cycle to 3.333ns (150.015MHz).
+        # Keep the real 6.666667ns target to femtosecond rounding instead.
+        text=replace_once(text,'`timescale 1ns/1ps','`timescale 1ns/1fs')
+        text=replace_once(text,'forever #3.333 processing_clk','forever #3.333333333 processing_clk')
     text=replace_once(text,'.clk(clk),.rst_n(rst_n),.controller_ready(','.clk(clk),.rst_n(rst_n),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),.controller_ready(')
     text=text.replace('dut.processor.geometry.coefficients','dut.processor.processor.geometry.coefficients')
     # The prior fixture looked one DDR edge after synchronous admission. With
@@ -62,11 +80,12 @@ def main():
     text=replace_once(text,'next_normal_frame(3,81);wait(dut.geo_valid && dut.geo_ready);@(posedge clk);@(negedge clk);',
         'next_normal_frame(3,81);wait(dut.geo_valid && dut.geo_ready);@(posedge clk);\n   wait(dut.processor.pv && dut.processor.pr);@(posedge processing_clk);@(negedge processing_clk);@(negedge clk);')
     tb.write_text(text,encoding='utf-8',newline='\n')
-    all_names=[*names,*['rtl/'+d+'/'+n for n,d in [('geometry_processing_domain.sv','geometry'),('processing_job_cdc.sv','memory'),('dma_write_cdc.sv','memory')]],'sim/tb_video_memory_core.sv','sim/video_core_display_fixture.sv']
+    all_names=[*names,*extra_names,*['rtl/'+d+'/'+n for n,d in [('geometry_processing_domain.sv','geometry'),('processing_job_cdc.sv','memory'),('dma_write_cdc.sv','memory')]],'sim/tb_video_memory_core.sv','sim/video_core_display_fixture.sv']
     hashes={n:hashlib.sha256((source/n).read_bytes()).hexdigest() for n in all_names}
     (run/'sources.json').write_text(json.dumps(hashes,indent=2))
     (run/'candidate.json').write_text(json.dumps(dict(experimental_only=True,production_instantiated=False,
-        baseline=str(baseline),processing_clock_period_ns=6.666,ddr_clock_period_ns=8,
+        baseline=str(baseline),processing_clock_period_ns=6.666666666 if args.exact_clock else 6.666,ddr_clock_period_ns=8,
+        exact_clock=args.exact_clock,read_prefetch_proof=str(args.read_prefetch_proof) if args.read_prefetch_proof else None,
         common_reset_assertion_required=True,pll_hardware_integrated=False,
         changed_production_files=[],input_count=len(hashes)),indent=2))
     shutil.copyfile(__file__,run/'prepare_script.py');print('PROC150_VIDEO_MODEL',run)

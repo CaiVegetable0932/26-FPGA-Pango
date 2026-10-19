@@ -10,6 +10,7 @@ def main():
     parser.add_argument('--session',type=Path,required=True)
     parser.add_argument('--proof',type=Path,nargs='*',default=[])
     parser.add_argument('--native-case',type=Path,nargs='*',default=[])
+    parser.add_argument('--native-synthesis',type=Path,nargs='*',default=[])
     parser.add_argument('--input-tree',type=Path,nargs='*',default=[])
     parser.add_argument('--file',type=Path,nargs='*',default=[])
     args=parser.parse_args();root=Path(__file__).resolve().parents[2]
@@ -25,14 +26,17 @@ def main():
         if not isinstance(d.get('passed'),bool):raise ValueError('Proof must have a terminal pass/fail record')
         small(folder)
     for folder in args.input_tree:small(folder.resolve())
-    for case in args.native_case:
+    for case in [*args.native_case,*args.native_synthesis]:
         case=case.resolve();d=json.loads((case/'result.json').read_text())
-        if not d.get('completed'):raise ValueError('Physical case must be terminal and complete')
+        synthesis=case in [p.resolve() for p in args.native_synthesis]
+        if not (d.get('passed') if synthesis else d.get('completed')):
+            raise ValueError('Native case must be terminal and complete')
         small(case);target=case/('native_checkpoints_'+args.label+'.zip');members={}
         if target.exists():raise ValueError('Never overwrite frozen archives')
         with zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
-            for j in d['jobs']:
-                for p in sorted((case/j['label']).rglob('*')):
+            builds=[case/'synthesize'] if synthesis else [case/j['label'] for j in d['jobs']]
+            for build in builds:
+                for p in sorted(build.rglob('*')):
                     if p.is_file() and (p.suffix.lower() in {'.adf','.vm','.snr','.dmr','.prr','.rtr','.prt','.netlist','.pcf'} or 'CongestionNetInfo' in p.name):
                         name=p.relative_to(case).as_posix();z.write(p,name);members[name]=dict(bytes=p.stat().st_size,sha256=sha(p))
         with zipfile.ZipFile(target) as z:

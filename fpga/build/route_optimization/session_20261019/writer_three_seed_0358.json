@@ -1,0 +1,39 @@
+{
+  "sample_count": 3,
+  "all_candidate_internal_sta_pass": true,
+  "records": [
+    {
+      "seed": 11,
+      "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_candidate_screen_20261020_032507_179978\\unit_screen\\regional_route_20261020_032713_550985",
+      "timing_clean": true,
+      "native_pnr_seconds": 50,
+      "result_sha256": "fcf71eab26f3dae58726aa52447400c328a67686d42c7b97608f2cd64591c71a",
+      "wirelength": [
+        "22112"
+      ]
+    },
+    {
+      "seed": 7,
+      "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_candidate_screen_20261020_032507_179978\\unit_screen\\regional_route_20261020_034224_150394",
+      "timing_clean": true,
+      "native_pnr_seconds": 63,
+      "result_sha256": "948836b6ebf9b869fd4eae024f4aeef58be4a8f22e209600d92d5e634df1d0b4",
+      "wirelength": [
+        "22148"
+      ]
+    },
+    {
+      "seed": 13,
+      "case": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\writer_candidate_screen_20261020_032507_179978\\unit_screen\\regional_route_20261020_034544_435841",
+      "timing_clean": true,
+      "native_pnr_seconds": 58,
+      "result_sha256": "1a99a3cfc417051a2a46d5b70c00bebd8f96198f3ea06b782db26e2fca084fe3",
+      "wirelength": [
+        "24410"
+      ]
+    }
+  ],
+  "baseline_timing_clean": false,
+  "acceleration_ratio": null,
+  "whole_design_signoff": false
+}

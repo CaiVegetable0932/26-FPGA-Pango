@@ -16,8 +16,8 @@ module frame_pixel_writer #(parameter TILED=0)(
  output dma_cancel,input done,output done_ready,input dma_error,dma_cancelled,
  input [31:0] done_tag
 );
- localparam IDLE=0,START_PACK=1,COLLECT=2,REQUEST=3,FEED=4,DRAIN=5,FINISH=6;
- reg [2:0] state;
+ localparam IDLE=0,START_PACK=1,COLLECT=2,REQUEST=3,FEED=4,DRAIN=5,FINISH=6,CHECK_SUM=7,CHECK_RANGE=8;
+ reg [3:0] state;
  reg [31:0] stride,generation,address;
  // Segment addresses follow the same raster/tile coordinate transitions.
  // Keep the active DMA address separate: 4KiB splits may advance it while
@@ -40,8 +40,30 @@ module frame_pixel_writer #(parameter TILED=0)(
  wire pack_start_ready,pack_pixel_ready,pack_valid,pack_last;
  wire [255:0] pack_data;wire [31:0] pack_strb;
  wire correct_pixel=in_x==x && in_y==y;
- wire [63:0] span_end={32'd0,frame_base}+({48'd0,frame_height}-1)*{32'd0,frame_stride}+
-  {48'd0,frame_width}*(frame_rgb888 ? 64'd3 : 64'd1);
+ // Height-1 is exactly -1..65534, including the rejected height=0
+ // case. A signed 17x33 product retains every input bit and its full result;
+ // sign extension restores the original modulo-2^64 negative-product value.
+ // The width/RGB term and final 64-bit round-up/range check are unchanged.
+ wire signed [16:0] preceding_rows=$signed({1'b0,frame_height})-17'sd1;
+ wire signed [49:0] row_span=preceding_rows*$signed({1'b0,frame_stride});
+ wire [63:0] width_span={48'd0,frame_width}*(frame_rgb888 ? 64'd3 : 64'd1);
+ // Only frame admission gains two cycles. Segment collection and DMA
+ // prefetch retain their old cadence. Elastic producers must hold pixels
+ // until in_ready; no request or pixel can be accepted before legality.
+ // Payload registers are written before their state becomes observable;
+ // cold reset invalidates the states without a new wide data-reset tree.
+ reg signed [49:0] row_span_q;
+ reg [63:0] width_span_q,rounded_span_q;
+ reg shape_bad_q;
+ always @(posedge clk)begin
+  if(rst_n && state==IDLE && frame_valid)begin
+   row_span_q<=row_span;width_span_q<=width_span;
+   shape_bad_q<=frame_width==0 || frame_height==0 || frame_width>4096 || frame_height>4096 ||
+    frame_base[4:0]!=0 || frame_stride[4:0]!=0 || frame_stride<frame_width*(frame_rgb888 ? 3:1);
+  end
+  if(rst_n && state==CHECK_SUM)
+   rounded_span_q<={32'd0,row_base}+{{14{row_span_q[49]}},row_span_q}+width_span_q+64'd31;
+ end
  assign frame_ready=state==IDLE;
  assign in_ready=state==COLLECT && pack_pixel_ready && !aborting && !frame_abort;
  assign req_valid=state==REQUEST,req_write=1,req_addr=address,req_tag=generation,req_beats=burst_beats;
@@ -87,11 +109,18 @@ module frame_pixel_writer #(parameter TILED=0)(
     IDLE:if(frame_valid)begin
      segment_address<=frame_base;row_base<=frame_base;tile_band_base<=frame_base;tile_top<=frame_base;stride<=frame_stride;generation<=frame_generation;rgb<=frame_rgb888;
      width<=frame_width;height<=frame_height;x<=0;y<=0;tile_x<=0;tile_y<=0;
-     aborting<=0;frame_failed<=0;accepted_pixels<=0;last_segment<=0;state<=START_PACK;
-     if(frame_width==0 || frame_height==0 || frame_width>4096 || frame_height>4096 ||
-        frame_base[4:0]!=0 || frame_stride[4:0]!=0 ||
-        frame_stride<frame_width*(frame_rgb888 ? 3:1) ||
-        ((span_end+31)&64'hffffffffffffffe0)>64'h100000000)begin frame_failed<=1;state<=FINISH;end
+     aborting<=0;frame_failed<=0;accepted_pixels<=0;last_segment<=0;state<=CHECK_SUM;
+
+    end
+    CHECK_SUM:begin
+     if(aborting || frame_abort)state<=FINISH;
+     else state<=CHECK_RANGE;
+    end
+    CHECK_RANGE:begin
+     if(aborting || frame_abort || shape_bad_q ||
+        (rounded_span_q&64'hffffffffffffffe0)>64'h100000000)begin
+      frame_failed<=1;state<=FINISH;
+     end else state<=START_PACK;
     end
     START_PACK:begin
      stored<=0;burst_start<=0;feed_index<=0;

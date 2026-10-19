@@ -1,0 +1,70 @@
+{
+  "passed": true,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\rtl\\memory\\dma_read_cdc.sv": "f79e17f0b3bc22648a3ae9900e6f49c466169b9af8ca5e89c7455eb345a1cdf0",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\experiments\\proc150\\rtl\\dma_read_cdc_prefetch.sv": "64c74aedfc17584a070ff697aafe549e6c06849ed4cb3b53c4791a3b3b33a88c",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_dma_read_cdc.sv": "c6eaeb5010d64770c8059cbecc41ce5728cd1e8eb435890f0df1b539e200c819"
+  },
+  "cycle_equivalent": false,
+  "production_changed": false,
+  "independent_byte_scoreboard": true,
+  "tests": [
+    {
+      "client_half_ns": 3.333,
+      "memory_half_ns": 4,
+      "phase_ns": 0.7,
+      "continuous": false,
+      "passed": true
+    },
+    {
+      "client_half_ns": 3.333,
+      "memory_half_ns": 4,
+      "phase_ns": 0.7,
+      "continuous": true,
+      "passed": true
+    },
+    {
+      "client_half_ns": 4,
+      "memory_half_ns": 3.333,
+      "phase_ns": 1.1,
+      "continuous": false,
+      "passed": true
+    },
+    {
+      "client_half_ns": 4,
+      "memory_half_ns": 3.333,
+      "phase_ns": 1.1,
+      "continuous": true,
+      "passed": true
+    },
+    {
+      "client_half_ns": 5,
+      "memory_half_ns": 3.1,
+      "phase_ns": 0,
+      "continuous": false,
+      "passed": true
+    },
+    {
+      "client_half_ns": 5,
+      "memory_half_ns": 3.1,
+      "phase_ns": 0,
+      "continuous": true,
+      "passed": true
+    },
+    {
+      "client_half_ns": 3.333,
+      "memory_half_ns": 4,
+      "phase_ns": 3.9,
+      "continuous": false,
+      "passed": true
+    },
+    {
+      "client_half_ns": 3.333,
+      "memory_half_ns": 4,
+      "phase_ns": 3.9,
+      "continuous": true,
+      "passed": true
+    }
+  ],
+  "inputs_intact": true
+}

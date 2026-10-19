@@ -1,0 +1,692 @@
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+W: Warning : The license will invalid in 14 days. In order not to affect your usage, please update the license in time.
+
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/prepare.pds'.
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate successfully.
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676 successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/dma_pixel_pack.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/dma_pixel_pack.v successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/clock.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/clock.fdc successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/regional_wrapper.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/regional_wrapper.sv successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc successfully.
+
+
+Executing : compile -top_module regional_wrapper -system_verilog
+
+
+Process "Compile" started.
+Current time: Tue Oct 20 03:45:46 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/prepare.pds'.
+License checkout: fabric_ads from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling verification operator library.
+Loading technology operator library.
+Compiling technology operator library.
+Compiling technology operator (valence) library.
+I: Enable SystemVerilog features and keywords
+Start rtl-analyze.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv
+I: Verilog-0001: Analyzing file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv
+I: Verilog-0002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv(line number: 7)] Analyzing module frame_pixel_writer (library work)
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv(line number: 36)] Convert attribute name from syn_ramstyle to PAP_RAM_STYLE
+Parsing done.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv successfully.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/dma_pixel_pack.v
+I: Verilog-0001: Analyzing file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/dma_pixel_pack.v
+I: Verilog-0002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/dma_pixel_pack.v(line number: 7)] Analyzing module dma_pixel_pack (library work)
+Parsing done.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/dma_pixel_pack.v successfully.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/regional_wrapper.sv
+I: Verilog-0001: Analyzing file D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/regional_wrapper.sv
+I: Verilog-0002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/regional_wrapper.sv(line number: 2)] Analyzing module regional_wrapper (library work)
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/regional_wrapper.sv(line number: 4)] Convert attribute name from syn_preserve to PAP_PRESERVE
+I: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/regional_wrapper.sv(line number: 6)] Convert attribute name from syn_preserve to PAP_PRESERVE
+Parsing done.
+Executing : .rtl_analyze -work work -include_path {D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate} D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/regional_wrapper.sv successfully.
+I: Module "regional_wrapper" is set as top module.
+Executing : rtl-analyze successfully. Time elapsed: 1.774s wall, 0.000s user + 0.031s system = 0.031s CPU (1.8%)
+
+Start rtl-elaborate.
+I: Verilog-0003: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/regional_wrapper.sv(line number: 2)] Elaborating module regional_wrapper
+I: Verilog-0004: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/regional_wrapper.sv(line number: 10)] Elaborating instance dut
+I: Verilog-0003: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv(line number: 7)] Elaborating module frame_pixel_writer
+I: Module instance {regional_wrapper/dut} parameter value:
+    TILED = 32'b00000000000000000000000000000000
+I: Verilog-0004: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv(line number: 76)] Elaborating instance pack
+I: Verilog-0003: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/dma_pixel_pack.v(line number: 7)] Elaborating module dma_pixel_pack
+Executing : rtl-elaborate successfully. Time elapsed: 0.013s wall, 0.000s user + 0.016s system = 0.016s CPU (121.3%)
+
+Start rtl-prep.
+Executing : rtl-prep successfully. Time elapsed: 0.073s wall, 0.078s user + 0.000s system = 0.078s CPU (106.9%)
+
+Start rtl-infer.
+Start DFF-inference.
+W: Sdm-2000: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv(line number: 99)] Removed register node dut/stored[2] that is stuck at constant 0.
+Executing : DFF-inference successfully.
+I: Sdm-0001: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/writer.sv(line number: 91)] Found Ram segment_cache, depth=4, width=288.
+Executing : rtl-infer successfully. Time elapsed: 0.415s wall, 0.312s user + 0.078s system = 0.391s CPU (94.2%)
+
+Start rtl-control-opt.
+Executing : rtl-control-opt successfully. Time elapsed: 0.019s wall, 0.016s user + 0.000s system = 0.016s CPU (82.1%)
+
+Start rtl-data-opt.
+Executing : rtl-data-opt successfully. Time elapsed: 0.086s wall, 0.078s user + 0.000s system = 0.078s CPU (90.4%)
+
+Start FSM inference.
+Executing : FSM inference successfully. Time elapsed: 0.014s wall, 0.016s user + 0.000s system = 0.016s CPU (113.4%)
+
+Start sdm2adm.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+W: Loop was found during constant probe.
+I: Constant propagation done on N3850 (bmsPMUX).
+I: Constant propagation done on N1624 (bmsWIDEMUX).
+I: Constant propagation done on N1695 (bmsREDAND).
+I: Constant propagation done on N1728 (bmsREDAND).
+I: Constant propagation done on N1767 (bmsREDAND).
+I: Constant propagation done on N1799 (bmsREDAND).
+I: Constant propagation done on N1832 (bmsREDAND).
+I: Constant propagation done on N1864 (bmsREDAND).
+I: Constant propagation done on N1896 (bmsREDAND).
+I: Constant propagation done on N1927 (bmsREDAND).
+Executing : sdm2adm successfully. Time elapsed: 0.173s wall, 0.141s user + 0.016s system = 0.156s CPU (90.3%)
+
+Saving design to DB.
+Action compile: Real time elapsed is 0h:0m:5s
+Action compile: CPU time elapsed is 0h:0m:1s
+Action compile: Process CPU time elapsed is 0h:0m:1s
+Current time: Tue Oct 20 03:45:50 2026
+Action compile: Peak memory pool usage is 153 MB
+Action from compile to compile: Total Real Time elapsed is 0h:0m:5s
+Action from compile to compile: Total CPU time elapsed is 0h:0m:1s
+Action from compile to compile: Total Process CPU Time elapsed is 0h:0m:1s
+Process "Compile" done.
+Executing : compile -top_module regional_wrapper -system_verilog successfully.
+
+
+Executing : synthesize -ads -fanout_guide 64 -rw_check_on_ram -resource_sharing false -selected_syn_tool_opt 2
+
+
+Process "Synthesize" started.
+Current time: Tue Oct 20 03:45:50 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/prepare.pds'.
+License checkout: fabric_ads from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling verification operator library.
+Compiling common defs.
+Loading technology operator library.
+Compiling technology operator library.
+Compiling technology operator (valence) library.
+Reading design from compile DB
+Reading design from compile DB successfully.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 148538
+
+Constraint check start.
+Compiling prim grid devices.
+Building architecture model.
+Loading device packaging model.
+Building architecture floorplan logic view.
+Executing : get_ports clk
+Executing : get_ports clk successfully.
+Executing : create_clock -name clk -period 8.000 [get_ports clk]
+Executing : create_clock -name clk -period 8.000 [get_ports clk] successfully.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 93)] | Port scan_in[16] has been placed at location H24, whose type is share pin.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 103)] | Port scan_in[18] has been placed at location E23, whose type is share pin.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 108)] | Port scan_in[19] has been placed at location J24, whose type is share pin.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 173)] | Port scan_out[0] has been placed at location N16, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[0] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[0] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 178)] | Port scan_out[1] has been placed at location J25, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[1] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[1] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 183)] | Port scan_out[2] has been placed at location N18, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[2] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[2] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 188)] | Port scan_out[3] has been placed at location R17, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[3] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[3] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[4] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[4] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 198)] | Port scan_out[5] has been placed at location G26, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[5] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[5] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[6] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[6] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 208)] | Port scan_out[7] has been placed at location E25, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[7] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[7] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 213)] | Port scan_out[8] has been placed at location F23, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[8] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[8] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 218)] | Port scan_out[9] has been placed at location G24, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[9] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[9] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 223)] | Port scan_out[10] has been placed at location N17, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[10] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[10] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 228)] | Port scan_out[11] has been placed at location P14, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[11] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[11] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[12] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[12] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 238)] | Port scan_out[13] has been placed at location D25, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[13] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[13] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 243)] | Port scan_out[14] has been placed at location K23, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[14] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[14] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 248)] | Port scan_out[15] has been placed at location G25, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[15] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[15] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 253)] | Port scan_out[16] has been placed at location F24, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[16] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[16] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 258)] | Port scan_out[17] has been placed at location P16, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[17] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[17] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[18] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[18] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 268)] | Port scan_out[19] has been placed at location R14, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[19] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[19] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[20] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[20] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 278)] | Port scan_out[21] has been placed at location H26, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[21] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[21] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 283)] | Port scan_out[22] has been placed at location J26, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[22] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[22] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[23] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[23] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 293)] | Port scan_out[24] has been placed at location P18, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[24] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[24] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[25] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[25] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 303)] | Port scan_out[26] has been placed at location R15, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[26] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[26] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 308)] | Port scan_out[27] has been placed at location N14, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[27] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[27] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[28] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[28] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[29] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[29] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/scan_pins.fdc(line number: 323)] | Port scan_out[30] has been placed at location R16, whose type is share pin.
+C: ConstraintEditor-2009: p:scan_out[30] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[30] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: p:scan_out[31] is lack of PAP_IO_DRIVE, OUTPUT or INOUT PORT had better set PAP_IO_DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2009: p:scan_out[31] is lack of PAP_IO_SLEW, OUTPUT or INOUT PORT had better set PAP_IO_SLEW, the optional value is {FAST, SLOW}.
+Constraint check end.
+
+Start pre-mapping.
+I: Removed bmsADD inst N356_1 that is redundant to N353
+I: Removed bmsADD inst N366_1 that is redundant to N353
+I: Removed bmsSIGNMULT inst N79 that is redundant to N37
+Executing : pre-mapping successfully. Time elapsed: 0.026s wall, 0.031s user + 0.000s system = 0.031s CPU (118.9%)
+
+Start mod-gen.
+I: Constant propagation done on dut/N733 (bmsREDAND).
+I: Constant propagation done on dut/pack/N3853 (bmsREDAND).
+I: Constant propagation done on out_xor (bmsREDXOR).
+I: Constant propagation done on out_xor_1 (bmsREDXOR).
+I: Constant propagation done on out_xor_2 (bmsREDXOR).
+I: Constant propagation done on out_xor_3 (bmsREDXOR).
+I: Constant propagation done on out_xor_4 (bmsREDXOR).
+I: Constant propagation done on out_xor_5 (bmsREDXOR).
+I: Constant propagation done on out_xor_6 (bmsREDXOR).
+I: Constant propagation done on out_xor_7 (bmsREDXOR).
+I: Removed bmsADD inst dut/N332_0 that is redundant to dut/N313_2
+Executing : mod-gen successfully. Time elapsed: 0.582s wall, 0.547s user + 0.125s system = 0.672s CPU (115.4%)
+
+Start logic-optimization.
+W: Removed bmsWIDEDFFCPE inst dut/pack/bytes_q[279:0] at 272 that is stuck at constant 0.
+W: Removed bmsWIDEDFFCPE inst dut/pack/bytes_q[279:0] at 273 that is stuck at constant 0.
+W: Removed bmsWIDEDFFCPE inst dut/pack/bytes_q[279:0] at 274 that is stuck at constant 0.
+W: Removed bmsWIDEDFFCPE inst dut/pack/bytes_q[279:0] at 275 that is stuck at constant 0.
+W: Removed bmsWIDEDFFCPE inst dut/pack/bytes_q[279:0] at 276 that is stuck at constant 0.
+W: Removed bmsWIDEDFFCPE inst dut/pack/bytes_q[279:0] at 277 that is stuck at constant 0.
+W: Removed bmsWIDEDFFCPE inst dut/pack/bytes_q[279:0] at 278 that is stuck at constant 0.
+W: Removed bmsWIDEDFFCPE inst dut/pack/bytes_q[279:0] at 279 that is stuck at constant 0.
+W: Removed bmsWIDEDFFCPE inst dut/pack/mask_q[34:0] at 34 that is stuck at constant 0.
+Executing : logic-optimization successfully. Time elapsed: 3.251s wall, 2.312s user + 0.844s system = 3.156s CPU (97.1%)
+
+Start tech-mapping phase 1.
+W: Public-4008: Instance 'dut/pack/mask_q[34]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/rounded_span_q[0]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/rounded_span_q[1]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/rounded_span_q[2]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/rounded_span_q[3]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/rounded_span_q[4]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[24]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[25]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[26]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[27]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[28]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[29]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[30]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[31]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[32]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[33]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[34]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[35]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[36]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[37]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[38]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[39]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[40]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[41]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[42]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[43]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[44]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[45]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[46]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[47]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[48]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/row_span_q[49]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[20]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[21]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[22]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[23]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[24]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[25]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[26]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[27]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[28]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[29]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[30]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[31]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[32]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[33]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[34]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[35]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[36]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[37]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[38]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[39]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[40]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[41]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[42]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[43]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[44]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[45]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[46]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[47]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[48]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[49]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[50]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[51]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[52]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[53]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[54]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[55]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[56]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[57]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[58]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[59]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[60]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[61]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[62]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/width_span_q[63]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/burst_start[2]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/pack/bytes_q[272]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/pack/bytes_q[273]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/pack/bytes_q[274]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/pack/bytes_q[275]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/pack/bytes_q[276]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/pack/bytes_q[277]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/pack/bytes_q[278]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'dut/pack/bytes_q[279]' of 'bmsWIDEDFFCPE' unit is dangling and will be cleaned.
+I: Removed GTP_DFF_CE inst dut/remaining_beats[3] that is redundant to dut/burst_beats[3]
+I: Removed GTP_DFF_CE inst dut/remaining_beats[4] that is redundant to dut/burst_beats[4]
+Executing : tech-mapping phase 1 successfully. Time elapsed: 0.174s wall, 0.156s user + 0.016s system = 0.172s CPU (98.6%)
+
+Start tech-mapping phase 2.
+Executing : tech-mapping phase 2 successfully. Time elapsed: 1.905s wall, 1.812s user + 0.219s system = 2.031s CPU (106.6%)
+
+Start tech-optimization.
+W: Unable to honor max fanout constraint for gtp_inv driven net dut/N205
+W: Unable to honor max fanout constraint for gtp_inv driven net dut/N205
+Executing : tech-optimization successfully. Time elapsed: 0.378s wall, 0.344s user + 0.188s system = 0.531s CPU (140.5%)
+
+Start phys-optimization.
+Executing : phys-optimization successfully. Time elapsed: 0.000s wall, 0.000s user + 0.000s system = 0.000s CPU (n/a%)
+
+Start restore-hierarchy.
+Executing : restore-hierarchy successfully. Time elapsed: 0.065s wall, 0.062s user + 0.000s system = 0.062s CPU (96.2%)
+
+W: Unable to honor max fanout constraint for gtp_inv driven net N205
+W: Unable to honor max fanout constraint for gtp_inv driven net N205
+
+Cell Usage:
+GTP_APM_E2                    3 uses
+GTP_DFF                     673 uses
+GTP_DFF_C                   318 uses
+GTP_DFF_CE                  278 uses
+GTP_DFF_E                   104 uses
+GTP_DRM36K_E1                 4 uses
+GTP_GRS                       1 use
+GTP_INV                       1 use
+GTP_LUT1                      5 uses
+GTP_LUT2                     15 uses
+GTP_LUT3                     38 uses
+GTP_LUT4                    191 uses
+GTP_LUT5                    105 uses
+GTP_LUT6                    505 uses
+GTP_LUT6CARRY               450 uses
+GTP_LUT6D                    80 uses
+GTP_MUX2LUT7                 64 uses
+GTP_MUX2LUT8                 32 uses
+
+I/O ports: 70
+GTP_INBUF                  38 uses
+GTP_OUTBUF                 32 uses
+
+Mapping Summary:
+Total LUTs: 1389 of 66600 (2.09%)
+	LUTs as dram: 0 of 19900 (0.00%)
+	LUTs as logic: 1389
+Total Registers: 1373 of 133200 (1.03%)
+Total Latches: 0
+
+DRM36K/FIFO:
+Total DRM = 4.0 of 155 (2.58%)
+
+APMs:
+Total APMs = 3.00 of 240 (1.25%)
+
+Total I/O ports = 70 of 300 (23.33%)
+
+
+Overview of Control Sets:
+
+Number of unique control sets : 14
+
+Histogram:
+**************************************************************
+  Fanout      | Count    | Sync Set/Reset    Async Set/Reset
+--------------------------------------------------------------
+  [0, 2)      | 0        | 0                 0
+  [2, 4)      | 3        | 0                 3
+  [4, 6)      | 1        | 0                 1
+  [6, 8)      | 0        | 0                 0
+  [8, 10)     | 1        | 0                 1
+  [10, 12)    | 0        | 0                 0
+  [12, 14)    | 0        | 0                 0
+  [14, 16)    | 0        | 0                 0
+  [16, Inf)   | 9        | 3                 6
+--------------------------------------------------------------
+  The maximum fanout: 673
+==============================================================
+
+Flip-Flop Distribution:
+************************************************************************
+  Clock Enable    Sync Set/Reset    Async Set/Reset    Total Registers
+------------------------------------------------------------------------
+  NO              NO                NO                 673
+  NO              NO                YES                318
+  NO              YES               NO                 0
+  YES             NO                NO                 104
+  YES             NO                YES                278
+  YES             YES               NO                 0
+========================================================================
+
+Latch Distribution:
+************************************************
+  Gate Enable    Preset/Clear    Total Latches
+************************************************
+  NO             NO              0
+  NO             YES             0
+  YES            NO              0
+  YES            YES             0
+************************************************
+
+Design 'regional_wrapper' has been successfully synthesized to architecture-specific objects.
+Saving design to DB.
+Saving design to regional_wrapper_syn.vm
+Constructing timing graph ...
+Timing graph has been constructed successfully
+W: Timing-4087: Port 'scan_out[0]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[1]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[2]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[3]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[4]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[5]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[6]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[7]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[8]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[9]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[10]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[11]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[12]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[13]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[14]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[15]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[16]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[17]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[18]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[19]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[20]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[21]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[22]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[23]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[24]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[25]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[26]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[27]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[28]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[29]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[30]' is not constrained, it is treated as combinational output.
+W: Timing-4087: Port 'scan_out[31]' is not constrained, it is treated as combinational output.
+W: Timing-4086: Port 'rst_n' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[0]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[1]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[2]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_addr[3]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[0]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[1]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[2]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[3]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[4]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[5]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[6]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[7]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[8]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[9]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[10]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[11]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[12]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[13]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[14]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[15]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[16]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[17]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[18]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[19]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[20]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[21]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[22]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[23]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[24]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[25]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[26]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[27]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[28]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[29]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[30]' is not constrained, it is treated as combinational input.
+W: Timing-4086: Port 'scan_in[31]' is not constrained, it is treated as combinational input.
+Action synthesize: Real time elapsed is 0h:0m:17s
+Action synthesize: CPU time elapsed is 0h:0m:13s
+Action synthesize: Process CPU time elapsed is 0h:0m:13s
+Current time: Tue Oct 20 03:46:06 2026
+Action synthesize: Peak memory pool usage is 386 MB
+Action from compile to synthesize: Total Real Time elapsed is 0h:0m:22s
+Action from compile to synthesize: Total CPU time elapsed is 0h:0m:14s
+Action from compile to synthesize: Total Process CPU Time elapsed is 0h:0m:14s
+Process "Synthesize" done.
+Executing : synthesize -ads -fanout_guide 64 -rw_check_on_ram -resource_sharing false -selected_syn_tool_opt 2 successfully.
+
+
+Executing : dev_map
+
+
+Process "Device Map" started.
+Current time: Tue Oct 20 03:46:06 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/route_optimization/writer_candidate_screen_20261020_032507_179978/unit_screen/regional_route_20261020_034544_435841/candidate/prepare.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Loading technology operator library.
+Compiling technology operator library.
+Compiling technology operator (valence) library.
+Compiling operator packing rules.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Compiling tech operator impls.
+Building architecture model.
+Loading device packaging model.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 148538
+
+Flattening design 'regional_wrapper'
+W: Public-4008: Instance 'scan_inputs[225]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[226]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[227]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[228]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[229]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[230]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[231]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[232]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[233]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[234]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[235]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[236]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[237]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[238]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[239]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[240]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[241]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[242]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[243]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[244]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[245]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[246]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[247]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[248]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[249]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[250]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[251]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[252]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[253]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[254]' of 'GTP_DFF' unit is dangling and will be cleaned.
+W: Public-4008: Instance 'scan_inputs[255]' of 'GTP_DFF' unit is dangling and will be cleaned.
+Device mapping started.
+Optimizing circuit logic.
+I: Const net (pin RSTP of inst dut/N31_m2) has been disconnected.
+Checking design netlist.
+Processing tech operator.
+I: The instance clkbufg_0(GTP_CLKBUFG) has been inserted on the net nt_clk in design, driver pin O(instance clk_ibuf) -> load pin CLK(instance dut/N31_m2).
+Converting tech operator to gate operator.
+Processing gate operator.
+I: Infer CARRY group, base inst: dut/N12_0.fsub_1/gateop, insts:15.
+I: Infer CARRY group, base inst: dut/N13.eq_0/gateop, insts:8.
+I: Infer CARRY group, base inst: dut/N19_0.fsub_1/gateop, insts:15.
+I: Infer CARRY group, base inst: dut/N20.eq_0/gateop, insts:8.
+I: Infer CARRY group, base inst: dut/N22.eq_0/gateop, insts:8.
+I: Infer CARRY group, base inst: dut/N23.eq_0/gateop, insts:8.
+I: Infer CARRY group, base inst: dut/N27_0.fsub_1/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N80.lt_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N98_1/gateop, insts:51.
+I: Infer CARRY group, base inst: dut/N99_1/gateop, insts:64.
+I: Infer CARRY group, base inst: dut/N101_0_3/gateop, insts:61.
+I: Infer CARRY group, base inst: dut/N300_0_1/gateop, insts:31.
+I: Infer CARRY group, base inst: dut/N313_2_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N324_0_1/gateop, insts:15.
+I: Infer CARRY group, base inst: dut/N325_1/gateop, insts:32.
+I: Infer CARRY group, base inst: dut/N327_0_0/gateop, insts:27.
+I: Infer CARRY group, base inst: dut/N360_0.fsub_3/gateop, insts:10.
+I: Infer CARRY group, base inst: dut/N437.eq_0/gateop, insts:16.
+I: Infer CARRY group, base inst: dut/N452_0_0/gateop, insts:28.
+I: Infer CARRY group, base inst: dut/N455.fsub_1/gateop, insts:5.
+I: Infer APM group, base inst: dut/N31_m1/gopapm, insts:2.
+Device Utilization Summary:
++------------------------------------------------------------------------+
+| Logic Utilization     | Used     | Available     | Utilization(%)     
++------------------------------------------------------------------------+
+| APM                   | 3        | 240           | 2                  
+| FF                    | 1342     | 133200        | 2                  
+| LUT                   | 1389     | 66600         | 3                  
+| Distributed RAM       | 0        | 19900         | 0                  
+| DRM                   | 4        | 155           | 3                  
+| IO                    | 70       | 300           | 24                 
+| RCKB                  | 0        | 24            | 0                  
+| SCANCHAIN             | 0        | 1             | 0                  
+| USCM                  | 1        | 32            | 4                  
+| CCS                   | 1        | 1             | 100                
+| ADC                   | 0        | 1             | 0                  
+| DDR_PHY               | 0        | 24            | 0                  
+| HSSTLP                | 0        | 2             | 0                  
+| GPLL                  | 0        | 6             | 0                  
+| PPLL                  | 0        | 6             | 0                  
+| DDRPHY_CPD            | 0        | 12            | 0                  
+| HCKB                  | 0        | 96            | 0                  
+| IOCKB                 | 0        | 24            | 0                  
+| MRCKB                 | 0        | 12            | 0                  
+| PCIE                  | 0        | 1             | 0                  
+| DDRPHY_IOCLK_DIV      | 0        | 6             | 0                  
+| ANALOG                | 0        | 1             | 0                  
+| TSERDES               | 0        | 48            | 0                  
+| KEYRAM                | 0        | 1             | 0                  
++------------------------------------------------------------------------+
+
+Device mapping done.
+Total device mapping takes 0.20 sec.
+
+Design 'regional_wrapper' has been successfully mapped to architecture-specific objects.
+Saving design to DB.
+Action dev_map: Real time elapsed is 0h:0m:12s
+Action dev_map: CPU time elapsed is 0h:0m:9s
+Action dev_map: Process CPU time elapsed is 0h:0m:9s
+Current time: Tue Oct 20 03:46:17 2026
+Action dev_map: Peak memory pool usage is 354 MB
+Action from compile to dev_map: Total Real Time elapsed is 0h:0m:34s
+Action from compile to dev_map: Total CPU time elapsed is 0h:0m:23s
+Action from compile to dev_map: Total Process CPU Time elapsed is 0h:0m:23s
+Process "Device Map" done.
+Executing : dev_map successfully.

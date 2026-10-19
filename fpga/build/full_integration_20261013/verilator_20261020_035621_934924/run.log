@@ -1,0 +1,9 @@
+FRAME_GEOMETRY job=1 geometry_cycles=4161
+FRAME_GEOMETRY job=2 geometry_cycles=3447
+FRAME_GEOMETRY job=3 geometry_cycles=4138
+GEOMETRY_BUDGET jobs=3 max_cycles=4161 clock_hz=125000000 minimum_fps=30
+TB_VIDEO_MEMORY_CORE_PASS bytes=3465 good=3 processed=3 geometry_cycles=4138
+- D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261020_035621_934924/source/sim\tb_video_memory_core.sv:219: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.52
+- Verilator: $finish at 300us; walltime 1.059 s; speed 283.306 us/s
+- Verilator: cpu 1.000 s on 1 threads; allocated 82 MB

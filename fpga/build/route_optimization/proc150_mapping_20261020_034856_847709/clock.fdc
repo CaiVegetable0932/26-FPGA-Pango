@@ -1,0 +1,2 @@
+create_clock -name memory_clk -period 8.000 [get_ports clk]
+create_clock -name processing_clk -period 6.666667 [get_ports processing_clk]
