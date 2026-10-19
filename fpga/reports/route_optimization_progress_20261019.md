@@ -91,4 +91,18 @@ The first DMA physical fixture failed mapping DRC because raw top ports lacked I
 
 Review round 2: `fpga/build/route_optimization/unpack_local_capture_20261019_221324_680300` changes only the aligned unpack capture control, retaining all payload resets and original edge timing. Its strict differential proof `differential_20261019_221418_033659` passed 300,000 comparisons over both parameter branches and three seeds, including long stalls, simultaneous consume/refill, partial tails and mid-stream resets. It is NOT PROMOTED; synthesis and physical screening remain pending. The main integrated source still contains the preceding 13-file set.
 
-Common whole-design routes and direct timed-database bitgen now enforce the readiness gate. No whole-design PnR or bitstream generation is allowed while design completion is false. The plan remains incomplete; regional validation continues. The next hourly report remains approximately 22:48 China time.
+Common whole-design routes and direct timed-database bitgen now enforce the readiness gate. No whole-design PnR or bitstream generation is allowed while design completion is false. The plan remains incomplete; regional validation continues.
+
+## 2026-10-19 23:48 hourly checkpoint
+
+Canonical design is restored to the 11-file writer baseline. Both first-round additions were withheld and rolled back. Fresh 20-case regression `sim_20261019_224436_927540` passed; all 72 inputs of the previously passing baseline full-frame model match current source bytes. Whole-design routing remains stopped; no bitstream generation or programming has occurred. Account quota observation at 23:48: 42% remaining; shared 10% stop remains active.
+
+Earlier auto-pin boot/DMA physical comparisons had different actual package pins and are preliminary. Subsequent experiments freeze identical diagnostic pins, wrapper, 8 ns clock and native settings and verify the final pin mapping. This is isolated internal timing evidence, not board signoff.
+
+Round-2 unpack candidate passed strict differential simulation but is not promoted. Standalone PnR 35→34 seconds is too small to establish a useful improvement. Real RGB reader context `unit_screen_20261019_233122_395009/regional_route_20261019_234111_668461` completed both sides with internal constraints met and fixed pins verified; placement wirelength increased 10,613→11,032. Keep the canonical unpack design.
+
+Round-2 local wait-statistics candidate reduced synthesis LUTs by 166 relative to grouped DMA, but fixed-pin detailed routing stalled after 1,050.547 seconds. Best unrouted count was 1,430, followed by five rounds without improvement. Reference completed routing but failed setup/hold. Neither is a qualifying successful implementation; do not claim acceleration or promote it. Evidence: `dma_local_wait_stats_20261019_222919_171043/owner_unit_probe_20261019_224815_958515/regional_route_20261019_230100_405717`.
+
+Round 3 targets the measured shared beat-index hotspot, using two candidates based on canonical DMA rather than the withheld grouped structure: `dma_local_cursor_20261019_234450_385383` and `dma_cursor_stats_20261019_234450_843063`. A mirrors the exact post-edge cursor into client-local scalar registers; RAM type, latency and reset semantics remain unchanged. B adds local wait-statistics comparisons relative to A. Both passed 10 transport/readback differential scenarios and 12 parameter tests. A synthesis is in progress; neither is promoted. No unattended seed sweep is authorized.
+
+Latest checkpoint commit `0b45b46ae6c3f5d5cb3e3d3ac7f83e8137e049a1` was verified on the remote branch. Progress/handoff and later regional evidence will be committed in the next checkpoint. Clock scope remains pending user clarification: actual 125 MHz equal-constraint optimization versus adding the planned 150 MHz domain/CDC architecture. No clock or PHY change is assumed.

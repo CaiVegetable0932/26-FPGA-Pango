@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "cycle_equivalent": true,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\source\\rtl\\memory\\ddr_native_dma.v": "505d55bee869560cb8ca4e185c0cdf44c45d18fdf29ab28ba0b5aa70b6ee87a7",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\original_ddr_native_dma.v": "52f12a6f4110cf99b87dbdfdecf62dd75a8b31d0f00e815e2598cdec2481ea30",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\source\\rtl\\memory\\frame_manager_pkg.sv": "4d93591a7cd365243bad3347165a6ed9708fdd0ce5a6daa84470fe8c744a6f2e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\source\\rtl\\memory\\frame_manager_layout.vh": "729ae9f63f1cccdcb244dbad3fc5eafe59ce5ee11ea4da0aa69cb18d037c2973",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\source\\rtl\\memory\\frame_pool_bank.sv": "f445700f24a71e203e31fe20849965ccb15885d4b17fe383e39fc3ecf5f8b1b1",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\source\\rtl\\memory\\frame_manager.sv": "b2211c685d787f7c0e105aac6dcf6e821293899e0065561422a7bc05ed6c2165",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\source\\rtl\\memory\\frame_memory_fabric.sv": "a8b7c7d403eb9d69f3677dc5ab21ad4f65e159aab140c9631a4fb272e481c37d",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261019_224436_927540\\source\\tb_ddr_native_dma.sv": "b397dff2da2c2ed14aec8a73feaac6a9cee7872b756ebcdd324b4c6f055b1e14",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261019_224436_927540\\source\\tb_frame_memory_fabric.sv": "d29fa066e20f0d3cd883f36c7ea76cbf639c9869305c81d8446dd3d3e40ddf02"
+  },
+  "tests": [
+    "transport_4_42",
+    "transport_4_177",
+    "transport_4_2718",
+    "transport_8_42",
+    "transport_8_177",
+    "transport_8_2718",
+    "transport_16_42",
+    "transport_16_177",
+    "transport_16_2718",
+    "full_readback"
+  ],
+  "scope": "Frozen DMA original versus candidate; common frame-bank implementation is not claimed cycle-equivalent to its older version",
+  "owner_onehot_invariant_checked": false,
+  "inputs_intact": true
+}

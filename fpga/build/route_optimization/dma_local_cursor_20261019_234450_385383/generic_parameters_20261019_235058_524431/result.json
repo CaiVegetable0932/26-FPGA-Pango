@@ -1,0 +1,72 @@
+{
+  "passed": true,
+  "cycle_equivalent": true,
+  "wrapper_proof": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\differential_20261019_234527_296143",
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_dma_grouped_parameters.sv": "0a6a876fe453a94aa116857acd9d111f2e85bfa9417bbf37efc26fb1a19e36ec",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_local_cursor_20261019_234450_385383\\differential_20261019_234527_296143\\ddr_native_dma.v": "9bb24086f6f2de77a03723a841704273fb268d04fc1f70600d7296cdf313cda2"
+  },
+  "tests": [
+    {
+      "clients": 1,
+      "verify": 0,
+      "passed": true
+    },
+    {
+      "clients": 1,
+      "verify": 1,
+      "passed": true
+    },
+    {
+      "clients": 2,
+      "verify": 0,
+      "passed": true
+    },
+    {
+      "clients": 2,
+      "verify": 1,
+      "passed": true
+    },
+    {
+      "clients": 3,
+      "verify": 0,
+      "passed": true
+    },
+    {
+      "clients": 3,
+      "verify": 1,
+      "passed": true
+    },
+    {
+      "clients": 5,
+      "verify": 0,
+      "passed": true
+    },
+    {
+      "clients": 5,
+      "verify": 1,
+      "passed": true
+    },
+    {
+      "clients": 7,
+      "verify": 0,
+      "passed": true
+    },
+    {
+      "clients": 7,
+      "verify": 1,
+      "passed": true
+    },
+    {
+      "clients": 8,
+      "verify": 0,
+      "passed": true
+    },
+    {
+      "clients": 8,
+      "verify": 1,
+      "passed": true
+    }
+  ],
+  "inputs_intact": true
+}

@@ -1,0 +1,12 @@
+{
+  "review_round": 3,
+  "status": "FUNCTIONAL_PROOF_REQUIRED_NOT_PROMOTED",
+  "with_local_stats": true,
+  "reference": "local_cursor_A",
+  "changed_files": [
+    "rtl/memory/ddr_native_dma.v"
+  ],
+  "expected_scalar_copies": "CLIENTS*5",
+  "extra_payload_latency_cycles": 0,
+  "storage_type_unchanged": true
+}

@@ -1,0 +1,93 @@
+{
+  "passed": true,
+  "routed": false,
+  "board_timing_signoff": false,
+  "proof": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\differential_20261019_221418_033659",
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\original_dma_byte_unpack.v": "a27750d08200708e596a0eab39df18aab2e5f610aa096b9a72f56ab7db9094df",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\source\\rtl\\memory\\dma_byte_unpack.v": "b1f42994faa79f7e6ca7ee1ce9c8b34f2707c4b4a9110fdaf919b4a5c7b56592",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\source\\rtl\\network\\raw_dma_reader.sv": "8a0dc44c080ccacc94b4d02cef283326fa917407ebdbc9c68fc87895fc3ea408"
+  },
+  "clock_period_ns": 8.0,
+  "jobs": [
+    {
+      "label": "baseline",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 30.061999999999898,
+        "pid": 23016,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\unit_screen_20261019_233122_395009\\baseline\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "error_count": 0,
+      "errors": []
+    },
+    {
+      "label": "candidate",
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 30.04699999999866,
+        "pid": 44196,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\unit_screen_20261019_233122_395009\\candidate\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "requested_timeout_seconds": 1200,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      },
+      "error_count": 0,
+      "errors": []
+    }
+  ],
+  "top": "raw_dma_reader",
+  "reader_context": true,
+  "parameters": {
+    "WIDTH": 5760,
+    "HEIGHT": 1080,
+    "STRIDE": 6144,
+    "ALIGNED_ROWS": 1
+  },
+  "baseline": {
+    "resources": {
+      "LUT": 592,
+      "FF": 685,
+      "controlsets": 11,
+      "DRM": 0.0
+    },
+    "report_sha256": "b222da134961164764497bb6c7fed05f67f38e8ed7c566649d2a7da45520da7e"
+  },
+  "candidate": {
+    "resources": {
+      "LUT": 602,
+      "FF": 697,
+      "controlsets": 15,
+      "DRM": 0.0
+    },
+    "report_sha256": "01283a4a1f97b9359029d6f578c62c4eb555d90c0d76c6d1f09f6361ef753942"
+  },
+  "inputs_intact": true
+}
