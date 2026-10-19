@@ -1,0 +1,113 @@
+{
+  "passed": true,
+  "routed": false,
+  "board_timing_signoff": false,
+  "proof": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\differential_20261019_210254_623005",
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\original_ddr_native_dma.v": "52f12a6f4110cf99b87dbdfdecf62dd75a8b31d0f00e815e2598cdec2481ea30",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\source\\rtl\\memory\\ddr_native_dma.v": "bb8d1423bb9015941d88ffee29db74241bb9d0d22b8f3e812259bacb071caa97"
+  },
+  "jobs": [
+    {
+      "label": "baseline",
+      "exit": 0,
+      "errors": [],
+      "residual_shells": 0,
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 390.2970000000005,
+        "pid": 42744,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\owner_unit_probe_20261019_214842_425939\\baseline\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      }
+    },
+    {
+      "label": "candidate",
+      "exit": 0,
+      "errors": [],
+      "residual_shells": 0,
+      "supervision": {
+        "status": "COMPLETED",
+        "returncode": 0,
+        "elapsed_seconds": 60.0630000000001,
+        "pid": 25568,
+        "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\owner_unit_probe_20261019_214842_425939\\candidate\\synthesis_monitor.jsonl",
+        "policy": {
+          "timeout_seconds": 1200,
+          "warning_seconds": 960.0,
+          "poll_seconds": 30,
+          "stall_enabled": false,
+          "stall_window": 5,
+          "stall_minimum_unrouted": 1000,
+          "stall_minimum_improvement": 0.01,
+          "warmup_rounds": 5,
+          "baseline_success_seconds": null,
+          "baseline_acceleration_claim": false,
+          "no_log_investigation_seconds": 600
+        }
+      }
+    }
+  ],
+  "baseline": {
+    "resources": {
+      "LUT": 3950,
+      "FF": 1508,
+      "LUTRAM": 112,
+      "controlsets": 51,
+      "DRM": 28.0
+    },
+    "timing_rows": [
+      [
+        "0.216",
+        "0.000",
+        "0",
+        "5111"
+      ],
+      [
+        "0.552",
+        "0.000",
+        "0",
+        "5111"
+      ]
+    ],
+    "report_sha256": "73376ad196ac21771cb46a665f6f1bc187d94d5b9bc3b6c09953de2ded97300e"
+  },
+  "candidate": {
+    "resources": {
+      "LUT": 4047,
+      "FF": 1512,
+      "LUTRAM": 112,
+      "controlsets": 51,
+      "DRM": 28.0
+    },
+    "timing_rows": [
+      [
+        "0.211",
+        "0.000",
+        "0",
+        "5119"
+      ],
+      [
+        "0.552",
+        "0.000",
+        "0",
+        "5119"
+      ]
+    ],
+    "report_sha256": "d2a7e795bfa090e53679a1af77cfc335c79e4d60a9283a9f2d3bcf4f55bb7189"
+  },
+  "inputs_intact": true
+}

@@ -15,6 +15,7 @@ import subprocess
 import sys
 from package_video_system import verified_geometry_budget, verified_display_evidence
 from resume_video_system import verified_planning_help
+from implementation_readiness import require_whole_design_ready
 
 
 def now():
@@ -60,6 +61,8 @@ def main():
     parser.add_argument('--installed-pnr-help',type=Path,
                         help='Frozen target-specific native help required with module planning')
     args=parser.parse_args()
+    # Do not launch a complete design while regional design work is pending.
+    require_whole_design_ready()
     if not 1 <= args.phase_timeout_minutes <= 1440:
         parser.error('--phase-timeout-minutes must be 1..1440')
     # Reject unverified optional policies before creating a campaign or lock.

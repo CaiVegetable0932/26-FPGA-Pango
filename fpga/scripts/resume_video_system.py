@@ -9,6 +9,7 @@ import shutil
 import subprocess
 from native_bitgen import generate_from_timed_database
 from route_supervisor import run_supervised
+from implementation_readiness import require_whole_design_ready
 
 
 def verified_planning_help(path):
@@ -71,6 +72,8 @@ def main():
     parser.add_argument('--pin-cost-increasing-speed', type=int,
                         help='Explicit native congestion-pin cost increment; native default is 300')
     args = parser.parse_args()
+    # Resuming an old MAP must respect the same gate as a fresh full attempt.
+    require_whole_design_ready()
     if args.planning_before_place != (args.installed_pnr_help is not None):
         parser.error('--planning-before-place and --installed-pnr-help must be supplied together')
     planning_help_sha256 = verified_planning_help(args.installed_pnr_help) if args.planning_before_place else None

@@ -9,6 +9,18 @@ from optimization_status import latest_quota,record_status
 
 class QuotaTests(unittest.TestCase):
     """Quota percentages must come from explicit account events."""
+    def test_reserve_stops_regional_and_whole_design_jobs(self):
+        # Regional authorization must never bypass the shared account reserve.
+        root=Path(__file__).resolve().parents[1]/'build/route_optimization'
+        with tempfile.TemporaryDirectory(dir=root) as directory:
+            session=Path(directory)
+            quota=dict(available=True,remaining_percent=10,at='2026-10-19T12:00:00Z')
+            with patch('optimization_status.latest_quota',return_value=quota):
+                result=record_status(session,session)
+            self.assertTrue(result['stop_new_optimization'])
+            for name in ('stop_requested.json','regional_stop_requested.json'):
+                self.assertEqual(json.loads((session/name).read_text())['quota'],quota)
+
     def test_both_windows_and_newest_event(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)/'events.jsonl'

@@ -66,3 +66,14 @@ Git transport uses per-command `-c http.proxy=http://127.0.0.1:7897 -c http.sslB
 This later instruction supersedes the simulation-only restriction above: regional synthesis and isolated regional placement/routing A/B tests are authorized. Whole-design routing and bitstream generation remain forbidden until the entire design plan is complete. Keep the whole-design stop file intact. Regional jobs use `regional_stop_requested.json`; at the account reserve threshold both kinds of jobs must stop. Do not restart the old automatic queue. Run regional screens sequentially under the native-slot supervisor, compare identical boundaries/constraints, and report results as isolated evidence rather than board signoff.
 
 Combined canonical 20-case regression passed; additional runtime-control scenario passed at `fpga/build/full_integration_20261013/sim_20261019_214713_180909`. The 1920x1080 snapshot simulation remains running. DMA baseline/candidate regional synthesis started in `fpga/build/route_optimization/dma_grouped_20261019_210245_219923/owner_unit_probe_20261019_214842_425939`.
+
+
+## 2026-10-19 22:03 regional checkpoint
+
+Whole-design entry points now enforce `fpga/config/implementation_readiness.json` before starting or resuming physical work. Its completion/review/permission flags remain false. A real invocation of the resume entry point was rejected before any build mutation or native launch. Regional physical probes only allow `ddr_native_dma` and `pc_video_boot`; they cannot generate bitstreams.
+
+Regional verification matrix: `fpga/reports/regional_verification_plan_20261019.md`. DMA A/B synthesis completed with inputs intact: baseline LUT 3950 / FF 1508 / DRM 28 / controlsets 51; grouped candidate LUT 4047 / FF 1512 / DRM 28 / controlsets 51. Synthesis clock slack estimate changed 0.216 to 0.211 ns (slow row), with 0.552 ns unchanged in the second row. This is not routed timing and does not yet establish a locality benefit. Do not add isolated resources to board totals.
+
+DMA isolated physical A/B is running under `owner_unit_probe_20261019_214842_425939/regional_route_20261019_215701_945412`, bounded to 20 minutes per side including fresh compile/synthesis/map/PnR/STA. Its dynamic boundary has no diagnostic IO insertion; raw internal reports must be reviewed. No whole-design PnR is running. Combined-source Verilator model at `verilator_20261019_215712_138161` is checking full-frame control, snapshot and actual display RTL with one C++ build job. Both this model and the separate full-frame Icarus snapshot simulation remain pending.
+
+Quota monitor tests: 6 passed, including the shared 10% stop for regional and whole-design jobs. Its active watcher was restarted after the regional reserve change. Supplemental evidence in commit `0e9e4755751abfd25f70389c7ef991749a8ca469` was pushed and all 344 frozen supplementary file hashes match Git objects.

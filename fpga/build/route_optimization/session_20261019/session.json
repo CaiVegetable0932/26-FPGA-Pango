@@ -32,6 +32,10 @@
     {
       "commit": "7ffb6639dd6b47bf309c40336676e9b2d807da9c",
       "pushed": true
+    },
+    {
+      "commit": "0e9e4755751abfd25f70389c7ef991749a8ca469",
+      "pushed": true
     }
   ],
   "next_hourly_report_approx": "2026-10-19T21:48:00+08:00",
@@ -44,5 +48,29 @@
     "tests": 20
   },
   "regional_builds_allowed": true,
-  "whole_design_builds_allowed": false
+  "whole_design_builds_allowed": false,
+  "design_readiness": {
+    "complete": false,
+    "whole_design_route_allowed": false,
+    "bitstream_allowed": false,
+    "regional_physical_checks_allowed": true,
+    "requirements": [
+      "Every plan region reviewed with explicit disposition",
+      "All selected RTL changes frozen and functional simulation passed",
+      "Integrated performance/model and protocol proof bound to selected source",
+      "Resource budget and real clock/CDC constraints reviewed",
+      "Notify user that the design phase is complete before handing off whole-design routing"
+    ]
+  },
+  "regional_validation": {
+    "dma_synthesis": "fpga/build/route_optimization/dma_grouped_20261019_210245_219923/owner_unit_probe_20261019_214842_425939",
+    "dma_route_status": "RUNNING_ISOLATED_ONLY",
+    "dma_synthesis_delta": {
+      "LUT": 97,
+      "FF": 4,
+      "DRM": 0,
+      "controlsets": 0
+    },
+    "full_frame_model": "fpga/build/full_integration_20261013/verilator_20261019_215712_138161"
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "design_complete": false,
+  "selected_source_simulation_passed": false,
+  "resource_and_constraints_reviewed": false,
+  "whole_design_route_allowed": false,
+  "regional_physical_checks_allowed": true,
+  "reason": "User requires the entire design plan to be complete before whole-design routing; regional validation is authorized.",
+  "review_document": "fpga/reports/regional_verification_plan_20261019.md",
+  "simulation_note": "Current combined RTL passed 20 integration tests and runtime-control simulation. Final selected source is not yet frozen; full-frame supplementary simulations are running.",
+  "updated_at": "2026-10-19T22:01:00+08:00"
+}
