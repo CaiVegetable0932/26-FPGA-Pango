@@ -1,0 +1,23 @@
+{
+  "passed": false,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\original_frame_pool_bank.sv": "f445700f24a71e203e31fe20849965ccb15885d4b17fe383e39fc3ecf5f8b1b1",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\source\\rtl\\memory\\frame_pool_bank.sv": "88438b7986441cc5b8e67fba929561e495ddf2e285404082642ec09337dd5716",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\source\\rtl\\memory\\frame_manager_pkg.sv": "4d93591a7cd365243bad3347165a6ed9708fdd0ce5a6daa84470fe8c744a6f2e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\pool_local_tokens_20261020_014909_011108\\source\\rtl\\memory\\frame_manager_layout.vh": "729ae9f63f1cccdcb244dbad3fc5eafe59ce5ee11ea4da0aa69cb18d037c2973",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_frame_manager_pressure.sv": "645b508d3498af9ba2c922f5fe096109c17bf3f1af9692572958985413f83c51",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_frame_metadata_read.sv": "91286b72dbe23d4db82ddc12778d13ed72b2373676303bf48f48be249fbde444",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\sim\\tb_frame_ticket_rollover.sv": "ebf4856dbbb4c700359834e1dcbf09f0138a38104fc1115e7f2e4966259c49c9"
+  },
+  "four_state": true,
+  "all_response_bits_compared": true,
+  "mirror_checked_on_both_edges": true,
+  "fixture_ticket_deposits_mirrored": 2,
+  "tests": [
+    {
+      "name": "tb_frame_manager_pressure",
+      "passed": true
+    }
+  ],
+  "inputs_intact": true
+}
