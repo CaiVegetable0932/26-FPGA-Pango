@@ -1,0 +1,138 @@
+{
+  "observed_at": "2026-10-19T13:36:29.314464+00:00",
+  "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261019_205545_289460",
+  "source_log": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261019_205545_289460\\resume_20261019_205546_788682\\place_route.log",
+  "source_log_sha256": "8c2ec5d619546d67eb2006f29d467d19b27ee5cddbf9d96b6a4010b122008fd0",
+  "frozen_plot_log": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\session_20261019\\route_convergence_snapshot.native.log",
+  "rounds": [
+    {
+      "iteration": 0,
+      "unrouted": 75520,
+      "cpu_seconds": 25.375,
+      "best_unrouted": 75520,
+      "native_dump_utc": "2026-10-19T13:10:53.800914+00:00"
+    },
+    {
+      "iteration": 1,
+      "unrouted": 72409,
+      "cpu_seconds": 24.71875,
+      "best_unrouted": 72409,
+      "native_dump_utc": "2026-10-19T13:11:21.471832+00:00"
+    },
+    {
+      "iteration": 2,
+      "unrouted": 69169,
+      "cpu_seconds": 25.28125,
+      "best_unrouted": 69169,
+      "native_dump_utc": "2026-10-19T13:11:49.732672+00:00"
+    },
+    {
+      "iteration": 3,
+      "unrouted": 66444,
+      "cpu_seconds": 27.78125,
+      "best_unrouted": 66444,
+      "native_dump_utc": "2026-10-19T13:12:20.547277+00:00"
+    },
+    {
+      "iteration": 4,
+      "unrouted": 63684,
+      "cpu_seconds": 31.25,
+      "best_unrouted": 63684,
+      "native_dump_utc": "2026-10-19T13:12:54.953311+00:00"
+    },
+    {
+      "iteration": 5,
+      "unrouted": 61346,
+      "cpu_seconds": 39.703125,
+      "best_unrouted": 61346,
+      "native_dump_utc": "2026-10-19T13:13:39.311625+00:00"
+    },
+    {
+      "iteration": 6,
+      "unrouted": 58257,
+      "cpu_seconds": 46.15625,
+      "best_unrouted": 58257,
+      "native_dump_utc": "2026-10-19T13:14:30.463118+00:00"
+    },
+    {
+      "iteration": 7,
+      "unrouted": 55461,
+      "cpu_seconds": 52.53125,
+      "best_unrouted": 55461,
+      "native_dump_utc": "2026-10-19T13:15:28.062750+00:00"
+    },
+    {
+      "iteration": 8,
+      "unrouted": 52909,
+      "cpu_seconds": 60.671875,
+      "best_unrouted": 52909,
+      "native_dump_utc": "2026-10-19T13:16:35.303307+00:00"
+    },
+    {
+      "iteration": 9,
+      "unrouted": 50175,
+      "cpu_seconds": 70.65625,
+      "best_unrouted": 50175,
+      "native_dump_utc": "2026-10-19T13:17:53.224760+00:00"
+    },
+    {
+      "iteration": 10,
+      "unrouted": 48416,
+      "cpu_seconds": 79.875,
+      "best_unrouted": 48416,
+      "native_dump_utc": "2026-10-19T13:19:19.537940+00:00"
+    },
+    {
+      "iteration": 11,
+      "unrouted": 46762,
+      "cpu_seconds": 88.796875,
+      "best_unrouted": 46762,
+      "native_dump_utc": "2026-10-19T13:20:54.674840+00:00"
+    },
+    {
+      "iteration": 12,
+      "unrouted": 45220,
+      "cpu_seconds": 97.40625,
+      "best_unrouted": 45220,
+      "native_dump_utc": "2026-10-19T13:22:38.550385+00:00"
+    },
+    {
+      "iteration": 13,
+      "unrouted": 44009,
+      "cpu_seconds": 123.125,
+      "best_unrouted": 44009,
+      "native_dump_utc": "2026-10-19T13:24:51.321206+00:00"
+    },
+    {
+      "iteration": 14,
+      "unrouted": 42844,
+      "cpu_seconds": 132.484375,
+      "best_unrouted": 42844,
+      "native_dump_utc": "2026-10-19T13:27:16.135432+00:00"
+    },
+    {
+      "iteration": 15,
+      "unrouted": 41625,
+      "cpu_seconds": 139.9375,
+      "best_unrouted": 41625,
+      "native_dump_utc": "2026-10-19T13:29:48.692832+00:00"
+    },
+    {
+      "iteration": 16,
+      "unrouted": 40563,
+      "cpu_seconds": 140.671875,
+      "best_unrouted": 40563,
+      "native_dump_utc": "2026-10-19T13:32:20.773500+00:00"
+    },
+    {
+      "iteration": 17,
+      "unrouted": 39485,
+      "cpu_seconds": 154.65625,
+      "best_unrouted": 39485,
+      "native_dump_utc": "2026-10-19T13:35:07.295949+00:00"
+    }
+  ],
+  "routed_signoff": false,
+  "timing_signoff": false,
+  "note": "Native CPU values are per iteration. No successful baseline or speedup claim."
+}

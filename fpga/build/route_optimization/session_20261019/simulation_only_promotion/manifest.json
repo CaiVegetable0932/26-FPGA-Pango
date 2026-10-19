@@ -1,0 +1,17 @@
+{
+  "status": "functional_candidate_only_physical_benefit_unverified",
+  "files": [
+    {
+      "file": "fpga\\rtl\\memory\\ddr_native_dma.v",
+      "candidate": "fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\source\\rtl\\memory\\ddr_native_dma.v",
+      "before_sha256": "52f12a6f4110cf99b87dbdfdecf62dd75a8b31d0f00e815e2598cdec2481ea30",
+      "sha256": "bb8d1423bb9015941d88ffee29db74241bb9d0d22b8f3e812259bacb071caa97"
+    },
+    {
+      "file": "fpga\\rtl\\control\\pc_video_boot.sv",
+      "candidate": "fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\source\\rtl\\control\\pc_video_boot.sv",
+      "before_sha256": "663a237b8b6a68848da1751744af5717fd610b547bf399e575c27919c354ecb8",
+      "sha256": "82f19a6c4330d326d76ad56e7fb481d5b9a81e59102314e4cbc561c07a731486"
+    }
+  ]
+}

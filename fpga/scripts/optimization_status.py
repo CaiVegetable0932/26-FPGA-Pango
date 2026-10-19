@@ -69,14 +69,28 @@ def record_status(session, codex_sessions):
                   stop_new_optimization=stop, quota_fresh=age is not None and age < 300,
                   campaigns=[])
     for path in session.glob('*/campaign.json'):
-        state = json.loads(path.read_text(encoding='utf-8'))
+        # Legacy campaign writers truncate before publishing their next JSON.
+        # A transient partial ledger must not disable the quota watchdog.
+        try:
+            state = json.loads(path.read_text(encoding='utf-8'))
+        except (FileNotFoundError,json.JSONDecodeError):
+            record['campaigns'].append(dict(path=str(path),attempt=dict(phase='ledger_write_pending'),
+                                            monitor=None,observed_resources=None))
+            continue
         for attempt in state.get('attempts', []):
             build = Path(attempt['build'])
             monitors = sorted(build.glob('resume_*/*_monitor.jsonl'))
             current = None
             if monitors:
                 lines = monitors[-1].read_text(encoding='utf-8').splitlines()
-                current = json.loads(lines[-1]) if lines else None
+                # An append may be observed midway through its final line.
+                # Retain the most recent complete observation until next poll.
+                for line in reversed(lines):
+                    try:
+                        current=json.loads(line)
+                        break
+                    except json.JSONDecodeError:
+                        continue
             resources = process_resources(current['pid']) if current and current['status']=='RUNNING' else None
             record['campaigns'].append(dict(path=str(path), attempt=attempt,
                                            monitor=current, observed_resources=resources))
@@ -85,8 +99,11 @@ def record_status(session, codex_sessions):
     if stop:
         # Existing supervisors observe this explicit session stop request. It
         # applies only to builds launched with this session's --pause-file.
-        (session/'stop_requested.json').write_text(json.dumps(dict(
-            reason='Codex account remaining quota <= 10 percent', quota=quota), indent=2))
+        # Regional experiments have a separate user-authorization stop file;
+        # the account reserve must stop both regional and whole-design jobs.
+        for name in ('stop_requested.json', 'regional_stop_requested.json'):
+            (session/name).write_text(json.dumps(dict(
+                reason='Codex account remaining quota <= 10 percent', quota=quota), indent=2))
     return record
 
 

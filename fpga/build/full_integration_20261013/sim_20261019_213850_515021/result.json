@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "hardware_tested": false,
+  "board_integrated": false,
+  "full_frame_simulation": false,
+  "rtl_snapshot": "fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\source",
+  "snapshot_test": false,
+  "control_test": false,
+  "tests": [
+    "tb_frame_snapshot_pair",
+    "tb_frame_pixel_writer",
+    "tb_geometry_tile_refill",
+    "tb_geometry_native_integration",
+    "tb_geometry_frame_processor",
+    "tb_frame_memory_fabric",
+    "tb_frame_ticket_rollover",
+    "tb_ddr_native_dma",
+    "tb_video_memory_core",
+    "tb_frame_manager_pressure",
+    "tb_pc_runtime_control",
+    "tb_pc_video_boot"
+  ],
+  "acquire_wait_cycles": 0,
+  "board_client_limits": true
+}

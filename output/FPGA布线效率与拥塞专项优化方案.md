@@ -1,6 +1,6 @@
 # FPGA 布线效率与拥塞专项优化方案
 
-日期：2026-10-19。适用目标：PG2L100H、FBG676、-6，PDS 2022.2-SP6.4；具体 build、板卡版本和源码以每次构建清单为准。性质：实施与验收方案，尚未执行本轮 RTL 优化及对比构建。
+日期：2026-10-19。适用目标：PG2L100H、FBG676、-6，PDS 2022.2-SP6.4；具体 build、板卡版本和源码以每次构建清单为准。性质：实施与验收方案；初版仅规划，20:48 起用户已授权本轮实施、提交和推送。最新实测状态见[实施进度](../fpga/reports/route_optimization_progress_20261019.md)，续接入口见[实施交接](../fpga/reports/route_optimization_handoff_20261019.md)。尚未形成完整 routed/STA 验收结论。
 
 本轮目标是在满足既定功能、精度、吞吐、延迟和真实时序要求的前提下，优先缩短布局布线耗时、减少拥塞及长尾失败。允许增加 LUT、FF、APM（DSP）和 DRM 消耗，优先采用局部互连、规则流水和适配器件结构的写法；资源总量和局部布局仍必须可承受。不能承诺任意完整设计都能在固定分钟内成功，但必须限制每次实验等待时间，超时后转入诊断和结构修改，而不是无限等待。
 
@@ -15,6 +15,8 @@
 
 禁止降低精度、缩小输入、压缩原图、持续丢帧、删有效掩码、伪造同帧、放宽时钟或扩大 false path 来获得“优化”。功能范围不变时，不把软件替代板端运算计为成功。
 
+实施核对补充：现有完整工程和全帧模型的 DDR/处理时钟是 125 MHz。首轮拥塞实验按该既有真实约束建立可比基线，没有从 150 MHz 降频。上述 150 MHz 仍是待实现、待验收的处理目标；125 MHz 的模型或 STA 通过不能充当 150 MHz 签核。后续若建立独立处理域，应单列 CDC、服务期限和整机时钟验证，不改官方 DDR PHY 语义。
+
 ## 2 优先处理的已有证据
 
 以 10 月 18～19 日完整工程证据确定首轮优化对象，10 月 12 日隔离核仅作补充。以下只代表所记录快照，实施前核对当前源码哈希。
@@ -28,7 +30,7 @@
 | writer 上下文候选差分与 MAP 通过，但布局线长增加 28.33%，预估 WNS +0.534→+0.071 ns，已拒绝 | 不能重复将“共享上下文”当作必然有效优化；one-hot、加寄存器也必须做 A/B |
 | [换机交接](../fpga/reports/FPGA_P12换机布线交接文档_20261018.md)：原 P12 MAP 为 LUT 41,616、FF 40,440、APM 117、DRM 86 | 这是有业务规模的预算参考，但不是最终布线或时序签核 |
 
-[现有 writer BRAM 候选清单](../fpga/build/route_campaign_20261015/batch02/next_route_inputs_writer_bram.json)已记录模型、差分、回归和 MAP 证据，`proof_inputs_verified=true`；同时 `launch_authorized=false`、`new_builds_allowed=false`。本次只制定方案，不恢复旧任务或启动新布线。后续明确授权实施时，先复用并核对该候选证据，避免重复开发；现有 seed 11 为该组基准，不替换成隔离核的 seed 7。
+[现有 writer BRAM 候选清单](../fpga/build/route_campaign_20261015/batch02/next_route_inputs_writer_bram.json)已记录模型、差分、回归和 MAP 证据，`proof_inputs_verified=true`；同时 `launch_authorized=false`、`new_builds_allowed=false`，对应初版制定阶段的暂停状态，保留原记录。本轮用户明确授权实施后，已重新校验这些输入，在 `fpga/build/route_optimization/session_20261019/` 新建限时实验与授权账本，不恢复或篡改旧暂停任务。现有 seed 11 为该组基准，不替换成隔离核的 seed 7。
 
 第一批候选顺序：现有 writer BRAM → writer 分段存储与本地 WE → DMA owner/宽数据选择分层 → refill bank 本地译码 → token_busy、boot、业务复位与 calib_done 的局部分发。不得修改官方 DDR PHY 语义。逐项保持 reset/abort、4 KiB 拆分、帧身份和原有吞吐；已拒绝的 refill 窗口改写、DMA one-hot 和 writer 共享上下文不无理由重跑。
 
@@ -204,7 +206,7 @@ Vivado 的 Pblock、phys_opt、MAX_FANOUT、KEEP/DONT_TOUCH，Quartus 的 fitter
 4. 同功能候选通过后执行三 seed 小样本复验，冻结通过版本；再规划防抖与历史补全扩展。
 5. 任何任务失败都保存日志、变更及退回原因；不能以未完成的局部模块宣称整机实现。
 
-本次用户请求是制定方案；后续启动实施时按本节调度。硬件下载、板卡操作及既有告警放行仍遵循原约定，本方案不扩大硬件操作授权。
+本方案初版对应制定方案的请求；本轮实施按本节调度。用户要求每小时汇报，并在 Codex 账户剩余额度不高于 10% 时停止新增优化、保存进度和交接、提交并推送。额度依据本机会话的实际账户限额事件，缺失或过期时不能编造百分比；后台监控只导出额度字段，不导出会话或认证内容。硬件下载、板卡操作及既有告警放行仍遵循原约定，本轮没有新增硬件下载授权。
 
 ## 8 验收与交付
 
@@ -218,3 +220,8 @@ Vivado 的 Pblock、phys_opt、MAX_FANOUT、KEEP/DONT_TOUCH，Quartus 的 fitter
 - **效率门**：限时规则生效，有限 seed 内无长尾失败，耗时与基线可比；未达到改善目标明确报告，不使用选择性样本。
 
 规划继续放 `output/`；RTL、模型、脚本、配置、日志和测量报告全部归 `fpga/` 对应目录，跨端影响才修改 `host/` 或 `mcu/`。不新增 Git 忽略项，不修改官方资料，不自动提交或推送无关工作区变化。
+
+
+## 2026-10-19 regional implementation gate
+
+User authorizes regional synthesis and isolated regional routing only while this design plan is being implemented. Whole-design routing and bitstream generation must wait until the entire design plan has been completed. Functional simulations must pass before physical comparison; regional results cannot establish whole-board timing or congestion signoff.

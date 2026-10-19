@@ -43,3 +43,26 @@
 - 监督器补充原生父进程退出而子进程遗留的检测/回收；测试增至 7 项。额度读取覆盖工具产生的多个会话分片和大日志，4 项测试通过。额度观察约剩余 51%。
 - 复核用于云端交接的 1,442 个证据输入的 Git 暂存字节，SHA-256 全部匹配。为本轮两个 host 验证快照路径添加局部 `-text` 属性，避免 Git 换行转换破坏既有哈希；未新增忽略规则。
 - 时钟口径：本轮现有整机 DDR/处理模型按 125 MHz 的真实约束比较，未放宽原约束。方案提出的初始 150 MHz 处理目标不能写成已达成；独立处理域提频仍需另行结构、CDC 和性能验证。
+
+
+## 2026-10-19 21:48 ? user scope update (authoritative)
+
+Project: `D:\XDU\concept\26-FPGA-Pango`; branch: `codex/fpga-pds-project`.
+Remote: https://github.com/CaiVegetable0932/26-FPGA-Pango.git
+
+The user now requests design-file edits and functional simulation first. Whole-design placement/routing, bitstream generation and the queued native unit screens have been stopped. Do not restart them automatically. `stop_requested.json` is intentional; the next agent must obtain the user's routing assignment before starting a separate supervised campaign. The existing campaign ended PAUSED at 21:46; it is not a successful routed result and did not generate a qualified bitstream. The unit queue is STOPPED with zero jobs launched.
+
+Canonical RTL now includes the grouped binary DMA selection and the boot status snapshot local capture enables, in addition to the previous 11-file writer-BRAM baseline. Both new candidates passed independent cycle-level proofs before integration. Their combined canonical RTL passed all 20 default integration tests at `fpga/build/full_integration_20261013/sim_20261019_214617_365522`. Full-frame snapshot and runtime-control supplementary simulations are pending at this timestamp. Physical resource, congestion and timing benefits of these two changes remain UNVERIFIED; simulation equivalence does not establish those benefits.
+
+Promotion backup and SHA-256 manifest: `fpga/build/route_optimization/session_20261019/simulation_only_promotion/`. Candidate-specific proofs and combined evidence are listed in `composed_evidence_manifest.json`. Earlier checkpoint `7ffb6639dd6b47bf309c40336676e9b2d807da9c` was pushed successfully. Account quota observed at 21:47: approximately 50% remaining (weekly primary window). Preserve the 10% reserve policy if optimization resumes.
+
+The real existing board processing constraint remains 125 MHz. The plan's 150 MHz target, routed setup/hold, three-seed stability and physical 1080p30 acceptance are still outstanding. No hardware programming was performed.
+
+Git transport uses per-command `-c http.proxy=http://127.0.0.1:7897 -c http.sslBackend=openssl -c http.version=HTTP/1.1`; no global Git settings or certificate validation were changed. Historical unrelated workspace changes must not be included in a broad add/commit.
+
+
+## 2026-10-19 21:48 ? regional verification authorized
+
+This later instruction supersedes the simulation-only restriction above: regional synthesis and isolated regional placement/routing A/B tests are authorized. Whole-design routing and bitstream generation remain forbidden until the entire design plan is complete. Keep the whole-design stop file intact. Regional jobs use `regional_stop_requested.json`; at the account reserve threshold both kinds of jobs must stop. Do not restart the old automatic queue. Run regional screens sequentially under the native-slot supervisor, compare identical boundaries/constraints, and report results as isolated evidence rather than board signoff.
+
+Combined canonical 20-case regression passed; additional runtime-control scenario passed at `fpga/build/full_integration_20261013/sim_20261019_214713_180909`. The 1920x1080 snapshot simulation remains running. DMA baseline/candidate regional synthesis started in `fpga/build/route_optimization/dma_grouped_20261019_210245_219923/owner_unit_probe_20261019_214842_425939`.

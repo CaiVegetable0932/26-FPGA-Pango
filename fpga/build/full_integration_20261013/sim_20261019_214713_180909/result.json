@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "hardware_tested": false,
+  "board_integrated": false,
+  "full_frame_simulation": false,
+  "rtl_snapshot": null,
+  "snapshot_test": false,
+  "control_test": true,
+  "tests": [
+    "tb_video_memory_core"
+  ],
+  "acquire_wait_cycles": 0,
+  "board_client_limits": true
+}

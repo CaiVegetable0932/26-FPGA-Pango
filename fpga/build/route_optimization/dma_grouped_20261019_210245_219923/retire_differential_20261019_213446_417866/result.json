@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "cycle_equivalent": true,
+  "inputs": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\original_frame_memory_fabric.sv": "ecb7d2a943fd7dbf324bb7d2dd8b18a051cfcfd225a36812acc938f832ec6af3",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261019_205651_502065\\source\\tb_frame_memory_fabric.sv": "d29fa066e20f0d3cd883f36c7ea76cbf639c9869305c81d8446dd3d3e40ddf02",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\source\\rtl\\memory\\frame_manager_pkg.sv": "4d93591a7cd365243bad3347165a6ed9708fdd0ce5a6daa84470fe8c744a6f2e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\source\\rtl\\memory\\frame_manager_layout.vh": "729ae9f63f1cccdcb244dbad3fc5eafe59ce5ee11ea4da0aa69cb18d037c2973",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\source\\rtl\\memory\\frame_pool_bank.sv": "f445700f24a71e203e31fe20849965ccb15885d4b17fe383e39fc3ecf5f8b1b1",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\source\\rtl\\memory\\frame_manager.sv": "b2211c685d787f7c0e105aac6dcf6e821293899e0065561422a7bc05ed6c2165",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\source\\rtl\\memory\\ddr_native_dma.v": "bb8d1423bb9015941d88ffee29db74241bb9d0d22b8f3e812259bacb071caa97",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\source\\rtl\\memory\\frame_memory_fabric.sv": "a8b7c7d403eb9d69f3677dc5ab21ad4f65e159aab140c9631a4fb272e481c37d"
+  },
+  "tests": [
+    "full_readback_all_fabric_outputs"
+  ],
+  "scope": "All public fabric outputs under the board-capacity ownership/readback fixture; no hardware or full-frame performance claim",
+  "inputs_intact": true
+}

@@ -17,12 +17,57 @@
         "duplication": "default",
         "planning_before_place": true
       },
-      "phase": "route_sta_bitgen",
-      "complete": false,
-      "passed": false
+      "phase": "native_failed",
+      "complete": true,
+      "passed": false,
+      "native_driver_exit": 1,
+      "finished_at": "2026-10-19T21:46:17.831913+08:00",
+      "native_result": {
+        "stage": "gen_bit_stream",
+        "native_exit": 1,
+        "errors": [],
+        "snapshot_intact": true,
+        "internal_timing_met": false,
+        "full_function_release": false,
+        "hardware_tested": false,
+        "programmed": false,
+        "external_timing_verified": false,
+        "download_approved": false,
+        "resumed_project": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261019_205545_289460\\flow.pds",
+        "resume_evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261019_205545_289460\\resume_20261019_205546_788682",
+        "native_runs": [
+          {
+            "phase": "place_route",
+            "status": "PAUSED",
+            "returncode": 1,
+            "elapsed_seconds": 3030.9219999999996,
+            "pid": 34176,
+            "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261019_205545_289460\\resume_20261019_205546_788682\\place_route_monitor.jsonl"
+          }
+        ],
+        "physical_options": {
+          "from_placement": false,
+          "placement_decongestion": 1,
+          "placement_seed": 11,
+          "mode": "normal",
+          "control_chain_length": 500,
+          "dump_congestion": true,
+          "native_timeout_minutes": 60,
+          "host_timeout_minutes": 60,
+          "cell_duplication": "default",
+          "macro_placement": "Global",
+          "planning_before_place": true,
+          "planning_help_sha256": "3fa1a8ceaa418fb97422972b6fc1bf9c416a76e7902936cff3135c525a5637a2",
+          "congestion_iterations": 200,
+          "pin_cost_increasing_speed": null
+        },
+        "optimization_status": "PAUSED"
+      }
     }
   ],
   "passed": false,
-  "updated_at": "2026-10-19T20:55:45.740763+08:00",
-  "phase": "route_sta_bitgen"
+  "updated_at": "2026-10-19T21:46:17.834911+08:00",
+  "phase": "native_failed",
+  "completed_attempts": 1,
+  "review_required": false
 }

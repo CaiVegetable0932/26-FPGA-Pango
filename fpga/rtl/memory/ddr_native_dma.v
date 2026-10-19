@@ -55,6 +55,33 @@ module ddr_native_dma #(
  wire [CLIENTS-1:0] eligible;
  reg [31:0] wait_cycles[0:CLIENTS-1];
  reg [CLIENT_BITS-1:0] owner,rr;
+ // Binary two-client groups localize low-order owner fanout. All copies
+ // update on the existing grant edge and hold through write/readback/drain.
+ // ADS 5.15 preserves only these intentionally redundant local registers.
+ localparam OWNER_GROUPS=(CLIENTS+1)/2;
+ localparam OWNER_GROUP_BITS=(OWNER_GROUPS>1)?$clog2(OWNER_GROUPS):1;
+ reg [OWNER_GROUPS-1:0] owner_lane /* synthesis syn_preserve=1 */;
+ reg [OWNER_GROUP_BITS-1:0] owner_group;
+ wire [OWNER_GROUPS*256-1:0] grouped_data;
+ wire [OWNER_GROUPS*32-1:0] grouped_mask;
+ wire [255:0] selected_data=grouped_data[owner_group*256+:256];
+ wire [31:0] selected_mask=grouped_mask[owner_group*32+:32];
+ genvar owner_pair;
+ generate for(owner_pair=0;owner_pair<OWNER_GROUPS;owner_pair=owner_pair+1)begin: owner_mux_group
+  if(owner_pair*2+1<CLIENTS)begin: full_pair
+   assign grouped_data[owner_pair*256+:256]=owner_lane[owner_pair] ?
+    bank_data[(owner_pair*2+1)*256+:256] : bank_data[(owner_pair*2)*256+:256];
+   assign grouped_mask[owner_pair*32+:32]=owner_lane[owner_pair] ?
+    bank_mask[(owner_pair*2+1)*32+:32] : bank_mask[(owner_pair*2)*32+:32];
+  end else begin: final_single
+   // Preserve out-of-range selection as unknown rather than inventing an
+   // additional legal client. Reachable grants always select an actual bank.
+   assign grouped_data[owner_pair*256+:256]=owner_lane[owner_pair] ?
+    256'bx : bank_data[(owner_pair*2)*256+:256];
+   assign grouped_mask[owner_pair*32+:32]=owner_lane[owner_pair] ?
+    32'bx : bank_mask[(owner_pair*2)*32+:32];
+  end
+ end endgenerate
  reg [QUOTA_BITS-1:0] emergency_run;
  integer chosen, normal_choice, urgent_choice;
  integer i, j, k, byte_count;
@@ -69,8 +96,8 @@ module ddr_native_dma #(
  assign awlen=beats[owner]-1'b1, arlen=beats[owner]-1'b1;
  assign awid=4'd0, arid=4'd0;
  assign awvalid=(state==WA), arvalid=(state==RA || state==VERIFY_ADDR);
- assign native_wdata=bank_data[owner*256+:256];
- assign native_wstrb=(state==WD) ? bank_mask[owner*32+:32] : 32'd0;
+ assign native_wdata=selected_data;
+ assign native_wstrb=(state==WD) ? selected_mask : 32'd0;
  assign req_ready=~pending & {CLIENTS{controller_ready && !fault}};
 
  // Compare every enabled byte against the reserved write bank. A last-word
@@ -79,8 +106,8 @@ module ddr_native_dma #(
  always @* begin
   verify_mismatch=0;
   for(verify_byte=0;verify_byte<32;verify_byte=verify_byte+1)
-   if(bank_mask[owner*32+verify_byte] &&
-      native_rdata[verify_byte*8+:8]!=bank_data[owner*256+verify_byte*8+:8])
+   if(selected_mask[verify_byte] &&
+      native_rdata[verify_byte*8+:8]!=selected_data[verify_byte*8+:8])
     verify_mismatch=1;
  end
 
@@ -180,7 +207,7 @@ module ddr_native_dma #(
    state<=IDLE; pending<=0; is_write<=0; aborted<=0; returned<=0;
    done<=0; cancelled<=0; error<=0; done_tag<=0; fault<=0;
    write_verified<=0; verify_failed<=0;
-   owner<=0; rr<=0; emergency_run<=0; beat_index<=0;
+   owner<=0; owner_lane<=0; owner_group<=0; rr<=0; emergency_run<=0; beat_index<=0;
    max_wait_cycles<=0; bus_bytes<=0; useful_write_bytes<=0;
    for(i=0;i<CLIENTS;i=i+1) begin
     addr[i]<=0; beats[i]<=1; loaded[i]<=0; consumed[i]<=0; tag[i]<=0; wait_cycles[i]<=0;
@@ -226,6 +253,10 @@ module ddr_native_dma #(
    end
    case(state)
     IDLE: if(chosen>=0 && !fault && controller_ready && !cancel[chosen[CLIENT_BITS-1:0]]) begin
+     // The same accepted grant installs all group-local selectors, with
+     // no new arbitration edge or native beat of latency.
+     owner_lane<={OWNER_GROUPS{chosen[0]}};
+     owner_group<=chosen[CLIENT_BITS-1:0]>>1;
      owner<=chosen[CLIENT_BITS-1:0]; beat_index<=0; state<=is_write[chosen[CLIENT_BITS-1:0]] ? WA : RA;
      if(wait_cycles[chosen[CLIENT_BITS-1:0]]>max_wait_cycles[chosen[CLIENT_BITS-1:0]*32+:32])
       max_wait_cycles[chosen[CLIENT_BITS-1:0]*32+:32]<=wait_cycles[chosen[CLIENT_BITS-1:0]];
@@ -238,7 +269,7 @@ module ddr_native_dma #(
     WD: if(native_wready) begin
      bus_bytes[owner*32+:32]<=bus_bytes[owner*32+:32]+32;
      byte_count=0;
-     for(i=0;i<32;i=i+1) byte_count=byte_count+bank_mask[owner*32+i];
+     for(i=0;i<32;i=i+1) byte_count=byte_count+selected_mask[i];
      useful_write_bytes[owner*32+:32]<=useful_write_bytes[owner*32+:32]+byte_count;
      if(native_wid!=0 || native_wlast!=(beat_index==beats[owner]-1'b1)) begin
       error[owner]<=1; fault<=1;

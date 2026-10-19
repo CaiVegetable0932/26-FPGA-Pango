@@ -1,0 +1,40 @@
+{
+  "started_at": "2026-10-19T20:55:29.607590+08:00",
+  "project": "D:\\XDU\\concept\\26-FPGA-Pango",
+  "remote": "https://github.com/CaiVegetable0932/26-FPGA-Pango.git",
+  "branch": "codex/fpga-pds-project",
+  "initial_head": "6fc951b3cb7a9d367b6d3c293a3e9efbb1f2c483",
+  "initial_status_lines": 91825,
+  "authorization": "User explicitly requested implementation, hourly reports, stop at 10 percent Codex account remaining, commit and push. Prior paused campaign remains archived; new bounded campaign only.",
+  "quota_stop_remaining_percent": 10,
+  "report_interval_seconds": 3600,
+  "status": "writer_bram_route_running_two_functionally_verified_candidates",
+  "updated_at": "2026-10-19T21:41:51.829151+08:00",
+  "active_campaign": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\session_20261019\\writer_bram_seed11\\campaign.json",
+  "unit_queue": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\session_20261019\\unit_queue.json",
+  "candidate_regressions": {
+    "fpga\\build\\route_optimization\\dma_grouped_20261019_210245_219923\\source": {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261019_213850_515021",
+      "passed": true,
+      "tests": 12
+    },
+    "fpga\\build\\route_optimization\\boot_local_capture_20261019_211117_597873\\source": {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261019_213850_529350",
+      "passed": true,
+      "tests": 12
+    }
+  },
+  "git_checkpoints": [
+    {
+      "commit": "3540e9e8b7afc0c8e9fc5ba2fd6a1c0a3bdf6477",
+      "pushed": true
+    },
+    {
+      "commit": "7ffb6639dd6b47bf309c40336676e9b2d807da9c",
+      "pushed": true
+    }
+  ],
+  "next_hourly_report_approx": "2026-10-19T21:48:00+08:00",
+  "new_builds_allowed": true,
+  "hardware_download_allowed": false
+}

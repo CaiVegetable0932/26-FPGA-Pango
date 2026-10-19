@@ -1,0 +1,185 @@
+{
+  "at": "2026-10-19T21:32:02.116915+08:00",
+  "synthesis_vm": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261019_163458_368603\\synthesize\\pango_video_system_syn.vm",
+  "synthesis_vm_sha256": "9559a19fede293c98259490613508dde5c823f79efdf9ab5c88ee6492f23f299",
+  "congestion_source": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261019_205545_289460\\place_route\\CongestionNetInfo\\CongestionNetInfo_14.txt",
+  "congestion_sha256": "85e56f3c79741b4d94b0c8e4ad9ef09dcfd06c91e48fcd87e5c022ae2f7a1f7a",
+  "native_values_are_not_percentages": true,
+  "control_loads": [
+    {
+      "module": "pc_video_boot",
+      "enable_net": "N2726",
+      "sequential_loads": 1168,
+      "q_examples": [
+        "have_snapshot",
+        "snapshot_operation[0]",
+        "snapshot_operation[1]",
+        "snapshot_operation[2]",
+        "snapshot_operation[3]",
+        "snapshot_operation[4]"
+      ],
+      "q_tail": [
+        "status_snapshot[1413]",
+        "status_snapshot[1414]",
+        "status_snapshot[1415]"
+      ]
+    },
+    {
+      "module": "dma_byte_unpack_unq4",
+      "enable_net": "N249",
+      "sequential_loads": 275,
+      "q_examples": [
+        "valid_bytes[0]",
+        "valid_bytes[1]",
+        "valid_bytes[2]",
+        "valid_bytes[3]",
+        "valid_bytes[4]",
+        "valid_bytes[5]"
+      ],
+      "q_tail": [
+        "\\aligned_rows.held_data [253]",
+        "\\aligned_rows.held_data [254]",
+        "\\aligned_rows.held_data [255]"
+      ]
+    },
+    {
+      "module": "snapshot_copy_dma",
+      "enable_net": "N112",
+      "sequential_loads": 132,
+      "q_examples": [
+        "drg[0]",
+        "drg[1]",
+        "drg[2]",
+        "drg[3]",
+        "drg[4]",
+        "drg[5]"
+      ],
+      "q_tail": [
+        "sg[31]",
+        "ss[0]",
+        "ss[1]"
+      ]
+    },
+    {
+      "module": "dma_byte_unpack",
+      "enable_net": "N249",
+      "sequential_loads": 275,
+      "q_examples": [
+        "valid_bytes[0]",
+        "valid_bytes[1]",
+        "valid_bytes[2]",
+        "valid_bytes[3]",
+        "valid_bytes[4]",
+        "valid_bytes[5]"
+      ],
+      "q_tail": [
+        "\\aligned_rows.held_data [253]",
+        "\\aligned_rows.held_data [254]",
+        "\\aligned_rows.held_data [255]"
+      ]
+    }
+  ],
+  "round14_top": [
+    {
+      "value": 125,
+      "driver": "CLMA_273_186:Y3",
+      "net": "core/snapshot_connected.snapshots/reader/unpack/N249"
+    },
+    {
+      "value": 84,
+      "driver": "CLMA_243_228:Y0",
+      "net": "core/snapshot_connected.snapshots/copy/N112"
+    },
+    {
+      "value": 76,
+      "driver": "CLMS_159_397:CR0",
+      "net": "boot/N2726"
+    },
+    {
+      "value": 59,
+      "driver": "CLMA_207_306:Y3",
+      "net": "core/fabric/frames/banks[3].pool/N780"
+    },
+    {
+      "value": 58,
+      "driver": "CLMA_249_78:CR1",
+      "net": "core/fabric/retire_client[4] [0]"
+    },
+    {
+      "value": 56,
+      "driver": "SRB_168_210:ZQE[3]",
+      "net": "core/fabric/frames/banks[0].pool/N656"
+    },
+    {
+      "value": 56,
+      "driver": "CLMA_273_169:Q1",
+      "net": "core/snapshot_connected.snapshots/reader/unpack/core/snapshot_connected.snapshots/reader/chunk_bytes_12"
+    },
+    {
+      "value": 55,
+      "driver": "CLMA_165_85:Q3",
+      "net": "core/fabric/frames/banks[2].pool/token_busy [0]"
+    },
+    {
+      "value": 54,
+      "driver": "CLMA_165_175:Y1",
+      "net": "core/fabric/N1494_inv"
+    },
+    {
+      "value": 54,
+      "driver": "CLMA_273_186:Q1",
+      "net": "core/snapshot_connected.snapshots/reader/unpack/core/snapshot_connected.snapshots/reader/chunk_bytes_3"
+    },
+    {
+      "value": 53,
+      "driver": "CLMS_201_157:Y2",
+      "net": "core/fabric/N1556"
+    },
+    {
+      "value": 53,
+      "driver": "CLMA_309_384:CR1",
+      "net": "core/isp/N902"
+    },
+    {
+      "value": 53,
+      "driver": "CLMA_315_235:Q0",
+      "net": "I_ips_ddr_top/u_ddrphy_top/calib_done_11"
+    },
+    {
+      "value": 50,
+      "driver": "CLMA_291_684:CR0",
+      "net": "core/processor/refill/_N128431_1"
+    },
+    {
+      "value": 50,
+      "driver": "CLMS_93_265:Y1",
+      "net": "core/isp_writer/writer/pack/append_at [0]"
+    },
+    {
+      "value": 50,
+      "driver": "CLMA_273_169:Q3",
+      "net": "core/snapshot_connected.snapshots/reader/unpack/core/snapshot_connected.snapshots/reader/chunk_bytes_8"
+    },
+    {
+      "value": 49,
+      "driver": "CLMA_177_271:Y3",
+      "net": "core/fabric/frames/banks[1].pool/slots[1].allocate_slot"
+    },
+    {
+      "value": 49,
+      "driver": "CLMS_225_697:Y1",
+      "net": "core/processor/geometry/u_map/core/processor/geometry/step_r_3"
+    },
+    {
+      "value": 49,
+      "driver": "CLMA_249_727:Q3",
+      "net": "core/processor/geometry/projective_path.u_step/divide/payload_write [1]"
+    },
+    {
+      "value": 48,
+      "driver": "CLMA_249_727:Q0",
+      "net": "core/processor/geometry/projective_path.u_step/divide/payload_write [0]"
+    }
+  ],
+  "next_round_only": "Current round retains DMA-grouped and boot-local-capture candidates. Unpack/copy locality requires a separate reviewed round; no third candidate launched."
+}
