@@ -28,6 +28,8 @@ def main():
     parser.add_argument('--screen', type=Path, required=True)
     parser.add_argument('--pause-file', type=Path, required=True)
     parser.add_argument('--timeout-minutes', type=int, default=20)
+    # Only the plan's finite reproducibility set is permitted; no seed sweep.
+    parser.add_argument('--seed', type=int, choices=(11, 7, 13), default=11)
     parser.add_argument('--only-label',choices=('baseline','candidate'),
                         help='One reviewed side only; never implies a completed A/B pair')
     args = parser.parse_args()
@@ -44,13 +46,14 @@ def main():
         raise ValueError('Synthesis input drift')
     top_match = re.search(r'compile -top_module (\w+) ',
                          (screen/'baseline/flow.tcl').read_text(encoding='utf-8'))
-    if not top_match or top_match[1] not in ('ddr_native_dma','pc_video_boot','dma_byte_unpack','raw_dma_reader'):
+    if not top_match or top_match[1] not in ('ddr_native_dma','pc_video_boot','dma_byte_unpack','raw_dma_reader','frame_pixel_writer'):
         raise ValueError('Only the reviewed isolated tops are authorized')
     top = top_match[1]
     port_lists=[]
     for label in ('baseline','candidate'):
         filename={'ddr_native_dma':'dma.v','pc_video_boot':'pc_video_boot.sv',
-                  'dma_byte_unpack':'unpack.v','raw_dma_reader':'reader.sv'}[top]
+                  'dma_byte_unpack':'unpack.v','raw_dma_reader':'reader.sv',
+                  'frame_pixel_writer':'writer.sv'}[top]
         port_lists.append(ports((screen/label/filename).read_text(encoding='utf-8'),
                                 top,dict(CLIENTS=7,TAG_BITS=32)))
     if port_lists[0]!=port_lists[1]:
@@ -77,6 +80,20 @@ def main():
                 'parameter VERIFY_WRITES=0','parameter VERIFY_WRITES=1',1)
             if (source/'dma.v').read_text(encoding='utf-8') != expected:
                 raise ValueError('Diagnostic DMA source drift')
+        elif top == 'frame_pixel_writer':
+            # The existing storage-edge proof binds writer and packer bytes.
+            # TILED is the only diagnostic default change, identical on A/B.
+            if checked.get('tiled') not in (0,1):
+                raise ValueError('Unreviewed writer mode')
+            original=(candidate/'original_frame_pixel_writer.sv' if label=='baseline' else
+                      candidate/'source/rtl/memory/frame_pixel_writer.sv')
+            expected=original.read_text(encoding='utf-8').replace('parameter TILED=0',
+                'parameter TILED='+str(checked['tiled']),1)
+            if (source/'writer.sv').read_text(encoding='utf-8')!=expected:
+                raise ValueError('Diagnostic writer source drift')
+            pack=candidate/'source/rtl/memory/dma_pixel_pack.v'
+            if checked['inputs'].get(str(pack))!=digest(pack) or digest(source/'dma_pixel_pack.v')!=digest(pack):
+                raise ValueError('Unbound writer packer dependency')
         elif top in ('dma_byte_unpack','raw_dma_reader'):
             original=(candidate/'original_dma_byte_unpack.v' if label=='baseline' else
                       candidate/'source/rtl/memory/dma_byte_unpack.v')
@@ -115,7 +132,7 @@ def main():
     result = dict(scope='isolated_region', top=top, source_screen=str(screen),
                   labels_requested=list(labels),comparison_complete=False,
                   board_timing_signoff=False, bitstream_generated=False,
-                  hardware_tested=False, clock_period_ns=8.0, seed=11,
+                  hardware_tested=False, clock_period_ns=8.0, seed=args.seed,
                   boundary='identical registered scan wrapper with legal IO buffers',
                   wrapper_metadata=wrapper_metadata,
                   wrapper_sha256=hashlib.sha256(wrapper.encode()).hexdigest(),
@@ -149,7 +166,7 @@ def main():
                 f'add_design {{{wrapper_path.as_posix()}}}\nadd_constraint {{{pins_path.as_posix()}}}\ncompile -top_module regional_wrapper ')
             flow=flow.replace(' -disable_io_insertion','')
             flow += 'dev_map\n'
-            flow += (f'pnr -action_timeout {args.timeout_minutes} -gplace_seed 11 '
+            flow += (f'pnr -action_timeout {args.timeout_minutes} -gplace_seed {args.seed} '
                      '-plc_decongestion 1 -max_ctrl_chain_length 500 '
                      '-mode normal -congest_overlap_limit 200 '
                      '-dump_router_congestion_plot TRUE\n')

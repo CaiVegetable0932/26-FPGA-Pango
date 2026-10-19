@@ -108,12 +108,17 @@
     "promoted": false,
     "unit_screen": "fpga/build/route_optimization/unpack_local_capture_20261019_221324_680300/unit_screen_20261019_224446_969878",
     "fixed_pin_route": "regional_route_20261019_225549_860601",
-    "decision": "WITHHELD_NO_MEANINGFUL_PHYSICAL_GAIN",
+    "decision": "PENDING_FINITE_SEED_7_13_REVIEW",
     "reader_context_route": "unit_screen_20261019_233122_395009/regional_route_20261019_234111_668461",
     "reader_wirelength": [
       10613,
       11032
-    ]
+    ],
+    "reader_pnr_seconds": [
+      44,
+      36
+    ],
+    "reader_single_seed_reduction_percent": 18.1818181818
   },
   "icarus_full_frame_supplement": {
     "path": "fpga/build/full_integration_20261013/sim_20261019_214646_986066",

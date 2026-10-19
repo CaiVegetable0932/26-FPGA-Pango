@@ -154,6 +154,17 @@ def run_supervised(command, *, cwd, log_path, timeout_seconds,
     last_log_bytes, last_log_change = None, started
     options = dict(creationflags=0x08000000) if os.name == 'nt' else dict(start_new_session=True)
     with native_slot(), log_path.open('wb') as log, monitor_path.open('a', encoding='utf-8') as monitor:
+        # A reserve/user stop already on disk must prevent process creation,
+        # including the transition from one completed regional side to another.
+        if pause_path and Path(pause_path).exists():
+            monitor.write(json.dumps(dict(at=datetime.now(timezone.utc).isoformat(),
+                pid=None, elapsed_seconds=0, status='PAUSED', warning=False,
+                timeout_seconds=timeout_seconds, rounds=[], log_bytes=0,
+                launch_prevented=True))+'\n')
+            monitor.flush()
+            return dict(status='PAUSED', returncode=1, elapsed_seconds=0,
+                        pid=None, monitor=str(monitor_path), policy=policy,
+                        launch_prevented=True)
         child = subprocess.Popen(command, cwd=cwd, stdout=log,
                                  stderr=subprocess.STDOUT, **options)
         try:

@@ -21,6 +21,8 @@ def main():
                         help='Use already-passing frozen integration fixtures for latency-aware ownership')
     parser.add_argument('--check-owner-onehot',action='store_true',
                         help='Also require the candidate wide-selector owner to match its binary owner on every active cycle')
+    parser.add_argument('--check-local-cursor',action='store_true',
+                        help='Check every local cursor against the actual central cursor, including inactive banks')
     args=parser.parse_args()
     fpga=Path(__file__).resolve().parents[1]
     candidate=args.candidate.resolve()
@@ -41,6 +43,8 @@ def main():
     previous=original.read_text(encoding='utf-8')
     if args.check_owner_onehot and 'reg [CLIENTS-1:0] owner_onehot;' not in current:
         raise ValueError('One-hot owner invariant requested for a different candidate')
+    if args.check_local_cursor and 'reg [CLIENTS*5-1:0] client_cursor' not in current:
+        raise ValueError('Local cursor invariant requested for a different candidate')
     start=current.index('module ddr_native_dma #(')
     header=current[start:current.index('\n localparam',start)].replace('output reg ','output wire ')
     outputs={n:'[CLIENTS-1:0]' for n in 'req_ready w_ready r_valid r_last done cancelled error write_verified'.split()}
@@ -72,6 +76,12 @@ def main():
         body+='''   if(candidate_impl.owner_onehot !== ({{(CLIENTS-1){1'b0}},1'b1} << candidate_impl.owner))
     $fatal(1,"DMA_DIFFERENTIAL onehot owner invariant");
 '''
+    # Inactive banks may not expose data until a later grant. Check their
+    # redundant address state now, including IDLE holds and cancellation.
+    if args.check_local_cursor:
+        body+='''   if(candidate_impl.client_cursor !== {CLIENTS{candidate_impl.beat_index}})
+    $fatal(1,"DMA_DIFFERENTIAL same-cycle local cursor invariant");
+'''
     body+='   if({'+','.join(common)+'} !== {'+','.join('ref_'+n for n in common)+'})$fatal(1,"DMA_DIFFERENTIAL control/statistics");\n'
     body+='''   for(lane=0;lane<CLIENTS;lane=lane+1)
     if(r_valid[lane] && r_data[lane*256+:256] !== ref_r_data[lane*256+:256])
@@ -101,6 +111,7 @@ endmodule
     result=dict(passed=False,cycle_equivalent=False,inputs=inputs,tests=[])
     result['scope']='Frozen DMA original versus candidate; common frame-bank implementation is not claimed cycle-equivalent to its older version'
     result['owner_onehot_invariant_checked']=args.check_owner_onehot
+    result['local_cursor_invariant_checked']=args.check_local_cursor
     sources=[str(run/Path(n).name) for n in names if not n.endswith('.vh')]
     sources.append(str(run/'ddr_native_dma.v'))
     try:

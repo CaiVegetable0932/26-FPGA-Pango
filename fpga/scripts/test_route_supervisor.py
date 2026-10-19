@@ -76,8 +76,12 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(rows[-1]['status'], 'TIMEOUT')
 
     def test_pause_stops_without_timeout(self):
-        result, _ = self.run_child('import time; time.sleep(60)', pause=True)
+        # A pre-existing user/quota stop must never create a native process.
+        with patch('route_supervisor.subprocess.Popen', side_effect=AssertionError('unexpected launch')):
+            result, rows = self.run_child('import time; time.sleep(60)', pause=True)
         self.assertEqual(result['status'], 'PAUSED')
+        self.assertIsNone(result['pid'])
+        self.assertTrue(rows[-1]['launch_prevented'])
 
     def test_stall_stops_running_process(self):
         content = ''.join(f'Unrouted nets 33000 at the end of iteration {i}.\n'
@@ -88,6 +92,16 @@ class SupervisorTests(unittest.TestCase):
             watch_stall=True)
         self.assertEqual(result['status'], 'STALLED')
         self.assertEqual(len(rows[-1]['rounds']), 10)
+
+    def test_pause_created_after_launch_reaps_process(self):
+        """The account watcher can request a stop while a native phase runs."""
+        result, rows = self.run_child(
+            'import pathlib,time; time.sleep(0.1); '
+            'pathlib.Path("pause.json").write_text("{}"); time.sleep(60)')
+        self.assertEqual(result['status'], 'PAUSED')
+        self.assertIsNotNone(result['pid'])
+        self.assertIsNotNone(result['returncode'])
+        self.assertEqual(rows[-1]['status'], 'PAUSED')
 
     def test_native_root_cannot_leave_an_observed_worker(self):
         """A successful launcher exit cannot conceal a still-running worker."""
