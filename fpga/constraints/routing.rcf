@@ -3,9 +3,6 @@
 def_route -prior_net {I_ips_ddr_top/u_ddrphy_top/ddrphy_ioclk_gate [0]}
 def_route -prior_net {I_ips_ddr_top/u_ddrphy_top/ddrphy_ioclk_gate [1]}
 # Source: constraints/hdmi_reset.rcf
-# Native PDS priority routing. No paths are exempted from timing analysis.
-# Names verified in the native post-route netlist; each net drives two IOLs.
-def_route -prior_net {hdmi_lane[0].u_serial/local_reset}
-def_route -prior_net {hdmi_lane[1].u_serial/local_reset}
-def_route -prior_net {hdmi_lane[2].u_serial/local_reset}
-def_route -prior_net {u_hdmi_clock/local_reset}
+# Native direct IOCLKDIV/OSERDES startup topology has no per-lane local_reset
+# registers. Rely on PDS native IOL packing; obsolete priority nets would match
+# nothing. Timing exceptions are scoped in clocks.fdc, never route constraints.
