@@ -1,0 +1,19 @@
+{
+  "status": "FUNCTIONAL_INTEGRATION_PENDING_NOT_PROMOTED",
+  "only_changed_file": "rtl/memory/dma_byte_unpack.v",
+  "baseline_source_count": 290,
+  "reference": "canonical 11-file writer baseline",
+  "pnr_median_seconds": [
+    44,
+    38
+  ],
+  "target_30_percent_met": false,
+  "all_three_internal_sta_pass": true,
+  "current_main_differences": [
+    "rtl/memory/dma_byte_unpack.v"
+  ],
+  "regression": "fpga/build/full_integration_20261013/sim_20261020_001153_047628",
+  "regression_passed": true,
+  "full_frame_model": "fpga/build/full_integration_20261013/verilator_20261020_001232_095496",
+  "full_frame_status": "RUNNING"
+}

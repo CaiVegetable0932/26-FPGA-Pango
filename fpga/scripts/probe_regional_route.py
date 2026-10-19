@@ -15,6 +15,7 @@ import shutil
 
 from route_supervisor import run_supervised
 from regional_scan_wrapper import ports,make_wrapper,fixed_pin_constraints
+from probe_writer_bram_mapping import diagnostic_writer
 
 
 def digest(path):
@@ -87,13 +88,17 @@ def main():
                 raise ValueError('Unreviewed writer mode')
             original=(candidate/'original_frame_pixel_writer.sv' if label=='baseline' else
                       candidate/'source/rtl/memory/frame_pixel_writer.sv')
-            expected=original.read_text(encoding='utf-8').replace('parameter TILED=0',
-                'parameter TILED='+str(checked['tiled']),1)
+            expected=diagnostic_writer(original.read_text(encoding='utf-8'),
+                checked['tiled'],checked.get('board_rgb_context',False))
             if (source/'writer.sv').read_text(encoding='utf-8')!=expected:
                 raise ValueError('Diagnostic writer source drift')
             pack=candidate/'source/rtl/memory/dma_pixel_pack.v'
             if checked['inputs'].get(str(pack))!=digest(pack) or digest(source/'dma_pixel_pack.v')!=digest(pack):
                 raise ValueError('Unbound writer packer dependency')
+            if checked.get('board_rgb_context'):
+                board=candidate/'source/rtl/board/video_memory_core.sv'
+                if checked['inputs'].get(str(board))!=digest(board):
+                    raise ValueError('Unbound production writer constants')
         elif top in ('dma_byte_unpack','raw_dma_reader'):
             original=(candidate/'original_dma_byte_unpack.v' if label=='baseline' else
                       candidate/'source/rtl/memory/dma_byte_unpack.v')
@@ -124,6 +129,8 @@ def main():
             raise ValueError('Diagnostic clock constraint drift')
     run = screen/datetime.now().strftime('regional_route_%Y%m%d_%H%M%S_%f')
     run.mkdir()
+    # Preserve the exact diagnostic transformation helper with each result.
+    shutil.copyfile(Path(__file__).with_name('probe_writer_bram_mapping.py'),run/'probe_writer_bram_mapping.py')
     shutil.copyfile(__file__,run/'probe_script.py')
     shutil.copyfile(Path(__file__).with_name('route_supervisor.py'),run/'route_supervisor.py')
     shutil.copyfile(Path(__file__).with_name('regional_scan_wrapper.py'),run/'regional_scan_wrapper.py')

@@ -1,0 +1,24 @@
+{
+  "observed_at": "2026-10-20T00:13:54.394594+08:00",
+  "logical_cpus": 16,
+  "physical_cpus": 8,
+  "available_memory_bytes": 18754994176,
+  "processes": [
+    {
+      "name": "pds_shell.exe",
+      "create_time": 1792426427.9534504,
+      "pid": 14924
+    },
+    {
+      "name": "pds_shell.exe",
+      "create_time": 1792426422.1276,
+      "pid": 39876
+    },
+    {
+      "name": "video_sim.exe",
+      "create_time": 1792426428.5841515,
+      "pid": 42212
+    }
+  ],
+  "note": "One PDS only; separate single-job C++ functional model build active. Isolated timing/runtime evidence only."
+}

@@ -1,0 +1,14 @@
+{
+  "timeout_seconds": 390,
+  "warning_seconds": 67.5,
+  "requested_timeout_seconds": 1200,
+  "poll_seconds": 30,
+  "stall_enabled": true,
+  "stall_window": 5,
+  "stall_minimum_unrouted": 1000,
+  "stall_minimum_improvement": 0.01,
+  "warmup_rounds": 5,
+  "baseline_success_seconds": 45,
+  "baseline_acceleration_claim": false,
+  "no_log_investigation_seconds": 600
+}

@@ -108,7 +108,7 @@
     "promoted": false,
     "unit_screen": "fpga/build/route_optimization/unpack_local_capture_20261019_221324_680300/unit_screen_20261019_224446_969878",
     "fixed_pin_route": "regional_route_20261019_225549_860601",
-    "decision": "PENDING_FINITE_SEED_7_13_REVIEW",
+    "decision": "CLEAN_FINALIST_FULL_FRAME_PENDING",
     "reader_context_route": "unit_screen_20261019_233122_395009/regional_route_20261019_234111_668461",
     "reader_wirelength": [
       10613,
@@ -118,7 +118,24 @@
       44,
       36
     ],
-    "reader_single_seed_reduction_percent": 18.1818181818
+    "reader_single_seed_reduction_percent": 18.1818181818,
+    "three_seed_pnr_seconds": {
+      "baseline": [
+        44,
+        45,
+        44
+      ],
+      "candidate": [
+        36,
+        38,
+        39
+      ]
+    },
+    "median_reduction_percent": 13.6363636364,
+    "target_30_percent_met": false,
+    "clean_snapshot": "session_20261019/unpack_finalist/source",
+    "regression": "sim_20261020_001153_047628",
+    "full_frame_model": "verilator_20261020_001232_095496"
   },
   "icarus_full_frame_supplement": {
     "path": "fpga/build/full_integration_20261013/sim_20261019_214646_986066",
@@ -172,8 +189,46 @@
     "transport_tests_each": 10,
     "parameter_tests_each": 12,
     "promoted": false,
-    "status": "A_SYNTHESIS_RUNNING"
+    "status": "B_SYNTHESIS_RUNNING_A_PHYSICAL_PENDING",
+    "a_resources": {
+      "baseline": {
+        "LUT": 3950,
+        "FF": 1508,
+        "DRM": 28,
+        "controlsets": 51
+      },
+      "candidate": {
+        "LUT": 4004,
+        "FF": 1535,
+        "DRM": 28,
+        "controlsets": 51
+      }
+    },
+    "all_35_cursor_copies_preserved": true,
+    "cursor_invariant_proof_passed_both": true
   },
   "latest_hourly_report": "2026-10-19T23:48:00+08:00",
-  "next_hourly_report": "2026-10-20T00:48:00+08:00"
+  "next_hourly_report": "2026-10-20T00:48:00+08:00",
+  "writer_regional": {
+    "generic_screen": "writer_bram_screen_20261020_001142_389407/unit_screen",
+    "both_routed": true,
+    "both_internal_sta_pass": false,
+    "worst_path": "dynamic span_end validation",
+    "fixed_ISP_context_status": "ROUTED_BOTH_INTERNAL_STA_PASS",
+    "production_source_modified": false,
+    "fixed_screen": "writer_bram_screen_20261020_001911_724767/unit_screen",
+    "pnr_seconds": [
+      49,
+      48
+    ],
+    "wirelength": [
+      16853,
+      18376
+    ],
+    "timing_setup_slow_ns": [
+      2.964,
+      3.09
+    ],
+    "time_improvement_significant": false
+  }
 }

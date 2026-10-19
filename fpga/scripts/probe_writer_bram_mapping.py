@@ -18,12 +18,41 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def diagnostic_writer(text, tiled, board_rgb_context=False):
+    """Specialize only verified production input constants, equally on A/B.
+
+    Keep unused public ports so both scan boundaries remain identical. This
+    models the ISP writer's existing fixed connections, not disabled logic.
+    """
+    if text.count('parameter TILED=0') != 1:
+        raise ValueError('Unexpected writer parameter')
+    text = text.replace('parameter TILED=0', 'parameter TILED='+str(tiled), 1)
+    if board_rgb_context:
+        if tiled != 0:
+            raise ValueError('Fixed raster ISP context cannot model tiled geometry')
+        header, body = text.split(');', 1)
+        constants = ''
+        for name, width, value in (('frame_width', 16, "16'd1920"),
+                                   ('frame_height', 16, "16'd1080"),
+                                   ('frame_stride', 32, "32'd6144"),
+                                   ('frame_rgb888', 1, "1'b1")):
+            # Named constants support the existing stride[4:0] selection in
+            # both Verilog front ends; selecting directly from a literal does not.
+            local = 'DIAG_'+name.upper()
+            constants += f'\n localparam [{width-1}:0] {local}={value};'
+            body = re.sub(r'\b'+name+r'\b', local, body)
+        text = header+');'+constants+'\n'+body
+    return text
+
+
 def main():
     """Preserve raster/tiled semantics and reject any unproven input bytes."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--proof', type=Path, required=True)
     parser.add_argument('--pause-file', type=Path, required=True)
     parser.add_argument('--tiled', type=int, choices=(0, 1), default=0)
+    parser.add_argument('--board-rgb-context', action='store_true',
+                        help='Use the actual fixed ISP writer geometry/stride/RGB connections')
     args = parser.parse_args()
     fpga = Path(__file__).resolve().parents[1]
     proof = args.proof.resolve()
@@ -56,18 +85,31 @@ def main():
     inputs = dict(checked['inputs'])
     for p in [*sources.values(), source/'dma_pixel_pack.v', proof/'result.json']:
         inputs[str(p)] = digest(p)
+    if args.board_rgb_context:
+        board = fpga/'rtl/board/video_memory_core.sv'
+        text = board.read_text(encoding='utf-8')
+        required = ('parameter WIDTH=1920,HEIGHT=1080',
+                    '.frame_stride(32\'d6144)', '.frame_width(WIDTH[15:0])',
+                    '.frame_height(HEIGHT[15:0])', '.frame_rgb888(1\'b1)')
+        start = text.index('frame_writer_buffer isp_writer(')
+        end = text.index('frame_writer_buffer raw_writer(', start)
+        if required[0] not in text or any(s not in text[start:end] for s in required[1:]):
+            raise ValueError('Production ISP constants changed')
+        dest = candidate/'source/rtl/board/video_memory_core.sv'
+        dest.parent.mkdir(parents=True)
+        shutil.copyfile(board, dest)
+        inputs[str(dest)] = digest(dest)
     result = dict(passed=False, routed=False, board_timing_signoff=False,
-                  proof=str(proof), inputs=inputs, tiled=args.tiled, jobs=[])
+                  proof=str(proof), inputs=inputs, tiled=args.tiled,
+                  board_rgb_context=args.board_rgb_context, jobs=[])
     print('WRITER_UNIT_SCREEN', run, flush=True)
     try:
         for label, writer in sources.items():
             build = run/label
             build.mkdir()
             text = writer.read_text(encoding='utf-8')
-            if text.count('parameter TILED=0') != 1:
-                raise ValueError('Unexpected writer parameter')
-            (build/'writer.sv').write_text(text.replace('parameter TILED=0',
-                'parameter TILED='+str(args.tiled), 1), encoding='utf-8')
+            (build/'writer.sv').write_text(diagnostic_writer(text, args.tiled,
+                args.board_rgb_context), encoding='utf-8')
             shutil.copyfile(source/'dma_pixel_pack.v', build/'dma_pixel_pack.v')
             (build/'clock.fdc').write_text('create_clock -name clk -period 8.000 [get_ports clk]\n')
             flow = 'set_dir -impl_directory {'+build.as_posix()+'}\n'

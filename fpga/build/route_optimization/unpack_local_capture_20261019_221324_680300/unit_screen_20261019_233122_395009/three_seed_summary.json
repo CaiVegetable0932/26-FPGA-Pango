@@ -1,0 +1,60 @@
+{
+  "rows": [
+    {
+      "seed": 11,
+      "path": "fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\unit_screen_20261019_233122_395009\\regional_route_20261019_234111_668461",
+      "all_internal_constraints_met": true,
+      "baseline": {
+        "pnr_seconds": 44,
+        "total_seconds": 87,
+        "wirelength": 10613
+      },
+      "candidate": {
+        "pnr_seconds": 36,
+        "total_seconds": 80,
+        "wirelength": 11032
+      }
+    },
+    {
+      "seed": 7,
+      "path": "fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\unit_screen_20261019_233122_395009\\regional_route_20261020_000430_019194",
+      "all_internal_constraints_met": true,
+      "baseline": {
+        "pnr_seconds": 45,
+        "total_seconds": 89,
+        "wirelength": 11521
+      },
+      "candidate": {
+        "pnr_seconds": 38,
+        "total_seconds": 80,
+        "wirelength": 11170
+      }
+    },
+    {
+      "seed": 13,
+      "path": "fpga\\build\\route_optimization\\unpack_local_capture_20261019_221324_680300\\unit_screen_20261019_233122_395009\\regional_route_20261020_000753_001887",
+      "all_internal_constraints_met": true,
+      "baseline": {
+        "pnr_seconds": 44,
+        "total_seconds": 87,
+        "wirelength": 10480
+      },
+      "candidate": {
+        "pnr_seconds": 39,
+        "total_seconds": 82,
+        "wirelength": 11103
+      }
+    }
+  ],
+  "sample_count": 3,
+  "p95_claimed": false,
+  "board_timing_signoff": false,
+  "baseline_median_seconds": 44,
+  "candidate_median_seconds": 38,
+  "median_reduction_percent": 13.636363636363635,
+  "baseline_max_seconds": 45,
+  "candidate_max_seconds": 39,
+  "all_three_both_internal_sta_pass": true,
+  "target_30_percent_met": false,
+  "selection": "CLEAN_FINALIST_FUNCTIONAL_INTEGRATION_PENDING"
+}
