@@ -1,0 +1,1215 @@
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+W: Warning : The license will invalid in 14 days. In order not to affect your usage, please update the license in time.
+
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/place_route.pds'.
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875
+Executing : set_dir -impl_directory D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875 successfully.
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676 successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_manager_pkg.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_manager_pkg.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/async_stream_fifo.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/async_stream_fifo.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/ddr_native_dma.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/ddr_native_dma.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/dma_byte_unpack.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/dma_byte_unpack.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/dma_pixel_pack.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/dma_pixel_pack.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/dma_read_cdc.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/dma_read_cdc.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/dma_row_plan.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/dma_row_plan.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/dma_write_cdc.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/dma_write_cdc.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_manager.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_manager.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_memory_fabric.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_memory_fabric.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_pixel_writer.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_pixel_writer.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_pool_bank.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_pool_bank.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_snapshot_pair.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_snapshot_pair.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_writer_buffer.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/frame_writer_buffer.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/geometry_tile_refill.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/geometry_tile_refill.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/processing_job_cdc.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/processing_job_cdc.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/snapshot_copy_dma.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/snapshot_copy_dma.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/tile_refill_cdc.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/memory/tile_refill_cdc.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/camera_frame_cdc.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/camera_frame_cdc.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/dvp_clock_watchdog.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/dvp_clock_watchdog.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/dvp_frame_receiver.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/dvp_frame_receiver.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/dvp_raw8_fanout.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/dvp_raw8_fanout.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/ov5640_integrated_startup.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/ov5640_integrated_startup.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/ov5640_raw8_mode.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/ov5640_raw8_mode.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/ov5640_reference_profile.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/ov5640_reference_profile.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/ov5640_register_service.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/input/ov5640_register_service.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/isp/isp_line_store.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/isp/isp_line_store.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/isp/raw8_isp.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/isp/raw8_isp.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/isp/rgb_colour_matrix.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/isp/rgb_colour_matrix.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/isp/rgb_frame_statistics.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/isp/rgb_frame_statistics.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/affine_ray_stepper.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/affine_ray_stepper.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/gamma_lut_bank.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/gamma_lut_bank.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/geometry_frame_processor.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/geometry_frame_processor.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/geometry_frame_processor_external_refill.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/geometry_frame_processor_external_refill.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/geometry_processing_domain.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/geometry_processing_domain.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/geometry_processing_domain_external_refill.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/geometry_processing_domain_external_refill.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/geometry_rgb_pipeline.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/geometry_rgb_pipeline.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/legacy_tone_lut.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/legacy_tone_lut.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/lens_inverse_map.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/lens_inverse_map.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/perspective_divide.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/perspective_divide.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/projective_ray_stepper.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/projective_ray_stepper.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/rgb_bilinear.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/rgb_bilinear.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/rgb_cache_bank.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/rgb_cache_bank.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/rgb_enhance.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/rgb_enhance.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/rgb_tile_cache.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/rgb_tile_cache.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/signed_mult32_pipe.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/signed_mult32_pipe.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/signed_mult40_unsigned40_pipe.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/signed_mult40_unsigned40_pipe.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/unsigned_mult32_pipe.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/geometry/unsigned_mult32_pipe.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/arp_peer.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/arp_peer.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/ethernet_mac_rx.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/ethernet_mac_rx.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/ethernet_mac_tx.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/ethernet_mac_tx.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/ethernet_packet_mux.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/ethernet_packet_mux.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/gmii_receive_cdc.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/gmii_receive_cdc.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/mdio_clause22.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/mdio_clause22.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/mini_phy_startup.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/mini_phy_startup.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/praw_udp_tx.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/praw_udp_tx.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/raw_dma_reader.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/raw_dma_reader.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/raw_frame_tx.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/raw_frame_tx.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/raw_network_service.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/network/raw_network_service.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/counter_snapshot_cdc.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/counter_snapshot_cdc.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/frame_parameter_bank.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/frame_parameter_bank.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/mcu_readonly_client.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/mcu_readonly_client.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/parameter_entity_guard.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/parameter_entity_guard.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/pc_video_boot.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/pc_video_boot.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/pose_frame_selector.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/pose_frame_selector.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/uart_8n1.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/uart_8n1.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/uart_v2_parser.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/uart_v2_parser.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/video_frame_scheduler.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/video_frame_scheduler.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/video_snapshot_service.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/control/video_snapshot_service.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/video/display_frame_cdc.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/video/display_frame_cdc.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/video/hdmi_display.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/video/hdmi_display.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/video/hdmi_rgb888_tx.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/video/hdmi_rgb888_tx.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/video/rgb888_line_prefetch.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/video/rgb888_line_prefetch.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/video/video_raster.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/video/video_raster.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/reset_sync.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/reset_sync.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/video_clock_start.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/video_clock_start.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/rgmii_phy_io.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/rgmii_phy_io.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/tmds_serializer.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/tmds_serializer.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/video_memory_core.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/video_memory_core.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/pango_video_system.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/pango_video_system.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/processing_domain_reset.sv
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/board/processing_domain_reset.sv successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/mini_camera_diag/vendor/camera/SCCB.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/mini_camera_diag/vendor/camera/SCCB.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/mini_camera_diag/vendor/camera/data_init.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/mini_camera_diag/vendor/camera/data_init.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/mini_camera_diag/vendor/hdmi/tmds_encoder.v
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/rtl/mini_camera_diag/vendor/hdmi/tmds_encoder.v successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/ip/video_pll/video_pll.idf
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/ip/video_pll/video_pll.idf successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/ip/ddr3_controller/ddr3_controller.idf
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/ip/ddr3_controller/ddr3_controller.idf successfully.
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/ip/sys_pll/sys_pll.idf
+Executing : add_design D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/ip/sys_pll/sys_pll.idf successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/ddr_native.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/ddr_native.fdc successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/ddr_board_pins.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/ddr_board_pins.fdc successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/video_system/board_pins.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/video_system/board_pins.fdc successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/video_system/clocks_cdc.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/video_system/clocks_cdc.fdc successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/placement.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/placement.fdc successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/routing.rcf
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/routing.rcf successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/video_system/processing_cdc.fdc
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/source/constraints/video_system/processing_cdc.fdc successfully.
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf
+Executing : add_constraint D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf successfully.
+
+
+Executing : pnr -force_to_run -input_db_file D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system_map.adf -action_timeout 0 -max_ctrl_chain_length 500 -plc_decongestion 1 -gplace_seed 13 -mode normal -congest_overlap_limit 200 -dump_router_congestion_plot TRUE
+
+
+Process "Place & Route" started.
+Current time: Tue Oct 20 21:23:14 2026
+Compiling architecture definition.
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/place_route.pds'.
+Compiling verification operator library.
+Compiling common defs.
+Compiling prim grid devices.
+Compiling gate devices.
+Compiling gate operators.
+Building architecture model.
+Loading device packaging model.
+pnr strategy configuration : 
+strategy name : 0
+Building architecture floorplan logic view.
+Constraint check start.
+Executing : def_port {camera_scl} LOC=P19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: camera_scl is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: camera_scl is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 3)] | Port camera_scl has been placed at location P19, whose type is share pin.
+Executing : def_port {camera_scl} LOC=P19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_sda} LOC=R20 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: camera_sda is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: camera_sda is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 4)] | Port camera_sda has been placed at location R20, whose type is share pin.
+Executing : def_port {camera_sda} LOC=R20 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {mem_dq[0]} LOC=G5 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[0]} LOC=G5 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[1]} LOC=J6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 6)] | Port mem_dq[1] has been placed at location J6, whose type is share pin.
+Executing : def_port {mem_dq[1]} LOC=J6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[2]} LOC=F5 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[2]} LOC=F5 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[3]} LOC=L8 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 8)] | Port mem_dq[3] has been placed at location L8, whose type is share pin.
+Executing : def_port {mem_dq[3]} LOC=L8 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[4]} LOC=G4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[4]} LOC=G4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[5]} LOC=K7 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 10)] | Port mem_dq[5] has been placed at location K7, whose type is share pin.
+Executing : def_port {mem_dq[5]} LOC=K7 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[6]} LOC=F4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[6]} LOC=F4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[7]} LOC=J5 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 12)] | Port mem_dq[7] has been placed at location J5, whose type is share pin.
+Executing : def_port {mem_dq[7]} LOC=J5 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[8]} LOC=H6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 13)] | Port mem_dq[8] has been placed at location H6, whose type is share pin.
+Executing : def_port {mem_dq[8]} LOC=H6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[9]} LOC=F8 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[9]} LOC=F8 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[10]} LOC=H8 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 15)] | Port mem_dq[10] has been placed at location H8, whose type is share pin.
+Executing : def_port {mem_dq[10]} LOC=H8 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[11]} LOC=D6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 16)] | Port mem_dq[11] has been placed at location D6, whose type is share pin.
+Executing : def_port {mem_dq[11]} LOC=D6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[12]} LOC=G8 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 17)] | Port mem_dq[12] has been placed at location G8, whose type is share pin.
+Executing : def_port {mem_dq[12]} LOC=G8 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[13]} LOC=E6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 18)] | Port mem_dq[13] has been placed at location E6, whose type is share pin.
+Executing : def_port {mem_dq[13]} LOC=E6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[14]} LOC=H9 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[14]} LOC=H9 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[15]} LOC=G6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 20)] | Port mem_dq[15] has been placed at location G6, whose type is share pin.
+Executing : def_port {mem_dq[15]} LOC=G6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[16]} LOC=C4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[16]} LOC=C4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[17]} LOC=D4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[17]} LOC=D4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[18]} LOC=A4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[18]} LOC=A4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[19]} LOC=E3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[19]} LOC=E3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[20]} LOC=C3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[20]} LOC=C3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[21]} LOC=F3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[21]} LOC=F3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[22]} LOC=B4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[22]} LOC=B4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[23]} LOC=D3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[23]} LOC=D3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[24]} LOC=F2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[24]} LOC=F2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[25]} LOC=D1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[25]} LOC=D1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[26]} LOC=G1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[26]} LOC=G1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[27]} LOC=A2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[27]} LOC=A2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[28]} LOC=E1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[28]} LOC=E1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[29]} LOC=A3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[29]} LOC=A3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[30]} LOC=G2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[30]} LOC=G2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dq[31]} LOC=C2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dq[31]} LOC=C2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dqs[0]} LOC=J4 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 37)] | Port mem_dqs[0] has been placed at location J4, whose type is share pin.
+Executing : def_port {mem_dqs[0]} LOC=J4 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dqs[1]} LOC=H7 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 38)] | Port mem_dqs[1] has been placed at location H7, whose type is share pin.
+Executing : def_port {mem_dqs[1]} LOC=H7 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dqs[2]} LOC=B5 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dqs[2]} LOC=B5 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dqs[3]} LOC=C1 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dqs[3]} LOC=C1 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dqs_n[0]} LOC=H4 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 41)] | Port mem_dqs_n[0] has been placed at location H4, whose type is share pin.
+Executing : def_port {mem_dqs_n[0]} LOC=H4 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dqs_n[1]} LOC=G7 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 42)] | Port mem_dqs_n[1] has been placed at location G7, whose type is share pin.
+Executing : def_port {mem_dqs_n[1]} LOC=G7 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dqs_n[2]} LOC=A5 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dqs_n[2]} LOC=A5 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {mem_dqs_n[3]} LOC=B1 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON
+Executing : def_port {mem_dqs_n[3]} LOC=B1 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST VREF_MODE=INT VREF_MODE_VALUE=0.5 DDR_TERM_MODE=ON DDR_RES=60 CP_DYN_TERM=ON successfully
+Executing : def_port {phy_mdio} LOC=E21 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: phy_mdio is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: phy_mdio is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {phy_mdio} LOC=E21 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_reset_n} LOC=T22 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: camera_reset_n is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: camera_reset_n is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 46)] | Port camera_reset_n has been placed at location T22, whose type is share pin.
+Executing : def_port {camera_reset_n} LOC=T22 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {hdmi_clk_n} LOC=N22 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE
+C: ConstraintEditor-2009: hdmi_clk_n is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {5, 4.5, 4}.
+Executing : def_port {hdmi_clk_n} LOC=N22 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE successfully
+Executing : def_port {hdmi_clk_p} LOC=N21 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE
+C: ConstraintEditor-2009: hdmi_clk_p is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {5, 4.5, 4}.
+Executing : def_port {hdmi_clk_p} LOC=N21 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE successfully
+Executing : def_port {hdmi_data_n[0]} LOC=P25 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE
+C: ConstraintEditor-2009: hdmi_data_n[0] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 49)] | Port hdmi_data_n[0] has been placed at location P25, whose type is share pin.
+Executing : def_port {hdmi_data_n[0]} LOC=P25 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE successfully
+Executing : def_port {hdmi_data_n[1]} LOC=P24 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE
+C: ConstraintEditor-2009: hdmi_data_n[1] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 50)] | Port hdmi_data_n[1] has been placed at location P24, whose type is share pin.
+Executing : def_port {hdmi_data_n[1]} LOC=P24 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE successfully
+Executing : def_port {hdmi_data_n[2]} LOC=N24 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE
+C: ConstraintEditor-2009: hdmi_data_n[2] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 51)] | Port hdmi_data_n[2] has been placed at location N24, whose type is share pin.
+Executing : def_port {hdmi_data_n[2]} LOC=N24 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE successfully
+Executing : def_port {hdmi_data_p[0]} LOC=R25 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE
+C: ConstraintEditor-2009: hdmi_data_p[0] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 52)] | Port hdmi_data_p[0] has been placed at location R25, whose type is share pin.
+Executing : def_port {hdmi_data_p[0]} LOC=R25 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE successfully
+Executing : def_port {hdmi_data_p[1]} LOC=P23 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE
+C: ConstraintEditor-2009: hdmi_data_p[1] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 53)] | Port hdmi_data_p[1] has been placed at location P23, whose type is share pin.
+Executing : def_port {hdmi_data_p[1]} LOC=P23 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE successfully
+Executing : def_port {hdmi_data_p[2]} LOC=N23 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE
+C: ConstraintEditor-2009: hdmi_data_p[2] is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {5, 4.5, 4}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 54)] | Port hdmi_data_p[2] has been placed at location N23, whose type is share pin.
+Executing : def_port {hdmi_data_p[2]} LOC=N23 VCCIO=3.3 IOSTANDARD=TMDS NONE=TRUE successfully
+Executing : def_port {mem_a[0]} LOC=J1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[0]} LOC=J1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[1]} LOC=L3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[1]} LOC=L3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[2]} LOC=L2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[2]} LOC=L2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[3]} LOC=P3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[3]} LOC=P3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[4]} LOC=T2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[4]} LOC=T2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[5]} LOC=M1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[5]} LOC=M1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[6]} LOC=U1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[6]} LOC=U1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[7]} LOC=K1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[7]} LOC=K1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[8]} LOC=U2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[8]} LOC=U2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[9]} LOC=K2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[9]} LOC=K2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[10]} LOC=T3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[10]} LOC=T3 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[11]} LOC=P1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[11]} LOC=P1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[12]} LOC=T4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[12]} LOC=T4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[13]} LOC=M2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[13]} LOC=M2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_a[14]} LOC=N1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_a[14]} LOC=N1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_ba[0]} LOC=P4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_ba[0]} LOC=P4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_ba[1]} LOC=R2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_ba[1]} LOC=R2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_ba[2]} LOC=T5 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_ba[2]} LOC=T5 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_cas_n} LOC=T7 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_cas_n} LOC=T7 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_ck} LOC=U6 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_ck} LOC=U6 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_ck_n} LOC=U5 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_ck_n} LOC=U5 VCCIO=1.5 IOSTANDARD=SSTL15D_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_cke} LOC=R1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_cke} LOC=R1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_cs_n} LOC=N4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_cs_n} LOC=N4 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_dm[0]} LOC=K6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 78)] | Port mem_dm[0] has been placed at location K6, whose type is share pin.
+Executing : def_port {mem_dm[0]} LOC=K6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_dm[1]} LOC=F7 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_dm[1]} LOC=F7 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_dm[2]} LOC=D5 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_dm[2]} LOC=D5 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_dm[3]} LOC=E2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_dm[3]} LOC=E2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_odt} LOC=H2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_odt} LOC=H2 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_ras_n} LOC=P6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_ras_n} LOC=P6 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_rst_n} LOC=H1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_rst_n} LOC=H1 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {mem_we_n} LOC=T8 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST
+Executing : def_port {mem_we_n} LOC=T8 VCCIO=1.5 IOSTANDARD=SSTL15_I DRIVE=8.9 SLEW=FAST successfully
+Executing : def_port {phy_mdc} LOC=A25 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE
+C: ConstraintEditor-2009: phy_mdc is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+Executing : def_port {phy_mdc} LOC=A25 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE successfully
+Executing : def_port {phy_reset_n} LOC=G25 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE
+C: ConstraintEditor-2009: phy_reset_n is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 87)] | Port phy_reset_n has been placed at location G25, whose type is share pin.
+Executing : def_port {phy_reset_n} LOC=G25 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE successfully
+Executing : def_port {rgmii_tx_ctl} LOC=D20 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE
+C: ConstraintEditor-2009: rgmii_tx_ctl is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+Executing : def_port {rgmii_tx_ctl} LOC=D20 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE successfully
+Executing : def_port {rgmii_txc} LOC=G16 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE
+C: ConstraintEditor-2009: rgmii_txc is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+Executing : def_port {rgmii_txc} LOC=G16 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE successfully
+Executing : def_port {rgmii_txd[0]} LOC=E20 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE
+C: ConstraintEditor-2009: rgmii_txd[0] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+Executing : def_port {rgmii_txd[0]} LOC=E20 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE successfully
+Executing : def_port {rgmii_txd[1]} LOC=B21 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE
+C: ConstraintEditor-2009: rgmii_txd[1] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+Executing : def_port {rgmii_txd[1]} LOC=B21 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE successfully
+Executing : def_port {rgmii_txd[2]} LOC=C21 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE
+C: ConstraintEditor-2009: rgmii_txd[2] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+Executing : def_port {rgmii_txd[2]} LOC=C21 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE successfully
+Executing : def_port {rgmii_txd[3]} LOC=D21 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE
+C: ConstraintEditor-2009: rgmii_txd[3] is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+Executing : def_port {rgmii_txd[3]} LOC=D21 VCCIO=3.3 IOSTANDARD=LVCMOS33 DRIVE=16 NONE=TRUE successfully
+Executing : def_port {status_led} LOC=A20 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: status_led is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: status_led is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {status_led} LOC=A20 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {uart_tx} LOC=C24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2009: uart_tx is lack of SLEW, OUTPUT or INOUT PORT had better set SLEW, the optional value is {FAST, SLOW}.
+C: ConstraintEditor-2009: uart_tx is lack of DRIVE, OUTPUT or INOUT PORT had better set DRIVE, the optional value is {4, 8, 12, 16}.
+Executing : def_port {uart_tx} LOC=C24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_data[0]} LOC=M24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 96)] | Port camera_data[0] has been placed at location M24, whose type is share pin.
+Executing : def_port {camera_data[0]} LOC=M24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_data[1]} LOC=R22 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 97)] | Port camera_data[1] has been placed at location R22, whose type is share pin.
+Executing : def_port {camera_data[1]} LOC=R22 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_data[2]} LOC=K26 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 98)] | Port camera_data[2] has been placed at location K26, whose type is share pin.
+Executing : def_port {camera_data[2]} LOC=K26 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_data[3]} LOC=K25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 99)] | Port camera_data[3] has been placed at location K25, whose type is share pin.
+Executing : def_port {camera_data[3]} LOC=K25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_data[4]} LOC=M25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 100)] | Port camera_data[4] has been placed at location M25, whose type is share pin.
+Executing : def_port {camera_data[4]} LOC=M25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_data[5]} LOC=N19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 101)] | Port camera_data[5] has been placed at location N19, whose type is share pin.
+Executing : def_port {camera_data[5]} LOC=N19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_data[6]} LOC=T24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {camera_data[6]} LOC=T24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_data[7]} LOC=R21 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 103)] | Port camera_data[7] has been placed at location R21, whose type is share pin.
+Executing : def_port {camera_data[7]} LOC=R21 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_href} LOC=T25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/handoff_20261020_053147_229875/device_map/pango_video_system.pcf(line number: 104)] | Port camera_href has been placed at location T25, whose type is share pin.
+Executing : def_port {camera_href} LOC=T25 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_pclk} LOC=L22 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {camera_pclk} LOC=L22 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {camera_vsync} LOC=L23 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {camera_vsync} LOC=L23 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {clk_27m} LOC=D18 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {clk_27m} LOC=D18 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {ref_clk_n} LOC=N2 VCCIO=1.5 IOSTANDARD=SSTL15D_I NONE=TRUE
+Executing : def_port {ref_clk_n} LOC=N2 VCCIO=1.5 IOSTANDARD=SSTL15D_I NONE=TRUE successfully
+Executing : def_port {ref_clk_p} LOC=N3 VCCIO=1.5 IOSTANDARD=SSTL15D_I NONE=TRUE
+Executing : def_port {ref_clk_p} LOC=N3 VCCIO=1.5 IOSTANDARD=SSTL15D_I NONE=TRUE successfully
+Executing : def_port {reset_n} LOC=C22 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {reset_n} LOC=C22 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {rgmii_rx_ctl} LOC=H16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {rgmii_rx_ctl} LOC=H16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {rgmii_rxc} LOC=D19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {rgmii_rxc} LOC=D19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {rgmii_rxd[0]} LOC=D16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {rgmii_rxd[0]} LOC=D16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {rgmii_rxd[1]} LOC=E16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {rgmii_rxd[1]} LOC=E16 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {rgmii_rxd[2]} LOC=A19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {rgmii_rxd[2]} LOC=A19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {rgmii_rxd[3]} LOC=B19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {rgmii_rxd[3]} LOC=B19 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_port {uart_rx} LOC=B24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE
+Executing : def_port {uart_rx} LOC=B24 VCCIO=3.3 IOSTANDARD=LVCMOS33 NONE=TRUE successfully
+Executing : def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_reset_ctrl/ddrphy_ioclk_gate[0]/opit_0_inv} CLMA_357_354 FF3
+Executing : def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_reset_ctrl/ddrphy_ioclk_gate[0]/opit_0_inv} CLMA_357_354 FF3 successfully
+Executing : def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_reset_ctrl/ddrphy_ioclk_gate[1]/opit_0_inv} CLMA_357_660 FF3
+Executing : def_inst_site {I_ips_ddr_top/u_ddrphy_top/ddrphy_reset_ctrl/ddrphy_ioclk_gate[1]/opit_0_inv} CLMA_357_660 FF3 successfully
+Executing : def_inst_site {I_ips_ddr_top/u_ddrphy_top/u_ddrphy_cpd/cpd_inst} DDRPHY_CPD_369_466
+Executing : def_inst_site {I_ips_ddr_top/u_ddrphy_top/u_ddrphy_cpd/cpd_inst} DDRPHY_CPD_369_466 successfully
+Constraint check end.
+NOTE: The technology fpga was specified.
+NOTE: delay_model specified was generic_cmos.
+NOTE: Using the fpga syntax tables...
+Totals:
+ Calls to malloc = 0
+ Calls to calloc = 5993935
+
+I: Column Clock Check open.
+Read Column Clock Map.
+
+Placement started.
+Phase 1 Pre global placement started.
+Mapping instance GRS_INST/grs_ccs to CCS_87_316.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_gpll/u_gpll/gpll_inst to GPLL_367_463.
+Mapping instance u_video_pll/u_gpll/gpll_inst to GPLL_7_1075.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[0].u_ddrphy_ioclkdiv/ddrphy_ioclk_div_inst to DDRPHY_IOCLK_DIV_368_310.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[0].ddrphy_ppll/u_ppll/ppll_inst to PPLL_367_307.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_ca_group[0].u_ddc_ca/ddc_inst to DDR_PHY_369_463.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_ca_group[1].u_ddc_ca/ddc_inst to DDR_PHY_369_309.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_ca_group[2].u_ddc_ca/ddc_inst to DDR_PHY_369_307.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[1].u_ddrphy_ioclkdiv/ddrphy_ioclk_div_inst to DDRPHY_IOCLK_DIV_368_616.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[1].ddrphy_ppll/u_ppll/ppll_inst to PPLL_367_613.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/ddc_inst_PHY to DDR_PHY_369_769.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/u_ddc_dq/ddc_inst_PHY to DDR_PHY_369_771.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/u_ddc_dq/ddc_inst_PHY to DDR_PHY_369_615.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/u_ddc_dq/ddc_inst_PHY to DDR_PHY_369_613.
+Phase 1.1 1st GP placement started.
+Design Utilization : 63%.
+First map gop timing takes 10.70 sec
+Worst slack after clock region global placement is -5402
+Wirelength after clock region global placement is 1013920 and checksum is 2E1A3ED282D8BAE4.
+1st GP placement takes 68.61 sec.
+
+Phase 1.2 Clock placement started.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[0].u_clkbufr/goprclk to RCKB_363_456.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[1].u_clkbufr/goprclk to RCKB_363_762.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/u_clkbufm/clkbufm_inst to MRCKB_361_456.
+Mapping instance u_hdmi_serial_clock/gopclkgate to IOCKB_11_459.
+Mapping instance u_pixel_global/gopclkbufg to USCM_215_621.
+Mapping instance u_hdmi_pixel_div/iockdiv_inst to RCKB_9_456.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/u_sysclk_bufg/gopclkbufg to USCM_215_576.
+Mapping instance clkbufg_0/gopclkbufg to USCM_215_579.
+Mapping instance clkbufg_1/gopclkbufg to USCM_215_624.
+Mapping instance phy_io/rx_clock_buffer/gopclkbufg to USCM_215_627.
+Mapping instance u_processing_pll/u_gpll/gpll_inst to GPLL_7_463.
+Mapping instance u_processing_global/gopclkbufg to USCM_215_582.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/rst_clk_gpll/u_gpll/gpll_inst to GPLL_7_157.
+Mapping instance I_ips_ddr_top/u_ddrphy_top/u_rst_clk_bufg/gopclkbufg to USCM_215_585.
+Clock placement takes 0.78 sec.
+
+Wirelength after Pre Global Placement is 1013920 and checksum is 2E1A3ED282D8BAE4.
+Pre global placement takes 71.59 sec.
+
+Phase 2 Global placement started.
+Phase 2.1 Fixed placement started.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/dq_loop[0].u_iobuf_dq/opit_1 on IOLHR_364_774.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/dq_loop[1].u_iobuf_dq/opit_1 on IOLHR_364_834.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/dq_loop[2].u_iobuf_dq/opit_1 on IOLHR_364_768.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/dq_loop[3].u_iobuf_dq/opit_1 on IOLHR_364_822.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/dq_loop[4].u_iobuf_dq/opit_1 on IOLHR_364_786.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/dq_loop[5].u_iobuf_dq/opit_1 on IOLHR_364_798.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/dq_loop[6].u_iobuf_dq/opit_1 on IOLHR_364_780.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/dq_loop[7].u_iobuf_dq/opit_1 on IOLHR_364_828.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/genblk1.u_iobufco_dqs/opit_2 on IOLHR_364_810.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_outbuft_dm/opit_1 on IOLHR_364_792.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/dq_loop[0].u_iobuf_dq/opit_1 on IOLHR_364_858.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/dq_loop[1].u_iobuf_dq/opit_1 on IOLHR_364_870.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/dq_loop[2].u_iobuf_dq/opit_1 on IOLHR_364_894.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/dq_loop[3].u_iobuf_dq/opit_1 on IOLHR_364_900.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/dq_loop[4].u_iobuf_dq/opit_1 on IOLHR_364_888.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/dq_loop[5].u_iobuf_dq/opit_1 on IOLHR_364_906.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/dq_loop[6].u_iobuf_dq/opit_1 on IOLHR_364_846.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/dq_loop[7].u_iobuf_dq/opit_1 on IOLHR_364_852.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/genblk1.u_iobufco_dqs/opit_2 on IOLHR_364_882.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/u_outbuft_dm/opit_1 on IOLHR_364_864.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/dq_loop[0].u_iobuf_dq/opit_1 on IOLHR_364_738.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/dq_loop[1].u_iobuf_dq/opit_1 on IOLHR_364_744.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/dq_loop[2].u_iobuf_dq/opit_1 on IOLHR_364_714.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/dq_loop[3].u_iobuf_dq/opit_1 on IOLHR_364_690.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/dq_loop[4].u_iobuf_dq/opit_1 on IOLHR_364_702.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/dq_loop[5].u_iobuf_dq/opit_1 on IOLHR_364_696.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/dq_loop[6].u_iobuf_dq/opit_1 on IOLHR_364_720.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/dq_loop[7].u_iobuf_dq/opit_1 on IOLHR_364_708.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/genblk1.u_iobufco_dqs/opit_2 on IOLHR_364_732.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/u_outbuft_dm/opit_1 on IOLHR_364_750.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/dq_loop[0].u_iobuf_dq/opit_1 on IOLHR_364_648.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/dq_loop[1].u_iobuf_dq/opit_1 on IOLHR_364_630.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/dq_loop[2].u_iobuf_dq/opit_1 on IOLHR_364_618.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/dq_loop[3].u_iobuf_dq/opit_1 on IOLHR_364_666.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/dq_loop[4].u_iobuf_dq/opit_1 on IOLHR_364_636.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/dq_loop[5].u_iobuf_dq/opit_1 on IOLHR_364_672.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/dq_loop[6].u_iobuf_dq/opit_1 on IOLHR_364_624.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/dq_loop[7].u_iobuf_dq/opit_1 on IOLHR_364_684.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/genblk1.u_iobufco_dqs/opit_2 on IOLHR_364_660.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/u_outbuft_dm/opit_1 on IOLHR_364_642.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[0].u_outbuft_addr0/opit_1 on IOLHR_364_522.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[1].u_outbuft_addr0/opit_1 on IOLHR_364_516.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[2].u_outbuft_addr0/opit_1 on IOLHR_364_474.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[3].u_outbuft_addr0/opit_1 on IOLHR_364_444.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[4].u_outbuft_addr0/opit_1 on IOLHR_364_402.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[5].u_outbuft_addr0/opit_1 on IOLHR_364_498.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[6].u_outbuft_addr0/opit_1 on IOLHR_364_384.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[7].u_outbuft_addr0/opit_1 on IOLHR_364_528.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[8].u_outbuft_addr0/opit_1 on IOLHR_364_390.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[9].u_outbuft_addr0/opit_1 on IOLHR_364_510.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[10].u_outbuft_addr0/opit_1 on IOLHR_364_408.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[11].u_outbuft_addr0/opit_1 on IOLHR_364_420.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[12].u_outbuft_addr0/opit_1 on IOLHR_364_414.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[13].u_outbuft_addr0/opit_1 on IOLHR_364_480.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_mem_addr_0[14].u_outbuft_addr0/opit_1 on IOLHR_364_504.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/k_mem_ba[0].u_outbuft_ba/opit_1 on IOLHR_364_438.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/k_mem_ba[1].u_outbuft_ba/opit_1 on IOLHR_364_396.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/k_mem_ba[2].u_outbuft_ba/opit_1 on IOLHR_364_366.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_outbuft_casn/opit_1 on IOLHR_364_312.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_outbuft_cke/opit_1 on IOLHR_364_426.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_outbuft_csn/opit_1 on IOLHR_364_432.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_outbuft_odt/opit_1 on IOLHR_364_492.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_outbuft_rasn/opit_1 on IOLHR_364_378.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_outbuft_wen/opit_1 on IOLHR_364_318.
+Placed fixed group with base inst I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_outbuftco_ck/opit_3 on IOLHR_364_354.
+Placed fixed group with base inst camera_data_ibuf[0]/opit_1 on IOLHR_16_492.
+Placed fixed group with base inst camera_data_ibuf[1]/opit_1 on IOLHR_16_324.
+Placed fixed group with base inst camera_data_ibuf[2]/opit_1 on IOLHR_16_522.
+Placed fixed group with base inst camera_data_ibuf[3]/opit_1 on IOLHR_16_528.
+Placed fixed group with base inst camera_data_ibuf[4]/opit_1 on IOLHR_16_486.
+Placed fixed group with base inst camera_data_ibuf[5]/opit_1 on IOLHR_16_408.
+Placed fixed group with base inst camera_data_ibuf[6]/opit_1 on IOLHR_16_354.
+Placed fixed group with base inst camera_data_ibuf[7]/opit_1 on IOLHR_16_384.
+Placed fixed group with base inst camera_href_ibuf/opit_1 on IOLHR_16_348.
+Placed fixed group with base inst camera_init.service.bus.SCL_tri/opit_1 on IOLHR_16_414.
+Placed fixed group with base inst camera_init.service.bus.SDA_tri/opit_1 on IOLHR_16_390.
+Placed fixed group with base inst camera_pclk_ibuf/opit_1 on IOLHR_16_480.
+Placed fixed group with base inst camera_reset_n_obuf/opit_1 on IOLHR_16_330.
+Placed fixed group with base inst camera_vsync_ibuf/opit_1 on IOLHR_16_474.
+Placed fixed group with base inst clk_27m_ibuf/opit_1 on IOLHR_16_1080.
+Placed fixed group with base inst hdmi/channel[0].serializer/output_buffer/opit_2 on IOLHR_16_378.
+Placed fixed group with base inst hdmi/channel[1].serializer/output_buffer/opit_2 on IOLHR_16_402.
+Placed fixed group with base inst hdmi/channel[2].serializer/output_buffer/opit_2 on IOLHR_16_426.
+Placed fixed group with base inst hdmi/clock_serializer/output_buffer/opit_2 on IOLHR_16_450.
+Placed fixed group with base inst mem_rst_n_obuf/opit_1 on IOLHR_364_486.
+Placed fixed group with base inst phy_mdc_obuf/opit_1 on IOLHR_16_972.
+Placed fixed group with base inst phy_mdio_tri/opit_1 on IOLHR_16_1002.
+Placed fixed group with base inst phy_reset_n_obuf/opit_1 on IOLHR_16_636.
+Placed fixed group with base inst reset_n_ibuf/opit_1 on IOLHR_16_990.
+Placed fixed group with base inst rgmii_rx_ctl_ibuf/opit_1 on IOLHR_16_1152.
+Placed fixed group with base inst rgmii_rxc_ibuf/opit_1 on IOLHR_16_1062.
+Placed fixed group with base inst rgmii_rxd_ibuf[0]/opit_1 on IOLHR_16_1122.
+Placed fixed group with base inst rgmii_rxd_ibuf[1]/opit_1 on IOLHR_16_1128.
+Placed fixed group with base inst rgmii_rxd_ibuf[2]/opit_1 on IOLHR_16_1098.
+Placed fixed group with base inst rgmii_rxd_ibuf[3]/opit_1 on IOLHR_16_1104.
+Placed fixed group with base inst rgmii_tx_ctl_obuf/opit_1 on IOLHR_16_1044.
+Placed fixed group with base inst rgmii_txc_obuf/opit_1 on IOLHR_16_1146.
+Placed fixed group with base inst rgmii_txd_obuf[0]/opit_1 on IOLHR_16_1050.
+Placed fixed group with base inst rgmii_txd_obuf[1]/opit_1 on IOLHR_16_1020.
+Placed fixed group with base inst rgmii_txd_obuf[2]/opit_1 on IOLHR_16_1026.
+Placed fixed group with base inst rgmii_txd_obuf[3]/opit_1 on IOLHR_16_996.
+Placed fixed group with base inst status_led_obuf/opit_1 on IOLHR_16_1032.
+Placed fixed group with base inst u_ref_input/opit_2 on IOLHR_364_468.
+Placed fixed group with base inst uart_rx_ibuf/opit_1 on IOLHR_16_936.
+Placed fixed group with base inst uart_tx_obuf/opit_1 on IOLHR_16_942.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_reset_ctrl/ddrphy_ioclk_gate[0]/opit_0_inv on CLMA_357_354.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_reset_ctrl/ddrphy_ioclk_gate[1]/opit_0_inv on CLMA_357_660.
+Placed fixed instance GRS_INST/grs_ccs on CCS_87_316.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_gpll/u_gpll/gpll_inst on GPLL_367_463.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_ca_group[0].u_ddc_ca/ddc_inst on DDR_PHY_369_463.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_ca_group[1].u_ddc_ca/ddc_inst on DDR_PHY_369_309.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_ca_group[2].u_ddc_ca/ddc_inst on DDR_PHY_369_307.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[0].ddrphy_ppll/u_ppll/ppll_inst on PPLL_367_307.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[0].u_clkbufr/goprclk on RCKB_363_456.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[0].u_ddrphy_ioclkdiv/ddrphy_ioclk_div_inst on DDRPHY_IOCLK_DIV_368_310.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[1].ddrphy_ppll/u_ppll/ppll_inst on PPLL_367_613.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[1].u_clkbufr/goprclk on RCKB_363_762.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_bank[1].u_ddrphy_ioclkdiv/ddrphy_ioclk_div_inst on DDRPHY_IOCLK_DIV_368_616.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/ddc_inst_PHY on DDR_PHY_369_769.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[1].ddrphy_data_slice/u_ddc_dq/ddc_inst_PHY on DDR_PHY_369_771.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[2].ddrphy_data_slice/u_ddc_dq/ddc_inst_PHY on DDR_PHY_369_615.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[3].ddrphy_data_slice/u_ddc_dq/ddc_inst_PHY on DDR_PHY_369_613.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/rst_clk_gpll/u_gpll/gpll_inst on GPLL_7_157.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/u_clkbufm/clkbufm_inst on MRCKB_361_456.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/u_ddrphy_cpd/cpd_inst on DDRPHY_CPD_369_466.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/u_rst_clk_bufg/gopclkbufg on USCM_215_585.
+Placed fixed instance I_ips_ddr_top/u_ddrphy_top/u_sysclk_bufg/gopclkbufg on USCM_215_576.
+Placed fixed instance clkbufg_0/gopclkbufg on USCM_215_579.
+Placed fixed instance clkbufg_1/gopclkbufg on USCM_215_624.
+Placed fixed instance phy_io/rx_clock_buffer/gopclkbufg on USCM_215_627.
+Placed fixed instance u_hdmi_pixel_div/iockdiv_inst on RCKB_9_456.
+Placed fixed instance u_hdmi_serial_clock/gopclkgate on IOCKB_11_459.
+Placed fixed instance u_pixel_global/gopclkbufg on USCM_215_621.
+Placed fixed instance u_processing_global/gopclkbufg on USCM_215_582.
+Placed fixed instance u_processing_pll/u_gpll/gpll_inst on GPLL_7_463.
+Placed fixed instance u_video_pll/u_gpll/gpll_inst on GPLL_7_1075.
+Placed fixed instance BKCL_auto_0 on BKCL_1_952.
+Placed fixed instance BKCL_auto_1 on BKCL_1_646.
+Placed fixed instance BKCL_auto_2 on BKCL_1_340.
+Placed fixed instance BKCL_auto_3 on BKCL_373_646.
+Placed fixed instance BKCL_auto_4 on BKCL_373_340.
+Fixed placement takes 4.47 sec.
+
+Phase 2.2 Process placement started.
+I: The IO driver of I_ips_ddr_top/u_ddrphy_top/rst_clk_gpll/u_gpll/gpll_inst(CLKIN1) is not constraint at pllpad, its clock path will pass through SRB.
+I: The IO driver of u_processing_pll/u_gpll/gpll_inst(CLKIN1) is not constraint at pllpad, its clock path will pass through SRB.
+Process placement takes 0.00 sec.
+
+Phase 2.3 IO placement started.
+IO placement takes 0.56 sec.
+
+Phase 2.4 2nd GP placement started.
+Run super clustering :
+	Initial slack -21003.
+	16 iterations finished.
+	Final slack -7678.
+Super clustering done.
+Design Utilization : 63%.
+Worst slack after global placement is -4430
+2nd GP placement takes 63.55 sec.
+
+Wirelength after global placement is 1079907 and checksum is 2003B8BAC19EB50E.
+Global placement takes 68.64 sec.
+
+Phase 3 Post global placement started.
+Packing LUT6D started.
+I: LUT6D pack result: There are 15055 LUT6 in collection, pack success:439
+Packing LUT6D takes 15.62 sec.
+Phase 3.1 Macro cell placement started.
+I: Process macros using "Greedy".
+Ram placement takes 0.12 sec.
+Wirelength after macro cell placement is 1124440 and checksum is 23044340B7BA9A3B.
+Macro cell placement takes 0.58 sec.
+
+Phase 3.2 3rd GP placement started.
+Run super clustering :
+	Initial slack -20938.
+	13 iterations finished.
+	Final slack -8620.
+Super clustering done.
+Design Utilization : 62%.
+Worst slack after post global placement is -6719
+3rd GP placement takes 60.39 sec.
+
+Wirelength after post global placement is 1146354 and checksum is F73EE8764A87419F.
+Packing LUT6D started.
+I: LUT6D pack result: There are 14269 LUT6 in collection, pack success:51
+Packing LUT6D takes 10.97 sec.
+Post global placement takes 87.69 sec.
+
+Phase 4 Legalization started.
+The average distance in LP is 2.147878.
+Wirelength after legalization is 1293811 and checksum is 3E541C8D723095E5.
+Legalization takes 23.47 sec.
+
+Phase 5 Timing-driven detailed placement started.
+Phase 5.1 Replication placement started.
+Worst slack before Replication Place is -5584.
+Replication placement takes 31.88 sec.
+
+Wirelength after replication placement is 1300128 and checksum is 3ACB870099A4FD73.
+Phase 5.2 Swapping placement started.
+Worst slack before detailed placement is -5433, TNS before detailed placement is -16243569. 
+Cost at Swap iteration 0 : -5433, wslk -4722, tns -15006181, takes 9.83 sec.
+Cost at DP iteration 0 : -4722, wslk -4399, tns -13978923, takes 3.38 sec.
+Cost at Swap iteration 1 : -4399, wslk -4384, tns -12926974, takes 13.42 sec.
+Cost at Swap iteration 2 : -4384, wslk -4377, tns -12667269, takes 11.06 sec.
+Cost at DP iteration 2 : -4377, wslk -4262, tns -11805709, takes 3.38 sec.
+Cost at Swap iteration 3 : -4262, wslk -4217, tns -11694754, takes 8.05 sec.
+Cost at Swap iteration 4 : -4217, wslk -4214, tns -11904277, takes 6.73 sec.
+Cost at DP iteration 4 : -4214, wslk -4214, tns -11849802, takes 2.62 sec.
+Cost at Swap iteration 5 : -4214, wslk -4197, tns -12217954, takes 8.78 sec.
+Cost at Swap iteration 6 : -4197, wslk -4197, tns -12154313, takes 7.30 sec.
+Cost at DP iteration 6 : -4197, wslk -4197, tns -11872151, takes 2.89 sec.
+Cost at Swap iteration 7 : -4197, wslk -4197, tns -12356251, takes 13.62 sec.
+Cost at Swap iteration 8 : -4197, wslk -4197, tns -12314184, takes 5.59 sec.
+Cost at DP iteration 8 : -4197, wslk -4121, tns -11803992, takes 2.58 sec.
+Cost at Swap iteration 9 : -4121, wslk -4121, tns -11717124, takes 6.02 sec.
+Cost at Swap iteration 10 : -4121, wslk -4121, tns -12093174, takes 15.86 sec.
+Cost at DP iteration 10 : -4121, wslk -3971, tns -11439193, takes 12.19 sec.
+Cost at Swap iteration 11 : -3971, wslk -3971, tns -11114690, takes 6.70 sec.
+Cost at Swap iteration 12 : -3971, wslk -3943, tns -11115254, takes 14.73 sec.
+Cost at DP iteration 12 : -3943, wslk -3874, tns -10963895, takes 11.02 sec.
+Cost at Swap iteration 13 : -3874, wslk -3874, tns -10461841, takes 8.75 sec.
+Cost at Swap iteration 14 : -3874, wslk -3874, tns -10556975, takes 20.19 sec.
+Cost at DP iteration 14 : -3874, wslk -3866, tns -10462577, takes 19.36 sec.
+Cost at Swap iteration 15 : -3866, wslk -3866, tns -10317339, takes 7.97 sec.
+Cost at Swap iteration 16 : -3866, wslk -3866, tns -10487412, takes 16.84 sec.
+Cost at DP iteration 16 : -3866, wslk -3866, tns -10418296, takes 16.73 sec.
+Cost at Swap iteration 17 : -3866, wslk -3866, tns -10260412, takes 4.36 sec.
+Worst slack after detailed placement is -3866, TNS after detailed placement is -10260412. 
+Swapping placement takes 270.41 sec.
+
+I: Place-6001: Add the new FF instances CLMA_225_558(/FFAPP2/FF) CLMA_219_559(/FFAPP1/FF) replicated by the FF instance CLMS_225_553(/FFAPP0/FF) .
+Origin core/scheduler/geometry_source_slot_copy[1]_4/opit_0_inv replicates:
+    CLMA_225_558(/FFAPP2/FF)  : core/scheduler/geometry_source_slot_copy[1]_4/opit_0_inv_1(gopQ)
+    CLMA_219_559(/FFAPP1/FF)  : core/scheduler/geometry_source_slot_copy[1]_4/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new LUT instances CLMS_225_577(/devDL6_S) CLMA_231_624(/devBL6) replicated by the LUT instance CLMA_225_594(/devDL6).
+Origin core/N428_3[325]/gateop replicates:
+    CLMS_225_577(/devDL6_S) : core/N428_3[325]/gateop_1(gopLUT6)
+    CLMA_231_624(/devBL6) : core/N428_3[325]/gateop_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_219_571(/devDL6) CLMA_249_649(/devCL6) replicated by the LUT instance CLMS_225_595(/devDL6_S).
+Origin core/N428_3[323]/gateop replicates:
+    CLMA_219_571(/devDL6) : core/N428_3[323]/gateop_1(gopLUT6)
+    CLMA_249_649(/devCL6) : core/N428_3[323]/gateop_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_231_546(/devCL6) replicated by the LUT instance CLMS_201_613(/devCL6_S).
+Origin core/N428_3[345]/gateop replicates:
+    CLMA_231_546(/devCL6) : core/N428_3[345]/gateop_1(gopLUT6)
+I: Place-6001: Add the new FF instances CLMA_219_559(/FFAPP0/FF) replicated by the FF instance CLMS_225_553(/FF2/FF) .
+Origin core/scheduler/geometry_source_slot_copy[0]_4/opit_0_inv replicates:
+    CLMA_219_559(/FFAPP0/FF)  : core/scheduler/geometry_source_slot_copy[0]_4/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new FF instances CLMA_243_618(/FF0/FF) CLMA_219_559(/FF1/FF) replicated by the FF instance CLMA_291_630(/FFAPP2/FF) .
+Origin core/scheduler/geometry_source_slot_copy[1]_5/opit_0_inv replicates:
+    CLMA_243_618(/FF0/FF)  : core/scheduler/geometry_source_slot_copy[1]_5/opit_0_inv_1(gopQ)
+    CLMA_219_559(/FF1/FF)  : core/scheduler/geometry_source_slot_copy[1]_5/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new LUT instances CLMA_225_432(/devDL6) replicated by the LUT instance CLMS_171_559(/devBL6_S).
+Origin core/N428_3[383]/gateop replicates:
+    CLMA_225_432(/devDL6) : core/N428_3[383]/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMS_225_445(/devCL6_S) CLMA_225_444(/devCL6) replicated by the LUT instance CLMS_225_427(/devCL6_S).
+Origin core/processor/job_mailbox/processing_state_fsm[1:0]_18/LUT6_inst replicates:
+    CLMS_225_445(/devCL6_S) : core/processor/job_mailbox/processing_state_fsm[1:0]_18/LUT6_inst_1(gopLUT6)
+    CLMA_225_444(/devCL6) : core/processor/job_mailbox/processing_state_fsm[1:0]_18/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMS_225_559(/devBL6_S) replicated by the LUT instance CLMS_207_577(/devBL6_S).
+Origin core/N428_3[358]/gateop replicates:
+    CLMS_225_559(/devBL6_S) : core/N428_3[358]/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_225_576(/devCL6) replicated by the LUT instance CLMS_225_595(/devBL6_S).
+Origin core/N428_3[324]/gateop replicates:
+    CLMA_225_576(/devCL6) : core/N428_3[324]/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_225_558(/devBL6) replicated by the LUT instance CLMS_189_577(/devAL6_S).
+Origin core/N428_3[359]/gateop replicates:
+    CLMA_225_558(/devBL6) : core/N428_3[359]/gateop_1(gopLUT6)
+I: Place-6001: Add the new FF instances CLMS_309_871(/FFAPP2/FF) replicated by the FF instance CLMA_273_913(/FFAPP0/FF) .
+Origin core/fabric/dma/loaded[3][1]/opit_0_inv_L5Q replicates:
+    CLMS_309_871(/FFAPP2/FF)  : core/fabric/dma/loaded[3][1]/opit_0_inv_L5Q_1(gopLUT6L5Q)
+I: Place-6001: Add the new LUT instances CLMA_309_732(/devBL6) replicated by the LUT instance CLMS_309_733(/devBL6_S).
+Origin core/fabric/dma/N1212_3/gateop replicates:
+    CLMA_309_732(/devBL6) : core/fabric/dma/N1212_3/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMS_351_625(/devAL6L5Q_S) replicated by the LUT instance CLMA_315_625(/devAL6L5Q).
+Origin core/fabric/dma/N1454[2]/LUT6D_inst replicates:
+    CLMS_351_625(/devAL6L5Q_S) : core/fabric/dma/N1454[2]/LUT6D_inst_1(gopLUT6L5)
+I: Place-6001: Add the new LUT instances CLMA_309_666(/devDL6) replicated by the LUT instance CLMA_315_625(/devCL6).
+Origin core/fabric/dma/N169250/LUT6_inst replicates:
+    CLMA_309_666(/devDL6) : core/fabric/dma/N169250/LUT6_inst_1(gopLUT6)
+I: Place-6001: Add the new FF instances CLMS_309_733(/FFAPP0/FF) replicated by the FF instance CLMA_273_913(/FFAPP1/FF) .
+Origin core/fabric/dma/loaded[3][2]/opit_0_inv_L5Q replicates:
+    CLMS_309_733(/FFAPP0/FF)  : core/fabric/dma/loaded[3][2]/opit_0_inv_L5Q_1(gopLUT6L5Q)
+I: Place-6001: Add the new LUT instances CLMA_195_528(/devDL6) CLMA_327_534(/devAL6) replicated by the LUT instance CLMA_249_661(/devDL6).
+Origin core/processor/processor/N0_inv/LUT6_inst replicates:
+    CLMA_195_528(/devDL6) : core/processor/processor/N0_inv/LUT6_inst_1(gopLUT6)
+    CLMA_327_534(/devAL6) : core/processor/processor/N0_inv/LUT6_inst_2(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_219_570(/devCL6) replicated by the LUT instance CLMA_219_564(/devCL6).
+Origin core/N428_3[328]/gateop replicates:
+    CLMA_219_570(/devCL6) : core/N428_3[328]/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_231_546(/devBL6) replicated by the LUT instance CLMA_231_630(/devAL6).
+Origin core/N428_3[346]/gateop replicates:
+    CLMA_231_546(/devBL6) : core/N428_3[346]/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_225_564(/devCL6) replicated by the LUT instance CLMS_267_559(/devBL6_S).
+Origin core/N428_3[363]/gateop replicates:
+    CLMA_225_564(/devCL6) : core/N428_3[363]/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMS_225_565(/devDL6_S) replicated by the LUT instance CLMA_195_571(/devCL6).
+Origin core/N428_3[322]/gateop replicates:
+    CLMS_225_565(/devDL6_S) : core/N428_3[322]/gateop_1(gopLUT6)
+I: Place-6001: Add the new FF instances CLMS_75_463(/FF0/FF) CLMS_225_553(/FFAPP1/FF) replicated by the FF instance CLMS_225_553(/FFAPP3/FF) .
+Origin core/scheduler/geometry_source_slot_copy[0]_7/opit_0_inv replicates:
+    CLMS_75_463(/FF0/FF)  : core/scheduler/geometry_source_slot_copy[0]_7/opit_0_inv_1(gopQ)
+    CLMS_225_553(/FFAPP1/FF)  : core/scheduler/geometry_source_slot_copy[0]_7/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new LUT instances CLMA_225_552(/devDL6) replicated by the LUT instance CLMA_225_648(/devCL6).
+Origin core/N428_3[334]/gateop replicates:
+    CLMA_225_552(/devDL6) : core/N428_3[334]/gateop_1(gopLUT6)
+I: Place-6001: Add the new FF instances CLMA_219_432(/FF1/FF) CLMS_225_649(/FF3/FF) replicated by the FF instance CLMS_189_619(/FFAPP0/FF) .
+Origin core/scheduler/geometry_source_slot_copy[0]_5/opit_0_inv replicates:
+    CLMA_219_432(/FF1/FF)  : core/scheduler/geometry_source_slot_copy[0]_5/opit_0_inv_1(gopQ)
+    CLMS_225_649(/FF3/FF)  : core/scheduler/geometry_source_slot_copy[0]_5/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new LUT instances CLMA_225_558(/devCL6) replicated by the LUT instance CLMA_219_499(/devDL6).
+Origin core/N428_3[335]/gateop replicates:
+    CLMA_225_558(/devCL6) : core/N428_3[335]/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_231_552(/devCL6) replicated by the LUT instance CLMA_249_565(/devAL6).
+Origin core/N428_3[362]/gateop replicates:
+    CLMA_231_552(/devCL6) : core/N428_3[362]/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMS_225_553(/devDL6_S) replicated by the LUT instance CLMA_231_637(/devCL6).
+Origin core/N428_3[365]/gateop replicates:
+    CLMS_225_553(/devDL6_S) : core/N428_3[365]/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_225_582(/devDL6) CLMA_219_541(/devAL6) CLMA_189_600(/devBL6) replicated by the LUT instance CLMA_219_565(/devCL6).
+Origin core/N428_3[350]/gateop replicates:
+    CLMA_225_582(/devDL6) : core/N428_3[350]/gateop_1(gopLUT6)
+    CLMA_219_541(/devAL6) : core/N428_3[350]/gateop_2(gopLUT6)
+    CLMA_189_600(/devBL6) : core/N428_3[350]/gateop_3(gopLUT6)
+I: Place-6001: Add the new FF instances CLMA_327_774(/FFAPP0/FF) CLMA_327_774(/FF0/FF) replicated by the FF instance CLMA_327_780(/FF0/FF) .
+Origin core/fabric/dma/beat_index_copy[0]_1/opit_0_inv replicates:
+    CLMA_327_774(/FFAPP0/FF)  : core/fabric/dma/beat_index_copy[0]_1/opit_0_inv_1(gopQ)
+    CLMA_327_774(/FF0/FF)  : core/fabric/dma/beat_index_copy[0]_1/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new FF instances CLMA_327_774(/FF2/FF) CLMA_327_774(/FFAPP1/FF) replicated by the FF instance CLMA_327_786(/FFAPP0/FF) .
+Origin core/fabric/dma/beat_index[3]/opit_0_inv replicates:
+    CLMA_327_774(/FF2/FF)  : core/fabric/dma/beat_index[3]/opit_0_inv_1(gopQ)
+    CLMA_327_774(/FFAPP1/FF)  : core/fabric/dma/beat_index[3]/opit_0_inv_2(gopQ)
+I: Place-6001: Add the new LUT instances CLMA_177_565(/devBL6) replicated by the LUT instance CLMA_225_534(/devBL6).
+Origin core/processor/processor/geometry/N325/LUT6_inst replicates:
+    CLMA_177_565(/devBL6) : core/processor/processor/geometry/N325/LUT6_inst_1(gopLUT6)
+I: Place-6001: Add the new FF instances CLMS_159_529(/FF3/FF) CLMA_165_667(/FF0/FF) CLMA_249_535(/FF2/FF) replicated by the FF instance CLMA_225_558(/FF2/FF) .
+Origin core/scheduler/geometry_source_slot_copy[1]_7/opit_0_inv replicates:
+    CLMS_159_529(/FF3/FF)  : core/scheduler/geometry_source_slot_copy[1]_7/opit_0_inv_1(gopQ)
+    CLMA_165_667(/FF0/FF)  : core/scheduler/geometry_source_slot_copy[1]_7/opit_0_inv_2(gopQ)
+    CLMA_249_535(/FF2/FF)  : core/scheduler/geometry_source_slot_copy[1]_7/opit_0_inv_3(gopQ)
+I: Place-6001: Add the new FF instances CLMS_291_673(/FFAPP0/FF) replicated by the FF instance CLMA_303_702(/FF3/FF) .
+Origin core/fabric/dma/is_write[6]/opit_0_inv replicates:
+    CLMS_291_673(/FFAPP0/FF)  : core/fabric/dma/is_write[6]/opit_0_inv_1(gopQ)
+I: Place-6001: Add the new LUT instances CLMA_291_618(/devDL6) replicated by the LUT instance CLMA_219_559(/devCL6).
+Origin core/N428_3[356]/gateop replicates:
+    CLMA_291_618(/devDL6) : core/N428_3[356]/gateop_1(gopLUT6)
+I: Place-6001: Add the new LUT instances CLMA_261_588(/devBL6) replicated by the LUT instance CLMA_225_432(/devCL6).
+Origin core/N428_3[351]/gateop replicates:
+    CLMA_261_588(/devBL6) : core/N428_3[351]/gateop_1(gopLUT6)
+I: Place-6001: Add the new FF instances CLMA_219_565(/FFAPP0/FF) replicated by the FF instance CLMA_219_565(/FFAPP3/FF) .
+Origin core/processor/processor/writer/writer/state[3]/opit_0_inv_L5Q replicates:
+    CLMA_219_565(/FFAPP0/FF)  : core/processor/processor/writer/writer/state[3]/opit_0_inv_L5Q_1(gopLUT6L5Q)
+I: Place-6001: Add the new LUT instances CLMA_291_618(/devBL6) replicated by the LUT instance CLMS_225_565(/devCL6_S).
+Origin core/N428_3[354]/gateop replicates:
+    CLMA_291_618(/devBL6) : core/N428_3[354]/gateop_1(gopLUT6)
+I: Place-6001: Add the new FF instances CLMA_315_648(/FFAPP3/FF) replicated by the FF instance CLMA_273_678(/FFAPP2/FF) .
+Origin core/fabric/dma/pending[6]/opit_0_inv_L5Q replicates:
+    CLMA_315_648(/FFAPP3/FF)  : core/fabric/dma/pending[6]/opit_0_inv_L5Q_1(gopLUT6L5Q)
+I: Place-6001: Add the new FF instances CLMA_303_541(/FFAPP0/FF) CLMS_291_703(/FFAPP2/FF) replicated by the FF instance CLMA_315_601(/FFAPP3/FF) .
+Origin core/fabric/dma/pending[1]/opit_0_inv_L5Q replicates:
+    CLMA_303_541(/FFAPP0/FF)  : core/fabric/dma/pending[1]/opit_0_inv_L5Q_1(gopLUT6L5Q)
+    CLMS_291_703(/FFAPP2/FF)  : core/fabric/dma/pending[1]/opit_0_inv_L5Q_2(gopLUT6L5Q)
+Wirelength after detailed placement is 1528670 and checksum is 962E60D033F77FA1.
+Timing-driven detailed placement takes 302.45 sec.
+
+Worst slack is -3884, TNS after placement is -10306048.
+Placement done.
+Total placement takes 574.98 sec.
+Finished placement.
+Executing : def_route -prior_net {I_ips_ddr_top/u_ddrphy_top/ddrphy_ioclk_gate [0]}
+Executing : def_route -prior_net {I_ips_ddr_top/u_ddrphy_top/ddrphy_ioclk_gate [0]} successfully.
+Executing : def_route -prior_net {I_ips_ddr_top/u_ddrphy_top/ddrphy_ioclk_gate [1]}
+Executing : def_route -prior_net {I_ips_ddr_top/u_ddrphy_top/ddrphy_ioclk_gate [1]} successfully.
+
+Routing started.
+Building routing graph takes 10.25 sec.
+Worst slack is -3884, TNS before global route is -10306048.
+Processing design graph takes 7.25 sec.
+Total memory for routing:
+	275.546020 M.
+Total nets for routing : 88176.
+Global Routing step 1 processed 0 nets, it takes 78.69 sec.
+Unrouted nets 0 at the end of iteration 0.
+Rcf routing step 1 processed 2 nets, it takes 0.03 sec.
+Rcf routing step 2 processed 0 nets, it takes 0.00 sec.
+Rcf routing step 3 processed 0 nets, it takes 0.00 sec.
+Unrouted nets 0 at the end of iteration 0.
+Global Routing step 1 processed 35 nets, it takes 0.17 sec.
+Unrouted nets 85 at the end of iteration 0.
+Unrouted nets 57 at the end of iteration 1.
+Unrouted nets 48 at the end of iteration 2.
+Unrouted nets 39 at the end of iteration 3.
+Unrouted nets 34 at the end of iteration 4.
+Unrouted nets 30 at the end of iteration 5.
+Unrouted nets 30 at the end of iteration 6.
+Unrouted nets 24 at the end of iteration 7.
+Unrouted nets 24 at the end of iteration 8.
+Unrouted nets 20 at the end of iteration 9.
+Unrouted nets 16 at the end of iteration 10.
+Unrouted nets 17 at the end of iteration 11.
+Unrouted nets 17 at the end of iteration 12.
+Unrouted nets 17 at the end of iteration 13.
+Unrouted nets 14 at the end of iteration 14.
+Unrouted nets 15 at the end of iteration 15.
+Unrouted nets 15 at the end of iteration 16.
+Unrouted nets 11 at the end of iteration 17.
+Unrouted nets 12 at the end of iteration 18.
+Unrouted nets 11 at the end of iteration 19.
+Unrouted nets 9 at the end of iteration 20.
+Unrouted nets 11 at the end of iteration 21.
+Unrouted nets 9 at the end of iteration 22.
+Unrouted nets 9 at the end of iteration 23.
+Unrouted nets 8 at the end of iteration 24.
+Unrouted nets 9 at the end of iteration 25.
+Unrouted nets 9 at the end of iteration 26.
+Unrouted nets 9 at the end of iteration 27.
+Unrouted nets 7 at the end of iteration 28.
+Unrouted nets 7 at the end of iteration 29.
+Unrouted nets 7 at the end of iteration 30.
+Unrouted nets 7 at the end of iteration 31.
+Unrouted nets 7 at the end of iteration 32.
+Unrouted nets 7 at the end of iteration 33.
+Unrouted nets 7 at the end of iteration 34.
+Unrouted nets 8 at the end of iteration 35.
+Unrouted nets 6 at the end of iteration 36.
+Unrouted nets 6 at the end of iteration 37.
+Unrouted nets 5 at the end of iteration 38.
+Unrouted nets 5 at the end of iteration 39.
+Unrouted nets 8 at the end of iteration 40.
+Unrouted nets 5 at the end of iteration 41.
+Unrouted nets 5 at the end of iteration 42.
+Unrouted nets 5 at the end of iteration 43.
+Unrouted nets 5 at the end of iteration 44.
+Unrouted nets 7 at the end of iteration 45.
+Unrouted nets 7 at the end of iteration 46.
+Unrouted nets 7 at the end of iteration 47.
+Unrouted nets 8 at the end of iteration 48.
+Unrouted nets 6 at the end of iteration 49.
+Unrouted nets 6 at the end of iteration 50.
+Unrouted nets 5 at the end of iteration 51.
+Unrouted nets 5 at the end of iteration 52.
+Unrouted nets 5 at the end of iteration 53.
+Unrouted nets 6 at the end of iteration 54.
+Unrouted nets 5 at the end of iteration 55.
+Unrouted nets 5 at the end of iteration 56.
+Unrouted nets 5 at the end of iteration 57.
+Unrouted nets 5 at the end of iteration 58.
+Unrouted nets 5 at the end of iteration 59.
+Unrouted nets 5 at the end of iteration 60.
+Unrouted nets 5 at the end of iteration 61.
+Unrouted nets 5 at the end of iteration 62.
+Unrouted nets 5 at the end of iteration 63.
+Unrouted nets 6 at the end of iteration 64.
+Unrouted nets 5 at the end of iteration 65.
+Unrouted nets 5 at the end of iteration 66.
+Unrouted nets 5 at the end of iteration 67.
+Unrouted nets 5 at the end of iteration 68.
+Unrouted nets 5 at the end of iteration 69.
+Unrouted nets 5 at the end of iteration 70.
+Unrouted nets 5 at the end of iteration 71.
+Unrouted nets 6 at the end of iteration 72.
+Unrouted nets 5 at the end of iteration 73.
+Unrouted nets 5 at the end of iteration 74.
+Unrouted nets 4 at the end of iteration 75.
+Unrouted nets 3 at the end of iteration 76.
+Unrouted nets 3 at the end of iteration 77.
+Unrouted nets 2 at the end of iteration 78.
+Unrouted nets 3 at the end of iteration 79.
+Unrouted nets 3 at the end of iteration 80.
+Unrouted nets 3 at the end of iteration 81.
+Unrouted nets 3 at the end of iteration 82.
+Unrouted nets 2 at the end of iteration 83.
+Unrouted nets 2 at the end of iteration 84.
+Unrouted nets 2 at the end of iteration 85.
+Unrouted nets 4 at the end of iteration 86.
+Unrouted nets 2 at the end of iteration 87.
+Unrouted nets 2 at the end of iteration 88.
+Unrouted nets 2 at the end of iteration 89.
+Unrouted nets 2 at the end of iteration 90.
+Unrouted nets 2 at the end of iteration 91.
+Unrouted nets 2 at the end of iteration 92.
+Unrouted nets 2 at the end of iteration 93.
+Unrouted nets 2 at the end of iteration 94.
+Unrouted nets 3 at the end of iteration 95.
+Unrouted nets 2 at the end of iteration 96.
+Unrouted nets 2 at the end of iteration 97.
+Unrouted nets 2 at the end of iteration 98.
+Unrouted nets 2 at the end of iteration 99.
+Unrouted nets 1 at the end of iteration 100.
+Unrouted nets 1 at the end of iteration 101.
+Unrouted nets 1 at the end of iteration 102.
+Unrouted nets 1 at the end of iteration 103.
+Unrouted nets 1 at the end of iteration 104.
+Unrouted nets 1 at the end of iteration 105.
+Unrouted nets 1 at the end of iteration 106.
+Unrouted nets 1 at the end of iteration 107.
+Unrouted nets 1 at the end of iteration 108.
+Unrouted nets 1 at the end of iteration 109.
+Unrouted nets 1 at the end of iteration 110.
+Unrouted nets 1 at the end of iteration 111.
+Unrouted nets 1 at the end of iteration 112.
+Unrouted nets 1 at the end of iteration 113.
+Unrouted nets 1 at the end of iteration 114.
+Unrouted nets 1 at the end of iteration 115.
+Unrouted nets 1 at the end of iteration 116.
+Unrouted nets 1 at the end of iteration 117.
+Unrouted nets 1 at the end of iteration 118.
+Unrouted nets 1 at the end of iteration 119.
+Unrouted nets 1 at the end of iteration 120.
+Unrouted nets 0 at the end of iteration 121.
+Global Routing step 2 processed 168 nets, it takes 9.91 sec.
+Unrouted nets 6 at the end of iteration 0.
+Unrouted nets 3 at the end of iteration 1.
+Unrouted nets 2 at the end of iteration 2.
+Unrouted nets 1 at the end of iteration 3.
+Unrouted nets 0 at the end of iteration 4.
+Global Routing step 3 processed 20 nets, it takes 0.67 sec.
+Unrouted nets 2452 at the end of iteration 0.
+Unrouted nets 1857 at the end of iteration 1.
+Unrouted nets 1501 at the end of iteration 2.
+Unrouted nets 1218 at the end of iteration 3.
+Unrouted nets 1040 at the end of iteration 4.
+Unrouted nets 925 at the end of iteration 5.
+Unrouted nets 831 at the end of iteration 6.
+Unrouted nets 720 at the end of iteration 7.
+Unrouted nets 631 at the end of iteration 8.
+Unrouted nets 553 at the end of iteration 9.
+Unrouted nets 486 at the end of iteration 10.
+Unrouted nets 411 at the end of iteration 11.
+Unrouted nets 393 at the end of iteration 12.
+Unrouted nets 367 at the end of iteration 13.
+Unrouted nets 342 at the end of iteration 14.
+Unrouted nets 268 at the end of iteration 15.
+Unrouted nets 235 at the end of iteration 16.
+Unrouted nets 233 at the end of iteration 17.
+Unrouted nets 200 at the end of iteration 18.
+Unrouted nets 178 at the end of iteration 19.
+Unrouted nets 155 at the end of iteration 20.
+Unrouted nets 138 at the end of iteration 21.
+Unrouted nets 118 at the end of iteration 22.
+Unrouted nets 109 at the end of iteration 23.
+Unrouted nets 83 at the end of iteration 24.
+Unrouted nets 64 at the end of iteration 25.
+Unrouted nets 57 at the end of iteration 26.
+Unrouted nets 26 at the end of iteration 27.
+Unrouted nets 20 at the end of iteration 28.
+Unrouted nets 13 at the end of iteration 29.
+Unrouted nets 19 at the end of iteration 30.
+Unrouted nets 19 at the end of iteration 31.
+Unrouted nets 14 at the end of iteration 32.
+Unrouted nets 20 at the end of iteration 33.
+Unrouted nets 28 at the end of iteration 34.
+Unrouted nets 31 at the end of iteration 35.
+Unrouted nets 22 at the end of iteration 36.
+Unrouted nets 42 at the end of iteration 37.
+Unrouted nets 41 at the end of iteration 38.
+Unrouted nets 28 at the end of iteration 39.
+Unrouted nets 17 at the end of iteration 40.
+Unrouted nets 25 at the end of iteration 41.
+Unrouted nets 43 at the end of iteration 42.
+Unrouted nets 39 at the end of iteration 43.
+Unrouted nets 20 at the end of iteration 44.
+Unrouted nets 13 at the end of iteration 45.
+Unrouted nets 4 at the end of iteration 46.
+Unrouted nets 2 at the end of iteration 47.
+Unrouted nets 2 at the end of iteration 48.
+Unrouted nets 2 at the end of iteration 49.
+Unrouted nets 0 at the end of iteration 50.
+Global Routing step 4 processed 3328 nets, it takes 71.98 sec.
+Global routing takes 82.98 sec.
+Total 103094 subnets.
+    forward max bucket size 934 , backward 698.
+        Unrouted nets 78034 at the end of iteration 0.
+    route iteration 0, CPU time elapsed 26.171875 sec.
+    forward max bucket size 1595 , backward 1192.
+        Unrouted nets 72900 at the end of iteration 1.
+    route iteration 1, CPU time elapsed 25.703125 sec.
+    forward max bucket size 2415 , backward 2300.
+        Unrouted nets 67959 at the end of iteration 2.
+    route iteration 2, CPU time elapsed 28.718750 sec.
+    forward max bucket size 5651 , backward 4368.
+        Unrouted nets 64101 at the end of iteration 3.
+    route iteration 3, CPU time elapsed 35.562500 sec.
+    forward max bucket size 9012 , backward 4802.
+        Unrouted nets 60530 at the end of iteration 4.
+    route iteration 4, CPU time elapsed 44.046875 sec.
+    forward max bucket size 14813 , backward 5891.
+        Unrouted nets 57791 at the end of iteration 5.
+    route iteration 5, CPU time elapsed 83.437500 sec.
+    forward max bucket size 15839 , backward 7731.
+        Unrouted nets 56315 at the end of iteration 6.
+    route iteration 6, CPU time elapsed 100.906250 sec.
+    forward max bucket size 19580 , backward 5997.
+        Unrouted nets 53539 at the end of iteration 7.
+    route iteration 7, CPU time elapsed 138.937500 sec.
+    forward max bucket size 22310 , backward 6535.
+        Unrouted nets 50730 at the end of iteration 8.
+    route iteration 8, CPU time elapsed 157.562500 sec.
+    forward max bucket size 19651 , backward 8637.
+        Unrouted nets 48247 at the end of iteration 9.
+    route iteration 9, CPU time elapsed 183.093750 sec.
+    forward max bucket size 18603 , backward 8633.
+        Unrouted nets 45995 at the end of iteration 10.
+    route iteration 10, CPU time elapsed 237.468750 sec.
+    forward max bucket size 40727 , backward 7948.
+        Unrouted nets 44162 at the end of iteration 11.
+    route iteration 11, CPU time elapsed 272.734375 sec.
+    forward max bucket size 27039 , backward 8954.
+        Unrouted nets 42522 at the end of iteration 12.
+    route iteration 12, CPU time elapsed 276.171875 sec.
+    forward max bucket size 33987 , backward 9766.
+        Unrouted nets 41183 at the end of iteration 13.
+    route iteration 13, CPU time elapsed 276.171875 sec.
+    forward max bucket size 24301 , backward 9758.
+        Unrouted nets 39790 at the end of iteration 14.
+    route iteration 14, CPU time elapsed 280.312500 sec.
+    forward max bucket size 12790 , backward 11839.
+        Unrouted nets 38704 at the end of iteration 15.
+    route iteration 15, CPU time elapsed 284.718750 sec.
+    forward max bucket size 14663 , backward 9490.
+        Unrouted nets 37734 at the end of iteration 16.
+    route iteration 16, CPU time elapsed 303.562500 sec.
+    forward max bucket size 9594 , backward 9108.
+        Unrouted nets 36842 at the end of iteration 17.
+    route iteration 17, CPU time elapsed 329.171875 sec.
+    forward max bucket size 27706 , backward 8598.
+        Unrouted nets 36260 at the end of iteration 18.
+    route iteration 18, CPU time elapsed 357.968750 sec.
+    forward max bucket size 16530 , backward 11168.
+        Unrouted nets 35521 at the end of iteration 19.
+    route iteration 19, CPU time elapsed 357.156250 sec.
+    forward max bucket size 18386 , backward 17763.
+        Unrouted nets 34802 at the end of iteration 20.
+    route iteration 20, CPU time elapsed 376.859375 sec.
+    forward max bucket size 13407 , backward 20788.
+        Unrouted nets 34343 at the end of iteration 21.
+    route iteration 21, CPU time elapsed 391.468750 sec.
+    forward max bucket size 10301 , backward 19560.
+        Unrouted nets 33920 at the end of iteration 22.
+    route iteration 22, CPU time elapsed 380.156250 sec.

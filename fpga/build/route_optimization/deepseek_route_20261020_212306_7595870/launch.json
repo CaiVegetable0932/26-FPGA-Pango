@@ -1,0 +1,27 @@
+{
+    "session":  "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\deepseek_route_20261020_212306_7595870",
+    "build":  "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\handoff_20261020_053147_229875",
+    "driver_pid":  48432,
+    "driver_start_utc":  "2026-10-20T13:23:07.0457354Z",
+    "python":  "C:\\Users\\ROG\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "arguments":  [
+                      "-u",
+                      "fpga/scripts/resume_video_system.py",
+                      "--build",
+                      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\handoff_20261020_053147_229875",
+                      "--placement-seed",
+                      "13",
+                      "--placement-decongestion",
+                      "1",
+                      "--phase-timeout-minutes",
+                      "1440",
+                      "--pnr-timeout-minutes",
+                      "0",
+                      "--dump-congestion",
+                      "--pause-file",
+                      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\deepseek_route_20261020_212306_7595870\\stop_requested.json"
+                  ],
+    "stop_file":  "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\deepseek_route_20261020_212306_7595870\\stop_requested.json",
+    "bitstream_authorized":  true,
+    "started_at":  "2026-10-20T21:23:07.0560543+08:00"
+}

@@ -1,0 +1,14 @@
+{
+    "design_complete":  true,
+    "selected_source_simulation_passed":  true,
+    "resource_and_constraints_reviewed":  true,
+    "whole_design_route_allowed":  true,
+    "regional_physical_checks_allowed":  true,
+    "reason":  "User assigned the seed-13 trial (2026-10-20): last seed of the fixed set 11/7/13, single-variable vs seed 11, 1.5-hour single-routing timeout; bitgen enabled after routed min/max STA passes.",
+    "review_document":  "fpga/reports/regional_verification_plan_20261019.md",
+    "simulation_note":  "Selected 15-change 150MHz tile-boundary design passed source-bound full 1080p control/snapshot/display and host raw-byte identity; root 20-case regression and control/snapshot model passed after promotion. Actual board MAP and structural CDC audit passed. Routed setup/hold, CDC physical delays and external hardware remain unsigned.",
+    "updated_at":  "2026-10-20T17:57:33.2723017+08:00",
+    "physical_signoff_pending":  true,
+    "legacy_board_phy_critical_warnings":  61,
+    "handoff_project":  "fpga/build/full_integration_20261013/handoff_20261020_053147_229875"
+}
