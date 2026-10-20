@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "D:\XDU\concept\26-FPGA-Pango\fpga\scripts\resume_video_system.py", line 281, in <module>
+    main()
+  File "D:\XDU\concept\26-FPGA-Pango\fpga\scripts\resume_video_system.py", line 113, in main
+    raise ValueError('native project is still running; resume only after its processes finish')
+ValueError: native project is still running; resume only after its processes finish

@@ -56,7 +56,7 @@ clean 目录重试（2b，`resume_20261020_143304_667663`）与首次（2，`res
 - 与第 1 轮（60 分钟）逐位重合至迭代 12（45,542），此后为新区域：44,291→43,230→42,332→41,449，每轮改善 2.7%→2.4%→2.1%→2.1%，单迭代 427s→517s。
 - 停滞规则未触发（窗口改善 2.1% > 1% 阈值），由硬上限终结；`snapshot_intact=true`、无孤儿进程、锁已释放。
 - STA 与位流未到达（bitgen 门槛正确拦截）；结果按 TIMEOUT 保留。
-- 证据：`resume_20261020_144611_450798`（place_route.log、monitor、result.json）；原生产物归档 `native_place_route_timeout_90min.zip`（19,918,530 字节，39 成员，archive_sha256 `f35c69be5b6702a9f81fddd4df2a5ff07c19afc48cac569c5677a98ea045c04e`，已回读校验）。
+- 证据：`resume_20261020_144611_450798`（place_route.log、monitor、result.json）；原生产物归档 `native_place_route_timeout_90min.zip`（19,918,530 字节，39 成员，archive_sha256 `f8c4f5eca3763638b7b4816ae043a7c684c2fdfcd630f13cba8c3cf4597e2bca`，已回读校验；此处 SHA 以磁盘归档与同目录 manifest 为准）。
 - 会话：`deepseek_route_20261020_144608_3387834`（launch.json、observations.jsonl 10 行、driver 日志）。
 - 就绪门槛已复位 `whole_design_route_allowed=false`，reason 记录本轮结果，等待用户指定下一轮。
 
