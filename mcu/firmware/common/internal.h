@@ -12,5 +12,7 @@
 #define F1_STATE_BYTES 128U
 /* State: boot8, sample4, phase1, zero1, home1, source1, ticks(3x8),
  * fused(2x4), servo(2x4), raw(2x2), imu32, errors8, zeros8, biases12,
- * config4, reserved12. Internal times remain F1 times until mapped by F4. */
+ * config4, reserved12. Internal times remain F1 times until mapped by F4.
+ * The IMU fields are published as 0 because pose fusion was dropped
+ * (2026-10-20): 76..89 accel/gyro/temperature, 90 sensor_valid, 92 i2c_errors. */
 #endif

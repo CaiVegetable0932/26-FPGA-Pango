@@ -1,5 +1,9 @@
 #ifndef MCU_POSE_CONFIG_H
 #define MCU_POSE_CONFIG_H
+/* 2026-10-20 起 F1 放弃 MPU6050 姿态融合，pitch/yaw 只用舵机位置反馈。
+ * 下列 IMU 相关项（四元数、权重、稳定角速度阈值）仍被 pose.c 的保留分支引用，
+ * 因此不删除；当前固件不会走到该分支，实际生效的只有 POSE_WAIT_US、
+ * POSE_STALE_US 和舵机中心容差（pose.c 内的 POSE_CENTER_TOL_RAW=12）。 */
 /* Bench defaults, not a claim of measured precision or mounting direction. */
 #define POSE_SERVO_WEIGHT 9U
 #define POSE_IMU_WEIGHT 1U

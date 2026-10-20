@@ -20,7 +20,11 @@
 #define GIMBAL_CENTER_YAW_RAW              2405U
 #define GIMBAL_MOVE_TIME_MS                2000U
 #define GIMBAL_SETTLE_TIME_MS              1000U
-#define GIMBAL_POSITION_TOLERANCE          12U
+/* Arrival tolerance in raw counts. The bus servos repeat to roughly +-20
+ * counts (~1.3 deg) of the commanded target, so 12 was stricter than the
+ * hardware can deliver; 24 counts = 1.58 deg. It must match
+ * POSE_CENTER_TOL_RAW in firmware/common/pose.c. */
+#define GIMBAL_POSITION_TOLERANCE          24U
 
 void Gimbal_Test_Init(Usart_DataTypeDef *bus);
 void Gimbal_Test_Poll(void);

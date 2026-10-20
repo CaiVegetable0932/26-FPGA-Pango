@@ -37,6 +37,10 @@ static uint8_t poseReady=1U;
 static uint8_t failed;
 static GimbalFeedback feedback;
 
+
+static uint8_t ReadPosition(uint8_t id, uint16_t *position);
+
+
 static const char *AxisName(unsigned index)
 {
     return index == 0U ? "pitch" : "yaw";

@@ -6,6 +6,10 @@
 
 #define RAD_TO_DEG 57.2957795131f
 static const uint16_t center[2]={1881,2405};
+/* Servo-only zeroing tolerance in raw counts. Must match
+ * GIMBAL_POSITION_TOLERANCE (firmware/yuntai/Core/Inc/gimbal_test.h): the bus
+ * servos repeat to ~+-20 counts, so a tighter window would never confirm. */
+#define POSE_CENTER_TOL_RAW 24
 static float wrap(float x) { while (x>180) x-=360; while (x<=-180) x+=360; return x; }
 int32_t pose_delta(int32_t x) { while (x>180000) x-=360000; while (x<=-180000) x+=360000; return x; }
 void pose_init(Pose *p)
@@ -86,7 +90,7 @@ void pose_sample(Pose *p, const int16_t a[3], const int16_t g[3], int16_t temper
         int stable=p->sensor_valid && norm>0.97f && norm<1.03f && p->servo_valid==3;
         for (unsigned i=0;i<3;i++) stable &= fabsf(gb[i]-p->bias[i])<POSE_STABLE_RATE_DPS;
         for (unsigned i=0;i<2;i++) stable &= tick-p->servo_us[i]<=p->stale_us &&
-            abs((int)p->servo_raw[i]-(int)center[i])<=12;
+            abs((int)p->servo_raw[i]-(int)center[i])<=POSE_CENTER_TOL_RAW;
         if (!stable || gap) {
             p->settle_us=tick; p->stable_samples=0; memset(p->bias_sum,0,sizeof(p->bias_sum));
         } else if (p->stable_samples<2000) {
@@ -95,22 +99,56 @@ void pose_sample(Pose *p, const int16_t a[3], const int16_t g[3], int16_t temper
         }
     }
 }
+/* Servo-only zeroing: the two axes must stay inside the homing tolerance. */
+static int servo_centered(const Pose *p)
+{
+    if (p->servo_valid!=3) return 0;
+    for (unsigned i=0;i<2;i++)
+        if (abs((int)p->servo_raw[i]-(int)center[i])>POSE_CENTER_TOL_RAW) return 0;
+    return 1;
+}
+
 void pose_servo(Pose *p, unsigned axis, uint16_t raw, uint64_t tick, int valid)
 {
     if (axis>1) return;
-    if (!valid || raw>4095) { p->servo_valid&=(uint8_t)~(1U<<axis); return; }
+    if (!valid || raw>4095) {
+        p->servo_valid&=(uint8_t)~(1U<<axis);
+        /* Lost or failed feedback restarts the servo-only stable window. */
+        if (p->settling && p->home_confirmed) p->settle_us=tick;
+        return;
+    }
     p->servo_raw[axis]=raw;
     p->servo[axis]=(int32_t)lroundf(((int32_t)raw-center[axis])*270000.0f/4095.0f);
-    if (abs(p->servo[axis])>60792) { p->servo_valid&=(uint8_t)~(1U<<axis); return; }
+    if (abs(p->servo[axis])>60792) {
+        p->servo_valid&=(uint8_t)~(1U<<axis);
+        if (p->settling && p->home_confirmed) p->settle_us=tick;
+        return;
+    }
     p->servo_us[axis]=tick; p->servo_valid|=(uint8_t)(1U<<axis);
+    /* Servo feedback drives the published sample counter when no IMU is used. */
+    ++p->sample_seq;
+    /* Any axis leaving the center tolerance restarts the stable window. */
+    if (p->settling && p->home_confirmed && !servo_centered(p)) p->settle_us=tick;
 }
 int pose_calibrate(Pose *p, uint64_t tick)
 {
-    if ((!p->settling && !p->zero_valid) || !p->home_confirmed || !p->sensor_valid || p->servo_valid!=3 ||
-        tick-p->settle_us<POSE_WAIT_US || p->stable_samples<900 || tick-p->imu_us>p->stale_us ||
-        tick-p->servo_us[0]>p->stale_us || tick-p->servo_us[1]>p->stale_us) return 0;
-    for (unsigned i=0;i<3;i++) p->bias[i]=(float)(p->bias_sum[i]/p->stable_samples);
-    p->zero_pitch=p->pitch; p->zero_yaw=p->yaw; p->zero_valid=1; p->settling=0;
+    if ((!p->settling && !p->zero_valid) || !p->home_confirmed) return 0;
+    if (tick-p->servo_us[0]>p->stale_us || tick-p->servo_us[1]>p->stale_us) return 0;
+    if (tick-p->settle_us<POSE_WAIT_US) return 0;
+
+    if (p->sensor_valid) {
+        /* IMU path: gyro bias and absolute attitude zero, unchanged. */
+        if (p->servo_valid!=3 || p->stable_samples<900 || tick-p->imu_us>p->stale_us) return 0;
+        for (unsigned i=0;i<3;i++) p->bias[i]=(float)(p->bias_sum[i]/p->stable_samples);
+        p->zero_pitch=p->pitch; p->zero_yaw=p->yaw;
+    } else {
+        /* Servo-only path: fresh, still-centered feedback confirms the zero.
+         * No gyro bias and no attitude reference exist in this mode. */
+        if (!servo_centered(p)) return 0;
+        memset(p->bias,0,sizeof(p->bias));
+        p->zero_pitch=0.0f; p->zero_yaw=0.0f;
+    }
+    p->zero_valid=1; p->settling=0;
     return 1;
 }
 void pose_fuse(Pose *p, uint64_t tick)

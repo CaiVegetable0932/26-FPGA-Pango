@@ -43,13 +43,14 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 # Add sources to executable
+# mpu6050.c is intentionally not built: pose fusion was dropped in favour of
+# servo position feedback (see README). The driver and its host test stay.
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     Core/Src/ring_buffer.c
     Core/Src/uart_servo_lite.c
     Core/Src/host_console.c
     Core/Src/gimbal_test.c
     Core/Src/f1_link.c
-    Core/Src/mpu6050.c
     ../common/board.c
     ../common/wire.c
     ../common/pose.c
@@ -62,13 +63,16 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 # Add project symbols (macros)
+# NOTE: the temporary bench move test (GIMBAL_BENCH_MOVE_TEST) has been removed
+# after collecting its data; the remaining temporary diagnostic is the failure
+# stamp published in STATE bytes 76..81.
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     MCU_F1
     # Add user defined symbols
 )
 
 # Remove wrong libob.a library dependency when using cpp files
-target_sources(STM32_Drivers PRIVATE Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c)
+# I2C1 HAL is not compiled any more: MPU6050 pose fusion was dropped.
 list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)
 
 # Add linked libraries

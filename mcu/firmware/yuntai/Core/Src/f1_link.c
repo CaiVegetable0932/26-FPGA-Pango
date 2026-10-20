@@ -1,6 +1,6 @@
 #include "f1_link.h"
 #include "internal.h"
-#include "mpu6050.h"
+#include "pose.h"
 #include "gimbal_test.h"
 #include <math.h>
 #include <stdlib.h>
@@ -58,7 +58,8 @@ static void receive(void *ctx, uint8_t cmd, uint16_t seq, const uint8_t *data, u
         }
     } else if (cmd==F1_ZERO && n==8) {
         if (!pose.home_confirmed || Gimbal_State()!=0 || home_pending ||
-            abs((int)pose.servo_raw[0]-1881)>12 || abs((int)pose.servo_raw[1]-2405)>12) result=7;
+            abs((int)pose.servo_raw[0]-(int)GIMBAL_CENTER_PITCH_RAW)>(int)GIMBAL_POSITION_TOLERANCE ||
+            abs((int)pose.servo_raw[1]-(int)GIMBAL_CENTER_YAW_RAW)>(int)GIMBAL_POSITION_TOLERANCE) result=7;
         else {
             pose_begin_home(&pose); pose_home_confirmed(&pose,board_us());
             Gimbal_SetPoseReady(0); home_pending=1; phase=3; home_start=board_us(); result=1;
@@ -83,7 +84,8 @@ void F1_Link_Init(UART_HandleTypeDef *uart)
     pose_init(&pose); boot=board_boot_id();
     board_port_init(&port,uart,receive,0,30);
     Gimbal_SetFeedback(feedback); Gimbal_SetPoseReady(0);
-    if (!MPU6050_Init()) wire_count(&pose.i2c_errors);
+    /* MPU6050 pose fusion is not used: pitch/yaw come from the servo feedback
+     * only, so no I2C init and no sensor_valid path exists in this build. */
     last_contact=board_us();
 }
 void F1_Link_Rx(UART_HandleTypeDef *uart) { board_port_rx(&port,uart); }
@@ -93,7 +95,7 @@ void F1_Service(void)
 {
     if (servicing) return;
     servicing=1;
-    board_port_poll(&port); MPU6050_Poll(&pose,board_us());
+    board_port_poll(&port);
     publish_state(board_us());
     servicing=0;
 }

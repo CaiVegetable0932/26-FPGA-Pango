@@ -6,6 +6,7 @@
 static uint64_t now=1000;
 static uint8_t mechanical,can_move,sensor_ok=1,last_result;
 static unsigned go_calls,cancel_calls;
+static uint16_t feed_raw[2]={1881,2405};
 static GimbalFeedback observe;
 uint64_t board_us(void) {return now;}
 uint64_t board_boot_id(void) {return 77;}
@@ -27,7 +28,7 @@ uint8_t Gimbal_State(void){return mechanical;}
 uint8_t Gimbal_Ready(void){mechanical=2;return 1;}
 uint8_t Gimbal_Go(int32_t p,int32_t y){(void)p;(void)y;assert(can_move);mechanical=1;++go_calls;return 1;}
 uint8_t Gimbal_CancelMotion(void){mechanical=0;++cancel_calls;return 1;}
-void Gimbal_ReadFeedback(void){observe(0,1881,1);observe(1,2405,1);}
+void Gimbal_ReadFeedback(void){observe(0,feed_raw[0],1);observe(1,feed_raw[1],1);}
 static void request(uint8_t cmd,uint16_t seq)
 {uint8_t p[16]={0};wire_put64(p,boot);receive(0,cmd,seq,p,cmd==F1_GO?16:8,now);}
 static void advance(unsigned milliseconds)
@@ -53,7 +54,10 @@ int main(void)
     now+=1000001;F1_Link_Poll();
     assert(phase==5 && cancel_calls==1 && !can_move && pose.zero_valid);
     request(F1_READY,6);mechanical=0;advance(20);
-    sensor_ok=0;advance(5100);assert(!pose.zero_valid && !can_move);
+    /* Servo-only zeroing: an axis outside the centre tolerance keeps the five
+     * second window closed, even though no IMU exists in this build.
+     * 1930 is 49 counts from centre, comfortably outside the 24-count band. */
+    feed_raw[0]=1930;advance(5100);assert(!pose.zero_valid && !can_move);
     request(0x23,7);assert(last_result==6 && home_pending && !pose.zero_valid);
     advance(10000);assert(phase==5 && !home_pending && cancel_calls==2);
     puts("F1 link: zero delay, motion gate, retry, retired opcode and local timeout passed");
