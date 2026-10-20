@@ -99,6 +99,9 @@ int main(void)
 
   HAL_Delay(1000U);
   Gimbal_Test_Init(&servoUart);
+  /* USART1 归 F4 代理链路；人机文本控制台因此没有绑定串口，
+   * gimbal_test.c 的 Reply(...) 输出会被丢弃，详见 host_console.h 顶部说明。
+   * 若将来把控制台挪到空闲 UART（如 USART2），需在此调用 Host_Console_Init()。 */
   F1_Link_Init(&huart1);
 
   /* USER CODE END 2 */

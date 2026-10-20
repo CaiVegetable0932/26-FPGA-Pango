@@ -44,6 +44,9 @@ static const char *AxisName(unsigned index)
 
 static void Reply(const char *format, ...)
 {
+    /* 当前构建没有绑定控制台串口（USART1 归 F4 代理），Host_Console_Write()
+     * 在 g_hostUart == NULL 时直接返回，下面这些诊断文本不会出现在任何链路上。
+     * 需要排障时读 F1_STATE；不要据此文本是否存在判断命令是否执行。 */
     char text[320];
     va_list ap;
     va_start(ap, format);

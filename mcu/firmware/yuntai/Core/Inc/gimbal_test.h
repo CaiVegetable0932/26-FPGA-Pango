@@ -3,6 +3,12 @@
 
 #include "uart_servo_lite.h"
 
+/* 命令入口有两处：
+ *   - F4 代理帧（f1_link.c 的 F1_READY / F1_GO / F1_ZERO），这是当前唯一生效的入口；
+ *   - 旧的文本控制台（gimbal_test.c 的 Command()），因未绑定串口而不生效，
+ *     见 host_console.h 顶部说明。
+ * 本文件的 Reply(...) 诊断文本在当前构建里不会出现在任何链路上，状态以 F1_STATE 为准。 */
+
 /* JOHO position raw 0..4095 maps to the calibrated 270 degree range. */
 #define GIMBAL_TRAVEL_DEGREES              270U
 #define GIMBAL_POSITION_MAX                4095U
