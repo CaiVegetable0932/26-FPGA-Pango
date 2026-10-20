@@ -21,7 +21,7 @@
 
 主视频采用OV5640直接输入PG2L100H，S0 RAW8经板载千兆网到PC，FPGA结果经HDMI回采，见[跨端回传方案](../output/OV5640_RAW8千兆网与HDMI双路回传方案.md)。MCU不转发像素，不参与实时畸变矫正；继续负责光照、云台、电机和设备端反馈。
 
-MPU6050 经 I2C 接入 F1，由 F1 融合舵机反馈，再经 F4 独立双向 UART 回传 FPGA。PC 经 F4 下发运动，FPGA 仅查询、同步和接收状态。用于证明 FPGA 独立处理的板载旁路/矫正按键直接作用于 FPGA 逻辑。参见 [接口补充](../output/MCU_POSE_V2接口实现补充.md)、[板卡配置](config/board_interfaces.md) 和 [软件验证记录](reports/MCU_POSE_V2软件验证.md)。
+F1 直接用两只舵机的位置反馈生成 pitch/yaw（2026-10-20 起不再使用 MPU6050 姿态融合），再经 F4 独立双向 UART 回传 FPGA。PC 经 F4 下发运动，FPGA 仅查询、同步和接收状态。用于证明 FPGA 独立处理的板载旁路/矫正按键直接作用于 FPGA 逻辑。参见 [接口补充](../output/MCU_POSE_V2接口实现补充.md)、[板卡配置](config/board_interfaces.md) 和 [软件验证记录](reports/MCU_POSE_V2软件验证.md)。
 
 在本目录运行：
 

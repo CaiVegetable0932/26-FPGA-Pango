@@ -2,6 +2,8 @@
 
 日期：2026-10-11。对应 `MCU五轴控制与FPGA通信开发交接文档.md` 的 V1.3 实施版。本文件冻结本轮 MCU 适配所需的内部接口与旧功能封装；不表示 FPGA RTL、PC 界面或实板联调已经完成。
 
+> **2026-10-20 变更（优先于下文）**：F1 放弃 MPU6050 姿态融合，pitch/yaw 只用舵机位置反馈。报文布局与长度全部不变，受影响的只有取值：能力 `feature_flags` bit1 恒 0、`imu_type` 置 0、GET_RAW_IMU 与 STATE 的 IMU/零位/零偏字段恒 0；`sample_seq` 改为舵机反馈采样计数。5 s 稳定判据改为"两轴 raw 持续在正对中心 ±12 内"。下文涉及 MPU 采样、六轴融合、安装四元数与零偏标定的段落视为历史设计，不再作为本版实现要求。
+
 ## 外部接口
 
 外层固定 `55 AA / version=2 / cmd / seq:u16 / length:u16 / payload / CRC-16/CCITT-FALSE`，小端，CRC 覆盖 version 至 payload。通用回应前 16B 和 STATE 96B 沿用主文档。F4 的 USART3 接 PC，USART6 接 FPGA；两条链路会话独立，FPGA 无运动权限。
@@ -19,7 +21,7 @@ LEGACY 保留 `wake`、`measure n start/over`、`set n m`、`go x y s`、`out z 
 
 CONFIRM_MANUAL_ZERO 只接受 XYZ 掩码，不执行运动、不改脉冲计数。对应轴必须停止且已有脉冲计数为0。操作者须先断电人工置于真实零位再启动/复位，然后确认；设置行程或wake不自动确认物理零位。Z 未测量的2圈显示分母仍只用于旧state文本，正式STATE的Z无效。
 
-SET_POSE_ZERO 重新使用中心反馈、5秒稳定等待和MPU校准，期间普通云台运动被锁定；最终成功回应带新配置号和零角，另发 POSE_ZEROED。该事务等待期间必须单独继续 HEARTBEAT，每≤300ms；不使用一次查询阻塞PC心跳。通信超时、舵机报警或回正失败中断等待并返回失败终态。
+SET_POSE_ZERO 重新使用中心反馈和5秒舵机居中等待（2026-10-20 起不再做 MPU 校准），期间普通云台运动被锁定；最终成功回应带新配置号和零角，另发 POSE_ZEROED。该事务等待期间必须单独继续 HEARTBEAT，每≤300ms；不使用一次查询阻塞PC心跳。通信超时、舵机报警或回正失败中断等待并返回失败终态。
 
 ## F4-F1 内部链路
 
@@ -35,7 +37,7 @@ USART1↔USART1，460800、8N1，沿用版本2外层，30ms整包期限。内部
 | 0xA0 | REPLY | F1 boot:u64 + request_cmd:u8 + result:u8 + reserved:u16，12B |
 | 0xA1 | STATE | 下表128B，F1目标发布200Hz，可能替换待发送旧状态 |
 
-内部状态布局：0 boot:u64；8 IMU sample_seq:u32；12 phase:u8；13 zero_valid:u8；14 home_confirmed:u8；15 angle_source:u8；16 imu_capture_us:u64；24/32各舵机capture_us:u64；40融合角2×i32；48舵机相对角2×i32；56舵机raw2×u16；60原始IMU诊断32B；92/96 I2C错误和漏样u32；100/104 pitch/yaw零位i32；108陀螺零偏3×i32(µdeg/s)；120 F1 config_version:u32；124状态生成tick低32位。phase沿用IDLE/MOVING/HOMING/SETTLING/FAULT，数值4保留。
+内部状态布局：0 boot:u64；8 IMU sample_seq:u32；12 phase:u8；13 zero_valid:u8；14 home_confirmed:u8；15 angle_source:u8；16 imu_capture_us:u64；24/32各舵机capture_us:u64；40融合角2×i32；48舵机相对角2×i32；56舵机raw2×u16；60原始IMU诊断32B；92/96 I2C错误和漏样u32；100/104 pitch/yaw零位i32；108陀螺零偏3×i32(µdeg/s)；120 F1 config_version:u32；124状态生成tick低32位。phase沿用IDLE/MOVING/HOMING/SETTLING/FAULT，数值4保留。**2026-10-20 起：8 处 sample_seq 为舵机反馈采样计数；16 与 60–91 的 IMU 诊断区、100/104 零位角、108 陀螺零偏恒 0；15 处 angle_source 在零位有效后恒为 1（纯舵机）。**
 
 内部请求序号在单次F1启动内递增，不回绕；普通请求可使用至65535，耗尽必须维护重启。相同事务重试只执行一次；默认200ms、2次重试。INFO不占运动事务序号。F1发布时间、舵机和IMU采样时间分开保留，不把200Hz发送说成200Hz舵机反馈。
 
@@ -47,9 +49,9 @@ PC 租约超时或控制链路故障后，F4 取消本地电机任务、清除�
 
 ## 可复核配置
 
-MPU默认±2g、±250dps、DLPF_CFG=3、SMPLRT_DIV=4、200Hz，PLL陀螺参考，FIFO关闭，DATA_READY轮询；WHO_AM_I和配置逐项回读失败则不得标定。默认安装四元数为单位阵，实际安装轴向必须由现场替换验证。
+**MPU6050 本版不启用**（原方案：±2g、±250dps、DLPF_CFG=3、SMPLRT_DIV=4、200Hz、PLL 陀螺参考、FIFO 关闭、DATA_READY 轮询；WHO_AM_I 与配置逐项回读失败不得标定；安装四元数为单位阵）。驱动与测试保留，F1 固件不再初始化 I2C1，也不参与构建。
 
-融合为六轴互补：重力校正pitch/roll，陀螺相对yaw积分。对外仍发布机械pitch/yaw。阈值初值3000mdeg，舵机/IMU权重9:1，舵机或IMU过期阈值20ms；这些是待调试初值。角差超过阈值采用舵机；接近时偏向舵机加权；舵机无效时不发布有效角，IMU失效则舵机降级。首次ready反馈到位后至少5秒连续稳定样本才写入零位，通信超时、运动或传感器失败中断或重启标定。
+**融合不再启用**（2026-10-20 起）：pitch/yaw 直接取舵机位置反馈相对正对中心的 mdeg 值，不做重力校正、陀螺积分和加权，阈值 3000mdeg、权重 9:1 等仅作为历史设计保留。舵机无效时不发布有效角；两轴反馈须连续 5 秒停留在正对 raw ±12 内才写入零位，通信超时、回正失败或任一轴越界/反馈中断即重启标定窗口。
 
 F1时钟改为HSI PLL 64MHz，F4为HSI PLL 96MHz；F4四个步进定时器仍保持1MHz计数，通过47预分频与48MHz定时器时钟匹配。旧脉冲驱动代码未改。460800标称速率、内部HSI误差和FPGA IO电平必须实板核对。
 
