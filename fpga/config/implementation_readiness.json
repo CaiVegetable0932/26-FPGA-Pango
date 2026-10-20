@@ -4,10 +4,10 @@
   "resource_and_constraints_reviewed": true,
   "whole_design_route_allowed": false,
   "regional_physical_checks_allowed": true,
-  "reason": "Round 3 ended: seed 11 PnR TIMEOUT at the 90-minute hard cap with 41,449 nets unrouted (session deepseek_route_20261020_144608_3387834, 17 detailed-route iterations). STA/bitgen were not reached. Seed 7 previously failed placement twice (Place-0006). Gate reset for the user to direct the next round.",
+  "reason": "Unlimited seed-13 round ended STALLED at iteration 49 with 28,831 nets unrouted (session deepseek_route_20261020_212306_7595870): the supervisor convergence rule saw a 0.877% best-improvement in the last five rounds, below the 1% threshold. No STA and no bitstream. Gate reset until the user assigns a single-variable next round or a structural change; auto-restarting the same seed is not permitted.",
   "review_document": "fpga/reports/regional_verification_plan_20261019.md",
   "simulation_note": "Selected 15-change 150MHz tile-boundary design passed source-bound full 1080p control/snapshot/display and host raw-byte identity; root 20-case regression and control/snapshot model passed after promotion. Actual board MAP and structural CDC audit passed. Routed setup/hold, CDC physical delays and external hardware remain unsigned.",
-  "updated_at": "2026-10-20T16:18:55.810458+08:00",
+  "updated_at": "2026-10-21T03:43:06.598872+08:00",
   "physical_signoff_pending": true,
   "legacy_board_phy_critical_warnings": 61,
   "handoff_project": "fpga/build/full_integration_20261013/handoff_20261020_053147_229875"
