@@ -1,0 +1,11 @@
+# user-requested sequence: ready -> +20/+20 -> -20/-20 -> ready
+status
+ready
+sleep 2000
+go 20 20
+sleep 5000
+go -20 -20
+sleep 3000
+ready
+status
+quit
