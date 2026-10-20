@@ -31,8 +31,13 @@ def last_row(path):
 
 
 def phase_fields(evidence, phase):
-    """提取单个原生阶段的最新监控行及日志字节数。"""
-    row, missing = last_row(evidence / (phase + '_monitor.jsonl'))
+    """提取单个原生阶段的最新监控行及日志字节数。
+
+    PnR/STA 的 monitor 命名为 <phase>_monitor.jsonl；bitgen 由 native_bitgen
+    生成 <phase>.monitor.jsonl（去下划线），按实际命名读取。
+    """
+    monitor_name = 'gen_bit_stream.monitor.jsonl' if phase == 'gen_bit_stream' else phase + '_monitor.jsonl'
+    row, missing = last_row(evidence / monitor_name)
     log = evidence / (phase + '.log')
     out = {'phase': phase}
     if row is None:
@@ -73,7 +78,7 @@ def main():
         row['note'] = 'resume_* 证据目录尚未出现'
     else:
         row['phases'] = [phase_fields(evidence, phase)
-                         for phase in ('place_route', 'report_timing')]
+                         for phase in ('place_route', 'report_timing', 'gen_bit_stream')]
         # driver 身份与启动信息来自本轮会话 launch.json，不做重复推断
         launch = args.session / 'launch.json'
         if launch.is_file():

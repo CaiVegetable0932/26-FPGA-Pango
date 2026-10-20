@@ -10,19 +10,19 @@
   "external_timing_verified": false,
   "download_approved": false,
   "resumed_project": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\handoff_20261020_053147_229875\\flow.pds",
-  "resume_evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\handoff_20261020_053147_229875\\resume_20261020_125518_926278",
+  "resume_evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\handoff_20261020_053147_229875\\resume_20261020_144611_450798",
   "native_runs": [
     {
       "phase": "place_route",
       "status": "TIMEOUT",
       "returncode": 1,
-      "elapsed_seconds": 3600.9219999999987,
-      "pid": 47048,
-      "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\handoff_20261020_053147_229875\\resume_20261020_125518_926278\\place_route_monitor.jsonl",
+      "elapsed_seconds": 5400.921999999999,
+      "pid": 50148,
+      "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\handoff_20261020_053147_229875\\resume_20261020_144611_450798\\place_route_monitor.jsonl",
       "policy": {
-        "timeout_seconds": 3600,
-        "warning_seconds": 2880.0,
-        "requested_timeout_seconds": 3600,
+        "timeout_seconds": 5400,
+        "warning_seconds": 4320.0,
+        "requested_timeout_seconds": 5400,
         "poll_seconds": 30,
         "stall_enabled": true,
         "stall_window": 5,
@@ -42,8 +42,8 @@
     "mode": "normal",
     "control_chain_length": 500,
     "dump_congestion": true,
-    "native_timeout_minutes": 60,
-    "host_timeout_minutes": 60,
+    "native_timeout_minutes": 90,
+    "host_timeout_minutes": 90,
     "cell_duplication": "default",
     "macro_placement": null,
     "planning_before_place": null,
@@ -51,6 +51,6 @@
     "congestion_iterations": 200,
     "pin_cost_increasing_speed": null
   },
-  "stop_after_timing": true,
+  "stop_after_timing": false,
   "optimization_status": "TIMEOUT"
 }
