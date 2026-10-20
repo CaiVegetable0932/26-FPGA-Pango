@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "D:\XDU\concept\26-FPGA-Pango\fpga\scripts\resume_video_system.py", line 281, in <module>
+    main()
+  File "D:\XDU\concept\26-FPGA-Pango\fpga\scripts\resume_video_system.py", line 256, in main
+    raise RuntimeError('native '+phase+' stopped: '+supervised['status'])
+RuntimeError: native place_route stopped: TIMEOUT
