@@ -63,7 +63,7 @@ void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_ENABLE;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
   {
@@ -117,7 +117,7 @@ void MX_TIM3_Init(void)
   {
     Error_Handler();
   }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_ENABLE;
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
   {
@@ -146,6 +146,7 @@ void MX_TIM4_Init(void)
   /* USER CODE END TIM4_Init 0 */
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_SlaveConfigTypeDef sSlaveConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
   TIM_OC_InitTypeDef sConfigOC = {0};
 
@@ -168,6 +169,12 @@ void MX_TIM4_Init(void)
     Error_Handler();
   }
   if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sSlaveConfig.SlaveMode = TIM_SLAVEMODE_GATED;
+  sSlaveConfig.InputTrigger = TIM_TS_ITR1;
+  if (HAL_TIM_SlaveConfigSynchro(&htim4, &sSlaveConfig) != HAL_OK)
   {
     Error_Handler();
   }
@@ -226,7 +233,7 @@ void MX_TIM5_Init(void)
   {
     Error_Handler();
   }
-  sSlaveConfig.SlaveMode = TIM_SLAVEMODE_GATED;
+  sSlaveConfig.SlaveMode = TIM_SLAVEMODE_DISABLE;
   sSlaveConfig.InputTrigger = TIM_TS_ITR1;
   if (HAL_TIM_SlaveConfigSynchro(&htim5, &sSlaveConfig) != HAL_OK)
   {

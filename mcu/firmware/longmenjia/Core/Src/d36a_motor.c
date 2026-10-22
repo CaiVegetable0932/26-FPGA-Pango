@@ -33,16 +33,24 @@ typedef struct
     int32_t position;
 } D36A_State;
 
+/* 2026-10-22：现场把两块 D36A 驱动板接反（**板内通道对应正确**，只是两块板互换）。
+ * 为避免重新接线，这里按实际接线重排"电机编号 -> 引脚组/定时器"的对应关系：
+ *   电机 1（X，单电机）   ← M2 信号组  TIM5_CH2  PA1 STEP / PA2 DIR / PC3 EN
+ *   电机 2（龙门架 A）    ← M1 信号组  TIM2_CH1  PA5 STEP / PA4 DIR / PC2 EN
+ *   电机 3（龙门架 B）    ← M4 信号组  TIM4_CH1  PB6 STEP / PB11 DIR / PB10 EN
+ *   电机 4（Y，单电机）   ← M3 信号组  TIM3_CH1  PA6 STEP / PB5 DIR / PG8 EN
+ * 龙门架仍是 index1+index2，因此同步关系从"TIM3 主 + TIM5 从"整体搬到"TIM2 主 + TIM4 从"
+ * （TIM4 的 ITR1 正是 TIM2，可与原方案等价地做门控同步）。 */
 static const D36A_Hardware hardware[D36A_MOTOR_COUNT] =
 {
-    {&htim2, D36A_M1_DIR_GPIO_Port, D36A_M1_DIR_Pin,
-     D36A_M1_EN_GPIO_Port, D36A_M1_EN_Pin, 0U},
     {&htim5, D36A_M2_DIR_GPIO_Port, D36A_M2_DIR_Pin,
      D36A_M2_EN_GPIO_Port, D36A_M2_EN_Pin, 8U},
-    {&htim3, D36A_M3_DIR_GPIO_Port, D36A_M3_DIR_Pin,
-     D36A_M3_EN_GPIO_Port, D36A_M3_EN_Pin, 0U},
+    {&htim2, D36A_M1_DIR_GPIO_Port, D36A_M1_DIR_Pin,
+     D36A_M1_EN_GPIO_Port, D36A_M1_EN_Pin, 0U},
     {&htim4, D36A_M4_DIR_GPIO_Port, D36A_M4_DIR_Pin,
-     D36A_M4_EN_GPIO_Port, D36A_M4_EN_Pin, 0U}
+     D36A_M4_EN_GPIO_Port, D36A_M4_EN_Pin, 0U},
+    {&htim3, D36A_M3_DIR_GPIO_Port, D36A_M3_DIR_Pin,
+     D36A_M3_EN_GPIO_Port, D36A_M3_EN_Pin, 0U}
 };
 
 static volatile D36A_State state[D36A_MOTOR_COUNT];
@@ -103,10 +111,16 @@ static void prepare_command(uint32_t index, const D36A_Command *command)
 
 static void apply_command(uint32_t index, const D36A_Command *command)
 {
-    if (index == 1U)
+    if (index == 0U)
     {
-        /* Legacy independent motor control; gantry mode restores CubeMX gating. */
-        TIM5->SMCR &= ~TIM_SMCR_SMS;
+        /* 电机 1 现在由 TIM5 驱动；TIM5 在 .ioc 里配的是门控从模式（原用于龙门架），
+         * 单轴独立运动必须先清掉从模式，否则主定时器不跑就没有脉冲。 */
+        TIM5->SMCR &= ~(TIM_SMCR_SMS | TIM_SMCR_TS);
+    }
+    else if (index == 2U)
+    {
+        /* 电机 3（TIM4）平时作为龙门架从机，若被单独驱动同样要脱离门控。 */
+        TIM4->SMCR &= ~(TIM_SMCR_SMS | TIM_SMCR_TS);
     }
     prepare_command(index, command);
     if (command->period != 0U)
@@ -119,18 +133,22 @@ static void apply_gantry(const D36A_Command *command)
 {
     D36A_Command reverse = *command;
     reverse.forward = !command->forward;
-    /* TIM3 TRGO=ENABLE gates TIM5 through ITR1. Arm the follower first. */
+    /* 2026-10-22：龙门架改为 TIM2(主) 门控 TIM4(从)。TIM4 的 ITR1 = TIM2。
+     * 先武装从定时器，再同时启动两者，保证两台电机严格同步起停。 */
     stop_timer(2U);
     stop_timer(1U);
-    TIM5->SMCR = (TIM5->SMCR & ~(TIM_SMCR_SMS | TIM_SMCR_TS)) |
+    TIM4->SMCR = (TIM4->SMCR & ~(TIM_SMCR_SMS | TIM_SMCR_TS)) |
                  TIM_SLAVEMODE_GATED | TIM_TS_ITR1;
     prepare_command(1U, command);
     prepare_command(2U, &reverse);
-    TIM5->DIER = 0U;
+    /* 2026-10-22：脉冲计数与状态机仍挂在 index2（现在是从机 TIM4）上：
+     * handle_update() 只在 index==2 分支做龙门架计数/镜像/收尾，D36A_GetStatus 也读 state[2]。
+     * 因此关闭的是主定时器 TIM2 的更新中断，TIM4 的 UIE 必须保留。 */
+    TIM2->DIER = 0U;
     if (command->period != 0U)
     {
-        TIM5->CR1 |= TIM_CR1_CEN;
-        TIM3->CR1 |= TIM_CR1_CEN;
+        TIM4->CR1 |= TIM_CR1_CEN;
+        TIM2->CR1 |= TIM_CR1_CEN;
     }
 }
 
@@ -179,6 +197,13 @@ static HAL_StatusTypeDef initialize(void)
         timer->CR1 |= TIM_CR1_URS;
         timer->CCER = (pins->channel_shift == 0U) ? TIM_CCER_CC1E : TIM_CCER_CC2E;
     }
+
+    /* 主/从关系由 FPGA.ioc 决定（2026-10-22）：
+     *   TIM2 = 龙门架主（TIM_MasterOutputTrigger = TRGO_ENABLE）
+     *   TIM4 = 龙门架从（TIM_SlaveMode = GATED，TIM_InputTrigger = ITR1，即 TIM2）
+     *   TIM3 / TIM5 = 独立单轴（不设从模式、TRGO 为 RESET）
+     * 这里不再运行时改写 CR2/SMCR，避免与 .ioc 冲突；apply_gantry() 每次命令前
+     * 会重新武装从机，属于逐命令的时序要求，不改变静态配置。 */
 
     /* D36A EN goes to nSLEEP, not the chip's active-low nENABLE pin. */
     for (uint32_t index = 0U; index < D36A_MOTOR_COUNT; ++index)
@@ -248,7 +273,7 @@ HAL_StatusTypeDef D36A_Control(uint8_t motor, int16_t rpm, uint32_t pulses)
 
     if (motor == D36A_GANTRY)
     {
-        if (((TIM3->CR2 & TIM_CR2_MMS) != TIM_TRGO_ENABLE) ||
+        if (((TIM2->CR2 & TIM_CR2_MMS) != TIM_TRGO_ENABLE) ||
             ((gantry_enabled == 0U) && (state[1].running || state[2].running ||
                                       state[1].position != 0 || state[2].position != 0)))
         {

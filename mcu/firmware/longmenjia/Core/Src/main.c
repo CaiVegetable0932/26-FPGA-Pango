@@ -48,10 +48,13 @@
 #define COORDINATE_SCALE (100U * DECIMAL_SCALE)
 #define RX_CAPACITY 512U
 #define LINE_CAPACITY 96U
-/* Logical-axis travel measured on the mechanism, reported 2026-09-25. */
+/* Logical-axis travel measured on the mechanism.
+ * 轴 1/轴 2 于 2026-09-25 报告；轴 3（伸缩）于 2026-10-22 用 measure 3 实测。
+ * 三者都在开机 ready 之后自动 set，主机无需每次重新标定。 */
 #define AXIS1_STARTUP_TRAVEL "5.696250"
 #define AXIS2_STARTUP_TRAVEL "6.195625"
-/* Temporary display scale only: axis 3 has not been measured or configured. */
+#define AXIS3_STARTUP_TRAVEL "2.915000"   /* measure 3 实测：2.915 圈 = 4664 脉冲 */
+/* 仅在轴 3 未成功 set 时用于 state 归一化显示，不代表真实行程。 */
 #define AXIS3_STATE_FALLBACK_PULSES (2U * D36A_PULSES_PER_REV)
 /* USER CODE END PD */
 
@@ -75,8 +78,10 @@ static struct
   AxisMode mode;
 } axes[AXIS_COUNT];
 static const uint8_t axis_motor[AXIS_COUNT] = {1U, D36A_GANTRY, 4U};
-/* Logical positive travel: axis 1 DIR low; axes 2 and 3 keep their polarity. */
-static const int16_t axis_direction[AXIS_COUNT] = {-1, 1, 1};
+/* 逻辑正方向：轴 1、轴 3 为 DIR 低（-1），轴 2（龙门架）保持原极性。
+ * 2026-10-22：轴 3（伸缩）实测坐标增大对应现场定义的"负向"，因此由 +1 改为 -1，
+ * 使"坐标增大 = 现场正向"。位置计数同样乘以该系数，坐标与走位保持一致。 */
+static const int16_t axis_direction[AXIS_COUNT] = {-1, 1, -1};
 #ifndef MCU_POSE_V2
 static uint8_t rx_byte;
 static volatile uint8_t rx_ring[RX_CAPACITY];
@@ -293,6 +298,23 @@ static void execute_command(char *line)
     token = strtok(NULL, " \t");
   }
   if (count == 0U) return;
+  /* 2026-10-22 诊断：手动设置四路 EN(nSLEEP / nENABLE) 电平。
+   * 背景：D36A_Control 从不驱动 EN，四条 EN 始终保持 MX_GPIO_Init() 时的低电平；
+   * 若驱动板要求 EN 为高才工作，则电机只会保持力矩（嗡鸣）而不会走。
+   * 用法：en 1 / en 0，用于在不重烧固件的前提下判定使能极性。 */
+  if (strcmp(tokens[0], "en") == 0 && count == 2U)
+  {
+    GPIO_PinState level;
+    if (tokens[1][0] == '1' && tokens[1][1] == '\0') level = GPIO_PIN_SET;
+    else if (tokens[1][0] == '0' && tokens[1][1] == '\0') level = GPIO_PIN_RESET;
+    else { reply("error en 0|1\r\n"); return; }
+    HAL_GPIO_WritePin(D36A_M1_EN_GPIO_Port, D36A_M1_EN_Pin, level);
+    HAL_GPIO_WritePin(D36A_M2_EN_GPIO_Port, D36A_M2_EN_Pin, level);
+    HAL_GPIO_WritePin(D36A_M3_EN_GPIO_Port, D36A_M3_EN_Pin, level);
+    HAL_GPIO_WritePin(D36A_M4_EN_GPIO_Port, D36A_M4_EN_Pin, level);
+    reply(level == GPIO_PIN_SET ? "ok en 1\r\n" : "ok en 0\r\n");
+    return;
+  }
   if (strcmp(tokens[0], "wake") == 0 && count == 1U)
   {
     /* A reconnect cancels motion but must never invent a new physical zero. */
@@ -698,8 +720,10 @@ int main(void)
   /* Reuse set validation/replies after ready, before consuming host commands. */
   char startup_axis1[] = "set 1 " AXIS1_STARTUP_TRAVEL;
   char startup_axis2[] = "set 2 " AXIS2_STARTUP_TRAVEL;
+  char startup_axis3[] = "set 3 " AXIS3_STARTUP_TRAVEL;
   execute_command(startup_axis1);
   execute_command(startup_axis2);
+  execute_command(startup_axis3);
 #ifdef MCU_POSE_V2
   F4_Link_Init();
 #endif
