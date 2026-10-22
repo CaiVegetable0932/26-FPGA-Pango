@@ -46,6 +46,13 @@ uint8_t Gimbal_State(void); /* 0 idle, 1 move, 2 centering, 5 failed */
 /* 2026-10-22 诊断：最近一次"系统就绪/回正准备"失败的步骤号（0=无失败）。
  * 10=读ID 11=进位置模式 12=限位检查 20=进位置模式 21=读位置 22=锁位 23=开扭矩 24=回读扭矩 */
 uint8_t Gimbal_LastFailStep(void);
+/* 2026-10-22 诊断：把"为什么没动"所需的最小信息暴露出来。
+ * flags：bit0=gimbalReady bit1=poseReady bit2=Busy bit3=failed
+ * phase：各轴 phase 枚举（0 空闲 / 3 回正 / 4 定位 等，见 gimbal_test.c AxisPhase）
+ * targetRaw：各轴当前目标 raw 位置（未开始运动时可能是上一次的目标） */
+uint8_t Gimbal_DebugFlags(void);
+uint8_t Gimbal_AxisPhaseId(uint8_t index);
+uint16_t Gimbal_TargetRaw(uint8_t index);
 uint8_t Gimbal_Ready(void);
 uint8_t Gimbal_Go(int32_t pitch, int32_t yaw);
 /* Local fault recovery only; there is no serial all-axis stop command. */

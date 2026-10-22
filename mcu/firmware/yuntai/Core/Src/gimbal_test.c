@@ -392,13 +392,24 @@ static void PollAxis(unsigned index)
         return;
     }
     if (!ReadPosition(axis->id, &position)) {
-        completed = axis->phase;
-        axis->phase = AXIS_IDLE;
-        failed=1U;
-        if (completed == AXIS_CENTERING) gimbalReady = 0U;
-        Reply("[运动失败] %s轴(ID=%u)无法读取当前位置。\r\n",
-              AxisName(index), axis->id);
-        return;
+        /* 2026-10-22：单次读取失败不足以下结论。实测 ±20° 运动过程中，
+         * 总线偶发一次读失败（一个 CRC 错）就会把整个会话判成驱动故障(phase=5)，
+         * 而舵机实际已走到目标附近（实测 19.25°），F4 随后取消任务并锁死到 /home。
+         * 先原地重试 3 次，仍失败才认定驱动故障。 */
+        uint8_t recovered = 0U;
+        for (uint8_t retry = 0U; retry < 3U; ++retry) {
+            HAL_Delay(2U);
+            if (ReadPosition(axis->id, &position)) { recovered = 1U; break; }
+        }
+        if (recovered == 0U) {
+            completed = axis->phase;
+            axis->phase = AXIS_IDLE;
+            failed=1U;
+            if (completed == AXIS_CENTERING) gimbalReady = 0U;
+            Reply("[运动失败] %s轴(ID=%u)无法读取当前位置。\r\n",
+                  AxisName(index), axis->id);
+            return;
+        }
     }
     error = (int32_t)position - (int32_t)axis->targetRaw;
     /* 2026-10-22：到位容差按动作类型区分。
@@ -548,6 +559,20 @@ uint8_t Gimbal_Ready(void)
 {
     ReadyCommand();
     return gimbalReady && Gimbal_State()==2U;
+}
+/* 2026-10-22 诊断访问器：用于定位"回执已接受但舵机不动"。 */
+uint8_t Gimbal_DebugFlags(void)
+{
+    return (uint8_t)((gimbalReady ? 1U : 0U) | (poseReady ? 2U : 0U) |
+                     (Busy() ? 4U : 0U) | (failed ? 8U : 0U));
+}
+uint8_t Gimbal_AxisPhaseId(uint8_t index)
+{
+    return (index < 2U) ? (uint8_t)axes[index].phase : 0xFFU;
+}
+uint16_t Gimbal_TargetRaw(uint8_t index)
+{
+    return (index < 2U) ? axes[index].targetRaw : 0U;
 }
 uint8_t Gimbal_Go(int32_t pitch, int32_t yaw)
 {

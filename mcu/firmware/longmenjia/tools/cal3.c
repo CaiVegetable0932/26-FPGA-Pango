@@ -33,10 +33,16 @@
 #define CMD_SET_STREAM   0x43U
 #define CMD_HEARTBEAT    0x4CU
 #define CMD_LEGACY       0x50U
+#define CMD_MOVE_ABS     0x46U
+#define CMD_HOME         0x48U
+#define CMD_ACK_EVENT    0x49U
+#define CMD_POSE_ZERO    0x4AU
+#define CMD_MANUAL_ZERO  0x51U
 #define RSP_GENERIC      0x80U
+#define RSP_EVENT        0x90U
 #define RSP_NOTICE       0x91U
 #define WIRE_MAX_PAYLOAD 240U
-#define HEARTBEAT_MS     300U
+#define HEARTBEAT_MS     150U
 
 /* ---------------------------------------------------------------- 基础工具 */
 static uint16_t rd16(const uint8_t *p) { return (uint16_t)(p[0] | ((uint16_t)p[1] << 8)); }
@@ -67,10 +73,14 @@ static uint16_t           g_seq;
 static uint32_t           g_legacy_id;      /* 下一个 motion id：必须 > 固件 latest_motion */
 static volatile LONG      g_quit;
 static volatile LONG      g_heartbeat_on;
+static volatile LONG      g_hb_sent;   /* 已发送心跳数，故障时用于判断是否真的在发 */
 
 static double             g_revs = -1.0;     /* 最近一次 measure 3 回报的圈数 */
 static char               g_revs_text[96];   /* 原始通知文本 */
 static int                g_revs_count;
+/* 运动默认速度（RPM），可用 speed <n> 修改 */
+static int                g_speed = 10;
+static DWORD              g_event_mute_until;   /* 启动后静默旧事件的截止时刻 */
 
 static void out(const char *fmt, ...)
 {
@@ -131,7 +141,6 @@ static int ser_write(const uint8_t *p, size_t n)
     DWORD written = 0;
     if (!WriteFile(g_port, p, (DWORD)n, &written, NULL)) return -1;
     if (written != n) return -1;
-    FlushFileBuffers(g_port);
     return 0;
 }
 
@@ -185,13 +194,17 @@ static int send_frame(uint8_t cmd, const uint8_t *payload, uint16_t n)
     uint8_t frame[16 + WIRE_MAX_PAYLOAD];
     if (n > WIRE_MAX_PAYLOAD) return -1;
     frame[0] = 0x55; frame[1] = 0xAA; frame[2] = WIRE_VERSION; frame[3] = cmd;
-    uint16_t seq = ++g_seq;
-    wr16(frame + 4, seq);
     wr16(frame + 6, n);
     if (n) memcpy(frame + 8, payload, n);
-    wr16(frame + 8 + n, crc16(frame + 2, (size_t)6 + n));
 
+    /* 2026-10-22：序号必须在锁内自增。心跳线程与主线程共用 g_seq，
+     * 原来在锁外 ++g_seq，两个线程可能取到同一个序号；F4 对重复序号回放/拒绝，
+     * 就不会刷新控制租约，运动中被看门狗判 fault=8(LEASE_LOST) 并中止。
+     * 实测 go 20 20 20 20 20 时就发生：伸缩轴走完后整组被 stopped。 */
     EnterCriticalSection(&g_tx);
+    uint16_t seq = ++g_seq;
+    wr16(frame + 4, seq);
+    wr16(frame + 8 + n, crc16(frame + 2, (size_t)6 + n));
     int rc = ser_write(frame, (size_t)n + 10U);
     LeaveCriticalSection(&g_tx);
     return rc;
@@ -210,6 +223,118 @@ static int send_legacy(const char *text)
 }
 
 /* ---------------------------------------------------------------- 收帧 */
+/* MOVE_ABS：一次同时下发 XYZ 坐标与云台 pitch/yaw。
+ * 注意固件逻辑轴序与现场叫法的对应（现场按用户命名）：
+ *   target[0] = 轴1 = 单电机 = 现场 X
+ *   target[1] = 轴2 = 双电机龙门架 = 现场 Z
+ *   target[2] = 轴3 = 悬臂伸缩 = 现场 Y
+ *   target[3] = pitch(mdeg)，target[4] = yaw(mdeg)
+ * 因此命令行参数顺序是 x y z yaw pitch，内部按上面重新排列。 */
+static int send_move(double x, double y, double z, double yaw_deg, double pitch_deg, int rpm)
+{
+    if (rpm < 1 || rpm > 60) { out("rpm 必须在 1..60"); return -1; }
+    if (x < 0.0 || x > 100.0 || y < 0.0 || y > 100.0 || z < 0.0 || z > 100.0) {
+        out("XYZ 坐标必须在 0..100（百分比行程）");
+        return -1;
+    }
+    if (yaw_deg < -60.0 || yaw_deg > 60.0 || pitch_deg < -60.0 || pitch_deg > 60.0) {
+        out("云台角度必须在 -60..60 度");
+        return -1;
+    }
+    uint8_t p[48];
+    memset(p, 0, sizeof(p));
+    put_ctx(p);
+    wr32(p + 12, ++g_legacy_id);
+    p[16] = 0x1FU;                                  /* X|Y|Z|pitch|yaw */
+    double coord[3] = { x, z, y };                  /* 固件轴序：1=X 2=Z 3=Y */
+    for (int i = 0; i < 3; ++i)
+        wr32(p + 20 + 4 * i, (uint32_t)(int32_t)(coord[i] * 1000000.0 + 0.5));
+    wr32(p + 32, (uint32_t)(int32_t)(pitch_deg * 1000.0 + (pitch_deg < 0 ? -0.5 : 0.5)));
+    wr32(p + 36, (uint32_t)(int32_t)(yaw_deg * 1000.0 + (yaw_deg < 0 ? -0.5 : 0.5)));
+    wr16(p + 40, (uint16_t)rpm);
+    wr16(p + 42, (uint16_t)rpm);
+    wr16(p + 44, (uint16_t)rpm);
+    out(">>> MOVE_ABS  X=%.3f  Y=%.3f  Z=%.3f   yaw=%.3f°  pitch=%.3f°   rpm=%d",
+        x, y, z, yaw_deg, pitch_deg, rpm);
+    return send_frame(CMD_MOVE_ABS, p, sizeof(p));
+}
+
+/* 复位（RST）后恢复现场必须的三步，缺任何一步后续指令都会回 result=7：
+ *   c = CONFIRM_MANUAL_ZERO：声明"当前物理位置就是三轴零点"（F4 侧坐标才有效）
+ *   h = HOME：F1 两轴回到正对角度（云台零位的前提）
+ *   z = SET_POSE_ZERO：把回正后的位置登记为姿态零位（zero_valid） */
+static int send_confirm(void)
+{
+    uint8_t p[16];
+    memset(p, 0, sizeof(p));
+    put_ctx(p);
+    p[12] = 0x07U;                    /* X|Y|Z 三轴一起确认 */
+    out(">>> CONFIRM_MANUAL_ZERO mask=0x07（把当前位置声明为三轴零点）");
+    return send_frame(CMD_MANUAL_ZERO, p, sizeof(p));
+}
+
+static int send_home(void)
+{
+    /* 0x48 的载荷长度固定为 20 字节（ctx 12 + id 4 + mask 1 + 保留 3），
+     * 与 0x46 的 48 字节不同；发错长度会得到 result=3(BAD_LENGTH)。 */
+    uint8_t p[20];
+    memset(p, 0, sizeof(p));
+    put_ctx(p);
+    wr32(p + 12, ++g_legacy_id);
+    p[16] = 0x18U;                    /* 仅云台两轴 */
+    out(">>> HOME mask=0x18（F1 两轴回到正对角度，约需 10 秒）");
+    return send_frame(CMD_HOME, p, sizeof(p));
+}
+
+static int send_pose_zero(void)
+{
+    uint8_t p[12];
+    memset(p, 0, sizeof(p));
+    put_ctx(p);
+    out(">>> SET_POSE_ZERO（把当前回正位置登记为姿态零位）");
+    return send_frame(CMD_POSE_ZERO, p, sizeof(p));
+}
+
+
+static void handle_event(const uint8_t *p, uint16_t n)
+{
+    if (n < 40) return;
+    uint32_t id = rd32(p + 12);
+    /* 启动阶段把上次会话遗留的事件只 ACK 不打印，避免误读成新结果 */
+    if ((DWORD)GetTickCount() < g_event_mute_until) {
+        uint8_t q[16];
+        memset(q, 0, sizeof(q));
+        put_ctx(q);
+        wr32(q + 12, id);
+        send_frame(CMD_ACK_EVENT, q, sizeof(q));
+        return;
+    }
+    uint32_t motion = rd32(p + 24);
+    uint16_t type = rd16(p + 28);
+    uint16_t result = rd16(p + 30);
+    uint16_t fault = rd16(p + 36);
+    const char *tn = "?";
+    switch (type) {
+        case 1: tn = "ACCEPTED"; break;
+        case 2: tn = "MOTION_DONE"; break;
+        case 4: tn = "HOME_DONE"; break;
+        case 5: tn = "CANCELLED"; break;
+        case 7: tn = "POSE_ZEROED"; break;
+        case 8: tn = "LINK_LOST"; break;
+        default: break;
+    }
+    out("[事件] %s  motion=%u  result=%u  fault=%u  （已发心跳 %ld 次）",
+        tn, motion, result, fault, (long)InterlockedCompareExchange(&g_hb_sent, 0, 0));
+    if (fault != 0)
+        out("    提示：fault=8 表示 F4 超过 1 秒没收到上位机命令；若上面心跳数在增长，"
+            "说明心跳被拒（序号/会话不符），否则是心跳没发出去。");
+    uint8_t q[16];
+    memset(q, 0, sizeof(q));
+    put_ctx(q);
+    wr32(q + 12, id);
+    send_frame(CMD_ACK_EVENT, q, sizeof(q));
+}
+
 static void handle_notice(const uint8_t *p, uint16_t n)
 {
     if (n <= 12) return;
@@ -222,6 +347,18 @@ static void handle_notice(const uint8_t *p, uint16_t n)
     while (m && (text[m - 1] == '\r' || text[m - 1] == '\n' || text[m - 1] == ' '))
         text[--m] = '\0';
     if (!m) return;
+
+    /* 固件 state 文本按"逻辑轴 1/2/3"顺序返回坐标，而现场叫法是
+     * 轴1=X、轴2=Z（双电机）、轴3=Y（伸缩）。12.0 这里换成现场命名再打印，
+     * 否则很容易把 Y 和 Z 读反。 */
+    if (!strncmp(text, "state ", 6)) {
+        double a = 0, b = 0, c = 0;
+        if (sscanf(text + 6, "%lf %lf %lf", &a, &b, &c) == 3) {
+            out("[位置] X=%.3f  Y=%.3f  Z=%.3f   （已按现场命名：Y=伸缩轴，Z=双电机轴）",
+                a, c, b);
+            return;
+        }
+    }
 
     out("[通知] %s", text);
 
@@ -264,9 +401,21 @@ static void handle_generic(const uint8_t *p, uint16_t n)
         memcpy(text, data, m);
         text[m] = '\0';
         while (m && (text[m - 1] == '\r' || text[m - 1] == '\n')) text[--m] = '\0';
+        /* 固件 state 文本按逻辑轴 1/2/3 顺序返回（轴2=双电机=现场Z，轴3=伸缩=现场Y），
+         * 这里换成现场命名再打印，否则极易把 Y / Z 读反。 */
+        if (!strncmp(text, "state ", 6)) {
+            double a = 0, b = 0, c = 0;
+            if (sscanf(text + 6, "%lf %lf %lf", &a, &b, &c) == 3) {
+                out("[位置] X=%.3f  Y=%.3f  Z=%.3f   （现场命名：Y=伸缩轴，Z=双电机轴）",
+                    a, c, b);
+                return;
+            }
+        }
         if (m) out("[回应] %s", text);
         if (result != 0 && result != 1)
             out("[失败] result=%u（看上面的 error 文本）", (unsigned)result);
+        if (req == CMD_MOVE_ABS && result == 2U)
+            out("    上一条动作还没结束：等 1~2 秒后把同一条命令再发一次即可");
         return;
     }
     if (req == CMD_HEARTBEAT) return;                      /* 不刷屏 */
@@ -277,6 +426,7 @@ static void handle_generic(const uint8_t *p, uint16_t n)
 static void on_frame(uint8_t cmd, const uint8_t *p, uint16_t n)
 {
     if (cmd == RSP_NOTICE)        handle_notice(p, n);
+    else if (cmd == RSP_EVENT)    handle_event(p, n);
     else if (cmd == RSP_GENERIC)  handle_generic(p, n);
 }
 
@@ -327,6 +477,7 @@ static unsigned __stdcall heartbeat_thread(void *arg)
             uint8_t p[12];
             put_ctx(p);
             send_frame(CMD_HEARTBEAT, p, sizeof(p));
+            InterlockedIncrement(&g_hb_sent);
         }
         Sleep(HEARTBEAT_MS);
     }
@@ -367,6 +518,7 @@ static int handshake(void)
     send_frame(CMD_SET_STREAM, p, sizeof(p));
     Sleep(100);
 
+    g_event_mute_until = (DWORD)GetTickCount() + 1500U;
     InterlockedExchange(&g_heartbeat_on, 1);
     return 0;
 }
@@ -455,15 +607,66 @@ int main(void)
     printf("   s + 回车   查看 state 文本\n");
     printf("   q + 回车   停止全部轴并退出\n");
     printf("----------------------------------------------------\n");
+    printf("   复位(RST)后恢复现场，按 c → h → z 顺序：\n");
+    printf("   c + 回车   确认三轴手动零位（当前位置=零点）\n");
+    printf("   h + 回车   F1 两轴回正（约 10 秒）\n");
+    printf("   z + 回车   登记姿态零位\n");
+    printf("----------------------------------------------------\n");
+    printf("       例：go 5 6 7 8 9  →  X=5 Y=6 Z=7，yaw=8°，pitch=9°，速度 %d\n", g_speed);
+    printf("       （Y=悬臂伸缩，Z=双电机龙门架，坐标 0..100 为行程百分比）\n");
+    printf("   speed <rpm>                设置默认速度（1..60）\n");
+    printf("   wait <ms>                  等待指定毫秒（用于连续动作）\n");
+    printf("----------------------------------------------------\n");
     printf("   警告：measure 3 没有软限位，只有 2 或 0 能停。\n");
     printf("        10 RPM 下人反应 0.5 秒约多转 0.08 圈。\n");
     printf("====================================================\n\n");
 
     char line[128];
     for (;;) {
-        printf("输入 1/2/3/4/5/0/s/q 后回车 > ");
+        printf("> ");
         fflush(stdout);
         if (!fgets(line, sizeof(line), stdin)) break;
+
+        /* ---- 文本命令：go / speed ---- */
+        {
+            char kw[16] = {0};
+            if (sscanf(line, "%15s", kw) == 1) {
+                if (!_stricmp(kw, "go")) {
+                    double x = 0, y = 0, z = 0, yaw = 0, pitch = 0;
+                    int rpm = 0;
+                    int m = sscanf(line, "%*s %lf %lf %lf %lf %lf %d",
+                                   &x, &y, &z, &yaw, &pitch, &rpm);
+                    if (m < 5) {
+                        out("用法：go <X> <Y> <Z> <yaw°> <pitch°> [rpm]");
+                        out("  例：go 5 6 7 8 9  →  X=5 Y=6 Z=7，yaw=8°，pitch=9°");
+                    } else {
+                        send_move(x, y, z, yaw, pitch, (m >= 6) ? rpm : g_speed);
+                    }
+                    continue;
+                }
+                if (!_stricmp(kw, "speed")) {
+                    int rpm = 0;
+                    if (sscanf(line, "%*s %d", &rpm) == 1 && rpm >= 1 && rpm <= 60) {
+                        g_speed = rpm;
+                        out("默认速度已设为 %d RPM", g_speed);
+                    } else {
+                        out("用法：speed <1..60>");
+                    }
+                    continue;
+                }
+                if (!_stricmp(kw, "wait")) {
+                    int ms = 0;
+                    if (sscanf(line, "%*s %d", &ms) == 1 && ms >= 0 && ms <= 600000) {
+                        out("等待 %d ms ...", ms);
+                        Sleep((DWORD)ms);
+                    } else {
+                        out("用法：wait <毫秒，0..600000>");
+                    }
+                    continue;
+                }
+            }
+        }
+
         char c = 0;
         for (char *q = line; *q; ++q) {
             if (*q != ' ' && *q != '\t' && *q != '\r' && *q != '\n') { c = *q; break; }
@@ -499,13 +702,19 @@ int main(void)
         } else if (c == 's' || c == 'S') {
             out(">>> 发送 state");
             send_legacy("state");
+        } else if (c == 'c' || c == 'C') {
+            send_confirm();
+        } else if (c == 'h' || c == 'H') {
+            send_home();
+        } else if (c == 'z' || c == 'Z') {
+            send_pose_zero();
         } else if (c == 'q' || c == 'Q') {
             out(">>> 发送 wake 停止全部轴，退出");
             send_legacy("wake");
             Sleep(300);
             break;
         } else {
-            out("无效输入：%c（可用 1/2/3/4/5/0/s/q）", c);
+            out("无效输入：%c（可用 1/2/3/4/5/0/s/q，或 go/speed 文本命令）", c);
         }
     }
 

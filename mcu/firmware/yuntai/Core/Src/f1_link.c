@@ -228,6 +228,13 @@ static void publish_state(uint64_t now)
         /* 2026-10-22：108/109 原属已废弃的 IMU 偏置，改放舵机总线就绪失败步号与驱动状态 */
         p[108]=Gimbal_LastFailStep();
         p[109]=Gimbal_State();
+        /* 2026-10-22：定位"回执已接受但不动作"。
+         * 112 就绪标志位，113/114 两轴 phase，116/118 两轴目标 raw。 */
+        p[112]=Gimbal_DebugFlags();
+        p[113]=Gimbal_AxisPhaseId(0U);
+        p[114]=Gimbal_AxisPhaseId(1U);
+        wire_put16(p+116,Gimbal_TargetRaw(0U));
+        wire_put16(p+118,Gimbal_TargetRaw(1U));
         board_port_send(&port,F1_STATE,(uint16_t)pose.sample_seq,p,sizeof(p),1);
     }
 }

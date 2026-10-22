@@ -40,6 +40,18 @@ static uint32_t f1_replies;
 extern uint32_t F4_PinMask;
 static uint32_t links_pinmask_get(void) { return F4_PinMask; }
 static uint16_t f1_seq, fault;
+/* 2026-10-22 诊断：最近一次锁存故障的来源码，用于定位误判点 */
+static uint8_t fault_src;
+/* 2026-10-22 诊断：F1 最近一次内部命令回执（cmd, result），用于区分
+ * BUSY/NOT_READY 这类正常瞬时状态和真正的驱动故障。 */
+static uint8_t f1_last_cmd, f1_last_result;
+/* 2026-10-22：F4 复位后 f1_seq 从 0 重新开始，而 F1 若没有同时复位，
+ * 其 16 条回执缓存与 max_seq 仍在，于是第一条内部命令必然撞号：
+ *   8  = 同序号但内容不同（CONFLICT）
+ *   10 = 序号不大于已见最大值（STALE）
+ * 实测这会让烧完 F4 后的第一条云台命令必定失败并锁存 fault=5。
+ * 处理：跳到一个远高于 F1 已见序号的区间重发一次，而不是判驱动故障。 */
+static uint8_t f1_resync;
 static uint32_t config=1, f1_config, sample, latest_motion, event_id, oldest_event=1, watchdog_count;
 static uint8_t events[64][40];
 static uint8_t zero_pending;
@@ -166,10 +178,29 @@ static void f1_receive(void *ctx, uint8_t cmd, uint16_t seq, const uint8_t *p, u
         f1_config=c;
     } else if (pending.active && seq==pending.seq && p[8]==pending.cmd) {
         pending.active=0; pending.result=p[9];
+        f1_last_result=p[9]; f1_last_cmd=p[8];
+        if ((p[9]==8U || p[9]==10U) && f1_resync<3U) {
+            /* 序号失配：跳到远高于 F1 已见序号的区间，重发同一条内部命令。 */
+            uint8_t angles[8];
+            uint8_t m=(uint8_t)(pending.n>8U?pending.n-8U:0U);
+            if (m>sizeof(angles)) m=sizeof(angles);
+            if (m) memcpy(angles,pending.data+8,m);
+            ++f1_resync;
+            f1_seq=(uint16_t)(f1_seq+1000U);
+            internal_send(pending.cmd, m?angles:NULL, m);
+            return;
+        }
+        if (pending.result==0U || pending.result==1U) f1_resync=0U;
         if (pending.result!=0 && pending.result!=1) {
-            fault=5;
-            link_fault();
+            /* 2026-10-22：BUSY(2)/NOT_READY(7) 是 F1 的正常瞬时状态
+             * （刚回正完、姿态零位处于稳定确认期等），不是驱动故障。
+             * 原实现把它们一律判成 fault=5，导致云台任务被立刻取消并锁死到 /home，
+             * 而舵机实际仍把动作做完了（实测目标 20°、到位 19.253°）。 */
             cancel_tasks(5,1);
+            if (pending.result!=2 && pending.result!=7) {
+                fault_src=1; fault=5;
+                link_fault();
+            }
         }
     }
 }
@@ -430,6 +461,15 @@ static void receive(void *ctx, uint8_t cmd, uint16_t seq, const uint8_t *p, uint
         /* F1 侧舵机总线就绪失败步号 / 驱动状态（108/109 字节） */
         wire_put32(out+112,f1_data[108]);
         wire_put32(out+116,f1_data[109]);
+        /* F1 最近一次内部命令回执：低字节 = cmd，高字节 = result */
+        wire_put32(out+120,(uint32_t)f1_last_cmd | ((uint32_t)f1_last_result<<8U));
+        /* F1 侧就绪标志/两轴 phase/两轴目标 raw（诊断"已接受但不动"） */
+        wire_put32(out+124,(uint32_t)f1_data[112] | ((uint32_t)f1_data[113]<<8U) |
+                            ((uint32_t)f1_data[114]<<16U));
+        wire_put32(out+128,(uint32_t)f1_data[116] | ((uint32_t)f1_data[117]<<8U) |
+                            ((uint32_t)f1_data[118]<<16U) | ((uint32_t)f1_data[119]<<24U));
+        /* 故障来源码 1=F1回执 2=phase5去抖 3=反馈过期 4=超时/离线 5=轴结果 6=租约 7=重试用尽 */
+        wire_put32(out+132,(uint32_t)fault_src | ((uint32_t)fault<<8U));
         {
             /* 2026-10-22：直接暴露 f1_feedback_fresh() 的判据，定位 fault=5 的真实原因：
              *   +84/+88 两个舵机时间戳映射后的"年龄"（0xFFFFFFFF 表示映射失败/为 0）
@@ -445,7 +485,7 @@ static void receive(void *ctx, uint8_t cmd, uint16_t seq, const uint8_t *p, uint
             wire_put32(out+96,(uint32_t)f1_data[12] | ((uint32_t)f1_data[13]<<8)
                               | ((uint32_t)f1_data[14]<<16) | ((uint32_t)(f1_data[15]&0xF)<<24));
         }
-        out_n=120; break;
+        out_n=136; break;
     case 0x4c: break;
     case 0x4d:
         memcpy(out,f1_data+60,32); wire_put64(out,mapped(wire_u64(out))); wire_put32(out+12,config);
@@ -595,10 +635,10 @@ void F4_Link_Poll(void)
         if (pending.retries<2) {
             ++pending.retries; pending.sent=now;
             board_port_send(&f1,pending.cmd,pending.seq,pending.data,pending.n,0);
-        } else { fault=8; link_fault(); cancel_tasks(5,1); }
+        } else { fault_src=7; fault=8; link_fault(); cancel_tasks(5,1); }
     }
     if (!control_fault && (busy_mask() || zero_pending) && now-lease>=1000000) {
-        wire_count(&watchdog_count); fault=8; link_fault(); cancel_tasks(8,3);
+        wire_count(&watchdog_count); fault_src=6; fault=8; link_fault(); cancel_tasks(8,3);
     }
     int32_t position[3]; uint32_t limits[3]; uint8_t busy,valid;
     F4_AxesSnapshot(position,limits,&busy,&valid);
@@ -607,7 +647,7 @@ void F4_Link_Poll(void)
     for (unsigned i=0;i<5;i++) if (tasks[i].mask) {
         Task *t=&tasks[i];
         if ((t->mask&7) && F4_AxesResult(t->mask&7)==9) {
-            fault=5; link_fault(); cancel_tasks(5,1); break;
+            fault_src=5; fault=5; link_fault(); cancel_tasks(5,1); break;
         }
         if ((t->mask&24) && f1_data[12]==5) {
             /* 2026-10-22：对 F1 的故障态去抖。F1 在回正/校准过程中可能出现短暂的
@@ -616,16 +656,21 @@ void F4_Link_Poll(void)
              * 只有持续超过 1.5 秒才判故障。 */
             if (!f1_phase5_since) f1_phase5_since=now;
             else if (now-f1_phase5_since>3000000ULL) {
-                fault=5; link_fault(); cancel_tasks(5,1); break;
+                fault_src=2; fault=5; link_fault(); cancel_tasks(5,1); break;
             }
         } else if (f1_data[12]!=5) {
             f1_phase5_since=0;
         }
-        if ((t->mask&24) && !t->home && !pending.active && now-t->start>100000 && !f1_feedback_fresh(now)) {
-            fault=5; link_fault(); cancel_tasks(5,1); break;
-        }
+        /* 2026-10-22：删除"反馈时间戳过期即判驱动故障"的分支。
+         * 该判据今晚误伤三次（60 ms 门限两次、放宽到 250 ms 后仍在第 4 条命令
+         * 触发 fault=5），而它想防的情况已被更可靠的判据覆盖：
+         *   f1_online()      —— 50 ms 内没收到 F1 帧（见任务超时分支）
+         *   f1_data[12]      —— F1 报驱动故障（独立去抖分支）
+         *   f1_data[13]      —— 姿态零位无效（命令下发前就已拦截）
+         *   任务 180 s 超时  —— 卡死兜底
+         * f1_feedback_fresh() 仍保留给姿态快照使用，只是不再作为故障判据。 */
         if (now-t->start>(t->home?15000000ULL:180000000ULL) || ((t->mask&24) && !f1_online(now))) {
-            fault=(t->mask&24)?8:7; link_fault(); cancel_tasks(5,1); break;
+            fault_src=4; fault=(t->mask&24)?8:7; link_fault(); cancel_tasks(5,1); break;
         }
         if ((t->mask&7)&busy) continue;
         if ((t->mask&24) && (pending.active || f1_data[12]!=0 || !f1_data[13] || f1_state_received<=t->start+3000)) continue;

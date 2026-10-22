@@ -431,6 +431,8 @@ typedef struct {
     uint32_t last_motion_seen;
     uint32_t last_event_seen;
     uint32_t last_event_acked;
+    uint8_t  suppress_events;   /* 握手后 1 秒内静默 ACK 旧事件，避免重放被误读成新结果 */
+    uint32_t suppress_start;
     uint8_t  last_valid;
     uint8_t  last_motion_state;
     uint16_t last_fault;
@@ -790,6 +792,15 @@ static void print_event(const uint8_t *p, uint16_t n)
     if (id != g_st.last_event_acked) {
         g_st.last_event_acked = id;
         g_st.last_event_seen = id;
+        /* 2026-10-22：握手阶段把上一次会话遗留的事件静默 ACK 掉。
+         * 这些旧事件会被当成新命令的结果重放（实测把 result=9 的拒绝误读成
+         * MOTION_DONE 成功），所以启动后 1 秒内只确认、不打印。 */
+        if (g_st.suppress_events) {
+            /* F4 每 100 ms 只重发一条未确认事件，积压 30 条就需要约 3 秒排空，
+             * 因此静默窗取 3 秒。 */
+            if (GetTickCount() - g_st.suppress_start < 3000U) { req_ack(id); return; }
+            g_st.suppress_events = 0;
+        }
         log_line("EV", "event=%u motion=%u type=%u(%s) result=%u(%s) fault=%u(%s) mask=0x%02X",
                  (unsigned)id, (unsigned)motion, (unsigned)type, event_name(type),
                  (unsigned)result, event_result_name(result),
@@ -891,6 +902,45 @@ static void print_generic(const uint8_t *p, uint16_t n)
                 }
                 out_line("              舵机总线：就绪失败步号=%u（%s）  Gimbal_State=%u（0空闲/1运动/2回正/5故障）",
                          step, txt, st);
+                if (dn >= 124) {
+                    unsigned r = (unsigned)rd32(data + 120);
+                    out_line("              F1 最近回执：cmd=0x%02X result=%u%s",
+                             r & 0xFFU, (r >> 8) & 0xFFU,
+                             ((r >> 8) & 0xFFU) == 2 ? "（BUSY，正常瞬时状态）" :
+                             ((r >> 8) & 0xFFU) == 7 ? "（NOT_READY，正常瞬时状态）" : "");
+                }
+                if (dn >= 128) {
+                    unsigned f = (unsigned)rd32(data + 124);
+                    unsigned fl = f & 0xFFU, p0 = (f >> 8) & 0xFFU, p1 = (f >> 16) & 0xFFU;
+                    out_line("              F1 就绪标志=0x%02X（%s%s%s%s）  轴相位 pitch=%u yaw=%u",
+                             fl,
+                             (fl & 1) ? "gimbalReady " : "gimbalReady=0 ",
+                             (fl & 2) ? "poseReady " : "poseReady=0 ",
+                             (fl & 4) ? "BUSY " : "idle ",
+                             (fl & 8) ? "FAILED" : "",
+                             p0, p1);
+                }
+                if (dn >= 132) {
+                    unsigned g = (unsigned)rd32(data + 128);
+                    out_line("              F1 目标 raw：pitch=%u  yaw=%u",
+                             g & 0xFFFFU, (g >> 16) & 0xFFFFU);
+                }
+                if (dn >= 136) {
+                    unsigned k = (unsigned)rd32(data + 132);
+                    unsigned src = k & 0xFFU, flt = (k >> 8) & 0xFFU;
+                    const char *txt = "无";
+                    switch (src) {
+                        case 1: txt = "F1 回执非 0/1"; break;
+                        case 2: txt = "F1 phase=5 持续 3 秒"; break;
+                        case 3: txt = "反馈时间戳过期"; break;
+                        case 4: txt = "任务超时/F1 离线"; break;
+                        case 5: txt = "三轴结果=9"; break;
+                        case 6: txt = "控制租约超时"; break;
+                        case 7: txt = "内部命令重试用尽"; break;
+                        default: break;
+                    }
+                    out_line("              故障来源：%u（%s）  锁存 fault=%u", src, txt, flt);
+                }
             }
             if (dn >= 100) {
                 unsigned a0 = (unsigned)rd32(data + 84), a1 = (unsigned)rd32(data + 88);
@@ -1131,14 +1181,16 @@ static int handshake(void)
     req_open(session);
     for (unsigned i = 0; i < 60 && !g_st.opened; ++i) sleep_ms(10);
     if (!g_st.opened) { out_line("!! OPEN 未成功"); return -1; }
+    /* 旧事件静默期：只 ACK 不打印 */
+    g_st.suppress_events = 1;
+    g_st.suppress_start = GetTickCount();
 
     if (g_cfg.mode == MODE_HOST) {
         out_line("");
         out_line("== SET_STREAM %u Hz ==", g_cfg.rate);
         req_set_stream(g_cfg.rate);
         sleep_ms(50);
-    } else {
-        out_line("");
+    } else {        out_line("");
         out_line("== SET_STREAM %u Hz（FPGA 会话） ==", g_cfg.rate);
         req_set_stream(g_cfg.rate);
         sleep_ms(50);
