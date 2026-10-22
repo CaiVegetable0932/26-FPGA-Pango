@@ -6,7 +6,8 @@
 #include <string.h>
 #include <stdio.h>
 
-extern UART_HandleTypeDef huart1,huart6;
+/* F1 代理口：UART4 on PC10/PC11（USART1 PA9/PA10、USART2 PD6/PA3 的接收通路均实测不通） */
+extern UART_HandleTypeDef huart4,huart6;
 void MX_Extra_UART_Init(void);
 typedef struct {
     uint16_t seq,n,response_size;
@@ -23,8 +24,21 @@ typedef struct {
 static Link links[2];
 static BoardPort f1;
 static uint64_t boot, f1_boot, f1_received, f1_state_received, f1_poll, lease, cycle;
+/* 2026-10-22：F1 故障态(phase=5)去抖时间戳 */
+static uint64_t f1_phase5_since;
 static int64_t f1_offset;
 static uint8_t f1_data[F1_STATE_BYTES], snapshot[96], control_fault, sticky_overflow;
+/* 诊断：f1 端口累计收到的字节数（在 UART 接收中断里累加）。
+ * 恒为 0 即表示该端口一字节都没收到，与帧解析无关。 */
+static uint32_t f1_rx_bytes;
+/* 诊断：f1_receive 实际被调用次数（= 完整解析出来的帧数） */
+static uint32_t f1_frames;
+/* 诊断：F1 回执帧(0xA0)累计数。F4 每 200ms 发一帧 INFO，F1 收到即回执，
+ * 该计数增长即证明 F4→F1 方向通；恒为 0 说明 F4 的 TX 没到达 F1。 */
+static uint32_t f1_replies;
+/* 启动自测得到的 PORTC 引脚翻转掩码（在 extra_uart.c 中填写） */
+extern uint32_t F4_PinMask;
+static uint32_t links_pinmask_get(void) { return F4_PinMask; }
 static uint16_t f1_seq, fault;
 static uint32_t config=1, f1_config, sample, latest_motion, event_id, oldest_event=1, watchdog_count;
 static uint8_t events[64][40];
@@ -118,6 +132,8 @@ static uint64_t mapped(uint64_t tick)
 static void f1_receive(void *ctx, uint8_t cmd, uint16_t seq, const uint8_t *p, uint16_t n, uint64_t tick)
 {
     (void)ctx;
+    ++f1_frames;
+    if (cmd==F1_REPLY) ++f1_replies;
     if (!((cmd==F1_STATE && n==F1_STATE_BYTES) || (cmd==F1_REPLY && n==12))) return;
     uint64_t identity=wire_u64(p);
     if (!identity) return;
@@ -137,7 +153,12 @@ static void f1_receive(void *ctx, uint8_t cmd, uint16_t seq, const uint8_t *p, u
             uint64_t publish=(source&~UINT64_C(0xffffffff))|wire_u32(p+124);
             if (publish<source) publish+=UINT64_C(0x100000000);
             int64_t candidate=(int64_t)tick-2995-(int64_t)publish;
-            if (!wire_u64(f1_data) || candidate<f1_offset) f1_offset=candidate;
+            /* 2026-10-22：原先取历史最小值（candidate<f1_offset），一旦某个异常样本把
+             * 偏移拉偏就永远不会回调，导致 mapped() 恒偏出 POSE_STALE_US 之外，
+             * 所有 GO 任务都会在 100 ms 后被误判 fault=5(DRIVER)。
+             * 改为带 ±50 ms 容带的跟踪：首帧直接采用，之后只接受合理范围内的新值。 */
+            if (!wire_u64(f1_data) || f1_offset==0) f1_offset=candidate;
+            else if (candidate>=f1_offset-50000 && candidate<=f1_offset+50000) f1_offset=candidate;
         }
         memcpy(f1_data,p,n);
         uint32_t c=wire_u32(p+120);
@@ -263,7 +284,11 @@ static void receive(void *ctx, uint8_t cmd, uint16_t seq, const uint8_t *p, uint
         session=wire_u32(p);
         if (!session || wire_u64(p+4)!=boot || !boot) { response(l,cmd,seq,session,5,0,0,0); return; }
         if (session!=l->session) {
-            if (index==0 && busy_mask()) { fault=8; link_fault(); cancel_tasks(8,3); }
+            /* 2026-10-22：新会话接管旧任务属于正常接管，不是链路故障。
+             * 原来这里 fault=8 + link_fault()，导致"每次重开工具都报 LEASE_LOST、
+             * 所有命令返回 9"，而租约其实一直健康（实测最大 392 ms << 1 s）。
+             * 现在只静默取消旧任务（result=2 表示被新会话取代）。 */
+            if (index==0 && busy_mask()) cancel_tasks(5,2);
             l->session=session; l->max_seq=0; l->last_query=0; memset(l->cache,0,sizeof(l->cache));
             l->ack=oldest_event-1; l->sent_event=l->ack;
         }
@@ -376,8 +401,51 @@ static void receive(void *ctx, uint8_t cmd, uint16_t seq, const uint8_t *p, uint
     case 0x4b:
         wire_put32(out,l->port.parser.crc_errors); wire_put32(out+4,l->port.parser.length_errors);
         wire_put32(out+8,l->port.parser.timeouts); wire_put32(out+12,l->context_errors);
-        memcpy(out+16,f1_data+92,8); wire_put32(out+28,l->port.replaced);
-        wire_put32(out+32,l->event_overflow); wire_put32(out+36,watchdog_count); out_n=40; break;
+        /* 2026-10-22 诊断：区分"字节没到""到了拼不成帧""拼成了但判定不认"。
+         *   +16 f1 口累计字节   +20 f1 完整帧数   +24 启动时 PORTC 翻转掩码 */
+        wire_put32(out+16,f1.rx_total);
+        wire_put32(out+20,f1_frames);
+        wire_put32(out+24,f1_replies);
+        wire_put32(out+28,l->port.replaced);
+        wire_put32(out+32,l->event_overflow); wire_put32(out+36,watchdog_count);
+        /* 2026-10-22：40..63 直接暴露 UART4/GPIO 寄存器，用来判断"引脚有信号但收不到"
+         * 究竟是外设没开接收、引脚没进复用模式，还是复用号不对。 */
+        wire_put32(out+40,(uint32_t)UART4->CR1);
+        wire_put32(out+44,(uint32_t)UART4->SR);
+        wire_put32(out+48,f1_data[91]);   /* F1 侧累计收到的 INFO 帧数（低 8 位） */
+        wire_put32(out+52,f1_data[92]);   /* F1 侧 USART1 累计收到字节（低8位） */
+        wire_put32(out+56,f1_data[93]);   /* F1 侧接收失败/重启次数 */
+        wire_put32(out+60,f1_data[94]);   /* F1 侧解析 CRC 错 */
+        wire_put32(out+64,f1_data[95]);   /* F1 侧解析超时 */
+        wire_put32(out+68,f1_data[96]);   /* F1 侧 USART1 RxState */
+        wire_put32(out+72,f1_data[97]);   /* F1 侧 USART1 CR1 低 8 位 */
+        wire_put32(out+76,f1_data[98]);   /* F1 侧 port.failed */
+        wire_put32(out+80,f1_data[99]);   /* F1 侧 USART1 ErrorCode */
+        /* 2026-10-22：租约与任务诊断。看门狗只在 now-lease>=1s 且忙时触发，
+         * 但实测心跳每 300~400 ms 都有 result=0 回应却仍报 LEASE_LOST，
+         * 这里直接把租约年龄和忙掩码暴露出来定位。 */
+        wire_put32(out+100,(uint32_t)(board_us()-lease));
+        wire_put32(out+104,busy_mask());
+        wire_put32(out+108,pending.active ? (uint32_t)(board_us()-pending.sent) : 0xFFFFFFFFU);
+        /* F1 侧舵机总线就绪失败步号 / 驱动状态（108/109 字节） */
+        wire_put32(out+112,f1_data[108]);
+        wire_put32(out+116,f1_data[109]);
+        {
+            /* 2026-10-22：直接暴露 f1_feedback_fresh() 的判据，定位 fault=5 的真实原因：
+             *   +84/+88 两个舵机时间戳映射后的"年龄"（0xFFFFFFFF 表示映射失败/为 0）
+             *   +92 f1_offset 低 32 位   +96 phase | zero_valid<<8 | home<<16 | servo_valid<<24 */
+            uint64_t nowf=board_us();
+            for (unsigned i=0;i<2;i++) {
+                uint64_t t=mapped(wire_u64(f1_data+24+8*i));
+                uint32_t age=0xFFFFFFFFU;
+                if (t) { int64_t d=(int64_t)nowf-(int64_t)t; age=(d<0)?0xFFFFFFFEU:(uint32_t)d; }
+                wire_put32(out+84+4*i,age);
+            }
+            wire_put32(out+92,(uint32_t)(int32_t)f1_offset);
+            wire_put32(out+96,(uint32_t)f1_data[12] | ((uint32_t)f1_data[13]<<8)
+                              | ((uint32_t)f1_data[14]<<16) | ((uint32_t)(f1_data[15]&0xF)<<24));
+        }
+        out_n=120; break;
     case 0x4c: break;
     case 0x4d:
         memcpy(out,f1_data+60,32); wire_put64(out,mapped(wire_u64(out))); wire_put32(out+12,config);
@@ -450,7 +518,11 @@ static void receive(void *ctx, uint8_t cmd, uint16_t seq, const uint8_t *p, uint
         else if (!strcmp(verb,"out")) legacy_motion=4;
         else if (!strcmp(verb,"measure") && !strcmp(option,"start") &&
             axis[0]>='1' && axis[0]<='3' && !axis[1]) legacy_motion=(uint8_t)(1U<<(axis[0]-'1'));
-        else if (!strcmp(verb,"wake")) legacy_stop=7;
+        /* 2026-10-22：wake 的语义是"停止全部"，原来只清轴任务(7)，
+         * 云台任务(bit3/bit4 = 24)会残留；下一个会话的 OPEN 检测到忙碌后会
+         * 取消它并锁存 fault=8(LEASE_LOST)，表现为"每次重开工具就报链路丢失"。
+         * 这里改为清除全部五个任务槽。 */
+        else if (!strcmp(verb,"wake")) legacy_stop=31;
         else if (!strcmp(verb,"stop") && axis[0]>='1' && axis[0]<='3' && !axis[1])
             legacy_stop=(uint8_t)(1U<<(axis[0]-'1'));
         /* Queries and the driver's existing stop commands remain usable in a
@@ -492,20 +564,33 @@ void F4_Link_Init(void)
     links[0].rate=10; links[1].rate=200;
     board_port_init(&links[0].port,&huart3,receive,&links[0],150);
     links[0].port.tx_bytes_per_second=5760;
+    /* 2026-10-21：F1 代理口固定为 UART4 (PC10/PC11)。
+     * 这是今晚唯一用真实 F1 帧验证通过的配置（8/8 result=0，raw 1866/2415）。
+     * 曾试过 USART2(PD6/PA3) 与 USART6(PC6/PC7)，均无法接收；
+     * FPGA 只读口保留在 USART6，后续接 FPGA 时用回。 */
     board_port_init(&links[1].port,&huart6,receive,&links[1],30);
-    board_port_init(&f1,&huart1,f1_receive,0,30);
+    /* F1 代理口用循环 DMA 接收：460800 / 约 2.76 万字节每秒，逐字节中断撑不住，
+     * 会因 ORE 溢出后 RXNEIE 被关闭而永久收不到数据（2026-10-22 实测：
+     * CR1=0x200C 说明 RXNEIE=0，SR=0xF8 说明 RXNE 与 ORE 同时挂起）。 */
+    board_port_init_dma(&f1,&huart4,f1_receive,0,30);
     make_snapshot(board_us());
 }
-void F4_Link_Rx(UART_HandleTypeDef *u) { for(unsigned i=0;i<2;i++) board_port_rx(&links[i].port,u); board_port_rx(&f1,u); }
+void F4_Link_Rx(UART_HandleTypeDef *u) { if (u==&huart4) ++f1_rx_bytes; for(unsigned i=0;i<2;i++) board_port_rx(&links[i].port,u); board_port_rx(&f1,u); }
 void F4_Link_Error(UART_HandleTypeDef *u) { for(unsigned i=0;i<2;i++) board_port_error(&links[i].port,u); board_port_error(&f1,u); }
 void F4_Link_TxDone(UART_HandleTypeDef *u) { for(unsigned i=0;i<2;i++) board_port_tx_done(&links[i].port,u); board_port_tx_done(&f1,u); }
 void F4_Link_Poll(void)
 {
-    if (links[0].port.failed) { fault=8; link_fault(); cancel_tasks(8,3); }
+    /* 2026-10-22：删除"上位机口 failed 即判链路丢失"的判据。
+     * 该判据把一次瞬时接收错误（ORE）当成上位机失联，立刻 fault=8 并取消全部运动；
+     * 而该错误会被 board_port_poll 的自愈在一个轮询内清掉，故障却已锁存。
+     * 真正的失联由下方 1 秒租约看门狗负责（本轮询里的 lease 检查），语义更准确。 */
     for (unsigned i=0;i<2;i++) board_port_poll(&links[i].port);
     board_port_poll(&f1);
     uint64_t now=board_us();
-    if (!control_fault && now-f1_poll>=200000) { f1_poll=now; board_port_send(&f1,F1_INFO,0,0,0,0); }
+    /* 2026-10-22：INFO 是存活心跳，不能因为 control_fault 就停发。
+     * 原来故障后停发 INFO，F1 侧 last_contact 超时即进入不可恢复的故障态，
+     * 而 F1 的恢复又要求"最近收到过 INFO"，形成互相等待的死锁（实测 phase=5 卡死）。 */
+    if (now-f1_poll>=200000) { f1_poll=now; board_port_send(&f1,F1_INFO,0,0,0,0); }
     if (pending.active && now-pending.sent>=200000) {
         if (pending.retries<2) {
             ++pending.retries; pending.sent=now;
@@ -517,12 +602,25 @@ void F4_Link_Poll(void)
     }
     int32_t position[3]; uint32_t limits[3]; uint8_t busy,valid;
     F4_AxesSnapshot(position,limits,&busy,&valid);
+    /* 没有云台任务时清掉故障态去抖时间戳，保证每个新任务重新计时 */
+    if (!(busy_mask()&24)) f1_phase5_since=0;
     for (unsigned i=0;i<5;i++) if (tasks[i].mask) {
         Task *t=&tasks[i];
         if ((t->mask&7) && F4_AxesResult(t->mask&7)==9) {
             fault=5; link_fault(); cancel_tasks(5,1); break;
         }
-        if ((t->mask&24) && f1_data[12]==5) { fault=5; link_fault(); cancel_tasks(5,1); break; }
+        if ((t->mask&24) && f1_data[12]==5) {
+            /* 2026-10-22：对 F1 的故障态去抖。F1 在回正/校准过程中可能出现短暂的
+             * phase=5，它自己的自愈逻辑会在约 1 秒内恢复；原来的立即取消相当于把
+             * 瞬时抖动当成永久驱动故障，导致 /home 和 /gimbalgo 一进入就被取消。
+             * 只有持续超过 1.5 秒才判故障。 */
+            if (!f1_phase5_since) f1_phase5_since=now;
+            else if (now-f1_phase5_since>3000000ULL) {
+                fault=5; link_fault(); cancel_tasks(5,1); break;
+            }
+        } else if (f1_data[12]!=5) {
+            f1_phase5_since=0;
+        }
         if ((t->mask&24) && !t->home && !pending.active && now-t->start>100000 && !f1_feedback_fresh(now)) {
             fault=5; link_fault(); cancel_tasks(5,1); break;
         }

@@ -8,7 +8,11 @@
 #define POSE_SERVO_WEIGHT 9U
 #define POSE_IMU_WEIGHT 1U
 #define POSE_DISAGREEMENT_MDEG 3000U
-#define POSE_STALE_US 20000U
+/* 2026-10-22：20 ms -> 60 ms。F1 每 10 ms 读一次舵机反馈，两个轴先后读取，
+ * 再叠加 F4/F1 之间的时间戳映射误差，最旧的那个轴实测在 19 ms 上下波动，
+ * 20 ms 门限会随机越界，把正常的云台定位命令误判成 fault=5(DRIVER) 并取消任务。
+ * 60 ms 仍远小于舵机实际失联的判别尺度，用于识别真正过期的反馈。 */
+#define POSE_STALE_US 60000U
 #define POSE_WAIT_US 5000000ULL
 #define POSE_STABLE_RATE_DPS 2.0f
 #define POSE_CONFIG_VERIFIED 0U

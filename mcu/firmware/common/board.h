@@ -17,6 +17,12 @@ typedef struct {
     uint64_t rx_tick[512];
     volatile uint16_t head, tail;
     volatile uint8_t failed;
+    /* 循环 DMA 接收（用于高码率端口，例如 F4 的 F1 代理口 460800/27.6 kB/s） */
+    uint8_t dma_mode;
+    uint8_t dma_buf[512];
+    volatile uint16_t dma_last;
+    uint32_t rx_total;      /* 本端口累计收到的字节数（中断与 DMA 两条路径统一计数） */
+    uint32_t tx_ok, tx_fail;/* 发送发起次数 / 发起失败次数（诊断发送方向是否通） */
     uint8_t tx[320], controls[4][320], state[160];
     uint16_t control_size[4], state_size;
     uint8_t control_head, control_tail, control_count;
@@ -27,6 +33,8 @@ typedef struct {
     uint32_t tx_bytes_per_second;
 } BoardPort;
 void board_port_init(BoardPort *p, UART_HandleTypeDef *uart, WireReceive callback, void *ctx, uint16_t timeout);
+/* 循环 DMA 接收版本：适合高码率端口。若该 UART 没有配置 DMA，会自动退回中断方式。 */
+void board_port_init_dma(BoardPort *p, UART_HandleTypeDef *uart, WireReceive callback, void *ctx, uint16_t timeout);
 void board_port_rx(BoardPort *p, UART_HandleTypeDef *uart);
 void board_port_error(BoardPort *p, UART_HandleTypeDef *uart);
 void board_port_tx_done(BoardPort *p, UART_HandleTypeDef *uart);

@@ -1,0 +1,513 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "yuntai.elf"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_libraries",
+			"target_compile_definitions",
+			"target_include_directories",
+			"target_sources"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt",
+			"cmake/stm32cubemx/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 35,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 81,
+				"parent" : 2
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 79,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 69,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 60,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 1,
+				"line" : 75,
+				"parent" : 2
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 48,
+				"parent" : 0
+			}
+		]
+	},
+	"codemodelVersion" : 
+	{
+		"major" : 2,
+		"minor" : 9
+	},
+	"compileDependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "STM32_Drivers::@768a070a0fe75716b479"
+		},
+		{
+			"backtrace" : 4,
+			"id" : "stm32cubemx::@768a070a0fe75716b479"
+		}
+	],
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -mcpu=cortex-m3  -Wall -fdata-sections -ffunction-sections -fstack-usage -O0 -g3 -std=gnu11"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 3,
+					"define" : "DEBUG"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "MCU_F1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "STM32F103xB"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "USE_HAL_DRIVER"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 6,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/../common"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/cmake/stm32cubemx/../../Core/Inc"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/cmake/stm32cubemx/../../Drivers/STM32F1xx_HAL_Driver/Inc"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/cmake/stm32cubemx/../../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F1xx/Include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/cmake/stm32cubemx/../../Drivers/CMSIS/Include"
+				}
+			],
+			"language" : "C",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "11"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -mcpu=cortex-m3  -x assembler-with-cpp -MMD -MP -g"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 3,
+					"define" : "DEBUG"
+				},
+				{
+					"backtrace" : 5,
+					"define" : "MCU_F1"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "STM32F103xB"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "USE_HAL_DRIVER"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 6,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/../common"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/cmake/stm32cubemx/../../Core/Inc"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/cmake/stm32cubemx/../../Drivers/STM32F1xx_HAL_Driver/Inc"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/cmake/stm32cubemx/../../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32F1xx/Include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/cmake/stm32cubemx/../../Drivers/CMSIS/Include"
+				}
+			],
+			"language" : "ASM",
+			"sourceIndexes" : 
+			[
+				7
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "STM32_Drivers::@768a070a0fe75716b479"
+		}
+	],
+	"id" : "yuntai::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-mcpu=cortex-m3  -Wall -fdata-sections -ffunction-sections -fstack-usage -O0 -g3",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-mcpu=cortex-m3  -T \"C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/yuntai/STM32F103XX_FLASH.ld\" --specs=nano.specs -Wl,-Map=yuntai.map -Wl,--gc-sections -Wl,--print-memory-usage",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "-lm",
+				"role" : "libraries"
+			}
+		],
+		"language" : "C"
+	},
+	"linkLibraries" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "STM32_Drivers::@768a070a0fe75716b479"
+		},
+		{
+			"backtrace" : 3,
+			"fragment" : "m"
+		},
+		{
+			"backtrace" : 4,
+			"id" : "stm32cubemx::@768a070a0fe75716b479"
+		}
+	],
+	"name" : "yuntai",
+	"nameOnDisk" : "yuntai.elf",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15
+			]
+		},
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				7
+			]
+		},
+		{
+			"name" : "Object Libraries",
+			"sourceIndexes" : 
+			[
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/main.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/gpio.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/usart.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/stm32f1xx_it.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/stm32f1xx_hal_msp.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/sysmem.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/syscalls.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 1,
+			"path" : "startup_stm32f103xb.s",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/ring_buffer.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/uart_servo_lite.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/host_console.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/gimbal_test.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "Core/Src/f1_link.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/common/board.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/common/wire.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/firmware/common/pose.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f1xx.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c.obj",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "C:/Users/ROG/Desktop/\u5de5\u4f5c/FPGA\u5de5\u4f5c\u7a7a\u95f4/26-FPGA-Pango/mcu/build/f1/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c.obj",
+			"sourceGroupIndex" : 2
+		}
+	],
+	"type" : "EXECUTABLE"
+}

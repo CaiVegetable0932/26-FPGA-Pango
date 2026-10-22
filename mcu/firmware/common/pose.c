@@ -8,8 +8,9 @@
 static const uint16_t center[2]={1881,2405};
 /* Servo-only zeroing tolerance in raw counts. Must match
  * GIMBAL_POSITION_TOLERANCE (firmware/yuntai/Core/Inc/gimbal_test.h): the bus
- * servos repeat to ~+-20 counts, so a tighter window would never confirm. */
-#define POSE_CENTER_TOL_RAW 24
+ * servos repeat to ~+-20 counts, and measured settling was as far as 31 counts,
+ * so a tighter window would never confirm. 2026-10-22: 24 -> 32. */
+#define POSE_CENTER_TOL_RAW 32
 static float wrap(float x) { while (x>180) x-=360; while (x<=-180) x+=360; return x; }
 int32_t pose_delta(int32_t x) { while (x>180000) x-=360000; while (x<=-180000) x+=360000; return x; }
 void pose_init(Pose *p)

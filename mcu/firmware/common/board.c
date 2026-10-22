@@ -87,6 +87,19 @@ void board_port_init(BoardPort *p, UART_HandleTypeDef *uart, WireReceive cb, voi
     memset(p,0,sizeof(*p)); p->uart=uart; wire_init(&p->parser,timeout,cb,ctx);
     p->failed=HAL_UART_Receive_IT(uart,&p->rx_byte,1)!=HAL_OK;
 }
+/* 循环 DMA 接收：不再逐字节进中断，主循环按 DMA 写指针批量取字节喂解析器。
+ * 适用场景见 board.h：高码率端口（F4 的 F1 代理口 460800 约 2.76 万字节/秒）。 */
+void board_port_init_dma(BoardPort *p, UART_HandleTypeDef *uart, WireReceive cb, void *ctx, uint16_t timeout)
+{
+    memset(p,0,sizeof(*p)); p->uart=uart; wire_init(&p->parser,timeout,cb,ctx);
+    p->dma_mode=1; p->dma_last=0;
+    if (uart->hdmarx==NULL ||
+        HAL_UART_Receive_DMA(uart,p->dma_buf,(uint16_t)sizeof(p->dma_buf))!=HAL_OK) {
+        /* .ioc 里还没给这个 UART 配 DMA 时，安静地退回中断方式 */
+        p->dma_mode=0;
+        p->failed=HAL_UART_Receive_IT(uart,&p->rx_byte,1)!=HAL_OK;
+    }
+}
 void board_port_rx(BoardPort *p, UART_HandleTypeDef *uart)
 {
     if (uart!=p->uart) return;
@@ -99,7 +112,7 @@ void board_port_rx(BoardPort *p, UART_HandleTypeDef *uart)
     }
     uint16_t next=(uint16_t)((p->head+1)%512);
     if (next==p->tail) p->failed=1;
-    else { p->rx[p->head]=p->rx_byte; p->rx_tick[p->head]=board_us(); p->head=next; }
+    else { p->rx[p->head]=p->rx_byte; p->rx_tick[p->head]=board_us(); p->head=next; ++p->rx_total; }
     if (HAL_UART_Receive_IT(uart,&p->rx_byte,1)!=HAL_OK) p->failed=1;
 }
 void board_port_error(BoardPort *p, UART_HandleTypeDef *uart)
@@ -126,13 +139,42 @@ int board_port_send(BoardPort *p, uint8_t cmd, uint16_t seq, const uint8_t *data
 }
 void board_port_poll(BoardPort *p)
 {
-    if (p->failed) {
-        uint32_t mask=__get_PRIMASK(); __disable_irq();
-        wire_count(&p->overrun);
-        HAL_UART_AbortReceive(p->uart); __HAL_UART_CLEAR_OREFLAG(p->uart);
-        p->tail=p->head; p->parser.used=0;
-        p->failed=HAL_UART_Receive_IT(p->uart,&p->rx_byte,1)!=HAL_OK;
-        __set_PRIMASK(mask);
+    if (p->dma_mode && p->uart->hdmarx) {
+        if (p->failed) {
+            /* 溢出等错误会让 HAL 中止 DMA，这里重新武装 */
+            uint32_t mask=__get_PRIMASK(); __disable_irq();
+            wire_count(&p->overrun);
+            HAL_UART_AbortReceive(p->uart); __HAL_UART_CLEAR_OREFLAG(p->uart);
+            p->parser.used=0; p->dma_last=0;
+            p->failed=HAL_UART_Receive_DMA(p->uart,p->dma_buf,(uint16_t)sizeof(p->dma_buf))!=HAL_OK;
+            __set_PRIMASK(mask);
+        }
+        /* 循环 DMA：这一轮新增了多少字节由 DMA 剩余计数反推 */
+        uint16_t pos=(uint16_t)(sizeof(p->dma_buf)-__HAL_DMA_GET_COUNTER(p->uart->hdmarx));
+        if (pos>sizeof(p->dma_buf)) pos=0;
+        uint64_t tick=board_us();
+        for (unsigned budget=0;budget<1024 && p->dma_last!=pos;budget++) {
+            uint8_t byte=p->dma_buf[p->dma_last];
+            p->dma_last=(uint16_t)((p->dma_last+1U)%sizeof(p->dma_buf));
+            ++p->rx_total;
+            wire_feed(&p->parser,byte,tick);
+        }
+    } else {
+        if (p->failed) {
+            uint32_t mask=__get_PRIMASK(); __disable_irq();
+            wire_count(&p->overrun);
+            HAL_UART_AbortReceive(p->uart); __HAL_UART_CLEAR_OREFLAG(p->uart);
+            p->tail=p->head; p->parser.used=0;
+            p->failed=HAL_UART_Receive_IT(p->uart,&p->rx_byte,1)!=HAL_OK;
+            __set_PRIMASK(mask);
+        } else if (p->uart->RxState==HAL_UART_STATE_READY) {
+            /* 自愈（2026-10-22）：HAL 在 ORE 等错误后会把 RxState 打回 READY 并停止接收，
+             * 若不重新武装，该端口会永久静默（F1 的 USART1 实测就是 RxState=0x20/RXNEIE=0）。
+             * 这里只要发现"空闲且没在收"就重新武装。 */
+            __HAL_UART_CLEAR_OREFLAG(p->uart);
+            p->uart->ErrorCode=HAL_UART_ERROR_NONE;
+            if (HAL_UART_Receive_IT(p->uart,&p->rx_byte,1)!=HAL_OK) p->failed=1;
+        }
     }
     for (unsigned budget=0;budget<512 && p->tail!=p->head;budget++) {
         unsigned i=p->tail; uint8_t byte=p->rx[i]; uint64_t tick=p->rx_tick[i];
@@ -158,7 +200,9 @@ void board_port_poll(BoardPort *p)
             }
             p->transmitting=1;
             if (p->tx_bytes_per_second) p->tx_budget_us=board_us()+((uint64_t)n*1000000+p->tx_bytes_per_second-1)/p->tx_bytes_per_second;
-            if (HAL_UART_Transmit_IT(p->uart,p->tx,n)!=HAL_OK) { p->transmitting=0; p->failed=1; }
+            /* DMA 模式下 failed 只表示接收需要重新武装，发送失败不得误触发接收复位 */
+            if (HAL_UART_Transmit_IT(p->uart,p->tx,n)!=HAL_OK) { p->transmitting=0; if(!p->dma_mode) p->failed=1; ++p->tx_fail; }
+            else ++p->tx_ok;
         }
     }
 }

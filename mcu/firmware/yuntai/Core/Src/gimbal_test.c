@@ -22,6 +22,7 @@ typedef struct {
     uint16_t targetRaw;
     int32_t targetMilliDegrees;
     uint8_t settleExtended;
+    uint8_t retries;        /* 2026-10-22：本次动作已用于修正的重试次数 */
     uint32_t deadline;
 } Axis;
 
@@ -35,6 +36,11 @@ static Axis axes[2] = {
 static uint8_t gimbalReady;
 static uint8_t poseReady=1U;
 static uint8_t failed;
+/* 2026-10-22 诊断：记录最近一次"系统就绪/回正准备"失败的步骤号，0 表示没有失败。
+ * 10=读ID失败 11=进入位置模式失败 12=限位检查失败
+ * 20=进入位置模式失败 21=读位置失败 22=锁位发送失败 23=开扭矩失败 24=回读扭矩为0 */
+static uint8_t lastFailStep;
+uint8_t Gimbal_LastFailStep(void) { return lastFailStep; }
 static GimbalFeedback feedback;
 
 
@@ -176,19 +182,23 @@ static uint8_t EnsurePositionMode(unsigned index)
 static uint8_t PrepareAxis(unsigned index)
 {
     Axis *axis = &axes[index];
-    if (!EnsurePositionMode(index) || !ReadPosition(axis->id, &axis->currentRaw)) {
+    if (!EnsurePositionMode(index)) { lastFailStep = 20U; return 0U; }
+    if (!ReadPosition(axis->id, &axis->currentRaw)) { lastFailStep = 21U; return 0U; }
+    if (USL_MoveChecked(bus, axis->id, axis->currentRaw, 100U) != JOHO_STATUS_SUCCESS) {
+        lastFailStep = 22U;
+        Reply("[发送失败] %s轴(ID=%u)保持当前位置失败。\r\n", AxisName(index), axis->id);
         return 0U;
     }
-    if (USL_MoveChecked(bus, axis->id, axis->currentRaw, 100U) != JOHO_STATUS_SUCCESS ||
-        USL_TorqueChecked(bus, axis->id, 1U) != JOHO_STATUS_SUCCESS) {
-        Reply("[发送失败] %s轴(ID=%u)保持当前位置或开启扭矩失败。\r\n",
-              AxisName(index), axis->id);
+    if (USL_TorqueChecked(bus, axis->id, 1U) != JOHO_STATUS_SUCCESS) {
+        lastFailStep = 23U;
+        Reply("[发送失败] %s轴(ID=%u)开启扭矩失败。\r\n", AxisName(index), axis->id);
         return 0U;
     }
     HAL_Delay(10U);
     {
         uint8_t torque[1];
         if (!Read(axis->id, 0x28U, torque, 1U) || torque[0] == 0U) {
+            lastFailStep = 24U;
             Reply("[扭矩未开启] %s轴(ID=%u)无法确认位置控制。\r\n",
                   AxisName(index), axis->id);
             return 0U;
@@ -205,12 +215,19 @@ static uint8_t CheckDevices(void)
         JOHO_STATUS status = USL_ReadRegister(bus, axes[i].id, 0x05U,
                                               &actual, 1U, &alarm);
         if (status != JOHO_STATUS_SUCCESS || alarm != 0U || actual != axes[i].id) {
+            lastFailStep = 10U;
             Reply("[启动核验失败] %s轴：期望ID=%u，读回ID=%u，通信状态=%u，报警=0x%02X。\r\n",
                   AxisName(i), axes[i].id, actual, status, alarm);
             gimbalReady = 0U;
             return 0U;
         }
-        if (!EnsurePositionMode(i) || !CheckGimbalLimits(i)) {
+        if (!EnsurePositionMode(i)) {
+            lastFailStep = 11U;
+            gimbalReady = 0U;
+            return 0U;
+        }
+        if (!CheckGimbalLimits(i)) {
+            lastFailStep = 12U;
             gimbalReady = 0U;
             return 0U;
         }
@@ -256,6 +273,7 @@ static void StartCentering(void)
         axis->targetRaw = axis->centerRaw;
         axis->targetMilliDegrees = axis->centerMilliDegrees;
         axis->settleExtended = 0U;
+        axis->retries = 0U;
         axis->phase = AXIS_CENTERING;
         axis->deadline = HAL_GetTick() + GIMBAL_MOVE_TIME_MS + 500U;
         if (USL_MoveChecked(bus, axis->id, axis->targetRaw,
@@ -285,6 +303,7 @@ static void ReadyCommand(void)
     }
     gimbalReady = 1U;
     failed=0U;
+    lastFailStep=0U;
     StartCentering();
 }
 
@@ -320,6 +339,7 @@ static void StartGo(int32_t pitchOffset, int32_t yawOffset)
         axes[i].targetRaw = target[i];
         axes[i].targetMilliDegrees = axes[i].centerMilliDegrees + requested[i];
         axes[i].settleExtended = 0U;
+        axes[i].retries = 0U;
         axes[i].phase = AXIS_GO;
         axes[i].deadline = HAL_GetTick() + GIMBAL_MOVE_TIME_MS + 500U;
         if (USL_MoveChecked(bus, axes[i].id, target[i],
@@ -381,14 +401,29 @@ static void PollAxis(unsigned index)
         return;
     }
     error = (int32_t)position - (int32_t)axis->targetRaw;
-    if ((error < -(int32_t)GIMBAL_POSITION_TOLERANCE ||
-         error > (int32_t)GIMBAL_POSITION_TOLERANCE) && !axis->settleExtended) {
+    /* 2026-10-22：到位容差按动作类型区分。
+     * 居中(AXIS_CENTERING)必须用较宽的 GIMBAL_POSITION_TOLERANCE(24)，
+     * 因为舵机重复精度约 ±20 计数，实测回正后就停在 24 计数附近；
+     * 普通定位用更严的 GIMBAL_MOTION_TOLERANCE(16)，否则 1.6° 的命令会被判"已在容差内"。
+     * 若两者混用，收紧运动容差会连带让 /home 报"未到位"并进入 failed。 */
+    uint32_t tol = (axis->phase == AXIS_CENTERING) ? GIMBAL_POSITION_TOLERANCE
+                                                   : GIMBAL_MOTION_TOLERANCE;
+    if ((error < -(int32_t)tol || error > (int32_t)tol) && !axis->settleExtended) {
         axis->settleExtended = 1U;
         axis->deadline = HAL_GetTick() + GIMBAL_SETTLE_TIME_MS;
         return;
     }
-    if (error < -(int32_t)GIMBAL_POSITION_TOLERANCE ||
-        error > (int32_t)GIMBAL_POSITION_TOLERANCE) {
+    if (error < -(int32_t)tol || error > (int32_t)tol) {
+        /* 2026-10-22：实测舵机落点误差约 ±20~25 计数，一次动作常常"差一点到位"。
+         * 允许补一次修正动作（目标不变），再给一个完整的移动+稳定窗口；
+         * 两次仍不到位才判失败。否则 1.6° 这类小步进会反复报"未到位"并进入 failed。 */
+        if (axis->retries < 1U) {
+            axis->retries++;
+            axis->settleExtended = 0U;
+            axis->deadline = HAL_GetTick() + GIMBAL_MOVE_TIME_MS + 500U;
+            (void)USL_MoveChecked(bus, axis->id, axis->targetRaw, GIMBAL_MOVE_TIME_MS);
+            return;
+        }
         USL_MoveChecked(bus, axis->id, position, 100U);
         completed = axis->phase;
         axis->phase = AXIS_IDLE;

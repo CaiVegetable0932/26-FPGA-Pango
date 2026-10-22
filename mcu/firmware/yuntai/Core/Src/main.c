@@ -87,7 +87,11 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  /* 诊断：在 USART1 初始化之前扫描 PA10 有无电平活动（判断 F4 的 TX 是否到达）。 */
+  {
+      void F1_Pin_ScanOnce(void);
+      F1_Pin_ScanOnce();
+  }
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
