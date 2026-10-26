@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pango Vision · 标定图像</title><link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/calibration.css">
+<!-- Purpose: load the isolated manual software-reference preview before its page adapter. -->
+<script src="/video-input.js" defer></script><script src="/fisheye-preview.js" defer></script><script src="/fisheye-tuning.js" defer></script><script src="/calibration.js" defer></script></head>
+<body>
+<header><a href="/">PANGO VISION / 返回采集工作台</a><span id="environment">检查 OpenCV…</span></header>
+<main>
+<h1>镜头与相机标定</h1><p>填写实测几何 → 采集 / 导入 → 检查角点 → 独立验证 → 导出候选参数</p>
+<aside>鱼眼镜头请选择鱼眼等距模型；其 k1～k4 与 FPGA 当前针孔 k1/k2/p1/p2 不兼容，页面不会下发参数。固定相机、焦点、裁剪、镜像与 ISP 配置；每张图都记录镜头参考面到图卡平面的实测距离。建议 25～40 张不同倾角、距离、覆盖四角的图像，另留至少 3 张独立验证图。当前网口增强 RAW8 和普通采集卡画面均不是已验证板端 S1。</aside>
+<p id="message" role="status" aria-live="polite">准备就绪</p>
+<!-- Purpose: let an operator tune approximate fish-eye optics interactively;
+     reference settings are separate from measured sets and FPGA parameters. -->
+<section id="manual-preview">
+<h2>鱼眼实时调参 · PC 软件参考</h2>
+<p>左右为同一输入帧的原图和软件校正图。预置值是假设的镜头参数，可用于观察效果；真实精度仍需标定。参数不会下发 FPGA，也不会改写已保存标定组。</p>
+<div class="row">
+<label>近似参数组合<select id="tuning-preset"><option value="user-reviewed200">用户审校 · 200°鱼眼（2026-10-02）</option><option value="equidistant200">200° 对角 · 等距鱼眼</option><option value="equidistant180">180° 对角 · 等距鱼眼</option><option value="equisolid200">200° 对角 · 等立体角近似</option><option value="custom">当前手动 / 上次保存参数</option></select></label>
+<button id="tuning-reset">应用预置参数</button>
+<label>调参画面来源<select id="tuning-source"><option value="live">实时采集卡</option><option value="sample">已保存样本</option></select></label>
+<label>选择保存的样本<select id="tuning-sample"><option value="">暂无样本</option></select></label>
+<button id="tuning-freeze">冻结当前画面</button>
+<!-- The same reference pixels stay above the immutable tuning input/output. -->
+<button id="tuning-pixel-markers-toggle" type="button" aria-pressed="false" aria-controls="tuning-original-markers tuning-corrected-markers">显示像素标记</button>
+</div>
+<div class="twocol tuning-views">
+<figure><figcaption>输入原图 · 来源未验证</figcaption><div class="tuning-image-surface"><canvas id="tuning-original" width="1280" height="720" aria-label="鱼眼输入原图"></canvas><svg id="tuning-original-markers" class="pixel-marker-overlay" aria-label="原图的代表像素位置" hidden></svg></div></figure>
+<figure><figcaption>鱼眼校正 · PC 软件参考 / 近似参数</figcaption><div class="tuning-image-surface"><canvas id="tuning-corrected" width="1280" height="720" aria-label="鱼眼软件校正预览"></canvas><svg id="tuning-corrected-markers" class="pixel-marker-overlay" aria-label="矫正后的对应像素位置" hidden></svg></div></figure>
+</div>
+<p id="tuning-marker-info" class="muted" role="status">标记已隐藏 · 可观察原图像素的矫正映射</p>
+<p id="tuning-status" role="status" aria-live="polite">准备鱼眼预览…</p>
+<form id="tuning-parameters">
+<div class="fields">
+<label>参数参考宽度 px<input name="reference_width" type="number" min="16" max="8192" step="1" value="1920"></label>
+<label>参数参考高度 px<input name="reference_height" type="number" min="16" max="8192" step="1" value="1080"></label>
+<label>fx 焦距 px<input name="fx" type="number" min="1" step="any"><input aria-label="fx 焦距滑块" type="range" min="50" max="3000" step="1" data-parameter="fx"></label>
+<label>fy 焦距 px<input name="fy" type="number" min="1" step="any"><input aria-label="fy 焦距滑块" type="range" min="50" max="3000" step="1" data-parameter="fy"></label>
+<label>cx 主点 px<input name="cx" type="number" step="any"><input aria-label="cx 主点滑块" type="range" min="0" max="1920" step="1" data-parameter="cx"></label>
+<label>cy 主点 px<input name="cy" type="number" step="any"><input aria-label="cy 主点滑块" type="range" min="0" max="1080" step="1" data-parameter="cy"></label>
+<label>k1 鱼眼系数<input name="k1" type="number" min="-2" max="2" step="any"><input aria-label="k1 鱼眼系数滑块" type="range" min="-0.5" max="0.5" step="0.001" data-parameter="k1"></label>
+<label>k2 鱼眼系数<input name="k2" type="number" min="-2" max="2" step="any"><input aria-label="k2 鱼眼系数滑块" type="range" min="-0.5" max="0.5" step="0.001" data-parameter="k2"></label>
+<label>k3 鱼眼系数<input name="k3" type="number" min="-2" max="2" step="any"><input aria-label="k3 鱼眼系数滑块" type="range" min="-0.5" max="0.5" step="0.001" data-parameter="k3"></label>
+<label>k4 鱼眼系数<input name="k4" type="number" min="-2" max="2" step="any"><input aria-label="k4 鱼眼系数滑块" type="range" min="-0.5" max="0.5" step="0.001" data-parameter="k4"></label>
+<label>输出水平视场 °<input name="output_fov_deg" type="number" min="30" max="160" step="any"><input aria-label="输出水平视场滑块" type="range" min="30" max="160" step="1" data-parameter="output_fov_deg"></label>
+</div>
+</form>
+<p class="muted">修改数字或拖动滑块即可更新，无需重新拍照。“用户审校”采用你在 2026-10-02 截图中确认的参数，仍可继续调整。减小输出视场会放大中心并裁掉边缘；通用预置的“200°对角”仅是光学假设。fx/fy/cx/cy 按参考尺寸换算到当前输入，仅用于本页参考。</p>
+<div class="row"><button id="tuning-export">导出调参 JSON</button><label>导入调参 JSON<input id="tuning-import" type="file" accept=".json"></label><a href="#video">打开实时输入：前往采集卡区域</a></div>
+</section>
+<section><h2>1 · 标定组与图卡</h2>
+<div class="row"><label>已有标定组<select id="datasets"><option value="">选择或创建标定组</option></select></label><button id="refresh">刷新记录</button></div>
+<form id="config"><div class="fields">
+<!-- Purpose: freeze optical model and physical reference before collecting any images. -->
+<label>镜头模型<select name="model"><option value="fisheye_equidistant">鱼眼等距 k1～k4</option><option value="pinhole_k1_k2_p1_p2">针孔 k1/k2/p1/p2</option></select></label>
+<label>图卡类型<select name="pattern"><option value="chessboard">棋盘格（填写内角点数）</option><option value="circles">对称圆点（填写圆心数）</option><option value="asymmetric_circles">非对称圆点</option></select></label>
+<!-- User-confirmed physical board: 22x22 squares, 21x21 internal corners, 10 mm pitch. -->
+<label>内角点列数<input name="cols" type="number" min="3" max="30" value="21" required></label><label>内角点行数<input name="rows" type="number" min="3" max="30" value="21" required></label>
+<label>实测格长 / 间距 mm<input name="square_mm" type="number" min="0.001" step="any" value="10" required></label>
+<label>图卡编号<input name="board_id" required></label><label>图卡平整度记录<input name="flatness" placeholder="填写检查结果" required></label>
+<label>相机编号<input name="camera_id" required></label><label>镜头编号<input name="lens_id" required></label><label>镜头焦点设置<input name="lens_focus" required></label>
+<label>距离测量参考面<input name="distance_reference" placeholder="如：镜头前端机械平面；注明与光心的未知偏移" required></label>
+</div><label>固定采集模式<textarea name="mode_notes" required placeholder="记录分辨率、裁剪、镜像、Bayer/RAW 位宽、ISP 版本及 HDMI 是否缩放/叠字；不适用的项目请注明。"></textarea></label>
+<p class="muted">非对称圆点坐标采用 ((2c+r%2)×间距, r×间距)。本组参数创建后冻结，改变模式请新建组。</p>
+<button type="submit">创建标定组</button></form><pre id="group-info"></pre></section>
+<section><h2>2 · 采集与导入</h2><div class="row"><label>样本用途<select id="role"><option value="train">拟合集</option><option value="validation">独立验证集（不拟合 K/D）</option></select></label></div>
+<!-- Purpose: bind manually measured conditions to each immutable image, not to the whole dataset. -->
+<fieldset id="sample-context"><legend>本张样本的外部输入（人工记录，非 MCU 实测同步）</legend><div class="fields">
+<label>镜头参考面—图卡平面距离 mm<input name="distance_mm" type="number" min="1" max="100000" step="any" required></label>
+<label>距离不确定度 mm<input name="distance_uncertainty_mm" type="number" min="0" step="any" placeholder="可留空"></label>
+<label>光照预设<select name="light_preset"><option value="unknown">未知 / 未记录</option><option value="1">预设 1</option><option value="2">预设 2</option><option value="3">预设 3</option></select></label>
+<label>实测照度 lx<input name="illuminance_lux" type="number" min="0" step="any" placeholder="可留空"></label>
+<label>曝光时间 μs<input name="exposure_us" type="number" min="0" step="any" placeholder="可留空"></label>
+<label>云台 Roll °<input name="gimbal_roll_deg" type="number" min="-180" max="180" step="any" placeholder="可留空"></label>
+<label>云台 Pitch °<input name="gimbal_pitch_deg" type="number" min="-180" max="180" step="any" placeholder="可留空"></label>
+<label>龙门架 X mm<input name="gantry_x_mm" type="number" step="any" placeholder="可留空"></label>
+<label>龙门架 Y mm<input name="gantry_y_mm" type="number" step="any" placeholder="可留空"></label>
+<label>龙门架 Z mm<input name="gantry_z_mm" type="number" step="any" placeholder="可留空"></label>
+</div><label>本张样本备注<textarea name="notes" placeholder="例如测距方法、光源变化、遮挡和图卡姿态"></textarea></label></fieldset>
+<!-- Import original server-owned captures, preserving the current sample's manual measurements. -->
+<h3>当前上位机已保存原图</h3><div class="row"><label>完整 RAW8 / RGB888<select id="host-records"><option value="">加载记录…</option></select></label><button id="refresh-records">刷新原图列表</button><button id="import-record">选入此原图并检测</button></div><p class="muted">选择完整原图，填写其对应的人工测量信息。TEST / MOCK 图源及已声明的 S2/S3 结果不能用于镜头标定。</p>
+<div class="twocol"><div><h3>采集卡 / 摄像头</h3><div class="row"><select id="device" aria-label="视频设备"></select><button id="authorize">授权并读取设备</button><button id="open">打开预览</button><button id="close">关闭设备</button></div>
+<video id="video" muted playsinline></video><p id="device-status">尚未打开设备</p><button id="capture">保存当前标定图</button><p class="muted">按视频固有分辨率保存 RGB，不按页面缩放尺寸截屏。无数据或轨道静音时拒绝拍照。</p></div>
+<div><h3>导入板端快照 / 本地图像</h3><label>单张 PNG / JPEG / 无填充 RGB888<input id="files" type="file" accept=".png,.jpg,.jpeg,.rgb"></label>
+<div class="row"><label>RGB 宽<input id="width" type="number" min="16" max="4096" value="1920"></label><label>RGB 高<input id="height" type="number" min="16" max="4096" value="1080"></label></div>
+<label>单张 RGB 配套元数据 JSON（可选）<input id="metadata" type="file" accept=".json"></label><button id="import">导入并检测</button>
+<p class="muted">PNG/JPEG 保留上传文件及解码 RGB；它们不等于板端原始证据。RGB 保留精确字节，配套元数据仅作为来源声明保存，不自动获得 S1 身份认证。</p>
+<img id="preview" alt="选中图像的角点叠加预览" hidden></div></div></section>
+<section><h2>网口完整 RAW8 帧</h2><p>从本机正在运行的接收器读取最新完整帧，保存原始 .raw 与派生 RGB；源帧号仅作接收端声明，不自动验证 S1 身份或 HDMI 配对。</p><button id="capture-network">抓取网口当前帧并检测角点</button></section>
+<section><h2>3 · 样本检查</h2><p id="counts">尚未选择标定组</p><p>点击图像查看角点。剔除只影响本次拟合，原图和理由继续保留。</p><div class="table-wrap"><table><thead><tr><th>图像</th><th>分组 / 尺寸</th><th>检测 / 原因</th><th>操作</th></tr></thead><tbody id="samples"></tbody></table></div></section>
+<section><h2>4 · 求解与导出</h2><button id="solve">按所选模型求解候选内参与畸变</button><p>输出含 K/D、逐图误差、人工测距、4×3 覆盖统计、模式说明、原图清单与哈希。独立验证只估计每张图的姿态，不更新内参与畸变参数。</p><pre id="parameters" hidden></pre><div id="downloads"></div><details><summary>完整求解报告</summary><pre id="result"></pre></details><p class="muted">结果为候选参数。独立网格直线度、有效域、S1 等价性与板端下发回读需另行验证；上方调参为单独的 PC 软件参考预览。</p></section>
+</main></body></html>

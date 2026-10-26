@@ -18,10 +18,15 @@ module affine_ray_stepper #(parameter TAG_BITS=160)(
  reg active,result_valid,preparing;
  reg [2:0] prepare_cycle;
  reg [15:0] u,v,left_u,top_v,rw,rh;
- reg signed [63:0] line_x,line_y,acc_x,acc_y;
+ // Signed32 coefficients and admitted unsigned16 coordinates bound every
+ // origin/step to [-2^48,2^48). This also includes the unused terminal line
+ // at v=65536: two coordinate weights plus translation total at most 131072.
+ // Signed49 therefore retains every bit for all legal regions, even those
+ // rejected later by the public ray-range checks; no calibration clipping.
+ reg signed [48:0] line_x,line_y,acc_x,acc_y;
  reg signed [31:0] dx,dy,rx,ry;
  reg signed [31:0] origin_x,origin_y;
- reg signed [63:0] origin_x_sum,origin_y_sum;
+ reg signed [48:0] origin_x_sum,origin_y_sum;
  wire signed [63:0] x_column,x_row,y_column,y_row;
  reg [TAG_BITS-1:0] saved_tag;
  wire advance=!result_valid || out_ready;

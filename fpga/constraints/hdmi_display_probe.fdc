@@ -1,0 +1,12 @@
+# Purpose: isolated PG2L100H HDMI probe. Internal clocks match the existing
+# native PLL/IOCLKDIV tree; no data/encoder/serializer path is false-pathed.
+# External output electrical timing remains unsigned, as for the diagnostic.
+create_clock -name ref27 -period 37.037037 [get_ports clk_27m]
+create_generated_clock -name serial_clk -source [get_ports clk_27m] -multiply_by 55 -divide_by 4 [get_pins {u_video_pll.u_gpll/CLKOUT1}]
+# Native /5 is high for two serial cycles, low for three (40% duty). Edges
+# 1/5/11 are source rising, two-cycle falling, five-cycle next rising (UCE p.21).
+create_generated_clock -name pixel_clk -source [get_pins {u_video_pll.u_gpll/CLKOUT1}] -edges {1 5 11} [get_pins {u_hdmi_pixel_clock/CLKDIVOUT}]
+set_false_path -from [get_ports reset_n]
+# Narrow exception: dedicated initialization register only; it never fans out
+# to ordinary pixel state. Review integration's local reset packing separately.
+set_false_path -from [get_cells {video_div_reset_n*}]

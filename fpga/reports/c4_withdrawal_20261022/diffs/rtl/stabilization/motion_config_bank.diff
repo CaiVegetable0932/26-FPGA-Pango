@@ -1,0 +1,57 @@
+--- baseline/rtl/stabilization/motion_config_bank.sv
++++ c4_withdrawal/rtl/stabilization/motion_config_bank.sv
+@@ -1,5 +1,6 @@
+ `timescale 1ns/1ps
+-// Bounded common commit slot for motion entities 4/5/6/8. Submission ACK is
++// Bounded source commit for C3/C6 and disabled C5 settings. C4 kind 4
++// and dynamic viewport / enabled completion return UNSUPPORTED (6). ACK is
+ // queued, and only the source capture edge publishes a whole entity. Published
+ // bodies are copied into source-owned sidecars by the video integration.
+ module motion_config_bank(
+@@ -32,13 +33,6 @@
+  always @*begin
+   legal=0;active_version=0;
+   case(kind)
+-   4:begin active_version=stabilization_version;
+-    legal=entity[7:0]<=1 && entity[15:8]>=1 && entity[15:8]<=8 &&
+-     entity[23:16]>=1 && entity[23:16]<=4 && entity[31:24]==0 && entity[255:224]==0 &&
+-     entity[63:48]<=65535 && $signed(entity[95:64])>=0 && entity[95:64]<=32'd16777216 &&
+-     $signed(entity[127:96])>=0 && entity[127:96]<=32'd8388608 &&
+-     $signed(entity[159:128])>=0 && entity[159:128]<=32'd8388608 &&
+-     (!entity[0] || entity[191:160]!=0);end
+    5:begin active_version=viewport_version;
+     legal=entity[7:0]<=2 && entity[31:8]==0 && entity[255:224]==0 &&
+      entity[63:32]>=65536 && entity[95:64]>=entity[63:32] && entity[95:64]<=131072 &&
+@@ -55,7 +49,8 @@
+       $signed(entity[128+:32])<=$signed(entity[160+:32]) &&
+       $signed(entity[192+:32])<=$signed(entity[224+:32])));end
+   endcase
+-  submit_code=!legal || version==0 || version[31] || entity_id==0 || entity_id[31] || version<=active_version ?8'd11:pending?8'd4:8'd0;
++  // Never queue removed features, even when another entity is pending.
++  submit_code=(kind==4 || (kind==5 && entity[7:0]==2) || (kind==6 && entity[0]))?8'd6:!legal || version==0 || version[31] || entity_id==0 || entity_id[31] || version<=active_version ?8'd11:pending?8'd4:8'd0;
+   status=0;status[15:0]=1;status[31:16]=read_kind;ri=0;
+   case(read_kind)
+    4:begin ri=0;status[63:32]=stabilization_version;status[111:96]=32;status[256+:256]=stabilization;end
+@@ -65,11 +60,13 @@
+   endcase
+   status[95:64]=ids[ri];status[112]=status[63:32]!=0;status[113]=pending && held_kind==read_kind;
+   status[128+:64]=epochs[ri];status[192+:64]=frames[ri];
++  // Kind 6 can retain a disabled entity; error 6 reports unavailable registration.
++  if(read_kind==4 || read_kind==6)status[127:120]=8'd6;
+  end
+  always @(posedge clk or negedge rst_n)begin
+   if(!rst_n)begin
+    pending<=0;held_kind<=0;held<=0;held_version<=0;held_id<=0;applied_epoch<=0;applied_frame<=0;
+-   stabilization<=256'h0000000000000000000000000000000000000000000000000000000000010300;
++   stabilization<=0;
+    viewport<=0;viewport[63:32]<=65536;viewport[95:64]<=65536;viewport[127:96]<=1;viewport[191:160]<=65536;
+    completion<=128'h00000000000000000000000000000100;pose<=0;
+    stabilization_version<=0;viewport_version<=0;completion_version<=0;pose_version<=0;
+@@ -81,7 +78,6 @@
+     ids[held_kind==8?3:held_kind-4]<=held_id;
+     epochs[held_kind==8?3:held_kind-4]<=epoch;frames[held_kind==8?3:held_kind-4]<=frame_id;
+     case(held_kind)
+-     4:begin stabilization<=held[255:0];stabilization_version<=held_version;end
+      5:begin viewport<=held[255:0];viewport_version<=held_version;end
+      6:begin completion<=held[127:0];completion_version<=held_version;end
+      8:begin pose<=held;pose_version<=held_version;end

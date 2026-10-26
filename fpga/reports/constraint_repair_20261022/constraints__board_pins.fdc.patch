@@ -1,0 +1,18 @@
+--- before/constraints/board_pins.fdc
++++ after/constraints/board_pins.fdc
+@@ -159,3 +159,15 @@
+ define_attribute {p:hdmi_data_n[2]} {PAP_IO_VCCIO} {3.3}
+ define_attribute {p:hdmi_data_n[2]} {PAP_IO_STANDARD} {TMDS}
+ define_attribute {p:hdmi_data_n[2]} {PAP_IO_NONE} {TRUE}
++
++# Explicit PG2L100H electrical defaults: UCE Guide section 2.6.3 (pp113-115).
++# TMDS DRIVE=5 has no SLEW setting; LVCMOS uses DRIVE=4/FAST, LED SLOW.
++# Existing electrical attributes and board wiring are preserved; SI validation is pending.
++define_attribute {p:hdmi_clk_p} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_clk_n} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_p[0]} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_p[1]} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_p[2]} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_n[0]} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_n[1]} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_n[2]} {PAP_IO_DRIVE} {5}

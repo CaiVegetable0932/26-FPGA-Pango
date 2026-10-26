@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Purpose: 256-pixel RGB888 tiles, 4-way associative, four-parity-bank cache.
+// Purpose: 256-pixel RGB888 tiles, parameterized 2/4-way associative, four-parity-bank cache.
 // Hot hit path reads four synchronous banks per cycle (II=1); duplicates broadcast.
 // An ordered bounded FIFO preserves tags across misses and downstream stalls.
 // A single complete tile refill is outstanding. It pins all four head tiles,
@@ -10,13 +10,14 @@
 // crop/pad partial edge tiles and report ACTUAL bus bytes including alignment.
 // start invalidates tags only after queue/refill/output drain; no native cancellation.
 module rgb_tile_cache #(
- parameter TAG_BITS=192,parameter SET_BITS=5,parameter QUEUE_DEPTH=8,parameter FILL_PIXELS=4,
+ parameter WAY_BITS=2,parameter TAG_BITS=192,parameter SET_BITS=5,parameter QUEUE_DEPTH=8,parameter FILL_PIXELS=4,
  parameter TILE_X_BITS=4,parameter TILE_Y_BITS=4,
- parameter MAX_FRAME_WIDTH=32768,parameter MAX_FRAME_HEIGHT=32768
+ parameter MAX_FRAME_WIDTH=32768,parameter MAX_FRAME_HEIGHT=32768,parameter DUAL_SOURCE=0
 )(
  input clk,rst_n,input frame_start,output frame_ready,input [15:0] frame_width,frame_height,
  input in_valid,output in_ready,input signed [27:0] in_u,in_v,
  input in_mask,input [TAG_BITS-1:0] in_tag,
+ input in_history,output fill_history,
  output out_valid,input out_ready,output [95:0] out_samples,
  output reg [11:0] out_a,out_b,output reg out_mask,output reg [TAG_BITS-1:0] out_tag,
  output fill_req_valid,input fill_req_ready,output [11:0] fill_tile_x,fill_tile_y,
@@ -26,7 +27,8 @@ module rgb_tile_cache #(
  output reg [31:0] hit_pixels,miss_tiles,duplicate_samples,stall_cycles,max_stall_cycles,
  output reg [63:0] refill_bus_bytes,output reg [15:0] queue_peak
 );
- localparam SETS=1<<SET_BITS,SLOTS=SETS*4,BANK_WORDS=SLOTS*64,FILL_WORDS=256/FILL_PIXELS;
+ localparam WAYS=1<<WAY_BITS;
+ localparam SETS=1<<SET_BITS,SLOTS=SETS*WAYS,BANK_WORDS=SLOTS*64,FILL_WORDS=256/FILL_PIXELS;
  localparam TILE_W=1<<TILE_X_BITS,TILE_H=1<<TILE_Y_BITS;
  // Purpose: store only enough bits for every tile admitted by this instance.
  // Ceil tile counts preserve partial edge tiles; a single possible tile still
@@ -36,7 +38,7 @@ module rgb_tile_cache #(
  localparam MAX_TILES_Y=(MAX_FRAME_HEIGHT+TILE_H-1)/TILE_H;
  localparam TAG_X_BITS=MAX_TILES_X<2 ? 1 : $clog2(MAX_TILES_X);
  localparam TAG_Y_BITS=MAX_TILES_Y<2 ? 1 : $clog2(MAX_TILES_Y);
- localparam PARAMETERS_VALID=MAX_FRAME_WIDTH>=2 && MAX_FRAME_WIDTH<=32768 &&
+ localparam PARAMETERS_VALID=(WAY_BITS==1 || WAY_BITS==2) && MAX_FRAME_WIDTH>=2 && MAX_FRAME_WIDTH<=32768 &&
   MAX_FRAME_HEIGHT>=2 && MAX_FRAME_HEIGHT<=32768 &&
   TILE_X_BITS>=1 && TILE_X_BITS<=7 && TILE_Y_BITS>=1 && TILE_Y_BITS<=7 &&
   TILE_X_BITS+TILE_Y_BITS==8;
@@ -57,7 +59,12 @@ module rgb_tile_cache #(
  // for these tables increases routing pressure beside the four data banks.
  reg [TAG_X_BITS-1:0] tag_x[0:SLOTS-1] /* synthesis syn_ramstyle="lut_ram" */;
  reg [TAG_Y_BITS-1:0] tag_y[0:SLOTS-1] /* synthesis syn_ramstyle="lut_ram" */;
- reg [1:0] replace_way[0:SETS-1];
+ // Domain participates in every cache hit: current and history may have the
+ // same tile coordinates but different S1 bytes. Pages reset each whole job.
+ reg tag_history[0:SLOTS-1];reg qhistory[0:QUEUE_DEPTH-1];
+ reg lookup_history,query_history,requested_history;
+ reg query_domain[0:3][0:WAYS-1];
+ reg [WAY_BITS-1:0] replace_way[0:SETS-1];
  wire [23:0] bank_q[0:3];
  reg [1:0] output_bank[0:3];
  reg data_valid,data_mask;
@@ -80,13 +87,13 @@ module rgb_tile_cache #(
  reg [TAG_BITS-1:0] query_tag;
  reg [15:0] pre_sx[0:3],pre_sy[0:3];
  // Registered query payload has the same lossless width as its tag table.
- reg [TAG_X_BITS-1:0] query_x[0:3][0:3];
- reg [TAG_Y_BITS-1:0] query_y[0:3][0:3];
- reg query_hit_valid[0:3][0:3];
+ reg [TAG_X_BITS-1:0] query_x[0:3][0:WAYS-1];
+ reg [TAG_Y_BITS-1:0] query_y[0:3][0:WAYS-1];
+ reg query_hit_valid[0:3][0:WAYS-1];
  reg [SET_BITS-1:0] read_set[0:3];integer read_lane;
  reg [15:0] prefix_x[0:3],prefix_y[0:3];integer prefix_index;
  reg prefix_mask;
- reg [SET_BITS+2:0] saved_slots[0:3];reg [SET_BITS-1:0] saved_set;
+ reg [SET_BITS+WAY_BITS:0] saved_slots[0:3];reg [SET_BITS-1:0] saved_set;
  // Preserve the registered public 12-bit request bus and its hold behavior.
  // Admission bounds every issued tile integer to 0..4095, so assignment from
  // full tx/ty zero-extends smaller valid coordinates without a truncation alias.
@@ -129,6 +136,7 @@ module rgb_tile_cache #(
  assign frame_ready=count==0 && !lookup_valid && !query_valid && !data_valid && state==LOOKUP && !result_valid;
  assign out_valid=result_valid;
  assign fill_req_valid=state==REQUEST,fill_tile_x=requested_x,fill_tile_y=requested_y;
+ assign fill_history=DUAL_SOURCE && requested_history;
  assign fill_ready=state==FILL;
  // Parallel tag lookups and explicit duplicate-bank broadcast. In this four
  // parity scheme unequal neighbours cannot collide; assertion/test covers it.
@@ -162,14 +170,15 @@ module rgb_tile_cache #(
   for(i=0;i<4;i=i+1) begin
    tx[i]=sx[i]>>TILE_X_BITS;ty[i]=sy[i]>>TILE_Y_BITS;sets[i]=(tx[i]^ty[i])&(SETS-1);
    slots[i]=SLOTS;
-   for(j=0;j<4;j=j+1)
-    if(query_hit_valid[i][j] && query_x[i][j]==tx[i] && query_y[i][j]==ty[i]) slots[i]=sets[i]*4+j;
+   for(j=0;j<WAYS;j=j+1)
+    if(query_hit_valid[i][j] && query_x[i][j]==tx[i] && query_y[i][j]==ty[i] &&
+       (!DUAL_SOURCE || query_domain[i][j]==query_history)) slots[i]=sets[i]*WAYS+j;
    if(slots[i]==SLOTS) begin all_hit=0;if(miss_lane<0) miss_lane=i;end
    // Source addresses are nonnegative after head_mask validation. Explicit
    // parity bits avoid unsupported signed-modulo operators in this PDS version.
    banks[i]=((sy[i]&1)<<1)|(sx[i]&1);
    addresses[i]=(slots[i]==SLOTS ? 0 : slots[i]*64)+((sy[i]&(TILE_H-1))>>1)*(TILE_W/2)+((sx[i]&(TILE_W-1))>>1);
-   bank_addr[banks[i]]=addresses[i];
+
    // Detect bank-port conflicts from the source coordinates BEFORE tag lookup.
    // Equal coordinates must broadcast the same sample; distinct coordinates in
    // one bank are illegal for the clamped adjacent-neighbour contract. This
@@ -177,9 +186,19 @@ module rgb_tile_cache #(
    for(j=0;j<i;j=j+1)
     if(banks[i]==banks[j] && (sx[i]!=sx[j] || sy[i]!=sy[j])) conflict=1;
   end
+  // Adjacent/clamped neighbours sharing a parity bank address the same
+  // sample. Decode each physical bank locally and OR its matching addresses;
+  // this avoids four variable-index writes and their priority merge cascade.
+  // A conflicting coordinate set is rejected by the unchanged conflict gate.
+  for(i=0;i<4;i=i+1)begin
+   bank_addr[i]=0;
+   for(j=0;j<4;j=j+1)
+    bank_addr[i]=bank_addr[i] | (addresses[j] & {32{banks[j]==i}});
+  end
+
   if(state==SELECT) begin
-   for(w=0;w<4;w=w+1) begin
-    rr_way=(replace_way[saved_set]+w)&3;candidate=saved_set*4+rr_way;pinned=0;
+   for(w=0;w<WAYS;w=w+1) begin
+    rr_way=(replace_way[saved_set]+w)&(WAYS-1);candidate=saved_set*WAYS+rr_way;pinned=0;
     for(k=0;k<4;k=k+1) if(saved_slots[k]==candidate) pinned=1;
     if(!pinned && victim<0) victim=candidate;
    end
@@ -209,23 +228,24 @@ module rgb_tile_cache #(
     end else config_rejected<=1;
    end
    if(push) begin
-    qu[tail]<=in_u;qv[tail]<=in_v;qm[tail]<=in_mask;qt[tail]<=in_tag;
+    qu[tail]<=in_u;qv[tail]<=in_v;qm[tail]<=in_mask;qt[tail]<=in_tag;qhistory[tail]<=DUAL_SOURCE && in_history;
     tail<=tail==QUEUE_DEPTH-1 ? 0 : tail+1;
     if(!pop && count+1>queue_peak) queue_peak<=count+1;
    end
    if(pop) head<=head==QUEUE_DEPTH-1 ? 0 : head+1;
    if(pop) begin
-    lookup_valid<=1;lookup_mask<=prefix_mask;lookup_u<=qu[head];lookup_v<=qv[head];lookup_tag<=qt[head];
+    lookup_valid<=1;lookup_mask<=prefix_mask;lookup_u<=qu[head];lookup_v<=qv[head];lookup_tag<=qt[head];lookup_history<=qhistory[head];
     for(lane=0;lane<4;lane=lane+1)begin pre_sx[lane]<=prefix_x[lane];pre_sy[lane]<=prefix_y[lane];end
    end else if(query_transfer) lookup_valid<=0;
    if(query_transfer)begin
-    query_valid<=1;query_mask<=lookup_mask;query_u<=lookup_u;query_v<=lookup_v;query_tag<=lookup_tag;
+    query_valid<=1;query_mask<=lookup_mask;query_u<=lookup_u;query_v<=lookup_v;query_tag<=lookup_tag;query_history<=lookup_history;
     for(lane=0;lane<4;lane=lane+1)begin sx[lane]<=pre_sx[lane];sy[lane]<=pre_sy[lane];end
    end else if(serve)query_valid<=0;
    if(query_transfer || state==REQUERY)begin
-    for(lane=0;lane<4;lane=lane+1)for(n=0;n<4;n=n+1)begin
-     query_x[lane][n]<=tag_x[read_set[lane]*4+n];query_y[lane][n]<=tag_y[read_set[lane]*4+n];
-     query_hit_valid[lane][n]<=tag_valid[read_set[lane]*4+n];
+    for(lane=0;lane<4;lane=lane+1)for(n=0;n<WAYS;n=n+1)begin
+     query_x[lane][n]<=tag_x[read_set[lane]*WAYS+n];query_y[lane][n]<=tag_y[read_set[lane]*WAYS+n];
+     query_hit_valid[lane][n]<=tag_valid[read_set[lane]*WAYS+n];
+     query_domain[lane][n]<=tag_history[read_set[lane]*WAYS+n];
     end
    end
    if(state==REQUERY)state<=LOOKUP;
@@ -264,7 +284,7 @@ module rgb_tile_cache #(
    // register boundary from the tag RAM/mux path and never evicts a required tile.
    if(state==LOOKUP && query_valid && head_mask && conflict)frame_error<=1;
    if(state==LOOKUP && query_valid && head_mask && !all_hit && !frame_error && !conflict && result_ready) begin
-    requested_x<=tx[miss_lane];requested_y<=ty[miss_lane];saved_set<=sets[miss_lane];state<=SELECT;
+    requested_x<=tx[miss_lane];requested_y<=ty[miss_lane];requested_history<=query_history;saved_set<=sets[miss_lane];state<=SELECT;
     for(lane=0;lane<4;lane=lane+1)saved_slots[lane]<=slots[lane];
    end
    if(state==SELECT) begin
@@ -286,7 +306,8 @@ module rgb_tile_cache #(
      if(fill_error || drain_fault || fill_index!=FILL_WORDS-1)begin frame_error<=1;state<=LOOKUP;end
      else begin
       tag_valid[fill_slot]<=1;tag_x[fill_slot]<=requested_x;tag_y[fill_slot]<=requested_y;
-      replace_way[fill_slot>>2]<=fill_slot[1:0]+2'd1;
+      tag_history[fill_slot]<=requested_history;
+      replace_way[fill_slot>>WAY_BITS]<=fill_slot[WAY_BITS-1:0]+1'b1;
      end
     end else if(fill_index<FILL_WORDS-1) fill_index<=fill_index+1;
    end

@@ -49,6 +49,9 @@ reg[ADDR_BITS - 1:0]                write_cnt;                   //write data co
 reg[1:0]                            write_addr_index_d0;
 reg[1:0]                            write_addr_index_d1;
 reg[3:0]                            state;                       //state machine
+// Purpose: bounded final burst in 256-bit words; never write beyond frame end.
+wire [ADDR_BITS-1:0] remaining_words=write_len_latch-write_cnt;
+wire [BUSRT_BITS-1:0] next_words=(remaining_words<BURST_SIZE) ? remaining_words : BURST_SIZE;
 
 assign write_finish = (state == S_END) ? 1'b1 : 1'b0;            //write finish at state 'S_END'
 always@(posedge mem_clk or posedge rst)
@@ -139,10 +142,10 @@ begin
 					state <= S_ACK;
 				end
 				//if the FIFO space is a burst write request, goto burst write state
-				else if(rdusedw >= BURST_SIZE)
+				else if(remaining_words!=0 && rdusedw >= next_words)
 				begin
 					state <= S_WRITE_BURST;
-					wr_burst_len <= BURST_SIZE[BUSRT_BITS - 1:0];
+					wr_burst_len <= next_words;
 					wr_burst_req <= 1'b1;
 				end
 			end
@@ -155,9 +158,9 @@ begin
 					wr_burst_req <= 1'b0;
 					state <= S_WRITE_BURST_END;
 					//write counter + burst length
-					write_cnt <= write_cnt + BURST_SIZE[ADDR_BITS - 1:0];
+					write_cnt <= write_cnt + wr_burst_len;
 					//the next burst write address is generated
-					wr_burst_addr <= wr_burst_addr + BURST_SIZE[ADDR_BITS - 1:0];
+					wr_burst_addr <= wr_burst_addr + wr_burst_len;
 				end     
 			end
 			S_WRITE_BURST_END:

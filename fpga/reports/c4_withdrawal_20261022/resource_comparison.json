@@ -1,0 +1,50 @@
+{
+  "baseline_synthesis_lut": 51373,
+  "new_synthesis_lut": 45655,
+  "synthesis_reduction": 5718,
+  "baseline_mapped_lut": 51367,
+  "new_mapped_lut": 45650,
+  "mapped_reduction": 5717,
+  "strict_maximum": 46619,
+  "synthesis_headroom": 964,
+  "mapped_headroom": 969,
+  "source_count": 318,
+  "native_result": {
+    "stage": "dev_map",
+    "resource_sharing": "true",
+    "native_exit": 0,
+    "errors": [],
+    "snapshot_intact": true,
+    "rtl_snapshot": "fpga\\build\\full_integration_20261013\\board_20261022_210349_089457\\source",
+    "experimental_proc150": false,
+    "internal_timing_met": false,
+    "full_function_release": false,
+    "hardware_tested": false,
+    "programmed": false,
+    "external_timing_verified": false,
+    "download_approved": false,
+    "supervision": {
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 1772.1400000000003,
+      "pid": 42464,
+      "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261022_210425_587876\\native_monitor.jsonl",
+      "policy": {
+        "timeout_seconds": 3600,
+        "warning_seconds": 2880.0,
+        "requested_timeout_seconds": 3600,
+        "poll_seconds": 30,
+        "stall_enabled": false,
+        "stall_window": 5,
+        "stall_minimum_unrouted": 1000,
+        "stall_minimum_improvement": 0.01,
+        "warmup_rounds": 5,
+        "baseline_success_seconds": null,
+        "baseline_acceleration_claim": false,
+        "no_log_investigation_seconds": 600
+      }
+    },
+    "optimization_status": "COMPLETED",
+    "placement_seed": 11
+  }
+}

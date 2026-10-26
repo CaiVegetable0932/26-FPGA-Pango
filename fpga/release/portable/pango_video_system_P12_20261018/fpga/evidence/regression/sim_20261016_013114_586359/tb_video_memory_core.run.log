@@ -1,0 +1,5 @@
+FRAME_GEOMETRY job=1 geometry_cycles=3616
+FRAME_GEOMETRY job=2 geometry_cycles=3798
+GEOMETRY_BUDGET jobs=2 max_cycles=3798 clock_hz=125000000 minimum_fps=30
+TB_VIDEO_MEMORY_CORE_PASS bytes=3465 good=3 processed=2 geometry_cycles=3798
+D:\XDU\concept\26-FPGA-Pango\fpga\build\full_integration_20261013\sim_20261016_013114_586359\source\tb_video_memory_core.sv:213: $finish called at 119084000 (1ps)

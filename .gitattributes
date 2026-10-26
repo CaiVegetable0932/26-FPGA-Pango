@@ -31,3 +31,7 @@
 *.bit binary
 *.bin binary
 *.sbit binary
+fpga/build/full_integration_20261013/placement_timing_20261023_184642_621291/board_20261023_180615_764649/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text
+fpga/build/full_integration_20261013/placement_timing_20261023_201234_324276/board_20261023_192330_969348/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text
+fpga/build/full_integration_20261013/placement_timing_20261025_225251_633423/board_postsyn_20261025_162347_361985/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text
+fpga/build/full_integration_20261013/placement_timing_20261025_225251_633423/board_postsyn_20261025_204448_746627/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text

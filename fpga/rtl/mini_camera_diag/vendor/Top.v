@@ -7,6 +7,13 @@ module Top#(
 	parameter MEM_COL_ADDR_WIDTH   = 10         ,
 	parameter MEM_BADDR_WIDTH      = 3          ,
 	parameter MEM_DQ_WIDTH         =  32        ,
+	// 用途：固定测评只在复位后的首次采集前提交；曝光必须由核验输入计算。
+    parameter CAMERA_FIXED_MODE=0,
+    parameter [19:0] CAMERA_EXPOSURE=0,
+    parameter [9:0] CAMERA_GAIN=10'h010,
+    parameter [11:0] CAMERA_WB_R=12'h400, CAMERA_WB_G=12'h400, CAMERA_WB_B=12'h400,
+    parameter [15:0] CAMERA_EXPECT_HTS=0, CAMERA_EXPECT_VTS=0,
+    parameter CAMERA_VTS_MARGIN=4,
 	parameter MEM_DQS_WIDTH        =  32/8
 )(
 	input   wire                                sys_clk        ,//27Mhz
@@ -69,7 +76,6 @@ wire    rst_n;
 // supplies one 371.25 MHz source, GTP_IOCLKBUF drives the OSERDES I/O clock and
 // GTP_IOCLKDIV_E2 derives the phase-related 74.25 MHz pixel clock. A delayed
 // divider reset follows the official example so the /5 phase starts cleanly.
-reg [7:0] video_clock_start_count;
 wire video_div_reset_n;
 wire video_clock_ready;
 wire pixel_reset_n, cam_reset_n, mem_reset_n;
@@ -77,18 +83,16 @@ video_pll u_video_pll(.clkin1(sys_clk), .clkout1(serial_raw), .lock(locked0));
 GTP_IOCLKBUF u_hdmi_serial_clock(.CLKIN(serial_raw), .DI(1'b1), .CLKOUT(pclkx5));
 GTP_IOCLKDIV_E2 #(.DIV_FACTOR("5")) u_hdmi_pixel_clock(
  .CE(1'b1), .CLKIN(serial_raw), .RST_N(video_div_reset_n), .CLKDIVOUT(pclk));
-always @(posedge sys_clk or negedge rst_in)
- if(!rst_in) video_clock_start_count <= 8'h00;
- else if(!locked0) video_clock_start_count <= 8'h00;
- else if(video_clock_start_count != 8'hff)
-  video_clock_start_count <= video_clock_start_count + 1'b1;
-assign video_div_reset_n = locked0 &&
- !((video_clock_start_count >= 8'h4f) && (video_clock_start_count <= 8'h8f));
-assign video_clock_ready = (video_clock_start_count == 8'hff);
-reset_sync rs_sys(sys_clk, rst_in && locked0, rst_n);
-reset_sync rs_pixel(pclk, rst_in && locked0 && video_clock_ready, pixel_reset_n);
+// Purpose: keep the native startup pulse, but assert pixel reset immediately
+// on unlock even with pclk stopped. Ready crosses only the first pixel stage;
+// reference control and pixel consumers each release in their own domain.
+video_clock_start u_video_start(.ref_clk(sys_clk), .pixel_clk(pclk),
+ .async_reset_n(rst_in && locked0), .reference_reset_n(rst_n),
+ .divider_reset_n(video_div_reset_n), .clock_ready(video_clock_ready), .pixel_reset_n(pixel_reset_n));
 reset_sync rs_camera(camera_clk_0, rst_in && locked0, cam_reset_n);
-reset_sync rs_mem(core_clk, rst_in && ddr_init_done, mem_reset_n);
+// DDR user logic also resets on controller/PHY unlock; controller reset itself
+// remains external-only so user readiness cannot prevent calibration startup.
+reset_sync rs_mem(core_clk, rst_in && pll_lock && phy_pll_lock && ddr_init_done, mem_reset_n);
 
 //===========================================================================
 // camera
@@ -106,7 +110,16 @@ wire    [15:0]  cam_data_1;
 wire            cam_init_done_0;
 wire            cam_init_done_1;
 
-camera camera_inst0(
+camera #(.FIXED_MODE(CAMERA_FIXED_MODE),.EXPOSURE(CAMERA_EXPOSURE),
+    .GAIN(CAMERA_GAIN),.WB_R(CAMERA_WB_R),.WB_G(CAMERA_WB_G),.WB_B(CAMERA_WB_B),
+    .EXPECT_HTS(CAMERA_EXPECT_HTS),.EXPECT_VTS(CAMERA_EXPECT_VTS),
+    .VTS_MARGIN(CAMERA_VTS_MARGIN)) camera_inst0(
+    // 用途：此顶层尚无 PC 查询桥，明确禁用外部请求；查询端口供后续集成。
+    .query_start(1'b0),.query_addr(16'b0),
+    .query_ready(),.query_done(),.query_rejected(),.query_value(),.query_status(),
+    .config_version(),.config_fault(),.fault_addr(),.snapshot_valid(),
+    .snapshot_addr(),.snapshot_value(),.snapshot_cycle(),
+    .row_ticks(),.frame_ticks(),.source_frames(),.row_valid(),.frame_valid(),
     /*input   wire            */.clk           ( sys_clk             )  ,
     /*input   wire            */.rst_n         ( rst_n               )  ,
     /*output  wire            */.SCL           ( SCL_0               )  ,  
@@ -134,7 +147,7 @@ always @(posedge camera_clk_0 or negedge cam_reset_n) begin
  else if (cam_cnt_0 == 25'd23999999) begin cam_cnt_0 <= 0; cam_led0 <= ~cam_led0; end
  else cam_cnt_0 <= cam_cnt_0 + 1'b1;
 end
-// Purpose: active-low LED indicates ACKed configuration, not a sensor-ID check.
+// Purpose: active-low LED indicates initialization plus ID/readback checks; not optical validation.
 always @(posedge sys_clk or negedge rst_n)
  if (!rst_n) cam_led1 <= 1'b1; else cam_led1 <= !cam_init_done_0;
 //video_scale
@@ -282,7 +295,8 @@ rgb2tmds rgb2tmds_inst (
     /*output  wire    [2:0]   */.tmds_data_p ( tmds_data_p  ) ,
     /*output  wire    [2:0]   */.tmds_data_n ( tmds_data_n  ) ,
 
-    /*input   wire            */.rstn        ( pixel_reset_n ) , // Encoder/serializer reset domain.
+    /*input   wire            */.rstn        ( pixel_reset_n ) , // Pixel encoder/display reset domain.
+    /*input   wire            */.serializer_rstn ( video_div_reset_n ) , // Native GTP startup pulse.
 
     /*input   wire    [23:0]  */.vid_pdata   ( vout_data    ) ,
     /*input   wire            */.vid_pvde    ( de_out       ) ,
@@ -290,7 +304,7 @@ rgb2tmds rgb2tmds_inst (
     /*input   wire            */.vid_pvsync  ( vs_out       ) ,
  
     /*input   wire            */.pixelclk    ( pclk         ) ,
-    /*input   wire            */.serialclk   ( pclkx5       ) 
+    /*input   wire            */.serialclk   ( pclkx5       )
 );
 
 //=====================================================================================
@@ -499,89 +513,23 @@ wire [3:0] axi_rid;
 wire axi_rlast;
 wire                        axi_rvalid      ;
 
-wire axi_bvalid;
-// Purpose: make the vendor generic AXI-to-native DDR width conversion explicit.
-// Four 2 MiB slots fit 28 address bits; bursts are fixed at 16 beats (LEN=15).
-// Only transaction ID zero is issued. Wider/high-bit behavior is not supported.
-wire [31:0] adapter_awaddr, adapter_araddr;
-wire [7:0] adapter_awlen, adapter_arlen;
-wire adapter_awid, adapter_arid;
-assign axi_awaddr=adapter_awaddr[27:0], axi_araddr=adapter_araddr[27:0];
-assign axi_awlen=adapter_awlen[3:0], axi_arlen=adapter_arlen[3:0];
-assign axi_awid={3'b0,adapter_awid}, axi_arid={3'b0,adapter_arid};
-// Native DDR has no AXI B channel; retain the vendor adapter convention only.
-// Its write-completion semantics still require a transaction-level regression.
-assign axi_bvalid =1'b1;
-aq_axi_master_256	u_aq_axi_master (
-	  .ARESETN                     (mem_reset_n          ), // DDR-domain reset release.
-	  .ACLK                        (core_clk              ),
-	  .M_AXI_AWID                  (adapter_awid      ),
-	  .M_AXI_AWADDR                (adapter_awaddr    ),
-	  .M_AXI_AWLEN                 (adapter_awlen     ),
-	  .M_AXI_AWSIZE                (),
-	  .M_AXI_AWBURST               (),
-	  .M_AXI_AWLOCK                (),
-	  .M_AXI_AWCACHE               (),
-	  .M_AXI_AWPROT                (),
-	  .M_AXI_AWQOS                 (),
-	  .M_AXI_AWUSER                (),
-	  .M_AXI_AWVALID               (axi_awvalid       ),
-	  .M_AXI_AWREADY               (axi_awready       ),
-
-	  .M_AXI_WDATA                 (axi_wdata         ),
-	  .M_AXI_WSTRB                 (axi_wstrb         ),
-	  .M_AXI_WLAST                 (),
-	  .M_AXI_WUSER                 (),
-	  .M_AXI_WVALID                (),
-	  .M_AXI_WREADY                (axi_wready        ),
-
-	  .M_AXI_BID                   (),
-	  .M_AXI_BRESP                 (),
-	  .M_AXI_BUSER                 (),
-      .M_AXI_BVALID                (axi_bvalid        ),
-	  .M_AXI_BREADY                (),
-
-	  .M_AXI_ARID                  (adapter_arid      ),
-	  .M_AXI_ARADDR                (adapter_araddr    ),
-	  .M_AXI_ARLEN                 (adapter_arlen     ),
-	  .M_AXI_ARSIZE                (),
-	  .M_AXI_ARBURST               (),
-	  .M_AXI_ARLOCK                (),
-	  .M_AXI_ARCACHE               (),
-	  .M_AXI_ARPROT                (),
-	  .M_AXI_ARQOS                 (),
-	  .M_AXI_ARUSER                (),
-	  .M_AXI_ARVALID               (axi_arvalid       ),
-	  .M_AXI_ARREADY               (axi_arready       ),
-
-	  .M_AXI_RID                   (axi_rid[0]        ),
-	  .M_AXI_RDATA                 (axi_rdata         ),
-	  .M_AXI_RRESP                 (),
-	  .M_AXI_RLAST                 (axi_rlast         ),
-	  .M_AXI_RUSER                 (),
-	  .M_AXI_RVALID                (axi_rvalid        ),
-	  .M_AXI_RREADY                (),
-
-	  .MASTER_RST                  (1'b0                  ),
-	  .WR_START                    (wr_burst_req          ),
-	  .WR_ADRS                     ({wr_burst_addr[22:0],5'd0}  ),
-	  .WR_LEN                      ({wr_burst_len, 5'd0}  ),
-	  .WR_READY                    (                      ),
-	  .WR_FIFO_RE                  (wr_burst_data_req     ),
-	  .WR_FIFO_EMPTY               (1'b0                  ),
-	  .WR_FIFO_AEMPTY              (1'b0                  ),
-	  .WR_FIFO_DATA                (wr_burst_data         ),
-	  .WR_DONE                     (wr_burst_finish       ),
-	  .RD_START                    (rd_burst_req          ),
-	  .RD_ADRS                     ({rd_burst_addr[22:0],5'd0}  ),
-	  .RD_LEN                      ({rd_burst_len, 5'd0}   ),
-	  .RD_READY                    (                      ),
-	  .RD_FIFO_WE                  (rd_burst_data_valid   ),
-	  .RD_FIFO_FULL                (1'b0                  ),
-	  .RD_FIFO_AFULL               (1'b0                  ),
-	  .RD_FIFO_DATA                (rd_burst_data         ),
-	  .RD_DONE                     (rd_burst_finish       ),
-	  .DEBUG                       (                      )
+// Purpose: the native interface is not standard AXI: no WVALID/RREADY/B.
+// Reserve FIFO bursts, convert 32-byte beat addresses to x32 physical words,
+// and use controller-generated write ID/LAST. Fault stops future transactions.
+wire native_wlast, native_dma_fault;
+wire [3:0] native_wid;
+mini_ddr_native_bridge u_native_dma (
+ .clk(core_clk), .rst_n(mem_reset_n),
+ .wr_req(wr_burst_req), .wr_beats(wr_burst_len), .wr_beat_addr(wr_burst_addr),
+ .wr_data_req(wr_burst_data_req), .wr_data(wr_burst_data), .wr_finish(wr_burst_finish),
+ .rd_req(rd_burst_req), .rd_beats(rd_burst_len), .rd_beat_addr(rd_burst_addr),
+ .rd_data_valid(rd_burst_data_valid), .rd_data(rd_burst_data), .rd_finish(rd_burst_finish),
+ .awaddr(axi_awaddr), .awlen(axi_awlen), .awid(axi_awid),
+ .awvalid(axi_awvalid), .awready(axi_awready), .wdata(axi_wdata), .wstrb(axi_wstrb),
+ .wready(axi_wready), .wid(native_wid), .wlast(native_wlast),
+ .araddr(axi_araddr), .arlen(axi_arlen), .arid(axi_arid),
+ .arvalid(axi_arvalid), .arready(axi_arready), .rdata(axi_rdata),
+ .rvalid(axi_rvalid), .rid(axi_rid), .rlast(axi_rlast), .fault(native_dma_fault)
 );
 //=====================================================================================
 //ddr
@@ -621,8 +569,8 @@ ddr3_controller I_ips_ddr_top (
     .axi_wdata                 (axi_wdata          ),
     .axi_wstrb                 (axi_wstrb          ),// input [31:0]
     .axi_wready                (axi_wready         ),// output
-    .axi_wusero_id             (                   ),// output [3:0]
-    .axi_wusero_last           (),// output
+    .axi_wusero_id             (native_wid         ),// output [3:0]
+    .axi_wusero_last           (native_wlast       ),// output
 
     .axi_araddr                (axi_araddr         ),// input [27:0]
     .axi_aruser_ap             (1'b0               ),// input
@@ -701,8 +649,10 @@ ddr3_controller I_ips_ddr_top (
 //心跳信号
 //=====================================================================================
 reg [26:0] cnt;
-always@(posedge core_clk) begin
-    if (!ddr_init_done)
+// Heartbeat shares the DDR domain reset, including async assertion on stopped
+// clocks; it reports activity only, never successful frame/timing acceptance.
+always@(posedge core_clk or negedge mem_reset_n) begin
+    if (!mem_reset_n)
         cnt <= 27'd0;
     else if ( cnt >= TH_1S )
         cnt <= 27'd0;
@@ -710,8 +660,8 @@ always@(posedge core_clk) begin
         cnt <= cnt + 27'd1;
 end
 
-always @(posedge core_clk) begin
-    if (!ddr_init_done)
+always @(posedge core_clk or negedge mem_reset_n) begin
+    if (!mem_reset_n)
         heart_beat_led <= 1'd1;
     else if ( cnt >= TH_1S )
         heart_beat_led <= ~heart_beat_led;

@@ -5,12 +5,12 @@
 // A token retires only after read consumption or full masked write readback.
 // Runtime cold reset must also reset the native controller and all CDC clients.
 // No CDC, camera/geometry scheduling or external protocol is implied here.
-module frame_memory_fabric #(parameter N=7, parameter BANK_TXNS=8, parameter BOARD_CLIENT_LIMITS=0, parameter CAPACITY_BYTES=32'h40000000)(
- input clk,rst_n,controller_ready,display_boundary,allow_snapshot,
+module frame_memory_fabric #(parameter N=6, parameter BANK_TXNS=8, parameter BOARD_CLIENT_LIMITS=0, parameter CAPACITY_BYTES=32'h40000000)(
+ input clk,rst_n,controller_ready,display_boundary,
  // Scheduler owns alloc/seal/cancel/acquire/release/skip, this fabric exclusively
  // owns issue/complete. Descriptors and all ownership operations are atomic.
- input [5*`FM_CMD_BITS-1:0] frame_command,
- output [5*`FM_RSP_BITS-1:0] frame_response,
+ input [3*`FM_CMD_BITS-1:0] frame_command,
+ output [3*`FM_RSP_BITS-1:0] frame_response,
  input [N-1:0] req_valid,output reg [N-1:0] req_ready,
  input [N-1:0] req_write,input [N*32-1:0] req_addr,req_tag,
  input [N*5-1:0] req_beats,input [N*3-1:0] req_bank,req_owner,
@@ -43,31 +43,31 @@ module frame_memory_fabric #(parameter N=7, parameter BANK_TXNS=8, parameter BOA
  wire [N*32-1:0] dma_tag;
  wire dma_fault;
  reg logic_fault;
- reg [5*`FM_CMD_BITS-1:0] commands;
- wire [5*`FM_RSP_BITS-1:0] responses;
- wire [14:0] issue_tokens;
- wire [319:0] issue_tickets;
- integer issue_choice[0:4],complete_choice[0:4];
- reg [2:0] rr_issue[0:4],rr_complete[0:4];
+ reg [3*`FM_CMD_BITS-1:0] commands;
+ wire [3*`FM_RSP_BITS-1:0] responses;
+ wire [8:0] issue_tokens;
+ wire [191:0] issue_tickets;
+ integer issue_choice[0:2],complete_choice[0:2];
+ reg [2:0] rr_issue[0:2],rr_complete[0:2];
  // Register the selected bank command before evaluating slot generation/
  // consumer ownership. The client remains ADMIT until that held command is
  // accepted or rejected, so no token can be issued twice or lost on cancel.
- reg admit_valid[0:4];reg [2:0] admit_client[0:4],admit_owner[0:4];
- reg [1:0] admit_slot[0:4];reg [31:0] admit_generation[0:4];
+ reg admit_valid[0:2];reg [2:0] admit_client[0:2],admit_owner[0:2];
+ reg [1:0] admit_slot[0:2];reg [31:0] admit_generation[0:2];
  // Bank acceptance is an atomic commit edge. Keep its outcome/token/ticket
  // in a bank-local register before client-state and descriptor muxes consume
  // it; the selected client stays ADMIT until this held outcome is delivered.
- reg admit_result_valid[0:4],admit_result_rejected[0:4];
- reg [2:0] admit_result_client[0:4],admit_result_token[0:4];
- reg [63:0] admit_result_ticket[0:4];
+ reg admit_result_valid[0:2],admit_result_rejected[0:2];
+ reg [2:0] admit_result_client[0:2],admit_result_token[0:2];
+ reg [63:0] admit_result_ticket[0:2];
  // Retire selection and its 64-bit completion descriptor are registered on
  // separate edges. Adapter done remains held until the final frame-bank ACK;
  // no completion/owner bypass is introduced by these arbitration stages.
- reg [1:0] retire_stage[0:4];reg [2:0] retire_client[0:4],retire_token[0:4];
- reg [63:0] retire_ticket[0:4];reg retire_error[0:4];
- reg retire_ack[0:4];
- wire [14:0] committed_tokens;
- wire [319:0] committed_tickets;
+ reg [1:0] retire_stage[0:2];reg [2:0] retire_client[0:2],retire_token[0:2];
+ reg [63:0] retire_ticket[0:2];reg retire_error[0:2];
+ reg retire_ack[0:2];
+ wire [8:0] committed_tokens;
+ wire [191:0] committed_tickets;
  integer b,c,k,off;
  reg [N-1:0] address_legal,ownership_granted,ownership_rejected;
  reg [32:0] slot_base,slot_end,span_end;
@@ -84,63 +84,59 @@ module frame_memory_fabric #(parameter N=7, parameter BANK_TXNS=8, parameter BOA
  end endgenerate
  // Select from compact 3-bit token / 64-bit ticket banks, not the entire wide metadata
  // response bus. This avoids a huge dynamic slice during native ADS inference.
- generate for(g=0;g<5;g=g+1) begin: response_fields
+ generate for(g=0;g<3;g=g+1) begin: response_fields
   assign issue_tokens[g*3+:3]=responses[g*`FM_RSP_BITS+`FM_RSP_ISSUE_TOKEN];
   assign issue_tickets[g*64+:64]=responses[g*`FM_RSP_BITS+`FM_RSP_ISSUE_TICKET];
   assign committed_tokens[g*3+:3]=admit_result_token[g];
   assign committed_tickets[g*64+:64]=admit_result_ticket[g];
  end endgenerate
 
- // Requests cannot address another frame, even if a caller supplies a valid
- // token owner. Checks use 33-bit sums to reject overflow and padding overrun.
- // Invalid descriptors produce a bounded local error without issuing a token.
+ // Frame slots end on 4KiB boundaries. Prefix membership proves that the
+ // start belongs to the selected slot; the page-span check then proves the
+ // entire request stays in that slot, including exact-end requests. This
+ // avoids six wide slot-base additions and end-address comparisons. Keep
+ // owner, length, alignment and small-capacity checks unchanged in meaning.
  always @* begin
   address_legal=0;slot_base=0;slot_end=0;span_end=0;slot_bytes=0;
   for(c=0;c<N;c=c+1) begin
-   slot_bytes=req_bank[c*3+:3]==2 ? 32'h00400000 : 32'h00800000;
-   case(req_bank[c*3+:3])
-    0:slot_base=0;
-    1:slot_base=33'h01800000;
-    2:slot_base=33'h03000000;
-    3:slot_base=33'h03c00000;
-    4:slot_base=33'h04400000;
-    default:slot_base=33'h100000000;
-   endcase
-   // Slot sizes are exact powers of two. Express the offsets as wiring so
-   // synthesis does not create seven wide run-time multipliers for bounds.
-   if(req_bank[c*3+:3]==2)slot_base=slot_base+{9'd0,req_slot[c*2+:2],22'd0};
-   else slot_base=slot_base+{8'd0,req_slot[c*2+:2],23'd0};
-   slot_end=slot_base+slot_bytes;
    span_end={1'b0,req_addr[c*32+:32]}+({28'd0,req_beats[c*5+:5]}<<5);
-   address_legal[c]=req_bank[c*3+:3]<5 &&
-    req_slot[c*2+:2]<(req_bank[c*3+:3]>=3 ? 1:3) &&
+   address_legal[c]=req_bank[c*3+:3]<3 && req_slot[c*2+:2]<3 &&
     req_owner[c*3+:3]<=4 && (req_write[c] ? req_owner[c*3+:3]==0 : req_owner[c*3+:3]!=0) &&
     req_beats[c*5+:5]!=0 && req_beats[c*5+:5]<=16 && req_addr[c*32+:5]==0 &&
-    {1'b0,req_addr[c*32+:32]}>=slot_base && span_end<=slot_end && span_end<=CAPACITY_BYTES &&
-    ({1'b0,req_addr[c*32+:12]}+({8'd0,req_beats[c*5+:5]}<<5))<=4096 &&
-    (c!=N-1 || allow_snapshot);
+    ((req_bank[c*3+:3]==0 && req_addr[c*32+23+:9]=={7'd0,req_slot[c*2+:2]}) ||
+     (req_bank[c*3+:3]==1 && req_addr[c*32+23+:9]==9'd3+{7'd0,req_slot[c*2+:2]}) ||
+     (req_bank[c*3+:3]==2 && req_addr[c*32+22+:10]==10'd12+{8'd0,req_slot[c*2+:2]})) &&
+    (CAPACITY_BYTES>=32'h03c00000 || span_end<={1'b0,CAPACITY_BYTES}) &&
+    ({1'b0,req_addr[c*32+5+:7]}+{3'd0,req_beats[c*5+:5]})<=8'd128;
   end
  end
 
- // Narrow client selectors bound every dynamic packed-bus address to seven
+ // Narrow client selectors bound every dynamic packed-bus address to six
  // clients; this prevents ADS inferring 32-bit offset multipliers.
  // Independent round-robin admission and retirement per frame bank. The
  // selected valid never depends on issue_ready, avoiding a combinational loop.
  // A client retains its tag/ticket until both frame retirement and user ACK.
  always @* begin
   commands=frame_command;req_ready=0;dma_req=0;dma_done_ready=0;ownership_granted=0;ownership_rejected=0;
-  for(b=0;b<5;b=b+1) begin
+  for(b=0;b<3;b=b+1) begin
    commands[b*`FM_CMD_BITS+`FM_CMD_ISSUE]=0;
    commands[b*`FM_CMD_BITS+`FM_CMD_COMPLETE]=0;
    issue_choice[b]=-1;complete_choice[b]=-1;
+   // Scan fixed client indices in two ordered ranges. This is the same
+   // first eligible client at/after rr, then wrap, without six dynamic
+   // state/bank/data selectors per bank. Only reset/accepted clients update
+   // rr below, so it always stays in 0..N-1. No handshake edge changes.
    for(off=0;off<N;off=off+1) begin
-    k=rr_issue[b]+off;if(k>=N)k=k-N;
-    if(issue_choice[b]<0 && state[k[2:0]]==ADMIT && !cancel_saved[k[2:0]] && bank[k[2:0]]==b &&
-       !(admit_result_valid[b] && admit_result_client[b]==k[2:0]))
-     issue_choice[b]=k;
-    k=rr_complete[b]+off;if(k>=N)k=k-N;
-    if(complete_choice[b]<0 && state[k[2:0]]==WAIT_DRAIN && bank[k[2:0]]==b && dma_done[k[2:0]] &&
-       (!write_saved[k[2:0]] || verified[k[2:0]] || dma_error[k[2:0]] || dma_cancelled[k[2:0]])) complete_choice[b]=k;
+    if(issue_choice[b]<0 && off>=rr_issue[b] && state[off]==ADMIT && !cancel_saved[off] && bank[off]==b &&
+       !(admit_result_valid[b] && admit_result_client[b]==off))issue_choice[b]=off;
+    if(complete_choice[b]<0 && off>=rr_complete[b] && state[off]==WAIT_DRAIN && bank[off]==b && dma_done[off] &&
+       (!write_saved[off] || verified[off] || dma_error[off] || dma_cancelled[off]))complete_choice[b]=off;
+   end
+   for(off=0;off<N;off=off+1) begin
+    if(issue_choice[b]<0 && off<rr_issue[b] && state[off]==ADMIT && !cancel_saved[off] && bank[off]==b &&
+       !(admit_result_valid[b] && admit_result_client[b]==off))issue_choice[b]=off;
+    if(complete_choice[b]<0 && off<rr_complete[b] && state[off]==WAIT_DRAIN && bank[off]==b && dma_done[off] &&
+       (!write_saved[off] || verified[off] || dma_error[off] || dma_cancelled[off]))complete_choice[b]=off;
    end
    // Held bank commands need no early fault mux: frame_manager qualifies its
    // response and all state updates with fabric_ready. Keeping COMPLETE valid
@@ -191,10 +187,10 @@ module frame_memory_fabric #(parameter N=7, parameter BANK_TXNS=8, parameter BOA
    addr_saved<=0;tag_saved<=0;beats_saved<=0;write_saved<=0;cancel_saved<=0;
    error<=0;cancelled<=0;logic_fault<=0;
    for(i=0;i<N;i=i+1) begin state[i]<=FREE;bank[i]<=0;token[i]<=0;ticket[i]<=0;owner_saved[i]<=0;slot_saved[i]<=0;generation_saved[i]<=0;end
-   for(j=0;j<5;j=j+1)begin rr_issue[j]<=0;rr_complete[j]<=0;admit_valid[j]<=0;admit_client[j]<=0;admit_owner[j]<=0;admit_slot[j]<=0;admit_generation[j]<=0;retire_stage[j]<=0;retire_client[j]<=0;retire_token[j]<=0;retire_ticket[j]<=0;retire_error[j]<=0;
+   for(j=0;j<3;j=j+1)begin rr_issue[j]<=0;rr_complete[j]<=0;admit_valid[j]<=0;admit_client[j]<=0;admit_owner[j]<=0;admit_slot[j]<=0;admit_generation[j]<=0;retire_stage[j]<=0;retire_client[j]<=0;retire_token[j]<=0;retire_ticket[j]<=0;retire_error[j]<=0;
     admit_result_valid[j]<=0;admit_result_rejected[j]<=0;admit_result_client[j]<=0;admit_result_token[j]<=0;admit_result_ticket[j]<=0;retire_ack[j]<=0;end
   end else begin
-   for(j=0;j<5;j=j+1) begin
+   for(j=0;j<3;j=j+1) begin
     admit_result_valid[j]<=0;
     if(frame_command[j*`FM_CMD_BITS+`FM_CMD_ISSUE] || frame_command[j*`FM_CMD_BITS+`FM_CMD_COMPLETE]) logic_fault<=1;
     if(retire_stage[j]==0 && complete_choice[j]>=0)begin retire_client[j]<=complete_choice[j];retire_stage[j]<=1;end
@@ -204,7 +200,7 @@ module frame_memory_fabric #(parameter N=7, parameter BANK_TXNS=8, parameter BOA
     end
     if(controller_ready && !fault && commands[j*`FM_CMD_BITS+`FM_CMD_COMPLETE] &&
        !responses[j*`FM_RSP_BITS+`FM_RSP_COMPLETE_OK])logic_fault<=1;
-    // Static bank destinations avoid seven competing dynamic write ports on
+    // Static bank destinations avoid six competing dynamic write ports on
     // the round-robin state arrays in ADS's register inference.
     if(!admit_valid[j] && issue_choice[j]>=0)begin
      admit_client[j]<=issue_choice[j][2:0];admit_slot[j]<=slot_saved[issue_choice[j][2:0]];
@@ -265,8 +261,10 @@ module frame_memory_fabric #(parameter N=7, parameter BANK_TXNS=8, parameter BOA
  // Requests still wait for ownership admission and retire only after DMA drain.
  frame_manager #(.TXNS(BANK_TXNS),.BOARD_CLIENT_LIMITS(BOARD_CLIENT_LIMITS)) frames(.clk(clk),.reset_n(rst_n),.fabric_ready(controller_ready && !fault),
   .display_boundary(display_boundary),.command(commands),.response(responses));
- ddr_native_dma #(.CLIENTS(N),.VERIFY_WRITES(1),.CAPACITY_BYTES(CAPACITY_BYTES)) dma(
-  .clk(clk),.rst_n(rst_n),.controller_ready(controller_ready),.allow_snapshot(allow_snapshot),
+ // address_legal already proves the same shape/capacity before dma_req.
+ // Full write readback, ownership, cancellation and response checks remain.
+ ddr_native_dma #(.CLIENTS(N),.VERIFY_WRITES(1),.DESCRIPTOR_PREVALIDATED(1),.CAPACITY_BYTES(CAPACITY_BYTES)) dma(
+  .clk(clk),.rst_n(rst_n),.controller_ready(controller_ready),
   .req_valid(dma_req),.req_ready(dma_ready),.req_write(write_saved),.req_addr(addr_saved),
   .req_beats(beats_saved),.req_tag(tag_saved),.urgent(urgent),.cancel(dma_cancel_request),
   .w_valid(w_valid),.w_ready(w_ready),.w_data(w_data),.w_strb(w_strb),

@@ -16,7 +16,7 @@ module tb_board_io;
     reset_sync #(.STAGES(4)) u_reset4(reset_clk, async_reset_n, reset4_n);
 
     // TX/RX 都采用 125 MHz、不同相位；全局复位实例名称遵循 PDS 原生仿真模型的要求。
-    reg tx_clk = 0, rx_clock_input = 0, global_reset_n = 0, io_reset = 1;
+    reg tx_clk = 0, rx_clock_input = 0, rx_clock_enabled = 1, global_reset_n = 0, io_reset = 1;
     reg [7:0] tx_data = 0;
     reg tx_valid = 0;
     reg [3:0] rx_nibble = 0;
@@ -25,7 +25,7 @@ module tb_board_io;
     wire [7:0] rx_data;
     wire [3:0] tx_nibble;
     always #4 tx_clk = ~tx_clk;
-    initial begin #1.3; forever #4 rx_clock_input = ~rx_clock_input; end
+    initial begin #1.3; forever #4 if(rx_clock_enabled) rx_clock_input = ~rx_clock_input; end
     GTP_GRS GRS_INST(.GRS_N(global_reset_n));
     rgmii_phy_io u_rgmii(.tx_clk(tx_clk), .reset(io_reset), .tx_data(tx_data), .tx_valid(tx_valid),
         .rgmii_rxc(rx_clock_input), .rgmii_rxd(rx_nibble), .rgmii_rx_ctl(rx_control),
@@ -92,6 +92,16 @@ module tb_board_io;
         global_reset_n = 1;
         repeat (4) @(posedge tx_clk);
         @(negedge tx_clk); #0.2; io_reset = 0;
+        // The local TX reset chain releases after three edges; synchronous
+        // primitive sampling begins on the following edge, with no early TXC.
+        // The native SAME_EDGE model then transfers D0 at a falling edge,
+        // making the forwarded rising clock observable at edge five.
+        repeat (3) begin
+            @(posedge tx_clk); #0.2;
+            check({tx_nibble,tx_control_pin,tx_clock_pin} === 6'b0, "TX local reset release barrier");
+        end
+        repeat (2) @(posedge tx_clk); #0.2;
+        check(tx_clock_pin === 1'b1, "TX forwarded clock after local release");
         for (control = 0; control < 2; control = control + 1) begin
             for (value = 0; value < 256; value = value + 1) begin
                 @(negedge tx_clk); #0.2;
@@ -114,9 +124,24 @@ module tb_board_io;
             for (value = 0; value < 256; value = value + 1)
                 receive_byte(value[7:0], control[0], control[1]);
 
-        // 在非时钟边沿再次复位，分别检查发送异步清零和接收同步清零。
+        // Establish a live RX_VALID, stop RXC, then request reset. IDDR itself
+        // is synchronous, so the wrapper must suppress the stale valid/error.
+        receive_byte(8'ha5, 1'b1, 1'b1);
+        rx_clock_enabled = 0;
         #0.37; io_reset = 1; #0.2;
         check({tx_nibble,tx_control_pin,tx_clock_pin} === 6'b0, "TX asynchronous reset");
+        check({rx_valid,rx_error} === 2'b0, "RX stopped-clock reset masks validity");
+        io_reset = 0; #30;
+        check({rx_valid,rx_error} === 2'b0, "RX cannot release without RXC");
+        rx_clock_enabled = 1;
+        repeat (3) begin
+            @(posedge rx_clock_input); #0.2;
+            check({rx_valid,rx_error} === 2'b0, "RX primitive reset held during release chain");
+        end
+        receive_byte(8'h5a, 1'b1, 1'b0);
+        // Non-edge reset again checks both the asynchronous TX bank and the
+        // locally held synchronous RX bank after clocks have resumed.
+        #0.37; io_reset = 1; #0.2;
         repeat (3) @(posedge rx_clock_input);
         #0.2; check({rx_data,rx_valid,rx_error} === 10'b0, "RX synchronous reset");
         finished = 1;

@@ -1,0 +1,413 @@
+{
+  "schema": "video_route_campaign_state.v2",
+  "updated_at": "2026-10-18T13:25:08.441316+08:00",
+  "top": "pango_video_system",
+  "objective": "Generate a real routed/min_max-passing source-bound bitstream; preserve corrected 1920x1080 at least 30fps; no programming",
+  "minimum_corrected_fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "review_interval": "five complete place-and-route attempts",
+  "batch_index": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\batch_index.json",
+  "route_watch": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\route_watch.json",
+  "candidates": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\candidates.json",
+  "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\reports\\route_campaign_1080p30_20261015.md",
+  "historical_state": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\prior_active_work_state_20261015_202925.json",
+  "historical_state_sha256": "49fa4da467fb296f23ed5aff2a3216af44f9aab2a310ccfe9164e616ecd32b52",
+  "new_bitstream_generated": false,
+  "programmed": false,
+  "physical_1080p30_verified": false,
+  "live_candidate_promoted": false,
+  "notes": [
+    "Read each live result and process status; pending is not a PASS.",
+    "Historical O failed naturally; historical J intentionally stopped, neither belongs to batch01.",
+    "Frozen candidates differ from live RTL; promotion requires winning source-bound route/STA/bitgen and live-hash guards."
+  ],
+  "pds_cleanup_policy": "After every completed native build, inspect all pds_shell processes; release only residual shells owned by the finished build after verifying PID, parent, creation time and command path. Do not close active route/SYN/MAP/STA/bitgen shells.",
+  "pds_cleanup_last_check": {
+    "at": "2026-10-17T20:30:37.2949710+08:00",
+    "evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_201353_968880\\placement_probe\\after_processes.json",
+    "completed_build_owned_shells": 0,
+    "remaining_active_pds_shells": 2,
+    "active_route_preserved": true
+  },
+  "attempt01_release_qualification": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt01_release_qualification.json",
+  "continuation_checkpoint": {
+    "at": "2026-10-17T13:52:01.419574+08:00",
+    "full_route_sessions": [
+      {
+        "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_135035_561224",
+        "resume": "resume_20261017_135037_064053",
+        "session": 90924,
+        "historical": false,
+        "complete": false,
+        "candidate": "P12",
+        "campaign": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\campaign.json",
+        "started_at": "2026-10-17T13:50:35.973036+08:00",
+        "process_identity": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\start_processes.json"
+      }
+    ],
+    "pending_candidate": "uart_absolute_deadline",
+    "map_session": null,
+    "model_session": null,
+    "model_phase": "complete_pass",
+    "full_batch_completed": 4,
+    "full_batch_target": 5,
+    "next_actions": [
+      "Run source-bound complete P12 attempt",
+      "After five complete failures review and continue; preserve 1080p30 and same-routed-database min/max signoff"
+    ],
+    "bitstream_generated": false,
+    "placement_probe_session": null,
+    "placement_probe": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261016_020225_462403",
+    "placement_probe_phase": "complete",
+    "launch_new_place_route": true
+  },
+  "pending_replacement_decision": {
+    "status": "resolved_continue_routing",
+    "user_reply": "如果现成方案能够满足性能和时序要求则直接使用现成方案，否则继续布线",
+    "at": "2026-10-16T12:12:11.934413+08:00",
+    "evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\existing_result_audit_20261016.json",
+    "current_run_continues": true,
+    "cancel_approved": false,
+    "rule": "Use an existing result only if the complete system meets performance and routed timing requirements; none qualifies. Continue the current run and review after five complete attempts."
+  },
+  "pause_after_current_request": {
+    "requested_at": "2026-10-16T12:25:46.743880+08:00",
+    "user_instruction": "当前计算结束后暂时停止，记录结果",
+    "status": "superseded_by_explicit_user_resume",
+    "active_session": null,
+    "active_build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261015_185530_083301",
+    "active_resume": "resume_20261015_185532_977854",
+    "allow_current_job_to_finish": false,
+    "launch_new_place_route": false,
+    "after_terminal": [
+      "Record native result, source integrity, final routing statistics and timing/bitstream status",
+      "Audit and release only residual PDS shells owned by the finished job",
+      "Refresh completed-attempt count and save the stopping checkpoint",
+      "Set thread goal paused; do not start another candidate until the user resumes"
+    ],
+    "programming_allowed": false,
+    "completion_followup": {
+      "at": "2026-10-16T12:33:23.543337+08:00",
+      "automation_id": "automation",
+      "kind": "heartbeat",
+      "target_thread_id": "01a13ec2-d757-7ef3-a8de-78980e25b654",
+      "active": false,
+      "interval_minutes": 5,
+      "verified_configuration_sha256": "3e5059666fa0aaec26ea5ef8a390d37319611f2e7e0b894729cbe4352575eb0f",
+      "scope": "Observe only the existing attempt, record terminal evidence and release owned residual shells; then pause the follow-up. Never launch a new build.",
+      "goal_pause_requested": true,
+      "current_native_job_interrupted": false,
+      "completion_record_pending": false
+    },
+    "latest_user_instruction": "现在全部暂停计算和进程，暂停前将所有的进度保存",
+    "stopped_at": "2026-10-16T12:42:19.780822+08:00",
+    "stop_evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\intentional_stop_20261016_124038_005\\stop_summary.json",
+    "evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\pause_after_current_request.json"
+  },
+  "completion_followup_handoff": {
+    "at": "2026-10-16T12:33:23.543337+08:00",
+    "automation_id": "automation",
+    "kind": "heartbeat",
+    "target_thread_id": "01a13ec2-d757-7ef3-a8de-78980e25b654",
+    "active": false,
+    "interval_minutes": 5,
+    "verified_configuration_sha256": "3e5059666fa0aaec26ea5ef8a390d37319611f2e7e0b894729cbe4352575eb0f",
+    "scope": "Observe only the existing attempt, record terminal evidence and release owned residual shells; then pause the follow-up. Never launch a new build.",
+    "goal_pause_requested": true,
+    "current_native_job_interrupted": false,
+    "completion_record_pending": false,
+    "stopped_at": "2026-10-16T12:42:19.780822+08:00",
+    "reason": "User requested immediate stop; archive and cancellation record complete",
+    "evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\completion_followup_handoff.json"
+  },
+  "immediate_stop": {
+    "recorded_at": "2026-10-16T12:42:19.780822+08:00",
+    "disposition": "user_requested_immediate_stop",
+    "complete_native_place_route_attempt": false,
+    "counts_toward_five": false,
+    "termination_evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\intentional_stop_20261016_124038_005\\termination.json",
+    "pre_stop_snapshot": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\intentional_stop_20261016_124038_005\\before_stop_manifest.json",
+    "pre_stop_manifest_sha256": "0d40af69b177a8b66c72288636f5e72282915cb614010e46dae4b0c8502335a8",
+    "pre_stop_archive_verified_files": 481,
+    "last_completed_internal_iteration": 56,
+    "unrouted_subnets": 36766,
+    "total_subnets": 103993,
+    "last_iteration_cpu_seconds": 1387.640625,
+    "final_log": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261015_185530_083301\\resume_20261015_185532_977854\\place_route.log",
+    "final_log_sha256": "243a1dedb6fd788b8e87270b67dfa6b2f9b0adb234f53069182ac8b792ae29db",
+    "last_congestion_file": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261015_185530_083301\\place_route\\CongestionNetInfo\\CongestionNetInfo_56.txt",
+    "last_congestion_sha256": "2e9fb3d3978c5a13bf0f81414cd6f28ee576e024c66c804069abbf5fbda5cdb9",
+    "native_driver_exit": 1,
+    "native_executed_phases": [
+      "place_route"
+    ],
+    "native_errors_after_forced_stop": [
+      "E: Flow-0189: Internal error occurred.",
+      "E: Failed to execute the script : "
+    ],
+    "native_error_interpretation": "Flow-0189 followed explicit termination; it is not a naturally completed congestion failure.",
+    "snapshot_intact": true,
+    "routed_database_present": false,
+    "bitstream_present": false,
+    "timing_signoff": false,
+    "saved_native_checkpoints": [
+      {
+        "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261015_185530_083301\\device_map\\pango_video_system.pcf",
+        "bytes": 12353,
+        "sha256": "5c39f3566e9be757f90de3d79acdca7c09ae8ba9039e5abaed1dc9e18bf04ddb"
+      },
+      {
+        "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261015_185530_083301\\device_map\\pango_video_system_map.adf",
+        "bytes": 9109899,
+        "sha256": "1a4b32e6eec5b6dca3b97ba4e8c8b460f1c7c83d2a15c0643963e4e0824521a5"
+      },
+      {
+        "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261015_185530_083301\\place_route\\pango_video_system_plc.adf",
+        "bytes": 10509381,
+        "sha256": "c470694f0d69fe5c227bcecee736a9ae2a5327280d40aa1462f393face5f9377"
+      }
+    ],
+    "in_memory_router_state_saved": false,
+    "resume_note": "Source, logs and saved checkpoints retained; exact continuation of the interrupted internal router iteration is not established.",
+    "pending_candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\uart_deadline_repair_20261016_012302_468792",
+    "new_builds_allowed": false,
+    "programmed": false
+  },
+  "resume_authorization": {
+    "at": "2026-10-17T13:50:34.647454+08:00",
+    "user_instruction": "最新指令为继续这个任务，生成完整位流",
+    "candidate": "P12",
+    "launch_authorized": true,
+    "programming_allowed": false,
+    "campaign": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\campaign.json",
+    "argv": [
+      "C:\\Users\\ROG\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\scripts\\run_video_route_attempt.py",
+      "--campaign",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034",
+      "--map-build",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261016_013746_534606",
+      "--model",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261016_013808_414872",
+      "--host-report",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\host\\reports\\fpga_rgb_vectors_20261016_020054_956588.json",
+      "--regression",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\sim_20261016_013114_586359",
+      "--differential",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\dma_pack_repair_20261015_223509_992672\\differential_20261015_224326_203259",
+      "--additional-differential",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\pixel_pack_lanes_20261015_201817_101429",
+      "--additional-differential",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\differential_20261016_000927_310553",
+      "--additional-differential",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\differential_20261016_000925_393109",
+      "--additional-differential",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\retire_payload_repair_20261016_000622_284743\\retire_differential_20261016_000738_398288",
+      "--additional-differential",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\uart_deadline_repair_20261016_012302_468792\\uart_differential_20261016_012553_986714",
+      "--seed",
+      "11",
+      "--decongestion",
+      "1",
+      "--macro",
+      "Global",
+      "--duplication",
+      "default",
+      "--planning-before-place",
+      "--installed-pnr-help",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\device_pnr_help_20261015_222737_481762\\help.log"
+    ],
+    "previous_stop": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\intentional_stop_20261017_012307\\stop_summary.json"
+  },
+  "execution_status": "running_p12",
+  "resumed_followup_handoff": {
+    "at": "2026-10-17T13:52:01.419574+08:00",
+    "automation_id": "automation",
+    "kind": "heartbeat",
+    "target_thread_id": "01a13ec2-d757-7ef3-a8de-78980e25b654",
+    "active": true,
+    "interval_minutes": 20,
+    "current_attempt": {
+      "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_135035_561224",
+      "resume": "resume_20261017_135037_064053",
+      "session": 90924,
+      "historical": false,
+      "complete": false,
+      "candidate": "P12",
+      "campaign": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\campaign.json",
+      "started_at": "2026-10-17T13:50:35.973036+08:00",
+      "process_identity": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\start_processes.json"
+    },
+    "scope": "Follow current P12 and continue full-bitstream objective; review each five complete attempts; latest human pause overrides"
+  },
+  "latest_pause": {
+    "at": "2026-10-17T01:24:34.673806+08:00",
+    "disposition": "user_requested_pause_all",
+    "user_instruction": "暂停所有任务，保存当前进度",
+    "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_004908_147827",
+    "archive": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\intentional_stop_20261017_012307",
+    "session": 3348,
+    "session_exit": 1,
+    "native_exit": 1,
+    "native_runs": [
+      {
+        "phase": "place_route",
+        "exit": 1,
+        "errors": [
+          "E: Flow-0189: Internal error occurred.",
+          "E: Failed to execute the script : "
+        ]
+      }
+    ],
+    "complete_native_place_route_attempt": false,
+    "counts_toward_five": false,
+    "source_files_verified": 290,
+    "snapshot_intact": true,
+    "iteration": 11,
+    "unrouted": 47865,
+    "total_subnets": 100568,
+    "iteration_cpu_seconds": 207.9375,
+    "final_log": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_004908_147827\\resume_20261017_004909_579072\\place_route.log",
+    "final_log_sha256": "a60e27f5d3b1fce34d24199d0efa3f478cff4058564d3f8d1ba3c0339b8fa79f",
+    "congestion_file": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_004908_147827\\place_route\\CongestionNetInfo\\CongestionNetInfo_11.txt",
+    "congestion_sha256": "c420db4c41098f4d56cb3b249d995e394814916add4c058aa3839d7f08485f90",
+    "routed_database_present": false,
+    "bitstream_present": false,
+    "timing_signoff": false,
+    "programmed": false,
+    "checkpoints": {
+      "device_map\\pango_video_system_map.adf": "c13353aa535e69bb9ce1d51f4117eb5ee84e1e5f6819616ac15ee7578186b565",
+      "place_route\\pango_video_system_plc.adf": "0ba20b9646f60d30a7a48f69d126c5382ff76d54006c80138ac51267d0758f58"
+    },
+    "resume_note": "All disk artifacts saved; in-memory detailed-route state is not checkpointed. Exact internal-iteration resume is not established. Wait for explicit human resume."
+  },
+  "current_attempt": {
+    "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_135035_561224",
+    "resume": "resume_20261017_135037_064053",
+    "session": 90924,
+    "historical": false,
+    "complete": false,
+    "candidate": "P12",
+    "campaign": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\campaign.json",
+    "started_at": "2026-10-17T13:50:35.973036+08:00",
+    "process_identity": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\start_processes.json"
+  },
+  "latest_progress_audit": {
+    "at": "2026-10-17T16:29:42.165007+08:00",
+    "evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\progress_audit_20261017_162942.json",
+    "iteration": 25,
+    "unrouted": 38180,
+    "status": "active_slow_convergence"
+  },
+  "speed_optimization": {
+    "at": "2026-10-17T17:29:56.177435+08:00",
+    "plan": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\p12_speed_optimization_20261017.json",
+    "current_trial": null,
+    "last_completed_trial": {
+      "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_173539_165035",
+      "evidence": "placement_probe",
+      "session": 58962,
+      "candidate": "P12",
+      "kind": "placement_only",
+      "decongestion": 3,
+      "seed": 11,
+      "macro": "Global",
+      "complete": true,
+      "started_at": "2026-10-17T17:43:48.850928+08:00",
+      "result": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_173539_165035\\placement_probe\\result.json",
+      "cleanup_audit": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_173539_165035\\placement_probe\\after_processes.json"
+    },
+    "candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\refill_window_repair_20261017_193417_980313",
+    "phase": "original_p12_route_retained",
+    "current_auxiliary": null,
+    "differential": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\refill_window_repair_20261017_193417_980313\\differential_20261017_194137_530637",
+    "unit_comparison": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\refill_window_repair_20261017_193417_980313\\unit_syn_20261017_194321_103208\\comparison.json",
+    "refill_window_full_map": {
+      "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261017_194448_116165",
+      "complete": true,
+      "comparison": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261017_194448_116165\\p12_comparison.json",
+      "cleanup": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261017_194448_116165\\after_processes.json",
+      "whole_model_pending": true,
+      "promoted": false
+    },
+    "dma_owner": {
+      "candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\dma_owner_repair_20261017_194632_525512",
+      "kind": "DMA bank-local one-hot wide selection",
+      "status": "not_selected_unit_regression",
+      "test_next_when_auxiliary_slot_free": true,
+      "added_cycles_intended": 0,
+      "no_promotion": true,
+      "verification_command": [
+        "fpga/scripts/verify_dma_prefetch_repair.py",
+        "--candidate",
+        "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\dma_owner_repair_20261017_194632_525512",
+        "--regression-fixtures",
+        "fpga/build/full_integration_20261013/sim_20261016_013114_586359",
+        "--check-owner-onehot"
+      ],
+      "differential": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\dma_owner_repair_20261017_194632_525512\\differential_20261017_200517_718916",
+      "tests": 10,
+      "selection_decision": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\dma_owner_repair_20261017_194632_525512\\selection_decision.json",
+      "unit_result": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\dma_owner_repair_20261017_194632_525512\\owner_unit_probe_20261017_200635_473888\\result.json"
+    },
+    "next_actions": [
+      "Preserve current complete P12 route until a real terminal result; no new speculative trials or full routes while it runs.",
+      "Record source integrity, final congestion, min/max STA, bitstream provenance and ended owned shells.",
+      "After five completed failed attempts, review all actual evidence and plan the next batch per the standing user instruction; user-cancelled and placement-only runs are not counted."
+    ],
+    "selection": "original_P12",
+    "refill_window_selection_decision": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\refill_window_repair_20261017_193417_980313\\selection_decision.json"
+  },
+  "latest_current_route_progress": {
+    "at": "2026-10-18T20:04:31.494394+08:00",
+    "iteration": 60,
+    "unrouted": 32509,
+    "total_subnets": 100568,
+    "decrease_from_previous": 161,
+    "iteration_cpu_seconds": 1479.984375,
+    "complete_attempt": false,
+    "completed_batch_attempts": 4,
+    "routed_database_present": false,
+    "qualified_bitstream_present": false,
+    "congestion_file": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\CongestionNetInfo_60_observed.txt",
+    "congestion_sha256": "8b9357f7e2dff071709b7ef59c00b541d3dee9dc134e26a730d75c3638025a3c"
+  },
+  "latest_system_sleep_audit": {
+    "sleep_at": "2026-10-18T01:00:10.9213434+08:00",
+    "wake_at": "2026-10-18T12:56:45.5452695+08:00",
+    "evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\system_sleep_evidence_20261018.json",
+    "sha256": "0b72e037db71511433c318a6c325654590415acc3909ef6d448951d7f84090e5",
+    "cpu_after_wake_samples": [
+      36878.171875,
+      36961.484375
+    ],
+    "original_process_identity_confirmed": true,
+    "power_settings_modified": false
+  },
+  "host_acceleration": {
+    "at": "2026-10-18T15:04:47.566669+08:00",
+    "status": "awake_only_active_on_ac",
+    "guard_record": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\awake_guard_20261018.json",
+    "helper_pid": 82224,
+    "stop_file": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\awake_guard_20261018.stop",
+    "script": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\scripts\\guard_route_power.py",
+    "script_sha256": "e5c29f3789a71aa2eb9e6012a89de377268f4fe1685dedcf3e434f604dc22efe",
+    "power_plan": "external Turbo retained; awake-only helper does not change plans",
+    "original_pds_not_restarted": true,
+    "smoke_test": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\power_guard_smoke_20261018.json",
+    "prior_plan_guard": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_campaign_20261015\\batch01\\attempt02_p12_restart_20261017_135034\\power_guard_20261018.json",
+    "speedup_verified": false,
+    "limitations": [
+      "Explicit manual/application sleep may still suspend calculation.",
+      "Native powercfg /requests inventory requires administrator token and was unavailable.",
+      "Congestion remains unsolved; no qualified bitstream."
+    ],
+    "release_on": [
+      "original route child exit",
+      "AC disconnected or unknown",
+      "stop file created",
+      "helper exit"
+    ]
+  }
+}

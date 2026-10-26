@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "scope": "Electrical constraint repair plus build reporting; not physical or hardware signoff",
+  "build": "fpga\\build\\full_integration_20261013\\board_20261022_222010_653701",
+  "source_count": 318,
+  "source_hashes_intact": true,
+  "workspace_matches_frozen_inputs": true,
+  "native_exit": 0,
+  "native_status": "COMPLETED",
+  "elapsed_seconds": 1141.0779999999995,
+  "syn_lut": 45655,
+  "map_lut": 45650,
+  "missing_electrical_critical_warnings_before": 28,
+  "missing_electrical_critical_warnings_after": 0,
+  "remaining_shared_pin_critical_warnings": 33,
+  "shared_pin_diagnostics_unchanged": true,
+  "readiness_unchanged": true,
+  "native_lock_released": true,
+  "pnr_launched": false,
+  "timing_checked": false,
+  "bitstream_generated": false,
+  "hardware_tested": false,
+  "evidence_sha256": {
+    "result.json": "de9337cc5f17845da2796f64e32c20452f9ac133ffe0bf895260e8de729f0d15",
+    "sources.json": "752cb14c4362eafcad572b90b2c38c4acab5bea5bd0a006cb326c800b3c7c910",
+    "constraint_check/constraint_check.ccr": "a63425d83386a31fb9dc6e32998e9c296aa677bcfff0778ce84127053effbc9c",
+    "synthesize/pango_video_system.snr": "a862a0c46635489b2076bcdb9c853ad37183f25836fed66b2dff80558c6a12b2",
+    "device_map/pango_video_system.dmr": "11693f129ba437d89660efcb53ded8ef8a451b0dd52b0e92502b09ebf9359b45",
+    "module_resources.json": "1e8452acadee9235843c14f255292c2cb39eb587cd28002dc15ac2e864bcf26d"
+  }
+}

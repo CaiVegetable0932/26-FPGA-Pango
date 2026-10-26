@@ -12,11 +12,16 @@ module tb_mini_video;
  reg prev_vs=0,prev_de=0,prev_req=0;
  integer pixels=0,lines=0,line_pixels=0,frames=0,checks=0;
  reg started=0;integer guard=0;
- sync_vg gen(.clk(clk),.rstn(rstn),.hs_out(ih),.vs_out(iv),.de_out(id));
+ // Purpose: connect otherwise-unused coordinate/edge observability ports so the
+ // full-raster regression detects interface drift without compile warnings.
+ wire gen_de_re;wire [11:0] gen_x,gen_y,rect_x,rect_y;
+ sync_vg gen(.clk(clk),.rstn(rstn),.hs_out(ih),.vs_out(iv),.de_out(id),
+ .de_re(gen_de_re),.x_act(gen_x),.y_act(gen_y));
  video_rect_read_data rect(.video_clk(clk),.rst(!rstn),.video_left_offset(12'd0),
  .video_top_offset(12'd0),.video_width(12'd1280),.video_height(12'd720),
  .read_req(req),.read_req_ack(ack),.read_en(ren),.read_data(read_data),
- .timing_hs(ih),.timing_vs(iv),.timing_de(id),.timing_data(16'd0),
+ .timing_hs(ih),.timing_vs(iv),.x_cnt(rect_x),.y_cnt(rect_y),
+ .timing_de(id),.timing_data(16'd0),
  .hs(oh),.vs(ov),.de(od),.vout_data(out_data));
  tmds_encoder enc(.pix_clk(clk),.rstn(rstn),.din(out_data[7:0]),
  .c0(oh),.c1(ov),.de(od),.dout(encoded));

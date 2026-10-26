@@ -1,0 +1,19 @@
+{
+  "source": "OV5640 RAW8 - HARDWARE UNVERIFIED",
+  "epoch": 7535762224280168193,
+  "descriptor_id": "0x484E4552",
+  "param_version": 2,
+  "source_stage": "fpga_enhanced_raw8",
+  "command_hex": "55aa01710100200001e7061ad1679468020000000001207bd2c02996a9fe51bba9fe51ba51c350c3cd3b",
+  "source_mac": "02:00:00:00:00:01",
+  "peer_mac": "20:7B:D2:C0:29:96",
+  "source_ip": "169.254.81.187",
+  "peer_ip": "169.254.81.186",
+  "source_port": 50001,
+  "peer_port": 50000,
+  "hardware_tested": false,
+  "physical_camera_source_verified": false,
+  "hdmi_source_frame_id": null,
+  "bayer_phase_verified": false,
+  "note": "One cold boot only; regenerate after reset. HDMI gray is not ISP S1."
+}

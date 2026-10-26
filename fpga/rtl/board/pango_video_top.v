@@ -33,12 +33,11 @@ module pango_video_top(
         .clkout1(proc_clk), .clkout2(tx_clk), .lock(sys_lock));
     // video_pll：由 27 MHz 产生 371.25 MHz 串行时钟，像素时钟由下方原语同源分频。
     video_pll u_video_pll(.clkin1(clk_27m), .clkout1(serial_clk), .lock(video_lock));
-    // HDMI 时钟树：区域缓冲提供串行时钟；先在该域释放分频器复位，再启动像素域。
-    // 原生 /5 分频得到同源 74.25 MHz 像素时钟，高电平占两拍、低电平占三拍（40%）。
-    // 像素时钟同时驱动串行器并行端、本地复位寄存器和显示 FIFO 读端。
-    wire hdmi_serial_clk, hdmi_div_reset_n;
-    GTP_CLKBUFR u_hdmi_serial_clock(.CLKIN(serial_clk), .CLKOUT(hdmi_serial_clk));
-    reset_sync rs_hdmi_div(hdmi_serial_clk, reset_n && video_lock, hdmi_div_reset_n);
+    // Native PG2L100H IOCLKBUF supplies the OSERDES serial clock; IOCLKDIV
+    // derives the coherent 74.25 MHz, 40%-duty pixel clock from the same PLL.
+    // Divider and serializers share the documented delayed startup pulse.
+    wire hdmi_serial_clk, hdmi_div_reset_n, video_reference_reset_n, video_clock_ready;
+    GTP_IOCLKBUF u_hdmi_serial_clock(.CLKIN(serial_clk), .DI(1'b1), .CLKOUT(hdmi_serial_clk));
     GTP_IOCLKDIV_E2 #(.DIV_FACTOR("5")) u_hdmi_pixel_div(
         .CLKIN(serial_clk), .RST_N(hdmi_div_reset_n), .CE(1'b1), .CLKDIVOUT(pixel_clk));
     wire sys_reset_n, proc_reset_n, tx_reset_n, pixel_reset_n, ddr_reset_n, rx_reset_n;
@@ -48,7 +47,9 @@ module pango_video_top(
     reset_sync rs_sys(sys_clk, reset_n && sys_lock, sys_reset_n);
     reset_sync rs_proc(proc_clk, reset_n && sys_lock, proc_reset_n);
     reset_sync rs_tx(tx_clk, reset_n && sys_lock, tx_reset_n);
-    reset_sync rs_pixel(pixel_clk, reset_n && video_lock, pixel_reset_n);
+    video_clock_start u_video_start(.ref_clk(clk_27m), .pixel_clk(pixel_clk),
+        .async_reset_n(reset_n && video_lock), .reference_reset_n(video_reference_reset_n),
+        .divider_reset_n(hdmi_div_reset_n), .clock_ready(video_clock_ready), .pixel_reset_n(pixel_reset_n));
     reset_sync rs_ddr(ddr_clk, reset_n && ddr_lock && ddr_ready, ddr_reset_n);
     wire [255:0] ddr_rdata, ddr_wdata;
     wire ddr_rvalid;
@@ -84,7 +85,8 @@ module pango_video_top(
     wire [7:0] rx_data;
     // RGMII 物理转换层保留原生双沿输入/输出原语；发送数据与有效信号均置零。
     // 接收字节只作为集成库的候选输入，不代表已具备 MAC、报文解析或摄像头 RAW8 输入。
-    rgmii_phy_io u_rgmii(.tx_clk(tx_clk), .reset(!reset_n), .tx_data(8'b0), .tx_valid(1'b0),
+    // System PLL unlock resets both I/O banks; each bank releases locally.
+    rgmii_phy_io u_rgmii(.tx_clk(tx_clk), .reset(!(reset_n && sys_lock)), .tx_data(8'b0), .tx_valid(1'b0),
         .rgmii_rxc(rgmii_rxc), .rgmii_rxd(rgmii_rxd), .rgmii_rx_ctl(rgmii_rx_ctl),
         .rx_clk(rx_clk), .rx_data(rx_data), .rx_valid(rx_valid), .rx_error(rx_error),
         .rgmii_txc(rgmii_txc), .rgmii_txd(rgmii_txd), .rgmii_tx_ctl(rgmii_tx_ctl));
@@ -104,10 +106,11 @@ module pango_video_top(
         .pixel_observe(pixel_observe), .tx_observe(tx_observe));
     // 同一串行器用于转发固定 TMDS 时钟模式；三条数据通道重复发送固定消隐控制符号。
     // 没有逐像素编码、行场时序或图像内容，不能据此认定 HDMI 视频功能已实现。
-    tmds_serializer u_hdmi_clock(pixel_clk, hdmi_serial_clk, !pixel_reset_n, 10'b1111100000, hdmi_clk_p, hdmi_clk_n);
+    tmds_serializer u_hdmi_clock(pixel_clk, hdmi_serial_clk,
+        !hdmi_div_reset_n, 10'b1111100000, hdmi_clk_p, hdmi_clk_n);
     genvar lane;
     generate for (lane=0; lane<3; lane=lane+1) begin: hdmi_lane
-        tmds_serializer u_serial(pixel_clk, hdmi_serial_clk, !pixel_reset_n,
+        tmds_serializer u_serial(pixel_clk, hdmi_serial_clk, !hdmi_div_reset_n,
             10'b1101010100, hdmi_data_p[lane], hdmi_data_n[lane]);
     end endgenerate
     // 各观察位独立经两级寄存进入系统域，降低单比特跨域的亚稳态传播风险。

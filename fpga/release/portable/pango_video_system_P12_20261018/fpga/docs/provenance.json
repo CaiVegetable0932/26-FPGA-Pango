@@ -1,0 +1,35 @@
+{
+  "source_build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\phys_20261017_135035_561224",
+  "mapped_build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\delay_20261016_013746_534606",
+  "model_build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261016_013808_414872",
+  "git_head_context_only": "6fc951b3cb7a9d367b6d3c293a3e9efbb1f2c483",
+  "version_identity": "frozen sources.json SHA256, not git HEAD",
+  "working_tree_differs_from_candidate": [
+    "rtl/board/video_memory_core.sv",
+    "rtl/control/uart_v2_parser.sv",
+    "rtl/geometry/perspective_divide.sv",
+    "rtl/isp/rgb_frame_statistics.sv",
+    "rtl/memory/ddr_native_dma.v",
+    "rtl/memory/dma_pixel_pack.v",
+    "rtl/memory/frame_manager.sv",
+    "rtl/memory/frame_memory_fabric.sv",
+    "rtl/memory/frame_pixel_writer.sv",
+    "rtl/memory/frame_snapshot_pair.sv",
+    "rtl/memory/geometry_tile_refill.sv"
+  ],
+  "source_files": 290,
+  "references": [
+    {
+      "original": "D:\\XDU\\concept\\26-FPGA-Pango\\reference\\盘古100K200K MINI开发板\\1_Demo_document\\实验例程说明篇\\教程1_盘古MINI系列开发板硬件指导手册_V1.3.pdf",
+      "sha256": "7d7eebf1ff4acdb6a6936302e78a184903ac4e9666b7c8ced8c1d9e3593280ac",
+      "modifications": "none"
+    },
+    {
+      "original": "E:\\PDS_Pangu\\PDS_2022.2-SP6.4\\doc\\Pango_Design_Suite_User_Guide.pdf",
+      "sha256": "e2ac3f2ac7bb539cc51fe85cc239ea2249f4ee6790912b67c86cae23a3898ba2",
+      "modifications": "none"
+    }
+  ],
+  "portable_changes": "New path-independent driver and Tcl root substitution; no RTL/IP/constraint edits",
+  "source_state": "MAP completed; P12 detailed routing incomplete at capture; no qualified full bitstream"
+}

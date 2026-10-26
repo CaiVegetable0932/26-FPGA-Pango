@@ -1,0 +1,12 @@
+--- baseline/rtl/board/pango_video_system.sv
++++ c4_withdrawal/rtl/board/pango_video_system.sv
+@@ -113,7 +113,8 @@
+  wire [767:0] control_status,geometry_status;wire geometry_submit_valid,geometry_submit_ready;wire [543:0] geometry_submit;wire [31:0] geometry_version,geometry_entity_id;wire mode_submit_valid,mode_submit_ready;wire [1:0] mode_submit;wire [31:0] mode_version;
+  wire commissioned;wire [63:0] boot_epoch;wire [47:0] local_mac,peer_mac;
+  wire [31:0] local_ip,peer_ip;wire [15:0] local_port,peer_port;
+- pc_video_boot #(.ENTITY_MASK(16'h0bfe)) boot(.clk(ddr_clk),.rst_n(core_reset_n),.uart_rx(uart_rx),.uart_tx(uart_tx),
++ // C4 kind4 is not advertised. Kind6 retains disabled config / history clear.
++ pc_video_boot #(.ENTITY_MASK(16'h0bee)) boot(.clk(ddr_clk),.rst_n(core_reset_n),.uart_rx(uart_rx),.uart_tx(uart_tx),
+   .entity_submit_valid(entity_submit_valid),.entity_kind(entity_kind),.entity_length(entity_length),
+   .entity_body(entity_body),.entity_submit_code(entity_submit_code),.entity_read_kind(entity_read_kind),.entity_status(entity_status),
+   .configured(commissioned),.epoch(boot_epoch),.local_mac(local_mac),.peer_mac(peer_mac),

@@ -8,6 +8,13 @@ create_generated_clock -name serial_clk -source [get_ports clk_27m] -multiply_by
 # Native CLKDIV inference/rename (UCE 2.2.1.2, pp.74-75): infer the real /5
 # period and 40% duty cycle from the instantiated IOCLKDIV_E2 parameters.
 create_generated_clock -name pixel_clk [get_pins {u_hdmi_pixel_div/CLKDIVOUT}]
+# Native pulse fans out only to IOCLKDIV/OSERDES resets, never pixel logic.
+set_false_path -from [get_cells {u_video_start.divider_reset_n}]
+# Reference reset drives only asynchronous reset pins in the pixel release chain.
+set_false_path -from [get_cells {u_video_start.rs_ref.stages*}] -to [get_cells {u_video_start.pixel_ready_meta u_video_start.pixel_stages*}]
+# Bound only the ready decode into stage zero; all later stages remain timed.
+set_max_delay 6.0 -datapath_only -from [get_cells {u_video_start.start_count*}] -to [get_cells {u_video_start.pixel_ready_meta}]
+set_false_path -hold -from [get_cells {u_video_start.start_count*}] -to [get_cells {u_video_start.pixel_ready_meta}]
 # CDC exceptions are deliberately endpoint-specific. Do not mask entire
 # processing/display/Ethernet domains: every other path stays timed.
 # Native FIFO gray pointers cross into wrptr1/rwptr1, then a second stage.

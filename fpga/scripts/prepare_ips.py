@@ -12,6 +12,7 @@ from copy import deepcopy
 
 
 def configure_pll(values, clock):
+    """Map declared frequencies and phases to native PDS static PLL fields."""
     values.update(MODE_CFG="1", CLKIN_FREQ=str(clock["input_mhz"]),
                   CLKIN_FREQ_advancedPage=str(clock["input_mhz"]),
                   CLKIN_FREQ_basicPage=str(clock["input_mhz"]),
@@ -32,6 +33,24 @@ def configure_pll(values, clock):
         values[f"STATIC_DUTY{i}"] = str(max(2, int(ratio)))
         values[f"CLKOUT{i}_REQ_DUTY_advancedPage"] = str(max(2, int(ratio)))
         values[f"CLKOUT{i}_SYN_EN"] = "FALSE"
+    # Purpose: reproduce the PDS GUI phase conversion for headless generation.
+    # Coarse phase is measured in output-divider VCO cycles; fine phase uses
+    # eighth-cycle steps. Requested degrees remain in the saved native IDF too.
+    for key, degrees in clock.get("phases_deg", {}).items():
+        i = int(key)
+        ratio = float(ratios[i])
+        phase_units = float(degrees) * ratio / 360.0
+        coarse = int(phase_units)
+        fine = round(8.0 * (phase_units - coarse))
+        if fine > 7:
+            coarse += 1
+            fine = 0
+        values[f"CLKOUT{i}_REQ_PHASE_basicPage"] = str(float(degrees))
+        values[f"STATIC_PHASE{i}"] = str(fine)
+        values[f"STATIC_PHASE{i}_advancedPage"] = str(fine)
+        if i in (0, 1):
+            values[f"STATIC_CPHASE{i}"] = str(coarse)
+            values[f"STATIC_CPHASE{i}_advancedPage"] = str(coarse)
     return values
 
 

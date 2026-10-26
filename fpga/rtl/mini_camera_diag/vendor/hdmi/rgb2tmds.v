@@ -27,6 +27,9 @@ module rgb2tmds (
     output [2:0]       tmds_data_n,
     
     input              rstn,
+    // Purpose: serializer_rstn carries the vendor-style one-time GTP reset;
+    // rstn independently controls pixel-domain encoders and video state.
+    input              serializer_rstn,
     
     input [23:0]       vid_pdata,
     input              vid_pvde,
@@ -34,7 +37,7 @@ module rgb2tmds (
     input              vid_pvsync,
     input              pixelclk,
     
-    input              serialclk 
+    input              serialclk
 );
 
    reg  [7:0]         pdataout[2:0];     //编码输入并行输入数据
@@ -53,7 +56,7 @@ module rgb2tmds (
        .sdataout_p       (  tmds_clk_p      ),              
        .sdataout_n       (  tmds_clk_n      ),              
        .pdataout         (  10'b1111100000  ),               
-       .rstn             (  rstn            )               
+       .rstn             (  serializer_rstn )               
    );
    
    generate
@@ -81,7 +84,7 @@ module rgb2tmds (
                 .sdataout_p  (  tmds_data_p[i] ),                
                 .sdataout_n  (  tmds_data_n[i] ),                
                 .pdataout    (  pdataoutraw[i] ),               
-                .rstn        (  rstn           )                
+                .rstn        (  serializer_rstn )                
            );
        end
    endgenerate

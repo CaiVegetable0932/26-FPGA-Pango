@@ -3,6 +3,8 @@ set fpga_root [file normalize [file join [file dirname [info script]] ../..]]
 set_dir -impl_directory [file join $fpga_root build pango_video_top]
 set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
 add_design [file join $fpga_root rtl board reset_sync.v]
+# Shared native divider startup and per-domain reset recovery.
+add_design [file join $fpga_root rtl board video_clock_start.v]
 add_design [file join $fpga_root rtl board rgmii_phy_io.v]
 add_design [file join $fpga_root rtl board tmds_serializer.v]
 add_design [file join $fpga_root rtl memory ip_integration_bank.v]

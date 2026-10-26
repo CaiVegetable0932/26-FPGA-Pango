@@ -1,17 +1,17 @@
 `timescale 1ns/1ps
-// Immutable descriptor -> compact RAW8 or RGB888 bytes -> PRAW -> UDP.
-// PIXEL_BYTES/FRAME_TYPE are explicit: RGB snapshots never impersonate S0 RAW8.
+// Immutable descriptor -> compact RAW8 bytes -> PRAW type 1 -> UDP.
+// Retired paired RGB types have no production formatter.
 // Epoch/frame_id originate at acquisition, never at network reconnection.
 // Cancellation aborts MAC, flushes bounded banks, and requests upstream DMA
 // drain. release_valid is held until acknowledged and requires dma_drained.
 // The upstream producer must deliver exactly WIDTH*HEIGHT effective bytes;
 // missing input is bounded by INPUT_TIMEOUT cycles, not replaced by padding.
 module raw_frame_tx #(
- parameter WIDTH=1920,HEIGHT=1080,INPUT_TIMEOUT=1250000,EXTERNAL_MAC=0,PACKET_BANKS=2,PIXEL_BYTES=1,FRAME_TYPE=1
+ parameter WIDTH=1920,HEIGHT=1080,INPUT_TIMEOUT=1250000,EXTERNAL_MAC=0,PACKET_BANKS=2
 )(
  input clk,input rst_n,input link_up,input peer_resolved,input cancel,
  input frame_valid,output frame_ready,input [63:0] epoch,frame_id,
- input [31:0] param_version,descriptor_id,input [7:0] bayer_code,frame_type,
+ input [31:0] param_version,descriptor_id,input [7:0] bayer_code,
  input [47:0] local_mac,peer_mac,input [31:0] local_ip,peer_ip,
  input [15:0] local_port,peer_port,
  input byte_valid,output byte_ready,input [7:0] byte_data,
@@ -21,11 +21,11 @@ module raw_frame_tx #(
  output body_valid,input body_ready,output [7:0] body_data,output body_last,input external_mac_idle,
  output [31:0] sent_packets,output reg [31:0] complete_frames,failed_frames
 );
- localparam FRAME_BYTES=WIDTH*HEIGHT*PIXEL_BYTES,PACKETS=(FRAME_BYTES+1399)/1400;
+ localparam FRAME_BYTES=WIDTH*HEIGHT,PACKETS=(FRAME_BYTES+1399)/1400;
  reg active,feed,all_input;
  reg [63:0] saved_epoch,saved_frame;
  reg [31:0] saved_param,saved_desc,offset;
- reg [7:0] saved_bayer,saved_type;
+ reg [7:0] saved_bayer;
  reg [47:0] saved_local_mac,saved_peer_mac;
  reg [31:0] saved_local_ip,saved_peer_ip;
  reg [15:0] saved_local_port,saved_peer_port,index;
@@ -43,9 +43,9 @@ module raw_frame_tx #(
  // the physical 125MHz byte output. All application fields are little endian.
  always @* begin
   header=0; header[0+:32]=32'h57415250;header[32+:16]=1;header[48+:16]=64;
-  header[64+:8]=saved_type;header[72+:8]=(index==PACKETS-1)?2:0;header[80+:16]=PIXEL_BYTES==3 ? 2:1;
+  header[64+:8]=1;header[72+:8]=(index==PACKETS-1)?2:0;header[80+:16]=1;
   header[96+:64]=saved_epoch;header[160+:64]=saved_frame;header[224+:32]=saved_param;
-  header[256+:16]=WIDTH;header[272+:16]=HEIGHT;header[288+:32]=WIDTH*PIXEL_BYTES;
+  header[256+:16]=WIDTH;header[272+:16]=HEIGHT;header[288+:32]=WIDTH;
   header[320+:32]=FRAME_BYTES;header[352+:32]=offset;header[384+:16]=payload_size;
   header[400+:8]=saved_bayer;header[408+:8]=8;header[416+:16]=index;
   header[432+:16]=PACKETS;header[480+:32]=saved_desc;
@@ -70,7 +70,7 @@ module raw_frame_tx #(
   if(!rst_n) begin
    active<=0;feed<=0;all_input<=0;release_valid<=0;failed<=0;offset<=0;index<=0;
    payload_count<=0;payload_size<=0;wait_cycles<=0;complete_frames<=0;failed_frames<=0;
-   saved_epoch<=0;saved_frame<=0;saved_param<=0;saved_desc<=0;saved_bayer<=0;saved_type<=0;
+   saved_epoch<=0;saved_frame<=0;saved_param<=0;saved_desc<=0;saved_bayer<=0;
    saved_local_mac<=0;saved_peer_mac<=0;saved_local_ip<=0;saved_peer_ip<=0;
    saved_local_port<=0;saved_peer_port<=0;
   end else begin
@@ -79,9 +79,9 @@ module raw_frame_tx #(
     active<=1;feed<=0;all_input<=0;offset<=0;index<=0;payload_count<=0;wait_cycles<=0;
     payload_size<=(FRAME_BYTES>1400)?1400:FRAME_BYTES;
     saved_epoch<=epoch;saved_frame<=frame_id;saved_param<=param_version;saved_desc<=descriptor_id;
-    saved_bayer<=bayer_code;saved_type<=FRAME_TYPE==0 ? frame_type:FRAME_TYPE;saved_local_mac<=local_mac;saved_peer_mac<=peer_mac;
+    saved_bayer<=bayer_code;saved_local_mac<=local_mac;saved_peer_mac<=peer_mac;
     saved_local_ip<=local_ip;saved_peer_ip<=peer_ip;saved_local_port<=local_port;saved_peer_port<=peer_port;
-    failed<=epoch==0 || (PIXEL_BYTES==1 && (bayer_code<1 || bayer_code>4)) || (PIXEL_BYTES==3 && (bayer_code!=0 || (FRAME_TYPE==0 && frame_type!=2 && frame_type!=3))) || local_port==0 || peer_port==0;
+    failed<=epoch==0 || (bayer_code<1 || bayer_code>4) || local_port==0 || peer_port==0;
    end
    if(active && !stopping) begin
     if(!feed && !all_input && desc_ready) begin feed<=1;payload_count<=0;end

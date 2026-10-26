@@ -1,0 +1,46 @@
+--- before/scripts/build_video_system.py
++++ after/scripts/build_video_system.py
+@@ -10,6 +10,7 @@
+ from native_bitgen import generate_from_timed_database
+ from implementation_readiness import require_whole_design_ready
+ from route_supervisor import run_supervised
++from constraint_report import read_constraint_report
+ 
+ 
+ def main():
+@@ -93,7 +94,7 @@
+     (run / 'sources.json').write_text(json.dumps(hashes, indent=2), encoding='utf-8')
+     shutil.copyfile(Path(__file__), run / 'build_script.py')
+     shutil.copyfile(Path(__file__).with_name('native_bitgen.py'), run / 'native_bitgen.py')
+-    for helper in ('route_supervisor.py','implementation_readiness.py'):
++    for helper in ('route_supervisor.py','implementation_readiness.py','constraint_report.py'):
+         shutil.copyfile(Path(__file__).with_name(helper),run/helper)
+     # Native task commands follow the installed PDS 2022.2-SP6.4 flow. Full
+     # board timing is a distinct gate; unit-wide abstract ports are not routed.
+@@ -168,9 +169,17 @@
+     report = run / 'report_timing/pango_video_system.rtr'
+     match = re.search(r'^Design Summary\s*:\s*(.+)$', report.read_text(errors='replace'), re.M) if report.exists() else None
+     intact = all(hashlib.sha256((source / name).read_bytes()).hexdigest() == digest for name, digest in hashes.items())
++    # Console E: alone omits CCR critical warnings. Preserve native categories
++    # and unknown/missing evidence; shared configuration pins still need review.
++    constraints_result = read_constraint_report(run / 'constraint_check/constraint_check.ccr')
++    constraint_failure = bool(constraints_result['errors']) or (
++        options.stage in ('dev_map', 'report_timing', 'gen_bit_stream') and
++        not constraints_result['summary_valid'])
+     result = {'stage': options.stage, 'resource_sharing': options.resource_sharing, 'native_exit': process.returncode, 'errors': errors, 'snapshot_intact': intact,
+               'rtl_snapshot':str(options.rtl_snapshot) if options.rtl_snapshot else None,
+               'experimental_proc150':options.experimental_proc150,
++              'constraint_check': constraints_result,
++              'internal_timing_checked': match is not None,
+               'internal_timing_met': bool(match and match[1].strip() == 'All Constraints Met.'),
+               'full_function_release': False, 'hardware_tested': False, 'programmed': False,
+               'external_timing_verified': False, 'download_approved': False}
+@@ -181,7 +190,7 @@
+                       bitstream_sha256=hashlib.sha256(bitstream.read_bytes()).hexdigest())
+     (run / 'result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+     print(json.dumps(result), flush=True)
+-    if supervised['status']!='COMPLETED' or process.returncode or errors or not intact:
++    if supervised['status']!='COMPLETED' or process.returncode or errors or not intact or constraint_failure:
+         raise SystemExit(1)
+     if options.stage in ('report_timing', 'gen_bit_stream') and not result['internal_timing_met']:
+         raise SystemExit(2)

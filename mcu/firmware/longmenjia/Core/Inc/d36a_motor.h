@@ -1,0 +1,45 @@
+#ifndef D36A_MOTOR_H
+#define D36A_MOTOR_H
+
+#include "stm32f4xx_hal.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define D36A_MOTOR_COUNT          4U
+#define D36A_FULL_STEPS_PER_REV   200U
+#define D36A_MICROSTEPS           8U
+#define D36A_PULSES_PER_REV       (D36A_FULL_STEPS_PER_REV * D36A_MICROSTEPS)
+#define D36A_MAX_RPM              60
+#define D36A_GANTRY               5U
+
+typedef struct
+{
+    int32_t position;
+    uint8_t running;
+} D36A_Status;
+
+/*
+ * motor: 1..4, or D36A_GANTRY (physical 2 positive, physical 3 negative).
+ * The first gantry command permanently reserves motors 2/3 until reset.
+ * rpm: -60..60 (sign selects DIR, zero stops and holds).
+ * pulses: number of microsteps; zero means continuous rotation at nonzero rpm.
+ * A finite move stops and holds after exactly 'pulses' STEP rising edges.
+ * A new command replaces the old move at its next pulse boundary. Stop latency
+ * is at most one old pulse period; no pulse is truncated on a direction change.
+ * The first valid call prepares all four channels and waits 2 ms for wakeup.
+ * Call from the main loop with interrupts enabled, after HAL/clock setup and
+ * CubeMX's MX_GPIO_Init(), MX_TIM2/3/4/5_Init(). Timer counters must run at 1 MHz.
+ * Returns HAL_ERROR for invalid arguments/context or missing/incompatible init.
+ * FPGA.ioc owns GPIO, timer and NVIC setup; no extra application init/poll API.
+ */
+HAL_StatusTypeDef D36A_Control(uint8_t motor, int16_t rpm, uint32_t pulses);
+/* Snapshot of emitted STEP position since boot, not encoder feedback. */
+HAL_StatusTypeDef D36A_GetStatus(uint8_t motor, D36A_Status *status);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

@@ -1,0 +1,299 @@
+{
+  "baseline_build": "fpga\\build\\full_integration_20261013\\board_20261022_210425_587876",
+  "build": "fpga\\build\\full_integration_20261013\\board_20261022_222010_653701",
+  "source_count": 318,
+  "source_hashes_intact": true,
+  "changed_frozen_inputs": [
+    "config/implementation_readiness.json",
+    "config/integration/ENTITY_CONTROL.md",
+    "constraints/video_system/board_pins.fdc"
+  ],
+  "metadata_difference_note": "Readiness and entity-control docs were finalized by the prior C4 withdrawal after its immutable build snapshot; this repair does not change them.",
+  "rtl_and_ip_identical_to_c4_validated_build": true,
+  "existing_pin_attributes_unchanged": true,
+  "added_attributes": [
+    {
+      "port": "status_led",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "4"
+    },
+    {
+      "port": "status_led",
+      "attribute": "PAP_IO_SLEW",
+      "value": "SLOW"
+    },
+    {
+      "port": "rgmii_txc",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "rgmii_tx_ctl",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "rgmii_txd[0]",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "rgmii_txd[1]",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "rgmii_txd[2]",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "rgmii_txd[3]",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "phy_reset_n",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "phy_mdc",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "phy_mdio",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "4"
+    },
+    {
+      "port": "phy_mdio",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "hdmi_clk_p",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "5"
+    },
+    {
+      "port": "hdmi_clk_n",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "5"
+    },
+    {
+      "port": "hdmi_data_p[0]",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "5"
+    },
+    {
+      "port": "hdmi_data_p[1]",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "5"
+    },
+    {
+      "port": "hdmi_data_p[2]",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "5"
+    },
+    {
+      "port": "hdmi_data_n[0]",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "5"
+    },
+    {
+      "port": "hdmi_data_n[1]",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "5"
+    },
+    {
+      "port": "hdmi_data_n[2]",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "5"
+    },
+    {
+      "port": "camera_scl",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "4"
+    },
+    {
+      "port": "camera_scl",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "camera_sda",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "4"
+    },
+    {
+      "port": "camera_sda",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "camera_reset_n",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "4"
+    },
+    {
+      "port": "camera_reset_n",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    },
+    {
+      "port": "uart_tx",
+      "attribute": "PAP_IO_DRIVE",
+      "value": "4"
+    },
+    {
+      "port": "uart_tx",
+      "attribute": "PAP_IO_SLEW",
+      "value": "FAST"
+    }
+  ],
+  "added_attribute_count": 28,
+  "baseline_critical_counts": {
+    "shared_configuration_pin": 33,
+    "missing_electrical_attribute": 28
+  },
+  "shared_configuration_pins": [
+    {
+      "port": "mem_dq[1]",
+      "pin": "J6"
+    },
+    {
+      "port": "mem_dq[3]",
+      "pin": "L8"
+    },
+    {
+      "port": "mem_dq[5]",
+      "pin": "K7"
+    },
+    {
+      "port": "mem_dq[7]",
+      "pin": "J5"
+    },
+    {
+      "port": "mem_dq[8]",
+      "pin": "H6"
+    },
+    {
+      "port": "mem_dq[10]",
+      "pin": "H8"
+    },
+    {
+      "port": "mem_dq[11]",
+      "pin": "D6"
+    },
+    {
+      "port": "mem_dq[12]",
+      "pin": "G8"
+    },
+    {
+      "port": "mem_dq[13]",
+      "pin": "E6"
+    },
+    {
+      "port": "mem_dq[15]",
+      "pin": "G6"
+    },
+    {
+      "port": "mem_dm[0]",
+      "pin": "K6"
+    },
+    {
+      "port": "mem_dqs[0]",
+      "pin": "J4"
+    },
+    {
+      "port": "mem_dqs[1]",
+      "pin": "H7"
+    },
+    {
+      "port": "mem_dqs_n[0]",
+      "pin": "H4"
+    },
+    {
+      "port": "mem_dqs_n[1]",
+      "pin": "G7"
+    },
+    {
+      "port": "phy_reset_n",
+      "pin": "G25"
+    },
+    {
+      "port": "hdmi_data_p[0]",
+      "pin": "R25"
+    },
+    {
+      "port": "hdmi_data_p[1]",
+      "pin": "P23"
+    },
+    {
+      "port": "hdmi_data_p[2]",
+      "pin": "N23"
+    },
+    {
+      "port": "hdmi_data_n[0]",
+      "pin": "P25"
+    },
+    {
+      "port": "hdmi_data_n[1]",
+      "pin": "P24"
+    },
+    {
+      "port": "hdmi_data_n[2]",
+      "pin": "N24"
+    },
+    {
+      "port": "camera_href",
+      "pin": "T25"
+    },
+    {
+      "port": "camera_scl",
+      "pin": "P19"
+    },
+    {
+      "port": "camera_sda",
+      "pin": "R20"
+    },
+    {
+      "port": "camera_reset_n",
+      "pin": "T22"
+    },
+    {
+      "port": "camera_data[0]",
+      "pin": "M24"
+    },
+    {
+      "port": "camera_data[1]",
+      "pin": "R22"
+    },
+    {
+      "port": "camera_data[2]",
+      "pin": "K26"
+    },
+    {
+      "port": "camera_data[3]",
+      "pin": "K25"
+    },
+    {
+      "port": "camera_data[4]",
+      "pin": "M25"
+    },
+    {
+      "port": "camera_data[5]",
+      "pin": "N19"
+    },
+    {
+      "port": "camera_data[7]",
+      "pin": "R21"
+    }
+  ],
+  "readiness_sha256": "86c64bc8be2d1cde6f72bca31c500bc5c013cb3974268887238c99dbac31e68c",
+  "pnr_launched": false,
+  "bitstream_generated": false,
+  "hardware_tested": false
+}

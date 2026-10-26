@@ -2,11 +2,13 @@
 # Purpose: after the section 5 preflight (source/MAP/PCF SHA + readiness gates) passes,
 #          enable the whole-design routing gate and start the background driver for
 #          PnR + min/max STA, then bitgen when STA passes (full burnable bitstream goal).
-# History: round 1 (seed 11) used --stop-after-timing and is archived in
-#          deepseek_route_20261020_125517_1325705. Seed 7 failed placement twice
-#          (Place-0006 DDR PHY OSERDES at ~150s, even in a clean directory), so
-#          this version returns to seed 11, which completed placement and routed
-#          for the full 60 minutes in round 1. Bitgen enabled after successful STA.
+# History: seed 7 failed placement twice; seed 11 reached 41,449 unrouted at 90 min;
+#          seed 13 reached 34,802 at 90 min and 28,831 (STALLED) unlimited. Congestion
+#          analysis shows a ~56k plateau dominated by geometry/frame-pool buses plus
+#          high-fanout control nets, so this round changes ONE placement variable:
+#          module planning (-planning_before_place TRUE, seed 13, decongestion 1,
+#          90-minute budget) against the completed seed-13 baseline. Bitgen stays
+#          gated on routed min/max STA.
 # Hard constraints (do not change):
 #   - bitgen only runs inside the driver after routed min/max STA reports
 #     "All Constraints Met"; no standalone bypass, no JTAG download or board burn;
@@ -33,7 +35,7 @@ git -c core.fsmonitor=false status --short --untracked-files=no | Set-Content -L
 $gate = Get-Content -LiteralPath $gatePath -Raw -Encoding UTF8 | ConvertFrom-Json
 if (!$gate.design_complete -or !$gate.selected_source_simulation_passed -or !$gate.resource_and_constraints_reviewed) { throw 'Design gates incomplete' }
 $gate.whole_design_route_allowed = $true
-$gate.reason = 'User assigned the bitstream-goal routing effort (2026-10-20): seed 7 proven to fail placement twice (Place-0006), so return to seed 11 with the 1.5-hour single-routing timeout; bitgen enabled after routed min/max STA passes.'
+$gate.reason = 'Placement experiment (2026-10-21): single-variable module planning (-planning_before_place TRUE) at seed 13 / decongestion 1 with the 1.5-hour routing timeout, after the congestion analysis showed a plateau; bitgen enabled after routed min/max STA passes.'
 $gate.updated_at = (Get-Date).ToString('o')
 # The readiness file can be briefly held by system scanners as a user-mapped
 # section; retry the write a few times instead of failing the whole launch.
@@ -51,9 +53,14 @@ $pause = Join-Path $session 'stop_requested.json'
 $pythonExe = (Get-Command python -ErrorAction Stop).Source
 # No --stop-after-timing: the driver gates bitgen on routed min/max STA passing,
 # so a failed or timed-out PnR can never reach bitgen.
+# Module planning is the single changed variable for this round; the installed
+# target-device PNR help (captured read-only from pds_shell) is passed as frozen
+# capability evidence and verified again by the driver.
+$planningHelp = Join-Path $repo 'fpga/build/route_optimization/placement_planning_20261021/installed_pnr_help.log'
 $runArgs = @('-u','fpga/scripts/resume_video_system.py','--build',$build,
-  '--placement-seed','11','--placement-decongestion','1',
+  '--placement-seed','13','--placement-decongestion','1',
   '--phase-timeout-minutes','90','--pnr-timeout-minutes','90','--dump-congestion',
+  '--planning-before-place','--installed-pnr-help',$planningHelp,
   '--pause-file',$pause)
 # Start the driver in the background; route_supervisor inside it owns the PDS process
 # via the exclusive native_phase.lock. A background process is not a Windows service:

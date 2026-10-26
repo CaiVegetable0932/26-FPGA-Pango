@@ -1,0 +1,23 @@
+--- baseline/rtl/control/frame_runtime_actions.sv
++++ c4_withdrawal/rtl/control/frame_runtime_actions.sv
+@@ -1,5 +1,5 @@
+ `timescale 1ns/1ps
+-// A5 actions 3/4 share one bounded pending slot. The most recently accepted
++// A5 action 4 clears retained history; retired C4 action 3 returns code 6. The most recently accepted
+ // (outer request_seq, action) is an exact retry key both before and after apply.
+ // ACK means queued; only a source capture boundary emits the actual clear.
+ module frame_runtime_actions(
+@@ -12,10 +12,10 @@
+  wire duplicate=have_last && request_seq==last_sequence && action==last_action;
+  // Combinational boundary pulses reach consumers on the same capture edge,
+  // before the later source_start initializes the first new observation.
+- assign clear_motion=capture_boundary && pending && held_action==3;
+- assign clear_history=capture_boundary && pending && (held_action==3 || held_action==4);
++ assign clear_motion=1'b0;
++ assign clear_history=capture_boundary && pending && held_action==4;
+  always @*begin
+-  submit_code=(action!=3 && action!=4)?8'd6:
++  submit_code=(action!=4)?8'd6:
+    (have_last && request_seq==last_sequence)?(action==last_action?8'd0:8'd11):pending?8'd4:8'd0;
+   status_extension=0;
+   status_extension[0]=pending && held_action==3;status_extension[1]=pending && held_action==4;

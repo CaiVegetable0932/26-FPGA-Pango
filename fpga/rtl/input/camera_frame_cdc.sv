@@ -13,8 +13,15 @@ module camera_frame_cdc #(parameter WIDTH=1920,HEIGHT=1080,WARMUP=10,QUEUE_BITS=
  output isp_abort,raw_abort,
  output isp_valid,input isp_ready,output [7:0] isp_data,
  output raw_valid,input raw_ready,output [7:0] raw_data,
- output queues_drained,output [31:0] source_frames,dropped_raw,dropped_isp
+ output queues_drained,output reg source_quiesced,output [31:0] source_frames,dropped_raw,dropped_isp
 );
+ // Return an explicit stopped-and-drained observation, not an elapsed delay.
+ (* syn_preserve=1 *) reg paused_meta,paused_sync;
+ always @(posedge memory_clk or negedge memory_rst_n)begin
+  if(!memory_rst_n)begin paused_meta<=0;paused_sync<=0;source_quiesced<=0;end
+  else begin paused_meta<=!ready_sync && !active;paused_sync<=paused_meta;
+   source_quiesced<=paused_sync && queues_drained && !start_pending && !consumed;end
+ end
  reg configured,enabled,active,start_toggle,end_toggle,terminal_posted;
  reg [63:0] source_id;
  reg [191:0] start_held;reg [97:0] end_held;

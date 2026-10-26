@@ -1,5 +1,18 @@
 # Board pins: MINI V1.3 / existing board.json / historical camera J10.
-# External MCU and other equipment cabling is outside this routing revision.
+# MCU: MINI hardware guide V1.3 pp37/41, J25-9=U19 RX, J25-10=T19 TX,
+# BANK L6; J20 must select 3.3V. J25-1 is common ground. No supply wire.
+define_attribute {p:mcu_uart_rx} {PAP_IO_DIRECTION} {INPUT}
+define_attribute {p:mcu_uart_rx} {PAP_IO_LOC} {U19}
+define_attribute {p:mcu_uart_rx} {PAP_IO_VCCIO} {3.3}
+define_attribute {p:mcu_uart_rx} {PAP_IO_STANDARD} {LVCMOS33}
+define_attribute {p:mcu_uart_rx} {PAP_IO_NONE} {TRUE}
+define_attribute {p:mcu_uart_tx} {PAP_IO_DIRECTION} {OUTPUT}
+define_attribute {p:mcu_uart_tx} {PAP_IO_LOC} {T19}
+define_attribute {p:mcu_uart_tx} {PAP_IO_VCCIO} {3.3}
+define_attribute {p:mcu_uart_tx} {PAP_IO_STANDARD} {LVCMOS33}
+define_attribute {p:mcu_uart_tx} {PAP_IO_NONE} {TRUE}
+define_attribute {p:mcu_uart_tx} {PAP_IO_DRIVE} {4}
+define_attribute {p:mcu_uart_tx} {PAP_IO_SLEW} {SLOW}
 define_attribute {p:clk_27m} {PAP_IO_DIRECTION} {INPUT}
 define_attribute {p:clk_27m} {PAP_IO_LOC} {D18}
 define_attribute {p:clk_27m} {PAP_IO_VCCIO} {3.3}
@@ -228,3 +241,35 @@ define_attribute {p:uart_tx} {PAP_IO_LOC} {C24}
 define_attribute {p:uart_tx} {PAP_IO_VCCIO} {3.3}
 define_attribute {p:uart_tx} {PAP_IO_STANDARD} {LVCMOS33}
 define_attribute {p:uart_tx} {PAP_IO_NONE} {TRUE}
+
+# Explicit PG2L100H electrical defaults: UCE Guide section 2.6.3 (pp113-115).
+# TMDS DRIVE=5 has no SLEW setting; LVCMOS uses DRIVE=4/FAST, LED SLOW.
+# Existing PHY DRIVE=16 and all board wiring are preserved; SI validation is pending.
+define_attribute {p:status_led} {PAP_IO_DRIVE} {4}
+define_attribute {p:status_led} {PAP_IO_SLEW} {SLOW}
+define_attribute {p:rgmii_txc} {PAP_IO_SLEW} {FAST}
+define_attribute {p:rgmii_tx_ctl} {PAP_IO_SLEW} {FAST}
+define_attribute {p:rgmii_txd[0]} {PAP_IO_SLEW} {FAST}
+define_attribute {p:rgmii_txd[1]} {PAP_IO_SLEW} {FAST}
+define_attribute {p:rgmii_txd[2]} {PAP_IO_SLEW} {FAST}
+define_attribute {p:rgmii_txd[3]} {PAP_IO_SLEW} {FAST}
+define_attribute {p:phy_reset_n} {PAP_IO_SLEW} {FAST}
+define_attribute {p:phy_mdc} {PAP_IO_SLEW} {FAST}
+define_attribute {p:phy_mdio} {PAP_IO_DRIVE} {4}
+define_attribute {p:phy_mdio} {PAP_IO_SLEW} {FAST}
+define_attribute {p:hdmi_clk_p} {PAP_IO_DRIVE} {5}
+define_attribute {p:hdmi_clk_n} {PAP_IO_DRIVE} {5}
+define_attribute {p:hdmi_data_p[0]} {PAP_IO_DRIVE} {5}
+define_attribute {p:hdmi_data_p[1]} {PAP_IO_DRIVE} {5}
+define_attribute {p:hdmi_data_p[2]} {PAP_IO_DRIVE} {5}
+define_attribute {p:hdmi_data_n[0]} {PAP_IO_DRIVE} {5}
+define_attribute {p:hdmi_data_n[1]} {PAP_IO_DRIVE} {5}
+define_attribute {p:hdmi_data_n[2]} {PAP_IO_DRIVE} {5}
+define_attribute {p:camera_scl} {PAP_IO_DRIVE} {4}
+define_attribute {p:camera_scl} {PAP_IO_SLEW} {FAST}
+define_attribute {p:camera_sda} {PAP_IO_DRIVE} {4}
+define_attribute {p:camera_sda} {PAP_IO_SLEW} {FAST}
+define_attribute {p:camera_reset_n} {PAP_IO_DRIVE} {4}
+define_attribute {p:camera_reset_n} {PAP_IO_SLEW} {FAST}
+define_attribute {p:uart_tx} {PAP_IO_DRIVE} {4}
+define_attribute {p:uart_tx} {PAP_IO_SLEW} {FAST}

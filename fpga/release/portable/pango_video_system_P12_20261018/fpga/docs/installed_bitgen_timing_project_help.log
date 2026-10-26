@@ -1,0 +1,370 @@
+License checkout: fabric_shell from D:\XDU\concept\26-FPGA-Pango\PDS\new_pds_F4A80DA47D72.lic
+Compiling architecture definition.
+W: Warning : The license will invalid in 16 days. In order not to affect your usage, please update the license in time.
+
+Analyzing project file 'D:/XDU/concept/26-FPGA-Pango/fpga/build/portable_handoff_validation_20261018/capabilities/help.pds'.
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
+Executing : set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676 successfully.
+
+
+Executing : gen_bit_stream -help
+H: gen_bit_stream : Generate configuration bit stream (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -of_flow string ]
+        Specify the flow which will be run
+    [ -force_to_run  ]
+        Run this Action without Checking the Status.
+    [ -input_db_file file string ]
+        Specify the Input Design DB File Name
+    [ -create_bit_file Boolean_value (TRUE/FALSE) ]
+        Create Bit File
+    [ -create_bin_file  ]
+        Create Bin File
+    [ -reverse_bit_in_a_byte  ]
+        Reverse Bit In a Byte
+    [ -reverse_byte_in_a_word  ]
+        Reverse Byte In a Word
+    [ -enable_write_feature_value  ]
+        Enable Write Feature Value
+    [ -compress_bitstream Boolean_value (TRUE/FALSE) ]
+        Compress Bitstream
+    [ -optimize_compress Boolean_value (TRUE/FALSE) ]
+        Optimize Compress
+    [ -disable_cyclic_redundancy_checking Boolean_value (TRUE/FALSE) ]
+        Disable Cyclic Redundancy Checking(CRC)
+    [ -write_drm_data Boolean_value (TRUE/FALSE) ]
+        Write DRM Data
+    [ -unused_io_status string ]
+        Unused IO Status
+    [ -show_time_info Boolean_value (TRUE/FALSE) ]
+        Show Time Info
+    [ -show_manufacturer_info Boolean_value (TRUE/FALSE) ]
+        Show Manufacturer Info
+    [ -usercode string ]
+        Usercode
+    [ -master_configuration_clock_frequency string ]
+        Master Configuration Clock Frequency
+    [ -system_clock_frequency string ]
+        System Clock Frequency
+    [ -enable_osc_shut_off Boolean_value (TRUE/FALSE) ]
+        Enable OSC Shut Off
+    [ -enable_watchdog_in_user_mode Boolean_value (TRUE/FALSE) ]
+        Enable Watchdog In User Mode
+    [ -enable_watchdog_in_configuration_mode Boolean_value (TRUE/FALSE) ]
+        Enable Watchdog In Configuration Mode
+    [ -load_watchdog string ]
+        Load Watchdog
+    [ -enable_version_select_pin Boolean_value (TRUE/FALSE) ]
+        Enable Version Select(VS) Pin
+    [ -enable_version_fallback Boolean_value (TRUE/FALSE) ]
+        Enable Version Fallback
+    [ -set_fallback_retry_times string ]
+        Set Fallback Retry Times
+    [ -set_bitstream_retry_times string ]
+        Set Bitstream Retry Times
+    [ -rst_n_pin string ]
+        RST_N pin
+    [ -tdi_pin string ]
+        TDI pin
+    [ -tms_pin string ]
+        TMS pin
+    [ -tck_pin string ]
+        TCK pin
+    [ -tdo_pin string ]
+        TDO pin
+    [ -enable_external_master_configuration_clock  ]
+        Enable External Master Configuration Clock
+    [ -bpi_read_cycle integer_number ]
+        BPI Read Cycle
+    [ -bpi_page_size string ]
+        BPI Page Size
+    [ -bpi_mode string ]
+        BPI Mode
+    [ -enable_done_synchronization Boolean_value (TRUE/FALSE) ]
+        Enable Done Synchronization
+    [ -wake_up_time_slot_length string ]
+        Wake Up Time Slot Length
+    [ -done_time_slot string ]
+        Done Time Slot
+    [ -gwen_time_slot string ]
+        Gwen Time Slot
+    [ -grsn_time_slot string ]
+        Grsn Time Slot
+    [ -gouten_time_slot string ]
+        Gouten Time Slot
+    [ -enable_wait_dci_match Boolean_value (TRUE/FALSE) ]
+        Enable Wait DCI Match
+    [ -enable_wait_pll_lock Boolean_value (TRUE/FALSE) ]
+        Enable Wait PLL Lock
+    [ -wake_up_clock string ]
+        Wake Up Clock
+    [ -create_mask_file Boolean_value (TRUE/FALSE) ]
+        Create Mask File
+    [ -enable_mask_variable_memory_in_read_back Boolean_value (TRUE/FALSE) ]
+        Enable Mask Variable Memory In Read Back
+    [ -persist_slave_parallel_pins Boolean_value (TRUE/FALSE) ]
+        Persist Slave Parallel Pins
+    [ -master_configuration_clock_frequency_in_read_back string ]
+        Master Configuration Clock Frequency In Read Back
+    [ -disable_readback_crc Boolean_value (TRUE/FALSE) ]
+        Disable Readback CRC
+    [ -enable_crc_clock_in_read_back Boolean_value (TRUE/FALSE) ]
+        Enable CRC Clock In Read Back
+    [ -persist_ipal Boolean_value (TRUE/FALSE) ]
+        Persist Ipal
+    [ -bitstream_security string ]
+        Bitstream Security
+    [ -encrypt_bitstream  ]
+        Encrypt Bitstream
+    [ -select_key_type string ]
+        Select Key Type
+    [ -starting_cbc_value string ]
+        Starting CBC Value
+    [ -input_encryption_key_file file string ]
+        Input Encryption Key File
+    [ -key_string string ]
+        Key String
+    [ -enable_vref_select Boolean_value (TRUE/FALSE) ]
+        Enable Vref Select
+    [ -sram_retention Boolean_value (TRUE/FALSE) ]
+        SRAM Retention
+    [ -select_persist_pin string ]
+        Select Persist Pin
+    [ -version_fallback_ctrl string ]
+        Version Fallback Control
+    [ -enable_rs_pin Boolean_value (TRUE/FALSE) ]
+        Enable RS Pin
+    [ -rs_pin_value integer_number ]
+        RS Pin Value
+    [ -persist_pin string ]
+        Persist Pin
+    [ -enable_user_clock_wake_up Boolean_value (TRUE/FALSE) ]
+        Enable USER Clock Wake Up
+    [ -init_flag_n_pin string ]
+        INIT_FLAG_N pin
+    [ -cfg_done_pin string ]
+        CFG_DONE pin
+    [ -cfg_clk_pin string ]
+        CFG_CLK pin
+    [ -mode_2_pin string ]
+        MODE_2 pin
+    [ -mode_1_pin string ]
+        MODE_1 pin
+    [ -mode_0_pin string ]
+        MODE_0 pin
+    [ -scbv string ]
+        Set Configuration Bank Voltage(SCBV)
+    [ -over_temperature_shut_off Boolean_value (TRUE/FALSE) ]
+        Over Temperature Shut Off
+    [ -starting_gcm_value string ]
+        Starting GCM Value
+    [ -number_of_encryption_blocks integer_number ]
+        Number of Encryption Block
+    [ -enable_obfuscate Boolean_value (TRUE/FALSE) ]
+        Enable Obfuscate
+    [ -enable_self_authentication Boolean_value (TRUE/FALSE) ]
+        Enable Self Authentication
+    [ -data_width string ]
+        Data Width
+    [ -authenticate_bitstream Boolean_value (TRUE/FALSE) ]
+        Authenticate Bitstream
+    [ -input_rsa_private_key_file file string ]
+        Input RSA Private Key File
+    [ -enable_dpa Boolean_value (TRUE/FALSE) ]
+        Enable DPA
+    [ -dpa_protect_region string ]
+        DPA Protect Region
+    [ -feature_value string ]
+        Hexadecimal Value Of Feature Control Settings
+    [ -soft_error_insertion string ]
+        Soft Error Insertion
+    [ -cmi_cram_fsm_reset string ]
+        Control cmi_cram_fsm_reset
+    [ -apb_fsm_reset string ]
+        Control apb_fsm_reset
+    [ -apb1_fsm_reset string ]
+        Control apb_fsm_reset Of APB1
+    [ -cmi_drm_fsm_reset string ]
+        Control cmi_drm_fsm_reset
+    [ -apb2_fsm_reset string ]
+        Control apb_fsm_reset Of APB2
+    [ -enable_deskew_clk Boolean_value (TRUE/FALSE) ]
+        Enable Deskew CLK
+    [ -deskew_over_screen string ]
+        If Screen deskew_over signal
+    [ -enable_wakeup_fabric_only Boolean_value (TRUE/FALSE) ]
+        Enable Wake Up Fabric Only
+    [ -generate_hpio_rst string ]
+        Generate hpio_rst_n
+    [ -hpio_and_fabric_glogen_sel string ]
+        Pull up HPIO Glogen And Fabric Glogen
+    [ -fifo_write_full_load_line string ]
+        Full Load Line Of FIFO
+    [ -glogen_td_between_fabric_and_hpio string ]
+        Time Difference Between Fabric Glogen and HPIO Glogen
+    [ -enable_wait_deskew Boolean_value (TRUE/FALSE) ]
+        Enable Wait Deskew
+    [ -wait_hpio_initialization Boolean_value (TRUE/FALSE) ]
+        Enable Wait HPIO Initialization
+    [ -clk_refresh_set string ]
+        Set Frequency of clk_refresh
+    [ -deskew_timer_timeout_limit string ]
+        Set Timeout Limit Of deskew_timer
+    [ -hpio_timer1_timeout_limit string ]
+        Set Timeout Limit Of hpio_timer1
+    [ -hpio_timer0_timeout_limit string ]
+        Set Timeout Limit Of hpio_timer0
+    [ -switch_clk_refresh string ]
+        CCS clk_refresh Switch
+    [ -dio_bkcl_vccio string ]
+        DIO BKCL VCCIO
+    [ -dio1_port_stauts string ]
+        DIO_1 Port Status
+    [ -dio2_port_stauts string ]
+        DIO_2 Port Status
+    [ -dio3_port_stauts string ]
+        DIO_3 Port Status
+    [ -dio4_port_stauts string ]
+        DIO_4 Port Status
+    [ -dio5_port_stauts string ]
+        DIO_5 Port Status
+    [ -dio6_port_stauts string ]
+        DIO_6 Port Status
+    [ -dio7_port_stauts string ]
+        DIO_7 Port Status
+    [ -dio8_port_stauts string ]
+        DIO_8 Port Status
+    [ -dio9_port_stauts string ]
+        DIO_9 Port Status
+    [ -dio10_port_stauts string ]
+        DIO_10 Port Status
+    [ -dio11_port_stauts string ]
+        DIO_11 Port Status
+    [ -dio12_port_stauts string ]
+        DIO_12 Port Status
+    [ -enable_internal_spi1 Boolean_value (TRUE/FALSE) ]
+        Enable Internal SPI_1
+    [ -enable_user_master_clk Boolean_value (TRUE/FALSE) ]
+        Enable User Master Clock
+    [ -enable_user_jtag Boolean_value (TRUE/FALSE) ]
+        Enable User JTAG
+    [ -internal_spi_data_width string ]
+        Internal SPI Data Width
+    [ -enable_internal_spi0 Boolean_value (TRUE/FALSE) ]
+        Enable Internal SPI_0
+    [ -enable_user_control_gwen Boolean_value (TRUE/FALSE) ]
+        Enable User Control gwen
+    [ -enable_user_control_grs_n Boolean_value (TRUE/FALSE) ]
+        Enable User Control grs_n
+    [ -enable_user_control_gouten Boolean_value (TRUE/FALSE) ]
+        Enable User Control gouten
+    [ -soc_ref_clk_freq double_number ]
+        SOC Ref Clock Frequency(MHz)
+    [ -m0_pll_output_clk_freq integer_number ]
+        M0 PLL Output Clock Frequency(MHz)
+    [ -m1_pll_output_clk_freq integer_number ]
+        M1 PLL Output Clock Frequency(MHz)
+    [ -ppi_config_data_io_reuse_enable Boolean_value (TRUE/FALSE) ]
+        PPI Configure Data IO Reuse Enable
+    [ -ppi_config_mode string ]
+        PPI Configure Mode
+    [ -test_mux0_enable Boolean_value (TRUE/FALSE) ]
+        Test Mux0 Enable
+    [ -test_mux1_enable Boolean_value (TRUE/FALSE) ]
+        Test Mux1 Enable
+    [ -test_mux2_enable Boolean_value (TRUE/FALSE) ]
+        Test Mux2 Enable
+    [ -test_mux3_enable Boolean_value (TRUE/FALSE) ]
+        Test Mux3 Enable
+    [ -test_mux4_enable Boolean_value (TRUE/FALSE) ]
+        Test Mux4 Enable
+    [ -test_mux5_enable Boolean_value (TRUE/FALSE) ]
+        Test Mux5 Enable
+    [ -test_mux6_enable Boolean_value (TRUE/FALSE) ]
+        Test Mux6 Enable
+    [ -test_mux7_enable Boolean_value (TRUE/FALSE) ]
+        Test Mux7 Enable
+    [ -enable_configure_cram_ldo_trim Boolean_value (TRUE/FALSE) ]
+        Enable Configure Cram LDO Trim
+    [ -enable_configure_pvt_sensor_trim Boolean_value (TRUE/FALSE) ]
+        Enable Configure PVT Sensor Trim
+    [ -enable_configure_hrm_repair Boolean_value (TRUE/FALSE) ]
+        Enable Configure HRM Repair
+    [ -enable_configure_drm_repair Boolean_value (TRUE/FALSE) ]
+        Enable Configure DRM Repair
+    [ -reset_cram_read_back_fsm Boolean_value (TRUE/FALSE) ]
+        Reset Cram Read Back FSM
+    [ -reset_cram_write_fsm Boolean_value (TRUE/FALSE) ]
+        Reset Cram Write FSM
+    [ -enable_classify_seu_error Boolean_value (TRUE/FALSE) ]
+        Enable Classify SEU error
+    [ -enable_ccs_axis_pcie Boolean_value (TRUE/FALSE) ]
+        Enable CCS Axis PCIE
+    [ -encrypt_mode string ]
+        Encrypt Mode
+    [ -starting_inv_value string ]
+        Starting INV Value
+    [ -input_private_key_file file string ]
+        Input Private Key File
+    [ -authenticate_mode string ]
+        Authenticate Mode
+
+
+Executing : gen_bit_stream -help successfully.
+
+
+Executing : report_timing -help
+H: report_timing : Report timing (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    [ -force_to_run  ]
+        Run this Action without Checking the Status.
+    [ -input_db_file file string ]
+        Specify Input Design DB File Name
+    [ -delay_type string ]
+        Path Delay Type (-delay_type)
+    [ -nworst integer_number ]
+        Number of Paths per Endpoint (-nworst)
+    [ -max_path integer_number ]
+        Total Number of Paths (-max_path)
+    [ -input_pins Boolean_value (TRUE/FALSE) ]
+        Show Input Pins (-input_pins)
+    [ -slack_greater_than double_number ]
+        Report Paths with Slack >
+    [ -slack_less_than double_number ]
+        Report Paths with Slack <
+    [ -path_logic_level_gt_than integer_number ]
+        Report Paths with Logic levels >
+    [ -clock_group_limit { string string ... } ]
+        Limit Paths by Clock Group
+    [ -disable_package_delay  ]
+        Disable Package Delay
+    [ -report_io_datasheet  ]
+        Report IO Datasheet
+    [ -report_max_skew  ]
+        Report Max Skew
+    [ -report_exception Boolean_value (TRUE/FALSE) ]
+        Report Exception
+    [ -ignore_db_version  ]
+        Skip DB version check
+    [ -from { string string ... } ]
+        Specify Timing Path From points
+    [ -to { string string ... } ]
+        Specify Timing Path To points
+    [ -through Unknown ]
+        Specify Timing Path through points
+    [ -of_flow string ]
+        Specify the flow which will be run
+
+
+Executing : report_timing -help successfully.
+Executing : tcl2prj -help
+H: tcl2prj : Create a PDS project file from a tcl file. (Version 2022.2-SP6.4 build 146967)
+    [ -help  ]
+        Turn on to print this message
+    -tcl string
+        The input tcl file, which records the flow commands.
+
+
+Executing : tcl2prj -help successfully.

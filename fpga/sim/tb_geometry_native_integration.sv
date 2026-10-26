@@ -31,7 +31,7 @@ module tb_geometry_native_integration;
   .done(done),.done_ready(done_ready),.dma_error(dma_error),.dma_cancelled(dma_cancelled),.done_tag(done_tag));
  wire [27:0] araddr;wire [3:0] arlen;wire arvalid;
  reg arready=0,native_rvalid=0,native_rlast=0;reg [255:0] native_rdata=0;
- ddr_native_dma #(.CLIENTS(1)) dma(.clk(clk),.rst_n(rst_n),.controller_ready(1'b1),.allow_snapshot(1'b1),
+ ddr_native_dma #(.CLIENTS(1)) dma(.clk(clk),.rst_n(rst_n),.controller_ready(1'b1),
   .req_valid(req_valid),.req_ready(req_ready),.req_write(req_write),.req_addr(req_addr),.req_tag(req_tag),.req_beats(req_beats),
   .cancel(dma_cancel),.urgent(1'b0),.w_valid(1'b0),.w_data(256'b0),.w_strb(32'b0),
   .r_valid(r_valid),.r_ready(r_ready),.r_data(r_data),.r_last(r_last),.done(done),.done_ready(done_ready),

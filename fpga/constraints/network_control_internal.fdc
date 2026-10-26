@@ -1,0 +1,4 @@
+# Section07 isolated clock contract only. Not loaded into either board project.
+# No invented RGMII/UART IO delay, CDC exception or multicycle relaxation.
+create_clock -name network_clk -period 8.000 [get_ports clk]
+set_false_path -from [get_ports rst_n]

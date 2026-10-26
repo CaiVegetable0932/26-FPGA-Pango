@@ -23,23 +23,20 @@
 `define FM_META_STAGE 16 +: 8
 `define FM_META_ENHANCEMENT_STAGE 8 +: 8
 `define FM_META_POSE_STATUS 0 +: 8
-`define FM_CMD_BITS 1078
-`define FM_CMD_ALLOC 1077 +: 1
-`define FM_CMD_META 461 +: 616
-`define FM_CMD_CONSUMERS 457 +: 4
-`define FM_CMD_SEAL 456 +: 1
-`define FM_CMD_SEAL_SLOT 454 +: 2
-`define FM_CMD_SEAL_GEN 422 +: 32
-`define FM_CMD_LEGAL 421 +: 1
-`define FM_CMD_CAPTURE_LAST 357 +: 64
-`define FM_CMD_FRAME_ERRORS 325 +: 32
-`define FM_CMD_CANCEL 324 +: 1
-`define FM_CMD_CANCEL_SLOT 322 +: 2
-`define FM_CMD_CANCEL_GEN 290 +: 32
-`define FM_CMD_ACQUIRE 286 +: 4
-`define FM_CMD_SNAP_EXACT 285 +: 1
-`define FM_CMD_SNAP_SLOT 283 +: 2
-`define FM_CMD_SNAP_GEN 251 +: 32
+`define FM_CMD_BITS 1043
+`define FM_CMD_ALLOC 1042 +: 1
+`define FM_CMD_META 426 +: 616
+`define FM_CMD_CONSUMERS 422 +: 4
+`define FM_CMD_SEAL 421 +: 1
+`define FM_CMD_SEAL_SLOT 419 +: 2
+`define FM_CMD_SEAL_GEN 387 +: 32
+`define FM_CMD_LEGAL 386 +: 1
+`define FM_CMD_CAPTURE_LAST 322 +: 64
+`define FM_CMD_FRAME_ERRORS 290 +: 32
+`define FM_CMD_CANCEL 289 +: 1
+`define FM_CMD_CANCEL_SLOT 287 +: 2
+`define FM_CMD_CANCEL_GEN 255 +: 32
+`define FM_CMD_ACQUIRE 251 +: 4
 `define FM_CMD_RELEASE_MASK 247 +: 4
 `define FM_CMD_SKIP_MASK 243 +: 4
 `define FM_CMD_RELEASE_SLOTS 235 +: 8

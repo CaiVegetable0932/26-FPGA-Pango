@@ -1,4 +1,5 @@
-// Purpose: Arbitrate two burst-write clients onto one memory interface; diagnostic channel 1 is idle.
+// Purpose: round-robin four burst-write clients; retain ownership until completion.
+// An arbitrary timer must never drop an owner while native transfers are live.
 // Origin: imported MINI vendor demo; integration is not hardware validation.
 module mem_write_arbi
 #(
@@ -82,8 +83,6 @@ end
 always@(posedge mem_clk or negedge rst_n)
 begin
 	if(~rst_n)
-		write_state <= IDLE;
-	else if(cnt_timer > 16'd8000)
 		write_state <= IDLE;
 	else
 		write_state <= write_state_next;

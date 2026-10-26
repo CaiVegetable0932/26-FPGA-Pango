@@ -8,6 +8,10 @@ module uart_v2_parser #(parameter TIMEOUT_US=30000,WIRE_VERSION=2)(
  input clk,input rst_n,input [63:0] now_us,input byte_valid,input [7:0] byte_data,
  input byte_error,
  output packet_valid,input packet_ready,output reg [7:0] cmd,
+ // Same-edge discontinuity fence for consumers of the borrowed payload.
+ // packet_valid retains its registered HOLD meaning; this additionally warns
+ // that framing loss or ring overflow will revoke HOLD on the current edge.
+ output packet_revoked,
  output reg [15:0] seq,length,output reg [63:0] receive_us,
  input read_valid,input [9:0] read_index,output reg read_response,output reg [7:0] read_data,
  output reg [31:0] bad_crc,bad_header,timeouts,overflows,
@@ -38,6 +42,7 @@ module uart_v2_parser #(parameter TIMEOUT_US=30000,WIRE_VERSION=2)(
   ((now_us[31:0]-first_us)>=TIMEOUT_US);
  reg [15:0] crc,wire_crc;
  wire [11:0] occupancy=tail-head;
+ assign packet_revoked=byte_error || (byte_valid && occupancy==2048);
  reg expired_wait;
  wire expired=offset!=0 && expired_wait && state==FETCH && scan==tail;
  assign packet_valid=state==HOLD;
@@ -66,7 +71,7 @@ module uart_v2_parser #(parameter TIMEOUT_US=30000,WIRE_VERSION=2)(
    if(byte_valid) begin
     bytes_mem[tail[10:0]]<=byte_data;times_mem[tail[10:0]]<=now_us[31:0];tail<=tail+1'b1;
    end
-   if(byte_error || (byte_valid && occupancy==2048)) begin
+   if(packet_revoked) begin
     // Discontinuity invalidates candidate and queued bytes; do not deliver a
     // CRC-valid fragment assembled across an unobserved lost serial byte.
     overflows<=overflows+1;head<=tail+byte_valid;scan<=tail+byte_valid;offset<=0;state<=FETCH;

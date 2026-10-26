@@ -1,0 +1,117 @@
+PDF PAGE 51
+                            Fabric Configuration 软件说明 
+                                                                   Fabric Configuration 用户手册(V1.0) 51 / 109 
+④、Multi Function Data Stream：多功能数据流，仅 Logos 系列支持。至少存在两个应
+用数据流时才能正确生成。 
+⑤、Master Auto And Dual Boot Data Stream。 主自加载双启动数据流， 仅Compact 系列
+支持。当且仅当有两个应用数据流时，才能进行生成。 
+ 
+ 
+图 4-41 Generate Multi Revision Programming File 
+ 
+ 
+Device Family Type Data Stream Type 
+Compact Remote Upgrade Data Stream 
+Master Auto and Dual Boot Data Stream 
+Logos SPI Upgrade Data Stream 
+BPI Upgrade Data Stream 
+Multi Boot Data Stream 
+Multi Function Data Stream 
+Logos2 
+ 
+SPI Upgrade Data Stream 
+BPI Upgrade Data Stream 
+Multi Boot Data Stream 
+Titan2 SPI Upgrade Data Stream 
+BPI Upgrade Data Stream 
+
+PDF PAGE 55
+                            Fabric Configuration 软件说明 
+                                                                   Fabric Configuration 用户手册(V1.0) 55 / 109 
+ 
+图 4-45 Logos、Logos2 和 Titan2 系列组合数据流的位流格式 2 
+3.4、Compact 系列配置数据流的起始地址 
+Compact 系列的器件在生成 Remote Upgrade Data Stream、Dual Boot Data Stream 数据流
+时，软件支持对各个数据流的起始位置进行修改，其修改规则和约束与 Logos 系列的器件
+大体相同。但存在以下差异：①、Compact 系列的 Remote Upgrade Data Stream 只需添加
+512Byte 的头部数据，且每个数据流之前不需要去同步。②、Compact 系列的黄金数据流是
+在普通位流的基础上插入 64Byte 的数据形成的。 ③、Compact 系列的 Dual Boot Data Stream
+没有头部数据。其数据流格式如下 
+图 4-46 所示 
+
+PDF PAGE 56
+                            Fabric Configuration 软件说明 
+                                                                   Fabric Configuration 用户手册(V1.0) 56 / 109 
+头部数据 (size: 512 Byte)
+黄金数据流
+应用数据流1
+黄金数据流
+应用数据流2
+1.Compact系列远程升级数据流格式 2.Compact系列双启动数据流格式
+黄金数据流的起始
+地址
+应用数据流的起始
+地址
+黄金数据流的起始
+地址
+应用数据流的起始
+地址
+插入64 Byte数据与原位流组成
+黄金数据流
+插入64 Byte数据与原位流组成
+黄金数据流
+黄金数据流的起始
+地址
+ 
+图 4-46 Compact 系列组合数据流的位流格式  
+4、Generate Multi/Dual Boot File（向导方式） 
+该功能为向导方式生成方案级位流。添加器件并连接server 后右击器件，在弹出菜单中，选择
+Generate Multi/Dual Boot File 选项。会弹出如图 4-47 所示窗口（该窗口显示内容因器件而异） 。 
+
+PDF PAGE 57
+                            Fabric Configuration 软件说明 
+                                                                   Fabric Configuration 用户手册(V1.0) 57 / 109 
+ 
+图 4-47 PGL 系列方案级位流产生窗口 
+4.1 Master Auto and Dual Boot Data Stream 
+如图 4-47 所示，该选项为生成双启动位流选项。 
+单击 Next 进入双启动位流设置界面图 4-48，在Golden BitStream中设置黄金数据流。 在Applied 
+BitStream 中设置应用数据流。设置好后可在如图 4-51 处勾选需要设置的部分，包含设置特征控制位，
+生成 SVF 文件（相关参数请参考对应章节）和分离生成方案级位流的功能选择。 
+分离生成主自加载双启动位流功能会将主自加载双启动位流拆分成_golden.sfc 和_app.sfc 两个内
+容，若有勾选生成 svf，则会同时生成_golden.svf 和_app.svf（带地址设置）两个文件。 
+注： 若结合使用分离生成， 生成svf， 以及设置特征控制位功能， 在分离的两个svf 中都会进行特征
+控制位的配置，且要求特征控制位的值保持一致。若黄金数据位流和应用数据位流中两者的特征控制位
+值不一致，在生成双启动位流时将会产生告警。 
+
+PDF PAGE 92
+                            Fabric Configuration 软件说明 
+                                                                   Fabric Configuration 用户手册(V1.0) 92 / 109 
+[-count] 设置测试用例循环配置芯片次数，参数范围 0 < count < 1000，参数大于 1000
+则自动设置为 1000 
+[-break] 设置 Tcl 遇到 error 是否往下执行， 参数类型Boolean_value (TRUE/FALSE)，true
+表示 Tcl 遇到 error 不继续往下执行 
+用法：cfg_write_auto_test –file D:/auto_test –report_detail true –clock_mode 1 
+-server_delay_time integer-value –time integer-value 
+ 
+4.5.6 转换文件格式 
+1. cfg_gen_sfc  
+cfg_gen_sfc，产生关于 flash 的 SFC 文件，5 个参数； 
+-sbit 指定要转换的 sbit 文件 
+[-sfc] 指定生成的 sfc 文件名，默认值为 sbit 文件同路径下的同名的 sfc 文件 
+[-opcode] 指定操作码，即 Flash 的读写模式。 
+11(0x0B)："Fast Read, 24-bit address" 
+59(0x3B)："Dual Output Fast Read, 24-bit address" 
+    107(0x6B)："Quad Output Fast Read, 24-bit address" 
+12(0x0C)："Fast Read, 32-bit address" 
+60(0x3C)："Dual Output Fast Read, 32-bit address" 
+108(0x6C)："Quad Output Fast Read, 32-bit address" 
+默认的缺省值为 11(0x0B)。 
+[-device_name] 指定兼容的 flash 器件, 缺省默认 N25Q256 
+[-is_x8] 转换成 X8 数据流，默认为 false。 
+[-sbit_start_address] 设置位流文件起始位置 
+[-fast_mode] 设置芯片为快速模式还是非快速模式（pgc 系列没有） 。 
+[-user_address_list]设置用户的所有数据起始地址列表 
+[-file_list]输入文件列表 
+用法： cfg_gen_sfc –sbit  sbit 文件  
+ 

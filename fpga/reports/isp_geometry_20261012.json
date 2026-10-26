@@ -1,0 +1,2100 @@
+{
+  "date": "2026-10-12",
+  "scope": "algorithm 06 offline implementation; independent registered PDS harness",
+  "hardware_tested": false,
+  "board_integrated": false,
+  "rtl_run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\final_delivered",
+  "rtl": {
+    "passed": true,
+    "simulator": "Icarus",
+    "tests": [
+      {
+        "test": "tb_signed_mult32_pipe",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_rgb_colour_matrix",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_lens_inverse_map",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_perspective_divide",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_raw8_isp",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_rgb_enhance",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_rgb_tile_cache",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_rgb_tile_cache_quad",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_rgb_tile_cache_32x8",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_affine_statistics",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_geometry_rgb_pipeline",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_geometry_rgb_pipeline_partial",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_raw8_isp_1080p",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_geometry_rgb_pipeline_1080p",
+        "passed": true,
+        "native_exit": 0
+      }
+    ],
+    "hardware_tested": false,
+    "pds_pnr_tested": false,
+    "scope": "algorithm 06 local golden and RTL"
+  },
+  "model": {
+    "scope": "software arithmetic, full 1080p domain; no optical/board/PnR claims",
+    "source": "D:\\XDU\\concept\\26-FPGA-Pango\\host\\reports\\rgb33-calibration-20261010\\pinhole_k1_k2_p1_p2.json",
+    "source_sha256": "03cfa2872a1b0f331eceeafea6eaac052732d12f57f0b57277ea8f073a69af54",
+    "source_status": "candidate_unverified",
+    "isp_cases": [
+      {
+        "width": 2,
+        "height": 2,
+        "bayer": 0,
+        "black": [
+          59,
+          41,
+          40,
+          27
+        ],
+        "gains": [
+          15128,
+          6376,
+          6891,
+          7387
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 9,
+        "height": 7,
+        "bayer": 0,
+        "black": [
+          48,
+          26,
+          5,
+          48
+        ],
+        "gains": [
+          11450,
+          15966,
+          8251,
+          7170
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 16,
+        "height": 8,
+        "bayer": 0,
+        "black": [
+          25,
+          47,
+          31,
+          16
+        ],
+        "gains": [
+          9588,
+          17284,
+          11127,
+          15550
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 2,
+        "height": 2,
+        "bayer": 1,
+        "black": [
+          3,
+          60,
+          45,
+          11
+        ],
+        "gains": [
+          1416,
+          3677,
+          3108,
+          1631
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 9,
+        "height": 7,
+        "bayer": 1,
+        "black": [
+          23,
+          56,
+          21,
+          15
+        ],
+        "gains": [
+          6775,
+          8105,
+          10592,
+          17729
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 16,
+        "height": 8,
+        "bayer": 1,
+        "black": [
+          15,
+          56,
+          40,
+          40
+        ],
+        "gains": [
+          8691,
+          11355,
+          1382,
+          4907
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 2,
+        "height": 2,
+        "bayer": 2,
+        "black": [
+          31,
+          4,
+          30,
+          11
+        ],
+        "gains": [
+          13434,
+          3474,
+          10841,
+          11379
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 9,
+        "height": 7,
+        "bayer": 2,
+        "black": [
+          17,
+          23,
+          49,
+          14
+        ],
+        "gains": [
+          5038,
+          16324,
+          17200,
+          7968
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 16,
+        "height": 8,
+        "bayer": 2,
+        "black": [
+          22,
+          44,
+          41,
+          57
+        ],
+        "gains": [
+          9959,
+          3707,
+          8597,
+          17755
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 2,
+        "height": 2,
+        "bayer": 3,
+        "black": [
+          13,
+          15,
+          41,
+          46
+        ],
+        "gains": [
+          1827,
+          4115,
+          3516,
+          3984
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 9,
+        "height": 7,
+        "bayer": 3,
+        "black": [
+          26,
+          19,
+          53,
+          14
+        ],
+        "gains": [
+          1594,
+          2696,
+          5126,
+          3110
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 16,
+        "height": 8,
+        "bayer": 3,
+        "black": [
+          53,
+          64,
+          49,
+          17
+        ],
+        "gains": [
+          14229,
+          17307,
+          15323,
+          3702
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 9,
+        "height": 7,
+        "bayer": 0,
+        "black": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "gains": [
+          65535,
+          65535,
+          65535,
+          65535
+        ],
+        "synthetic": true
+      },
+      {
+        "width": 9,
+        "height": 7,
+        "bayer": 3,
+        "black": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "gains": [
+          0,
+          65535,
+          65535,
+          0
+        ],
+        "synthetic": true
+      }
+    ],
+    "coordinate_cases": [
+      {
+        "angle_deg": 0,
+        "full_pixels": 2073600,
+        "valid_float_pixels": 2073600,
+        "rms_px": 0.0037490005566639985,
+        "max_px": 0.007153174474389209,
+        "overflow_pixels": 0,
+        "mask_difference_pixels": 0,
+        "stage_integer_ranges": {
+          "x": [
+            -1165688,
+            1195402
+          ],
+          "y": [
+            -720963,
+            615058
+          ],
+          "xx": [
+            0,
+            1362787
+          ],
+          "yy": [
+            0,
+            495708
+          ],
+          "xy": [
+            -821915,
+            801485
+          ],
+          "r2": [
+            0,
+            1858495
+          ],
+          "horner": [
+            -16973995,
+            -11321490
+          ],
+          "tx": [
+            -3446,
+            1248
+          ],
+          "ty": [
+            -4472,
+            0
+          ],
+          "radial": [
+            47042667,
+            67108864
+          ],
+          "xd": [
+            -886917,
+            897389
+          ],
+          "yd": [
+            -644588,
+            563411
+          ],
+          "ud": [
+            928044,
+            6868095
+          ],
+          "vd": [
+            252650,
+            4248717
+          ]
+        },
+        "passed": true
+      },
+      {
+        "angle_deg": 15,
+        "full_pixels": 2073600,
+        "valid_float_pixels": 2055035,
+        "rms_px": 0.006789109898883702,
+        "max_px": 0.01205335746836001,
+        "overflow_pixels": 0,
+        "mask_difference_pixels": 4,
+        "stage_integer_ranges": {
+          "x": [
+            -1312567,
+            1313860
+          ],
+          "y": [
+            -1005806,
+            895806
+          ],
+          "xx": [
+            0,
+            1646259
+          ],
+          "yy": [
+            0,
+            964781
+          ],
+          "xy": [
+            -928588,
+            494064
+          ],
+          "r2": [
+            0,
+            1858533
+          ],
+          "horner": [
+            -16973995,
+            -11321375
+          ],
+          "tx": [
+            -2723,
+            1796
+          ],
+          "ty": [
+            -5069,
+            0
+          ],
+          "radial": [
+            47042461,
+            67108864
+          ],
+          "xd": [
+            -930149,
+            934015
+          ],
+          "yd": [
+            -713925,
+            643645
+          ],
+          "ud": [
+            784122,
+            6990024
+          ],
+          "vd": [
+            23282,
+            4514131
+          ]
+        },
+        "passed": true
+      },
+      {
+        "angle_deg": -15,
+        "full_pixels": 2073600,
+        "valid_float_pixels": 2054590,
+        "rms_px": 0.005023884361707049,
+        "max_px": 0.010358602516575261,
+        "overflow_pixels": 0,
+        "mask_difference_pixels": 3,
+        "stage_integer_ranges": {
+          "x": [
+            -1285155,
+            1341272
+          ],
+          "y": [
+            -998099,
+            903513
+          ],
+          "xx": [
+            0,
+            1715670
+          ],
+          "yy": [
+            0,
+            950052
+          ],
+          "xy": [
+            -495011,
+            894149
+          ],
+          "r2": [
+            0,
+            1858492
+          ],
+          "horner": [
+            -16973995,
+            -11321500
+          ],
+          "tx": [
+            -3489,
+            665
+          ],
+          "ty": [
+            -5846,
+            0
+          ],
+          "radial": [
+            47042682,
+            67108864
+          ],
+          "xd": [
+            -924205,
+            940335
+          ],
+          "yd": [
+            -714462,
+            643118
+          ],
+          "ud": [
+            803910,
+            7011064
+          ],
+          "vd": [
+            21506,
+            4512388
+          ]
+        },
+        "passed": true
+      },
+      {
+        "angle_deg": 45,
+        "full_pixels": 2073600,
+        "valid_float_pixels": 1734213,
+        "rms_px": 0.005665474986826981,
+        "max_px": 0.009994565339176892,
+        "overflow_pixels": 0,
+        "mask_difference_pixels": 3,
+        "stage_integer_ranges": {
+          "x": [
+            -1334064,
+            1280211
+          ],
+          "y": [
+            -1355092,
+            1259183
+          ],
+          "xx": [
+            0,
+            1697280
+          ],
+          "yy": [
+            0,
+            1751208
+          ],
+          "xy": [
+            -681421,
+            247854
+          ],
+          "r2": [
+            0,
+            1858551
+          ],
+          "horner": [
+            -16973995,
+            -11321320
+          ],
+          "tx": [
+            -1008,
+            1350
+          ],
+          "ty": [
+            -7618,
+            0
+          ],
+          "radial": [
+            47042364,
+            67108864
+          ],
+          "xd": [
+            -942751,
+            912575
+          ],
+          "yd": [
+            -957518,
+            898760
+          ],
+          "ud": [
+            742169,
+            6918650
+          ],
+          "vd": [
+            -782524,
+            5358053
+          ]
+        },
+        "passed": true
+      },
+      {
+        "angle_deg": 90,
+        "full_pixels": 2073600,
+        "valid_float_pixels": 1391538,
+        "rms_px": 0.004074543919000984,
+        "max_px": 0.007344292004130344,
+        "overflow_pixels": 0,
+        "mask_difference_pixels": 5,
+        "stage_integer_ranges": {
+          "x": [
+            -720963,
+            615058
+          ],
+          "y": [
+            -1195402,
+            1165688
+          ],
+          "xx": [
+            0,
+            495708
+          ],
+          "yy": [
+            0,
+            1362787
+          ],
+          "xy": [
+            -801485,
+            821915
+          ],
+          "r2": [
+            0,
+            1858495
+          ],
+          "horner": [
+            -16973995,
+            -11321490
+          ],
+          "tx": [
+            -3120,
+            1641
+          ],
+          "ty": [
+            -7114,
+            0
+          ],
+          "radial": [
+            47042667,
+            67108864
+          ],
+          "xd": [
+            -642796,
+            564727
+          ],
+          "yd": [
+            -904376,
+            880237
+          ],
+          "ud": [
+            1740736,
+            5760645
+          ],
+          "vd": [
+            -606730,
+            5296779
+          ]
+        },
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "hardware_tested": false
+  },
+  "benchmarks": {
+    "tb_affine_statistics": [
+      "AFFINE_STATS_PASS affine_pixels=3072 ROI_last_snapshot"
+    ],
+    "tb_geometry_rgb_pipeline": [
+      "PIPELINE_CASE_PASS mode=0 pixels=3072 cycles=4727 misses=12 bytes=9216 modeled_ms_150MHz=0.031513 g=1.000000 service_slots=10",
+      "PIPELINE_CASE_PASS mode=1 pixels=3072 cycles=4746 misses=12 bytes=9216 modeled_ms_150MHz=0.031640 g=1.000000 service_slots=10",
+      "PIPELINE_CASE_PASS mode=2 pixels=3072 cycles=4723 misses=12 bytes=9216 modeled_ms_150MHz=0.031487 g=1.000000 service_slots=10",
+      "PIPELINE_PASS frames=3 frame_identity_locked"
+    ],
+    "tb_geometry_rgb_pipeline_1080p": [
+      "PIPELINE_CASE_PASS mode=0 pixels=2073600 cycles=4136650 misses=8168 bytes=6273024 modeled_ms_150MHz=27.577667 g=1.008395 service_slots=4",
+      "PIPELINE_PASS frames=1 frame_identity_locked"
+    ],
+    "tb_geometry_rgb_pipeline_partial": [
+      "PIPELINE_CASE_PASS mode=0 pixels=1155 cycles=2237 misses=10 bytes=6336 modeled_ms_150MHz=0.014913 g=1.828571 service_slots=10",
+      "PIPELINE_PASS frames=1 frame_identity_locked"
+    ],
+    "tb_lens_inverse_map": [
+      "LENS_PASS pixels=7500 cycles=9236 burst_II=1 checked=399 latency_stages=23"
+    ],
+    "tb_perspective_divide": [
+      "PERSPECTIVE_PASS pixels=2500"
+    ],
+    "tb_raw8_isp": [
+      "ISP_CASE_PASS index=0 pixels=4 cycles=31",
+      "ISP_CASE_PASS index=1 pixels=63 cycles=150",
+      "ISP_CASE_PASS index=2 pixels=128 cycles=242",
+      "ISP_CASE_PASS index=3 pixels=4 cycles=30",
+      "ISP_CASE_PASS index=4 pixels=63 cycles=152",
+      "ISP_CASE_PASS index=5 pixels=128 cycles=236",
+      "ISP_CASE_PASS index=6 pixels=4 cycles=30",
+      "ISP_CASE_PASS index=7 pixels=63 cycles=143",
+      "ISP_CASE_PASS index=8 pixels=128 cycles=252",
+      "ISP_CASE_PASS index=9 pixels=4 cycles=29",
+      "ISP_CASE_PASS index=10 pixels=63 cycles=149",
+      "ISP_CASE_PASS index=11 pixels=128 cycles=255",
+      "ISP_CASE_PASS index=12 pixels=63 cycles=148",
+      "ISP_CASE_PASS index=13 pixels=63 cycles=142",
+      "ISP_PASS frames=14 plus_abort"
+    ],
+    "tb_raw8_isp_1080p": [
+      "ISP1080_PASS pixels=2073600 cycles=2084167 modeled_ms_at_150MHz=13.894447"
+    ],
+    "tb_rgb_colour_matrix": [
+      "CCM_PASS pixels=2400 identity_negative_saturation"
+    ],
+    "tb_rgb_enhance": [
+      "ENHANCE_PASS pixels=1800 modes=3 frame_locked"
+    ],
+    "tb_rgb_tile_cache": [
+      "CACHE_METRICS fill_pixels=1 pixels=1200 cycles=13754 misses=38 bus_bytes=26208 queue_peak=8 max_stall=1277 duplicates=231 hot_II_checks=169",
+      "CACHE_PASS ordered_random_wait duplicates replacement partial_edges fault"
+    ],
+    "tb_rgb_tile_cache_32x8": [
+      "CACHE_METRICS fill_pixels=4 pixels=1200 cycles=8489 misses=84 bus_bytes=46400 queue_peak=8 max_stall=333 duplicates=231 hot_II_checks=169",
+      "CACHE_PASS ordered_random_wait duplicates replacement partial_edges fault"
+    ],
+    "tb_rgb_tile_cache_quad": [
+      "CACHE_METRICS fill_pixels=4 pixels=1200 cycles=4620 misses=38 bus_bytes=26208 queue_peak=8 max_stall=333 duplicates=231 hot_II_checks=169",
+      "CACHE_PASS ordered_random_wait duplicates replacement partial_edges fault"
+    ],
+    "tb_signed_mult32_pipe": [
+      "MULT_PASS checked=7994 stalled=2007 full_signed_extremes"
+    ]
+  },
+  "pds_final": {
+    "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_seed7",
+    "available": true,
+    "internal_sta_passed": true,
+    "board_io_verified": false,
+    "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_seed7\\report_timing\\geometry_timing_top.rtr",
+    "corner_checks": [
+      {
+        "corner": "slow",
+        "analysis": "setup",
+        "worst_ns": 0.382,
+        "total_ns": 0.0,
+        "failing": 0,
+        "endpoints": 28041
+      },
+      {
+        "corner": "slow",
+        "analysis": "hold",
+        "worst_ns": 0.129,
+        "total_ns": 0.0,
+        "failing": 0,
+        "endpoints": 28041
+      },
+      {
+        "corner": "fast",
+        "analysis": "setup",
+        "worst_ns": 2.593,
+        "total_ns": 0.0,
+        "failing": 0,
+        "endpoints": 28041
+      },
+      {
+        "corner": "fast",
+        "analysis": "hold",
+        "worst_ns": 0.088,
+        "total_ns": 0.0,
+        "failing": 0,
+        "endpoints": 28041
+      }
+    ],
+    "resources_with_harness": {
+      "apm": 79,
+      "physical_drm": 30,
+      "ff": 7359,
+      "lut": 5938
+    },
+    "source_manifest": [
+      {
+        "path": "rtl/isp/isp_line_store.sv",
+        "sha256": "28cd013612c16f73c26f12bb48fbb2b9194df9f205ab550089a174e6f0f970fb"
+      },
+      {
+        "path": "rtl/isp/raw8_isp.sv",
+        "sha256": "e79e332ed2ac7ad8b3632d631db03e70b101fa86ecadb3e53dcc2e122d4a0189"
+      },
+      {
+        "path": "rtl/isp/rgb_colour_matrix.sv",
+        "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+      },
+      {
+        "path": "rtl/isp/rgb_frame_statistics.sv",
+        "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+      },
+      {
+        "path": "rtl/geometry/affine_ray_stepper.sv",
+        "sha256": "70b6435edbc115e47e5a40d644ceabc31036424087f294b4d2512b155831205f"
+      },
+      {
+        "path": "rtl/geometry/signed_mult32_pipe.sv",
+        "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+      },
+      {
+        "path": "rtl/geometry/lens_inverse_map.sv",
+        "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+      },
+      {
+        "path": "rtl/geometry/perspective_divide.sv",
+        "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+      },
+      {
+        "path": "rtl/geometry/rgb_cache_bank.sv",
+        "sha256": "c1f5b756946fd26afdf44891863dbde0633251d1d639216796f5396f5682cfbb"
+      },
+      {
+        "path": "rtl/geometry/rgb_tile_cache.sv",
+        "sha256": "a6613e0a8e7e28e82b61836f0b3782cdbfe7dcaa3363d22a61abb01206acd2b6"
+      },
+      {
+        "path": "rtl/geometry/rgb_bilinear.sv",
+        "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+      },
+      {
+        "path": "rtl/geometry/gamma_lut_bank.sv",
+        "sha256": "701349ca618d021d401e64f54aa522e21817f36f0bbb7a93b12728ae36a96d13"
+      },
+      {
+        "path": "rtl/geometry/rgb_enhance.sv",
+        "sha256": "c60cae4b3e1036c1ea92b87d76e22c27b32705da6523c1c1d21566fac86b82eb"
+      },
+      {
+        "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+        "sha256": "984b3f5f2ae67415572873aac13c0a091b2eb4610b4a3ed46eba9f7d319fb748"
+      },
+      {
+        "path": "rtl/geometry/algorithm_timing_top.sv",
+        "sha256": "d6e22bdee4afa0347f97e08809249392262950317d3eb60c2ea4e434d4943c41"
+      }
+    ]
+  },
+  "pds_comparisons": [
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_lens_registered",
+      "available": true,
+      "internal_sta_passed": false,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_lens_registered\\report_timing\\lens_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": -2.835,
+          "total_ns": -436.812,
+          "failing": 460,
+          "endpoints": 4221
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.174,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 4221
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": -0.306,
+          "total_ns": -22.992,
+          "failing": 96,
+          "endpoints": 4221
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.12,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 4221
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 42,
+        "physical_drm": 0,
+        "ff": 1598,
+        "lut": 945
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "b6796aafe512971638b9054a6ab1f9445c4d47ed5d06804316bd3913b8500402"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "e5ffef9970bdcf2b77424185ac110d5b11622c850721db7a86c158f177debce6"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "64109f7c54acab30f6f875009e08b5a94d148a7c2660f2af9104e5ef20a98bf4"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "4d2e52b7e447cf828f1b8d5469649ef9109d9d6aa7a6197ca21e5f36a41b1555"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "28664ad131d59d54daf265391a73d1489301baf212c8c37180b7febd9ec0ab31"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "4b3ce76c6afead9ae9b0e3755160d6242bbbe898ca76c3ed615f1b1625cb671e"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "8459f2b6f3389cce83a94ee52ea51dc5c3de4ec780022b5e94dd45dae77e6be1"
+        }
+      ]
+    },
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_lens_partial_products",
+      "available": true,
+      "internal_sta_passed": true,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_lens_partial_products\\report_timing\\lens_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": 1.653,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 7388
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.155,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 7388
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": 3.524,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 7388
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.103,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 7388
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 52,
+        "physical_drm": 0,
+        "ff": 2965,
+        "lut": 1663
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "b6796aafe512971638b9054a6ab1f9445c4d47ed5d06804316bd3913b8500402"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "e5ffef9970bdcf2b77424185ac110d5b11622c850721db7a86c158f177debce6"
+        },
+        {
+          "path": "rtl/geometry/signed_mult32_pipe.sv",
+          "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "4d2e52b7e447cf828f1b8d5469649ef9109d9d6aa7a6197ca21e5f36a41b1555"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "28664ad131d59d54daf265391a73d1489301baf212c8c37180b7febd9ec0ab31"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "4b3ce76c6afead9ae9b0e3755160d6242bbbe898ca76c3ed615f1b1625cb671e"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "8459f2b6f3389cce83a94ee52ea51dc5c3de4ec780022b5e94dd45dae77e6be1"
+        }
+      ]
+    },
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_bilinear_initial",
+      "available": true,
+      "internal_sta_passed": true,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_bilinear_initial\\report_timing\\bilinear_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": 1.72,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 1009
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.206,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 1009
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": 3.21,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 1009
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.149,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 1009
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 18,
+        "physical_drm": 0,
+        "ff": 277,
+        "lut": 62
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "b6796aafe512971638b9054a6ab1f9445c4d47ed5d06804316bd3913b8500402"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "e5ffef9970bdcf2b77424185ac110d5b11622c850721db7a86c158f177debce6"
+        },
+        {
+          "path": "rtl/geometry/signed_mult32_pipe.sv",
+          "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "4d2e52b7e447cf828f1b8d5469649ef9109d9d6aa7a6197ca21e5f36a41b1555"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "28664ad131d59d54daf265391a73d1489301baf212c8c37180b7febd9ec0ab31"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "4b3ce76c6afead9ae9b0e3755160d6242bbbe898ca76c3ed615f1b1625cb671e"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "8459f2b6f3389cce83a94ee52ea51dc5c3de4ec780022b5e94dd45dae77e6be1"
+        }
+      ]
+    },
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_isp_initial",
+      "available": true,
+      "internal_sta_passed": false,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_isp_initial\\report_timing\\isp_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": -1.036,
+          "total_ns": -526.982,
+          "failing": 837,
+          "endpoints": 4110
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.149,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 4110
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": 1.491,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 4110
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.102,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 4110
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 1,
+        "physical_drm": 0,
+        "ff": 716,
+        "lut": 1346
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "b6796aafe512971638b9054a6ab1f9445c4d47ed5d06804316bd3913b8500402"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "e5ffef9970bdcf2b77424185ac110d5b11622c850721db7a86c158f177debce6"
+        },
+        {
+          "path": "rtl/geometry/signed_mult32_pipe.sv",
+          "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "4d2e52b7e447cf828f1b8d5469649ef9109d9d6aa7a6197ca21e5f36a41b1555"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "28664ad131d59d54daf265391a73d1489301baf212c8c37180b7febd9ec0ab31"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "92a1f46e7ad678246ad6549df2cb5b7a4d6d3560df781a0e82ce067eda9312ef"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "a9bfceabc86baa8374c80d84cc7cc2e8955c2cdc700cc79acf784153677d983f"
+        }
+      ]
+    },
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_isp_registered_ram",
+      "available": true,
+      "internal_sta_passed": true,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_isp_registered_ram\\report_timing\\isp_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": 0.736,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 1961
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.151,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 1961
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": 3.051,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 1961
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.101,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 1961
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 1,
+        "physical_drm": 2,
+        "ff": 875,
+        "lut": 537
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/isp_line_store.sv",
+          "sha256": "28cd013612c16f73c26f12bb48fbb2b9194df9f205ab550089a174e6f0f970fb"
+        },
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "e79e332ed2ac7ad8b3632d631db03e70b101fa86ecadb3e53dcc2e122d4a0189"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "e5ffef9970bdcf2b77424185ac110d5b11622c850721db7a86c158f177debce6"
+        },
+        {
+          "path": "rtl/geometry/signed_mult32_pipe.sv",
+          "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "04ebbf44c8de033be0d571dbd286c5c788b15213f606c929711c3ed46ee7f23b"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "28664ad131d59d54daf265391a73d1489301baf212c8c37180b7febd9ec0ab31"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "51cbabc53932f8cbf4580db342970a04d71969b1fb7006c01642e5b354825f7b"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "a9bfceabc86baa8374c80d84cc7cc2e8955c2cdc700cc79acf784153677d983f"
+        }
+      ]
+    },
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_banked",
+      "available": true,
+      "internal_sta_passed": false,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_banked\\report_timing\\geometry_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": -8.621,
+          "total_ns": -10273.368,
+          "failing": 3539,
+          "endpoints": 25388
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.137,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 25388
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": -2.668,
+          "total_ns": -1818.279,
+          "failing": 1072,
+          "endpoints": 25388
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.095,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 25388
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 79,
+        "physical_drm": 30,
+        "ff": 6672,
+        "lut": 6266
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/isp_line_store.sv",
+          "sha256": "28cd013612c16f73c26f12bb48fbb2b9194df9f205ab550089a174e6f0f970fb"
+        },
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "e79e332ed2ac7ad8b3632d631db03e70b101fa86ecadb3e53dcc2e122d4a0189"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "d62c3040ff32276173ae0c1c1d1a7eb8083a3a16992832ad32a8129d735a1811"
+        },
+        {
+          "path": "rtl/geometry/signed_mult32_pipe.sv",
+          "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_cache_bank.sv",
+          "sha256": "c1f5b756946fd26afdf44891863dbde0633251d1d639216796f5396f5682cfbb"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "241d9b3ba08363bc80668840ea873187c73709e7acca7f21c64e144d7b275c80"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/gamma_lut_bank.sv",
+          "sha256": "701349ca618d021d401e64f54aa522e21817f36f0bbb7a93b12728ae36a96d13"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "c60cae4b3e1036c1ea92b87d76e22c27b32705da6523c1c1d21566fac86b82eb"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "51cbabc53932f8cbf4580db342970a04d71969b1fb7006c01642e5b354825f7b"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "6b9b85513a00f6ea2a0b5d7ed8e8388d5ca92ed376692de854a27a0877d1e494"
+        }
+      ]
+    },
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_tag_pipeline",
+      "available": true,
+      "internal_sta_passed": false,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_tag_pipeline\\report_timing\\geometry_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": -3.309,
+          "total_ns": -1913.493,
+          "failing": 1517,
+          "endpoints": 25819
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.14,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 25819
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": 0.476,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 25819
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.101,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 25819
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 79,
+        "physical_drm": 30,
+        "ff": 6844,
+        "lut": 6031
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/isp_line_store.sv",
+          "sha256": "28cd013612c16f73c26f12bb48fbb2b9194df9f205ab550089a174e6f0f970fb"
+        },
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "e79e332ed2ac7ad8b3632d631db03e70b101fa86ecadb3e53dcc2e122d4a0189"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "d62c3040ff32276173ae0c1c1d1a7eb8083a3a16992832ad32a8129d735a1811"
+        },
+        {
+          "path": "rtl/geometry/signed_mult32_pipe.sv",
+          "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_cache_bank.sv",
+          "sha256": "c1f5b756946fd26afdf44891863dbde0633251d1d639216796f5396f5682cfbb"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "58839f15b4a745c39a8befa1464ce32ec72c295097e5083f129f7ef71d945c1f"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/gamma_lut_bank.sv",
+          "sha256": "701349ca618d021d401e64f54aa522e21817f36f0bbb7a93b12728ae36a96d13"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "c60cae4b3e1036c1ea92b87d76e22c27b32705da6523c1c1d21566fac86b82eb"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "51cbabc53932f8cbf4580db342970a04d71969b1fb7006c01642e5b354825f7b"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "6b9b85513a00f6ea2a0b5d7ed8e8388d5ca92ed376692de854a27a0877d1e494"
+        }
+      ]
+    },
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_immutable_identity",
+      "available": true,
+      "internal_sta_passed": false,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_immutable_identity\\report_timing\\geometry_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": -1.771,
+          "total_ns": -678.651,
+          "failing": 1203,
+          "endpoints": 25189
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.061,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 25189
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": 1.446,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 25189
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.048,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 25189
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 79,
+        "physical_drm": 30,
+        "ff": 6617,
+        "lut": 5949
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/isp_line_store.sv",
+          "sha256": "28cd013612c16f73c26f12bb48fbb2b9194df9f205ab550089a174e6f0f970fb"
+        },
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "e79e332ed2ac7ad8b3632d631db03e70b101fa86ecadb3e53dcc2e122d4a0189"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "70b6435edbc115e47e5a40d644ceabc31036424087f294b4d2512b155831205f"
+        },
+        {
+          "path": "rtl/geometry/signed_mult32_pipe.sv",
+          "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_cache_bank.sv",
+          "sha256": "c1f5b756946fd26afdf44891863dbde0633251d1d639216796f5396f5682cfbb"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "3fa5b53e928f3bf5723c43f4d0f211ed1d330dfe957813896eeb0b3c43871976"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/gamma_lut_bank.sv",
+          "sha256": "701349ca618d021d401e64f54aa522e21817f36f0bbb7a93b12728ae36a96d13"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "c60cae4b3e1036c1ea92b87d76e22c27b32705da6523c1c1d21566fac86b82eb"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "f33905e5c10e4516a911f05a032ee45f5bc7d374f4a95bfb8e30be21a54e4085"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "d6e22bdee4afa0347f97e08809249392262950317d3eb60c2ea4e434d4943c41"
+        }
+      ]
+    },
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_local_tags",
+      "available": true,
+      "internal_sta_passed": false,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_local_tags\\report_timing\\geometry_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": -0.093,
+          "total_ns": -1.006,
+          "failing": 24,
+          "endpoints": 28296
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.065,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 28296
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": 2.485,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 28296
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.044,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 28296
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 79,
+        "physical_drm": 30,
+        "ff": 7238,
+        "lut": 5966
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/isp_line_store.sv",
+          "sha256": "28cd013612c16f73c26f12bb48fbb2b9194df9f205ab550089a174e6f0f970fb"
+        },
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "e79e332ed2ac7ad8b3632d631db03e70b101fa86ecadb3e53dcc2e122d4a0189"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "70b6435edbc115e47e5a40d644ceabc31036424087f294b4d2512b155831205f"
+        },
+        {
+          "path": "rtl/geometry/signed_mult32_pipe.sv",
+          "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_cache_bank.sv",
+          "sha256": "c1f5b756946fd26afdf44891863dbde0633251d1d639216796f5396f5682cfbb"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "a6613e0a8e7e28e82b61836f0b3782cdbfe7dcaa3363d22a61abb01206acd2b6"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/gamma_lut_bank.sv",
+          "sha256": "701349ca618d021d401e64f54aa522e21817f36f0bbb7a93b12728ae36a96d13"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "c60cae4b3e1036c1ea92b87d76e22c27b32705da6523c1c1d21566fac86b82eb"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "f33905e5c10e4516a911f05a032ee45f5bc7d374f4a95bfb8e30be21a54e4085"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "d6e22bdee4afa0347f97e08809249392262950317d3eb60c2ea4e434d4943c41"
+        }
+      ]
+    },
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_seed1",
+      "available": true,
+      "internal_sta_passed": false,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_seed1\\report_timing\\geometry_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": -0.195,
+          "total_ns": -1.997,
+          "failing": 16,
+          "endpoints": 28029
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.065,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 28029
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": 2.312,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 28029
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.047,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 28029
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 79,
+        "physical_drm": 30,
+        "ff": 7359,
+        "lut": 5936
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/isp_line_store.sv",
+          "sha256": "28cd013612c16f73c26f12bb48fbb2b9194df9f205ab550089a174e6f0f970fb"
+        },
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "e79e332ed2ac7ad8b3632d631db03e70b101fa86ecadb3e53dcc2e122d4a0189"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "70b6435edbc115e47e5a40d644ceabc31036424087f294b4d2512b155831205f"
+        },
+        {
+          "path": "rtl/geometry/signed_mult32_pipe.sv",
+          "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_cache_bank.sv",
+          "sha256": "c1f5b756946fd26afdf44891863dbde0633251d1d639216796f5396f5682cfbb"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "a6613e0a8e7e28e82b61836f0b3782cdbfe7dcaa3363d22a61abb01206acd2b6"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/gamma_lut_bank.sv",
+          "sha256": "701349ca618d021d401e64f54aa522e21817f36f0bbb7a93b12728ae36a96d13"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "c60cae4b3e1036c1ea92b87d76e22c27b32705da6523c1c1d21566fac86b82eb"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "984b3f5f2ae67415572873aac13c0a091b2eb4610b4a3ed46eba9f7d319fb748"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "d6e22bdee4afa0347f97e08809249392262950317d3eb60c2ea4e434d4943c41"
+        }
+      ]
+    },
+    {
+      "run": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_seed7",
+      "available": true,
+      "internal_sta_passed": true,
+      "board_io_verified": false,
+      "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\pds_geometry_seed7\\report_timing\\geometry_timing_top.rtr",
+      "corner_checks": [
+        {
+          "corner": "slow",
+          "analysis": "setup",
+          "worst_ns": 0.382,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 28041
+        },
+        {
+          "corner": "slow",
+          "analysis": "hold",
+          "worst_ns": 0.129,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 28041
+        },
+        {
+          "corner": "fast",
+          "analysis": "setup",
+          "worst_ns": 2.593,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 28041
+        },
+        {
+          "corner": "fast",
+          "analysis": "hold",
+          "worst_ns": 0.088,
+          "total_ns": 0.0,
+          "failing": 0,
+          "endpoints": 28041
+        }
+      ],
+      "resources_with_harness": {
+        "apm": 79,
+        "physical_drm": 30,
+        "ff": 7359,
+        "lut": 5938
+      },
+      "source_manifest": [
+        {
+          "path": "rtl/isp/isp_line_store.sv",
+          "sha256": "28cd013612c16f73c26f12bb48fbb2b9194df9f205ab550089a174e6f0f970fb"
+        },
+        {
+          "path": "rtl/isp/raw8_isp.sv",
+          "sha256": "e79e332ed2ac7ad8b3632d631db03e70b101fa86ecadb3e53dcc2e122d4a0189"
+        },
+        {
+          "path": "rtl/isp/rgb_colour_matrix.sv",
+          "sha256": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88"
+        },
+        {
+          "path": "rtl/isp/rgb_frame_statistics.sv",
+          "sha256": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47"
+        },
+        {
+          "path": "rtl/geometry/affine_ray_stepper.sv",
+          "sha256": "70b6435edbc115e47e5a40d644ceabc31036424087f294b4d2512b155831205f"
+        },
+        {
+          "path": "rtl/geometry/signed_mult32_pipe.sv",
+          "sha256": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+        },
+        {
+          "path": "rtl/geometry/lens_inverse_map.sv",
+          "sha256": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005"
+        },
+        {
+          "path": "rtl/geometry/perspective_divide.sv",
+          "sha256": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71"
+        },
+        {
+          "path": "rtl/geometry/rgb_cache_bank.sv",
+          "sha256": "c1f5b756946fd26afdf44891863dbde0633251d1d639216796f5396f5682cfbb"
+        },
+        {
+          "path": "rtl/geometry/rgb_tile_cache.sv",
+          "sha256": "a6613e0a8e7e28e82b61836f0b3782cdbfe7dcaa3363d22a61abb01206acd2b6"
+        },
+        {
+          "path": "rtl/geometry/rgb_bilinear.sv",
+          "sha256": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda"
+        },
+        {
+          "path": "rtl/geometry/gamma_lut_bank.sv",
+          "sha256": "701349ca618d021d401e64f54aa522e21817f36f0bbb7a93b12728ae36a96d13"
+        },
+        {
+          "path": "rtl/geometry/rgb_enhance.sv",
+          "sha256": "c60cae4b3e1036c1ea92b87d76e22c27b32705da6523c1c1d21566fac86b82eb"
+        },
+        {
+          "path": "rtl/geometry/geometry_rgb_pipeline.sv",
+          "sha256": "984b3f5f2ae67415572873aac13c0a091b2eb4610b4a3ed46eba9f7d319fb748"
+        },
+        {
+          "path": "rtl/geometry/algorithm_timing_top.sv",
+          "sha256": "d6e22bdee4afa0347f97e08809249392262950317d3eb60c2ea4e434d4943c41"
+        }
+      ]
+    }
+  ],
+  "current_rtl_sha256": {
+    "rtl/isp/isp_line_store.sv": "28cd013612c16f73c26f12bb48fbb2b9194df9f205ab550089a174e6f0f970fb",
+    "rtl/isp/raw8_isp.sv": "e79e332ed2ac7ad8b3632d631db03e70b101fa86ecadb3e53dcc2e122d4a0189",
+    "rtl/isp/rgb_colour_matrix.sv": "9fad31c1705b61ec15879200e538b0b46d7e69e14238c98679ae4acdd63efb88",
+    "rtl/isp/rgb_frame_statistics.sv": "d0dc925aed72ff9eb3aa72d395912aba0b0293c180082d65c8f4efac620e6c47",
+    "rtl/geometry/affine_ray_stepper.sv": "70b6435edbc115e47e5a40d644ceabc31036424087f294b4d2512b155831205f",
+    "rtl/geometry/algorithm_timing_top.sv": "d6e22bdee4afa0347f97e08809249392262950317d3eb60c2ea4e434d4943c41",
+    "rtl/geometry/gamma_lut_bank.sv": "701349ca618d021d401e64f54aa522e21817f36f0bbb7a93b12728ae36a96d13",
+    "rtl/geometry/geometry_rgb_pipeline.sv": "984b3f5f2ae67415572873aac13c0a091b2eb4610b4a3ed46eba9f7d319fb748",
+    "rtl/geometry/lens_inverse_map.sv": "961af581346e10a6f43d9b5584810fe0ee6752cb816e5a66c3967f6cdeafb005",
+    "rtl/geometry/perspective_divide.sv": "61b500fc3bee017ce2ee2e071e7aa555cc9e41a7ffad8addd000754243e82f71",
+    "rtl/geometry/rgb_bilinear.sv": "73b17a5871daa03627cbe3914849baf915a2dde6ddf371a419cce78fd4cabcda",
+    "rtl/geometry/rgb_cache_bank.sv": "c1f5b756946fd26afdf44891863dbde0633251d1d639216796f5396f5682cfbb",
+    "rtl/geometry/rgb_enhance.sv": "c60cae4b3e1036c1ea92b87d76e22c27b32705da6523c1c1d21566fac86b82eb",
+    "rtl/geometry/rgb_tile_cache.sv": "a6613e0a8e7e28e82b61836f0b3782cdbfe7dcaa3363d22a61abb01206acd2b6",
+    "rtl/geometry/signed_mult32_pipe.sv": "64a5ed6bc17d61629198a9786298104b53d6fcdef8c4854f51620d8e29796f57"
+  },
+  "cache_model": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\isp_geometry\\cache_round_robin_audit.json",
+  "extra_overflow_campaign": {
+    "passed": true,
+    "simulator": "Icarus",
+    "tests": [
+      {
+        "test": "tb_signed_mult32_pipe",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_rgb_colour_matrix",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_lens_inverse_map",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_lens_overflow",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_perspective_divide",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_raw8_isp",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_rgb_enhance",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_rgb_tile_cache",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_rgb_tile_cache_quad",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_rgb_tile_cache_32x8",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_affine_statistics",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_geometry_rgb_pipeline",
+        "passed": true,
+        "native_exit": 0
+      },
+      {
+        "test": "tb_geometry_rgb_pipeline_partial",
+        "passed": true,
+        "native_exit": 0
+      }
+    ],
+    "hardware_tested": false,
+    "pds_pnr_tested": false,
+    "scope": "algorithm 06 local golden and RTL"
+  },
+  "pds_source_matches_current": true,
+  "offline_checks_passed": true
+}

@@ -1,0 +1,190 @@
+--- baseline/rtl/stabilization/source_motion_controller.sv
++++ c4_withdrawal/rtl/stabilization/source_motion_controller.sv
+@@ -1,16 +1,14 @@
+ `timescale 1ns/1ps
+-// DDR-domain motion coordinator. Capture never waits on estimation: all state
+-// is indexed by immutable source identity, and a job waits at most 65535 cycles
+-// for its OWN result. A miss is counted and uses its frozen manual transform.
++// DDR-domain C3 pose / C6 fixed viewport coordinator after C4 withdrawal.
++// Immutable source slots retain atomic configuration and bounded pose fallback.
++// C5 storage/DDR ownership stays external; no unregistered history is eligible.
+ module source_motion_controller #(parameter WIDTH=1920,HEIGHT=1080)(
+  input clk,rst_n,input [63:0] now_us,input runtime_motion_reset,runtime_history_clear,
+  input submit_valid,input [15:0] submit_kind,input [1023:0] submit_entity,input [31:0] submit_version,submit_id,
+  output [7:0] submit_code,input [15:0] read_kind,output [2303:0] read_status,
+  input capture_admit,input [63:0] capture_epoch,capture_frame,capture_exposure,
+  input capture_enable,input [447:0] capture_geometry,
+- input source_start,input [1:0] source_slot,input capture_complete,capture_legal,
+- input [31:0] colour_version,camera_version,
+- input pixel_valid,input [15:0] pixel_x,pixel_y,input [23:0] pixel_rgb,input pixel_mask,
++ input source_start,input [1:0] source_slot,
+  input mcu_enable,mcu_rx_valid,input [7:0] mcu_rx_data,input mcu_rx_error,
+  output mcu_tx_valid,input mcu_tx_ready,output [7:0] mcu_tx_data,
+  input mcu_timing_valid,input [31:0] mcu_capture_error,input mcu_config_approved,
+@@ -25,7 +23,7 @@
+  output signed [31:0] job_motion_dx_q16,job_motion_dy_q16,output [15:0] job_motion_confidence,
+  output history_capture_enable,history_clear,output job_history_registration_ok,output [127:0] job_entity_versions
+ );
+- localparam [191:0] IDENTITY={32'd0,32'd67108864,32'd0,32'd0,32'd0,32'd67108864};
++ localparam [3:0] VISUAL_DISABLED=8;
+  wire [255:0] cfg_s,cfg_v;wire [127:0] cfg_h;wire [1023:0] cfg_p;
+  wire [31:0] ver_s,ver_v,ver_h,ver_p;
+  wire [127:0] capture_versions;reg [127:0] admitted_versions,source_versions[0:2];
+@@ -34,13 +32,11 @@
+   .capture_stabilization(cfg_s),.capture_viewport(cfg_v),.capture_completion(cfg_h),.capture_pose(cfg_p),
+   .stabilization(),.viewport(),.completion(),.pose(),.stabilization_version(ver_s),.viewport_version(ver_v),.completion_version(ver_h),.pose_version(ver_p),
+   .capture_versions(capture_versions),.read_kind(read_kind),.status(read_status));
+- reg [255:0] admitted_s,admitted_v,scfg[0:2],vcfg[0:2];reg [127:0] admitted_h,hcfg[0:2];
+- reg [1023:0] admitted_p,pcfg[0:2];reg [447:0] admitted_g;reg source_domain[0:2],source_distorted[0:2];
++ reg [255:0] admitted_v,vcfg[0:2];reg [127:0] admitted_h,hcfg[0:2];
++ reg [1023:0] admitted_p,pcfg[0:2];reg [447:0] admitted_g;
+  reg admitted_enable,source_enable[0:2];reg [63:0] admitted_epoch,admitted_frame,sepoch[0:2],sframe[0:2];
+- reg [191:0] pose_matrix[0:2],motion_matrix[0:2];reg pose_ready[0:2],motion_ready[0:2];
+- reg [3:0] pose_status[0:2],motion_status[0:2];reg [31:0] zoom_demand[0:2];
+- reg signed [31:0] motion_dx[0:2],motion_dy[0:2];reg [15:0] motion_confidence[0:2];
+- reg history_registration[0:2];
++ reg [191:0] pose_matrix[0:2];reg pose_ready[0:2];
++ reg [3:0] pose_status[0:2];
+  reg last_enable;wire toggle=capture_admit && capture_enable!=last_enable;
+  wire session_valid,mcstate,mapping_valid;wire [767:0] state_payload;wire [63:0] state_time,sync_time;
+  wire signed [63:0] clock_offset;wire [31:0] clock_error;
+@@ -67,112 +63,62 @@
+   .affine_enable(source_enable[selected_slot]),.calibration(pcfg[selected_slot]),.manual_matrix(pose_matrix[selected_slot]),
+   .epoch(selected_epoch),.frame_id(selected_frame),.pose(selected_pose),.pose_status(selected_status),.time_error_us(selected_error),
+   .result_valid(pose_valid),.result_ready(1'b1),.result_epoch(pose_epoch),.result_frame(pose_frame),.matrix(pose_result),.status(pose_result_status),.calibration_id());
+- wire estimate_valid;wire [63:0] estimate_epoch,estimate_frame;wire signed [31:0] estimate_dx,estimate_dy,estimate_rotation,estimate_scale;
+- wire [15:0] estimate_confidence;wire [3:0] estimate_status;
+- reg [1:0] estimate_slot;reg estimate_found;
+- always @*begin estimate_slot=0;estimate_found=0;for(k=0;k<3;k=k+1)if(sepoch[k]==estimate_epoch && sframe[k]==estimate_frame)begin estimate_slot=k;estimate_found=1;end end
+- // Parameterized miniature cores bypass the fixed 64x36 sampler. The standalone
+- // matcher test uses valid dimensions explicitly; no zero-width division exists.
+- generate if(WIDTH>=64 && HEIGHT>=36 && WIDTH%64==0 && HEIGHT%36==0)begin:g_estimator
+-  s1_motion_estimator #(.WIDTH(WIDTH),.HEIGHT(HEIGHT)) estimator(.clk(clk),.rst_n(rst_n),.clear(toggle || runtime_motion_reset),.frame_start(source_start),
+-   .epoch(admitted_epoch),.frame_id(admitted_frame),.colour_version(colour_version),.camera_version(camera_version),.config_entity({admitted_s[255:1],admitted_s[0] || admitted_h[0]}),
+-   .pixel_valid(pixel_valid),.x(pixel_x),.y(pixel_y),.rgb(pixel_rgb),.pixel_mask(pixel_mask),.frame_complete(capture_complete),.frame_legal(capture_legal),
+-   .result_valid(estimate_valid),.result_epoch(estimate_epoch),.result_frame(estimate_frame),.translation_x_q16(estimate_dx),.translation_y_q16(estimate_dy),
+-   .rotation_q26(estimate_rotation),.scale_delta_q26(estimate_scale),.confidence(estimate_confidence),.status(estimate_status),.dropped(),.cycles());
+- end else begin:g_no_thumbnail
+-  assign estimate_valid=0;assign estimate_epoch=0;assign estimate_frame=0;assign estimate_dx=0;assign estimate_dy=0;
+-  assign estimate_rotation=0;assign estimate_scale=0;assign estimate_confidence=0;assign estimate_status=4;
+- end endgenerate
+- // This certified coordinate subset has no radial/tangential distortion,
+- // square focal lengths and centred principal point. Other lenses degrade
+- // until a measured sparse ideal-ray correspondence entity is available.
+- // Validate the coordinate subset once at source_start. Retain only its
+- // boolean certificate, rather than three redundant 448-bit geometry copies.
+- // The immutable manual matrix already resides in pose_matrix until selection.
+- wire signed [63:0] admitted_focal_product=$signed(admitted_g[31:0])*$signed(admitted_g[351:320]);
+- wire admitted_domain=admitted_g[319:192]==0 && admitted_g[351:320]==admitted_g[383:352] &&
+-  admitted_g[415:384]==(WIDTH-1)*32768 && admitted_g[447:416]==(HEIGHT-1)*32768 &&
+-  admitted_g[31:0]>0 && admitted_g[159:128]==admitted_g[31:0] && admitted_g[63:32]==0 && admitted_g[127:96]==0 &&
+-  admitted_focal_product>=64'sd4397778075648 && admitted_focal_product<=64'sd4398314946560 && !admitted_p[0];
+- wire motion_domain=source_domain[estimate_slot];
+- wire trajectory_valid;wire [63:0] trajectory_epoch,trajectory_frame;wire [191:0] trajectory_matrix;wire [3:0] trajectory_status;wire [31:0] trajectory_zoom;
+- motion_trajectory trajectory(.clk(clk),.rst_n(rst_n),.clear(toggle || runtime_motion_reset),.observation_valid(estimate_valid && estimate_found),
+-  .enabled(source_enable[estimate_slot] && scfg[estimate_slot][0]),.domain_valid(motion_domain),.epoch(estimate_epoch),.frame_id(estimate_frame),
+-  .observation_status(estimate_status),.config_entity(scfg[estimate_slot]),.dx_q16(estimate_dx),.dy_q16(estimate_dy),.rotation_q26(estimate_rotation),
+-  .scale_delta_q26(estimate_scale),.inv_focal_q26(pose_matrix[estimate_slot][31:0]),
+-  .result_valid(trajectory_valid),.result_epoch(trajectory_epoch),.result_frame(trajectory_frame),.compensation(trajectory_matrix),.status(trajectory_status),.requested_zoom_q16(trajectory_zoom));
+- reg composing;reg [15:0] wait_cycles;reg [31:0] last_zoom,chosen_zoom;reg [63:0] zoom_epoch;
++ // C4 owns no sampler, matcher, trajectory or source-domain certificate.
++ // Jobs only wait for their own C3 pose; a timeout uses the frozen manual M.
++ reg composing;reg [15:0] wait_cycles;reg [31:0] chosen_zoom;
+  wire own_result=sepoch[job_slot]==job_epoch && sframe[job_slot]==job_frame;
+- wire can_prepare=own_result && (pose_ready[job_slot] && motion_ready[job_slot] || wait_cycles==65535);
++ wire can_prepare=own_result && (pose_ready[job_slot] || wait_cycles==65535);
+  wire compose_ready,compose_valid,compose_overflow;wire [191:0] composed;wire [63:0] composed_epoch,composed_frame;
+  reg [447:0] held_original;
++ // Fixed/manual crop uses the admitted zoom only. Legacy dynamic mode,
++ // rejected by the bank, also has a deterministic fixed-minimum fallback.
+  always @*begin
+   chosen_zoom=65536;
+-  if(source_enable[job_slot])begin
+-   if(vcfg[job_slot][7:0]==1)chosen_zoom=vcfg[job_slot][63:32];
+-   else if(vcfg[job_slot][7:0]==2 && !source_distorted[job_slot])begin
+-    chosen_zoom=zoom_demand[job_slot];if(chosen_zoom<vcfg[job_slot][63:32])chosen_zoom=vcfg[job_slot][63:32];
+-    if(chosen_zoom>vcfg[job_slot][95:64])chosen_zoom=vcfg[job_slot][95:64];
+-    if(zoom_epoch==job_epoch)begin
+-     if(chosen_zoom>=last_zoom && chosen_zoom-last_zoom<=vcfg[job_slot][159:128])chosen_zoom=last_zoom;
+-     if(chosen_zoom<last_zoom && last_zoom-chosen_zoom<=vcfg[job_slot][159:128])chosen_zoom=last_zoom;
+-     if(chosen_zoom>last_zoom+vcfg[job_slot][127:96])chosen_zoom=last_zoom+vcfg[job_slot][127:96];
+-     if(chosen_zoom+vcfg[job_slot][127:96]<last_zoom)chosen_zoom=last_zoom-vcfg[job_slot][127:96];
+-    end
+-    // A newly narrowed hard viewport bound overrides transition smoothing.
+-    // Otherwise the previous source zoom can escape the new max/min limits.
+-    if(chosen_zoom<vcfg[job_slot][63:32])chosen_zoom=vcfg[job_slot][63:32];
+-    if(chosen_zoom>vcfg[job_slot][95:64])chosen_zoom=vcfg[job_slot][95:64];
+-   end
+-  end
++  if(source_enable[job_slot] && vcfg[job_slot][7:0]!=0)
++   chosen_zoom=vcfg[job_slot][63:32];
+  end
+  affine_dynamic_compose #(.WIDTH(WIDTH),.HEIGHT(HEIGHT)) composer(.clk(clk),.rst_n(rst_n),
+   .request_valid(job_request && !prepared_valid && !composing && can_prepare),.request_ready(compose_ready),.enabled(source_enable[job_slot]),
+   .manual_matrix(pose_ready[job_slot]?pose_matrix[job_slot]:job_original[191:0]),
+-  .stabilization_matrix(motion_ready[job_slot]?motion_matrix[job_slot]:IDENTITY),.zoom_q16(chosen_zoom),.epoch(job_epoch),.frame_id(job_frame),
++  .zoom_q16(chosen_zoom),.epoch(job_epoch),.frame_id(job_frame),
+   .result_valid(compose_valid),.result_ready(1'b1),.matrix(composed),.result_epoch(composed_epoch),.result_frame(composed_frame),.overflow(compose_overflow));
+  assign job_completion_config=hcfg[job_slot];assign job_registration_version=source_versions[job_slot][31:0];
+  assign job_entity_versions=source_versions[job_slot];
+- assign job_motion_dx_q16=motion_dx[job_slot],job_motion_dy_q16=motion_dy[job_slot],job_motion_confidence=motion_confidence[job_slot];
+- // Resetting the visual reference also invalidates its historical alignment.
+- // The scheduler interprets clear as a request and retains in-flight DMA refs.
+- assign history_capture_enable=capture_enable && cfg_h[0];assign history_clear=toggle || runtime_motion_reset || runtime_history_clear;
+- assign job_history_registration_ok=history_registration[job_slot] && source_enable[job_slot];
++ // Zero diagnostic offsets have ZERO confidence and are never a certificate.
++ // Keep scheduler clear/release semantics and history storage interfaces intact.
++ assign job_motion_dx_q16=0,job_motion_dy_q16=0,job_motion_confidence=0;
++ assign history_capture_enable=capture_enable && cfg_h[0];
++ assign history_clear=toggle || runtime_motion_reset || runtime_history_clear;
++ assign job_history_registration_ok=1'b0;
+  integer i;
+  always @(posedge clk or negedge rst_n)begin
+   if(!rst_n)begin
+-   admitted_s<=0;admitted_v<=0;admitted_h<=0;admitted_p<=0;admitted_g<=0;admitted_enable<=0;admitted_epoch<=0;admitted_frame<=0;admitted_versions<=0;
+-   last_enable<=0;prepared_valid<=0;prepared_geometry<=0;prepared_pose_status<=1;prepared_motion_status<=1;missed_results<=0;
+-   composing<=0;wait_cycles<=0;held_original<=0;last_zoom<=65536;zoom_epoch<=0;
+-   for(i=0;i<3;i=i+1)begin scfg[i]<=0;vcfg[i]<=0;hcfg[i]<=0;pcfg[i]<=0;source_domain[i]<=0;source_distorted[i]<=0;source_enable[i]<=0;sepoch[i]<=0;sframe[i]<=0;
+-    pose_matrix[i]<=0;motion_matrix[i]<=IDENTITY;pose_ready[i]<=1;motion_ready[i]<=1;pose_status[i]<=1;motion_status[i]<=1;zoom_demand[i]<=65536;
+-    motion_dx[i]<=0;motion_dy[i]<=0;motion_confidence[i]<=0;history_registration[i]<=0;source_versions[i]<=0;end
++   admitted_v<=0;admitted_h<=0;admitted_p<=0;admitted_g<=0;admitted_enable<=0;admitted_epoch<=0;admitted_frame<=0;admitted_versions<=0;
++   last_enable<=0;prepared_valid<=0;prepared_geometry<=0;prepared_pose_status<=1;prepared_motion_status<=VISUAL_DISABLED;missed_results<=0;
++   composing<=0;wait_cycles<=0;held_original<=0;
++   for(i=0;i<3;i=i+1)begin vcfg[i]<=0;hcfg[i]<=0;pcfg[i]<=0;source_enable[i]<=0;sepoch[i]<=0;sframe[i]<=0;
++    pose_matrix[i]<=0;pose_ready[i]<=1;pose_status[i]<=1;
++    source_versions[i]<=0;end
+   end else begin
+-   if(capture_admit)begin admitted_s<=cfg_s;admitted_v<=cfg_v;admitted_h<=cfg_h;admitted_p<=cfg_p;admitted_g<=capture_geometry;admitted_versions<=capture_versions;
++   if(capture_admit)begin admitted_v<=cfg_v;admitted_h<=cfg_h;admitted_p<=cfg_p;admitted_g<=capture_geometry;admitted_versions<=capture_versions;
+     admitted_enable<=capture_enable;admitted_epoch<=capture_epoch;admitted_frame<=capture_frame;last_enable<=capture_enable;end
+    // Static slot writes avoid a wide variable-index merge network in ADS.
+    // Each capture changes only its immutable source-owned register bank.
+    for(i=0;i<3;i=i+1)if(source_start && source_slot==i)begin
+-    scfg[i]<=admitted_s;vcfg[i]<=admitted_v;hcfg[i]<=admitted_h;pcfg[i]<=admitted_p;source_versions[i]<=admitted_versions;
+-    source_domain[i]<=admitted_domain;source_distorted[i]<=admitted_g[319:192]!=0;source_enable[i]<=admitted_enable;sepoch[i]<=admitted_epoch;sframe[i]<=admitted_frame;
+-    pose_matrix[i]<=admitted_g[191:0];motion_matrix[i]<=IDENTITY;
++    vcfg[i]<=admitted_v;hcfg[i]<=admitted_h;pcfg[i]<=admitted_p;source_versions[i]<=admitted_versions;
++    source_enable[i]<=admitted_enable;sepoch[i]<=admitted_epoch;sframe[i]<=admitted_frame;
++    pose_matrix[i]<=admitted_g[191:0];
+     pose_ready[i]<=!admitted_enable || !admitted_p[0] || !mcu_enable;
+-    motion_ready[i]<=!admitted_enable || (!admitted_s[0] && !admitted_h[0]) || WIDTH<64 || HEIGHT<36;
+-    pose_status[i]<=mcu_enable?1:3;motion_status[i]<=1;zoom_demand[i]<=65536;motion_confidence[i]<=0;history_registration[i]<=0;
++    pose_status[i]<=mcu_enable?1:3;
+    end
+    for(i=0;i<3;i=i+1)begin
+     if(pose_valid && sepoch[i]==pose_epoch && sframe[i]==pose_frame)begin pose_matrix[i]<=pose_result;pose_status[i]<=pose_result_status;pose_ready[i]<=1;end
+-    if(estimate_valid && sepoch[i]==estimate_epoch && sframe[i]==estimate_frame)begin motion_dx[i]<=estimate_dx;motion_dy[i]<=estimate_dy;motion_confidence[i]<=estimate_confidence;
+-     history_registration[i]<=estimate_status==0 && estimate_rotation==0 && estimate_scale==0 && motion_domain;end
+-    if(trajectory_valid && sepoch[i]==trajectory_epoch && sframe[i]==trajectory_frame)begin motion_matrix[i]<=trajectory_matrix;motion_status[i]<=trajectory_status;motion_ready[i]<=1;zoom_demand[i]<=trajectory_zoom;end
+    end
+    if(job_request && !prepared_valid && !composing && wait_cycles!=65535)wait_cycles<=wait_cycles+1;
+    if(job_request && !prepared_valid && !composing && can_prepare && compose_ready)begin
+     composing<=1;held_original<=job_original;prepared_pose_status<=pose_ready[job_slot]?pose_status[job_slot]:6;
+-    prepared_motion_status<=motion_ready[job_slot]?motion_status[job_slot]:6;
+-    if(vcfg[job_slot][7:0]==2 && source_distorted[job_slot])prepared_motion_status<=7;
++    prepared_motion_status<=VISUAL_DISABLED;
+     if(wait_cycles==65535)missed_results<=missed_results+1;
+-    last_zoom<=chosen_zoom;zoom_epoch<=job_epoch;
+    end
+    if(compose_valid)begin prepared_valid<=1;composing<=0;prepared_geometry<={held_original[447:192],composed};if(compose_overflow)prepared_motion_status<=5;end
+    if(job_accept)begin prepared_valid<=0;wait_cycles<=0;end

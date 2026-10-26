@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FPGA 算法控制 · Pango Vision</title><link rel="stylesheet" href="/app.css">
+<link rel="stylesheet" href="/algorithms.css">
+<script src="/algorithm_drafts.js" defer></script><script src="/algorithms.js" defer></script></head>
+<body><main class="algorithm-workbench">
+<a href="/">← 视频采集工作台</a><h1>FPGA 算法控制</h1>
+<p>指令作用于 FPGA 的 HDMI 输出。先启动已配置网络的新版位流，再读取板端能力与状态。</p>
+<article class="panel">
+<label for="algorithm-port">CP2102 串口</label> <select id="algorithm-port"><option value="">请选择</option></select>
+<button id="algorithm-read" class="button secondary">读取板端状态</button>
+<p id="algorithm-message" role="status">未连接；尚未读取板端状态。</p>
+<label><input id="affine-enable" type="checkbox" disabled> 仿射变换（FPGA）</label>
+<p>关闭使用固定参考视图，保留镜头去畸变、颜色及亮度设置。手动 ON 参数会保留。</p>
+<dl><dt>源帧应用</dt><dd id="source-state">未知</dd><dt>板端显示采用</dt><dd id="display-state">未知</dd></dl>
+<pre id="affine-details"></pre>
+</article>
+<article class="panel">
+<h2>几何草稿</h2><p>先读取 ON 配置。编辑整组定点系数后提交；OFF 状态下提交不会改变当前参考视图。鱼眼 k1～k4 模型不可直接导入。</p>
+<p>以当前 OFF 参考为基准生成 ON 草稿（正角度为顺时针显示旋转）：</p>
+<label>旋转 ° <input id="draft-angle" type="number" value="0" min="-180" max="180" step="0.1"></label>
+<label>平移 X px <input id="draft-x" type="number" value="0"></label>
+<label>平移 Y px <input id="draft-y" type="number" value="0"></label>
+<label>缩放 <input id="draft-scale" type="number" value="1" min="0.25" max="4" step="0.01"></label>
+<button id="draft-build" class="button secondary" disabled>生成草稿并预览有效域</button>
+<p id="draft-coverage">仅计算草稿；不会改变视频或下发 FPGA。</p>
+<canvas id="draft-mask" width="640" height="360" aria-label="采样有效域，绿色有效，深色无效"></canvas>
+<label>标定实体 ID <input id="geometry-id" type="number" min="1" max="2147483647" value="1"></label>
+<p><textarea id="geometry-draft" rows="20" aria-label="仿射与镜头定点系数 JSON"></textarea></p>
+<button id="geometry-load" class="button secondary" disabled>载入板端 ON 配置</button>
+<button id="geometry-submit" class="button primary" disabled>提交完整几何草稿</button>
+<p>JSON 为 a00～a12、k1/k2/p1/p2、fx/fy/cx/cy 和规范第三行；Q26，内参为 Q16。草稿不代表已生效参数。</p>
+</article>
+<article class="panel">
+<h2>OFF 参考视图</h2><p>通过输出内参建立归一化参考矩阵；整组上传、校验并在源帧边界应用。该操作不覆盖 ON 矩阵。</p>
+<label>参考实体 ID <input id="reference-id" type="number" min="1" max="2147483647" value="1"></label>
+<p><textarea id="reference-draft" rows="10" aria-label="参考输出内参 JSON"></textarea></p>
+<button id="reference-load" class="button secondary" disabled>载入当前参考</button>
+<button id="reference-submit" class="button primary" disabled>提交参考视图</button>
+<button id="reference-cancel" class="button secondary" disabled>取消未提交上传</button>
+<p id="reference-state">未知</p>
+</article>
+<!-- Entity drafts are explicit and gated by negotiated firmware capabilities. -->
+<article class="panel">
+<h2>颜色、亮度与运动配置</h2>
+<p>选择能力查询已开放的模块。读取显示板端完整配置及版本；示例只填入草稿，须明确提交才会下发。定点值以字段名中的 Q 格式为准。</p>
+<select id="entity-kind" aria-label="实体类型">
+<option value="1">亮度曲线：关闭 / 手动 / AUTO</option><option value="2">共享 RGB LUT（256 项）</option>
+<option value="3">黑电平、白平衡与 CCM</option><option value="4" disabled>视觉防抖（已撤销）</option>
+<option value="5">裁边与视场</option><option value="6">历史补全</option><option value="7">相机曝光（固定 / 停流AE / 连续候选）</option>
+<option value="8">MCU 姿态标定</option><option value="11">实际运动帧（只读）</option>
+</select>
+<button id="entity-read" class="button secondary" disabled>读取实体</button>
+<button id="entity-load" class="button secondary" disabled>载入已读实际配置</button>
+<button id="entity-example" class="button secondary" disabled>填入关闭状态示例</button>
+<label>实体 ID <input id="entity-id" type="number" min="1" max="2147483647" value="1"></label>
+<!-- Local editor changes only the draft; the complete entity button below
+     is the sole submission action for these color controls. -->
+<section id="color-editor" hidden>
+<h3>线性 RGB 颜色草稿</h3>
+<label><input id="color-enabled" type="checkbox"> 启用 CCM</label>
+<label>白平衡 <select id="color-wb"><option value="0">固定</option><option value="1">受限自动</option></select></label>
+<label>标定来源 ID <input id="color-calibration" type="number" min="0" max="4294967295" value="0"></label>
+<div id="color-matrix" class="color-matrix" aria-label="3×3 CCM 系数，十进制"></div>
+<div id="color-channels"></div>
+<button id="color-load" class="button secondary">从 JSON 草稿载入编辑框</button>
+<button id="color-identity" class="button secondary">恢复单位矩阵草稿</button>
+<button id="color-stage" class="button secondary">量化整组颜色参数到草稿</button>
+<p>系数用十进制输入，写入草稿时量化为 Q14；增益量化为 Q12。受限 AWB 的范围、步长和保持帧数保留在下方 JSON 中。编辑框不会自动发送。</p>
+</section>
+<p><textarea id="entity-draft" rows="12" aria-label="完整配置实体 JSON"></textarea></p>
+<label>导入实体草稿 <input id="entity-import" type="file" accept=".json,application/json"></label>
+<button id="entity-export" class="button secondary">导出草稿 JSON</button>
+<p id="draft-message" role="status"></p>
+<button id="entity-submit" class="button primary" disabled>校验并提交完整实体</button>
+<button id="motion-reset" class="button secondary" disabled>视觉参考已撤销</button>
+<button id="history-clear" class="button secondary" disabled>清空历史引用</button>
+<pre id="entity-state">未读取</pre>
+<p>上传 LUT 不自动启用：读取其版本，再用亮度配置 mode=1、curve=3、lut_version 选择。AUTO 由 FPGA 的 S1 统计驱动，PC 无需持续连接。相机 mode=2 为官方白名单分组写连续 AE 候选，曝光帧归属仍未实测；group 错误需板复位。MCU 跟随还须独立线缆、时钟映射与真实标定通过；界面提交成功不代表条件成立。</p>
+</article>
+<p>外部 HDMI 采集卡的源帧身份仍为 unverified；板端显示读回不能替代采集卡配对证明。</p>
+</main></body></html>

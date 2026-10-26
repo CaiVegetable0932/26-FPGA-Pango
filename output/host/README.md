@@ -1,5 +1,7 @@
 # 上位机需求与开发规划
 
+2026-10-21 当前接口：只接收S0 RAW8连续网络流；删除快照类型2/3、SnapshotSpec及双图释放流程。新增FPGA算法控制页按能力、完整实体、源帧应用和板端显示采用分层读回，接口以 [AFG1](../../fpga/config/integration/ENTITY_CONTROL.md) 为准。外部HDMI来源未验证时仍null/unverified；不得恢复旧同源快照验收要求。
+
 本目录保存上位机待实施规格。按以下顺序阅读；正式代码、配置、测试及运行产物直接写入 [host 开发区](../../host/README.md)。
 
 | 顺序 | 文档 | 内容 |

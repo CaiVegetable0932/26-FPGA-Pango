@@ -1,0 +1,15 @@
+--- before/scripts/prepare_constraints.py
++++ after/scripts/prepare_constraints.py
+@@ -45,7 +45,11 @@
+     pins += attr(port, "PAP_IO_DIRECTION", direction) + attr(port, "PAP_IO_LOC", pin)
+     pins += attr(port, "PAP_IO_VCCIO", voltage) + attr(port, "PAP_IO_STANDARD", standard)
+     pins += attr(port, "PAP_IO_NONE", "TRUE")
+-    if direction != "INPUT" and not port.startswith("hdmi_"):
++    # PG2L100H UCE Guide section 2.6.3: differential TMDS defaults to 5mA;
++    # its SLEW is not applicable. Keep generated constraints explicit as well.
++    if direction != "INPUT" and standard == "TMDS":
++        pins += attr(port, "PAP_IO_DRIVE", "5")
++    elif direction != "INPUT":
+         pins += attr(port, "PAP_IO_DRIVE", "4") + attr(port, "PAP_IO_SLEW", "SLOW" if port == "status_led" else "FAST")
+ (out / "board_pins.fdc").write_text(pins, encoding="ascii")
+ 

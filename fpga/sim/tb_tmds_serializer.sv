@@ -3,9 +3,9 @@
 // 覆盖 /5 分频占空比、全部 1024 个恒定符号、差分互补与复位后重新输出。
 // 边界：只测重复符号的位映射；不覆盖逐像素变码、PLL 实物、HDMI 编码/行场时序或板级电气。
 module tb_tmds_serializer;
-    reg serial_clk = 0, async_reset_n = 0, global_reset_n = 0;
+    reg serial_clk = 0, ref_clk = 0, async_reset_n = 0, global_reset_n = 0;
     reg [9:0] symbol = 0;
-    wire divider_reset_n, pixel_clk, pixel_reset_n, data_p, data_n;
+    wire divider_reset_n, reference_reset_n, clock_ready, pixel_clk, pixel_reset_n, data_p, data_n;
     integer checks = 0, errors = 0, symbols_checked = 0;
     integer phase = -1, candidate, value;
     reg [19:0] captured;
@@ -14,12 +14,15 @@ module tb_tmds_serializer;
 
     // 用同源分频模拟当前 371.25 MHz→74.25 MHz 时钟结构；结果受 1 ps 仿真精度量化。
     always #(500.0/371.25) serial_clk = ~serial_clk;
+    // Use the production 27 MHz native startup controller, so this regression
+    // verifies the actual reset pulse supplied to both divider and serializers.
+    always #(500.0/27.0) ref_clk = ~ref_clk;
     GTP_GRS GRS_INST(.GRS_N(global_reset_n));
-    reset_sync u_divider_reset(serial_clk, async_reset_n, divider_reset_n);
+    video_clock_start u_start(ref_clk,pixel_clk,async_reset_n,
+        reference_reset_n,divider_reset_n,clock_ready,pixel_reset_n);
     GTP_IOCLKDIV_E2 #(.DIV_FACTOR("5")) u_pixel_divider(
         .CLKIN(serial_clk), .RST_N(divider_reset_n), .CE(1'b1), .CLKDIVOUT(pixel_clk));
-    reset_sync u_pixel_reset(pixel_clk, async_reset_n, pixel_reset_n);
-    tmds_serializer u_dut(pixel_clk, serial_clk, !pixel_reset_n, symbol, data_p, data_n);
+    tmds_serializer u_dut(pixel_clk, serial_clk, !divider_reset_n, symbol, data_p, data_n);
 
     // 明确累计检查与失败数，X/Z 不作为有效输出；只有完成标记和零失败同时满足才算通过。
     task check;

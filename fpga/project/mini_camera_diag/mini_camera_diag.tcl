@@ -5,7 +5,12 @@ set fpga_root [file normalize [file join [file dirname [info script]] ../..]]
 set_dir -impl_directory [file join $fpga_root build mini_camera_diag implementation]
 set_arch -family Logos2 -device PG2L100H -speedgrade -6 -package FBG676
 add_design [file join $fpga_root rtl board reset_sync.v]
+# Shared native divider startup and per-domain reset recovery.
+add_design [file join $fpga_root rtl board video_clock_start.v]
 add_design [file join $fpga_root rtl board tmds_serializer.v]
+# Purpose: sensor identity/readback and pre-capture fixed exposure controller.
+add_design [file join $fpga_root rtl mini_camera_diag ov5640_control.v]
+add_design [file join $fpga_root rtl mini_camera_diag ov5640_timing_monitor.v]
 add_design [file join $fpga_root rtl mini_camera_diag mini_frame_pool.v]
 add_design [file join $fpga_root rtl mini_camera_diag vendor Top.v]
 add_design [file join $fpga_root rtl mini_camera_diag vendor camera SCCB.v]
@@ -24,7 +29,8 @@ add_design [file join $fpga_root rtl mini_camera_diag vendor frame_ddr3 frame_fi
 add_design [file join $fpga_root rtl mini_camera_diag vendor frame_ddr3 frame_fifo_write.v]
 add_design [file join $fpga_root rtl mini_camera_diag vendor frame_ddr3 mem_read_arbi.v]
 add_design [file join $fpga_root rtl mini_camera_diag vendor frame_ddr3 mem_write_arbi.v]
-add_design [file join $fpga_root rtl mini_camera_diag vendor frame_ddr3 aq_axi_master_256.v]
+# Purpose: native FIFO adapter replaces generic AXI emulation (no fabricated B).
+add_design [file join $fpga_root rtl mini_camera_diag vendor frame_ddr3 mini_ddr_native_bridge.v]
 add_design [file join $fpga_root ip ddr3_controller ddr3_controller.idf]
 add_design [file join $fpga_root ip video_pll video_pll.idf]
 add_design [file join $fpga_root ip mini_camera_diag afifo_16i_64o_512 afifo_16i_64o_512.idf]

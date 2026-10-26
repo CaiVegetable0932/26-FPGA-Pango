@@ -3,10 +3,12 @@
 // GET_INFO(profile) -> OPEN -> GET_CONFIG(entity) -> SET_STREAM -> SYNC.
 // One request, seq 1..65535 without wrap, two exact retries, 200ms deadline.
 // No opcode for movement/HOME/zero/heartbeat is emitted. STATE is dispatched
-// independently of transactions. Complete configuration must be archived and
-// validated by the entity consumer before high-frequency state is admitted.
+// independently of transactions. Full configuration is externally archived;
+// the consumer approves either its retained bytes or the complete streamed
+// digest before high-frequency state is admitted.
 module mcu_readonly_client #(
- parameter BAUD=460800,REQUEST_TIMEOUT_US=200000,SYNC_INTERVAL_US=1000000
+ parameter BAUD=460800,REQUEST_TIMEOUT_US=200000,SYNC_INTERVAL_US=1000000,
+ parameter CONFIG_DIGEST_ONLY=0
 )(
  input clk,input rst_n,input [63:0] now_us,input enable,input [31:0] new_session,
  input rx_valid,input [7:0] rx_data,input rx_error,
@@ -15,7 +17,7 @@ module mcu_readonly_client #(
  output reg session_valid,output reg [63:0] boot_id,output reg [31:0] session_id,
  output reg reopen_required,
  output reg config_valid,input config_ready,input config_approved,
- output reg [2111:0] config_entity,output reg [31:0] config_version,
+ output reg [2111:0] config_entity,output reg [31:0] config_version,config_crc32,
  output reg state_valid,output reg [767:0] state_payload,output reg [63:0] state_receive_us,
  output reg event_valid,input event_ready,output reg [319:0] event_payload,
  output reg mapping_valid,output reg signed [63:0] clock_offset_us,
@@ -23,6 +25,18 @@ module mcu_readonly_client #(
  output [31:0] bad_crc,bad_header,timeouts,overflows,
  output reg [31:0] rejected_states,rejected_replies,reconnects,event_drops
 );
+ // Exact modulo-width arithmetic is unchanged; ask installed ADS to use
+ // available APM add/sub resources instead of LUT carry chains. This adds no
+ // RTL stages. Native resource and timing results decide whether to retain it.
+ wire [63:0] request_elapsed_apm /* synthesis syn_dspstyle="block_mult" */ = now_us-request_start;
+ wire [63:0] sync_elapsed_apm /* synthesis syn_dspstyle="block_mult" */ = now_us-sync_received_us;
+ wire [63:0] next_sync_apm /* synthesis syn_dspstyle="block_mult" */ = now_us+SYNC_INTERVAL_US;
+ wire [63:0] sync_a_base_apm /* synthesis syn_dspstyle="block_mult" */ = sync_t1+REQUEST_LINE_US;
+ wire [63:0] sync_b_base_apm /* synthesis syn_dspstyle="block_mult" */ = sync_t4-REPLY_LINE_US;
+ wire [63:0] sync_a_apm /* synthesis syn_dspstyle="block_mult" */ = sync_a_base-$signed(sync_t2);
+ wire [63:0] sync_b_apm /* synthesis syn_dspstyle="block_mult" */ = sync_b_base-$signed(sync_t3);
+ wire [63:0] sync_rtt_apm /* synthesis syn_dspstyle="block_mult" */ = sync_b-sync_a;
+ wire [63:0] sync_average_apm /* synthesis syn_dspstyle="block_mult" */ = (sync_a>>>1)+(sync_b>>>1)+(sync_a[0] && sync_b[0]);
  localparam INFO=0,OPEN=1,CONFIG=2,STREAM=3,RUN=4;
  localparam REQUEST_LINE_US=(34*10000000+BAUD-1)/BAUD;
  localparam REPLY_LINE_US=(50*10000000+BAUD-1)/BAUD;
@@ -43,26 +57,82 @@ module mcu_readonly_client #(
  reg signed [63:0] sync_a_base,sync_b_base,sync_a,sync_b,sync_rtt,sync_offset;
  reg [31:0] sync_capture_error;reg sync_eligible;
  reg state_decision_pending,state_context_valid,state_new_config,state_had_sample;
- reg [767:0] state_buffer;reg [63:0] state_time;
+ reg [63:0] state_time;
  reg [31:0] state_delta;
  wire [13:0] sync_abs_rtt=sync_rtt[63] ? -sync_rtt[13:0] : sync_rtt[13:0];
- reg [2239:0] received;
+ // STATE is the largest decision payload (96B). GET_CONFIG's 264B entity
+ // streams directly into its held consumer bank, avoiding a second 280B copy.
+ wire [767:0] received;
  reg [9:0] read_index;
- wire packet_valid,read_response;
+ wire packet_valid,packet_revoked,read_response;
  wire [7:0] packet_cmd,read_data;wire [15:0] packet_seq,packet_length;
  wire [63:0] receive_time;
- wire read_valid=collecting && !read_wait;
+ // A synchronous read response can outlive the parser's HOLD by one edge.
+ // Also fence the very edge that loses a UART byte or overflows the ring;
+ // neither a last-byte response nor process_packet may revive that borrow.
+ wire borrow_live=packet_valid && !packet_revoked;
+ wire read_valid=collecting && !read_wait && borrow_live;
+ // Decode byte writes into fixed lanes. The packet-wide variable part-select
+ // otherwise synthesizes a wide merge network for a single received byte.
+ // Clear on borrow exactly as before, so short packets cannot retain old tails.
+ genvar receive_byte;
+ generate for(receive_byte=0;receive_byte<96;receive_byte=receive_byte+1)begin:receive_bytes
+  reg [7:0] value;
+  assign received[receive_byte*8+:8]=value;
+  always @(posedge clk or negedge rst_n)
+   if(!rst_n)value<=0;
+   else if(borrow_live && !collecting && !process_packet && packet_length<=280)value<=0;
+   else if(collecting && borrow_live && read_response && read_index==receive_byte)value<=read_data;
+ end endgenerate
+ // The parser has checked the whole wire CRC before lending the packet.
+ // Read its 16B response header first, then write config bytes only for the
+ // outstanding command/sequence/boot/session. Never touch an entity already
+ // held valid for approval. Partial/aborted reads stay unpublished.
+ wire collecting_config=collecting && borrow_live && read_response && enable &&
+   new_session==session_id && !reopen_required && !config_valid &&
+   packet_length==280 && response_ok && request_cmd==8'h42 && context_ok;
+ // Board policy consumes the digest of every byte, not a parallel entity bus.
+ // Full-entity mode remains available for offline/other consumers. Both modes
+ // calculate the same digest before config_valid and keep it until approval.
+ reg [31:0] collecting_crc;
+ function [31:0] config_crc_byte(input [31:0] c,input [7:0] b);
+  reg [31:0] v;integer j;begin v=c^b;for(j=0;j<8;j=j+1)v=(v>>1)^(v[0]?32'hedb88320:0);config_crc_byte=v;end
+ endfunction
+ wire [31:0] next_config_crc=config_crc_byte(collecting_crc,read_data);
+ always @(posedge clk or negedge rst_n)
+  if(!rst_n)begin collecting_crc<=32'hffffffff;config_crc32<=0;end
+  else if(borrow_live && !collecting && !process_packet)collecting_crc<=32'hffffffff;
+  else if(collecting_config && read_index>=16)begin
+   collecting_crc<=next_config_crc;
+   if(read_index==279)config_crc32<=~next_config_crc;
+  end
+ genvar config_byte;
+ generate if(!CONFIG_DIGEST_ONLY)begin:full_config
+ for(config_byte=0;config_byte<264;config_byte=config_byte+1)begin:config_bytes
+  always @(posedge clk or negedge rst_n)
+   if(!rst_n)config_entity[config_byte*8+:8]<=0;
+   else if(collecting_config && read_index==config_byte+16)
+    config_entity[config_byte*8+:8]<=read_data;
+ end
+ end else begin:digest_config
+  // Retain the exact published entity version for the policy's cross-check;
+  // upper bytes are deliberately absent and must not be advertised as a copy.
+  always @*config_entity={2080'd0,config_version};
+ end endgenerate
  wire packet_ack=process_packet || (packet_valid && !collecting && !process_packet && packet_length>280);
  wire [31:0] sample_delta=received[128+:32]-last_sample;
  wire context_ok=received[0+:64]==boot_id && received[64+:32]==session_id;
  wire response_ok=pending && packet_seq==request_seq && packet_cmd==8'h80 &&
    packet_length>=16 && received[96+:8]==request_cmd && received[104+:8]==0;
+ // A packet completing exactly at the final timeout cannot revive the failed
+ // session or republish an event after restart has revoked its mailbox.
+ wire session_expiring=pending && !tx_active && retries==2 && request_elapsed_apm>=REQUEST_TIMEOUT_US;
  wire [63:0] t2=received[192+:64],t3=received[256+:64];
  wire signed [63:0] a_offset=$signed(t1+REQUEST_LINE_US)-$signed(t2);
  wire signed [63:0] b_offset=$signed(receive_time-REPLY_LINE_US)-$signed(t3);
  wire signed [63:0] corrected_rtt=b_offset-a_offset;
  uart_v2_parser parser(.clk(clk),.rst_n(rst_n),.now_us(now_us),.byte_valid(rx_valid),.byte_data(rx_data),
-  .byte_error(rx_error),.packet_valid(packet_valid),.packet_ready(packet_ack),.cmd(packet_cmd),
+  .byte_error(rx_error),.packet_valid(packet_valid),.packet_revoked(packet_revoked),.packet_ready(packet_ack),.cmd(packet_cmd),
   .seq(packet_seq),.length(packet_length),.receive_us(receive_time),
   .read_valid(read_valid),.read_index(read_index),.read_response(read_response),.read_data(read_data),
   .bad_crc(bad_crc),.bad_header(bad_header),.timeouts(timeouts),.overflows(overflows),.peak_bytes());
@@ -100,7 +170,8 @@ module mcu_readonly_client #(
    pending<=0;tx_active<=0;have_sample<=0;next_seq<=1;
    reopen_required<=1;
    sync_step<=0;
-   state_decision_pending<=0;state_valid<=0;
+   // Unconsumed events belong to this session and must never be ACKed after reopen.
+   state_decision_pending<=0;state_valid<=0;event_valid<=0;
    reconnects<=reconnects+1;
   end
  endtask
@@ -110,24 +181,28 @@ module mcu_readonly_client #(
    next_seq<=1;request_length<=0;request_payload<=0;tx_pos<=0;tx_crc<=16'hffff;
    retries<=0;request_start<=0;next_sync<=0;t1<=0;sync_id<=0;last_sample<=0;
    last_event<=0;ack_target<=0;have_sample<=0;collecting<=0;read_wait<=0;process_packet<=0;
-   read_index<=0;received<=0;session_valid<=0;boot_id<=0;session_id<=0;
-   config_valid<=0;config_entity<=0;config_version<=0;state_valid<=0;state_payload<=0;state_receive_us<=0;reopen_required<=0;
+   read_index<=0;session_valid<=0;boot_id<=0;session_id<=0;
+   config_valid<=0;config_version<=0;state_valid<=0;state_payload<=0;state_receive_us<=0;reopen_required<=0;
    event_valid<=0;event_payload<=0;mapping_valid<=0;clock_offset_us<=0;clock_error_us<=0;sync_received_us<=0;
    rejected_states<=0;rejected_replies<=0;reconnects<=0;event_drops<=0;
    sync_step<=0;sync_t1<=0;sync_t2<=0;sync_t3<=0;sync_t4<=0;
    sync_a_base<=0;sync_b_base<=0;sync_a<=0;sync_b<=0;sync_rtt<=0;sync_offset<=0;
    sync_capture_error<=0;sync_eligible<=0;
    state_decision_pending<=0;state_context_valid<=0;state_new_config<=0;state_had_sample<=0;
-   state_buffer<=0;state_time<=0;state_delta<=0;
+   state_time<=0;state_delta<=0;
   end else begin
    state_valid<=0;process_packet<=0;
-   // Stage sample delta separately from acceptance/statistics enables. Keep
-   // the immutable complete STATE across parser ACK, never use the next packet.
+   // Stage sample delta separately from acceptance/statistics enables.
+   // received is already a complete client-owned copy, independent of parser
+   // ACK/revocation. process_packet does not write it; on this next edge any
+   // new borrow clears it only AFTER these reads (nonblocking assignments).
+   // Thus a second 768-bit intermediate copy is unnecessary. Keep the public
+   // state_payload register and its original publication/reset behavior.
    if(state_decision_pending) begin
     state_decision_pending<=0;
     if(state_context_valid && (!state_had_sample || state_delta!=0 && !state_delta[31])) begin
-     state_payload<=state_buffer;state_receive_us<=state_time;state_valid<=1;
-     last_sample<=state_buffer[128+:32];have_sample<=1;
+     state_payload<=received;state_receive_us<=state_time;state_valid<=1;
+     last_sample<=received[128+:32];have_sample<=1;
     end else begin
      rejected_states<=rejected_states+1;
      if(state_new_config) begin
@@ -139,11 +214,11 @@ module mcu_readonly_client #(
    // the reply before returning borrowed RX storage; concurrent STATE reception
    // continues. No multicycle exception or live-payload dependency is needed.
    case(sync_step)
-    4: begin sync_a_base<=$signed(sync_t1+REQUEST_LINE_US);sync_b_base<=$signed(sync_t4-REPLY_LINE_US);sync_step<=3;end
-    3: begin sync_a<=sync_a_base-$signed(sync_t2);sync_b<=sync_b_base-$signed(sync_t3);sync_step<=2;end
+    4: begin sync_a_base<=$signed(sync_a_base_apm);sync_b_base<=$signed(sync_b_base_apm);sync_step<=3;end
+    3: begin sync_a<=sync_a_apm;sync_b<=sync_b_apm;sync_step<=2;end
     2: begin
-     sync_rtt<=sync_b-sync_a;
-     sync_offset<=(sync_a>>>1)+(sync_b>>>1)+(sync_a[0] && sync_b[0]);sync_step<=1;
+     sync_rtt<=sync_rtt_apm;
+     sync_offset<=sync_average_apm;sync_step<=1;
     end
     1: begin
      sync_step<=0;
@@ -155,18 +230,17 @@ module mcu_readonly_client #(
     default: begin end
    endcase
    if(event_valid && event_ready) begin event_valid<=0;ack_target<=event_payload[96+:32];end
-   if(packet_valid && !collecting && !process_packet && packet_length<=280) begin
-    received<=0;read_index<=0;collecting<=packet_length!=0;read_wait<=0;
+   if(borrow_live && !collecting && !process_packet && packet_length<=280) begin
+    read_index<=0;collecting<=packet_length!=0;read_wait<=0;
     if(packet_length==0) process_packet<=1;
    end
    if(read_valid) read_wait<=1;
-   if(collecting && !packet_valid) begin
+   if(collecting && !borrow_live) begin
     // Overflow/framing discontinuity can revoke a borrowed parser packet.
     // Abandon its partial entity instead of waiting indefinitely for more reads.
-    collecting<=0;read_wait<=0;rejected_replies<=rejected_replies+1;
-   end
-   if(collecting && read_response) begin
-    received[read_index*8+:8]<=read_data;read_wait<=0;
+    collecting<=0;read_wait<=0;process_packet<=0;rejected_replies<=rejected_replies+1;
+   end else if(collecting && read_response) begin
+    read_wait<=0;
     if(read_index==packet_length-1) begin collecting<=0;process_packet<=1;end
     else read_index<=read_index+1'b1;
    end
@@ -189,7 +263,7 @@ module mcu_readonly_client #(
      // Integration must allocate a fresh nonzero session before reconnecting.
      session_valid<=0;mapping_valid<=0;
     end
-    else if(pending && !tx_active && now_us-request_start>=REQUEST_TIMEOUT_US) begin
+    else if(pending && !tx_active && request_elapsed_apm>=REQUEST_TIMEOUT_US) begin
      if(retries==2) restart();
      else begin retries<=retries+1'b1;tx_active<=1;tx_pos<=0;tx_crc<=16'hffff;request_start<=now_us;end
     end else if(!pending && !tx_active && !config_valid) begin
@@ -206,7 +280,11 @@ module mcu_readonly_client #(
       default: restart();
      endcase
     end
-   end else begin session_valid<=0;mapping_valid<=0;pending<=0;tx_active<=0;phase<=INFO;have_sample<=0;config_valid<=0;sync_step<=0;state_decision_pending<=0;state_valid<=0;end
+   end else begin
+    // Disabling the boundary also revokes its borrowed event mailbox.
+    session_valid<=0;mapping_valid<=0;pending<=0;tx_active<=0;phase<=INFO;
+    have_sample<=0;config_valid<=0;sync_step<=0;state_decision_pending<=0;state_valid<=0;event_valid<=0;
+   end
    // Session rotation fences even an already-received configuration/reply.
    // Caller changing the nonce on this edge must not approve the old entity.
    if(enable && new_session==session_id && !reopen_required && config_valid && config_ready) begin
@@ -215,9 +293,9 @@ module mcu_readonly_client #(
    end
    // Responses are matched by command AND seq AND context. A CRC-valid wrong
    // boot response never selects a new boot; identity is established by INFO.
-   if(process_packet && enable && new_session==session_id && !reopen_required) begin
+   if(process_packet && borrow_live && enable && new_session==session_id && !reopen_required && !session_expiring) begin
     if(packet_cmd==8'h81) begin
-     state_buffer<=received[0+:768];state_time<=receive_time;state_delta<=sample_delta;
+     state_time<=receive_time;state_delta<=sample_delta;
      state_had_sample<=have_sample;state_decision_pending<=1;
      state_context_valid<=session_valid && packet_length==96 && context_ok &&
        received[96+:32]==config_version && packet_seq==received[128+:16];
@@ -229,7 +307,7 @@ module mcu_readonly_client #(
      else if(received[96+:32]>ack_target) event_drops<=event_drops+1;
     end else if(packet_cmd==8'h82 && packet_length==40 && pending && request_cmd==8'h45 &&
                 packet_seq==request_seq && context_ok && received[96+:32]==sync_id && received[128+:64]==t1) begin
-     pending<=0;next_sync<=now_us+SYNC_INTERVAL_US;
+     pending<=0;next_sync<=next_sync_apm;
      sync_t1<=t1;sync_t2<=t2;sync_t3<=t3;sync_t4<=receive_time;
      sync_eligible<=timing_bound_valid && capture_error_us<=1000000 && t3>=t2;
      sync_capture_error<=capture_error_us;sync_step<=4;
@@ -246,7 +324,9 @@ module mcu_readonly_client #(
       case(request_cmd)
        8'h41: if(packet_length==24) begin phase<=CONFIG;pending<=0;end
        8'h42: if(packet_length==280 && received[128+:32]!=0) begin
-        config_entity<=received[128+:2112];config_version<=received[128+:32];config_valid<=1;pending<=0;
+        // All entity bytes (and their complete digest) were consumed before
+        // publication; digest-only builds retain only version and CRC.
+        config_version<=received[128+:32];config_valid<=1;pending<=0;
        end
        8'h43: if(packet_length==20 && received[128+:16]==200 && received[144+:16]==0) begin
         phase<=RUN;pending<=0;next_sync<=now_us;
@@ -263,7 +343,7 @@ module mcu_readonly_client #(
    end
    // Mapping expires independently of STATE rate; its hardware uncertainty and
    // drift bound must be added by the frame selector, never hidden by 200Hz RX.
-   if(mapping_valid && now_us-sync_received_us>SYNC_INTERVAL_US*2) mapping_valid<=0;
+   if(mapping_valid && sync_elapsed_apm>SYNC_INTERVAL_US*2) mapping_valid<=0;
   end
  end
 endmodule

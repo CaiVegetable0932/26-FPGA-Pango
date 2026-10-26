@@ -28,6 +28,9 @@ set_false_path -hold -to [get_cells {display_valid_meta}]
 # PDS flattening removes module-port through points (STA-3015); register endpoints
 # survive mapping. These drivers connect ONLY to receiving asynchronous reset,
 # never to the shift data. All stage-to-stage and final-stage fanout remain timed.
-set_false_path -from [get_cells {rs_sys.stages*}] -to [get_cells {camera_inst0.rs_capture.stages*}]
+set_false_path -from [get_cells {u_video_start.rs_ref.stages*}] -to [get_cells {camera_inst0.rs_capture.stages* u_video_start.pixel_ready_meta u_video_start.pixel_stages*}]
+# Only the ready decode feeds pixel stage zero; later stages stay normally timed.
+set_max_delay 6.0 -datapath_only -from [get_cells {u_video_start.start_count*}] -to [get_cells {u_video_start.pixel_ready_meta}]
+set_false_path -hold -from [get_cells {u_video_start.start_count*}] -to [get_cells {u_video_start.pixel_ready_meta}]
 set_false_path -from [get_cells {rs_mem.stages* frame_read_write_inst0.frame_fifo_write_m0.fifo_aclr frame_read_write_inst0.frame_fifo_write_m0.write_req_ack}] -to [get_cells {frame_read_write_inst0.rs_capture_fifo.stages* frame_read_write_inst0.rs_write_mem.stages*}]
 set_false_path -from [get_cells {rs_mem.stages* frame_read_write_inst0.frame_fifo_read_m0.fifo_aclr frame_read_write_inst0.frame_fifo_read_m0.read_req_ack}] -to [get_cells {frame_read_write_inst0.rs_display_fifo.stages* frame_read_write_inst0.rs_read_mem.stages*}]

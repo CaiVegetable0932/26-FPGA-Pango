@@ -4,34 +4,105 @@
 // This is NOT the removed MCU_POSE_V1 protocol. It uses a separate parser and
 // never emits motion commands. Boot addresses stay immutable; runtime 0x90/92
 // status/mode and 0x94/95 geometry use queued whole entities and frozen readback.
-module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200)(
+module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200,parameter [15:0] ENTITY_MASK=16'h0200,parameter STREAM_CCM=0)(
  input clk,rst_n,input uart_rx,output uart_tx,output reg configured,
  output reg [63:0] epoch,output reg [47:0] local_mac,peer_mac,
  output reg [31:0] local_ip,peer_ip,output reg [15:0] local_port,peer_port,
- input [767:0] control_status,
+ input [767:0] control_status,affine_status,reference_status,
+ output reference_submit_valid,output [511:0] reference_entity,
+ output [31:0] reference_version,reference_entity_id,input [7:0] reference_submit_code,
+ // Configuration-only packed buses. Consumers capture on COMMIT; no pixel
+ // carries this staging payload. Readback freezes one selected entity record.
+ output entity_submit_valid,output [15:0] entity_kind,entity_length,
+ output [2047:0] entity_body,input [7:0] entity_submit_code,
+ output [15:0] entity_read_kind,input [2303:0] entity_status,
+ // Discrete motion actions queue at a source boundary independently of uploads.
+ output runtime_action_valid,output [15:0] runtime_action,runtime_action_seq,input [7:0] runtime_action_code,
+ output affine_submit_valid,output [95:0] affine_payload,output [15:0] affine_sequence,
+ input [7:0] affine_submit_code,
  output mode_submit_valid,input mode_submit_ready,output [1:0] mode_submit,output [31:0] mode_version,
- input [767:0] geometry_status,snapshot_s1_status,snapshot_result_status,snapshot_geometry_status,output geometry_submit_valid,input geometry_submit_ready,
- output [543:0] geometry_submit,output [31:0] geometry_version,geometry_entity_id,
- output snapshot_arm,input snapshot_arm_ready
+ input [767:0] geometry_status,output geometry_submit_valid,input geometry_submit_ready,
+ output [543:0] geometry_submit,output [31:0] geometry_version,geometry_entity_id
 );
- localparam IDLE=0,COLLECT=1,CHECK=2,SEND=3,DRAIN=4,RUN=5,TRANSMIT=6,SUBMIT=7,GUARD=8,GUARD_WAIT=9,GEOMETRY_SUBMIT=10,SNAPSHOT_SUBMIT=11;
+ localparam IDLE=0,COLLECT=1,CHECK=2,SEND=3,DRAIN=4,RUN=5,TRANSMIT=6,SUBMIT=7,GUARD=8,GUARD_WAIT=9,GEOMETRY_SUBMIT=10,ACTION_SUBMIT=11,AFFINE_SUBMIT=12,ENTITY_REQUEST=13,ENTITY_WAIT=14,PAGE_REPLY=15;
  reg [3:0] state;reg [6:0] index,collect_length;reg [5:0] tx_index;reg waiting,tx_active,accepted;
- reg [7:0] operation;reg [1535:0] status_snapshot;reg have_snapshot;reg [7:0] snapshot_operation;
- reg [639:0] received;reg [255:0] reply;reg [15:0] reply_seq,tx_crc;
+ reg [15:0] readback_kind,entity_last_sequence;reg [7:0] next_entity_page,entity_last_page;
+ // Capacity follows advertised entities: LUT readback alone needs 12 pages;
+ // MCU policy needs8, pose/frame records7, legacy/reference records4.
+ localparam SNAPSHOT_PAGES=ENTITY_MASK[2]?12:ENTITY_MASK[12]?8:(ENTITY_MASK[8] || ENTITY_MASK[11])?7:4;
+ localparam UPLOAD_BYTES=ENTITY_MASK[2]?256:ENTITY_MASK[8]?128:64;
+ reg [7:0] operation;reg [SNAPSHOT_PAGES*192-1:0] status_snapshot;reg have_snapshot;reg [7:0] snapshot_operation;
+ wire [639:0] received;reg [255:0] reply;reg [15:0] reply_seq,tx_crc;
  reg [7:0] reply_cmd,selected_byte;
  wire byte_valid,byte_error,uart_ready;wire [7:0] byte_data;
  reg [6:0] us_divider;reg [63:0] now_us;
  wire packet_valid,read_response;wire [7:0] command,read_data;wire [15:0] seq,length;
  wire read_valid=state==COLLECT && !waiting;
  wire supported=(!configured && command==8'h71 && length==32) ||
-  (configured && (((command==8'h90 || command==8'h95 || command==8'h96 || command==8'h97) && length==1) || (command==8'h92 && length==6) || (command==8'h94 && length==80) || (command==8'h93 && length==1)));
+  (configured && (((command==8'h90 || command==8'h95) && length==1) || (command==8'h92 && length==6) || (command==8'h94 && length==80) || (command==8'ha6 && length==12) || (command==8'ha0 && length==1) || (command==8'ha4 && length==4) || (command==8'ha1 && length==24) || (command==8'ha2 && length>=9 && length<=72) || (command==8'ha3 && length==12) || (command==8'ha5 && length==8)));
  wire packet_ready=state==CHECK || ((state==IDLE || state==RUN) && packet_valid && !supported);
- assign snapshot_arm=state==SNAPSHOT_SUBMIT;
+ wire entity_request_ready,entity_response_valid;wire [7:0] entity_response_code;
+ wire [31:0] entity_transaction;wire [15:0] entity_frontier;
+ wire upload_submit;wire [7:0] consumer_code=entity_kind==9?reference_submit_code:entity_submit_code;
+ // Qualify each attempt with its own consumer only. In particular the
+ // reference multiplier/validator must never control MCU session/event CE.
+ assign reference_submit_valid=upload_submit && entity_kind==9 && reference_submit_code==0;
+ assign entity_submit_valid=upload_submit && entity_kind!=9 && entity_submit_code==0;
+ assign entity_read_kind=received[15:0];
+ wire read_kind_legal=received[15:0]==9 || received[15:0]==10 ||
+                     (received[15:0]<=12 && ENTITY_MASK[received[3:0]]);
+ function [7:0] page_count(input [15:0] kind);
+  begin case(kind)
+   1,4,5:page_count=3;
+   2:page_count=12;
+   3,7,9,10:page_count=4;
+   6:page_count=2;
+   8,11:page_count=7;
+   // MCU policy plus diagnostics are one atomic readback, eight pages.
+   12:page_count=8;
+   default:page_count=0;
+  endcase end
+ endfunction
+ // An exact last-page retry replays the frozen data without advancing. This
+ // covers a lost/corrupt UART response, including page zero across a frame edge.
+ wire [3:0] status_page=operation==8'ha4 ? received[19:16]:{2'd0,received[1:0]};
+ // All status commands share one frozen-page mux. Page zero also passes this
+ // stage, avoiding separate wide bypass networks for five backend records.
+ // Pages are fixed 24B lanes. A shared one-hot decode avoids synthesizing
+ // a variable 192-bit alignment/barrel network for the twelve legal pages.
+ reg [191:0] frozen_page;integer read_page_index;
+ always @*begin
+  frozen_page=0;
+  for(read_page_index=0;read_page_index<SNAPSHOT_PAGES;read_page_index=read_page_index+1)
+   frozen_page=frozen_page | (status_snapshot[read_page_index*192+:192] & {192{status_page==read_page_index}});
+ end
+ wire entity_page_retry=have_snapshot && snapshot_operation==8'ha4 &&
+  readback_kind==received[15:0] && entity_last_sequence==reply_seq && entity_last_page==received[23:16];
+ // Operation and kind are mutually exclusive selections, so decode once
+ // and combine in parallel instead of cascading wide priority multiplexers.
+ wire [2303:0] selected_entity_status=
+   ({2304{operation==8'ha4 && received[15:0]==10}} & {1536'd0,affine_status}) |
+   ({2304{operation==8'ha4 && received[15:0]==9}} & {1536'd0,reference_status}) |
+   ({2304{operation==8'ha4 && received[15:0]!=9 && received[15:0]!=10}} & entity_status) |
+   ({2304{operation==8'h95}} & {1536'd0,geometry_status}) |
+   ({2304{operation==8'h90}} & {1536'd0,control_status});
+ // STREAM_CCM is an internal proof; command formats and COMMIT timing stay unchanged.
+ pc_reference_upload #(.ENTITY_MASK(ENTITY_MASK),.UNQUALIFIED_SUBMIT(1),.STREAM_CCM(STREAM_CCM)) upload(.clk(clk),.rst_n(rst_n),.now_us(now_us),
+  .request_valid(state==ENTITY_REQUEST),.request_ready(entity_request_ready),.command(operation),
+  .length(collect_length),.payload(received),.response_valid(entity_response_valid),
+  .response_ready(state==ENTITY_WAIT),.response_code(entity_response_code),
+  .transaction(entity_transaction),.accepted_bytes(entity_frontier),
+  .reference_submit_valid(upload_submit),.reference_entity(reference_entity),
+  .entity_kind(entity_kind),.entity_body(entity_body),.entity_length(entity_length),
+  .reference_version(reference_version),.reference_id(reference_entity_id),.reference_code(consumer_code));
+ assign runtime_action_valid=state==ACTION_SUBMIT,runtime_action=received[15:0],runtime_action_seq=reply_seq;
+ assign affine_submit_valid=state==AFFINE_SUBMIT;
+ assign affine_payload=received[95:0],affine_sequence=reply_seq;
  assign geometry_submit_valid=state==GEOMETRY_SUBMIT;
  assign geometry_submit=received[607:64],geometry_version=received[31:0],geometry_entity_id=received[63:32];
  // Validate all 19 signed words and CRC32 over the first 76 payload bytes.
  // These are the supported fixed-point implementation bounds, not an optical
- // calibration certificate. Invalid depth pixels still receive the mask.
+ // calibration certificate. The canonical homogeneous row is checked before accepting the entity.
  wire [607:0] entity_low,entity_high;
  genvar bound_word;
  generate for(bound_word=0;bound_word<19;bound_word=bound_word+1)begin: geometry_bounds
@@ -48,7 +119,7 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200)(
  wire guard_ready,guard_valid,guard_accepted;
  parameter_entity_guard #(.WORDS(19)) geometry_guard(.clk(clk),.rst_n(rst_n),.submit_valid(state==GUARD),.submit_ready(guard_ready),
   .entity(received[607:0]),.lower_bounds(entity_low),.upper_bounds(entity_high),.expected_crc(received[639:608]),
-  .format_supported(received[31:0]>geometry_status[576+:32] && received[63:32]!=0 && received[607:512]!=0),
+  .format_supported(received[31:0]>geometry_status[576+:32] && received[63:32]!=0 && received[543:512]==0 && received[575:544]==0 && received[607:576]==32'h04000000),
   .result_valid(guard_valid),.result_ready(state==GUARD_WAIT),.validated(guard_accepted),.result_entity(),.reject_reason());
  assign mode_submit_valid=state==SUBMIT,mode_submit=received[1:0],mode_version=received[47:16];
  uart_8n1 #(.CLK_HZ(CLK_HZ),.BAUD(BAUD)) uart(.clk(clk),.rst_n(rst_n),.rx(uart_rx),.tx(uart_tx),
@@ -64,6 +135,16 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200)(
  wire entity_valid=received[63:0]!=0 && received[111:64]!=0 && received[159:112]!=0 &&
   !received[64] && !received[112] && received[167:160]!=0 && received[167:160]<224 &&
   received[199:192]!=0 && received[199:192]<224 && received[239:224]!=0 && received[255:240]!=0;
+ // The UART parser fills one byte at a time. Explicit byte enables avoid a
+ // wide read/modify/write mux over the 80-byte collected command payload.
+ genvar command_byte;
+ generate for(command_byte=0;command_byte<80;command_byte=command_byte+1)begin:command_bytes
+  reg [7:0] value;
+  assign received[command_byte*8+:8]=value;
+  always @(posedge clk or negedge rst_n)
+   if(!rst_n)value<=0;
+   else if(read_response && index==command_byte)value<=read_data;
+ end endgenerate
  // Reply formatter holds bytes/CRC under UART backpressure and echoes the PC
  // sequence. Configuration becomes active after the final UART stop-bit drain.
  always @*begin
@@ -77,13 +158,13 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200)(
  end
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin state<=IDLE;index<=0;waiting<=0;tx_index<=0;tx_active<=0;accepted<=0;
-   received<=0;reply<=0;reply_seq<=0;reply_cmd<=0;tx_crc<=16'hffff;configured<=0;
-   collect_length<=0;operation<=0;status_snapshot<=0;have_snapshot<=0;snapshot_operation<=0;
+   reply<=0;reply_seq<=0;reply_cmd<=0;tx_crc<=16'hffff;configured<=0;
+   readback_kind<=0;next_entity_page<=0;entity_last_sequence<=0;entity_last_page<=0;collect_length<=0;operation<=0;have_snapshot<=0;snapshot_operation<=0;
    epoch<=0;local_mac<=0;peer_mac<=0;local_ip<=0;peer_ip<=0;local_port<=0;peer_port<=0;us_divider<=0;now_us<=0;end
   else begin
    if(us_divider==124)begin us_divider<=0;now_us<=now_us+1'b1;end else us_divider<=us_divider+1'b1;
    if(read_valid)waiting<=1;
-   if(read_response)begin received[index*8+:8]<=read_data;waiting<=0;
+   if(read_response)begin waiting<=0;
     if(index==collect_length-1'b1)state<=CHECK;else index<=index+1'b1;end
    if(tx_active && uart_ready)begin
     if(tx_index>=2 && tx_index<40)tx_crc<=crc_byte(tx_crc,selected_byte);
@@ -105,18 +186,50 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200)(
       local_ip<={received[167:160],received[175:168],received[183:176],received[191:184]};
       peer_ip<={received[199:192],received[207:200],received[215:208],received[223:216]};local_port<=received[239:224];peer_port<=received[255:240];
       end
-     end else if(operation==8'h90 || operation==8'h95 || operation==8'h96 || operation==8'h97)begin
+     end else if(operation==8'ha5 && (received[15:0]==3 || received[15:0]==4))begin
+      if(received[63:16]!=0)begin reply[7:0]<=11;reply_cmd<=8'h81;end
+      else if((received[15:0]==3 && !ENTITY_MASK[4]) || (received[15:0]==4 && !ENTITY_MASK[6]))begin reply[7:0]<=6;reply_cmd<=8'h81;end
+      else state<=ACTION_SUBMIT;
+     end else if(operation==8'ha1 || operation==8'ha2 || operation==8'ha3 || operation==8'ha5)begin
+      state<=ENTITY_REQUEST;
+     end else if(operation==8'ha6)begin
+      reply[63:32]<=received[63:32];
+      if(affine_submit_code!=0)begin reply[7:0]<=affine_submit_code;reply_cmd<=8'h81;end
+      else state<=AFFINE_SUBMIT;
+     end else if(operation==8'ha0)begin
+      // Capability bit2 is reference upload. C algorithms remain clear until
+      // their complete runtime paths are connected and verified.
+      reply_cmd<=received[7:0]==0?8'h80:8'h81;
+      reply[7:0]<=received[7:0]==0?0:11;reply[31:24]<=24;
+      reply[63:32]<=32'h31474641;reply[79:64]<=1;reply[95:80]<=1;
+      reply[127:96]<=32'h00000005;reply[159:128]<={16'd0,ENTITY_MASK | 16'h0600};
+      reply[175:160]<=UPLOAD_BYTES;reply[183:176]<=64;reply[191:184]<=1;
+      reply[255:224]<=32'h31474641;
+     end else if(operation==8'ha4)begin
+      reply[23:16]<=received[23:16];reply[31:24]<=24;reply[255:224]<=32'h31474641;
+      if(!read_kind_legal || received[31:24]!=0 || received[23:16]>=page_count(received[15:0]) ||
+         (received[23:16]!=0 && !entity_page_retry && (!have_snapshot || snapshot_operation!=operation || readback_kind!=received[15:0] || next_entity_page!=received[23:16])))begin
+       reply[7:0]<=11;reply_cmd<=8'h81;
+      end else begin
+       reply_cmd<=8'h80;
+       state<=PAGE_REPLY;
+       if(!entity_page_retry)begin
+        entity_last_sequence<=reply_seq;entity_last_page<=received[23:16];
+        if(received[23:16]==0)begin
+         have_snapshot<=1;snapshot_operation<=operation;
+         readback_kind<=received[15:0];next_entity_page<=1;
+        end else next_entity_page<=next_entity_page+1'b1;
+       end
+      end
+     end else if(operation==8'h90 || operation==8'h95)begin
       reply[23:16]<=received[7:0];reply[31:24]<=24;reply[255:224]<=32'h31424752;
-      if(received[7:0]>=(operation==8'h96 ? 8:4) || (received[7:0]!=0 && (!have_snapshot || snapshot_operation!=operation)))begin reply[7:0]<=11;reply_cmd<=8'h81;end
+      if(received[7:0]>=4 || (received[7:0]!=0 && (!have_snapshot || snapshot_operation!=operation)))begin reply[7:0]<=11;reply_cmd<=8'h81;end
       else begin
        reply[7:0]<=0;reply_cmd<=8'h80;
-       if(received[7:0]==0)begin status_snapshot<=operation==8'h96 ? {snapshot_result_status,snapshot_s1_status}:{768'd0,(operation==8'h95 ? geometry_status:(operation==8'h97 ? snapshot_geometry_status:control_status))};have_snapshot<=1;snapshot_operation<=operation;reply[223:32]<=operation==8'h96 ? snapshot_s1_status[0+:192]:(operation==8'h95 ? geometry_status[0+:192]:(operation==8'h97 ? snapshot_geometry_status[0+:192]:control_status[0+:192]));end
-       else reply[223:32]<=status_snapshot[received[2:0]*192+:192];
+       // Freeze the 96-byte status entity at page zero for coherent readback.
+       if(received[7:0]==0)begin have_snapshot<=1;snapshot_operation<=operation;end
+       state<=PAGE_REPLY;
       end
-     end else if(operation==8'h93)begin
-      if(received[7:0]!=0)begin reply[7:0]<=11;reply_cmd<=8'h81;end
-      else if(!snapshot_arm_ready)begin reply[7:0]<=4;reply_cmd<=8'h81;end
-      else state<=SNAPSHOT_SUBMIT;
      end else if(operation==8'h94)begin
       reply[63:32]<=received[31:0];reply[95:64]<=received[63:32];
       if(!geometry_submit_ready)begin reply[7:0]<=4;reply_cmd<=8'h81;end else state<=GUARD;
@@ -124,12 +237,29 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200)(
       // Received/validated is distinct from applied. The ACK reports a queued
       // mode entity; status page 1 supplies the actual capture epoch/frame.
       reply[63:32]<=received[47:16];
-      if(received[7:0]>2 || received[15:8]!=0 || received[47:16]<=control_status[320+:32])begin reply[7:0]<=11;reply_cmd<=8'h81;end
+      if(received[7:0]==2)begin reply[7:0]<=6;reply_cmd<=8'h81;end
+      else if(received[7:0]>2 || received[47] || received[15:8]!=0 || received[47:16]<=control_status[320+:32])begin reply[7:0]<=11;reply_cmd<=8'h81;end
       else if(!mode_submit_ready)begin reply[7:0]<=4;reply_cmd<=8'h81;end
       else state<=SUBMIT;
      end
     end
-    SNAPSHOT_SUBMIT:if(snapshot_arm_ready)begin reply[7:0]<=0;reply[23:16]<=2;reply_cmd<=8'h80;state<=SEND;end
+    PAGE_REPLY:begin reply[223:32]<=frozen_page;state<=SEND;end
+    ENTITY_REQUEST:if(entity_request_ready)state<=ENTITY_WAIT;
+    ENTITY_WAIT:if(entity_response_valid)begin
+     reply[7:0]<=entity_response_code;reply_cmd<=entity_response_code==0?8'h80:8'h81;
+     reply[23:16]<=entity_response_code==0 ? (operation==8'ha3 ? 2:1):0;
+     reply[63:32]<=entity_transaction;reply[79:64]<=entity_frontier;
+     reply[127:96]<=reference_version;reply[159:128]<=reference_entity_id;state<=SEND;
+    end
+    ACTION_SUBMIT:begin
+     reply[7:0]<=runtime_action_code;reply_cmd<=runtime_action_code==0?8'h80:8'h81;
+     reply[23:16]<=runtime_action_code==0?2:0;state<=SEND;
+    end
+    AFFINE_SUBMIT:begin
+     // Recheck arbitration at the actual acceptance edge, including retries.
+     reply[7:0]<=affine_submit_code;reply_cmd<=affine_submit_code==0?8'h80:8'h81;
+     reply[23:16]<=affine_submit_code==0?2:0;state<=SEND;
+    end
     GUARD:if(guard_ready)state<=GUARD_WAIT;
     GUARD_WAIT:if(guard_valid)begin
      if(!guard_accepted)begin reply[7:0]<=11;reply_cmd<=8'h81;state<=SEND;end
@@ -147,4 +277,15 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200)(
    endcase
   end
  end
+
+ // Private readback storage is overwritten in full on accepted page zero.
+ // Reset clears have_snapshot/state, so no page can expose its uninitialized
+ // payload. Keep the exact original capture edge and last-page retry freeze;
+ // removing the payload reset reduces reset/control-set routing pressure.
+ wire capture_status_snapshot=state==CHECK &&
+  (((operation==8'h90 || operation==8'h95) && received[7:0]==0) ||
+   (operation==8'ha4 && read_kind_legal && received[31:24]==0 &&
+    received[23:16]==0 && page_count(received[15:0])!=0 && !entity_page_retry));
+ always @(posedge clk) if(rst_n && capture_status_snapshot)
+  status_snapshot<=selected_entity_status;
 endmodule

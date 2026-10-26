@@ -1,0 +1,22 @@
+{
+  "source_kind": "synthetic_rtl_fixture",
+  "hardware_tested": false,
+  "physical_camera_source_verified": false,
+  "pixel_format": "RAW8",
+  "width": 1920,
+  "height": 1080,
+  "bit_depth": 8,
+  "row_stride": 1920,
+  "valid_bytes": 2073600,
+  "bayer_code": 4,
+  "bayer_phase_verified": false,
+  "stream_epoch": 72623859790382856,
+  "frame_id": 19,
+  "param_version": 7,
+  "descriptor_id": 305419896,
+  "source_pattern": "(row*7+column*3+17) mod 256",
+  "sha256": "80ad06782b8b6c2df489f4e9ce35df24bc9f7e83f0b63666c558d204ad1c2232",
+  "capture_reference_us": null,
+  "hdmi_source_frame_id": null,
+  "pairing_status": "unverified"
+}

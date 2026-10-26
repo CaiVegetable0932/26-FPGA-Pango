@@ -1,4 +1,4 @@
-##### Written on 2026/09/15 21:17:33 ###############################
+##### Written on 2026/09/16 21:16:56 ###############################
 
 
 ##### INFO ##################################################
@@ -18,7 +18,7 @@ Constraint File(s) :
 
 ##### SUMMARY ######################################################
 
-Found 0 error(s), 52 critical warning(s), 0 warning(s), out of 821 constraint(s)
+Found 0 error(s), 52 critical warning(s), 0 warning(s), out of 822 constraint(s)
 
 
 Inapplicable constraints(except overwritten constraints):
@@ -183,6 +183,10 @@ set_false_path -from [get_cells {rs_sys.stages*}] -to [get_cells {camera_inst0.r
 set_false_path -from [get_cells {rs_sys.stages*}] -to [get_cells {camera_inst0.rs_capture.stages*}]
 	I: The pattern 'camera_inst0.rs_capture.stages*' in command 'get_cells camera_inst0.rs_capture.stages*' match 1 objects below:
 	I: instance camera_inst0/rs_capture/stages[2:0]
+
+set_false_path -from [get_cells {video_div_reset_n*}]
+	I: The pattern 'video_div_reset_n*' in command 'get_cells video_div_reset_n*' match 1 objects below:
+	I: instance video_div_reset_n
 
 set_false_path -hold -from [get_cells {frame_read_write_inst0.read_buf.U_ipm2l_fifo_afifo_64i_16o_128.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*}] -to [get_cells {frame_read_write_inst0.read_buf.U_ipm2l_fifo_afifo_64i_16o_128.U_ipm2l_fifo_ctrl.ASYN_CTRL.wrptr1*}]
 	I: The pattern 'frame_read_write_inst0.read_buf.U_ipm2l_fifo_afifo_64i_16o_128.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*' in command 'get_cells frame_read_write_inst0.read_buf.U_ipm2l_fifo_afifo_64i_16o_128.U_ipm2l_fifo_ctrl.ASYN_CTRL.rptr*' match 1 objects below:

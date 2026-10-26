@@ -1,0 +1,107 @@
+{
+  "baseline": {
+    "count": 320,
+    "mismatches": []
+  },
+  "new_frozen": {
+    "count": 318,
+    "mismatches": []
+  },
+  "workspace_rtl_mismatch": [],
+  "old_visual_sources_unchanged": {
+    "s1_motion_estimator.sv": true,
+    "motion_trajectory.sv": true
+  },
+  "proofs": [
+    {
+      "run": "fpga\\build\\full_integration_20261013\\verilator_20261022_210131_896483",
+      "passed": true,
+      "files": 89,
+      "snapshot_mismatches": [],
+      "frozen_rtl_mismatches": []
+    },
+    {
+      "run": "fpga\\build\\full_integration_20261013\\verilator_20261022_210201_182041",
+      "passed": true,
+      "files": 89,
+      "snapshot_mismatches": [],
+      "frozen_rtl_mismatches": []
+    },
+    {
+      "run": "fpga\\build\\full_integration_20261013\\verilator_20261022_210228_305114",
+      "passed": true,
+      "files": 89,
+      "snapshot_mismatches": [],
+      "frozen_rtl_mismatches": []
+    },
+    {
+      "run": "fpga\\build\\full_integration_20261013\\verilator_20261022_210255_461714",
+      "passed": true,
+      "files": 89,
+      "snapshot_mismatches": [],
+      "frozen_rtl_mismatches": []
+    },
+    {
+      "run": "fpga\\build\\full_integration_20261013\\verilator_20261022_210320_563852",
+      "passed": true,
+      "files": 89,
+      "snapshot_mismatches": [],
+      "frozen_rtl_mismatches": []
+    },
+    {
+      "run": "fpga\\build\\full_integration_20261013\\verilator_20261022_210355_820210",
+      "passed": true,
+      "files": 91,
+      "snapshot_mismatches": [],
+      "frozen_rtl_mismatches": []
+    },
+    {
+      "run": "fpga\\build\\full_integration_20261013\\verilator_20261022_210420_916353",
+      "passed": true,
+      "files": 89,
+      "snapshot_mismatches": [],
+      "frozen_rtl_mismatches": []
+    },
+    {
+      "run": "fpga\\build\\full_integration_20261013\\verilator_20261022_210425_485255",
+      "passed": true,
+      "files": 87,
+      "snapshot_mismatches": [],
+      "frozen_rtl_mismatches": []
+    },
+    {
+      "run": "fpga\\build\\full_integration_20261013\\verilator_20261022_210951_871840",
+      "passed": true,
+      "files": 87,
+      "snapshot_mismatches": [],
+      "frozen_rtl_mismatches": []
+    },
+    {
+      "run": "fpga\\build\\full_integration_20261013\\sim_20261022_210640_798511",
+      "passed": true,
+      "files": 103,
+      "snapshot_mismatches": [],
+      "frozen_rtl_mismatches": []
+    }
+  ],
+  "changed_rtl": [
+    "rtl/board/pango_video_system.sv",
+    "rtl/board/video_memory_core.sv",
+    "rtl/control/frame_runtime_actions.sv",
+    "rtl/stabilization/affine_dynamic_compose.sv",
+    "rtl/stabilization/motion_config_bank.sv",
+    "rtl/stabilization/source_motion_controller.sv"
+  ],
+  "workspace_nonrtl_changes_after_freeze": [
+    "config/implementation_readiness.json",
+    "config/integration/ENTITY_CONTROL.md"
+  ],
+  "native_build": {
+    "directory": "fpga\\build\\full_integration_20261013\\board_20261022_210425_587876",
+    "source_count": 318,
+    "same_manifest_as_frozen": true,
+    "all_hashes_intact": true,
+    "native_exit": 0,
+    "stage": "dev_map"
+  }
+}

@@ -1,15 +1,15 @@
 `timescale 1ns/1ps
-// Unintegrated two-clock subsystem. DDR-side descriptors are borrowed and
+// Affine-only two-clock subsystem; the mailbox carries six ray coefficients. DDR-side descriptors are borrowed and
 // MUST remain immutable until job_done, including metadata and LUT version.
 // LUT programming ports belong to processing_clk; a DDR pulse is not legal.
 // All native traffic drains before the mailbox releases scheduler ownership.
 // No PLL/reset integration or CDC timing signoff is implied by this adapter.
-module geometry_processing_domain #(parameter META_BITS=616,PROJECTIVE=0)(
+module geometry_processing_domain #(parameter META_BITS=616,EXTERNAL_TONE_PAGES=0)(
  input clk,rst_n,processing_clk,processing_rst_n,input job_valid,output job_ready,
  input [31:0] source_base,source_generation,result_base,result_generation,
  input [15:0] width,height,input [447:0] coefficients,input [META_BITS-1:0] metadata,
- input [1:0] enhancement,input [31:0] lut_version,input [95:0] projective,
- input lut_write,input [7:0] lut_addr,lut_data,input lut_commit,
+ input [1:0] enhancement,input [31:0] lut_version,
+ input lut_write,input [7:0] lut_addr,lut_data,input lut_commit,input lut_page,input [31:0] lut_program_version,
  output job_done,job_failed,output [META_BITS-1:0] result_metadata,
  output source_req_valid,input source_req_ready,output [31:0] source_req_addr,source_req_tag,
  output [4:0] source_req_beats,output source_cancel,
@@ -20,28 +20,31 @@ module geometry_processing_domain #(parameter META_BITS=616,PROJECTIVE=0)(
  output result_w_valid,input result_w_ready,output [255:0] result_w_data,output [31:0] result_w_strb,
  input result_done,output result_done_ready,input result_error,result_cancelled,input [31:0] result_done_tag
 );
- localparam JOB_BITS=META_BITS+738;
+ localparam JOB_BITS=META_BITS+642;
  wire pv,pr,pdone,pfail;wire [JOB_BITS-1:0] pjob;
  wire [31:0] psb,psg,prb,prg,plv;wire [15:0] pw,ph;
- wire [447:0] pc;wire [95:0] pp;wire [1:0] pe;wire [META_BITS-1:0] pm;
+ wire [447:0] pc;wire [1:0] pe;wire [META_BITS-1:0] pm;
  wire sreq,sready,scancel,srv,srr,srl,sd,sdr,se,sx;
  wire [31:0] sa,st,sdt;wire [4:0] sn;wire [255:0] sdata;
  wire rreq,rready,rcancel,rwv,rwr,rd,rdr,re,rx;
  wire [31:0] ra,rt,rdt;wire [4:0] rn;wire [255:0] rdata;wire [31:0] rstrb;
- // The processor's existing frame admission registers are the bundled-data
- // capture endpoints, avoiding an additional full-width mailbox shadow.
- assign {psb,psg,prb,prg,pw,ph,pc,pm,pe,plv,pp}=pjob;
+ // The mailbox first captures all fields in processing_clk before offering
+ // the job, including fields used by combinational admission checks.
+ assign {psb,psg,prb,prg,pw,ph,pc,pm,pe,plv}=pjob;
  assign result_metadata=metadata;
  processing_job_cdc #(.JOB_BITS(JOB_BITS)) job_mailbox(
   .source_clk(clk),.source_rst_n(rst_n),.source_valid(job_valid),.source_ready(job_ready),
-  .source_job({source_base,source_generation,result_base,result_generation,width,height,coefficients,metadata,enhancement,lut_version,projective}),
+  .source_job({source_base,source_generation,result_base,result_generation,width,height,coefficients,metadata,enhancement,lut_version}),
   .source_done(job_done),.source_failed(job_failed),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),
-  .processing_valid(pv),.processing_ready(pr),.processing_job(pjob),.processing_done(pdone),.processing_failed(pfail));
- geometry_frame_processor #(.META_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) processor(
+  .processing_valid(pv),.processing_ready(pr),.processing_job(pjob),.processing_done(pdone),.processing_failed(pfail),
+  .processing_result(1'b0),.source_result());
+ geometry_frame_processor #(.META_BITS(META_BITS),.EXTERNAL_TONE_PAGES(EXTERNAL_TONE_PAGES),.PROGRAM_VERSION_SEPARATE(1)) processor(
   .clk(processing_clk),.rst_n(processing_rst_n),.job_valid(pv),.job_ready(pr),
   .source_base(psb),.source_generation(psg),.result_base(prb),.result_generation(prg),
-  .width(pw),.height(ph),.coefficients(pc),.metadata(pm),.enhancement(pe),.lut_version(plv),.projective(pp),
-  .lut_write(lut_write),.lut_addr(lut_addr),.lut_data(lut_data),.lut_commit(lut_commit),
+  .width(pw),.height(ph),.coefficients(pc),.metadata(pm),.enhancement(pe),.lut_version(plv),
+  // Legacy programming uses its original held version even before a job;
+  // board external pages use the explicit processing-domain program version.
+  .lut_write(lut_write),.lut_addr(lut_addr),.lut_data(lut_data),.lut_commit(lut_commit),.lut_page(lut_page),.lut_program_version(EXTERNAL_TONE_PAGES?lut_program_version:lut_version),
   .job_done(pdone),.job_failed(pfail),.result_metadata(),
   .source_req_valid(sreq),.source_req_ready(sready),.source_req_addr(sa),.source_req_tag(st),.source_req_beats(sn),.source_cancel(scancel),
   .source_r_valid(srv),.source_r_ready(srr),.source_r_data(sdata),.source_r_last(srl),.source_done(sd),.source_done_ready(sdr),

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Pango FPGA Workbench
+Comment=Restore the verified FPGA Ethernet and Hagibis preview at login
+Exec=/usr/bin/sh /usr/local/libexec/pango/open_workbench_at_login.sh
+Terminal=false
+X-GNOME-Autostart-enabled=true

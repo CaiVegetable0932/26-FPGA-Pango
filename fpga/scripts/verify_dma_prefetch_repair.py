@@ -52,7 +52,7 @@ def main():
         max_wait_cycles='[CLIENTS*32-1:0]',bus_bytes='[CLIENTS*32-1:0]',useful_write_bytes='[CLIENTS*32-1:0]',
         awaddr='[27:0]',araddr='[27:0]',awlen='[3:0]',awid='[3:0]',arlen='[3:0]',arid='[3:0]',
         awvalid='',arvalid='',native_wdata='[255:0]',native_wstrb='[31:0]',fault='')
-    ins='clk rst_n controller_ready allow_snapshot req_valid req_write req_addr req_beats req_tag urgent cancel w_valid w_data w_strb r_ready done_ready awready native_wready native_wid native_wlast arready native_rdata native_rvalid native_rid native_rlast'.split()
+    ins='clk rst_n controller_ready req_valid req_write req_addr req_beats req_tag urgent cancel w_valid w_data w_strb r_ready done_ready awready native_wready native_wid native_wlast arready native_rdata native_rvalid native_rid native_rlast'.split()
     params='CLIENTS TAG_BITS MAX_BEATS EMERGENCY_QUOTA VERIFY_WRITES CAPACITY_BYTES'.split()
     parameter_ports='#('+','.join('.'+n+'('+n+')' for n in params)+')'
     body='\n'.join(' wire '+width+' ref_'+n+';' for n,width in outputs.items())+'\n'

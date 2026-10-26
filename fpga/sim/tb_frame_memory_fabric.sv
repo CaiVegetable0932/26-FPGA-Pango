@@ -4,11 +4,11 @@ import frame_manager_pkg::*;
 // memory scoreboard, including delayed visibility and corrupted EARLY beats.
 // This tests RTL transactions; the model is not the vendor DDR timing model.
 module tb_frame_memory_fabric;
- localparam N=7;
+ localparam N=6;
  reg clk=0,rst_n=0;always #4 clk=~clk;
- reg controller_ready=1,display_boundary=0,allow_snapshot=1;
- reg [5*CMD_BITS-1:0] frame_command=0;
- wire [5*RSP_BITS-1:0] frame_response;
+ reg controller_ready=1,display_boundary=0;
+ reg [3*CMD_BITS-1:0] frame_command=0;
+ wire [3*RSP_BITS-1:0] frame_response;
  reg [N-1:0] req_valid=0,req_write=0,urgent=0,cancel=0,w_valid=0,r_ready='1,done_ready=0;
  wire [N-1:0] req_ready,w_ready,r_valid,r_last,done,error,cancelled;
  reg [N*32-1:0] req_addr=0,req_tag=0,req_generation=0;
@@ -25,6 +25,11 @@ module tb_frame_memory_fabric;
  byte mem[0:65535];
  integer wa=0,ra=0,wl=0,rl=0,wi=0,ri=0,cycle=0,checks=0,writes=0,reads=0;
  reg block_read=1,corrupt_early=0;
+ // Invalid descriptor tests must not merely avoid payload transfer: even an
+ // address VALID is forbidden throughout local rejection and its reply hold.
+ reg rejection_only=0;
+ always @(posedge clk)if(rst_n && rejection_only && (awvalid || arvalid))
+  $fatal(1,"invalid descriptor reached native address channel");
  frame_cmd_t command;frame_rsp_t response;frame_meta_t meta;
  reg [1:0] slot;reg [31:0] generation;
  // The native side cannot be stalled on read data. Return gaps/address delays
@@ -134,7 +139,34 @@ module tb_frame_memory_fabric;
   done_ready[1]=1;tick;done_ready=0;generation=generation+1;
   request(1,1,0,1,0);wait(done[1]);#1;
   check(error[1] && !fault,"stale generation rejected without native issue");
-  // All seven producers can queue against the same bank, with independently
+  // Withdrawn banks and unowned HISTORY/invalid owner reads cannot reach DDR.
+  cold_reset;block_read=0;allocate;
+  for(integer invalid_case=0;invalid_case<4;invalid_case=invalid_case+1)begin
+   @(negedge clk);req_valid[5]=1;req_write[5]=0;req_beats[25+:5]=1;
+   req_bank[15+:3]=invalid_case<2 ? invalid_case+3:0;
+   req_addr[160+:32]=invalid_case==0 ? 32'h03c00000:invalid_case==1 ? 32'h04400000:0;
+   req_owner[15+:3]=invalid_case==2 ? 5:4;req_slot[10+:2]=slot;req_generation[160+:32]=generation;
+   tick;@(negedge clk);req_valid[5]=0;wait(done[5]);#1;
+   check(error[5] && !fault,"withdrawn bank or unowned/invalid reader rejected");
+   done_ready[5]=1;tick;@(negedge clk);done_ready=0;
+  end
+  // The wrapper proves all four checks removed from its specialized DMA.
+  // Exercise each failure before token allocation, plus 33-bit wrap and slot
+  // overrun. The same dual-DMA wrapper compares every statistic and handshake.
+  for(integer shape_case=0;shape_case<6;shape_case=shape_case+1)begin
+   cold_reset;block_read=0;allocate;rejection_only=1;
+   case(shape_case)
+    0:request(1,1,1,1,0);
+    1:request(1,1,0,0,0);
+    2:request(1,1,0,17,0);
+    3:request(1,1,32'h00000fe0,2,0);
+    4:request(1,1,32'hffffffe0,2,0);
+    5:request(1,1,32'h007fffe0,2,0);
+   endcase
+   wait(done[1]);#1;check(error[1] && !fault,"shape check rejected before native issue");
+   repeat(3)tick;done_ready[1]=1;tick;@(negedge clk);done_ready=0;rejection_only=0;
+  end
+  // All six producers can queue against the same bank, with independently
   // reserved data and unique tickets; no shared-bank completion may be lost.
   cold_reset;block_read=1;allocate;
   fork
@@ -144,12 +176,11 @@ module tb_frame_memory_fabric;
    begin request(3,1,768,2,0);payload(3,2);end
    begin request(4,1,1024,2,0);payload(4,2);end
    begin request(5,1,1280,2,0);payload(5,2);end
-   begin request(6,1,1536,2,0);payload(6,2);end
   join
   seal;repeat(10)tick;response=frame_response[0+:RSP_BITS];
-  check(response.published==0,"seven writes retain publication fence");
-  block_read=0;wait(done==7'h7f);repeat(3)tick;response=frame_response[0+:RSP_BITS];
-  check(error==0 && !fault && response.published==1,"seven unique completions publish exactly once");
+  check(response.published==0,"six writes retain publication fence");
+  block_read=0;wait(done==6'h3f);repeat(3)tick;response=frame_response[0+:RSP_BITS];
+  check(error==0 && !fault && response.published==1,"six unique completions publish exactly once");
   $display("FRAME_MEMORY_FABRIC_PASS checks=%0d",checks);$finish;
  end
  initial begin #1000000;$fatal(1,"FABRIC_TIMEOUT");end

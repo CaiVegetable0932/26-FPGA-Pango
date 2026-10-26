@@ -1,0 +1,72 @@
+PAGE 21
+                           第 2 章 ADS 综合的基本操作 
+ 
+                   20 / 129             ADS Synthesis User Guide 
+Logos2/Titan2/Titan3 系列。设置为非选中状态则不进行 LUT 的 pack。默认为打
+开 状 态 ，Logos2/Titan2/Titan3 系 列 外 默 认 为 置 灰 状 态 。 与 shell 命 令 的 
+–enable_prepacking 功能等价。 
+Automatic Read/Write Check Insertion for RAM ：与 shell 命令中的
+-rw_check_on_ram 功能等价。 
+说明： 当前只有简单双端口ram 触发了 transparent_write 模式后并勾选该选项后，
+会插入 bypass 逻辑， 保证在同一个时钟周期内， 读出去的数据就是写入的数据，
+避免出现仿真不一致。 
+Resource Sharing：Resource Sharing 开关。默认是打开状态，对算数运算实
+现资源共享， 主要是对加法 （减法） 运算和乘法运算进行资源共享。 资源合并后
+可优化面积，但可能会降低时序。设置为非选中状态不进行资源共享。与 shell
+命令的-resource_sharing 功能等价。 
+    Pipelining：Pipelining 开关。 默认是打开状态， 通过挪动寄存器往前， 将dpram
+异步输出端口的 mux–chain 就吸收掉，从而减少资源，优化面积。设置为非选
+中状态则不进行 Pipelining 操作。与 shell 命令的-pipelining 功能等价。 
+Retiming：Retiming 开关；默认是关闭状态，打开开关后，Retiming 通过移
+动电路中已有的 register 的方式，来实现对电路的 timing, power，或者 area 的优
+化。 在此过程中， 不会插入多余的逻辑， 但是在移动register 中可能会增减 register
+的数量。与 shell 命令的 -retiming 功能等价。 
+Minimum Control-set Size： 调整具有同一控制端口的 FF 的最小值， 即CLK、
+CE、同步 SET/RESET 等端口一致的 FF 的最小值。默认值为 2，可选值为正整
+数。当具有同一控制端口的 FF 大于等于设置值时，不进行优化；当小于最小值
+时，会将对应的 FF 的部分或全部控制引脚移至 D 输入端。与 shell 命令的 
+–min_controlset_size 功能等价。 
+
+PAGE 52
+                          第 4 章 shell 命令执行 ADS 综合 
+ 
+                   51 / 129             ADS Synthesis User Guide 
+synthesize –ads 命令完成 ADS 的 synthesize 阶段的流程，该阶段有相应的 
+option 供用户设置。synthesize 命令的 option 及对应的描述如下： 
+ 
+Option                   Description 
+-fanout_guide 设置 fanout 的最大值，option 后的值为整型变量 
+-rw_check_on_ram 
+Automatic Read/Write Check Insertion for RAM，switch 属性，不需
+要参数 
+-disable_io_insertion Disable I/O Insertion，switch 属性，不需要参数 
+-enable_prepacking LUT6D pack 开关，switch 属性，不需要参数 
+-resource_sharing 
+Resource Sharing 开关。option 后的参数可设置为 true/false， 设置为
+true 时，进行资源共享，设置为 false 时，不进行资源共享 
+-min_controlset_size 调整具有同一控制端口的 FF 的最小值，option 后的值为整型变量 
+-retiming 
+Retiming 开关， 可在综合中通过移动寄存器的方式优化时序，switch
+属性，不需要参数 
+--pipelining 
+Pipelining 开关，可在综合中通过移动寄存器的方式优化面积，
+switch 属性，不需要参数 
+-max_path 
+设置综合时序报告中报告的最差时序路径的数量，option 后的值为
+整型变量 
+-nworst 
+设置综合时序分析时，报出的每个 end point 最多能保存的 path 数
+量，option 后的值为整型变量 
+-path_logic_level_gt_than 
+综合时序分析时，报出的每个 setup/recovery 时序路径的 Logic 
+Levels 必须大于设定值，小于该值的时序路径将不予显示，option
+后的值为整型变量 
+-frequency 
+用于 infer clock 中， 如果无法根据PLL 的参数以及参考时钟计算正
+确的时钟频率，就会用这个 option 的设置值为时钟频率来创建时
+钟，需大于 1.0000 才会被写入 
+-use_clocked_period_for_uncons
+traint_io 
+为用户没有约束 IO delay 的 port 增加 IO delay 约束， 提升时序约束
+的覆盖程度，switch 属性，不需要参数 
+ 

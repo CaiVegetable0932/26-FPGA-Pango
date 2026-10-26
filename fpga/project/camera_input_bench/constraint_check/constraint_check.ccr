@@ -1,0 +1,50 @@
+##### Written on 2026/10/12 15:58:14 ###############################
+
+
+##### INFO ##################################################
+
+Current device : 
+	PG2L100H-6FBG676
+
+Top Module : 
+	camera_control_bench
+
+Constraint File(s) : 
+	D:/XDU/concept/26-FPGA-Pango/fpga/project/camera_input_bench/control_clock.fdc
+
+##### SUMMARY ######################################################
+
+Found 0 error(s), 0 critical warning(s), 11 warning(s), out of 2 constraint(s)
+
+
+Inapplicable constraints(except overwritten constraints):
+********************************************
+
+
+Constraints with issues:
+********************************************
+
+
+Issues without commands:
+********************************************
+
+
+Unconstrained ports:
+********************************************
+
+W: ConstraintEditor-4019: Port Bus 'active_entity' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'active_version' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'returned_cookie' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'seed' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port Bus 'status' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'SCL' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'SDA' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'apply' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'clk' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'quiesced' unspecified I/O constraint.
+W: ConstraintEditor-4019: Port 'rst_in' unspecified I/O constraint.
+
+Constraints with matching wildcard expressions:
+********************************************
+
+

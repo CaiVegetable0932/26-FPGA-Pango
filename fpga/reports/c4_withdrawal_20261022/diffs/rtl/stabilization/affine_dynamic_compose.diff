@@ -1,0 +1,75 @@
+--- baseline/rtl/stabilization/affine_dynamic_compose.sv
++++ c4_withdrawal/rtl/stabilization/affine_dynamic_compose.sv
+@@ -1,27 +1,27 @@
+ `timescale 1ns/1ps
+-// One frame-level sequential S*M*V composition. M and S are ray Q26; V is a
++// One frame-level sequential M*V composition. M is ray Q26; V is a
+ // pixel-domain centred crop in Q16 (pixel translations do not fit Q26/i32).
+ // Restoring division computes reciprocal zoom in 33 bounded clocks. No pixel
+ // divider or second resampling pass is introduced. Overflow returns original M.
+ module affine_dynamic_compose # (parameter WIDTH=1920,HEIGHT=1080)(
+  input clk,rst_n,input request_valid,output request_ready,input enabled,
+- input [191:0] manual_matrix,stabilization_matrix,input [31:0] zoom_q16,
++ input [191:0] manual_matrix,input [31:0] zoom_q16,
+  input [63:0] epoch,frame_id,
+  output reg result_valid,input result_ready,output reg [191:0] matrix,
+  output reg [63:0] result_epoch,result_frame,output reg overflow
+ );
+  reg busy;reg [2:0] phase,index;reg [5:0] bit_index;
+- reg [191:0] m,s,n,work;reg [32:0] quotient,remainder;reg [31:0] divisor;
++ reg [191:0] m,work;reg [32:0] quotient,remainder;reg [31:0] divisor;
+  reg signed [31:0] inv_zoom,tx,ty;
+  reg signed [63:0] first_product;reg signed [65:0] sum;
+  reg signed [31:0] left0,left1,right0,right1,offset;
+  // A single explicit multiplication node is shared across both matrix terms
+- // and both composition passes even when ADS resource_sharing is disabled.
+- wire second_term=phase==6 || phase==7;
++ // in the fixed viewport pass even when ADS resource_sharing is disabled.
++ wire second_term=phase==6;
+  wire signed [31:0] multiply_left=second_term?left1:left0,multiply_right=second_term?right1:right0;
+  wire signed [63:0] product=multiply_left*multiply_right;
+  wire [33:0] trial={remainder,1'b0}+(bit_index==32?34'd1:34'd0);
+- wire signed [65:0] rounded=phase==3 ? (sum+32768)>>>16 : (sum+33554432)>>>26;
++ wire signed [65:0] rounded=(sum+32768)>>>16;
+  assign request_ready=!busy && !result_valid;
+  // Two shared products generate one coefficient at a time. Translation terms
+  // are added at the product scale, preserving an explicit rounding convention.
+@@ -33,20 +33,16 @@
+    if(index==2 || index==5)begin
+     left0=$signed(m[(index-2)*32+:32]);left1=$signed(m[(index-1)*32+:32]);right0=tx;right1=ty;offset=$signed(m[index*32+:32]);
+    end
+-  end else begin
+-   left0=$signed(s[(index<3?0:3)*32+:32]);left1=$signed(s[(index<3?1:4)*32+:32]);
+-   right0=$signed(n[(index%3)*32+:32]);right1=$signed(n[(3+index%3)*32+:32]);
+-   if(index==2 || index==5)offset=$signed(s[index*32+:32]);
+   end
+  end
+  always @(posedge clk or negedge rst_n)begin
+-  if(!rst_n)begin busy<=0;phase<=0;index<=0;bit_index<=0;m<=0;s<=0;n<=0;work<=0;
++  if(!rst_n)begin busy<=0;phase<=0;index<=0;bit_index<=0;m<=0;work<=0;
+    quotient<=0;remainder<=0;divisor<=65536;inv_zoom<=65536;tx<=0;ty<=0;first_product<=0;sum<=0;
+    result_valid<=0;matrix<=0;result_epoch<=0;result_frame<=0;overflow<=0;
+   end else begin
+    if(result_valid && result_ready)result_valid<=0;
+    if(request_valid && request_ready)begin
+-    m<=manual_matrix;s<=stabilization_matrix;matrix<=manual_matrix;result_epoch<=epoch;result_frame<=frame_id;overflow<=0;
++    m<=manual_matrix;matrix<=manual_matrix;result_epoch<=epoch;result_frame<=frame_id;overflow<=0;
+     if(!enabled)result_valid<=1;
+     else if(zoom_q16<65536 || zoom_q16>131072)begin result_valid<=1;overflow<=1;end
+     else begin busy<=1;phase<=0;divisor<=zoom_q16;quotient<=0;remainder<=0;bit_index<=32;end
+@@ -62,14 +58,8 @@
+     6:begin sum<=$signed({{2{first_product[63]}},first_product})+$signed({{2{product[63]}},product})+($signed({{34{offset[31]}},offset})<<<16);phase<=3;end
+     3:begin
+      if(rounded>2147483647 || rounded< -66'sd2147483648)begin busy<=0;result_valid<=1;overflow<=1;matrix<=m;end
+-     else begin n[index*32+:32]<=rounded[31:0];if(index==5)begin index<=0;phase<=4;end else begin index<=index+1;phase<=2;end end
+-    end
+-    4:begin first_product<=product;phase<=7;end
+-    7:begin sum<=$signed({{2{first_product[63]}},first_product})+$signed({{2{product[63]}},product})+($signed({{34{offset[31]}},offset})<<<26);phase<=5;end
+-    5:begin
+-     if(rounded>2147483647 || rounded< -66'sd2147483648)begin busy<=0;result_valid<=1;overflow<=1;matrix<=m;end
+      else begin work[index*32+:32]<=rounded[31:0];if(index==5)begin matrix<={rounded[31:0],work[159:0]};busy<=0;result_valid<=1;end
+-      else begin index<=index+1;phase<=4;end end
++      else begin index<=index+1;phase<=2;end end
+     end
+    endcase
+   end

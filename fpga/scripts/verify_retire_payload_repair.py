@@ -45,7 +45,7 @@ def main():
         done_tag='[N*32-1:0]',bus_bytes='[N*32-1:0]',max_wait_cycles='[N*32-1:0]',useful_write_bytes='[N*32-1:0]',
         fault='',awaddr='[27:0]',araddr='[27:0]',awlen='[3:0]',arlen='[3:0]',awid='[3:0]',arid='[3:0]',
         awvalid='',arvalid='',native_wdata='[255:0]',native_wstrb='[31:0]')
-    ins='clk rst_n controller_ready display_boundary allow_snapshot frame_command req_valid req_write req_addr req_tag req_beats req_bank req_owner req_slot req_generation urgent cancel w_valid w_data w_strb r_ready done_ready awready arready native_wready native_wlast native_wid native_rdata native_rvalid native_rlast native_rid'.split()
+    ins='clk rst_n controller_ready display_boundary frame_command req_valid req_write req_addr req_tag req_beats req_bank req_owner req_slot req_generation urgent cancel w_valid w_data w_strb r_ready done_ready awready arready native_wready native_wlast native_wid native_rdata native_rvalid native_rlast native_rid'.split()
     extra='\n // Separate reference ownership and transport state; shared stimulus only.\n'
     extra+='\n'.join(' wire '+w+' ref_'+n+';' for n,w in outputs.items())+'\n'
     ports=['.'+n+'('+n+')' for n in ins]+['.'+n+'(ref_'+n+')' for n in outputs]

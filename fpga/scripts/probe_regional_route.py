@@ -53,7 +53,7 @@ def main():
         raise ValueError('Synthesis input drift')
     top_match = re.search(r'compile -top_module (\w+) ',
                          (screen/'baseline/flow.tcl').read_text(encoding='utf-8'))
-    if not top_match or top_match[1] not in ('ddr_native_dma','pc_video_boot','dma_byte_unpack','raw_dma_reader','frame_pixel_writer','frame_pool_bank','snapshot_copy_dma'):
+    if not top_match or top_match[1] not in ('ddr_native_dma','pc_video_boot','dma_byte_unpack','raw_dma_reader','frame_pixel_writer','frame_pool_bank'):
         raise ValueError('Only the reviewed isolated tops are authorized')
     top = top_match[1]
     port_lists=[]
@@ -61,7 +61,7 @@ def main():
         filename={'ddr_native_dma':'dma.v','pc_video_boot':'pc_video_boot.sv',
                   'dma_byte_unpack':'unpack.v','raw_dma_reader':'reader.sv',
                   'frame_pixel_writer':'writer.sv','frame_pool_bank':'pool.sv',
-                  'snapshot_copy_dma':'snapshot_copy_dma.sv'}[top]
+                  }[top]
         port_text=(screen/label/filename).read_text(encoding='utf-8')
         if top=='frame_pool_bank':
             # Resolve only the two port-width macros for the parser. Actual
@@ -140,11 +140,6 @@ def main():
             for name in ('frame_manager_pkg.sv','frame_manager_layout.vh'):
                 if digest(source/name)!=digest(candidate/'source/rtl/memory'/name):
                     raise ValueError('Pool dependency drift')
-        elif top=='snapshot_copy_dma':
-            original=(candidate/'original_snapshot_copy_dma.sv' if label=='baseline' else
-                      candidate/'source/rtl/memory/snapshot_copy_dma.sv')
-            if digest(source/'snapshot_copy_dma.sv')!=digest(original):
-                raise ValueError('Snapshot-copy source drift')
         else:
             original = (candidate/'original_pc_video_boot.sv' if label=='baseline' else
                         candidate/'source/rtl/control/pc_video_boot.sv')

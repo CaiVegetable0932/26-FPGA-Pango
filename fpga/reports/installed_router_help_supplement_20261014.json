@@ -1,0 +1,174 @@
+{
+  "qch_source": "E:\\PDS_Pangu\\PDS_2022.2-SP6.4\\bin\\helpDoc_pango.qch",
+  "qch_sha256": "ca2d9a07db35d49fbf9bb582200845e6f32430798fade1b40506bfab7640e577",
+  "read_only_uri": true,
+  "scanned_html_files": [
+    "ADS_Language_Support_Reference_Manual.htm",
+    "ADS_Synthesis_User_Guide.htm",
+    "Design_Editor_User_Guide.htm",
+    "Fabric_Configuration_User_Guide.htm",
+    "Fabric_Debugger_User_Guide.htm",
+    "Fabric_Inserter_User_Guide.htm",
+    "IP_Compiler_User_Guide.htm",
+    "Pango_Design_Suite_Quick_Start_Tutorial.htm",
+    "Pango_Design_Suite_User_Guide.htm",
+    "Pango_Power_Calculator_User_Guide.htm",
+    "Pango_Power_Planner_User_Guide.htm",
+    "Pango_SSN_Analyzer_User_Guide.htm",
+    "Pango_SSN_Estimator_User_Guide.htm",
+    "Physical_Constraint_Editor_User_Guide.htm",
+    "Route_Constraint_Editor_User_Guide.htm",
+    "Simulation_User_Guide.htm",
+    "Timing_Analyzer_User_Guide.htm",
+    "User_Constraint_Editor_User_Guide.htm"
+  ],
+  "term_hit_documents": [],
+  "guide": {
+    "file_id": 556,
+    "charset": "utf-8",
+    "raw_html_sha256": "b2bd0a9d04ba7131f156c1cb5f69042000606c15b9ab6a026c85b2e9208eb330",
+    "raw_bytes": 2331450,
+    "selected_option_table_rows": [
+      [
+        "General",
+        "Mode",
+        "Normal",
+        "Normal",
+        "Normal",
+        "Normal",
+        "Normal"
+      ],
+      [
+        "Router",
+        "Enable Fast Router",
+        "√",
+        "√",
+        "无该选项",
+        "无该选项",
+        "无该选项"
+      ],
+      [
+        "Fast Router Mode",
+        "Auto",
+        "无该选项",
+        "无该选项",
+        "无该选项",
+        "无该选项"
+      ],
+      [
+        "Multi-thread routing thread size",
+        "无该选项",
+        "无该选项",
+        "无该选项",
+        "PG2L25H ： 2 PG2L50H ： 3 PG2L200H ： 10",
+        "7"
+      ],
+      [
+        "Slack Prior In Global router",
+        "√",
+        "√",
+        "无该选项",
+        "无该选项",
+        "无该选项"
+      ],
+      [
+        "Slack Weight",
+        "90",
+        "90",
+        "90",
+        "90",
+        "90"
+      ],
+      [
+        "Pin Cost Increasing Speed",
+        "300",
+        "300",
+        "300",
+        "300",
+        "300"
+      ],
+      [
+        "Max iterations in congest mode",
+        "30",
+        "200",
+        "20",
+        "无该选项",
+        "无该选项"
+      ]
+    ],
+    "pg2l100h_rule": [
+      [
+        "其中",
+        "PG2L100H",
+        "是单线程布线器件，它的",
+        "general",
+        "，",
+        "router",
+        "选项与",
+        "Logos",
+        "的选项一致",
+        "类型"
+      ]
+    ],
+    "negative_term_counts": {
+      "4022": 0,
+      "effort": 0,
+      "router_effort": 0,
+      "routing_effort": 0
+    },
+    "mode_definition": [
+      [
+        "nomal",
+        "和",
+        "performance",
+        "三个选项，",
+        "fast",
+        "模式，运行速度最快，性能最差；",
+        "normal",
+        "模式，兼顾性能和速度，能满足普通设计要求；",
+        "performance",
+        "模式，性能最优，但是运行时间最长。"
+      ],
+      [
+        "normal",
+        "模式，兼顾性能和速度，能满足普通设计要求；",
+        "performance",
+        "模式，性能最优，但是运行时间最长。",
+        "【",
+        "Optimize\nMulti-Corner Timing",
+        "】对",
+        "hold",
+        "违例进行修复时，是否打开",
+        "multi-corner"
+      ]
+    ],
+    "declared_charset": "utf-8",
+    "decode_replacement_used": false,
+    "raw_html_replacement_character_count": 0,
+    "source_text_limitation": "None observed: raw HTML is valid UTF-8 with Chinese text and checkbox symbols intact. Escaped-codepoint verification distinguishes shell/tool display mojibake from source corruption.",
+    "replacement_character_entities": 0,
+    "html_unescaped_replacement_characters": 0,
+    "pg2l100h_raw_source_excerpt": "US>PNR</span><span\nstyle='font-family:宋体'>阶段不同系列的各选项支持情况与默认值详情的表格：</span></p>\n\n<p class=MsoNormal style='text-indent:24.0pt'><span style='font-family:宋体'>其中</span><span\nlang=EN-US>PG2L100H</span><span style='font-family:宋体'>是单线程布线器件，它的</span><span\nlang=EN-US>general</span><span style='font-family:宋体'>，</span><span lang=EN-US>router</span><span\nstyle='font-family:宋体'>选项与</span><span lang=EN-US>Logos</span><span\nstyle='font-family:宋体'>的选项一致</span></p>\n\n<div align=center>\n\n<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=711\nstyle='width:532.95pt;border-collapse:collapse;border:none'>\n<tr style='height:4",
+    "display_encoding_note": "Earlier unescaped tool output displayed mojibake; this is not evidence of damaged installed help."
+  },
+  "html_strict_decode_encodings": {
+    "ADS_Language_Support_Reference_Manual.htm": "utf-8",
+    "ADS_Synthesis_User_Guide.htm": "utf-8",
+    "Design_Editor_User_Guide.htm": "utf-8",
+    "Fabric_Configuration_User_Guide.htm": "utf-8",
+    "Fabric_Debugger_User_Guide.htm": "utf-8",
+    "Fabric_Inserter_User_Guide.htm": "utf-8",
+    "IP_Compiler_User_Guide.htm": "utf-8",
+    "Pango_Design_Suite_Quick_Start_Tutorial.htm": "utf-8",
+    "Pango_Design_Suite_User_Guide.htm": "utf-8",
+    "Pango_Power_Calculator_User_Guide.htm": "utf-8",
+    "Pango_Power_Planner_User_Guide.htm": "utf-8",
+    "Pango_SSN_Analyzer_User_Guide.htm": "utf-8",
+    "Pango_SSN_Estimator_User_Guide.htm": "utf-8",
+    "Physical_Constraint_Editor_User_Guide.htm": "utf-8",
+    "Route_Constraint_Editor_User_Guide.htm": "utf-8",
+    "Simulation_User_Guide.htm": "utf-8",
+    "Timing_Analyzer_User_Guide.htm": "utf-8",
+    "User_Constraint_Editor_User_Guide.htm": "utf-8"
+  }
+}

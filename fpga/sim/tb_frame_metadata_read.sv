@@ -100,14 +100,11 @@ module tb_frame_metadata_read;
   tick;command='0;pending[allocated_slot]=0;repeat(3)tick;
   check(accepted==13 && response.occupied==0,"cancel releases unacquired claim");
 
-  // Exact snapshot selection may change while a read is pending. The old
-  // descriptor must not be acknowledged with the new requested generation.
+  // HISTORY follows the same oldest-pending ordering and generation fence.
   allocate(30,8);allocate(31,8);
-  @(negedge clk);command='0;command.acquire=8;command.snap_exact=1;command.snap_slot=0;command.snap_gen=generation[0];tick;
-  @(negedge clk);command.snap_slot=1;command.snap_gen=generation[1];
-  #1;check(response.acquire_ok==0,"changed exact slot rejects stale read");
-  acquire_until(14);check(owned[1][3] && pending[0][3],"requested exact frame acquired first");
-  @(negedge clk);command='0;command.acquire=8;command.snap_exact=1;command.snap_slot=0;command.snap_gen=generation[0];
+  @(negedge clk);command='0;command.acquire=8;
+  acquire_until(14);check(owned[0][3] && pending[1][3],"history acquires oldest source");
+  @(negedge clk);command='0;command.acquire=8;
   acquire_until(15);release_all;
 
   // Reset after a speculative read must invalidate its tag. A fresh cold

@@ -6,7 +6,7 @@ module tb_uart_v2_parser;
  reg clk=0;always #4 clk=~clk;
  reg rst_n=0,byte_valid=0,byte_error=0;reg [7:0] byte_data=0;
  reg [63:0] now_us=0;always @(posedge clk) now_us<=now_us+1;
- wire packet_valid,read_response;reg packet_ready=0,read_valid=0;
+ wire packet_valid,packet_revoked,read_response;reg packet_ready=0,read_valid=0;
  reg [9:0] read_index=0;wire [7:0] read_data,cmd;wire [15:0] seq,length;
  wire [31:0] bad_crc,bad_header,timeouts,overflows;wire [11:0] peak;
  reg [7:0] vector [0:2047];reg [7:0] golden [0:105];

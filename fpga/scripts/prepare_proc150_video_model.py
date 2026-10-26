@@ -8,6 +8,8 @@ def replace_once(text,old,new):
     return text.replace(old,new)
 
 def main():
+    # This historical transform expects the retired projective architecture.
+    raise SystemExit('Retired projective experiment: use sim_video_verilator.py for current affine_lens; historical reproduction requires its frozen script/source.')
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--baseline',type=Path,required=True)
     parser.add_argument('--read-prefetch-proof',type=Path)

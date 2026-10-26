@@ -1,0 +1,138 @@
+{
+  "created_at": "2026-10-12T22:09:46.365978+08:00",
+  "target": {
+    "family": "Logos2",
+    "device": "PG2L100H",
+    "package": "FBG676",
+    "speedgrade": "-6"
+  },
+  "pds": "2022.2-SP6.4 build146967",
+  "format": "native PDS .sbit",
+  "status": "offline_candidates",
+  "hardware_tested": false,
+  "programmed": false,
+  "download_approved": false,
+  "external_timing_verified": false,
+  "unresolved": [
+    "existing over_temp=1 has no clearance evidence",
+    "external timing/electrical sign-off pending",
+    "encrypted OSERDES behavioral regression blocked by ModelSim license",
+    "complete frame/DMA recovery and full RAW8/1080p pipeline acceptance pending"
+  ],
+  "candidates": [
+    {
+      "project": "pango_video_top",
+      "top": "pango_video_top",
+      "scope": "IP integration skeleton: DDR address requests idle, PHY held in reset, fixed HDMI symbols; no complete RAW8/ISP/geometry/network pipeline",
+      "bitstream": "pango_video_top/pango_video_top.sbit",
+      "bytes": 3791112,
+      "sha256": "d0cc119a73e7b519dbe5981aa41a1a2df374971e00a1afd52d4eb139b54c56ba",
+      "evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\bitstream_20261012\\pango_video_top_20261012_220353_214298",
+      "resources": {
+        "lut": 3666,
+        "ff": 3561,
+        "oserdes_e2": 87,
+        "ioclkbuf": 1
+      },
+      "timing": {
+        "Setup_Slow": {
+          "wns_ns": 1.463,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Setup_Fast": {
+          "wns_ns": 2.085,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Hold_Slow": {
+          "wns_ns": 0.138,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Hold_Fast": {
+          "wns_ns": 0.102,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Recovery_Slow": {
+          "wns_ns": 1.527,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Recovery_Fast": {
+          "wns_ns": 2.398,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Removal_Slow": {
+          "wns_ns": 0.324,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Removal_Fast": {
+          "wns_ns": 0.219,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        }
+      }
+    },
+    {
+      "project": "mini_camera_diag",
+      "top": "Top",
+      "scope": "Single CAM1 1280x720 RGB565 diagnostic: camera, DDR frame buffers and HDMI; no RAW8/PRAW or complete 1080p correction system",
+      "bitstream": "mini_camera_diag/Top.sbit",
+      "bytes": 3791112,
+      "sha256": "c22f697aa5be8192165f98773375920cb14f01611904443fdcb9035002133a46",
+      "evidence": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\bitstream_20261012\\mini_camera_diag_20261012_220409_168975",
+      "resources": {
+        "lut": 6196,
+        "ff": 6119,
+        "oserdes_e2": 87,
+        "ioclkbuf": 1
+      },
+      "timing": {
+        "Setup_Slow": {
+          "wns_ns": 1.155,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Setup_Fast": {
+          "wns_ns": 2.085,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Hold_Slow": {
+          "wns_ns": 0.137,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Hold_Fast": {
+          "wns_ns": 0.101,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Recovery_Slow": {
+          "wns_ns": 3.307,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Recovery_Fast": {
+          "wns_ns": 4.572,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Removal_Slow": {
+          "wns_ns": 0.336,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        },
+        "Removal_Fast": {
+          "wns_ns": 0.231,
+          "tns_ns": 0.0,
+          "failing_endpoints": 0
+        }
+      }
+    }
+  ]
+}

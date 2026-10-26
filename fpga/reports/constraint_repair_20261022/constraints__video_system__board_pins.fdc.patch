@@ -1,0 +1,38 @@
+--- before/constraints/video_system/board_pins.fdc
++++ after/constraints/video_system/board_pins.fdc
+@@ -228,3 +228,35 @@
+ define_attribute {p:uart_tx} {PAP_IO_VCCIO} {3.3}
+ define_attribute {p:uart_tx} {PAP_IO_STANDARD} {LVCMOS33}
+ define_attribute {p:uart_tx} {PAP_IO_NONE} {TRUE}
++
++# Explicit PG2L100H electrical defaults: UCE Guide section 2.6.3 (pp113-115).
++# TMDS DRIVE=5 has no SLEW setting; LVCMOS uses DRIVE=4/FAST, LED SLOW.
++# Existing PHY DRIVE=16 and all board wiring are preserved; SI validation is pending.
++define_attribute {p:status_led} {PAP_IO_DRIVE} {4}
++define_attribute {p:status_led} {PAP_IO_SLEW} {SLOW}
++define_attribute {p:rgmii_txc} {PAP_IO_SLEW} {FAST}
++define_attribute {p:rgmii_tx_ctl} {PAP_IO_SLEW} {FAST}
++define_attribute {p:rgmii_txd[0]} {PAP_IO_SLEW} {FAST}
++define_attribute {p:rgmii_txd[1]} {PAP_IO_SLEW} {FAST}
++define_attribute {p:rgmii_txd[2]} {PAP_IO_SLEW} {FAST}
++define_attribute {p:rgmii_txd[3]} {PAP_IO_SLEW} {FAST}
++define_attribute {p:phy_reset_n} {PAP_IO_SLEW} {FAST}
++define_attribute {p:phy_mdc} {PAP_IO_SLEW} {FAST}
++define_attribute {p:phy_mdio} {PAP_IO_DRIVE} {4}
++define_attribute {p:phy_mdio} {PAP_IO_SLEW} {FAST}
++define_attribute {p:hdmi_clk_p} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_clk_n} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_p[0]} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_p[1]} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_p[2]} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_n[0]} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_n[1]} {PAP_IO_DRIVE} {5}
++define_attribute {p:hdmi_data_n[2]} {PAP_IO_DRIVE} {5}
++define_attribute {p:camera_scl} {PAP_IO_DRIVE} {4}
++define_attribute {p:camera_scl} {PAP_IO_SLEW} {FAST}
++define_attribute {p:camera_sda} {PAP_IO_DRIVE} {4}
++define_attribute {p:camera_sda} {PAP_IO_SLEW} {FAST}
++define_attribute {p:camera_reset_n} {PAP_IO_DRIVE} {4}
++define_attribute {p:camera_reset_n} {PAP_IO_SLEW} {FAST}
++define_attribute {p:uart_tx} {PAP_IO_DRIVE} {4}
++define_attribute {p:uart_tx} {PAP_IO_SLEW} {FAST}

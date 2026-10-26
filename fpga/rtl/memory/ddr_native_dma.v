@@ -9,13 +9,16 @@
 // rst_n must be synchronously released and asserted with controller reset; a
 // local reset while the controller still has responses outstanding is illegal.
 module ddr_native_dma #(
- parameter CLIENTS=7, parameter TAG_BITS=32, parameter MAX_BEATS=16,
+ parameter CLIENTS=6, parameter TAG_BITS=32, parameter MAX_BEATS=16,
  parameter EMERGENCY_QUOTA=2,
  // Preserve transport-only callers; frame publication enables full readback.
  parameter VERIFY_WRITES=0,
+ // Only frame_memory_fabric may reuse its identical descriptor validation;
+ // standalone DMA callers retain capacity, length and alignment checks.
+ parameter DESCRIPTOR_PREVALIDATED=0,
  parameter [31:0] CAPACITY_BYTES=32'h40000000
 )(
- input clk, input rst_n, input controller_ready, input allow_snapshot,
+ input clk, input rst_n, input controller_ready,
  input [CLIENTS-1:0] req_valid, output [CLIENTS-1:0] req_ready,
  input [CLIENTS-1:0] req_write, input [CLIENTS*32-1:0] req_addr,
  input [CLIENTS*5-1:0] req_beats, input [CLIENTS*TAG_BITS-1:0] req_tag,
@@ -69,8 +72,12 @@ module ddr_native_dma #(
  assign awlen=beats[owner]-1'b1, arlen=beats[owner]-1'b1;
  assign awid=4'd0, arid=4'd0;
  assign awvalid=(state==WA), arvalid=(state==RA || state==VERIFY_ADDR);
- assign native_wdata=bank_data[owner*256+:256];
- assign native_wstrb=(state==WD) ? bank_mask[owner*32+:32] : 32'd0;
+ // Select the owner's complete payload once. Native output and bytewise
+ // readback checks share that bus instead of spelling 32 dynamic bit offsets.
+ wire [255:0] owner_data=bank_data[owner*256+:256];
+ wire [31:0] owner_mask=bank_mask[owner*32+:32];
+ assign native_wdata=owner_data;
+ assign native_wstrb=(state==WD) ? owner_mask : 32'd0;
  assign req_ready=~pending & {CLIENTS{controller_ready && !fault}};
 
  // Compare every enabled byte against the reserved write bank. A last-word
@@ -79,8 +86,8 @@ module ddr_native_dma #(
  always @* begin
   verify_mismatch=0;
   for(verify_byte=0;verify_byte<32;verify_byte=verify_byte+1)
-   if(bank_mask[owner*32+verify_byte] &&
-      native_rdata[verify_byte*8+:8]!=bank_data[owner*256+verify_byte*8+:8])
+   if(owner_mask[verify_byte] &&
+      native_rdata[verify_byte*8+:8]!=owner_data[verify_byte*8+:8])
     verify_mismatch=1;
  end
 
@@ -155,12 +162,19 @@ module ddr_native_dma #(
  always @* begin
   w_ready=0; r_valid=0; r_data=0; r_last=0;
   normal_choice=-1; urgent_choice=-1;
+  // Scan fixed indices above rr, then below it: exactly the original cyclic
+  // order, without an add/wrap plus dynamic eligible/urgent mux per candidate.
+  // rr resets to zero and advances only from a legal selected client.
   for(j=0;j<CLIENTS;j=j+1) begin
-   k=rr+j; if(k>=CLIENTS) k=k-CLIENTS;
-   // rr+j is reduced into 0..CLIENTS-1 before the narrow array selection.
-   if(eligible[k[CLIENT_BITS-1:0]]) begin
-    if(normal_choice<0) normal_choice=k;
-    if(urgent[k[CLIENT_BITS-1:0]] && urgent_choice<0) urgent_choice=k;
+   if(j>=rr && eligible[j]) begin
+    if(normal_choice<0) normal_choice=j;
+    if(urgent[j] && urgent_choice<0) urgent_choice=j;
+   end
+  end
+  for(j=0;j<CLIENTS;j=j+1) begin
+   if(j<rr && eligible[j]) begin
+    if(normal_choice<0) normal_choice=j;
+    if(urgent[j] && urgent_choice<0) urgent_choice=j;
    end
    w_ready[j]=pending[j] && is_write[j] && !done[j] && !aborted[j] && loaded[j]<beats[j];
    r_valid[j]=returned[j] && returned_settled[j] && !aborted[j] && !cancel[j] && consumed[j]<beats[j];
@@ -200,11 +214,10 @@ module ddr_native_dma #(
      loaded[i]<=0; consumed[i]<=0; wait_cycles[i]<=0; error[i]<=0; cancelled[i]<=0;
      write_verified[i]<=0;
      // Full bus span must stay in configured capacity and physical column.
-     if(req_beats[i*5+:5]==0 || req_beats[i*5+:5]>MAX_BEATS ||
+     if(!DESCRIPTOR_PREVALIDATED && (req_beats[i*5+:5]==0 || req_beats[i*5+:5]>MAX_BEATS ||
         req_addr[i*32+:5]!=0 ||
         {1'b0,req_addr[i*32+:32]}+({28'd0,req_beats[i*5+:5]}<<5)>{1'b0,CAPACITY_BYTES} ||
-        {1'b0,req_addr[i*32+:12]}+({8'd0,req_beats[i*5+:5]}<<5)>13'd4096 ||
-        (i==CLIENTS-1 && !allow_snapshot)) begin
+        {1'b0,req_addr[i*32+:12]}+({8'd0,req_beats[i*5+:5]}<<5)>13'd4096)) begin
       done[i]<=1; error[i]<=1;
      end
     end
@@ -238,7 +251,7 @@ module ddr_native_dma #(
     WD: if(native_wready) begin
      bus_bytes[owner*32+:32]<=bus_bytes[owner*32+:32]+32;
      byte_count=0;
-     for(i=0;i<32;i=i+1) byte_count=byte_count+bank_mask[owner*32+i];
+     for(i=0;i<32;i=i+1) byte_count=byte_count+owner_mask[i];
      useful_write_bytes[owner*32+:32]<=useful_write_bytes[owner*32+:32]+byte_count;
      if(native_wid!=0 || native_wlast!=(beat_index==beats[owner]-1'b1)) begin
       error[owner]<=1; fault<=1;

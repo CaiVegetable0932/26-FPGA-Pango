@@ -1,0 +1,1 @@
+Supporting algorithm references copied from the working tree on 2026-10-18. These files are not native PDS inputs. P12 model validation evidence uses the separate frozen fpga/evidence/model/source tree.

@@ -12,6 +12,7 @@ module video_core_display_fixture(
  output cancel,urgent,input r_valid,output r_ready,input [255:0] r_data,input r_last,
  input done,output done_ready,input error,cancelled,input [31:0] done_tag,
  output [31:0] new_frames,repeat_frames,failed_frames,underflow_events,underflow_pixels,
+ output confirm_valid,output [63:0] confirm_epoch,confirm_frame,output [31:0] confirm_generation,
  output reg [31:0] checked_pixels=0,output dma_fault
 );
  // Match the established HDMI fixture's 74.25MHz approximation (1ps
@@ -41,19 +42,27 @@ module video_core_display_fixture(
   .memory_req_tag(req_tag),.memory_req_beats(req_beats),.memory_cancel(cancel),.memory_r_valid(r_valid),.memory_r_ready(r_ready),
   .memory_r_data(r_data),.memory_r_last(r_last),.memory_done(done),.memory_done_ready(done_ready),
   .memory_error(error),.memory_cancelled(cancelled),.memory_done_tag(done_tag));
+ wire [31:0] displayed_generation;wire confirmation_ready,confirmation_valid;
+ wire [160:0] confirmation;
+ counter_snapshot_cdc #(.BITS(161)) confirmation_cdc(.src_clk(pixel_clk),.src_rst_n(rst_n),
+  .counters({tag_valid,displayed_epoch,displayed_id,displayed_generation}),
+  .dst_clk(clk),.dst_rst_n(rst_n),.request(confirmation_ready),.request_ready(confirmation_ready),
+  .snapshot_valid(confirmation_valid),.snapshot_ready(1'b1),.snapshot(confirmation));
+ assign confirm_valid=confirmation_valid && confirmation[160];
+ assign {confirm_epoch,confirm_frame,confirm_generation}=confirmation[159:0];
  wire de,tag_valid;wire [23:0] rgb;wire [63:0] displayed_epoch,displayed_id;
  hdmi_display display(.clk(pixel_clk),.rst_n(rst_n),.stream_enable(1'b1),.locked(1'b1),
   .offer_valid(p_offer),.offer_ready(p_offer_ready),.offer_base(p_base),.offer_generation(p_gen),.offer_slot(p_slot),
   .offer_epoch(p_epoch),.offer_frame_id(p_id),.release_valid(p_release),.release_ready(p_release_ready),
   .release_slot(p_release_slot),.release_generation(p_release_gen),.frame_boundary(),.hs(),.vs(),.de(de),.rgb(rgb),.x(),.y(),
-  .tag_valid(tag_valid),.epoch(displayed_epoch),.source_frame_id(displayed_id),.generation(),
+  .tag_valid(tag_valid),.epoch(displayed_epoch),.source_frame_id(displayed_id),.generation(displayed_generation),
   .display_new_frames(new_frames),.display_repeat_frames(repeat_frames),.display_failed_frames(failed_frames),
   .display_scan_frames(),.display_empty_frames(),.underflow_events(underflow_events),.underflow_pixels(underflow_pixels),
   .max_no_service_cycles(),.low_water_cycles(),.req_valid(p_req),.req_ready(p_req_ready),.req_addr(p_addr),.req_beats(p_beats),
   .req_tag(p_tag),.r_valid(p_rvalid),.r_ready(p_rready),.r_data(p_rdata),.r_last(p_rlast),.done(p_done),.done_ready(p_done_ready),
   .cancelled(p_cancelled),.error(p_error),.done_tag(p_done_tag),.cancel(p_cancel),.urgent(p_urgent),.ready_lines(),.dma_fault(dma_fault));
  // Independent expected bytes follow the original core fixture: source 1
- // is raw grey73, source3 uses pre tone165 and source4 uses post tone173.
+ // is raw grey73, source3 uses pre gamma=0.7 tone114 and source4 disables tone and returns grey91.
  // Never infer identities from display arrival order or count repeated frames
  // as newly corrected frames. Every qualified output carries its actual tag.
  reg [23:0] expected_rgb;
@@ -71,8 +80,8 @@ module video_core_display_fixture(
   if(rst_n && de && tag_valid)begin
    case(displayed_id)
     64'd1:expected_rgb=24'h494949;
-    64'd3:expected_rgb=24'ha5a5a5;
-    64'd4:expected_rgb=24'hadadad;
+    64'd3:expected_rgb=24'h727272;
+    64'd4:expected_rgb=24'h5b5b5b;
     default:$fatal(1,"DISPLAY_CORE unknown source frame %0d",displayed_id);
    endcase
    if(displayed_epoch!==64'hf123456789abcdef || rgb!==expected_rgb)

@@ -3,12 +3,12 @@
 // cache refill and coordinate-addressed result writeback. The frame scheduler
 // must already hold SRC PROCESS ownership and a freshly allocated DST slot.
 // All ports share one processing domain; adapters provide native DMA crossings.
-module geometry_frame_processor #(parameter META_BITS=616,PROJECTIVE=0)(
+module geometry_frame_processor #(parameter META_BITS=616,EXTERNAL_TONE_PAGES=0,PROGRAM_VERSION_SEPARATE=0)(
  input clk,rst_n,input job_valid,output job_ready,
  input [31:0] source_base,source_generation,result_base,result_generation,
  input [15:0] width,height,input [447:0] coefficients,input [META_BITS-1:0] metadata,
- input [1:0] enhancement,input [31:0] lut_version,input [95:0] projective,
- input lut_write,input [7:0] lut_addr,lut_data,input lut_commit,
+ input [1:0] enhancement,input [31:0] lut_version,
+ input lut_write,input [7:0] lut_addr,lut_data,input lut_commit,input lut_page,input [31:0] lut_program_version,
  output reg job_done,job_failed,output reg [META_BITS-1:0] result_metadata,
  output source_req_valid,input source_req_ready,output [31:0] source_req_addr,source_req_tag,
  output [4:0] source_req_beats,output source_cancel,
@@ -34,11 +34,13 @@ module geometry_frame_processor #(parameter META_BITS=616,PROJECTIVE=0)(
  // into discard so its frame state and any source reads can finish safely.
  assign out_ready=writer_finished || writer_failed || pixel_ready;
  wire pixel_ready;
- geometry_rgb_pipeline #(.FRAME_TAG_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) geometry(
+ geometry_rgb_pipeline #(.FRAME_TAG_BITS(META_BITS),.EXTERNAL_TONE_PAGES(EXTERNAL_TONE_PAGES)) geometry(
   .clk(clk),.rst_n(rst_n),.frame_valid(start),.frame_ready(geometry_ready),
   .frame_width(width),.frame_height(height),.frame_coefficients(coefficients),.frame_tag(metadata),
-  .frame_projective(projective),.frame_enhancement(enhancement),.frame_lut_version(lut_version),
-  .lut_write(lut_write),.lut_addr(lut_addr),.lut_data(lut_data),.lut_commit(lut_commit),.lut_version(lut_version),
+  .frame_enhancement(enhancement),.frame_lut_version(lut_version),
+  // A dual-clock wrapper programs its table before any frame snapshot exists.
+  // Keep that commit version independent; preserve legacy single-clock default.
+  .lut_write(lut_write),.lut_addr(lut_addr),.lut_data(lut_data),.lut_commit(lut_commit),.lut_version((EXTERNAL_TONE_PAGES || PROGRAM_VERSION_SEPARATE)?lut_program_version:lut_version),.lut_page(lut_page),
   .out_valid(out_valid),.out_ready(out_ready),.out_rgb(out_rgb),.out_mask(out_mask),.out_u(out_u),.out_v(out_v),
   .fill_req_valid(fill_req_valid),.fill_req_ready(fill_req_ready),.fill_tile_x(fill_tile_x),.fill_tile_y(fill_tile_y),
   .fill_valid(fill_valid),.fill_ready(fill_ready),.fill_rgb(fill_rgb),.fill_last(fill_last),.fill_error(fill_error),

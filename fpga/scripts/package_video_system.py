@@ -160,21 +160,21 @@ def main():
             board.get('bitstream_bytes') != stream.stat().st_size):
         raise ValueError('native recorded bitstream bytes changed')
     if (not model.get('passed') or not model.get('full_frame') or not model.get('snapshot_intact')
-            or not model.get('snapshot_test') or not model.get('control_test')):
+            or not model.get('control_test')):
         raise ValueError('complete synthetic full-frame regression required')
     geometry_budget=verified_geometry_budget(simulation)
     if not model.get('display_test'):
         raise ValueError('Full-frame model must include actual display read traffic')
     display_evidence=verified_display_evidence(simulation)
-    if not host.get('passed') or host.get('snapshot_bytes') != 12441600:
-        raise ValueError('complete 1080p pair host decoding required')
+    if not host.get('passed') or host.get('raw_bytes') != 2073600:
+        raise ValueError('complete 1080p RAW host decoding required')
     if host.get('hardware_tested') or model.get('hardware_tested'):
         raise ValueError('this packaging path records synthetic evidence only')
     if Path(host.get('input_directory', '')).resolve() != simulation:
         raise ValueError('host evidence belongs to a different simulation')
-    vector_names = {'snapshot_datagrams.bin', 'snapshot_descriptors.bin'}
+    vector_names = {'raw_datagrams.bin'}
     if set(host.get('input_sha256', {})) != vector_names:
-        raise ValueError('host evidence must bind both exact simulation vector files')
+        raise ValueError('host evidence must bind the exact RAW simulation vector file')
     for name, expected in host['input_sha256'].items():
         if digest(simulation / name) != expected:
             raise ValueError('host vector input changed: '+name)
@@ -283,7 +283,7 @@ def main():
                     archive.write(path, 'native/resume/'+name)
         for name in ('sources.json', 'result.json', 'run.log'):
             archive.write(simulation / name, 'simulation/'+name)
-        for name in ('snapshot_datagrams.bin', 'snapshot_descriptors.bin', 'simulation_script.py',
+        for name in ('raw_datagrams.bin', 'simulation_script.py',
                      'source/sim/tb_video_memory_core.sv', 'source/sim/video_core_display_fixture.sv'):
             archive.write(simulation / name, 'simulation/'+name)
         archive.writestr('host/verification.json', host_report_bytes)
@@ -308,13 +308,13 @@ def main():
         'modeled_geometry_budget': geometry_budget,
         'modeled_display': display_evidence,
         'features': ['RAW8 DVP / SCCB identity + readback / fixed exposure',
-                     'native DDR / verified writes / five frame pools',
+                     'native DDR / verified writes / three frame pools',
                      'FPGA ISP S1 / connected identity CCM / source statistics',
-                     'source-locked projective + lens mapping / RGB bilinear',
-                     'fixed reference tone LUT disabled/pre/post modes',
+                     'source-locked affine + lens mapping / RGB bilinear',
+                     'pre-resample enhancement',
                      'HDMI 1080p30 raster / coherent related serializer clocks',
-                     'S0 Ethernet / same-source RGB snapshot copy + export',
-                     'PC boot / status / mode / geometry / old snapshot parameter readback'],
+                     'S0 Ethernet RAW-only export',
+                     'PC boot / status / mode / geometry / affine control and entity upload'],
         'mcu_external_connection': 'deferred by user; pose_status=no_samples',
         'automatic_gamma': False, 'dynamic_lut_upload': False,
         'companion_files_sha256': companion_hashes,

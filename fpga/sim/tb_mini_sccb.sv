@@ -48,8 +48,9 @@ module tb_mini_sccb;
     integer starts,stops,bytes;
     wire [31:0] packet;
     assign scl=stretch ? 1'b0 : 1'bz;
+    // 用途：旧写事务回归明确关闭新增读入口，保留独立黄金向量的验证语义。
     SCCB #(.SYS_CLK(3200),.SCCB_CLK(100),.STRETCH_TIMEOUT(80)) dut(
-        .clk(clk),.rst_n(reset_n),.sccb_start(start),.data_in(data),
+        .clk(clk),.rst_n(reset_n),.sccb_start(start),.data_in(data),.sccb_read(1'b0),.read_data(),.error_code(),
         .SCL(scl),.SDA(sda),.sccb_done(done),.sccb_error(error),.busy(busy));
     mini_sccb_slave_model slave(reset_n,scl,sda,ack_mask,starts,stops,bytes,packet);
     integer checks=0, manual_cases=0;
@@ -67,7 +68,7 @@ module tb_mini_sccb;
         .sys_clk(clk),.sys_rst_n(cfg_reset_n),.cfg_end(tx_done && !tx_error),
         .cfg_start(cfg_start),.cfg_data(cfg_data),.cfg_done(cfg_done));
     SCCB #(.SYS_CLK(3200),.SCCB_CLK(100),.STRETCH_TIMEOUT(80)) cfg_master(
-        .clk(clk),.rst_n(cfg_reset_n),.sccb_start(cfg_start),.data_in(cfg_data),
+        .clk(clk),.rst_n(cfg_reset_n),.sccb_start(cfg_start),.data_in(cfg_data),.sccb_read(1'b0),.read_data(),.error_code(),
         .SCL(cfg_scl),.SDA(cfg_sda),.sccb_done(tx_done),.sccb_error(tx_error),.busy(tx_busy));
     mini_sccb_slave_model cfg_slave(cfg_reset_n,cfg_scl,cfg_sda,cfg_ack_mask,
                                    cfg_starts,cfg_stops,cfg_bytes,cfg_packet);

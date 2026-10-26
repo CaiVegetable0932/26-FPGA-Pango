@@ -2,8 +2,8 @@
 // Epoch/frame_id are authoritative u64 source identities; entity handles must
 // refer to immutable, readable parameter records retained by the integration.
 package frame_manager_pkg;
- localparam integer SRC=0, DST=1, RAW=2, SNAP_S1=3, SNAP_RESULT=4;
- localparam integer PROCESS=0, DISPLAY=1, NETWORK=2, SNAPSHOT=3;
+ localparam integer SRC=0, DST=1, RAW=2;
+ localparam integer PROCESS=0, DISPLAY=1, NETWORK=2, HISTORY=3; // Internal one-frame history; never a network export.
  typedef struct packed {
   logic [63:0] epoch, frame_id, capture_first, capture_last;
   logic [31:0] isp_version, geometry_version, enhancement_version;
@@ -30,9 +30,6 @@ package frame_manager_pkg;
   logic [1:0] cancel_slot;
   logic [31:0] cancel_gen;
   logic [3:0] acquire;
-  logic snap_exact;
-  logic [1:0] snap_slot;
-  logic [31:0] snap_gen;
   logic [3:0] release_mask, skip_mask;
   logic [7:0] release_slots;
   logic [127:0] release_gens;

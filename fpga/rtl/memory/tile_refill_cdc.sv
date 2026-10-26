@@ -5,9 +5,10 @@
 // A new tile is accepted only after the previous LAST is consumed. Common
 // cold reset is mandatory. Gray pointers need <=6ns source-to-meta bounds;
 // the held tile coordinates need a bounded-data capture constraint too.
-module tile_refill_cdc(
+module tile_refill_cdc #(parameter HISTORY_SUPPORT=0)(
  input processing_clk,processing_rst_n,
  input fill_req_valid,output fill_req_ready,input [11:0] fill_tile_x,fill_tile_y,
+ input fill_history,output reg memory_history,
  output fill_valid,input fill_ready,output [95:0] fill_rgb,
  output fill_last,fill_error,output [31:0] fill_bus_bytes,output reg busy,
  input memory_clk,memory_rst_n,
@@ -18,7 +19,9 @@ module tile_refill_cdc(
  localparam M_IDLE=0,M_REQUEST=1,M_RUN=2;
  reg [1:0] mstate;
  reg request_toggle,accepted_toggle;
- reg [23:0] tile_held;
+ // Domain bit crosses in the same held mailbox as tile coordinates. It remains
+ // stable until the previous tile's LAST drains, including errors/cancellation.
+ reg [24:0] tile_held;
  (* syn_preserve=1 *) reg request_meta,request_sync;
  wire fifo_write_ready;wire [129:0] fifo_data;wire fifo_drained;
  assign fill_req_ready=!busy;
@@ -35,19 +38,19 @@ module tile_refill_cdc(
   if(!processing_rst_n)begin busy<=0;request_toggle<=0;tile_held<=0;end
   else begin
    if(fill_req_valid && fill_req_ready)begin
-    tile_held<={fill_tile_x,fill_tile_y};request_toggle<=!request_toggle;busy<=1;
+    tile_held<={HISTORY_SUPPORT && fill_history,fill_tile_x,fill_tile_y};request_toggle<=!request_toggle;busy<=1;
    end
    if(fill_valid && fill_ready && fill_last)busy<=0;
   end
  end
  always @(posedge memory_clk or negedge memory_rst_n)begin
   if(!memory_rst_n)begin
-   mstate<=M_IDLE;request_meta<=0;request_sync<=0;accepted_toggle<=0;memory_tile_x<=0;memory_tile_y<=0;
+   mstate<=M_IDLE;request_meta<=0;request_sync<=0;accepted_toggle<=0;memory_tile_x<=0;memory_tile_y<=0;memory_history<=0;
   end else begin
    request_meta<=request_toggle;request_sync<=request_meta;
    case(mstate)
     M_IDLE:if(request_sync!=accepted_toggle)begin
-     {memory_tile_x,memory_tile_y}<=tile_held;mstate<=M_REQUEST;
+     {memory_history,memory_tile_x,memory_tile_y}<=tile_held;mstate<=M_REQUEST;
     end
     M_REQUEST:if(memory_req_ready)begin accepted_toggle<=request_sync;mstate<=M_RUN;end
     M_RUN:if(memory_fill_valid && memory_fill_ready && memory_fill_last)mstate<=M_IDLE;

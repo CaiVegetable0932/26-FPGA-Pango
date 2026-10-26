@@ -1,0 +1,17 @@
+/* Algorithm controls use an external stylesheet to respect the workbench CSP. */
+.algorithm-workbench {max-width:1100px;margin:32px auto;padding:24px;display:block}
+.algorithm-workbench .panel {padding:24px;margin:20px 0;display:block}
+.algorithm-workbench h2 {font-size:20px;margin:0 0 14px}
+.algorithm-workbench p {line-height:1.65;margin:14px 0}
+.algorithm-workbench label {display:inline-block;margin:5px 10px 5px 0}
+.algorithm-workbench input[type=number] {max-width:145px}
+.algorithm-workbench textarea {width:100%;font-family:ui-monospace,Consolas,monospace;line-height:1.5;padding:12px}
+.algorithm-workbench pre {white-space:pre-wrap;overflow-wrap:anywhere}
+.algorithm-workbench canvas {max-width:100%;height:auto;background:#222;border-radius:6px}
+.algorithm-workbench button {margin:4px 4px 4px 0}
+.algorithm-workbench dt {color:var(--secondary);margin-top:10px}
+.algorithm-workbench dd {margin:4px 0;font-weight:600}
+.algorithm-workbench .color-matrix {display:grid;grid-template-columns:repeat(3,minmax(80px,145px));gap:8px;margin:12px 0}
+.algorithm-workbench .color-matrix input {width:100%;min-width:0}
+.algorithm-workbench #color-editor {border-top:1px solid #d5deea;margin-top:18px;padding-top:14px}
+@media(max-width:650px) {.algorithm-workbench {margin:0;padding:12px}.algorithm-workbench .panel {padding:16px}}

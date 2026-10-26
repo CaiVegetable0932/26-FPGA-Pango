@@ -52,6 +52,9 @@ reg[3:0]                             state;                      //state machine
 reg[1:0]                             read_addr_index_d0;         //synchronize to 'mem_clk' clock domain first
 reg[1:0]                             read_addr_index_d1;         //synchronize to 'mem_clk' clock domain second
 reg[15:0]                            wait_cnt;
+// Purpose: reserve the actual tail length plus CDC margin, in wide FIFO words.
+wire [ADDR_BITS-1:0] remaining_words=read_len_latch-read_cnt;
+wire [BUSRT_BITS-1:0] next_words=(remaining_words<BURST_SIZE) ? remaining_words : BURST_SIZE;
 assign read_finish = (state == S_END) ? 1'b1 : 1'b0;             //read finish at state 'S_END'
 always@(posedge mem_clk or posedge rst)
 begin
@@ -153,10 +156,10 @@ begin
 					state <= S_ACK;
 				end
 				//if the FIFO space is a burst read request, goto burst read state
-				else if(wrusedw < (FIFO_DEPTH - BURST_SIZE - 2))
+				else if(remaining_words!=0 && wrusedw <= (FIFO_DEPTH - next_words - 2))
 				begin
 					state <= S_READ_BURST;
-					rd_burst_len <= BURST_SIZE[BUSRT_BITS - 1:0];
+					rd_burst_len <= next_words;
 					rd_burst_req <= 1'b1;
 				end
 			end
@@ -170,9 +173,9 @@ begin
 				begin
 					state <= S_READ_BURST_END;
 					//read counter + burst length
-					read_cnt <= read_cnt + BURST_SIZE[ADDR_BITS - 1:0];
+					read_cnt <= read_cnt + rd_burst_len;
 					//the next burst read address is generated
-					rd_burst_addr <= rd_burst_addr + BURST_SIZE[ADDR_BITS - 1:0];
+					rd_burst_addr <= rd_burst_addr + rd_burst_len;
 				end     
 			end
 			S_READ_BURST_END:

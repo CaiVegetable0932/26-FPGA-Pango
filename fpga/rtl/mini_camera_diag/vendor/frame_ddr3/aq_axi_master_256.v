@@ -1,7 +1,11 @@
-// Purpose: Translate FIFO burst requests into 256-bit AXI transactions; native DDR adaptation is in Top.
+`timescale 1ns/1ps
+// Purpose: standard AXI only; diagnostic Top uses mini_ddr_native_bridge instead.
+// Buffer synchronous FIFO reads, split at 16 beats/4 KiB, and complete on actual
+// B/R handshakes. Requests use byte addresses/lengths. No fake native B allowed.
+// MASTER_RST cancels between bursts after draining the current AXI transaction.
 // Origin: imported MINI vendor demo; integration is not hardware validation.
 module aq_axi_master_256 #(
-parameter DATA_WIDTH=256
+parameter DATA_WIDTH=256, parameter MAX_BURST_BEATS=16
 )(
   // Reset, Clock
   input           ARESETN,
@@ -82,278 +86,123 @@ parameter DATA_WIDTH=256
   output [DATA_WIDTH-1:0] RD_FIFO_DATA,
   output        RD_DONE,
 
+  output WR_ERROR, output RD_ERROR,
   output [31:0] DEBUG
 );
 
-  localparam S_WR_IDLE  = 3'd0;
-  localparam S_WA_WAIT  = 3'd1;
-  localparam S_WA_START = 3'd2;
-  localparam S_WD_WAIT  = 3'd3;
-  localparam S_WD_PROC  = 3'd4;
-  localparam S_WR_WAIT  = 3'd5;
-  localparam S_WR_DONE  = 3'd6;
-  
-  reg [2:0]   wr_state;
-  reg [31:0]  reg_wr_adrs;
-  reg [31:0]  reg_wr_len;
-  reg         reg_awvalid, reg_w_last;
- reg         reg_wvalid;
-  reg [7:0]   reg_w_len;
-  reg [7:0]   reg_w_stb;
-  reg [1:0]   reg_wr_status;
-  reg [3:0]   reg_w_count, reg_r_count;
 
-  reg [7:0]   rd_chkdata, wr_chkdata;
-  reg [1:0]   resp;
- reg rd_first_data;
-reg rd_fifo_enable;
-  reg[31:0] rd_fifo_cnt;
-assign WR_DONE = (wr_state == S_WR_DONE);
-
-
-
-assign WR_FIFO_RE         = rd_first_data | (reg_wvalid & ~WR_FIFO_EMPTY & M_AXI_WREADY & rd_fifo_enable);
-//assign WR_FIFO_RE         = reg_wvalid & ~WR_FIFO_EMPTY & M_AXI_WREADY;
-always @(posedge ACLK or negedge ARESETN)
-begin
-	if(!ARESETN)
-		rd_fifo_cnt <= 32'd0;
-	else if(WR_FIFO_RE)
-		rd_fifo_cnt <= rd_fifo_cnt + 32'd1;
-	else if(wr_state == S_WR_IDLE)
-		rd_fifo_cnt <= 32'd0;	
-end
-
-always @(posedge ACLK or negedge ARESETN)
-begin
-	if(!ARESETN)
-		rd_fifo_enable <= 1'b0;
-	else if(wr_state == S_WR_IDLE && WR_START)
-		rd_fifo_enable <= 1'b1;
-	else if(WR_FIFO_RE && (rd_fifo_cnt == RD_LEN[31:5] - 32'd1) )//5
-		rd_fifo_enable <= 1'b0;		
-end
-  // Write State
-  always @(posedge ACLK or negedge ARESETN) begin
-    if(!ARESETN) begin
-      wr_state            <= S_WR_IDLE;
-      reg_wr_adrs[31:0]   <= 32'd0;
-      reg_wr_len[31:0]    <= 32'd0;
-      reg_awvalid         <= 1'b0;
-      reg_wvalid          <= 1'b0;
-      reg_w_last          <= 1'b0;
-      reg_w_len[7:0]      <= 8'd0;
-      reg_w_stb[7:0]      <= 8'd0;
-      reg_wr_status[1:0]  <= 2'd0;
-      reg_w_count[3:0]    <= 4'd0;
-      reg_r_count[3:0]  <= 4'd0;
-      wr_chkdata          <= 8'd0;
-      rd_chkdata <= 8'd0;
-      resp <= 2'd0;
-	  rd_first_data <= 1'b0;
+ localparam BYTES=DATA_WIDTH/8, SHIFT=$clog2(BYTES);
+ localparam WI=0,WL=1,WA=2,WD=3,WB=4,WE=5;
+ localparam RI=0,RA=1,RR=2,RE=3;
+ reg [2:0] ws;
+ reg [1:0] rs;
+ reg [31:0] wa_q,ra_q,wleft,rleft,wbytes;
+ reg [4:0] wn,rn,popped,captured,windex,rindex;
+ reg pop_q,werr,rerr,wcancel,rcancel;
+ reg [DATA_WIDTH-1:0] buffer[0:15];
+ reg [31:0] planned_w,planned_r;
+ integer b;
+ // Purpose: keep address/LEN stable through stalls and never cross a page.
+ always @* begin
+  // Avoid 32-bit overflow when rounding a large legal byte count upward.
+  planned_w=(wleft>>SHIFT)+((wleft&(BYTES-1))!=0);
+  if(planned_w>MAX_BURST_BEATS) planned_w=MAX_BURST_BEATS;
+  if(planned_w>((4096-{20'd0,wa_q[11:0]})>>SHIFT)) planned_w=(4096-{20'd0,wa_q[11:0]})>>SHIFT;
+  planned_r=(rleft>>SHIFT)+((rleft&(BYTES-1))!=0);
+  if(planned_r>MAX_BURST_BEATS) planned_r=MAX_BURST_BEATS;
+  if(planned_r>((4096-{20'd0,ra_q[11:0]})>>SHIFT)) planned_r=(4096-{20'd0,ra_q[11:0]})>>SHIFT;
+ end
+ assign WR_READY=ws==WI,WR_DONE=ws==WE,WR_ERROR=werr;
+ assign RD_READY=rs==RI,RD_DONE=rs==RE,RD_ERROR=rerr;
+ assign WR_FIFO_RE=(ws==WL && wn!=0 && popped<wn && !WR_FIFO_EMPTY);
+ assign M_AXI_AWADDR=wa_q,M_AXI_AWLEN=wn-1'b1,M_AXI_AWVALID=ws==WA;
+ assign M_AXI_AWID=0,M_AXI_AWSIZE=SHIFT,M_AXI_AWBURST=1,M_AXI_AWLOCK=0;
+ assign M_AXI_AWCACHE=3,M_AXI_AWPROT=0,M_AXI_AWQOS=0,M_AXI_AWUSER=0;
+ assign M_AXI_WDATA=buffer[windex],M_AXI_WVALID=ws==WD,M_AXI_WLAST=windex==wn-1'b1,M_AXI_WUSER=0;
+ genvar g;
+ generate for(g=0;g<BYTES;g=g+1) begin: strobes
+  assign M_AXI_WSTRB[g]=(ws==WD) && ((windex*BYTES+g)<wleft);
+ end endgenerate
+ assign M_AXI_BREADY=ws==WB;
+ assign M_AXI_ARADDR=ra_q,M_AXI_ARLEN=rn-1'b1,M_AXI_ARVALID=rs==RA && rn!=0;
+ assign M_AXI_ARID=0,M_AXI_ARSIZE=SHIFT,M_AXI_ARBURST=1,M_AXI_ARLOCK=0;
+ assign M_AXI_ARCACHE=3,M_AXI_ARPROT=0,M_AXI_ARQOS=0,M_AXI_ARUSER=0;
+ // Cancellation must drain even when the abandoned consumer FIFO is full.
+ assign M_AXI_RREADY=rs==RR && (rcancel || MASTER_RST || !RD_FIFO_FULL);
+ assign RD_FIFO_WE=M_AXI_RVALID && M_AXI_RREADY && !rcancel && !MASTER_RST;
+ assign RD_FIFO_DATA=M_AXI_RDATA;
+ assign DEBUG={22'd0,wcancel,rcancel,werr,rerr,ws,1'b0,rs};
+ // Purpose: prefetch exactly wn synchronous FIFO words (one-cycle latency),
+ // including after FIFO EMPTY asserts on the final pop. RD_LEN is never used
+ // by write accounting. Cancellation cannot silently reset a live transaction.
+ always @(posedge ACLK or negedge ARESETN) begin
+  if(!ARESETN) begin
+   ws<=WI;wa_q<=0;wleft<=0;wbytes<=0;wn<=1;popped<=0;captured<=0;windex<=0;
+   pop_q<=0;werr<=0;wcancel<=0;
   end else begin
-    if(MASTER_RST) begin
-      wr_state <= S_WR_IDLE;
-    end else begin
-      case(wr_state)
-        S_WR_IDLE: begin
-          if(WR_START) begin
-            wr_state          <= S_WA_WAIT;
-            reg_wr_adrs[31:0] <= WR_ADRS[31:0];
-            reg_wr_len[31:0]  <= WR_LEN[31:0] -32'd1;
-			rd_first_data <= 1'b1;
-          end
-          reg_awvalid         <= 1'b0;
-          reg_wvalid          <= 1'b0;
-          reg_w_last          <= 1'b0;
-          reg_w_len[7:0]      <= 8'd0;
-          reg_w_stb[7:0]      <= 8'd0;
-          reg_wr_status[1:0]  <= 2'd0;
-        end
-        S_WA_WAIT: begin
-          if(!WR_FIFO_AEMPTY | (reg_wr_len[31:11] == 21'd0)) begin
-            wr_state          <= S_WA_START;
-          end
-		  rd_first_data <= 1'b0;
-        end
-        S_WA_START: begin
-          wr_state            <= S_WD_WAIT;
-          reg_awvalid         <= 1'b1;
-          reg_wr_len[31:11]    <= reg_wr_len[31:11] - 21'd1;
-          if(reg_wr_len[31:11] != 21'd0) begin
-            reg_w_len[7:0]  <= 8'hFF;
-            reg_w_last      <= 1'b0;
-            reg_w_stb[7:0]  <= 8'hFF;
-          end else begin
-        reg_w_len[7:0]  <= reg_wr_len[10:5];//5
-            reg_w_last      <= 1'b1;
-            reg_w_stb[7:0]  <= 8'hFF;
-          end
-        end
-        S_WD_WAIT: begin
-          if(M_AXI_AWREADY) begin
-            wr_state        <= S_WD_PROC;
-            reg_awvalid     <= 1'b0;
-            reg_wvalid      <= 1'b1;
-          end
-        end
-        S_WD_PROC: begin
-          if(M_AXI_WREADY & ~WR_FIFO_EMPTY) begin
-            if(reg_w_len[7:0] == 8'd0) begin
-              wr_state        <= S_WR_WAIT;
-              reg_wvalid      <= 1'b0;
-              reg_w_stb[7:0]  <= 8'h00;
-            end else begin
-              reg_w_len[7:0]  <= reg_w_len[7:0] -8'd1;
-            end
-          end
-        end
-        S_WR_WAIT: begin
-          if(M_AXI_BVALID) begin
-            reg_wr_status[1:0]  <= reg_wr_status[1:0] | M_AXI_BRESP[1:0];
-            if(reg_w_last) begin
-              wr_state          <= S_WR_DONE;
-            end else begin
-              wr_state          <= S_WA_WAIT;
-              reg_wr_adrs[31:0] <= reg_wr_adrs[31:0] + 32'd2048;
-            end
-          end
-        end
-        S_WR_DONE: begin
-            wr_state <= S_WR_IDLE;
-          end
-        
-        default: begin
-          wr_state <= S_WR_IDLE;
-        end
-      endcase
-
-      end
+   pop_q<=WR_FIFO_RE;
+   if(WR_FIFO_RE) popped<=popped+1'b1;
+   if(pop_q) begin buffer[captured]<=WR_FIFO_DATA;captured<=captured+1'b1;end
+   if(MASTER_RST && ws!=WI) begin wcancel<=1;werr<=1;end
+   case(ws)
+    WI: if(WR_START && !MASTER_RST) begin
+     wa_q<=WR_ADRS;wleft<=WR_LEN;werr<=0;wcancel<=0;
+     if(WR_LEN==0 || WR_ADRS[SHIFT-1:0]!=0 || {1'b0,WR_ADRS}+{1'b0,WR_LEN}>33'h100000000) begin werr<=1;ws<=WE;end
+     else begin ws<=WL;wn<=0;popped<=0;captured<=0;windex<=0; end
     end
-  end
-   
-  assign M_AXI_AWID         = 1'b0;
-  assign M_AXI_AWADDR[31:0] = reg_wr_adrs[31:0];
-  assign M_AXI_AWLEN[7:0]   = reg_w_len[7:0];
-  assign M_AXI_AWSIZE[2:0]  = 3'b101;
-  assign M_AXI_AWBURST[1:0] = 2'b01;
-  assign M_AXI_AWLOCK       = 1'b0;
-  assign M_AXI_AWCACHE[3:0] = 4'b0011;
-  assign M_AXI_AWPROT[2:0]  = 3'b000;
-  assign M_AXI_AWQOS[3:0]   = 4'b0000;
-  assign M_AXI_AWUSER[0]    = 1'b1;
-  assign M_AXI_AWVALID      = reg_awvalid;
-
-  assign M_AXI_WDATA  = WR_FIFO_DATA;
-  assign M_AXI_WSTRB   = (reg_wvalid & ~WR_FIFO_EMPTY)?32'hffffffff:32'h00000000;
-  assign M_AXI_WLAST        = (reg_w_len[7:0] == 8'd0)?1'b1:1'b0;
-  assign M_AXI_WUSER        = 1;
-  assign M_AXI_WVALID       = reg_wvalid & ~WR_FIFO_EMPTY;
-//  assign M_AXI_WVALID       = (wr_state == S_WD_PROC)?1'b1:1'b0;
-
-  assign M_AXI_BREADY       = M_AXI_BVALID;
-
-  assign WR_READY           = (wr_state == S_WR_IDLE)?1'b1:1'b0;
-  
-//  assign WR_FIFO_RE         = (wr_state == S_WD_PROC)?M_AXI_WREADY:1'b0;
-
-  localparam S_RD_IDLE  = 3'd0;
-  localparam S_RA_WAIT  = 3'd1;
-  localparam S_RA_START = 3'd2;
-  localparam S_RD_WAIT  = 3'd3;
-  localparam S_RD_PROC  = 3'd4;
-  localparam S_RD_DONE  = 3'd5;
-  
-  reg [2:0]   rd_state;
-  reg [31:0]  reg_rd_adrs;
-  reg [31:0]  reg_rd_len;
-  reg         reg_arvalid, reg_r_last;
-  reg [7:0]   reg_r_len;
- assign RD_DONE = (rd_state == S_RD_DONE) ; 
-  // Read State
-  always @(posedge ACLK or negedge ARESETN) begin
-    if(!ARESETN) begin
-      rd_state          <= S_RD_IDLE;
-      reg_rd_adrs[31:0] <= 32'd0;
-      reg_rd_len[31:0]  <= 32'd0;
-      reg_arvalid       <= 1'b0;
-      reg_r_len[7:0]    <= 8'd0;
-    end else begin
-      case(rd_state)
-        S_RD_IDLE: begin
-          if(RD_START) begin
-            rd_state          <= S_RA_WAIT;
-            reg_rd_adrs[31:0] <= RD_ADRS[31:0];
-            reg_rd_len[31:0]  <= RD_LEN[31:0] -32'd1;
-          end
-          reg_arvalid     <= 1'b0;
-          reg_r_len[7:0]  <= 8'd0;
-        end
-        S_RA_WAIT: begin
-          if(~RD_FIFO_AFULL) begin
-            rd_state          <= S_RA_START;
-          end
-        end
-        S_RA_START: begin
-          rd_state          <= S_RD_WAIT;
-          reg_arvalid       <= 1'b1;
-          reg_rd_len[31:11] <= reg_rd_len[31:11] -21'd1;
-          if(reg_rd_len[31:11] != 21'd0) begin
-            reg_r_last      <= 1'b0;
-            reg_r_len[7:0]  <= 8'd255;
-          end else begin
-            reg_r_last      <= 1'b1;
-            reg_r_len[7:0]  <= reg_rd_len[10:5];
-          end
-        end
-        S_RD_WAIT: begin
-          if(M_AXI_ARREADY) begin
-            rd_state        <= S_RD_PROC;
-            reg_arvalid     <= 1'b0;
-          end
-        end
-        S_RD_PROC: begin
-          if(M_AXI_RVALID) begin
-            if(M_AXI_RLAST) begin
-              if(reg_r_last) begin
-                rd_state          <= S_RD_DONE;
-              end else begin
-                rd_state          <= S_RA_WAIT;
-                reg_rd_adrs[31:0] <= reg_rd_adrs[31:0] + 32'd2048;
-              end
-            end else begin
-              reg_r_len[7:0] <= reg_r_len[7:0] -8'd1;
-            end
-          end
-        end
-		S_RD_DONE:begin
-			rd_state          <= S_RD_IDLE;
-		end
-			
-	  endcase
+    WL: begin
+     // First WL cycle is setup; loading starts only once wn has been computed.
+     if(wn==0) begin
+      wn<=planned_w[4:0];wbytes<=(wleft<planned_w*BYTES) ? wleft : planned_w*BYTES;
+     end
+     if(wcancel || MASTER_RST) ws<=WE;
+     else if(wn!=0 && captured==wn && popped==wn && !pop_q) ws<=WA;
     end
+    WA: if(M_AXI_AWREADY) ws<=WD;
+    WD: if(M_AXI_WVALID && M_AXI_WREADY) begin
+     if(windex==wn-1'b1) ws<=WB;else windex<=windex+1'b1;
+    end
+    WB: if(M_AXI_BVALID && M_AXI_BREADY) begin
+     if(M_AXI_BRESP!=0 || M_AXI_BID!=0) werr<=1;
+     if(wleft<=wbytes || wcancel || MASTER_RST || M_AXI_BRESP!=0 || M_AXI_BID!=0) ws<=WE;
+     else begin
+      wa_q<=wa_q+wbytes;wleft<=wleft-wbytes;ws<=WL;
+      popped<=0;captured<=0;windex<=0;wn<=0;
+     end
+    end
+    WE: ws<=WI;
+    default: begin ws<=WE;werr<=1;end
+   endcase
   end
-   
-  // Master Read Address
-  assign M_AXI_ARID         = 1'b0;
-  assign M_AXI_ARADDR[31:0] = reg_rd_adrs[31:0];
-  assign M_AXI_ARLEN[7:0]   = reg_r_len[7:0];
-  assign M_AXI_ARSIZE[2:0]  = 3'b101 ;
-  assign M_AXI_ARBURST[1:0] = 2'b01;
-  assign M_AXI_ARLOCK       = 1'b0;
-  assign M_AXI_ARCACHE[3:0] = 4'b0011;
-  assign M_AXI_ARPROT[2:0]  = 3'b000;
-  assign M_AXI_ARQOS[3:0]   = 4'b0000;
-  assign M_AXI_ARUSER[0]    = 1'b1;
-  assign M_AXI_ARVALID      = reg_arvalid;
-
-  assign M_AXI_RREADY       = M_AXI_RVALID & ~RD_FIFO_FULL;
-
-  assign RD_READY           = (rd_state == S_RD_IDLE)?1'b1:1'b0;
-  assign RD_FIFO_WE         = M_AXI_RVALID;
-  assign RD_FIFO_DATA = M_AXI_RDATA;
-
-  assign DEBUG[31:0] = {reg_wr_len[31:8],
-                        1'd0, wr_state[2:0], 1'd0, rd_state[2:0]};
-   
+ end
+ // Purpose: reserve via RD_FIFO_AFULL before AR; standard AXI read backpressure
+ // is honored. Complete only on a consumed LAST, not merely RVALID.
+ always @(posedge ACLK or negedge ARESETN) begin
+  if(!ARESETN) begin rs<=RI;ra_q<=0;rleft<=0;rn<=1;rindex<=0;rerr<=0;rcancel<=0;end
+  else begin
+   if(MASTER_RST && rs!=RI) begin rcancel<=1;rerr<=1;end
+   case(rs)
+    RI: if(RD_START && !MASTER_RST) begin
+     ra_q<=RD_ADRS;rleft<=RD_LEN;rn<=0;rindex<=0;rerr<=0;rcancel<=0;
+     if(RD_LEN==0 || RD_ADRS[SHIFT-1:0]!=0 || {1'b0,RD_ADRS}+{1'b0,RD_LEN}>33'h100000000) begin rerr<=1;rs<=RE;end
+     else rs<=RA;
+    end
+    RA: begin
+     if(rn==0) begin
+      if(rcancel || MASTER_RST) rs<=RE;
+      else if(!RD_FIFO_AFULL) rn<=planned_r[4:0];
+     end else if(M_AXI_ARREADY) begin rs<=RR;rindex<=0;end
+    end
+    RR: if(M_AXI_RVALID && M_AXI_RREADY) begin
+     if(M_AXI_RRESP!=0 || M_AXI_RID!=0 || M_AXI_RLAST!=(rindex==rn-1'b1)) rerr<=1;
+     if(M_AXI_RLAST) begin
+      if(rleft<=rn*BYTES || rcancel || MASTER_RST || rerr || M_AXI_RRESP!=0 || M_AXI_RID!=0 || rindex!=rn-1'b1) rs<=RE;
+      else begin ra_q<=ra_q+rn*BYTES;rleft<=rleft-rn*BYTES;rn<=0;rs<=RA;end
+     end else rindex<=rindex+1'b1;
+    end
+    RE: rs<=RI;
+    default: begin rs<=RE;rerr<=1;end
+   endcase
+  end
+ end
 endmodule

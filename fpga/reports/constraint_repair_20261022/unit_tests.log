@@ -1,0 +1,11 @@
+test_clean (test_constraint_report.ConstraintReportTests.test_clean) ... ok
+test_generator_in_isolation (test_constraint_report.ConstraintReportTests.test_generator_in_isolation) ... ok
+test_missing_and_unrecognized (test_constraint_report.ConstraintReportTests.test_missing_and_unrecognized) ... ok
+test_mixed_severity_and_unknown_code (test_constraint_report.ConstraintReportTests.test_mixed_severity_and_unknown_code) ... ok
+test_real_baseline (test_constraint_report.ConstraintReportTests.test_real_baseline) ... ok
+test_truncated (test_constraint_report.ConstraintReportTests.test_truncated) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.091s
+
+OK

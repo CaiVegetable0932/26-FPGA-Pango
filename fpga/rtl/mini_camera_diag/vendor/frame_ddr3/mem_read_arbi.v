@@ -1,4 +1,5 @@
-// Purpose: Arbitrate two burst-read clients onto one memory interface; diagnostic channel 1 is idle.
+// Purpose: round-robin four burst-read clients; retain ownership until completion.
+// Native responses cannot be cancelled by an arbitrary owner-reset timer.
 // Origin: imported MINI vendor demo; module-level integration is not hardware validation.
 module mem_read_arbi
 #(
@@ -74,8 +75,6 @@ localparam CH3_END = 6'd16;
 always@(posedge mem_clk or negedge rst_n)
 begin
 	if(~rst_n)
-		read_state <= IDLE;
-	else if(cnt_timer > 16'd8000)
 		read_state <= IDLE;
 	else
 		read_state <= read_state_next;

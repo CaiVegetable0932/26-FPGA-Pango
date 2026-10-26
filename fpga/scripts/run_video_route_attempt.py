@@ -118,8 +118,8 @@ def main():
         if len(board_sources)!=290 or len(shared)!=70 or any(board_sources[n]!=model_sources[n] for n in shared):
             raise ValueError('Full native/model source identity mismatch')
         model_result=read_json(model/'result.json')
-        if not all(model_result.get(k) for k in ('passed','full_frame','control_test','snapshot_test','snapshot_intact','display_test')):
-            raise ValueError('Full-frame/control/snapshot/display model must pass')
+        if not all(model_result.get(k) for k in ('passed','full_frame','control_test','snapshot_intact','display_test')):
+            raise ValueError('Full-frame/control/RAW/display model must pass')
         # Reuse the release gate: the job overlapping later capture/network
         # traffic must meet the same deadline as the final quiet-tail job.
         geometry_budget=verified_geometry_budget(model)
@@ -133,7 +133,7 @@ def main():
         # operation/descriptor checks, not claim whole-bank cycle equivalence
         # from the separate DMA and snapshot-controller differential tests.
         regression_result=read_json(args.regression.resolve()/'result.json')
-        required={'tb_frame_snapshot_pair','tb_frame_memory_fabric','tb_frame_ticket_rollover',
+        required={'tb_frame_memory_fabric','tb_frame_ticket_rollover',
             'tb_video_memory_core','tb_geometry_native_integration','tb_geometry_frame_processor',
             'tb_frame_pixel_writer','tb_geometry_tile_refill'}
         if regression_result.get('acquire_wait_cycles',0):

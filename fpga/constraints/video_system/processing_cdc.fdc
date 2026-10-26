@@ -1,10 +1,16 @@
 # Installed UCE guide printed p83: max-delay endpoints may be clocks.
-# The ONLY clock-target exception starts at named, immutable DDR job
-# fields. Timing paths stop at their first processing capture. All
-# processing-register -> processing-register paths remain ordinary.
-# Source ownership is held until the synchronized job completion.
-set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.scheduler.geometry_source_base* core.scheduler.geometry_source_gen* core.scheduler.geometry_result_base* core.scheduler.geometry_result_gen* core.scheduler.geometry_saved* core.source_geometry*}] -to [get_clocks processing_clk]
-set_false_path -hold -from [get_cells -hierarchical {core.scheduler.geometry_source_base* core.scheduler.geometry_source_gen* core.scheduler.geometry_result_base* core.scheduler.geometry_result_gen* core.scheduler.geometry_saved* core.source_geometry*}] -to [get_clocks processing_clk]
+# Immutable DDR job fields (including slot-selected RAM fields) terminate ONLY
+# at the explicit mailbox snapshot. P_OFFER follows this capture, so readiness
+# and all downstream processing logic use local registers and ordinary timing.
+# Source ownership is held until synchronized completion; retain the original
+# 6 ns datapath budget and waive only asynchronous hold at the first capture.
+set_max_delay 6.0 -datapath_only -from [get_clocks {ddrphy_sysclk}] -to [get_cells -hierarchical {core.processor.job_mailbox.processing_job*}]
+set_false_path -hold -from [get_clocks {ddrphy_sysclk}] -to [get_cells -hierarchical {core.processor.job_mailbox.processing_job*}]
+# Completed processing counters are held until the next job. Their DDR-domain
+# snapshot precedes source_done by a full cycle; status packaging is timed in
+# DDR normally. Clock startpoints also cover counters optimized to shared FFs.
+set_max_delay 6.0 -datapath_only -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.job_mailbox.source_result*}]
+set_false_path -hold -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.job_mailbox.source_result*}]
 set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.job_mailbox.request_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.request_meta}]
 set_false_path -hold -from [get_cells -hierarchical {core.processor.job_mailbox.request_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.request_meta}]
 set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.job_mailbox.free_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.free_meta}]
@@ -31,7 +37,21 @@ set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.
 set_false_path -hold -from [get_cells -hierarchical {core.processor.result_bridge.response_toggle}] -to [get_cells -hierarchical {core.processor.result_bridge.response_meta}]
 set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.result_bridge.descriptor_held*}] -to [get_cells -hierarchical {core.processor.result_bridge.memory_req_*}]
 set_false_path -hold -from [get_cells -hierarchical {core.processor.result_bridge.descriptor_held*}] -to [get_cells -hierarchical {core.processor.result_bridge.memory_req_*}]
+# The complete write burst is held before request crosses and until completion
+# is consumed. ADS may split payload[0] into processing-clock FFs; read_q is
+# the explicit DDR first capture, with retiming disabled in RTL. Bound only
+# those asynchronous data paths. DDR RAM-read and downstream DDR paths keep
+# their ordinary setup/hold checks; no full clock-pair exception is applied.
+set_max_delay 6.0 -datapath_only -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]
+set_false_path -hold -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]
 set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.result_bridge.status_held*}] -to [get_cells -hierarchical {core.processor.result_bridge.done_tag* core.processor.result_bridge.error core.processor.result_bridge.cancelled}]
 set_false_path -hold -from [get_cells -hierarchical {core.processor.result_bridge.status_held*}] -to [get_cells -hierarchical {core.processor.result_bridge.done_tag* core.processor.result_bridge.error core.processor.result_bridge.cancelled}]
-set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.tone_cursor* core.tone_commit}] -to [get_cells -hierarchical {core.tone_ready_meta}]
-set_false_path -hold -from [get_cells -hierarchical {core.tone_cursor* core.tone_commit}] -to [get_cells -hierarchical {core.tone_ready_meta}]
+
+# Versioned two-page tone mailbox: all curve payload fields remain held while
+# the processing domain copies 256 replicated entries and commits once.
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.tone_control.request}] -to [get_cells -hierarchical {core.tone_control.request_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.tone_control.request}] -to [get_cells -hierarchical {core.tone_control.request_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.tone_control.acknowledgement}] -to [get_cells -hierarchical {core.tone_control.ack_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.tone_control.acknowledgement}] -to [get_cells -hierarchical {core.tone_control.ack_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.tone_control.uploaded* core.tone_control.copy_curve* core.tone_control.copy_page core.tone_control.copy_generation*}] -to [get_clocks processing_clk]
+set_false_path -hold -from [get_cells -hierarchical {core.tone_control.uploaded* core.tone_control.copy_curve* core.tone_control.copy_page core.tone_control.copy_generation*}] -to [get_clocks processing_clk]

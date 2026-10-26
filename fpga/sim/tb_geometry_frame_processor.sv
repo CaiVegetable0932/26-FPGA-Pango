@@ -27,7 +27,7 @@ module tb_geometry_frame_processor;
  wire [27:0] awaddr,araddr;wire [3:0] awlen,arlen;wire awvalid,arvalid,fault;
  reg awready=0,arready=0,native_wready=0,native_wlast=0,native_rvalid=0,native_rlast=0;
  wire [255:0] native_wdata;wire [31:0] native_wstrb;reg [255:0] native_rdata=0;
- ddr_native_dma #(.CLIENTS(2),.VERIFY_WRITES(1)) dma(.clk(clk),.rst_n(rst_n),.controller_ready(1'b1),.allow_snapshot(1'b1),
+ ddr_native_dma #(.CLIENTS(2),.VERIFY_WRITES(1)) dma(.clk(clk),.rst_n(rst_n),.controller_ready(1'b1),
   .req_valid(req_valid),.req_ready(req_ready),.req_write(2'b10),.req_addr(req_addr),.req_tag(req_tag),.req_beats(req_beats),
   .w_valid(w_valid),.w_ready(w_ready),.w_data(w_data),.w_strb(w_strb),.cancel(cancel),.urgent(2'b00),
   .r_valid(r_valid),.r_ready(r_ready),.r_data(r_data),.r_last(r_last),.done(done),.done_ready(done_ready),
@@ -84,7 +84,7 @@ module tb_geometry_frame_processor;
   repeat(4)@(negedge clk);rst_n=1;
   for(integer a=0;a<256;a++)begin @(negedge clk);lut_write=1;lut_addr=a;lut_data=255-a;end
   @(negedge clk);lut_write=0;lut_commit=1;@(negedge clk);lut_commit=0;
-  for(integer f=0;f<3;f++)begin
+  for(integer f=0;f<2;f++)begin
    enhancement=f;for(integer a=0;a<262144;a++)result_mem[a]=8'h5a;
    wait(job_ready);@(negedge clk);job_valid=1;@(negedge clk);job_valid=0;
    wait(job_done);@(negedge clk);
@@ -100,7 +100,7 @@ module tb_geometry_frame_processor;
     checks++;
    end
   end
-  $display("GEOMETRY_FRAME_PROCESSOR_PASS frames=3 verified_result_bytes=%0d cycles=%0d",checks,cycle);$finish;
+  $display("GEOMETRY_FRAME_PROCESSOR_PASS frames=2 verified_result_bytes=%0d cycles=%0d",checks,cycle);$finish;
  end
  initial begin #20000000;$fatal(1,"PROCESSOR_TIMEOUT");end
 endmodule

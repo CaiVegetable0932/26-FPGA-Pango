@@ -6,7 +6,7 @@
 module tb_dma_grouped_parameters #(parameter N=1,VERIFY=1);
  localparam DEPTH=16384,BEATS=3;
  reg clk=0;always #4 clk=~clk;
- reg rst_n=0,controller_ready=1,allow_snapshot=1;
+ reg rst_n=0,controller_ready=1;
  reg [N-1:0] req_valid=0,req_write=0,urgent=0,cancel=0,w_valid=0,r_ready='1,done_ready=0;
  wire [N-1:0] req_ready,w_ready,r_valid,r_last,done,cancelled,error,write_verified;
  reg [N*32-1:0] req_addr=0,req_tag=0;
@@ -117,11 +117,8 @@ module tb_dma_grouped_parameters #(parameter N=1,VERIFY=1);
   wait(&done);#1;if(error!=0 || cancelled!=0 || fault)$fatal(1,"Read completion failed");
   if(checks!=N*BEATS*32)$fatal(1,"Missing read data");
   acknowledge;
-  // Denied snapshot and malformed alignment may not issue a native address.
+  // Misalignment cannot issue a native address; all client indices are live.
   begin integer prior;prior=native_requests;
-   allow_snapshot=0;enqueue(N-1,0,(N-1)*512,BEATS);wait(done[N-1]);#1;
-   if(!error[N-1] || native_requests!=prior)$fatal(1,"Snapshot rejection escaped to native bus");
-   acknowledge;allow_snapshot=1;
    enqueue(0,0,1,BEATS);wait(done[0]);#1;
    if(!error[0] || native_requests!=prior)$fatal(1,"Unaligned request escaped to native bus");
    acknowledge;

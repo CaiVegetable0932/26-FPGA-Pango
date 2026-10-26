@@ -1,0 +1,56 @@
+FULL_PROGRESS cycle=1250000 cap=2 geo=0 ix=1357 iy=364 processed=0
+FULL_PROGRESS cycle=2500000 cap=2 geo=0 ix=1381 iy=728 processed=0
+FULL_PROGRESS cycle=3750000 cap=0 geo=3 ix=0 iy=1080 processed=0
+FULL_PROGRESS cycle=5000000 cap=0 geo=3 ix=0 iy=1080 processed=0
+FULL_PROGRESS cycle=6250000 cap=0 geo=3 ix=0 iy=1080 processed=0
+FULL_PROGRESS cycle=7500000 cap=0 geo=3 ix=0 iy=1080 processed=0
+FRAME_GEOMETRY job=1 geometry_cycles=4073517
+FULL_PROGRESS cycle=8750000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=10000000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=11250000 cap=0 geo=0 ix=0 iy=1080 processed=1
+DISPLAY_CORE_PROGRESS new=1 repeat=0 checked_pixels=2073599
+FULL_PROGRESS cycle=12500000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=13750000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=15000000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=16250000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=17500000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=18750000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=20000000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=21250000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=22500000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=23750000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=25000000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=26250000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=27500000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=28750000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=30000000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=31250000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=32500000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=33750000 cap=0 geo=0 ix=0 iy=1080 processed=1
+FULL_PROGRESS cycle=35000000 cap=2 geo=0 ix=1633 iy=60 processed=1
+FULL_PROGRESS cycle=36250000 cap=2 geo=0 ix=251 iy=424 processed=1
+FULL_PROGRESS cycle=37500000 cap=2 geo=0 ix=812 iy=787 processed=1
+FULL_PROGRESS cycle=38750000 cap=2 geo=3 ix=1418 iy=68 processed=1
+FULL_PROGRESS cycle=40000000 cap=2 geo=3 ix=1190 iy=424 processed=1
+FULL_PROGRESS cycle=41250000 cap=2 geo=3 ix=1900 iy=781 processed=1
+FRAME_GEOMETRY job=2 geometry_cycles=3796435
+FULL_PROGRESS cycle=42500000 cap=0 geo=3 ix=0 iy=1080 processed=2
+FULL_PROGRESS cycle=43750000 cap=0 geo=3 ix=0 iy=1080 processed=2
+FULL_PROGRESS cycle=45000000 cap=0 geo=3 ix=0 iy=1080 processed=2
+FULL_PROGRESS cycle=46250000 cap=0 geo=3 ix=0 iy=1080 processed=2
+FRAME_GEOMETRY job=3 geometry_cycles=4114261
+FULL_PROGRESS cycle=47500000 cap=0 geo=0 ix=0 iy=1080 processed=3
+FULL_PROGRESS cycle=48750000 cap=0 geo=0 ix=0 iy=1080 processed=3
+DISPLAY_CORE_PROGRESS new=2 repeat=8 checked_pixels=20735999
+FULL_PROGRESS cycle=50000000 cap=0 geo=0 ix=0 iy=1080 processed=3
+FULL_PROGRESS cycle=51250000 cap=0 geo=0 ix=0 iy=1080 processed=3
+FULL_PROGRESS cycle=52500000 cap=0 geo=0 ix=0 iy=1080 processed=3
+FULL_PROGRESS cycle=53750000 cap=0 geo=0 ix=0 iy=1080 processed=3
+DISPLAY_CORE_PROGRESS new=3 repeat=8 checked_pixels=22809599
+DISPLAY_CORE_PASS new=3 repeat=8 checked_pixels=22809600 failed=0 underflow=0
+GEOMETRY_BUDGET jobs=3 max_cycles=4114261 clock_hz=125000000 minimum_fps=30
+TB_VIDEO_MEMORY_CORE_PASS bytes=6220800 good=3 processed=3 geometry_cycles=4114261
+- D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/verilator_20261016_013808_414872/source/sim\tb_video_memory_core.sv:213: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.52
+- Verilator: $finish at 433ms; walltime 1231.786 s; speed 351.695 us/s
+- Verilator: cpu 1197.281 s on 1 threads; allocated 83 MB

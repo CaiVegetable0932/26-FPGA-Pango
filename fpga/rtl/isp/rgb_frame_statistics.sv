@@ -10,6 +10,7 @@ module rgb_frame_statistics #(parameter TAG_BITS=192,SUPPORT_ABORT=0)(
  input [15:0] pixel_x,pixel_y,input [23:0] pixel_rgb,
  output reg result_valid,input result_ready,output reg [TAG_BITS-1:0] result_tag,
  output reg [47:0] luminance_sum,output reg [31:0] samples,dark,saturated,
+ output reg [47:0] red_sum,green_sum,blue_sum,output reg [31:0] neutral_count,
  output reg rejected
 );
  reg active;
@@ -17,6 +18,16 @@ module rgb_frame_statistics #(parameter TAG_BITS=192,SUPPORT_ABORT=0)(
  reg [15:0] rx,ry,rw,rh;
  reg [47:0] accum;
  reg [31:0] count,dark_count,sat_count;
+ // Neutral-only pre-CCM sums are an optional AWB tap. Exclude dark/clipped
+ // channels and strongly chromatic samples rather than assuming gray world.
+ reg [47:0] reds,greens,blues;reg [31:0] neutrals;
+ wire [7:0] largest=pixel_rgb[23:16]>pixel_rgb[15:8] ?
+  (pixel_rgb[23:16]>pixel_rgb[7:0]?pixel_rgb[23:16]:pixel_rgb[7:0]):
+  (pixel_rgb[15:8]>pixel_rgb[7:0]?pixel_rgb[15:8]:pixel_rgb[7:0]);
+ wire [7:0] smallest=pixel_rgb[23:16]<pixel_rgb[15:8] ?
+  (pixel_rgb[23:16]<pixel_rgb[7:0]?pixel_rgb[23:16]:pixel_rgb[7:0]):
+  (pixel_rgb[15:8]<pixel_rgb[7:0]?pixel_rgb[15:8]:pixel_rgb[7:0]);
+ wire neutral=selected && smallest>=32 && largest<240 && largest-smallest<=(largest>>2);
  // Purpose: keep the constant-weight luma arithmetic in local LUT logic.
  // All products and the rounded sum fit 16 bits (maximum sum is 65408).
  // This changes only native mapping, not pixels, sampling or result latency.
@@ -28,6 +39,17 @@ module rgb_frame_statistics #(parameter TAG_BITS=192,SUPPORT_ABORT=0)(
  wire selected=pixel_mask && pixel_x>=rx && pixel_y>=ry &&
   {1'b0,pixel_x} < {1'b0,rx}+{1'b0,rw} && {1'b0,pixel_y} < {1'b0,ry}+{1'b0,rh} &&
   ((pixel_x-rx)&3)==0 && ((pixel_y-ry)&3)==0;
+ // Accumulator update and last-pixel publication use one exact next-value
+ // expression each. This removes duplicate arithmetic while preserving the
+ // final included pixel, stalls, ROI selection and abort snapshots.
+ wire [47:0] next_luma=accum+(selected?luma:48'd0);
+ wire [31:0] next_count=count+(selected?1'b1:32'd0);
+ wire [31:0] next_dark=dark_count+(selected?(luma<32):32'd0);
+ wire [31:0] next_saturated=sat_count+(selected?(luma>=250):32'd0);
+ wire [47:0] next_red=reds+(neutral?pixel_rgb[23:16]:48'd0);
+ wire [47:0] next_green=greens+(neutral?pixel_rgb[15:8]:48'd0);
+ wire [47:0] next_blue=blues+(neutral?pixel_rgb[7:0]:48'd0);
+ wire [31:0] next_neutral=neutrals+(neutral?1'b1:32'd0);
  always @(posedge clk or negedge rst_n) begin
   if(!rst_n) begin active<=0;result_valid<=0;result_failed<=0;rejected<=0;accum<=0;count<=0;dark_count<=0;sat_count<=0; end
   else begin
@@ -36,18 +58,21 @@ module rgb_frame_statistics #(parameter TAG_BITS=192,SUPPORT_ABORT=0)(
    if(frame_start) begin
     if(!active && (!result_valid || result_ready) && roi_width!=0 && roi_height!=0) begin
      active<=1;saved_tag<=frame_tag;rx<=roi_x;ry<=roi_y;rw<=roi_width;rh<=roi_height;
-     accum<=0;count<=0;dark_count<=0;sat_count<=0;result_failed<=0;
+     accum<=0;count<=0;dark_count<=0;sat_count<=0;result_failed<=0;reds<=0;greens<=0;blues<=0;neutrals<=0;
     end else rejected<=1;
    end
    if(pixel_valid && pixel_ready && active) begin
+    if(neutral)begin reds<=next_red;greens<=next_green;blues<=next_blue;neutrals<=next_neutral;end
     if(selected) begin
-     accum<=accum+luma;count<=count+1'b1;
-     dark_count<=dark_count+(luma<32);sat_count<=sat_count+(luma>=250);
+     accum<=next_luma;count<=next_count;
+     dark_count<=next_dark;sat_count<=next_saturated;
     end
     if(pixel_last) begin
      active<=0;result_valid<=1;result_tag<=saved_tag;
-     luminance_sum<=accum+(selected ? luma : 0);samples<=count+selected;
-     dark<=dark_count+(selected && luma<32);saturated<=sat_count+(selected && luma>=250);
+     luminance_sum<=next_luma;samples<=next_count;
+     dark<=next_dark;saturated<=next_saturated;
+     red_sum<=next_red;green_sum<=next_green;
+     blue_sum<=next_blue;neutral_count<=next_neutral;
     end
    end
    // A truncated input may never deliver pixel_last. Finish its statistics

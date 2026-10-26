@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "hardware_tested": false,
+  "package_generated": false,
+  "host_report": "D:\\XDU\\concept\\26-FPGA-Pango\\host\\reports\\fpga_rgb_vectors_20261014_212339_734188.json",
+  "host_report_sha256": "14c1ea69815613e8066e8a8ed204b275c742e24510b7d9da5734fa1f044d4d5d",
+  "checks": {
+    "actual_frozen_snapshot": "PASS",
+    "historical_unbound_rejected": {
+      "passed": true,
+      "error": "host verification must bind the complete companion source snapshot"
+    },
+    "changed_source_hash_rejected": {
+      "passed": true,
+      "error": "verified host companion changed: host/scripts/verify_fpga_rgb_vectors.py"
+    },
+    "live_import_rejected": {
+      "passed": true,
+      "error": "host verifier imported outside its source snapshot: pango_video.protocol"
+    }
+  }
+}

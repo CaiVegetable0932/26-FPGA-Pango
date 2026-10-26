@@ -1,0 +1,22 @@
+--- baseline/rtl/board/video_memory_core.sv
++++ c4_withdrawal/rtl/board/video_memory_core.sv
+@@ -413,7 +413,7 @@
+   .done(done[0]),.done_ready(done_ready[0]),.dma_error(error[0]),.dma_cancelled(cancelled[0]),.done_tag(done_tag[0+:32]));
+  // Block geometry, not DVP, while a full replicated page is programmed.
+  wire tone_ready_ddr=tone_initialized && !tone_programming;
+- // Per-source motion runs in DDR domain. The immutable actual composed matrix
++ // C3 pose and C6 fixed crop run in DDR domain; C4 is disabled. The matrix
+  // enters the existing job mailbox; capture never waits for this calculation.
+  wire motion_prepared;wire [447:0] motion_geometry;wire [3:0] motion_pose_state,motion_visual_state;
+  wire [127:0] completion_job_config;wire [31:0] motion_registration_version;wire [127:0] motion_entity_versions;
+@@ -432,9 +432,7 @@
+   .submit_version(motion_version),.submit_id(motion_id),.submit_code(motion_submit_code),.read_kind(motion_read_kind),.read_status(motion_entity_status),
+   .capture_admit(capture_valid && capture_ready),.capture_epoch(capture_epoch),.capture_frame(capture_id),.capture_exposure(capture_first),
+   .capture_enable(SUPPORT_CONTROLS && affine_capture_enable),.capture_geometry(SUPPORT_CONTROLS?selected_capture_geometry:geometry_coefficients),
+-  .source_start(cap_start && cap_isp),.source_slot(src_slot),.capture_complete(capture_complete),
+-  .capture_legal(capture_isp_legal && !isp_writer_failed && !isp_error),.colour_version(admitted_colour_version),.camera_version(admitted_camera_version),
+-  .pixel_valid(ccm_valid && ccm_output_ready),.pixel_x(ccm_coordinates[15:0]),.pixel_y(ccm_coordinates[31:16]),.pixel_rgb(ccm_rgb),.pixel_mask(ccm_mask),
++  .source_start(cap_start && cap_isp),.source_slot(src_slot),
+   .mcu_enable(mcu_enable),.mcu_rx_valid(mcu_rx_valid),.mcu_rx_data(mcu_rx_data),.mcu_rx_error(mcu_rx_error),
+   .mcu_tx_valid(mcu_tx_valid),.mcu_tx_ready(mcu_tx_ready),.mcu_tx_data(mcu_tx_data),
+   .mcu_timing_valid(mcu_timing_valid),.mcu_capture_error(mcu_capture_error),.mcu_config_approved(mcu_config_approved),

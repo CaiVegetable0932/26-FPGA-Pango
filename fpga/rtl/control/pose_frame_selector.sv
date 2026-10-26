@@ -19,19 +19,32 @@ module pose_frame_selector #(parameter DEPTH=32,MAX_AGE_US=20000,MAX_ERROR_US=10
  // status: 0 usable approximate mapping, 1 no samples, 2 unmapped,
  // 3 stale/uncertain, 4 invalid angles/config/source. No status means q_wc.
  reg [767:0] samples [0:DEPTH-1];reg [63:0] arrival [0:DEPTH-1];
- integer wr,count,scan,left;
+ // Ring position is 0..DEPTH-1; occupancy/remaining/final scan can reach
+ // DEPTH. These widths retain that terminal value without 32-bit counters.
+ localparam PTR_BITS=DEPTH<2?1:$clog2(DEPTH);
+ localparam COUNT_BITS=DEPTH<2?1:$clog2(DEPTH+1);
+ reg [PTR_BITS-1:0] wr;reg [COUNT_BITS-1:0] count,scan,left;
  reg busy;reg [1:0] row_stage;reg [63:0] mapped_tick;reg candidate_valid;
  reg [767:0] q,best;reg [63:0] qt,best_arrival,target,best_tick;
  reg found,map_ok;reg signed [63:0] offset_q;reg [31:0] error_q;
  reg [1:0] timing_step;reg [63:0] sync_anchor,timing_delta;
  reg [31:0] error_base;reg map_requested;
+ // Exact modulo-width arithmetic is unchanged; ask installed ADS to use
+ // available APM add/sub resources instead of LUT carry chains. This adds no
+ // RTL stages. Native resource and timing results decide whether to retain it.
+ wire [63:0] mapped_time_apm /* synthesis syn_dspstyle="block_mult" */ = ($signed(q[480+:64])+offset_q);
+ wire [63:0] anchor_forward_apm /* synthesis syn_dspstyle="block_mult" */ = target-sync_anchor;
+ wire [63:0] anchor_reverse_apm /* synthesis syn_dspstyle="block_mult" */ = sync_anchor-target;
+ wire [63:0] sample_age_apm /* synthesis syn_dspstyle="block_mult" */ = target-best_tick;
+ // Avoid a second unregistered APM carry chain on the age decision.
+ wire [63:0] uncertain_age_apm = sample_age_apm+error_q;
  localparam DRIFT_PER_4096_US=(MAX_DRIFT_PPM*4096+999999)/1000000;
  wire [32:0] bounded_error={1'b0,error_base}+
   ((({12'd0,timing_delta[20:0]}+4095)>>12)*DRIFT_PER_4096_US);
  // An invalid new snapshot blocks reuse of older valid angles at its arrival
  // time. Arrival is a degradation boundary only, never a measurement timestamp.
  wire angles_valid=q[163+:2]==2'b11;
- wire [63:0] tick=angles_valid ? ($signed(q[480+:64])+offset_q) : qt;
+ wire [63:0] tick=angles_valid ? mapped_time_apm : qt;
  wire [31:0] flags=state_payload[160+:32];
  wire layout_ok=state_payload[544+:96]==0 && flags[31:12]==0 &&
   state_payload[704+:8]<=31 && state_payload[712+:8]<=31 &&
@@ -78,7 +91,7 @@ module pose_frame_selector #(parameter DEPTH=32,MAX_AGE_US=20000,MAX_ERROR_US=10
     busy<=1;row_stage<=0;left<=count;scan<=0;found<=0;best<=0;best_tick<=0;best_arrival<=0;
    end else if(busy) begin
     if(timing_step==2) begin
-     timing_delta<=target>=sync_anchor ? target-sync_anchor : sync_anchor-target;
+     timing_delta<=target>=sync_anchor ? anchor_forward_apm : anchor_reverse_apm;
      timing_step<=1;
     end else if(timing_step==1) begin
      // Use a conservative power-of-two drift envelope instead of a large
@@ -89,10 +102,10 @@ module pose_frame_selector #(parameter DEPTH=32,MAX_AGE_US=20000,MAX_ERROR_US=10
     end else if(left==0) begin
      busy<=0;result_valid<=1;result_state<=best;result_receive_us<=best_arrival;
      error_us<=error_q;
-     age_us<=found && target-best_tick<=32'hffffffff ? target-best_tick : 32'hffffffff;
+     age_us<=found && sample_age_apm<=32'hffffffff ? sample_age_apm : 32'hffffffff;
      if(!map_ok) begin status<=2;degraded_frames<=degraded_frames+1;end
      else if(!found) begin status<=1;degraded_frames<=degraded_frames+1;end
-     else if(target-best_tick+error_q>MAX_AGE_US || error_q>MAX_ERROR_US) begin status<=3;degraded_frames<=degraded_frames+1;end
+     else if(uncertain_age_apm>MAX_AGE_US || error_q>MAX_ERROR_US) begin status<=3;degraded_frames<=degraded_frames+1;end
      else if(best[163+:2]!=2'b11 || !best[166] || !best[167] ||
              best[728+:2]==0 || best[730+:2]==0 || best[744+:8]<2) begin status<=4;degraded_frames<=degraded_frames+1;end
      else status<=0;

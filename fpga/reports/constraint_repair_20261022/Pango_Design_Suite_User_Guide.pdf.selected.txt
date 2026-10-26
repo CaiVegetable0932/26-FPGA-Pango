@@ -1,0 +1,96 @@
+PDF PAGE 153
+ 开发流程 
+ 152 / 273 Pango Design Suite User Guide 
+【Enable Mask Variable Memory In Read Back】 选择回读时是否 mask RAM 区域，默认
+为 mask RAM 区域。 
+【Persist  Pin 】选择保留复用端口用于配置接口或释放给用户使用，默认为释放端口。 
+Encryption 
+【Encrypt Bitstream】勾选否加密位流文件，在 Create bit file 配置为 Yes 的前提下，勾选
+则生成加密的 sbit 文件及 nky 文件 （包含加密所需的128 比特的初始 CBC 值和 256 比特的密
+钥），不勾选则生成未加密的 sbit 文件，默认值为不勾选。用户可以编辑 CBC 和密钥字符串
+或选择 nky 文件，若用户不指定，则随机生成 nky 文件 
+【Select Key Type】 配置是否使用内部KEY， 默认值为Key。 选择Temporary Key 时， 每
+次下载位流前需先下载对应的 nky 文件， 选择Key， 则先将密钥烧录到芯片的efuse 模块 （该
+操作仅执行一次），然后直接下载位流即可 
+【Starting CBC Value】用户手动输入初始的 CBC 字符串，字符为 16 进制，输入长度为
+最多 32 个字符，默认为空 
+【Starting GCM Value】 用户手动输入初始的GCM 字符串， 字符为16 进制， 输入长度为
+最多 24 个字符，默认为空 
+【Input Encryption Key File】 选择nky 文件， 如果在此选择了密钥文件， 则软件选择以密
+钥文件进行加密，而不管用户在选项中是否输入了密钥字符串，默认为空。 
+【Key String】用户手动输入密钥字符串，字符为 16 进制字符，输入长度为最多 64 个字
+符，默认为空 
+【Number of Encryption Block】分块加密数据的块数，字符为 10 进制字符，输入范围为
+0~max_number (max_number 在不同的器件中取值不同， PG2L100H: 58; PG2L200H: 136; 
+PG2L50H: 32; PG2L25H: 18; PG2T390H: 201)，默认值为 0 
+【Enable Obfuscate】使能混淆加密，与加密功能配合使用，默认不使能 
+【Enable Self Authentication】使能自认证功能，对加密数据进行自认证，默认不使能 
+【Enable DPA】使能 DPA 保护功能，与加密功能配合使用，默认不使能 
+【DPA Protect Region】设置 DPA 保护区域，默认为 ALL 
+【Data Width】加密数据宽度设置，配置加密数据时使用的数据位宽，默认值为 X1 
+Authentication 
+【Authenticate Bitstream】选择是否生成认证位流文件，默认为不生成 
+
+PDF PAGE 166
+ 命令行运行 
+ 165 / 273 Pango Design Suite User Guide 
+dev_map  
+pnr  
+report_timing  
+gen_bit_stream 
+5.3 Shell 运行方式 
+一、pds 的-file 参数可以以直接执行 tcl 脚本文件的方式来运行 PDS 软件， 操作方式是在
+DOS 界面键入： 
+C:\Users\pango> C:\pango\PDS_2021.3\bin\pds.exe -file F:\work\project\pds\Adder\Adder.tcl 
+–work_dir C:\work_dir –project_name test 
+其中，work_dir 和 project_name 是可选项。Work_dir 指定工作目录， project_name 指定
+工程文件名。规则如下： 
+1. 指定 file 时，如果不指定 work_dir 和 project_name，则工程存放在 CMD 窗口目录，
+且 pds 工程文件名为 tcl 文件同名。 
+2. 指定 file 时，如果指定 work_dir，但不指定 project_name，则工程存放在 work_dir 选
+项值目录，且 pds 工程文件名为 tcl 文件同名。 
+3. 指定 file 时，如果不指定 work_dir，但指定 project_name，则工程存放在 tcl 文件同级
+目录，且 pds 工程文件名为 project_name 选项值。 
+4. 指定 file 时， 如果指定work_dir 和 project_name， 则工程存放在work_dir 选项值目录，
+且 pds 工程文件名为 project_name 选项值。 
+二、pds 的-project 参数可以以打开.pds 工程文件的方式来运行 PDS 软件，操作方式是在
+DOS 界面键入： 
+C:\Users\pango> C:\pango\PDS_2021.3\bin\pds.exe -project 
+F:\work\project\pds\Adder\project.pds –run gen_bit_stream 
+其中，run 是可选项，用来指定运行到的流程步骤。规则如下： 
+-run compile   运行到 Compile 
+-run synthesize  运行到 Synthesize 
+-run dev_map  运行到 Device Map 
+-run pnr   运行到 Place & Route 
+
+PDF PAGE 167
+ 命令行运行 
+ 166 / 273 Pango Design Suite User Guide 
+-run report_timing 运行到 Report Timing 
+-run report_power 运行到 Report Power 
+-run gen_netlist  运行到 Generate Netlist 
+-run gen_bit_stream 运行到 Generate Bit Stream 
+5.4 PDS 支持的命令 
+语法：command [OPTION]… [OPTION V ALUE]… 
+例： 
+add_design "F: /ipcore/rom/inst.idf" 
+add_constraint -logic -sdc pgdemo.sdc 
+compile -include_path {C:/Program Files C:/Program Files (x86)} 
+synthesize –ads 
+gen_bit_stream -create_bin -startup_sel TCK 
+注：在 tcl 标准语法中，”\”是转义字符，您可能需要将 windows 文件夹路径中的“\”更
+改为“/”后再运行 
+【generate_constraint】:用于将 pnr 之后的 DB 结果以约束的形式导出，可以指定导出的
+格式以及导出的约束资源类型，如： 
+generate_constraint –file {file_name} 
+以 pcf 的形式生成所有的约束信息，包括 IO，group，prim 资源。 
+ 
+generate_constraint –file {file_name} –device {APM/PLL/DRM} 
+以 pcf 的形式生成指定类型资源的约束信息 
+ 
+generate_constraint –file {file_name} –logic 
+以 fdc 的形式生成 IO、device 的约束信息 
+ 
+ generate_constraint –file {file_name} –slack -1.0 
+读取 pnr 之后的 DB 跑时序分析，以 txt 的形式生成 slack 值大于等于 
+-0.1ns 的 instance 的位置约束信息 

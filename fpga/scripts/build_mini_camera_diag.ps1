@@ -1,10 +1,11 @@
 # Purpose: isolated native IP/project generation and offline PDS stage execution.
-# No hardware access, bitstream generation, Flash operation or system setting change.
+# The optional bitstream stage creates only a volatile configuration image; this
+# script performs no hardware access, programming, Flash/eFuse or system change.
 param(
  [string]$PdsHome='E:/PDS_Pangu/PDS_2022.2-SP6.4',
  [string]$LicenseFile='',
  [switch]$GenerateIps,
- [ValidateSet('compile','synthesize','dev_map','pnr','report_timing')]
+ [ValidateSet('compile','synthesize','dev_map','pnr','report_timing','gen_bit_stream')]
  [string]$Stage='compile'
 )
 $ErrorActionPreference='Stop'
@@ -102,13 +103,17 @@ try {
   Restore-DiagnosticLayout
   # Purpose: native exit is not sufficient; capture error lines and require a
   # fresh native stage report. No result here implies functional/timing sign-off.
-  $taskExt=@{compile='cmr';synthesize='snr';dev_map='dmr';pnr='prr';report_timing='rtr'}[$Stage]
-  $taskDir=@{compile='compile';synthesize='synthesize';dev_map='device_map';pnr='place_route';report_timing='report_timing'}[$Stage]
+  # Purpose: require a fresh native artifact for the requested terminal stage;
+  # a successful process exit alone never authorizes hardware programming.
+  $taskExt=@{compile='cmr';synthesize='snr';dev_map='dmr';pnr='prr';report_timing='rtr';gen_bit_stream='sbit'}[$Stage]
+  $taskDir=@{compile='compile';synthesize='synthesize';dev_map='device_map';pnr='place_route';report_timing='report_timing';gen_bit_stream='generate_bitstream'}[$Stage]
   $taskReports=@(Get-ChildItem (Join-Path $taskImpl $taskDir) -Filter "*.$taskExt" -ErrorAction SilentlyContinue |
      Where-Object {$_.LastWriteTime -ge $taskStarted})
   $taskErrors=@($taskOut | Select-String '(?m)^E:|Check license failed')
+  $taskBitstream=if($Stage -eq 'gen_bit_stream' -and $taskReports.Count -eq 1){$taskReports[0]}else{$null}
   $taskResult=[ordered]@{stage=$Stage;native_exit=$taskExit;error_count=$taskErrors.Count;
     fresh_reports=$taskReports.Count;native_stage_completed=($taskExit -eq 0 -and !$taskErrors.Count -and $taskReports.Count -gt 0);
+    bitstream_sha256=if($taskBitstream){(Get-FileHash -LiteralPath $taskBitstream.FullName -Algorithm SHA256).Hash}else{$null};
     functional_verified=$false;external_timing_verified=$false;hardware_tested=$false;
     programmed=$false;download_allowed=$false;started=$taskStarted.ToString('o');finished=(Get-Date).ToString('o')}
   $taskResult | ConvertTo-Json | Set-Content (Join-Path $taskRun 'result.json') -Encoding utf8
@@ -117,6 +122,6 @@ try {
   if(!$taskResult.native_stage_completed){$taskErrors.Line;throw 'Native stage incomplete; inspect retained evidence'}
   # Purpose: a completed report_timing action is not a timing pass. Abort on
   # violations/unknown summary wording while preserving all native stage evidence.
-  if($Stage -eq 'report_timing'){ & (Join-Path $PSScriptRoot 'audit_mini_camera_timing.ps1') }
+  if($Stage -in @('report_timing','gen_bit_stream')){ & (Join-Path $PSScriptRoot 'audit_mini_camera_timing.ps1') }
  } finally {Pop-Location}
 } finally {$env:PANGO_LICENSE_FILE=$taskOldLicense}

@@ -9,7 +9,8 @@ import shutil
 import subprocess
 from native_bitgen import generate_from_timed_database
 from route_supervisor import run_supervised
-from implementation_readiness import require_whole_design_ready
+from implementation_readiness import require_whole_design_ready, require_mapped_lut_budget, require_routed_lut_budget, close_route_scope
+from constraint_report import require_native_constraints
 
 
 def verified_planning_help(path):
@@ -35,6 +36,8 @@ def main():
     """Preserve earlier failed results; never modify the frozen source tree."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--build', type=Path, required=True)
+    parser.add_argument('--check-only',action='store_true',
+                        help='Validate gate, MAP, constraints and source hashes without launching PDS')
     parser.add_argument('--stop-after-timing',action='store_true',
                         help='Route and min/max STA only; never enter bitstream generation')
     parser.add_argument('--pnr-timeout-minutes', type=int, default=60,
@@ -73,9 +76,20 @@ def main():
     # native default 300; an explicit value changes no clock or STA gate.
     parser.add_argument('--pin-cost-increasing-speed', type=int,
                         help='Explicit native congestion-pin cost increment; native default is 300')
+    # Installed User Guide printed p113 and target-specific pnr help define
+    # Placement Logic Optimization, whose current function is LUT6D packing:
+    # eligible LUTs are merged during placement, which can reduce the occupied
+    # CLMA/CLMS blocks that drive routing congestion. Omit by default so prior
+    # attempts preserve the native setting; the option is logical-equivalent
+    # packing only and changes no clock, exception or STA/resource gate.
+    parser.add_argument('--logic-optimize', choices=('default', 'enabled', 'disabled'),
+                        default='default',
+                        help='Placement logic optimization (LUT6D pack); default preserves the native setting')
+    parser.add_argument('--lut6d-strategy', type=int, choices=(0, 1, 2, 3),
+                        help='LUT6D packing strategy 0..3; requires --logic-optimize enabled')
     args = parser.parse_args()
     # Resuming an old MAP must respect the same gate as a fresh full attempt.
-    require_whole_design_ready()
+    readiness=require_whole_design_ready(args.build,args)
     if args.planning_before_place != (args.installed_pnr_help is not None):
         parser.error('--planning-before-place and --installed-pnr-help must be supplied together')
     planning_help_sha256 = verified_planning_help(args.installed_pnr_help) if args.planning_before_place else None
@@ -91,14 +105,35 @@ def main():
         parser.error('congestion iterations must be positive')
     if args.pin_cost_increasing_speed is not None and args.pin_cost_increasing_speed <= 0:
         parser.error('explicit congestion-pin cost must be positive; PDS validates supported values')
+    if args.lut6d_strategy is not None and args.logic_optimize != 'enabled':
+        parser.error('--lut6d-strategy requires --logic-optimize enabled')
     if args.from_placement and (args.placement_decongestion != 1 or args.placement_seed != 7
                                or args.cell_duplication != 'default' or args.macro_placement is not None
-                               or args.planning_before_place):
+                               or args.planning_before_place or args.logic_optimize != 'default'):
         parser.error('new placement options require starting from the mapped DB, without --from-placement')
     fpga = Path(__file__).resolve().parents[1]
     run = args.build.resolve()
     if not run.is_relative_to(fpga / 'build') or not (run / 'flow.pds').is_file():
         raise ValueError('an existing FPGA native board project is required')
+    # MAP evidence is mandatory even when every manual readiness flag is true.
+    # Reject before process discovery or creation of any native resume artifact.
+    # A failed immutable candidate cannot bypass unmatched timing paths/CCR
+    # errors by entering through resume instead of the original build command.
+    require_native_constraints(run)
+    lut_budget = require_mapped_lut_budget(run)
+    # Check every frozen input before either a diagnostic preflight or a real
+    # launch. Check-only creates no resume directory and never invokes PDS.
+    sources = json.loads((run / 'sources.json').read_text(encoding='utf-8'))
+    intact = lambda: all(hashlib.sha256((run / 'source' / n).read_bytes()).hexdigest() == h for n, h in sources.items())
+    if not intact():raise ValueError('native frozen source hash changed')
+    if args.check_only:
+        if (fpga/'build/route_optimization/native_phase.lock').exists():
+            raise ValueError('Native phase lock occupied; do not start another job')
+        if args.pause_file is not None and args.pause_file.exists():
+            raise ValueError('Scoped pause request exists; review before launch')
+        print(json.dumps(dict(preflight_passed=True,build=str(run),source_count=len(sources),
+            mapped_lut=lut_budget['total_lut'],native_launched=False,bitstream_generated=False)),flush=True)
+        return
     # Native projects/checkpoints are not concurrently writable. Query process
     # metadata with constant PowerShell text and compare the path in Python;
     # user/path content is never interpolated into executable shell code.
@@ -111,7 +146,7 @@ def main():
     prefix = run.as_posix().lower()+'/'
     if any(prefix in (row.get('CommandLine') or '').replace('\\', '/').lower() for row in rows):
         raise ValueError('native project is still running; resume only after its processes finish')
-    sources = json.loads((run / 'sources.json').read_text(encoding='utf-8'))
+    # Recheck after process inventory, before mutable physical artifacts exist.
     intact = lambda: all(hashlib.sha256((run / 'source' / n).read_bytes()).hexdigest() == h for n, h in sources.items())
     if not intact():
         raise ValueError('native frozen source hash changed')
@@ -124,6 +159,8 @@ def main():
     shutil.copyfile(Path(__file__).with_name('native_bitgen.py'), evidence / 'native_bitgen.py')
     # Freeze supervision logic as well as native commands for reproducibility.
     shutil.copyfile(Path(__file__).with_name('route_supervisor.py'), evidence / 'route_supervisor.py')
+    shutil.copyfile(Path(__file__).with_name('implementation_readiness.py'), evidence / 'implementation_readiness.py')
+    shutil.copyfile(Path(__file__).with_name('constraint_report.py'), evidence / 'constraint_report.py')
     # Freeze the exact capability evidence alongside the generated flow. A
     # reused placement cannot be replanned, and no active project is modified.
     if args.planning_before_place:
@@ -160,7 +197,7 @@ def main():
     result = {'stage': 'not_started', 'native_exit': None, 'errors': [], 'snapshot_intact': True,
               'internal_timing_met': False, 'full_function_release': False, 'hardware_tested': False,
               'programmed': False, 'external_timing_verified': False, 'download_approved': False,
-              'resumed_project': str(run / 'flow.pds'), 'resume_evidence': str(evidence), 'native_runs': []}
+              'mapped_lut_gate': lut_budget, 'resumed_project': str(run / 'flow.pds'), 'resume_evidence': str(evidence), 'native_runs': []}
     result['physical_options'] = {
         'from_placement': args.from_placement, 'placement_decongestion': args.placement_decongestion,
         'placement_seed': args.placement_seed, 'mode': args.mode,
@@ -173,6 +210,8 @@ def main():
         'planning_help_sha256': planning_help_sha256,
         'congestion_iterations': args.congestion_iterations,
         'pin_cost_increasing_speed': args.pin_cost_increasing_speed,
+        'logic_optimize': args.logic_optimize,
+        'lut6d_strategy': args.lut6d_strategy,
     }
     try:
         # The handoff can request physical validation without authorizing a
@@ -201,6 +240,10 @@ def main():
                 # register that generated physical dependency.
                 flow += f'add_constraint {{{physical.as_posix()}}}\n'
                 if phase == 'place_route':
+                    # Recheck the selected report immediately before this PnR
+                    # attempt; a stale/manual readiness record cannot bypass it.
+                    result['native_constraint_gate'] = require_native_constraints(run)
+                    result['mapped_lut_gate'] = require_mapped_lut_budget(run)
                     # Version-matched guide pp111-118: placement expansion and
                     # seeds affect placement; the dump exposes conflicting nets.
                     # The p117 device exception says single-thread PG2L100H
@@ -230,6 +273,14 @@ def main():
                     # constraints are preserved; min/max remains mandatory.
                     if args.pin_cost_increasing_speed is not None:
                         flow += f' -pin_cost_increasing_speed {args.pin_cost_increasing_speed}'
+                    # Installed Guide p113: enable the placement logic optimizer
+                    # and, when selected, the LUT6D packing strategy. This is a
+                    # placement-time packing option, not a netlist or timing
+                    # exception; all following resource/STA gates remain intact.
+                    if args.logic_optimize != 'default':
+                        flow += ' -logic_optimize_enable ' + ('TRUE' if args.logic_optimize == 'enabled' else 'FALSE')
+                        if args.logic_optimize == 'enabled' and args.lut6d_strategy is not None:
+                            flow += f' -logic_optimize_lut6d_combing_strategy {args.lut6d_strategy}'
                     flow += '\n'
                     if args.from_placement:
                         # input_place_db_file is the installed tool's explicit
@@ -259,11 +310,20 @@ def main():
             result['native_runs'].append({'phase': phase, 'exit': child.returncode, 'errors': errors})
             result['native_exit'] = child.returncode
             result['errors'] += errors
+            # Recheck each completed log, including newly loaded LCF paths,
+            # before starting STA/bitgen. This helper includes this resume's
+            # recorded phase log and rejects known STA-3015 diagnostics.
+            result['native_constraint_gate'] = require_native_constraints(run)
             text = report.read_text(errors='replace') if report.is_file() else ''
             result['internal_timing_met'] = bool(re.search(r'^Design Summary\s*:\s*All Constraints Met\.', text, re.M))
             if (child.returncode or errors or not intact() or
                     (phase != 'place_route' and not result['internal_timing_met'])):
                 raise RuntimeError('native '+phase+' did not meet its gate')
+            if phase == 'place_route':
+                # MAP admission is not final resource signoff: physical
+                # duplication/packing changes LUTs. A complete PRR must still
+                # be strictly below 70% before this flow advances to STA.
+                result['routed_lut_gate'] = require_routed_lut_budget(run)
         if not args.stop_after_timing:
             stream = run / 'generate_bitstream/pango_video_system.sbit'
             if not stream.is_file():
@@ -274,6 +334,9 @@ def main():
         result['snapshot_intact'] = intact()
         (evidence / 'result.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
         (run / 'result.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
+        # An authorized scoped attempt ends its permission after native cleanup,
+        # even on timeout/Route-0008. Its result remains the success authority.
+        close_route_scope(readiness.get('route_scope',{}).get('id'),evidence/'result.json')
         print(json.dumps(result), flush=True)
 
 

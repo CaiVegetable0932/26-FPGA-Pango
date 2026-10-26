@@ -3,9 +3,9 @@
 // Expected byte memory is built from accepted CLIENT requests/data, independently
 // of native addresses, so a shared address conversion bug cannot self-validate.
 module tb_ddr_native_dma #(parameter BURST_CAP=16);
- localparam N=7, DEPTH=131072;
+ localparam N=6, DEPTH=131072;
  reg clk=0; always #4 clk=~clk;
- reg rst_n=0,controller_ready=1,allow_snapshot=1;
+ reg rst_n=0,controller_ready=1;
  reg [N-1:0] req_valid=0,req_write=0,urgent=0,cancel=0,w_valid=0,r_ready='1,done_ready=0;
  wire [N-1:0] req_ready,w_ready,r_valid,r_last,done,cancelled,error;
  reg [N*32-1:0] req_addr=0,req_tag=0;
@@ -179,16 +179,17 @@ module tb_ddr_native_dma #(parameter BURST_CAP=16);
   // Buffered cancelled reads discard remaining responses and free only on ACK.
   r_ready[5]=0;request(5,0,7168,3,403);wait(dut.returned[5]);
   @(negedge clk);cancel[5]=1;@(negedge clk);cancel[5]=0;completion(5,1,0,403);r_ready[5]=1;
-  // Reject illegal span, zero/too-long lengths, misalignment, and snapshot BUSY.
+  // Reject illegal span, zero/too-long lengths, misalignment.
   request(0,0,4096,0,500);completion(0,0,1,500);
   request(0,0,4096,17,501);completion(0,0,1,501);
   request(0,0,4097,1,502);completion(0,0,1,502);
   request(0,0,4064,2,503);completion(0,0,1,503);
   request(0,0,32'h40000000,1,504);completion(0,0,1,504);
-  allow_snapshot=0;request(6,0,4096,1,505);completion(6,0,1,505);allow_snapshot=1;
-  // Seven concurrent streams, urgent capture/display permanently asserted.
+  // Client 5 is the last live RAW reader and must remain serviceable.
+  request(5,0,4096,1,505);completion(5,0,0,505);
+  // Six concurrent streams, urgent capture/display permanently asserted.
   // Fairness is measured in grants: stalls are finite model assumptions.
-  pressure=1;urgent=7'b0001011;
+  pressure=1;urgent=6'b001011;
   fork
    begin for(integer t=0;t<20;t=t+1) transfer(0,1,65536,16,600+t);end
    begin for(integer t=0;t<20;t=t+1) transfer(1,1,69632,8,700+t);end
@@ -196,14 +197,13 @@ module tb_ddr_native_dma #(parameter BURST_CAP=16);
    begin for(integer t=0;t<20;t=t+1) transfer(3,1,77824,16,900+t);end
    begin for(integer t=0;t<20;t=t+1) transfer(4,1,81920,2,1000+t);end
    begin for(integer t=0;t<20;t=t+1) transfer(5,1,86016,1,1100+t);end
-   begin for(integer t=0;t<20;t=t+1) transfer(6,1,90112,3,1200+t);end
   join
   pressure=0;
   for(integer c=0;c<N;c=c+1) begin
    if(max_gap[c]>N*3) $fatal(1,"unbounded starvation client %0d gap %0d",c,max_gap[c]);
    $display("DDR_METRIC client=%0d max_wait_cycles=%0d max_grant_gap=%0d bus_bytes=%0d useful_write_bytes=%0d",c,stats_wait[c*32+:32],max_gap[c],stats_bus[c*32+:32],stats_useful[c*32+:32]);
   end
-  // Actual mixed pressure: RAW/S1/result writes plus display/cache/RAW/snapshot
+  // Actual mixed pressure: RAW/S1/result writes plus display/cache/RAW
   // reads, with consumer stalls and refresh pauses. Disjoint destinations keep
   // the scoreboard independent of unproven native cross-channel visibility.
   mixed_start_cycle=cycle;mixed_start_beats=total_beats;mixed=1;
@@ -214,7 +214,6 @@ module tb_ddr_native_dma #(parameter BURST_CAP=16);
    begin for(integer t=0;t<30*16/BURST_CAP;t=t+1) transfer(3,0,77824,16,1700+t);end
    begin for(integer t=0;t<30;t=t+1) transfer(4,0,81920,4,1800+t);end
    begin for(integer t=0;t<30*16/BURST_CAP;t=t+1) transfer(5,0,86016,16,1900+t);end
-   begin for(integer t=0;t<30*8/(BURST_CAP<8?BURST_CAP:8);t=t+1) transfer(6,0,90112,8,2000+t);end
   join
   // Leave mixed pressure away from the negative edge used by the randomized
   // sink driver. Otherwise its last random assignment can overwrite r_ready='1

@@ -6,8 +6,20 @@ create_clock -name camera_pclk_budget -period 10.000 [get_ports camera_clk_0]
 # Purpose: constrain the single 371.25 MHz PLL source and its native /5 I/O
 # divider output; this matches the PG2L100H high-speed-output clock topology.
 create_generated_clock -name serial_clk -source [get_ports sys_clk] -multiply_by 55 -divide_by 4 [get_pins {u_video_pll.u_gpll/CLKOUT1}]
-create_generated_clock -name pixel_clk -source [get_pins {u_video_pll.u_gpll/CLKOUT1}] -divide_by 5 [get_pins {u_hdmi_pixel_clock/CLKDIVOUT}]
+# Purpose: derive the coherent 74.25 MHz pixel clock from the same 371.25 MHz
+# PLL source used by the OSERDES I/O clock.
+# Installed UCE 2.2.1.2 rename/infer preserves the native /5 40% duty cycle.
+# Explicit divide_by 5 would inherit the PLL's 50% duty in this PDS release.
+create_generated_clock -name pixel_clk [get_pins {u_hdmi_pixel_clock/CLKDIVOUT}]
 # External reset is asynchronous; internal reset release paths remain timed.
 set_false_path -from [get_ports rst_in]
+# Purpose: match the PG2L100H vendor startup topology. video_div_reset_n is a
+# one-time asynchronous initialization pulse shared by IOCLKDIV and OSERDES;
+# video remains held in pixel reset for 110 reference cycles plus the pixel
+# synchronizer after this pulse releases (about 4.1 us at the 27 MHz reference).
+# Exempt only paths launched by the dedicated preserved startup-pulse register.
+# Its fanout is limited to IOCLKDIV/OSERDES reset pins; no pixel data, encoder,
+# serial data, clock, or unrelated CDC path is exempted.
+set_false_path -from [get_cells {u_video_start.divider_reset_n}]
 # TODO: DVP input delays from sensor mode + board/cable skew; HDMI output timing;
 # bounded CDC constraints after frame-pool handshake/FIFO fault-path validation.

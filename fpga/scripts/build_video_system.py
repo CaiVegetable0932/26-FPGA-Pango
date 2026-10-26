@@ -7,9 +7,58 @@ import json
 import re
 import shutil
 import subprocess
+import time
 from native_bitgen import generate_from_timed_database
-from implementation_readiness import require_whole_design_ready
+from implementation_readiness import require_whole_design_ready, require_mapped_lut_budget, require_routed_lut_budget
 from route_supervisor import run_supervised
+from constraint_report import read_constraint_report, require_native_constraints
+
+
+def run_native_candidate(run, shell, options, hashes):
+    """Run review stages freely; actual MAP integers gate every physical stage."""
+    source = run / 'source'
+    # Project -run stops at the named installed flow step (User Guide p166).
+    # Always stop physical candidates at MAP first: Tcl project creation queues
+    # actions before their reports exist, so the hard LUT gate belongs here.
+    physical_requested = options.stage in ('report_timing', 'gen_bit_stream')
+    native_stage = 'dev_map' if physical_requested else options.stage
+    started = time.monotonic()
+    supervised=run_supervised([shell,'-project',str(run/'flow.pds'),'-run',native_stage,
+        '-work_dir',str(run)],cwd=run,log_path=run/'console.log',
+        monitor_path=run/'native_monitor.jsonl',timeout_seconds=options.overall_timeout_minutes*60,
+        pause_path=options.pause_file,watch_stall=False)
+    process=subprocess.CompletedProcess([],supervised['returncode'])
+    lut_budget = None
+    lut_gate_error = None
+    if physical_requested and supervised['status']=='COMPLETED' and process.returncode==0:
+        map_console = (run/'console.log').read_text(errors='replace')
+        if not re.search(r'^E:', map_console, re.M):
+            try:
+                # CCR can resolve an elaborated name which disappears during
+                # synthesis. Reject unmatched timing paths before starting
+                # PnR, not only when main later packages the final result.
+                # This also blocks physical work for a gen_bit_stream request.
+                require_native_constraints(run)
+                lut_budget = require_mapped_lut_budget(run)
+                # Frozen RTL/constraints may not drift between the MAP and PnR
+                # runs, even if a concurrent editor changes the working tree.
+                if not all(hashlib.sha256((source/n).read_bytes()).hexdigest()==h for n,h in hashes.items()):
+                    raise ValueError('Frozen source changed before PnR')
+                remaining = options.overall_timeout_minutes*60 - (time.monotonic()-started)
+                if remaining <= 0:
+                    raise ValueError('Overall native allowance exhausted before PnR')
+            except ValueError as error:
+                lut_gate_error = str(error)
+                print('PNR_GATE_REJECTED', lut_gate_error, flush=True)
+            else:
+                # Preserve the successful MAP log separately. Native PnR/STA
+                # uses the same project and its already-completed MAP database.
+                supervised=run_supervised([shell,'-project',str(run/'flow.pds'),'-run','report_timing',
+                    '-work_dir',str(run)],cwd=run,log_path=run/'physical_console.log',
+                    monitor_path=run/'physical_monitor.jsonl',timeout_seconds=remaining,
+                    pause_path=options.pause_file,watch_stall=True)
+                process=subprocess.CompletedProcess([],supervised['returncode'])
+    return supervised, process, lut_budget, lut_gate_error
 
 
 def main():
@@ -17,6 +66,8 @@ def main():
     parser.add_argument('--rtl-snapshot',type=Path,help='Explicit intact candidate source directory')
     parser.add_argument('--experimental-proc150',action='store_true',help='Compile/SYN/MAP-only two-clock board candidate')
     parser.add_argument('--snapshot-only',action='store_true',help='Freeze selected sources and flow without launching native tools')
+    parser.add_argument('--resource-sharing', choices=('false', 'true'), default='false',
+                        help='Installed ADS arithmetic sharing; record explicitly and recheck timing')
     parser.add_argument('--overall-timeout-minutes', type=int, default=60, help='Bounded whole native flow allowance')
     parser.add_argument('--pause-file',type=Path,help='Explicit stop request for this owned build')
     parser.add_argument('--placement-seed',type=int,choices=(11,7,13),default=11)
@@ -62,10 +113,13 @@ def main():
     # Freeze source directories with their includes. Generated IP is copied in
     # full and never regenerated/modified in the original or official directory.
     names = ['rtl/memory/frame_manager_pkg.sv']
-    for group in ['memory', 'input', 'isp', 'geometry', 'network', 'control', 'video']:
+    for group in ['memory', 'input', 'isp', 'geometry', 'network', 'control', 'stabilization', 'video']:
         for path in sorted((origin / 'rtl' / group).glob('*')):
             if path.suffix in ('.v', '.sv', '.vh') and path.name not in (
-                    'frame_manager_pkg.sv', 'ip_integration_bank.v', 'algorithm_timing_top.sv', 'hdmi_display_pnr_probe.v'):
+                    'frame_manager_pkg.sv', 'ip_integration_bank.v', 'algorithm_timing_top.sv', 'hdmi_display_pnr_probe.v',
+                    'projective_ray_stepper.sv', 'perspective_divide.sv',
+                    # C4 is archived in place; active projects omit its RTL.
+                    's1_motion_estimator.sv', 'motion_trajectory.sv'):
                 names.append(path.relative_to(origin).as_posix())
     names += ['rtl/board/' + n for n in ['reset_sync.v', 'video_clock_start.v', 'rgmii_phy_io.v',
               'tmds_serializer.v', 'video_memory_core.sv', 'pango_video_system.sv']]
@@ -76,6 +130,13 @@ def main():
                    'constraints/video_system/board_pins.fdc', 'constraints/video_system/clocks_cdc.fdc',
                    'constraints/placement.fdc', 'constraints/routing.rcf']
     if proc150_enabled:constraints.append('constraints/video_system/processing_cdc.fdc')
+    # ADS post-synthesis timing uses SCF at MAP; pre-synthesis checking skips
+    # SCF (installed UCE p10/User Guide p39). Exact raw i:/t: object names were
+    # verified by native positive and missing-endpoint negative MAP probes.
+    # Full ADS project mode can omit SCF despite registration; the final
+    # inventory gate rejects that result. Use map_postsyn_candidate.py with
+    # its explicit SYN DB entry to derive the final reviewed MAP candidate.
+    constraints.append('constraints/video_system/reset_fsm_postsyn.scf')
     for name in [*names, *constraints]:
         dest = source / name
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -88,7 +149,7 @@ def main():
     (run / 'sources.json').write_text(json.dumps(hashes, indent=2), encoding='utf-8')
     shutil.copyfile(Path(__file__), run / 'build_script.py')
     shutil.copyfile(Path(__file__).with_name('native_bitgen.py'), run / 'native_bitgen.py')
-    for helper in ('route_supervisor.py','implementation_readiness.py'):
+    for helper in ('route_supervisor.py','implementation_readiness.py','constraint_report.py'):
         shutil.copyfile(Path(__file__).with_name(helper),run/helper)
     # Native task commands follow the installed PDS 2022.2-SP6.4 flow. Full
     # board timing is a distinct gate; unit-wide abstract ports are not routed.
@@ -104,9 +165,10 @@ def main():
         flow += f'add_constraint {{{(source / name).as_posix()}}}\n'
     flow += f'compile -top_module pango_video_system -system_verilog -include_path [list {{{(source / "rtl/memory").as_posix()}}}]\n'
     if options.stage != 'compile':
-        # Installed ADS guide: bound data fanout, preserve RAM read/write checks,
-        # and avoid resource-sharing muxes on distinct active pipeline lanes.
-        flow += 'synthesize -ads -rw_check_on_ram -resource_sharing false -fanout_guide 64 -selected_syn_tool_opt 2\n'
+        # PDS 2022.2-SP6.4 ADS Synthesis User Guide, printed pp20/51:
+        # arithmetic sharing trades area against delay. Keep the previous
+        # default and record each explicit experiment; STA remains mandatory.
+        flow += f'synthesize -ads -rw_check_on_ram -resource_sharing {options.resource_sharing} -fanout_guide 64 -selected_syn_tool_opt 2\n'
     if options.stage in ('dev_map', 'report_timing', 'gen_bit_stream'):
         flow += 'dev_map\n'
     if options.stage in ('report_timing', 'gen_bit_stream'):
@@ -120,14 +182,16 @@ def main():
         # Native options are stored in the project. Ordinary Tcl file reads
         # execute during tcl2prj parsing, before queued STA tasks produce data.
         # The Python host therefore gates a SEPARATE native bitstream run.
-        flow += 'gen_bit_stream -scbv {High Voltage}\n'
+        # Installed PG2L100H persist_pin defaults to user release (Guide p152).
+        # Match the checkpoint entry explicitly so shared pins remain user IO.
+        flow += 'gen_bit_stream -scbv {High Voltage} -persist_pin {Release For USER}\n'
     (run / 'flow.tcl').write_text(flow, encoding='utf-8')
     print('BOARD_START', run, flush=True)
     if options.snapshot_only:
         # This is entry-point/source collection verification only. It never
         # reports synthesis, physical timing or bitstream generation as passed.
         (run/'snapshot_result.json').write_text(json.dumps(dict(source_snapshot_complete=True,
-            native_launched=False,stage=options.stage,processing_domain_enabled=proc150_enabled,
+            native_launched=False,stage=options.stage,resource_sharing=options.resource_sharing,processing_domain_enabled=proc150_enabled,
             processing_profile=processing_profile,source_count=len(hashes),
             whole_design_routed=False,bitstream_generated=False),indent=2))
         return
@@ -141,30 +205,67 @@ def main():
     generation_text = (run / 'generation.log').read_text(errors='replace')
     if generated['status']!='COMPLETED' or generated['returncode'] or re.search(r'^E:', generation_text, re.M):
         raise RuntimeError('PDS project generation failed: '+generation_text[-3000:])
-    native_stage = 'report_timing' if options.stage == 'gen_bit_stream' else options.stage
-    supervised=run_supervised([shell,'-project',str(run/'flow.pds'),'-run',native_stage,
-        '-work_dir',str(run)],cwd=run,log_path=run/'console.log',
-        monitor_path=run/'native_monitor.jsonl',timeout_seconds=options.overall_timeout_minutes*60,
-        pause_path=options.pause_file,watch_stall=native_stage=='report_timing')
-    process=subprocess.CompletedProcess([],supervised['returncode'])
-    if options.stage == 'gen_bit_stream':
+    supervised, process, lut_budget, lut_gate_error = run_native_candidate(run, shell, options, hashes)
+    # A passing MAP only admits physical implementation. Replication/packing
+    # can change the count, so completed PnR must independently meet <70%.
+    routed_budget = None
+    if options.stage in ('report_timing', 'gen_bit_stream') and not lut_gate_error and supervised['status']=='COMPLETED' and process.returncode==0:
+        try:
+            # Later physical/LCF processing can introduce unmatched paths too;
+            # stop before bitgen and retain the failed result for review.
+            require_native_constraints(run)
+            routed_budget = require_routed_lut_budget(run)
+        except ValueError as error:
+            lut_gate_error = str(error)
+    if options.stage == 'gen_bit_stream' and not lut_gate_error:
         report_path = run / 'report_timing/pango_video_system.rtr'
         timing_text = report_path.read_text(errors='replace') if report_path.exists() else ''
-        stage_errors = re.findall(r'^E:.*', (run / 'console.log').read_text(errors='replace'), re.M)
+        stage_text = (run / 'console.log').read_text(errors='replace')
+        if (run/'physical_console.log').exists():
+            stage_text += (run/'physical_console.log').read_text(errors='replace')
+        stage_errors = re.findall(r'^E:.*', stage_text, re.M)
         if supervised['status']=='COMPLETED' and process.returncode == 0 and not stage_errors and re.search(r'^Design Summary\s*:\s*All Constraints Met\.', timing_text, re.M):
             # The documented explicit DB action reads the SAME routed image;
             # re-opening a full project can otherwise re-run its prior tasks.
             process = generate_from_timed_database(run, shell, run / 'bitgen_console.log',pause_path=options.pause_file)
     console = (run / 'console.log').read_text(errors='replace')
+    if (run / 'physical_console.log').exists():
+        console += (run / 'physical_console.log').read_text(errors='replace')
     if (run / 'bitgen_console.log').exists():
         console += (run / 'bitgen_console.log').read_text(errors='replace')
     errors = re.findall(r'^E:.*', console, re.M)
+    # CCR checks elaborated object names, but synthesis can later remove a
+    # through point (I reproduced STA-3015 despite a zero-error CCR). Treat
+    # unmatched timing paths as an explicit review failure, not native success.
+    unmatched_timing_constraints = re.findall(r'^[CW]: STA-3015:.*', console, re.M)
     report = run / 'report_timing/pango_video_system.rtr'
     match = re.search(r'^Design Summary\s*:\s*(.+)$', report.read_text(errors='replace'), re.M) if report.exists() else None
     intact = all(hashlib.sha256((source / name).read_bytes()).hexdigest() == digest for name, digest in hashes.items())
-    result = {'stage': options.stage, 'native_exit': process.returncode, 'errors': errors, 'snapshot_intact': intact,
+    # Console E: alone omits CCR critical warnings. Preserve native categories
+    # and unknown/missing evidence; shared configuration pins still need review.
+    constraints_result = read_constraint_report(run / 'constraint_check/constraint_check.ccr')
+    constraint_failure = bool(constraints_result['errors']) or bool(unmatched_timing_constraints) or (
+        options.stage in ('dev_map', 'report_timing', 'gen_bit_stream') and
+        not constraints_result['summary_valid'])
+    # ADS project mode may silently omit a registered post-SYN SCF. Require
+    # its actual MAP command inventory even for a MAP-only request; the
+    # explicit map_postsyn_candidate.py entry can produce a reviewed successor.
+    native_constraint_gate_error = None
+    if options.stage in ('dev_map', 'report_timing', 'gen_bit_stream'):
+        try:
+            require_native_constraints(run)
+        except ValueError as error:
+            native_constraint_gate_error = str(error)
+            constraint_failure = True
+    result = {'stage': options.stage, 'resource_sharing': options.resource_sharing, 'native_exit': process.returncode, 'errors': errors, 'snapshot_intact': intact,
               'rtl_snapshot':str(options.rtl_snapshot) if options.rtl_snapshot else None,
               'experimental_proc150':options.experimental_proc150,
+              'constraint_check': constraints_result,
+              'unmatched_timing_constraints': unmatched_timing_constraints,
+              'native_constraint_gate_error': native_constraint_gate_error,
+              'mapped_lut_gate': lut_budget, 'pnr_gate_error': lut_gate_error,
+              'routed_lut_gate': routed_budget,
+              'internal_timing_checked': match is not None,
               'internal_timing_met': bool(match and match[1].strip() == 'All Constraints Met.'),
               'full_function_release': False, 'hardware_tested': False, 'programmed': False,
               'external_timing_verified': False, 'download_approved': False}
@@ -175,7 +276,7 @@ def main():
                       bitstream_sha256=hashlib.sha256(bitstream.read_bytes()).hexdigest())
     (run / 'result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
     print(json.dumps(result), flush=True)
-    if supervised['status']!='COMPLETED' or process.returncode or errors or not intact:
+    if supervised['status']!='COMPLETED' or process.returncode or errors or not intact or constraint_failure or lut_gate_error:
         raise SystemExit(1)
     if options.stage in ('report_timing', 'gen_bit_stream') and not result['internal_timing_met']:
         raise SystemExit(2)

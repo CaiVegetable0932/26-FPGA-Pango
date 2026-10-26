@@ -1,0 +1,167 @@
+[
+  {
+    "type": "read",
+    "data": "[启动检查] 只读核对已保存的舵机ID；上电不修改ID，也不发送运动命令。\r\n[轴映射] pitch俯仰=轴1/ID1，yaw偏航=轴2/ID2；整圈换算360°/4095计数，往返步进=114计数。\r\n命令：help | status | ready | scan [起始ID 结束ID] | ping ID | get ID\r\nmove 1/2：约10°往返测试；move 轴号 角度：从当前位置按360°整圈相对移动\r\n示例：move 1 -10、move 1 -180、move 2 360；角度可为正或负，最多3位小数\r\n跨越raw 0/4095时自动使用电机模式按方向累计，完成后恢复位置模式\r\n轴号1=pitch俯仰(ID1)，轴号2=yaw偏航(ID2)；get ID读取原始位置\r\nrange ID：读取设备软限位；range ID full：写入raw 0..4095并掉电保存\r\n其它：map 轴号 ID | setid 原ID 新ID isolated | ov [轴号] | torque ID 0/1\r\n每条命令输入后按回车；移动完成后再输入下一条同轴运动命令。\r\n",
+    "timestamp": 1791004765814,
+    "time": "2026-10-03 13:19:25:814",
+    "firstSeenAt": 1791004765814,
+    "lastSeenAt": 1791004765891,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 904
+  },
+  {
+    "type": "read",
+    "data": "[系统就绪] pitch轴(ID=1)、yaw轴(ID=2)均正常；可用 move 1/2 控制\r\n",
+    "timestamp": 1791004765909,
+    "time": "2026-10-03 13:19:25:909",
+    "firstSeenAt": 1791004765909,
+    "lastSeenAt": 1791004765915,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 80
+  },
+  {
+    "type": "write",
+    "data": "get 1\n",
+    "timestamp": 1791004776614,
+    "time": "2026-10-03 13:19:36:614",
+    "firstSeenAt": 1791004776614,
+    "lastSeenAt": 1791004776614,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 6
+  },
+  {
+    "type": "read",
+    "data": "[当前位置] 舵机ID=1，原始计数=196，名义角度=17.2°\r\n",
+    "timestamp": 1791004776628,
+    "time": "2026-10-03 13:19:36:628",
+    "firstSeenAt": 1791004776628,
+    "lastSeenAt": 1791004776632,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 68
+  },
+  {
+    "type": "write",
+    "data": "move 1 -10\n",
+    "timestamp": 1791004785453,
+    "time": "2026-10-03 13:19:45:453",
+    "firstSeenAt": 1791004785453,
+    "lastSeenAt": 1791004785453,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 11
+  },
+  {
+    "type": "read",
+    "data": "[模式恢复] pitch轴(ID=1)已从电机模式切回位置模式，继续执行命令。\r\n",
+    "timestamp": 1791004785499,
+    "time": "2026-10-03 13:19:45:499",
+    "firstSeenAt": 1791004785499,
+    "lastSeenAt": 1791004785505,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 91
+  },
+  {
+    "type": "read",
+    "data": "[相对运动] pitch轴(ID=1)：请求角度=-10.000°，原始位置=196 -> 82，运动时间=2000毫秒。\r\n",
+    "timestamp": 1791004785540,
+    "time": "2026-10-03 13:19:45:540",
+    "firstSeenAt": 1791004785540,
+    "lastSeenAt": 1791004785548,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 110
+  },
+  {
+    "type": "read",
+    "data": "[等待到位] pitch轴(ID=1)：目标raw=82，当前raw=110；再等待1秒后复查。\r\n",
+    "timestamp": 1791004788049,
+    "time": "2026-10-03 13:19:48:049",
+    "firstSeenAt": 1791004788049,
+    "lastSeenAt": 1791004788055,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 90
+  },
+  {
+    "type": "read",
+    "data": "[未到位] pitch轴(ID=1)：目标raw=82，当前raw=110；可用 get 1 读取当前位置，本命令不会返回起点。\r\n",
+    "timestamp": 1791004789058,
+    "time": "2026-10-03 13:19:49:058",
+    "firstSeenAt": 1791004789058,
+    "lastSeenAt": 1791004789067,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 126
+  },
+  {
+    "type": "write",
+    "data": "move 1 -10\n",
+    "timestamp": 1791004791541,
+    "time": "2026-10-03 13:19:51:541",
+    "firstSeenAt": 1791004791541,
+    "lastSeenAt": 1791004791541,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 11
+  },
+  {
+    "type": "read",
+    "data": "[连续运动] pitch轴(ID=1)：请求角度=-10.000°，方向=raw递减，速度=20；跨越raw边界时保持方向。\r\n",
+    "timestamp": 1791004791609,
+    "time": "2026-10-03 13:19:51:609",
+    "firstSeenAt": 1791004791609,
+    "lastSeenAt": 1791004791617,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 123
+  },
+  {
+    "type": "read",
+    "data": "[连续运动异常] pitch轴(ID=1)：停止位置raw=110，已尝试恢复位置模式。\r\n[连续运动无反馈] pitch轴(ID=1)连续5秒未检测到原始位置变化，已停止并恢复位置模式。\r\n",
+    "timestamp": 1791004796653,
+    "time": "2026-10-03 13:19:56:653",
+    "firstSeenAt": 1791004796653,
+    "lastSeenAt": 1791004796670,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 208
+  },
+  {
+    "type": "write",
+    "data": "move 1 -10\n",
+    "timestamp": 1791004801309,
+    "time": "2026-10-03 13:20:01:309",
+    "firstSeenAt": 1791004801309,
+    "lastSeenAt": 1791004801309,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 11
+  },
+  {
+    "type": "read",
+    "data": "[连续运动] pitch轴(ID=1)：请求角度=-10.000°，方向=raw递减，速度=20；跨越raw边界时保持方向。\r\n",
+    "timestamp": 1791004801376,
+    "time": "2026-10-03 13:20:01:376",
+    "firstSeenAt": 1791004801376,
+    "lastSeenAt": 1791004801385,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 123
+  },
+  {
+    "type": "read",
+    "data": "[连续运动异常] pitch轴(ID=1)：停止位置raw=108，已尝试恢复位置模式。\r\n[连续运动无反馈] pitch轴(ID=1)连续5秒未检测到原始位置变化，已停止并恢复位置模式。\r\n",
+    "timestamp": 1791004806420,
+    "time": "2026-10-03 13:20:06:420",
+    "firstSeenAt": 1791004806420,
+    "lastSeenAt": 1791004806437,
+    "display": "ascii",
+    "fileMeta": null,
+    "byteLength": 208
+  }
+]

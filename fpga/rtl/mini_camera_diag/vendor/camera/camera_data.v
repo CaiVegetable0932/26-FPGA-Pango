@@ -32,7 +32,9 @@ reg		[9:0]	cnt_v	   ;//720
 wire			add_cnt_v;
 wire			end_cnt_v;
 
-reg     [4:0]   eop_cnt;
+// 用途：就绪掉线时重新丢弃过渡帧，参数宽度可容纳任意非负预热帧数。
+localparam WARMUP_BITS=(WARMUP_FRAMES<1) ? 1 : $clog2(WARMUP_FRAMES+1);
+reg [WARMUP_BITS-1:0] eop_cnt;
 wire            pic_valid;
 
 reg             pixel_data_vld;
@@ -44,10 +46,11 @@ always @(posedge clk or negedge rst_n)
     else begin cfg_meta<=cfg_done; cfg_sync<=cfg_meta; ddr_meta<=ddr_init; ddr_sync<=ddr_meta; end
 
 
-// Purpose: discard the configured number of startup frames before writing pixels.
+// Purpose: discard complete-counted startup frames only after configuration and DDR readiness.
 always @(posedge clk or negedge rst_n)begin 
     if(!rst_n)
         eop_cnt <= 0;
+    else if(!cfg_sync || !ddr_sync) eop_cnt <= 0;
     else if(eop_cnt == WARMUP_FRAMES)
         eop_cnt <= eop_cnt;
     else if(eop)
@@ -73,7 +76,7 @@ always @(posedge clk or negedge rst_n)begin
         cnt_h <= 'd0;
     end 
     // Purpose: discard a dangling first byte at line/frame boundaries.
-    else if (!href || vsync || !cfg_sync) cnt_h <= 0;
+    else if (!href || vsync || (!cfg_sync || !ddr_sync)) cnt_h <= 0;
     else if(add_cnt_h)begin
         if(end_cnt_h)begin 
             cnt_h <= 'd0;
@@ -93,7 +96,7 @@ always @(posedge clk or negedge rst_n)begin
         cnt_v <= 'd0;
     end 
     // Purpose: never carry a partial frame's row count into the next frame.
-    else if (vsync || !cfg_sync) cnt_v <= 0;
+    else if (vsync || (!cfg_sync || !ddr_sync)) cnt_v <= 0;
     else if(add_cnt_v)begin
         if(end_cnt_v)begin 
             cnt_v <= 'd0;
@@ -112,8 +115,8 @@ always @(posedge clk or negedge rst_n)begin
     if(!rst_n)begin
         flag <= 'd0;
     end 
-    else if (vsync || !cfg_sync) flag <= 0;
-    else if(vsync_negedge && cfg_sync)begin
+    else if (vsync || (!cfg_sync || !ddr_sync)) flag <= 0;
+    else if(vsync_negedge && cfg_sync && ddr_sync)begin
         flag <= 1;
     end 
     else if(end_cnt_v)begin

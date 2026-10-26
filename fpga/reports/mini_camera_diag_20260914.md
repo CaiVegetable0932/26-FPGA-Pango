@@ -2,14 +2,32 @@
 
 ## 当前结论
 
-已建立独立的 **PG2L100H-6FBG676 / J10 CAM1 / 720p RGB565** 诊断工程，
-完成控制逻辑修改、两项模块回归、PDS 原生 IP 生成、工程重新打开、编译和综合。
-布局布线/时序阶段的最终结果见下方构建记录；**未烧录、未采集视频、未验证 HDMI 或 PC host 接收**。
+已建立独立的 **PG2L100H-6FBG676 / J10 CAM1 / 720p RGB565** 诊断工程。
+截至 2026-09-17，已完成离线回归、PDS 原生位流生成、易失 SRAM 下载和
+Hagibis HDMI 短时采集。9 月 14 日的时序失败及“未烧录”内容保留为历史记录，
+以本节和下方“2026-09-17 延续验证”为当前结论。
 
 本工程不能替代 RAW8/1080p30 的主方案，也不能作为 FPGA ISP、几何矫正或 PRAW 网络回传验收结果。
 
 当前分支为 `codex/fpga-pds-project`。未切换或改动其他分支，未提交、未推送。
 保留了开始工作时已有的 48 个暂存文件和其他工作区修改。
+
+## 2026-09-17 延续验证
+
+| 项目 | 实际结果 | 证据 |
+| --- | --- | --- |
+| PDS 原生全流程 | `gen_bit_stream` 原生退出 0、错误 0；同次时序报告 `All Constraints Met.` | `native_20260916_211619_864/`、`timing_audit.json` |
+| 位流 | `Top.sbit` SHA-256 `7DFA379D20516670411496E7A3D8CE65BB58E020A6CD616CBDCD97647404843B` | `implementation/generate_bitstream/Top.sbit` |
+| JTAG 烧录前 | USB Cable II、PG2L100H、ID `0x00602899`；DONE=0、over_temp=0、配置错误位全 0 | `status_20260917_194922_559/` |
+| 易失配置 | 仅 CRAM/SRAM，进度 100%，DONE=1；未操作 Flash/eFuse/key | `program_20260917_195007_007/` |
+| HDMI 主机采集 | Hagibis 协商 1280×720、30.00003 fps；2.281 s 收到 55 帧、0 读取失败、55 个唯一帧哈希 | `host/data/hdmi_diag_20260917_200123_460448/result.json` |
+| 采集后状态 | DONE=1，CRC/ID/readback/timeout 错误位全 0；over_temp=1 | `post_capture_status_20260917_200206_579/` |
+
+本轮证明 FPGA→HDMI→Hagibis 的 720p 动态视频传输已经建立；首末帧哈希不同，
+且不等于此前静态“No Signal”基线。因未对画面内容做人工视觉核验，来源身份仍为
+`null/unverified`，不能仅凭到达顺序声称已确认是 OV5640 实景，更不能替代 RAW8、
+1080p30、ISP、矫正或千兆网链路验收。烧录后 over_temp 再次置 1，未屏蔽该告警，
+本轮只执行了短时采集并停止继续压力测试。
 
 ## 来源与落点
 
@@ -85,7 +103,7 @@ PDS 综合已明确发出 **Timing-4086：摄像头数据、HREF、VSYNC 等输�
 还存在厂商 IP 常量探测/未使用端口等警告，未将 warning 数量隐去为零。
 相机时钟的 100 MHz 仅为暂定内部分析预算，既不是实测 PCLK，也不是 OV5640 模式时序证明。
 
-## 不能烧录放行的原因
+## 2026-09-14 未烧录原因（历史记录）
 
 1. **历史告警未查清**：先前状态为 `0x0810FC80`，bit27=`over_temp=1`。
    没有本轮 ADC 温度、阈值、供电或告警解除记录。该标志不能直接证明实际温度达到某个值，
@@ -101,8 +119,9 @@ PDS 综合已明确发出 **Timing-4086：摄像头数据、HREF、VSYNC 等输�
 6. **PC 回传不存在**：该厂商摄像头工程没有以太网 MAC/UDP/PRAW 发送链路，本次也未把 RGB565
    HDMI 路径冒充 RAW8 S0，未打开 host 接收并伪报采集成功。
 
-因此构建入口不生成位流、不提供下载步骤，所有结果保持
-`functional_verified=false`、`external_timing_verified=false`、`programmed=false`。
+上述条目记录 9 月 14 日当时为何未放行，已由 2026-09-17 的窄范围时序例外、
+全流程重构建和用户明确要求的短时 SRAM 实测部分更新。当前仍不具备外部 DVP
+setup/hold 签核、画面来源身份确认或长期热稳定性结论。
 
 ## 后续顺序
 

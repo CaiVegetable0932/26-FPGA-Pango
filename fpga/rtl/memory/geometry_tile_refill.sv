@@ -27,19 +27,20 @@ module geometry_tile_refill(
  reg [4:0] burst_beats;
  reg [2:0] row_beats,returned,segment_start;
  reg failed,cancelled_seen;
- // Each row has three aligned 256-bit beats. A fourth address is unused;
- // pair reads wrap to beat zero after beat two, whose upper neighbor is never
- // consumed. Valid in-frame bytes are all written before the EMIT state.
- reg [255:0] even_beats[0:3] /* synthesis syn_ramstyle="lut_ram" */;
- reg [255:0] odd_beats[0:3] /* synthesis syn_ramstyle="lut_ram" */;
+ // Each row stores three 256-bit beats in sixteen 16-bit lane banks.
+ // A quad needs three consecutive halfwords. Read each bank once, choosing
+ // the adjacent beat only for lanes before the starting lane, then gather
+ // the three required lanes. This preserves the original combinational
+ // read latency without duplicating a full 256-bit read port per row.
  wire [3:0] write_beat={1'b0,returned}+{1'b0,segment_start};
- wire [9:0] pair_offset={6'd0,quad}*10'd48;
- wire [1:0] read_beat=pair_offset[9:8];
+ wire [5:0] halfword_offset={2'b0,quad}*6'd3;
+ wire [1:0] read_beat=halfword_offset[5:4];
  wire [1:0] next_beat=read_beat==2 ? 2'd0 : read_beat+2'd1;
- wire [511:0] even_window={even_beats[next_beat],even_beats[read_beat]};
- wire [511:0] odd_window={odd_beats[next_beat],odd_beats[read_beat]};
- wire [47:0] even_pair=even_window>>pair_offset[7:0];
- wire [47:0] odd_pair=odd_window>>pair_offset[7:0];
+ wire [3:0] first_lane=halfword_offset[3:0];
+ wire [3:0] second_lane=first_lane+4'd1,third_lane=first_lane+4'd2;
+ wire [15:0] even_lane[0:15],odd_lane[0:15];
+ wire [47:0] even_pair={even_lane[third_lane],even_lane[second_lane],even_lane[first_lane]};
+ wire [47:0] odd_pair={odd_lane[third_lane],odd_lane[second_lane],odd_lane[first_lane]};
  // Predecode the next receive context into two row-local controls.
  // This removes the state/parity decode from the wide LUTRAM write enable.
  // ADDRESS acceptance enters RECEIVE; done leaves it even on errors/cancel.
@@ -55,14 +56,23 @@ module geometry_tile_refill(
    receive_odd<=receive_next && row[0];
   end
  end
- // Current-cycle DMA payload and address are written on the original edge.
- // Preserve invalid beat suppression and the original LUTRAM read semantics.
- always @(posedge clk)begin
-  if(rst_n && r_valid && write_beat<3)begin
-   if(receive_odd)odd_beats[write_beat[1:0]]<=r_data;
-   if(receive_even)even_beats[write_beat[1:0]]<=r_data;
+ // Current-cycle DMA writes all lanes on the same original edge. Memories
+ // remain unreset; valid-frame masks and drained response ownership protect
+ // unwritten tail/virtual bytes. The fourth address remains unused.
+ genvar lane;
+ generate for(lane=0;lane<16;lane=lane+1)begin: halfword_bank
+  reg [15:0] even_words[0:3] /* synthesis syn_ramstyle="lut_ram" */;
+  reg [15:0] odd_words[0:3] /* synthesis syn_ramstyle="lut_ram" */;
+  wire [1:0] lane_beat=first_lane>lane ? next_beat:read_beat;
+  assign even_lane[lane]=even_words[lane_beat];
+  assign odd_lane[lane]=odd_words[lane_beat];
+  always @(posedge clk)begin
+   if(rst_n && r_valid && write_beat<3)begin
+    if(receive_odd)odd_words[write_beat[1:0]]<=r_data[lane*16+:16];
+    if(receive_even)even_words[write_beat[1:0]]<=r_data[lane*16+:16];
+   end
   end
- end
+ end endgenerate
  // Capture, multiply, then validate the entire source span on separate edges.
  // A per-row address recurrence replaces a run-time multiply on every row.
  // Rounding up to a 32-byte boundary stays <=2^32 iff the unrounded end does.

@@ -1,12 +1,13 @@
 `timescale 1ns/1ps
-// Purpose: frame-locked disabled/pre/post Gamma around the same bilinear core.
+// Purpose: frame-locked disabled/pre-resample shared RGB Gamma around the same bilinear core.
 // Twelve physically independent table lanes support 12 addresses per II=1 input.
 // The caller ends a frame only after its expected outputs and all DMA writes drain.
-module rgb_enhance #(parameter TAG_BITS=192)(
+module rgb_enhance #(parameter TAG_BITS=192,EXTERNAL_PAGES=0)(
  input clk,rst_n,input frame_start,output frame_ready,output frame_config_ready,input frame_end,
  input [1:0] frame_mode,input [31:0] frame_lut_version,
  input lut_write,input [7:0] lut_addr,lut_data,
  input lut_commit,input [31:0] lut_version,output reg config_rejected,
+ input lut_page,
  input in_valid,output in_ready,input [95:0] in_samples,
  input [11:0] in_a,in_b,input in_mask,input [TAG_BITS-1:0] in_tag,
  output out_valid,input out_ready,output [23:0] out_rgb,
@@ -18,6 +19,13 @@ module rgb_enhance #(parameter TAG_BITS=192)(
  reg active_page,pending_page,table_valid,busy;
  reg [1:0] mode;
  reg [31:0] pending_version;
+ // Source versions resolve either retained page. External ownership prevents
+ // page reuse until all source consumers release their immutable handle.
+ reg [31:0] page_version[0:1];reg [1:0] page_valid;
+ wire target_page=EXTERNAL_PAGES?lut_page:!active_page;
+ wire selected_page=EXTERNAL_PAGES?(page_valid[1] && page_version[1]==frame_lut_version):pending_page;
+ wire selected_valid=EXTERNAL_PAGES?((page_valid[0] && page_version[0]==frame_lut_version) ||
+  (page_valid[1] && page_version[1]==frame_lut_version)):(table_valid && frame_lut_version==pending_version);
  reg pre_valid,pre_mask;
  reg [95:0] pre_raw;
  wire [95:0] pre_samples;
@@ -38,23 +46,18 @@ module rgb_enhance #(parameter TAG_BITS=192)(
  generate for(gamma_lane=0;gamma_lane<12;gamma_lane=gamma_lane+1) begin:g_lut
   wire [7:0] address;
   wire read_enable;
-  if(gamma_lane<3) begin
-   assign address=mode==2 ? core_rgb[gamma_lane*8+:8] : in_samples[gamma_lane*8+:8];
-   assign read_enable=busy && ((mode==1 && in_valid && in_ready) || (mode==2 && core_valid && post_ready));
-  end else begin
-   assign address=in_samples[gamma_lane*8+:8];
-   assign read_enable=busy && mode==1 && in_valid && in_ready;
-  end
+  assign address=in_samples[gamma_lane*8+:8];
+  assign read_enable=busy && mode==1 && in_valid && in_ready;
   gamma_lut_bank u_bank(.clk(clk),.read_enable(read_enable),.read_address({active_page,address}),.q(gamma_q[gamma_lane]),
-   .write_enable(write_allowed),.write_address({!active_page,lut_addr}),.data(lut_data));
+   .write_enable(write_allowed),.write_address({target_page,lut_addr}),.data(lut_data));
   assign pre_samples[gamma_lane*8+:8]=mode==1 ? gamma_q[gamma_lane] : pre_raw[gamma_lane*8+:8];
  end endgenerate
  integer i;
  assign frame_ready=!busy && drained;
- assign frame_config_ready=frame_ready && frame_mode<3 &&
-  (frame_mode==0 || (table_valid && frame_lut_version==pending_version)) && !lut_commit && !lut_write;
+ assign frame_config_ready=frame_ready && frame_mode<2 &&
+  (frame_mode==0 || selected_valid) && !lut_commit && !lut_write;
  assign in_ready=busy && pre_ready;
- assign out_valid=post_valid,out_rgb=mode==2 ? (post_mask ? {gamma_q[2],gamma_q[1],gamma_q[0]} : 24'd0) : post_rgb;
+ assign out_valid=post_valid,out_rgb=post_rgb;
  assign out_mask=post_mask,out_tag=post_tag;
  rgb_bilinear #(.TAG_BITS(TAG_BITS)) u_core(
   .clk(clk),.rst_n(rst_n),.in_valid(pre_valid),.in_ready(core_ready),
@@ -67,23 +70,25 @@ module rgb_enhance #(parameter TAG_BITS=192)(
    active_page<=0;pending_page<=0;table_valid<=0;busy<=0;written<=0;
    mode<=0;active_lut_version<=0;pending_version<=0;config_rejected<=0;pipe_count<=0;
    pre_valid<=0;post_valid<=0;pre_mask<=0;post_mask<=0;
+   page_valid<=0;page_version[0]<=0;page_version[1]<=0;
   end else begin
    config_rejected<=0;
    if(lut_write) begin
     if(frame_ready && !frame_start && !lut_commit) begin
      written[lut_addr]<=1;
      // A partly rewritten pending page is never eligible for frame activation.
-     table_valid<=0;
+     table_valid<=0;page_valid[target_page]<=0;
     end else config_rejected<=1;
    end
    if(lut_commit) begin
     if(frame_ready && !frame_start && !lut_write && &written) begin
-     pending_page<=!active_page;pending_version<=lut_version;table_valid<=1;written<=0;
+     pending_page<=target_page;pending_version<=lut_version;table_valid<=1;written<=0;
+     page_version[target_page]<=lut_version;page_valid[target_page]<=1;
     end else config_rejected<=1;
    end
    if(frame_start) begin
-    if(frame_ready && frame_mode<3 && (frame_mode==0 || (table_valid && frame_lut_version==pending_version)) && !lut_commit && !lut_write) begin
-     busy<=1;mode<=frame_mode;active_page<=pending_page;
+    if(frame_ready && frame_mode<2 && (frame_mode==0 || selected_valid) && !lut_commit && !lut_write) begin
+     busy<=1;mode<=frame_mode;active_page<=selected_page;
      active_lut_version<=frame_mode==0 ? 0 : frame_lut_version;
     end else config_rejected<=1;
    end

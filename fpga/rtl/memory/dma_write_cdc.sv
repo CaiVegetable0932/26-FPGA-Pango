@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Experimental, not instantiated by production. One transaction at a time.
+// Production processing-to-DDR write bridge. One transaction at a time.
 // Collect a complete client burst before issuing its immutable DDR request.
 // Data/strobes stay in dual-clock RAM until the native completion is drained.
 // Both resets MUST assert together with the native controller, and release
@@ -24,7 +24,11 @@ module dma_write_cdc(
  (* syn_preserve=1 *) reg request_meta,request_sync,free_meta,free_sync,cancel_meta,cancel_sync;
  (* syn_preserve=1 *) reg response_meta,response_sync;
  reg [287:0] payload[0:15] /* synthesis syn_ramstyle="block_ram" */;
- reg [287:0] read_q;
+ // This is the first memory-clock data capture for the held payload. ADS may
+ // implement the fixed first word as client-clock FFs beside the inferred RAM.
+ // Keep the capture boundary for precise CDC constraints, while allowing
+ // constant/dead-bit optimization (ADS guide 5.1, not broad syn_preserve).
+ (* syn_allow_retiming=0 *) reg [287:0] read_q;
  assign req_ready=cstate==C_IDLE;
  assign w_ready=cstate==C_COLLECT && !cancel && !cancel_held && client_count<client_beats;
  assign done=cstate==C_DONE;
@@ -34,11 +38,14 @@ module dma_write_cdc(
  assign memory_done_ready=mstate==M_LOAD || mstate==M_SEND || mstate==M_WAIT;
  assign memory_cancel=memory_done_ready && cancel_sync;
  wire [5:0] sent_after={1'b0,read_index}+(memory_w_valid && memory_w_ready);
- // No read/write collision: the request toggle follows the LAST RAM write;
- // the next client collection follows completion, consumption and free ACK.
+ // No read/write collision: the request toggle follows the LAST RAM write.
+ // Collection cannot restart until native completion returns to the client
+ // and is consumed; DDR then waits for the free toggle before a new request.
  always @(posedge client_clk)
   if(w_valid && w_ready)payload[client_count[3:0]]<={w_data,w_strb};
  // Prefetch after every accepted beat; hold the registered beat under stalls.
+ // The first load follows two-stage request synchronization, descriptor
+ // capture and native admission, providing the held-bus settling interval.
  always @(posedge memory_clk)
   if(mstate==M_LOAD)read_q<=payload[0];
   else if(memory_w_valid && memory_w_ready && read_index+1'b1<memory_req_beats)

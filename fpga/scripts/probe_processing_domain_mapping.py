@@ -7,6 +7,9 @@ from route_supervisor import run_supervised
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 
 def main():
+    # This probe mutates a frozen PROJECTIVE-era adapter and is not a current
+    # affine build entry. Reproduce old evidence with its own frozen script.
+    raise SystemExit('Retired processing-domain experiment: use build_video_system.py for current affine_lens; historical reproduction requires its frozen script/source.')
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--proof',type=Path,required=True)
     parser.add_argument('--pause-file',type=Path,required=True)
@@ -26,8 +29,8 @@ def main():
         if not args.integration_proof:raise ValueError('Projective mapping requires its integration proof')
         integrated=args.integration_proof.resolve()
         evidence=json.loads((integrated/'result.json').read_text())
-        if not all(evidence.get(k) for k in ['passed','snapshot_intact','control_test','snapshot_test']):
-            raise ValueError('Passed control and snapshot proof required')
+        if not all(evidence.get(k) for k in ['passed','snapshot_intact','control_test']):
+            raise ValueError('Passed control and RAW proof required')
         for name,group in [('geometry_processing_domain.sv','geometry'),('geometry_frame_processor.sv','geometry'),
                            ('processing_job_cdc.sv','memory'),('dma_write_cdc.sv','memory'),('dma_read_cdc.sv','memory')]:
             if sha(integrated/'source/rtl'/group/name)!=hashes[name]:raise ValueError('Integration source mismatch: '+name)

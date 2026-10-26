@@ -1,0 +1,29 @@
+{
+  "recorded_at": "2026-10-18T20:40:18.407476+08:00",
+  "frozen_source_hashes_pass": 290,
+  "engineering_registrations_resolved": 85,
+  "generated_ip_file_references_resolved": 88,
+  "matching_model_native_source_files": 70,
+  "native_project_generation_pass": true,
+  "native_route_template_generation_pass": true,
+  "driver_gate_mock_tests": {
+    "passed": 4,
+    "real_pds_or_hardware_test": false
+  },
+  "relocated_native_compile": "intentionally_stopped_during_database_save_after_elaboration_and_sdm2adm",
+  "relocated_compile_completed": false,
+  "original_source_bound_compile_synth_map_pass": true,
+  "new_route_run": false,
+  "new_timing_signoff": false,
+  "bitstream_generated": false,
+  "hardware_tested": false,
+  "original_p12_interrupted": false,
+  "second_physical_computer_tested": false,
+  "excluded": [
+    "machine licence",
+    "PDS installation",
+    "historical bitstreams",
+    "incomplete validation database"
+  ],
+  "driver_sha256": "b29b25c5166ceef028cf51fa69f74bc35c5c46722f450ebe51939278a0d89518"
+}

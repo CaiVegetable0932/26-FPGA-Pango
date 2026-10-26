@@ -1,15 +1,18 @@
 `timescale 1ns/1ps
-// Unintegrated two-clock subsystem. DDR-side descriptors are borrowed and
+// Affine-only two-clock subsystem; the mailbox snapshots the complete job in
+// processing_clk before exposing valid. DDR-side descriptors are borrowed and
 // MUST remain immutable until job_done, including metadata and LUT version.
 // LUT programming ports belong to processing_clk; a DDR pulse is not legal.
 // All native traffic drains before the mailbox releases scheduler ownership.
 // No PLL/reset integration or CDC timing signoff is implied by this adapter.
-module geometry_processing_domain_external_refill #(parameter META_BITS=616,PROJECTIVE=0)(
+module geometry_processing_domain_external_refill #(parameter META_BITS=616,EXTERNAL_TONE_PAGES=0,HISTORY_SUPPORT=0)(
  input clk,rst_n,processing_clk,processing_rst_n,input job_valid,output job_ready,
  input [31:0] source_base,source_generation,result_base,result_generation,
  input [15:0] width,height,input [447:0] coefficients,input [META_BITS-1:0] metadata,
- input [1:0] enhancement,input [31:0] lut_version,input [95:0] projective,
- input lut_write,input [7:0] lut_addr,lut_data,input lut_commit,
+ input [1:0] enhancement,input [31:0] lut_version,
+ input history_enable,input [31:0] history_base,history_generation,input signed [31:0] history_dx_q16,history_dy_q16,
+ output source_history,output [31:0] current_pixels,history_pixels,invalid_pixels,
+ input lut_write,input [7:0] lut_addr,lut_data,input lut_commit,input lut_page,input [31:0] lut_program_version,
  output job_done,job_failed,output [META_BITS-1:0] result_metadata,
  output source_req_valid,input source_req_ready,output [31:0] source_req_addr,source_req_tag,
  output [4:0] source_req_beats,output source_cancel,
@@ -23,28 +26,39 @@ module geometry_processing_domain_external_refill #(parameter META_BITS=616,PROJ
  // Quads cross once per tile; all row addresses/checks stay with DDR.
  wire freq,fready,fv,fr,fl,fe,fbusy,mreq,mready,mv,mr,ml,me;
  wire [11:0] ftx,fty,mtx,mty;wire [95:0] frgb,mrgb;wire [31:0] fbytes,mbytes;
- localparam JOB_BITS=META_BITS+738;
+ localparam JOB_BITS=META_BITS+707;
+ wire phe,fill_domain;wire signed [31:0] phdx,phdy;
  wire pv,pr,pdone,pfail;wire [JOB_BITS-1:0] pjob;
  wire [31:0] psb,psg,prb,prg,plv;wire [15:0] pw,ph;
- wire [447:0] pc;wire [95:0] pp;wire [1:0] pe;wire [META_BITS-1:0] pm;
+ wire [447:0] pc;wire [1:0] pe;wire [META_BITS-1:0] pm;
+ wire [31:0] processing_current_pixels,processing_history_pixels,processing_invalid_pixels;
  wire sreq,sready,scancel,srv,srr,srl,sd,sdr,se,sx;
  wire [31:0] sa,st,sdt;wire [4:0] sn;wire [255:0] sdata;
  wire rreq,rready,rcancel,rwv,rwr,rd,rdr,re,rx;
  wire [31:0] ra,rt,rdt;wire [4:0] rn;wire [255:0] rdata;wire [31:0] rstrb;
- // The processor's existing frame admission registers are the bundled-data
- // capture endpoints, avoiding an additional full-width mailbox shadow.
- assign {psb,psg,prb,prg,pw,ph,pc,pm,pe,plv,pp}=pjob;
+ // Readiness and LUT-version comparisons see only the mailbox destination
+ // snapshot. Slot-addressed DDR LUTRAM reads cannot reach processing enables.
+ assign {phe,phdx,phdy,psb,psg,prb,prg,pw,ph,pc,pm,pe,plv}=pjob;
  assign result_metadata=metadata;
- processing_job_cdc #(.JOB_BITS(JOB_BITS)) job_mailbox(
+ processing_job_cdc #(.JOB_BITS(JOB_BITS),.RESULT_BITS(96)) job_mailbox(
   .source_clk(clk),.source_rst_n(rst_n),.source_valid(job_valid),.source_ready(job_ready),
-  .source_job({source_base,source_generation,result_base,result_generation,width,height,coefficients,metadata,enhancement,lut_version,projective}),
+  .source_job({HISTORY_SUPPORT && history_enable,history_dx_q16,history_dy_q16,source_base,source_generation,result_base,result_generation,width,height,coefficients,metadata,enhancement,lut_version}),
   .source_done(job_done),.source_failed(job_failed),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),
-  .processing_valid(pv),.processing_ready(pr),.processing_job(pjob),.processing_done(pdone),.processing_failed(pfail));
- geometry_frame_processor_external_refill #(.META_BITS(META_BITS),.PROJECTIVE(PROJECTIVE)) processor(
+  .processing_valid(pv),.processing_ready(pr),.processing_job(pjob),.processing_done(pdone),.processing_failed(pfail),
+  // Geometry holds final counters until the next job; the synchronized done
+  // captures all three atomically before DDR observers receive job_done.
+  .processing_result({processing_current_pixels,processing_history_pixels,processing_invalid_pixels}),
+  .source_result({current_pixels,history_pixels,invalid_pixels}));
+ geometry_frame_processor_external_refill #(.META_BITS(META_BITS),.EXTERNAL_TONE_PAGES(EXTERNAL_TONE_PAGES),.HISTORY_SUPPORT(HISTORY_SUPPORT),.PROGRAM_VERSION_SEPARATE(1)) processor(
   .clk(processing_clk),.rst_n(processing_rst_n),.job_valid(pv),.job_ready(pr),
   .source_base(psb),.source_generation(psg),.result_base(prb),.result_generation(prg),
-  .width(pw),.height(ph),.coefficients(pc),.metadata(pm),.enhancement(pe),.lut_version(plv),.projective(pp),
-  .lut_write(lut_write),.lut_addr(lut_addr),.lut_data(lut_data),.lut_commit(lut_commit),
+  .width(pw),.height(ph),.coefficients(pc),.metadata(pm),.enhancement(pe),.lut_version(plv),
+  .history_enable(phe),.history_dx_q16(phdx),.history_dy_q16(phdy),.fill_history(fill_domain),
+  .current_pixels(processing_current_pixels),.history_pixels(processing_history_pixels),.invalid_pixels(processing_invalid_pixels),
+  // Programming controls/version are held on processing_clk, independently
+  // of job admission. Legacy callers use lut_version for both roles, while
+  // board EXTERNAL_TONE_PAGES mode supplies its separate programming version.
+  .lut_write(lut_write),.lut_addr(lut_addr),.lut_data(lut_data),.lut_commit(lut_commit),.lut_page(lut_page),.lut_program_version(EXTERNAL_TONE_PAGES?lut_program_version:lut_version),
   .job_done(pdone),.job_failed(pfail),.result_metadata(),
   .fill_req_valid(freq),.fill_req_ready(fready),.fill_tile_x(ftx),.fill_tile_y(fty),
   .fill_valid(fv),.fill_ready(fr),.fill_rgb(frgb),.fill_last(fl),.fill_error(fe),.fill_bus_bytes(fbytes),.refill_busy(fbusy),
@@ -52,14 +66,15 @@ module geometry_processing_domain_external_refill #(parameter META_BITS=616,PROJ
   .result_w_valid(rwv),.result_w_ready(rwr),.result_w_data(rdata),.result_w_strb(rstrb),
   .result_done(rd),.result_done_ready(rdr),.result_error(re),.result_cancelled(rx),.result_done_tag(rdt),
   .cache_misses(),.cache_stalls(),.cache_bus_bytes());
- tile_refill_cdc refill_bridge(
+ tile_refill_cdc #(.HISTORY_SUPPORT(HISTORY_SUPPORT)) refill_bridge(
   .processing_clk(processing_clk),.processing_rst_n(processing_rst_n),
   .fill_req_valid(freq),.fill_req_ready(fready),.fill_tile_x(ftx),.fill_tile_y(fty),
+  .fill_history(fill_domain),.memory_history(source_history),
   .fill_valid(fv),.fill_ready(fr),.fill_rgb(frgb),.fill_last(fl),.fill_error(fe),.fill_bus_bytes(fbytes),.busy(fbusy),
   .memory_clk(clk),.memory_rst_n(rst_n),.memory_req_valid(mreq),.memory_req_ready(mready),.memory_tile_x(mtx),.memory_tile_y(mty),
   .memory_fill_valid(mv),.memory_fill_ready(mr),.memory_fill_rgb(mrgb),.memory_fill_last(ml),.memory_fill_error(me),.memory_fill_bus_bytes(mbytes));
  geometry_tile_refill memory_refill(.clk(clk),.rst_n(rst_n),.fill_req_valid(mreq),.fill_req_ready(mready),
-  .fill_tile_x(mtx),.fill_tile_y(mty),.source_base(source_base),.source_stride(32'd6144),.source_generation(source_generation),
+  .fill_tile_x(mtx),.fill_tile_y(mty),.source_base(source_history?history_base:source_base),.source_stride(32'd6144),.source_generation(source_history?history_generation:source_generation),
   .source_width(width),.source_height(height),.fill_valid(mv),.fill_ready(mr),.fill_rgb(mrgb),.fill_last(ml),.fill_error(me),.fill_bus_bytes(mbytes),
   .cancel(1'b0),.req_valid(source_req_valid),.req_ready(source_req_ready),.req_addr(source_req_addr),.req_tag(source_req_tag),
   .req_beats(source_req_beats),.req_write(),.dma_cancel(source_cancel),.r_valid(source_r_valid),.r_ready(source_r_ready),

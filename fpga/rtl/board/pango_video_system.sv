@@ -1,11 +1,13 @@
 `timescale 1ns/1ps
 // Purpose: MINI video integration candidate: RAW8 S0 -> Ethernet; FPGA ISP S1
-// -> projective/lens RGB888 result -> HDMI, with shared native DDR requests.
-// PC mode/status/geometry and same-source paired snapshots are connected.
-// Calibrated MCU motion remains unavailable without its physical/extrinsic inputs. This engineering candidate is not a full-function release.
+// -> affine/lens RGB888 result -> HDMI, with shared native DDR requests.
+// PC mode/status/geometry are connected; image egress is RAW only.
+// Independent MCU UART is connected through an explicit commissioning policy;
+// timing/configuration/calibration remain separate runtime approval conditions.
 module pango_video_system(
  input clk_27m,ref_clk_p,ref_clk_n,reset_n,output status_led,
  input uart_rx,output uart_tx,
+ input mcu_uart_rx,output mcu_uart_tx,
  input camera_pclk,camera_href,camera_vsync,input [7:0] camera_data,
  inout camera_scl,camera_sda,output camera_reset_n,
  input rgmii_rxc,rgmii_rx_ctl,input [3:0] rgmii_rxd,
@@ -19,7 +21,7 @@ module pango_video_system(
  wire ref_clk,ddr_clk,ddr_lock,ddr_ready;
  wire processing_raw_clk,processing_clk,processing_lock,processing_reset_n;
  wire video_lock,serial_clk,pixel_clk,pixel_div_clk,hdmi_serial_clk,div_reset_n,video_ref_reset_n,video_ready,video_pixel_reset_n;
- wire core_reset_n,camera_domain_reset_n,pixel_domain_reset_n,ctrl_reset_n,rx_reset_n;
+ wire camera_control_reset_n;wire core_reset_n,camera_domain_reset_n,pixel_domain_reset_n,ctrl_reset_n,rx_reset_n;
  wire core_fault,camera_ready,camera_failed,camera_lost;
  // Native initialization is independent of processing PLL startup. After
  // arming, controller and all ownership clients share immediate cold reset.
@@ -50,33 +52,121 @@ module pango_video_system(
  // Native fault or stopped PCLK quarantines them until a board reset.
  reset_sync rs_processing(processing_clk,fabric_async_reset_n,processing_reset_n);
  reset_sync rs_core(ddr_clk,fabric_async_reset_n,core_reset_n);
+ // Camera SCCB owner and both request-mailbox ends share cold assertion.
+ // Restarting a fabric generation can never consume an old runtime reply.
+ reset_sync rs_camera_control(clk_27m,fabric_async_reset_n,camera_control_reset_n);
  reset_sync rs_camera(camera_pclk,fabric_async_reset_n,camera_domain_reset_n);
  reset_sync rs_pixel(pixel_clk,fabric_async_reset_n && video_pixel_reset_n,pixel_domain_reset_n);
  // Fault synchronization and sticky cold-reset arming live in processing_safety.
  dvp_clock_watchdog watchdog(.pclk(camera_pclk),.pclk_reset_n(camera_domain_reset_n),.ctrl_clk(clk_27m),
   .ctrl_reset_n(ctrl_reset_n),.enable(camera_ready),.clock_lost(camera_lost),.loss_event());
- ov5640_integrated_startup camera_init(.clk(clk_27m),.rst_n(ctrl_reset_n),.sensor_reset_n(camera_reset_n),
+ ov5640_integrated_startup camera_init(.clk(clk_27m),.rst_n(camera_control_reset_n),.sensor_reset_n(camera_reset_n),
+  .runtime_apply(rt_apply),.runtime_continuous(rt_payload[30]),.runtime_quiesced(quiesced_ctrl),.runtime_exposure(rt_payload[29:10]),.runtime_gain(rt_payload[9:0]),
+  .runtime_ready(rt_ready),.runtime_done(rt_done),.runtime_error(rt_error),
   .SCL(camera_scl),.SDA(camera_sda),.ready(camera_ready),.failed(camera_failed),.failure_code(),.active_version(),.active_entity());
- // CP2102 boot uses the existing PC V1 RAW8 commissioning entity. MCU V2
- // remains a separate independent interface, outside this cabling revision.
- wire snapshot_arm,snapshot_arm_ready;wire [767:0] control_status,geometry_status,snapshot_s1_status,snapshot_result_status,snapshot_geometry_status;wire geometry_submit_valid,geometry_submit_ready;wire [543:0] geometry_submit;wire [31:0] geometry_version,geometry_entity_id;wire mode_submit_valid,mode_submit_ready;wire [1:0] mode_submit;wire [31:0] mode_version;
+ // CP2102 uses existing PC V1 commissioning. MCU V2 has its own physical UART;
+ // kind12 changes link policy only and cannot issue MCU motion commands.
+ // Dedicated PC control reaches the frame parameter layer, never the pixel
+ // path. Display adoption is observed through an atomic status CDC mailbox.
+ // Only connected entity kinds are advertised. Reference remains a distinct
+ // frame-bank consumer; image/motion share the single bounded UART upload.
+ wire entity_submit_valid;wire [15:0] entity_kind,entity_length,entity_read_kind;
+ wire [2047:0] entity_body;wire [7:0] entity_submit_code,image_submit_code,motion_submit_code;
+ wire [2303:0] entity_status,image_status,motion_status;
+ wire [7:0] camera_submit_code;wire [2303:0] camera_status;
+ wire image_auto_stable;wire camera_continuous,camera_pause,source_quiesced,cam_apply,cam_apply_ready,cam_done,cam_failed;
+ wire [19:0] cam_exposure;wire [9:0] cam_gain;wire [31:0] camera_config_version;
+ wire camera_stats_valid;wire [47:0] camera_stats_sum;wire [31:0] camera_stats_count;
+ reg camera_return_valid;reg [2:0] camera_return_error;
+ // Capture the held error only after mailbox completion, then deliver an
+ // entirely DDR-domain done/error pair to the policy on the following cycle.
+ always @(posedge ddr_clk or negedge core_reset_n)begin
+  if(!core_reset_n)begin camera_return_valid<=0;camera_return_error<=0;end
+  else begin camera_return_valid<=cam_done;if(cam_done)camera_return_error<=cam_failed?rt_error:3'd0;end
+ end
+ wire rt_apply,rt_ready,rt_done;wire [2:0] rt_error;wire [30:0] rt_payload;
+ (* syn_preserve=1 *) reg quiesced_meta,quiesced_ctrl;
+ always @(posedge clk_27m or negedge camera_control_reset_n)begin
+  if(!camera_control_reset_n)begin quiesced_meta<=0;quiesced_ctrl<=0;end
+  else begin quiesced_meta<=source_quiesced;quiesced_ctrl<=quiesced_meta;end
+ end
+ // Held request mailbox reuses the normal controller drain/ack contract.
+ // Returned error bits stay stable until the next request; done is synchronized.
+ processing_job_cdc #(.JOB_BITS(31)) camera_apply_bridge(.source_clk(ddr_clk),.source_rst_n(core_reset_n),
+  .source_valid(cam_apply),.source_ready(cam_apply_ready),.source_job({camera_continuous,cam_exposure,cam_gain}),.source_done(cam_done),.source_failed(cam_failed),
+  .processing_clk(clk_27m),.processing_rst_n(camera_control_reset_n),.processing_valid(rt_apply),.processing_ready(rt_ready),
+  .processing_job(rt_payload),.processing_done(rt_done),.processing_failed(rt_error!=0),
+  // Camera error already uses the separately constrained held-error return.
+  .processing_result(1'b0),.source_result());
+ // Manual exposure/gain remains available; automatic image feedback is omitted
+ // in the strict-capacity board profile, together with custom tone uploads.
+ // Camera timing validation is split across clocks; the upload engine waits
+ // for its exact cached result before publishing a command to this consumer.
+ camera_brightness_control #(.SUPPORT_AUTO(0),.PIPELINED_VALIDATION(1)) camera_control(.clk(ddr_clk),.rst_n(core_reset_n),
+  .submit_valid(entity_submit_valid && entity_kind==7),.body(entity_body[383:0]),.version(reference_version),.entity_id(reference_entity_id),
+  .submit_code(camera_submit_code),.status(camera_status),.source_quiesced(source_quiesced),.pause_capture(camera_pause),
+  .apply_valid(cam_apply),.continuous(camera_continuous),.apply_ready(cam_apply_ready),.exposure(cam_exposure),.gain(cam_gain),.apply_done(camera_return_valid),.apply_error(camera_return_error),
+  .capture_boundary(capture_valid && capture_ready),.capture_epoch(capture_epoch),.capture_frame(capture_id),
+  .statistics_valid(camera_stats_valid),.luminance_sum(camera_stats_sum),.samples(camera_stats_count),.capture_camera_version(camera_config_version),.auto_stable(image_auto_stable));
+ wire image_kind_selected=entity_kind>=1 && entity_kind<=3;
+ wire motion_kind_selected=(entity_kind>=4 && entity_kind<=6) || entity_kind==8;
+ wire [7:0] mcu_policy_code;wire [2303:0] mcu_policy_status;
+ assign entity_submit_code=entity_kind==12?mcu_policy_code:entity_kind==7?camera_submit_code:image_kind_selected?image_submit_code:motion_kind_selected?motion_submit_code:8'd6;
+ assign entity_status=entity_read_kind==12?mcu_policy_status:entity_read_kind==7?camera_status:entity_read_kind<=3?image_status:motion_status;
+ wire reference_submit_valid;wire [511:0] reference_entity;wire [31:0] reference_version,reference_entity_id;
+ wire [7:0] reference_submit_code;wire [767:0] reference_status;
+ wire runtime_action_valid;wire [15:0] runtime_action,runtime_action_seq;wire [7:0] runtime_action_code;
+ wire affine_submit_valid;wire [95:0] affine_payload;wire [15:0] affine_sequence;
+ wire [7:0] affine_submit_code;wire [767:0] affine_status;
+ wire display_confirm_valid,display_confirm_ready;wire [160:0] display_confirm;
+ wire [767:0] control_status,geometry_status;wire geometry_submit_valid,geometry_submit_ready;wire [543:0] geometry_submit;wire [31:0] geometry_version,geometry_entity_id;wire mode_submit_valid,mode_submit_ready;wire [1:0] mode_submit;wire [31:0] mode_version;
  wire commissioned;wire [63:0] boot_epoch;wire [47:0] local_mac,peer_mac;
  wire [31:0] local_ip,peer_ip;wire [15:0] local_port,peer_port;
- pc_video_boot boot(.clk(ddr_clk),.rst_n(core_reset_n),.uart_rx(uart_rx),.uart_tx(uart_tx),
+ // C4 kind4 is not advertised. Kind6 retains disabled config / history clear.
+ // No kind2 custom LUT or kind5 independent viewport; gateway storage and
+ // status capacity follow the same actual board feature mask.
+ // The sole kind3 ingress proves coefficient rows during CRC upload. Pair
+ // STREAM_CCM with the core specialization; no alternate unproved ingress.
+ pc_video_boot #(.ENTITY_MASK(16'h1bca),.STREAM_CCM(1)) boot(.clk(ddr_clk),.rst_n(core_reset_n),.uart_rx(uart_rx),.uart_tx(uart_tx),
+  .entity_submit_valid(entity_submit_valid),.entity_kind(entity_kind),.entity_length(entity_length),
+  .entity_body(entity_body),.entity_submit_code(entity_submit_code),.entity_read_kind(entity_read_kind),.entity_status(entity_status),
   .configured(commissioned),.epoch(boot_epoch),.local_mac(local_mac),.peer_mac(peer_mac),
   .local_ip(local_ip),.peer_ip(peer_ip),.local_port(local_port),.peer_port(peer_port),
-  .snapshot_arm(snapshot_arm),.snapshot_arm_ready(snapshot_arm_ready),.snapshot_geometry_status(snapshot_geometry_status),.snapshot_s1_status(snapshot_s1_status),.snapshot_result_status(snapshot_result_status),.geometry_status(geometry_status),.geometry_submit_valid(geometry_submit_valid),.geometry_submit_ready(geometry_submit_ready),.geometry_submit(geometry_submit),.geometry_version(geometry_version),.geometry_entity_id(geometry_entity_id),
+  .geometry_status(geometry_status),.geometry_submit_valid(geometry_submit_valid),.geometry_submit_ready(geometry_submit_ready),.geometry_submit(geometry_submit),.geometry_version(geometry_version),.geometry_entity_id(geometry_entity_id),
+  .reference_status(reference_status),.reference_submit_valid(reference_submit_valid),.reference_entity(reference_entity),.reference_version(reference_version),.reference_entity_id(reference_entity_id),.reference_submit_code(reference_submit_code),
+  .runtime_action_valid(runtime_action_valid),.runtime_action(runtime_action),.runtime_action_seq(runtime_action_seq),.runtime_action_code(runtime_action_code),
+  .affine_status(affine_status),.affine_submit_valid(affine_submit_valid),.affine_payload(affine_payload),.affine_sequence(affine_sequence),.affine_submit_code(affine_submit_code),
   .control_status(control_status),.mode_submit_valid(mode_submit_valid),.mode_submit_ready(mode_submit_ready),.mode_submit(mode_submit),.mode_version(mode_version));
+ // Board adapter and protocol client share DDR clock/reset; no byte CDC is
+ // inserted. Only asynchronous UART RX crosses into a two-flop synchronizer.
+ wire mcu_enable,mcu_rx_valid,mcu_rx_error,mcu_tx_valid,mcu_tx_ready,mcu_timing_valid;
+ wire [7:0] mcu_rx_data,mcu_tx_data;wire [31:0] mcu_new_session,mcu_capture_error,mcu_config_version;
+ wire mcu_config_valid,mcu_config_ready,mcu_config_approved,mcu_reopen_required;
+ wire [31:0] mcu_config_crc32;
+ wire [2111:0] mcu_config_entity;wire mcu_event_valid,mcu_event_ready;wire [319:0] mcu_event_payload;
+ wire mcu_session_valid,mcu_mapping_valid;wire [63:0] mcu_boot_id;
+ mcu_link_adapter #(.CONFIG_DIGEST_ONLY(1)) mcu_link(.clk(ddr_clk),.rst_n(core_reset_n),.commissioned(commissioned),
+  .uart_rx(mcu_uart_rx),.uart_tx(mcu_uart_tx),.submit_valid(entity_submit_valid && entity_kind==12),
+  .body(entity_body[511:0]),.version(reference_version),.entity_id(reference_entity_id),
+  .submit_code(mcu_policy_code),.status(mcu_policy_status),.enable(mcu_enable),
+  .rx_valid(mcu_rx_valid),.rx_data(mcu_rx_data),.rx_error(mcu_rx_error),
+  .tx_valid(mcu_tx_valid),.tx_data(mcu_tx_data),.tx_ready(mcu_tx_ready),
+  .new_session(mcu_new_session),.timing_valid(mcu_timing_valid),.capture_error(mcu_capture_error),
+  .config_valid(mcu_config_valid),.config_entity(mcu_config_entity),.config_version(mcu_config_version),.config_crc32(mcu_config_crc32),
+  .config_ready(mcu_config_ready),.config_approved(mcu_config_approved),.reopen_required(mcu_reopen_required),
+  .session_valid(mcu_session_valid),.mapping_valid(mcu_mapping_valid),.boot_id(mcu_boot_id),
+  .event_valid(mcu_event_valid),.event_payload(mcu_event_payload),.event_ready(mcu_event_ready));
  wire capture_valid,capture_ready,capture_complete,capture_end,isp_legal,raw_legal,isp_abort,raw_abort,queues_drained;
  wire [63:0] capture_epoch,capture_id,capture_first,capture_last;
  wire [31:0] capture_errors;wire isp_valid,isp_ready,raw_valid,raw_ready;wire [7:0] isp_byte,raw_byte;
  camera_frame_cdc camera_input(.pclk(camera_pclk),.pclk_rst_n(camera_domain_reset_n),.dvp_data(camera_data),
-  .href(camera_href),.vsync(camera_vsync),.camera_ready(camera_ready && commissioned),.boot_epoch(boot_epoch),
-  .memory_clk(ddr_clk),.memory_rst_n(core_reset_n),.capture_valid(capture_valid),.capture_ready(capture_ready),.capture_complete(capture_complete),
+  .href(camera_href),.vsync(camera_vsync),.camera_ready(camera_ready && commissioned && !camera_pause),.boot_epoch(boot_epoch),
+  .memory_clk(ddr_clk),.memory_rst_n(core_reset_n),
+  .capture_valid(capture_valid),.capture_ready(capture_ready),.capture_complete(capture_complete),
   .epoch(capture_epoch),.frame_id(capture_id),.capture_first(capture_first),.capture_last(capture_last),
   .capture_end(capture_end),.isp_legal(isp_legal),.raw_legal(raw_legal),.capture_errors(capture_errors),.isp_abort(isp_abort),.raw_abort(raw_abort),
   .isp_valid(isp_valid),.isp_ready(isp_ready),.isp_data(isp_byte),.raw_valid(raw_valid),.raw_ready(raw_ready),.raw_data(raw_byte),
-  .queues_drained(queues_drained),.source_frames(),.dropped_raw(),.dropped_isp());
+  .queues_drained(queues_drained),.source_quiesced(source_quiesced),.source_frames(),.dropped_raw(),.dropped_isp());
  wire [27:0] awaddr,araddr;wire [3:0] awlen,arlen,awid,arid,wid,rid;
  wire awvalid,arvalid,awready,arready,wready,wlast,rlast,ddr_rvalid;
  wire [255:0] ddr_rdata,ddr_wdata;wire [31:0] wstrb;
@@ -158,13 +248,55 @@ module pango_video_system(
   .rgb(rgb),.hs(hs),.vs(vs),.de(de),.tag_valid(tag_valid),.epoch(display_epoch),.source_frame_id(display_id),.generation(display_generation),
   .data_p(hdmi_data_p),.data_n(hdmi_data_n),.clock_p(hdmi_clk_p),.clock_n(hdmi_clk_n),
   .symbol_tag_valid(),.symbol_epoch(),.symbol_source_frame_id(),.symbol_generation());
+ // tag_valid/epoch/id/generation originate from the adopted HDMI descriptor.
+ // The mailbox freezes all identity bits together; no independently sampled
+ // counters or asynchronous UART arrival ordering can establish association.
+ counter_snapshot_cdc #(.BITS(161)) displayed_status_cdc(
+  .src_clk(pixel_clk),.src_rst_n(pixel_domain_reset_n),
+  .counters({tag_valid,display_epoch,display_id,display_generation}),
+  .dst_clk(ddr_clk),.dst_rst_n(core_reset_n),.request(display_confirm_ready),
+  .request_ready(display_confirm_ready),.snapshot_valid(display_confirm_valid),
+  .snapshot_ready(1'b1),.snapshot(display_confirm));
  wire [31:0] captured,dropped,processed,failed_processing;
  // Existing calibration report supplies these coefficients. Its source stage
  // remains unverified; optical accuracy is not established by offline routing.
  localparam [447:0] CANDIDATE_COEFFICIENTS=448'h0246436103b36be2034ed96d03543ce2ffffbdfcfffe80d80030a9bffefcff55fd3fef320001358d00000000fb8da2030000000000013398;
- video_memory_core #(.STATIC_ENDPOINTS(0),.SUPPORT_CONTROLS(1),.SUPPORT_SNAPSHOT(1)) core(.clk(ddr_clk),.rst_n(core_reset_n),.processing_clk(processing_clk),.processing_rst_n(processing_reset_n),.controller_ready(ddr_ready),.geometry_coefficients(CANDIDATE_COEFFICIENTS),.enhancement(2'd0),
+ // Version-1 fixed OFF view: unrotated output rays, Q26, from the existing
+ // baseline output intrinsics (not recovered from a user-submitted ON matrix).
+ // This is a reproducible engineering seed, not a newly certified calibration.
+ localparam [511:0] AFFINE_REFERENCE_V1={112'd0,16'd1,32'd1,16'd1080,16'd1920,
+  -32'sd46141646,32'sd79245,32'sd0,-32'sd74604029,32'sd0,32'sd78744,
+  32'd38159366,32'd62090440,32'd55499357,32'd55852465};
+ // All image COMMIT pulses here originate in pc_reference_upload, which
+ // validates every LUT byte alongside CRC before raising submit_valid. There
+ // is no alternate LUT writer; standalone core defaults keep full validation.
+ // The physical consumer uses an all-byte configuration digest; keep the
+ // full parallel entity mode available to direct-core reference consumers.
+ video_memory_core #(.STATIC_ENDPOINTS(0),.SUPPORT_CONTROLS(1),.TONE_LUT_PREVALIDATED(1),.MCU_CONFIG_DIGEST_ONLY(1),.CCM_PREVALIDATED(1),.IMAGE_AUTOMATION(0),.TONE_UPLOAD(0),.SUPPORT_VIEWPORT(0)) core(.clk(ddr_clk),.rst_n(core_reset_n),.processing_clk(processing_clk),.processing_rst_n(processing_reset_n),.controller_ready(ddr_ready),.geometry_coefficients(CANDIDATE_COEFFICIENTS),.enhancement(2'd0),
+  .image_submit_valid(entity_submit_valid && image_kind_selected),.image_kind(entity_kind),
+  .image_entity(entity_body),.image_version(reference_version),.image_id(reference_entity_id),
+  .image_submit_code(image_submit_code),.image_read_kind(entity_read_kind),.image_status(image_status),
+  .camera_config_version(camera_config_version),.image_auto_stable(image_auto_stable),.camera_stats_valid(camera_stats_valid),.camera_stats_sum(camera_stats_sum),.camera_stats_count(camera_stats_count),
+  .motion_submit_valid(entity_submit_valid && motion_kind_selected),.motion_kind(entity_kind),
+  .motion_entity(entity_body[1023:0]),.motion_version(reference_version),.motion_id(reference_entity_id),
+  .motion_submit_code(motion_submit_code),.motion_read_kind(entity_read_kind),.motion_status(motion_status),
+  // Policy defaults disabled but remains runtime configurable in the real
+  // board netlist, so synthesis must retain the complete MCU receive path.
+  .mcu_enable(mcu_enable),.mcu_rx_valid(mcu_rx_valid),.mcu_rx_data(mcu_rx_data),.mcu_rx_error(mcu_rx_error),
+  .mcu_tx_valid(mcu_tx_valid),.mcu_tx_data(mcu_tx_data),.mcu_tx_ready(mcu_tx_ready),.mcu_timing_valid(mcu_timing_valid),
+  .mcu_capture_error(mcu_capture_error),.mcu_config_approved(mcu_config_approved),
+  .mcu_new_session(mcu_new_session),.mcu_config_valid(mcu_config_valid),.mcu_config_entity(mcu_config_entity),.mcu_config_version(mcu_config_version),
+  .mcu_config_ready(mcu_config_ready),.mcu_config_crc32(mcu_config_crc32),.mcu_reopen_required(mcu_reopen_required),.mcu_event_valid(mcu_event_valid),.mcu_event_payload(mcu_event_payload),.mcu_event_ready(mcu_event_ready),
+  .mcu_session_valid(mcu_session_valid),.mcu_mapping_valid(mcu_mapping_valid),.mcu_boot_id(mcu_boot_id),
+  .affine_reference(AFFINE_REFERENCE_V1),
+  .display_confirm_valid(display_confirm_valid && display_confirm[160]),
+  .display_confirm_epoch(display_confirm[159:96]),.display_confirm_frame(display_confirm[95:32]),
+  .display_confirm_generation(display_confirm[31:0]),
   .capture_valid(capture_valid),.capture_ready(capture_ready),.capture_complete(capture_complete),
-  .snapshot_arm(snapshot_arm),.snapshot_arm_ready(snapshot_arm_ready),.snapshot_geometry_status(snapshot_geometry_status),.snapshot_s1_status(snapshot_s1_status),.snapshot_result_status(snapshot_result_status),.geometry_status(geometry_status),.geometry_submit_valid(geometry_submit_valid),.geometry_submit_ready(geometry_submit_ready),.geometry_submit(geometry_submit),.geometry_version(geometry_version),.geometry_entity_id(geometry_entity_id),
+  .geometry_status(geometry_status),.geometry_submit_valid(geometry_submit_valid),.geometry_submit_ready(geometry_submit_ready),.geometry_submit(geometry_submit),.geometry_version(geometry_version),.geometry_entity_id(geometry_entity_id),
+  .reference_status(reference_status),.reference_submit_valid(reference_submit_valid),.reference_entity(reference_entity),.reference_version(reference_version),.reference_entity_id(reference_entity_id),.reference_submit_code(reference_submit_code),
+  .runtime_action_valid(runtime_action_valid),.runtime_action(runtime_action),.runtime_action_seq(runtime_action_seq),.runtime_action_code(runtime_action_code),
+  .affine_status(affine_status),.affine_submit_valid(affine_submit_valid),.affine_payload(affine_payload),.affine_sequence(affine_sequence),.affine_submit_code(affine_submit_code),
   .control_status(control_status),.mode_submit_valid(mode_submit_valid),.mode_submit_ready(mode_submit_ready),.mode_submit(mode_submit),.mode_version(mode_version),
   .capture_epoch(capture_epoch),.capture_id(capture_id),.capture_first(capture_first),.capture_last(capture_last),
   .capture_end(capture_end),.capture_isp_legal(isp_legal),.capture_raw_legal(raw_legal),.capture_errors(capture_errors),

@@ -6,7 +6,7 @@ module tb_uart_deadline_stress #(parameter TIMEOUT_VALUE=30000);
  reg clk=0;always #4 clk=~clk;
  reg rst_n=0,byte_valid=0,byte_error=0,packet_ready=0,read_valid=0;
  reg [7:0] byte_data=0;reg [9:0] read_index=0;reg [63:0] now_us=0;
- wire packet_valid,read_response;wire [7:0] read_data,cmd;
+ wire packet_valid,packet_revoked,read_response;wire [7:0] read_data,cmd;
  wire [15:0] seq,length;wire [63:0] receive_us;
  wire [31:0] bad_crc,bad_header,timeouts,overflows;wire [11:0] peak_bytes;
  reg [7:0] golden[0:105];reg [31:0] dice;

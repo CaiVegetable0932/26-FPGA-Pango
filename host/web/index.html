@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pango Vision · 视频采集工作台</title>
+  <meta name="description" content="PG2L100H 上位机：RAW8视频接收、源帧预览与原始证据归档。">
+  <link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/app.css">
+  <!-- HDMI software-reference display shares the calibration renderer. -->
+  <script src="/records.js" defer></script><script src="/preview-stream.js" defer></script><script src="/preview-rate.js" defer></script><script src="/video-input.js" defer></script><script src="/fisheye-preview.js" defer></script><script src="/video-input-ui.js" defer></script><script src="/board-link.js" defer></script><script src="/app.js" defer></script>
+</head>
+<body>
+<svg class="icon-defs" aria-hidden="true"><defs>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h7l2 3h9v12H3Z"/></symbol>
+  <symbol id="i-tune" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 7h5l2-3h4l2 3h5v13H3Z"/><circle cx="12" cy="13" r="4"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+</defs></svg>
+<a href="#main" class="skip-link">跳到工作区</a>
+<aside class="sidebar">
+  <a class="brand" href="/" aria-label="Pango Vision首页"><span class="brand-mark">P</span><span>PANGO<span class="brand-sub">VISION WORKBENCH</span></span></a>
+  <div class="nav-label">实验工作区</div>
+  <nav aria-label="主导航">
+    <button class="nav-button active" data-view="live" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg>实时采集</button>
+    <button class="nav-button" data-view="records"><svg class="icon"><use href="#i-folder"/></svg>采集记录<span id="nav-saved" class="nav-count">0</span></button>
+    <button class="nav-button" data-view="settings"><svg class="icon"><use href="#i-tune"/></svg>连接设置</button>
+    <!-- Purpose: keep calibration in the same local workbench without presenting it as FPGA correction. -->
+    <a class="nav-button" href="/calibration"><svg class="icon"><use href="#i-camera"/></svg>图像标定</a>
+    <!-- Hardware controls have their own explicit draft and applied readback. -->
+    <a class="nav-button" href="/algorithms">FPGA 算法控制</a>
+  </nav>
+  <div class="sidebar-note"><span class="small-dot"></span>本机工作台<span id="server-health">正在连接服务</span></div>
+  <div class="platform-card"><span class="eyebrow">PROJECT PLATFORM</span><strong>PG2L100H</strong><span>单路 OV5640 · RAW8</span><div class="platform-rule"></div><small>目标 1920 × 1080 / 30 FPS</small></div>
+</aside>
+<div class="shell">
+  <header class="topbar"><div class="breadcrumb">上位机 <span>/</span> <strong id="breadcrumb-view">实时采集</strong></div><div class="topbar-right"><span class="local-tag">LOCAL</span><span id="clock">--:--:--</span></div></header>
+  <main id="main">
+    <div id="connection-alert" class="alert" role="alert" hidden>本地服务未响应。请确认服务正在运行。<button id="reconnect">重新连接</button></div>
+    <section id="view-live" class="view">
+      <div class="page-heading"><div><div class="eyebrow page-kicker">CAPTURE WORKSPACE</div><h1>视频采集工作台</h1><p>查看源帧，检查链路，保留原始证据。</p></div><button class="button secondary" data-view="settings"><svg class="icon"><use href="#i-tune"/></svg>连接设置</button></div>
+      <!-- One saved physical setup drives UART commissioning and UDP reception. -->
+      <article class="panel board-startup" aria-labelledby="board-title">
+        <div class="panel-heading"><h2 id="board-title">板卡上电 → 一键连接</h2><button id="board-refresh" class="button secondary">刷新设备</button></div>
+        <div class="board-fields">
+          <label>板卡 USB-UART / CP2102<select id="board-port"><option value="">请刷新设备</option></select></label>
+          <label>连接板卡的以太网卡<select id="board-interface"><option value="">请刷新设备</option></select></label>
+          <label>FPGA IPv4<input id="board-source-ip" value="169.254.81.187" inputmode="decimal"></label>
+          <label>FPGA MAC<input id="board-source-mac" value="02:00:00:00:00:01"></label>
+          <label>PC 接收端口<input id="board-peer-port" type="number" value="50000" min="1" max="65535"></label>
+          <label>FPGA 发送端口<input id="board-source-port" type="number" value="50001" min="1" max="65535"></label>
+        </div>
+        <!-- Ethernet recovery restores the default link without touching HDMI. -->
+        <div class="board-actions"><label><input id="board-auto" type="checkbox" checked>下次启动 host 自动连接</label><button id="board-start" class="button primary">启动 / 重连板卡链路</button><button id="board-reset-ethernet" type="button" class="button secondary" title="恢复默认网口参数并重启 RAW8 接收，保留 HDMI 预览">以太网恢复默认并重连</button><button id="board-stop" class="button secondary">停止板卡接收</button><a href="/calibration" class="button secondary">进入标定</a></div>
+        <p id="board-message" role="status">首次选择直连板卡的网卡和串口；本机 IP/MAC 将从该网卡读取。</p>
+        <p id="board-diagnostics"></p>
+      </article>
+      <div class="session-toolbar">
+        <div class="session-label"><span id="source-pill" class="pill mock">本机模拟</span><span class="status-dot" id="session-dot"></span><strong id="session-state">未开始采集</strong></div>
+        <div class="toolbar-actions"><label class="archive-policy">自动归档<select id="archive-every" aria-label="自动归档策略"><option value="0">关闭</option><option value="30">每 30 个完整帧</option><option value="1">每个完整帧</option></select></label><button id="stop" class="button secondary" disabled><span class="stop-shape"></span>停止</button><button id="start" class="button primary"><span class="play-shape"></span><span id="start-label">开始模拟</span></button></div>
+      </div>
+      <div class="metrics" aria-label="网络接收指标">
+        <div class="metric"><div class="metric-label">完整帧率<span class="target">目标 30</span></div><div><strong id="metric-fps">—</strong><span class="unit">FPS</span></div><svg id="fps-chart" viewBox="0 0 240 28" role="img" aria-label="最近一分钟完整帧率趋势"><path id="fps-line" d=""/></svg></div>
+        <div class="metric"><div class="metric-label">累计完整帧</div><div><strong id="metric-frames">—</strong><span class="unit">帧</span></div><small id="frame-span">源帧号 —</small></div>
+        <div class="metric"><div class="metric-label">RAW 有效吞吐</div><div><strong id="metric-throughput">—</strong><span class="unit">MB/s</span></div><small>按完整像素字节计数</small></div>
+        <div class="metric"><div class="metric-label">校验失败 / 组帧失败</div><div><strong id="metric-errors">— / —</strong></div><small id="error-hint">等待接收数据</small></div>
+      </div>
+      <!-- One display-only switch controls original and mapped pixel overlays. -->
+      <div class="pixel-marker-toolbar"><button id="pixel-markers-toggle" type="button" class="button small secondary" aria-pressed="false" aria-controls="raw-pixel-markers capture-pixel-markers">显示像素标记</button><span id="pixel-markers-info" role="status">标记已隐藏 · 可观察原图像素的矫正映射</span></div>
+      <div class="capture-layout">
+        <article class="panel video-panel primary-viewer">
+          <!-- Purpose: full-size RAW gray remains byte-exact; the reduced-size
+               live preview averages Bayer cells to prevent aliasing, without
+               modifying archived RAW8 or mistaking enhanced RAW8 for S0. -->
+          <div class="panel-heading"><div class="panel-title"><span class="channel-label">RAW8</span><h2>网口 RAW8 数据</h2></div><div class="segmented" role="group" aria-label="RAW8预览方式"><button class="selected" data-color="raw" aria-pressed="true">RAW 灰阶</button><button data-color="color" aria-pressed="false">基础彩色</button><button data-color="gray" aria-pressed="false">平均灰度</button></div></div>
+          <div class="video-surface" id="video-surface">
+            <canvas id="live-canvas" width="960" height="540" aria-label="来自完整RAW8帧的预览画面" hidden></canvas>
+            <svg id="raw-pixel-markers" class="pixel-marker-overlay" aria-label="网口原图的代表像素位置" hidden></svg>
+            <div class="video-empty" id="video-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-camera"/></svg></div><strong>等待原始视频</strong><span>开始本机模拟，或配置板端数据来源</span><div class="signal-guide"><span>RAW8</span><span>1920 × 1080</span><span>PRAW V1</span></div></div>
+            <span class="video-corner" id="video-origin">MOCK / 模拟来源</span><div class="stale-label" id="stale-label" hidden>画面已停止更新</div>
+          </div>
+          <div class="video-meta"><span id="frame-identity">尚无完整源帧</span><span><span id="receive-rate">完整接收 0.0 FPS</span> · <span id="preview-rate">显示 0.0 FPS</span></span></div>
+          <div class="viewer-footer"><span id="raw-stage-note">PC 基础可视化 · 不等同于 FPGA S1</span><button id="save-current" class="button small secondary" disabled><svg class="icon"><use href="#i-camera"/></svg>保存最新完整帧</button></div>
+        </article>
+        <article class="panel video-panel hdmi-panel">
+          <div class="panel-heading"><div class="panel-title"><span class="channel-label">IN</span><h2>采集卡视频输入</h2></div><span id="capture-preview-status" class="pill neutral">未配置</span></div>
+          <div class="video-surface result-surface" id="result-surface">
+            <video id="capture-video" autoplay muted playsinline aria-label="所选视频采集设备的预览" hidden></video>
+            <!-- Display-only correction covers the existing video; it never
+                 opens a second device or changes the captured source pixels. -->
+            <canvas id="capture-corrected" width="1" height="1" aria-label="HDMI 图像的计算机矫正预览，与标定页面共用手动参数" hidden></canvas>
+            <svg id="capture-pixel-markers" class="pixel-marker-overlay" aria-label="HDMI 原图或计算机矫正后的对应像素位置" hidden></svg>
+            <div class="video-empty hdmi-empty" id="capture-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-monitor"/></svg></div><strong id="capture-empty-title">选择视频输入设备</strong><span id="capture-empty-detail">在连接设置中选择采集卡，无信号时也可保存配置</span><button class="button small secondary" type="button" data-view="settings">配置视频输入</button></div>
+            <span id="capture-view-label" class="video-corner">HDMI 原图 / 信号未验证</span>
+          </div>
+          <!-- Negotiated input, observed preview and decode health are distinct. -->
+          <div class="video-meta"><span id="capture-preview-device">尚未选择设备</span><span id="capture-format">采集格式 —</span><span id="capture-preview-rate" title="每秒实际观察到的新帧回调；跳过的回调不补计，不能证明显示器或远程桌面的最终帧率">预览 0.0 FPS</span></div>
+          <p id="capture-preview-health" class="capture-health" role="status" title="跳过更新表示合成提交帧数跨越了多个回调；不等同于 FPGA 源帧丢失">解码 0.0 FPS · 跳过更新 0 · 解码丢帧 0 · 最长间隔 0 ms</p>
+          <p id="capture-correction-info" class="capture-health" role="status">当前：HDMI 原图 · 可切换为标定页面的计算机矫正</p>
+          <div class="viewer-footer"><span>源帧配对未验证</span><div class="capture-preview-actions"><button id="capture-correction-toggle" type="button" class="button small secondary" aria-pressed="false" aria-controls="capture-corrected" title="使用标定页面的手动鱼眼参数进行 PC 软件矫正，只切换显示">计算机矫正</button><button id="capture-preview-open" type="button" class="button small secondary" disabled>打开预览</button><button id="capture-preview-close" type="button" class="button small secondary" disabled>关闭</button></div></div>
+        </article>
+      </div>
+      <div class="connection-row"><article class="panel connection-panel"><div class="panel-heading"><h2>当前连接</h2><span id="transport-pill" class="pill neutral">待启动</span></div><dl class="connection-facts"><div><dt>设备标识</dt><dd id="device-id">—</dd></div><div><dt>接收地址</dt><dd id="bind-address">—</dd></div><div><dt>来源地址</dt><dd id="peer-address">—</dd></div><div><dt>源代次</dt><dd id="epoch">—</dd></div><div><dt>运行时长</dt><dd id="elapsed">00:00</dd></div></dl><div class="control-note"><span class="status-dot"></span>UART 控制尚未接入</div></article></div>
+      <div class="bottom-layout">
+        <article class="panel"><div class="panel-heading"><h2>链路与缓冲</h2><span class="muted-label">实时统计</span></div><div class="flow"><div><span class="flow-number">01</span><strong id="source-node">模拟发送器</strong><small>源帧身份</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">02</span><strong>UDP 接收</strong><small id="packet-total">— 个数据报</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">03</span><strong>完整帧重组</strong><small id="buffer-usage">— MiB 在途</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">04</span><strong>预览 / 归档</strong><small id="saved-total">0 张已保存</small></div></div><div class="counter-strip"><span>重复包 <b id="duplicate-count">0</b></span><span>乱序包 <b id="reorder-count">0</b></span><span>未见源帧 <b id="missing-count">0</b></span><span>旧预览替换 <b id="preview-drops">0</b></span><span>归档拒绝 <b id="archive-drops">0</b></span></div></article>
+        <article class="panel events-panel"><div class="panel-heading"><h2>运行事件</h2><span class="muted-label">最近 5 条</span></div><ul id="event-list" class="event-list"><li class="empty-row">启动采集后显示运行事件</li></ul></article>
+      </div>
+    </section>
+    <section id="view-records" class="view" hidden>
+      <div class="page-heading"><div><div class="eyebrow page-kicker">CAPTURE EVIDENCE</div><h1>采集记录</h1><p>查看全部原始图像、运行记录与生成报告。</p></div><button id="refresh-records" class="button secondary">刷新记录</button></div>
+      <div class="records-toolbar"><div><strong id="records-total">正在读取全部记录</strong><span id="selection-count" aria-live="polite">未选择记录</span></div><div class="record-bulk-actions"><button id="select-all-records" class="button secondary">选择全部可删除记录</button><button id="clear-selection" class="button secondary" disabled>取消选择</button><button id="delete-selected" class="button danger" disabled>删除所选记录</button></div></div>
+      <article class="panel"><div class="panel-heading"><h2>原始图像</h2><span id="archive-count" class="muted-label">全部 RAW / RGB 与元数据</span></div><div class="table-wrap"><table><thead><tr><th class="check-cell"><input type="checkbox" data-select-group="archive" aria-label="选择全部可删除原始图像"></th><th>来源 / 运行</th><th>源帧</th><th>图像 / 状态</th><th>保存时间</th><th>原始证据</th></tr></thead><tbody id="archive-table"><tr><td colspan="6" class="empty-row">正在读取全部图像</td></tr></tbody></table></div></article>
+      <article class="panel records-second"><div class="panel-heading"><h2>全部运行</h2><span id="run-count" class="muted-label">包含未完成的运行</span></div><div class="table-wrap"><table><thead><tr><th class="check-cell"><input type="checkbox" data-select-group="run" aria-label="选择全部可删除运行"></th><th>运行标识 / 状态</th><th>来源</th><th>完整帧 / 写入帧</th><th>运行时长</th><th>运行报告</th></tr></thead><tbody id="run-table"><tr><td colspan="6" class="empty-row">正在读取全部运行</td></tr></tbody></table></div></article>
+      <article class="panel records-second"><div class="panel-heading"><h2>其他生成报告</h2><span id="report-count" class="muted-label">测试、联调与说明记录</span></div><div class="table-wrap"><table><thead><tr><th class="check-cell"><input type="checkbox" data-select-group="report" aria-label="选择全部生成报告"></th><th>报告文件</th><th>类型</th><th>大小</th><th>更新时间</th><th>文件</th></tr></thead><tbody id="report-table"><tr><td colspan="6" class="empty-row">正在读取报告文件</td></tr></tbody></table></div></article>
+    </section>
+    <section id="view-settings" class="view" hidden>
+      <div class="page-heading"><div><div class="eyebrow page-kicker">CONNECTION PROFILE</div><h1>连接设置</h1><p>分别配置 RAW8 网络来源与视频采集卡，保存后按需打开。</p></div></div>
+      <article class="panel capture-settings" aria-labelledby="capture-settings-title">
+        <div class="panel-heading"><div><h2 id="capture-settings-title">视频采集卡输入</h2><p>选择 USB 采集卡或摄像头，独立于左侧 RAW8 网络接收。</p></div><span id="capture-settings-status" class="pill neutral">未配置</span></div>
+        <div class="capture-settings-body">
+          <label for="capture-device">输入设备</label>
+          <div class="capture-device-row"><select id="capture-device" aria-describedby="capture-device-note"><option value="">先刷新设备列表</option></select><button id="capture-refresh" type="button" class="button secondary">刷新设备</button><button id="capture-authorize" type="button" class="button secondary">授权显示设备</button></div>
+          <p id="capture-device-note">首次使用需允许浏览器访问摄像头。授权时会短暂打开一个视频设备，读取名称后立即释放。</p>
+          <p id="capture-message" role="status" aria-live="polite">设备配置与输入信号无关；选择采集卡后可先保存，稍后再打开预览。</p>
+          <label for="capture-mode">预览采集模式</label><select id="capture-mode"><option value="1080p30">1920 × 1080 · 30 FPS</option><option value="720p30">1280 × 720 · 30 FPS</option></select>
+          <p>协商 FPS 是设备参数；预览 FPS 按实际观察到的新帧回调计数，跳过的更新不补计。解码 FPS、跳过更新和最长间隔独立显示；不代表 FPGA 源帧或远程桌面的帧率。</p>
+          <dl class="capture-facts"><div><dt>已保存的设备</dt><dd id="capture-selected">尚未选择</dd></div><div><dt>输入信号</dt><dd>未验证</dd></div><div><dt>源帧关联</dt><dd>未配对</dd></div></dl>
+        </div>
+        <div class="form-footer"><span>选择仅保存在当前浏览器。保存不会打开设备，关闭页面会释放采集卡。</span><div class="capture-form-actions"><button id="capture-save" type="button" class="button primary" disabled>保存设备选择</button><button id="capture-open" type="button" class="button secondary" disabled>打开预览</button><button id="capture-close" type="button" class="button secondary" disabled>关闭设备</button></div></div>
+      </article>
+      <form id="config-form" class="panel settings-panel">
+        <div class="panel-heading"><h2>RAW8 网络来源</h2><span id="settings-mode" class="pill mock">本机模拟</span></div>
+        <fieldset id="config-fields"><div class="form-grid">
+          <label class="full-row">数据来源<select id="cfg-mode" name="source_mode"><option value="mock">本机模拟 · 合成校验图</option><option value="hardware_unverified">板端数据 · 待实板验证</option></select></label>
+          <label>设备标识<input id="cfg-device" name="device_id" required maxlength="128" autocomplete="off"></label>
+          <label>源采集代次<input id="cfg-epoch" name="stream_epoch" required inputmode="numeric" pattern="[0-9]{1,20}" placeholder="由板端回读确认"></label>
+          <label>PC 接收地址<input id="cfg-bind" name="bind_ip" required placeholder="127.0.0.1" autocomplete="off"></label>
+          <label>PC 接收端口<input id="cfg-port" name="port" type="number" min="1" max="65535" required></label>
+          <label>数据来源地址<input id="cfg-peer" name="peer_ip" required placeholder="FPGA 实际 IPv4" autocomplete="off"></label>
+          <label>数据来源端口<input id="cfg-peer-port" name="peer_port" type="number" min="1" max="65535" required></label>
+          <label>Bayer 排列<select id="cfg-bayer" name="bayer_code"><option value="1">RGGB</option><option value="2">GRBG</option><option value="3">GBRG</option><option value="4">BGGR</option></select></label>
+          <label>接收缓冲<select id="cfg-buffer" name="receive_buffer_bytes"><option value="8388608">8 MiB</option><option value="16777216">16 MiB</option><option value="33554432">32 MiB</option></select></label>
+          <label>图像宽度<input id="cfg-width" name="width" type="number" min="2" max="4096" step="2" required></label>
+          <label>图像高度<input id="cfg-height" name="height" type="number" min="2" max="4096" step="2" required></label>
+        </div></fieldset>
+        <div class="settings-note" id="settings-note">本机模拟通过实际 UDP / PRAW 编解码链路，不计作硬件验收。</div>
+        <div class="form-footer"><span id="settings-lock">配置仅用于本次服务会话，每次运行均保存配置副本。</span><button id="apply-config" type="submit" class="button primary">应用连接设置</button></div>
+      </form>
+      <div class="boundary-note"><strong>当前接入范围</strong><p>S0 RAW8 接收、完整帧检查、基础预览和原始证据归档已接入。视频采集设备可选择并在本机浏览器预览；HDMI 原始数据归档、UART参数控制和严格同帧快照请求尚未接入，源帧配对保持未验证。</p></div>
+    </section>
+    <footer class="page-footer"><span>Pango Vision / Host Core</span><span id="run-footer">本机服务 · 无云端视频转发</span></footer>
+  </main>
+</div>
+<div id="toast" role="status" class="toast" hidden></div>
+<dialog id="archive-dialog"><div class="panel-heading"><h2 id="archive-title">归档图像</h2><button id="close-dialog" class="button secondary small">关闭</button></div><div class="archive-image"><canvas id="archive-canvas" aria-label="归档原始数据的派生预览"></canvas></div><p id="archive-detail"></p></dialog>
+<dialog id="delete-dialog" aria-labelledby="delete-title"><div class="panel-heading"><h2 id="delete-title">删除所选记录</h2></div><div class="delete-content"><p id="delete-summary"></p><p>删除运行会同时删除该轮原图、元数据、配置、日志和报告；单独删除图像只移除该图像及其元数据。文件将从本机永久删除。</p><ul id="delete-list"></ul><p id="delete-progress" aria-live="polite"></p></div><div class="form-footer"><button id="cancel-delete" class="button secondary">取消</button><button id="confirm-delete" class="button danger">确认删除</button></div></dialog>
+</body></html>

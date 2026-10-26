@@ -17,9 +17,13 @@ def main():
                         help='Explicit frozen experimental sim/ fixture directory; hashes remain recorded')
     parser.add_argument('--run-timeout-seconds',type=int,help='Explicit prelaunch software simulation allowance, at most 3600 seconds')
     parser.add_argument('--pause-file',type=Path,help='Owned proof stop file; defaults to the regional/account reserve')
+    parser.add_argument('--history-test', action='store_true',help='Exercise 64x36 real S1 history, registration, DMA and invalidation')
+    parser.add_argument('--motion-test', choices=['tb_motion_algorithms','tb_motion_config','tb_history_geometry','tb_frame_runtime_actions','tb_runtime_history_actions','tb_encoder_pose_model','tb_viewport_bounds'],
+                        help='Frozen focused pose/motion/history datapath test')
     parser.add_argument('--full-frame', action='store_true')
+    parser.add_argument('--board-manual-profile', action='store_true',
+                        help='Match board manual image controls, preset tone and MCU digest switches')
     parser.add_argument('--control-test', action='store_true')
-    parser.add_argument('--snapshot-test', action='store_true')
     parser.add_argument('--network-test', action='store_true')
     parser.add_argument('--display-test', action='store_true',help='Attach real HDMI display/context/DMA CDC to the 1080p memory core')
     parser.add_argument('--build-jobs', type=int, default=4,
@@ -30,11 +34,18 @@ def main():
     if options.run_timeout_seconds is not None and not 0<options.run_timeout_seconds<=3600:
         parser.error('software run allowance must be 1..3600 seconds')
     # Link-loss and control fixtures use independent frame identities and
-    # display-release schedules; snapshots can accompany either scenario.
+    # display-release schedules.
     if options.network_test and options.control_test:
         parser.error('run link-loss and parameter-control scenarios separately')
     if options.display_test and (not options.full_frame or options.network_test):
-        parser.error('display test requires full-frame; use the control/snapshot scenario, not link-loss stimulus')
+        parser.error('display test requires full-frame; use the control scenario, not link-loss stimulus')
+    if options.history_test and (options.full_frame or options.control_test or options.network_test or options.display_test):
+        parser.error('history-test is an independent 64x36 multi-frame scenario')
+    if options.motion_test and (options.history_test or options.full_frame or options.control_test or options.network_test or options.display_test):
+        parser.error('motion-test is an independent focused scenario')
+    top=options.motion_test or ('tb_video_history_core' if options.history_test else 'tb_video_memory_core')
+    if options.board_manual_profile and top != 'tb_video_memory_core':
+        parser.error('board-manual-profile requires the video core fixture')
     fpga = Path(__file__).resolve().parents[1]
     pause=options.pause_file or fpga/'build/route_optimization/session_20261019/regional_stop_requested.json'
     if pause.exists():raise RuntimeError('Proof launch prevented by regional/account reserve stop')
@@ -45,11 +56,16 @@ def main():
     # this changes simulation implementation, not the design or golden bytes.
     names = ['rtl/memory/frame_manager_pkg.sv']
     rtl_origin = options.rtl_snapshot.resolve() if options.rtl_snapshot else fpga
-    for group in ['memory', 'input', 'isp', 'geometry', 'network', 'control', 'video']:
+    for group in ['memory', 'input', 'isp', 'geometry', 'network', 'control', 'video', 'stabilization']:
         for path in sorted((rtl_origin / 'rtl' / group).glob('*')):
-            if path.suffix in ('.sv', '.v', '.vh') and path.name not in ('frame_manager_pkg.sv', 'ip_integration_bank.v'):
+            if path.suffix in ('.sv', '.v', '.vh') and path.name not in ('frame_manager_pkg.sv', 'ip_integration_bank.v',
+                    # Retained C4 sources are historical, outside active closure.
+                    's1_motion_estimator.sv', 'motion_trajectory.sv'):
                 names.append(path.relative_to(rtl_origin).as_posix())
-    names += ['rtl/board/video_memory_core.sv', 'sim/tb_video_memory_core.sv', 'sim/video_core_display_fixture.sv']
+    names += ['rtl/board/video_memory_core.sv', 'sim/'+top+'.sv', 'sim/video_core_display_fixture.sv']
+    # Actual C-generated encoder payloads remain part of the frozen test evidence.
+    if options.motion_test == 'tb_encoder_pose_model':
+        names += ['sim/data/state_encoder.hex', 'sim/data/state_stale.hex']
     for name in names:
         dest = source / name
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -77,9 +93,9 @@ def main():
     # compilation unit intentionally contributes no driver or alternate model.
     (run / 'build_anchor.cpp').write_text('// Build anchor; SV testbench owns all stimulus and checking.\n', encoding='utf-8')
     cmake_text += 'add_executable(video_sim build_anchor.cpp)\n'
-    cmake_text += 'verilate(video_sim TOP_MODULE tb_video_memory_core\n SOURCES\n'
+    cmake_text += 'verilate(video_sim TOP_MODULE '+top+'\n SOURCES\n'
     for name in names:
-        if not name.endswith('.vh'):
+        if name.endswith(('.sv','.v')):
             cmake_text += f' "{(source / name).as_posix()}"\n'
     cmake_text += f' INCLUDE_DIRS "{(source / "rtl/memory").as_posix()}"\n'
     cmake_text += ' VERILATOR_ARGS --timing --main -Wno-fatal'
@@ -89,21 +105,24 @@ def main():
         cmake_text += ' -GNETWORK_TEST=1'
     if options.control_test:
         cmake_text += ' -GCONTROL_TEST=1'
-    if options.snapshot_test:
-        cmake_text += ' -GSNAPSHOT_TEST=1'
     if options.display_test:
         cmake_text += ' -GDISPLAY_TEST=1'
+    # Exercise the exact production feature switches while preserving independent
+    # full-feature unit regressions for retained optional RTL implementations.
+    if options.board_manual_profile:
+        cmake_text += ' -GBOARD_MANUAL_PROFILE=1'
     cmake_text += ')\n'
     cmake_source.write_text(cmake_text, encoding='utf-8')
     environment = os.environ.copy()
     environment['PATH'] = 'D:/C Tool Chains/mingw64/bin;' + environment['PATH']
     environment['VERILATOR_ROOT'] = str(toolkit)
     result = {'passed': False, 'full_frame': options.full_frame, 'network_test': options.network_test,
-              'rtl_snapshot': str(options.rtl_snapshot) if options.rtl_snapshot else None, 'snapshot_test': options.snapshot_test, 'control_test': options.control_test,
+              'rtl_snapshot': str(options.rtl_snapshot) if options.rtl_snapshot else None, 'control_test': options.control_test, 'history_test':options.history_test,'motion_test':options.motion_test,
               'hardware_tested': False, 'board_integrated': False, 'compiler': 'Verilator 5.052 / GCC 13.1.0'}
     result['build_jobs'] = options.build_jobs
     result['fixture_snapshot'] = str(options.fixture_snapshot) if options.fixture_snapshot else None
     result['display_test'] = options.display_test
+    result['board_manual_profile'] = options.board_manual_profile
     result['run_timeout_seconds']=options.run_timeout_seconds or (2400 if options.display_test else 1200)
     result['proof_phases']=[]
     print('VERILATOR_START', run, flush=True)
@@ -125,7 +144,7 @@ def main():
                 timeout_seconds=result['run_timeout_seconds'] if phase=='run' else 1200,pause_path=pause)
             result['proof_phases'].append(dict(phase=phase,**process))
             output = (run / (phase + '.log')).read_text(errors='replace')
-            if process['returncode'] or (phase == 'run' and ('TB_VIDEO_MEMORY_CORE_PASS' not in output or 'FATAL' in output)):
+            if process['returncode'] or (phase == 'run' and (('PASS ' if options.motion_test else 'VIDEO_HISTORY_CORE_PASS' if options.history_test else 'TB_VIDEO_MEMORY_CORE_PASS') not in output or 'FATAL' in output)):
                 raise RuntimeError(phase + ': ' + output[-5000:])
         result['passed'] = True
     finally:
