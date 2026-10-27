@@ -4,7 +4,7 @@
 // This is NOT the removed MCU_POSE_V1 protocol. It uses a separate parser and
 // never emits motion commands. Boot addresses stay immutable; runtime 0x90/92
 // status/mode and 0x94/95 geometry use queued whole entities and frozen readback.
-module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200,parameter [15:0] ENTITY_MASK=16'h0200,parameter STREAM_CCM=0)(
+module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200,parameter [15:0] ENTITY_MASK=16'h0200,parameter STREAM_CCM=0,parameter SUMMARY_READBACK=0)(
  input clk,rst_n,input uart_rx,output uart_tx,output reg configured,
  output reg [63:0] epoch,output reg [47:0] local_mac,peer_mac,
  output reg [31:0] local_ip,peer_ip,output reg [15:0] local_port,peer_port,
@@ -29,7 +29,7 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200,parameter [15:0] E
  reg [15:0] readback_kind,entity_last_sequence;reg [7:0] next_entity_page,entity_last_page;
  // Capacity follows advertised entities: LUT readback alone needs 12 pages;
  // MCU policy needs8, pose/frame records7, legacy/reference records4.
- localparam SNAPSHOT_PAGES=ENTITY_MASK[2]?12:ENTITY_MASK[12]?8:(ENTITY_MASK[8] || ENTITY_MASK[11])?7:4;
+ localparam SNAPSHOT_PAGES=SUMMARY_READBACK?4:ENTITY_MASK[2]?12:ENTITY_MASK[12]?8:(ENTITY_MASK[8] || ENTITY_MASK[11])?7:4;
  localparam UPLOAD_BYTES=ENTITY_MASK[2]?256:ENTITY_MASK[8]?128:64;
  reg [7:0] operation;reg [SNAPSHOT_PAGES*192-1:0] status_snapshot;reg have_snapshot;reg [7:0] snapshot_operation;
  wire [639:0] received;reg [255:0] reply;reg [15:0] reply_seq,tx_crc;
@@ -52,7 +52,7 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200,parameter [15:0] E
  wire read_kind_legal=received[15:0]==9 || received[15:0]==10 ||
                      (received[15:0]<=12 && ENTITY_MASK[received[3:0]]);
  function [7:0] page_count(input [15:0] kind);
-  begin case(kind)
+  begin if(SUMMARY_READBACK && kind!=9 && kind!=10)page_count=2;else case(kind)
    1,4,5:page_count=3;
    2:page_count=12;
    3,7,9,10:page_count=4;
@@ -83,9 +83,15 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200,parameter [15:0] E
  wire [2303:0] selected_entity_status=
    ({2304{operation==8'ha4 && received[15:0]==10}} & {1536'd0,affine_status}) |
    ({2304{operation==8'ha4 && received[15:0]==9}} & {1536'd0,reference_status}) |
-   ({2304{operation==8'ha4 && received[15:0]!=9 && received[15:0]!=10}} & entity_status) |
+   ({2304{operation==8'ha4 && received[15:0]!=9 && received[15:0]!=10}} & generic_read_status) |
    ({2304{operation==8'h95}} & {1536'd0,geometry_status}) |
    ({2304{operation==8'h90}} & {1536'd0,control_status});
+ // Schema 2 generic readback retains identity, version, pending/error and
+ // the actual applied source frame. No parameter body is returned or stored.
+ // Reference/affine and legacy status/geometry retain their complete records
+ // because the PC needs them for dynamic control and adoption confirmation.
+ wire [2303:0] generic_read_status=SUMMARY_READBACK?
+  {2048'd0,entity_status[255:112],16'd0,entity_status[95:16],16'd2}:entity_status;
  // STREAM_CCM is an internal proof; command formats and COMMIT timing stay unchanged.
  pc_reference_upload #(.ENTITY_MASK(ENTITY_MASK),.UNQUALIFIED_SUBMIT(1),.STREAM_CCM(STREAM_CCM)) upload(.clk(clk),.rst_n(rst_n),.now_us(now_us),
   .request_valid(state==ENTITY_REQUEST),.request_ready(entity_request_ready),.command(operation),
@@ -202,7 +208,8 @@ module pc_video_boot #(parameter CLK_HZ=125000000,BAUD=115200,parameter [15:0] E
       reply_cmd<=received[7:0]==0?8'h80:8'h81;
       reply[7:0]<=received[7:0]==0?0:11;reply[31:24]<=24;
       reply[63:32]<=32'h31474641;reply[79:64]<=1;reply[95:80]<=1;
-      reply[127:96]<=32'h00000005;reply[159:128]<={16'd0,ENTITY_MASK | 16'h0600};
+      // Capability bit 3 selects schema-2 two-page generic summary readback.
+      reply[127:96]<=SUMMARY_READBACK?32'h0000000d:32'h00000005;reply[159:128]<={16'd0,ENTITY_MASK | 16'h0600};
       reply[175:160]<=UPLOAD_BYTES;reply[183:176]<=64;reply[191:184]<=1;
       reply[255:224]<=32'h31474641;
      end else if(operation==8'ha4)begin

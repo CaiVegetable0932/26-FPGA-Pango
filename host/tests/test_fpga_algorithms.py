@@ -114,6 +114,31 @@ class AlgorithmSessionTests(unittest.TestCase):
             self.service.execute(dict(action='entity_write', kind=7, draft={}, entity_id=1))
         self.assertNotIn(0xA1, [x[0] for x in FakeUart.calls])
 
+    def test_compact_firmware_keeps_dynamic_writes_without_body_echo(self):
+        """Negotiate summaries, use device version, and keep ACK distinct from applied."""
+        class SummaryUart(FakeUart):
+            def exchange(self, cmd, payload):
+                if cmd==0xA4 and payload[:2]==b'\x01\0':
+                    self.sequence+=1;self.calls.append((cmd,payload,self.sequence))
+                    page=payload[2]
+                    record=struct.pack('<HHIIHBBQQ',2,1,3,9,0,1,0,1,12)+bytes(16)
+                    return bytes([0,cmd,page,24])+record[page*24:(page+1)*24]+b'AFG1'
+                reply=bytearray(super().exchange(cmd,payload))
+                if cmd==0xA0:
+                    struct.pack_into('<I',reply,12,9)
+                    struct.pack_into('<I',reply,16,(1<<1)|(1<<9)|(1<<10))
+                return bytes(reply)
+        result=AlgorithmControls(self.board,SummaryUart).execute(dict(action='entity_write',kind=1,
+            draft={'mode':1,'curve':1},entity_id=4))
+        begin=next(data for cmd,data,_ in FakeUart.calls if cmd==0xA1)
+        self.assertEqual(struct.unpack_from('<I',begin,8)[0],4)
+        self.assertTrue(result['queued'])
+        self.assertEqual(result['entity']['version'],3)
+        self.assertIsNone(result['entity']['values'])
+        self.assertFalse(result['features']['mcu_auto_pose'])
+        self.assertFalse(result['features']['entity_body_readback'])
+        self.assertEqual([data[2] for cmd,data,_ in FakeUart.calls if cmd==0xA4 and data[:2]==b'\x01\0'],[0,1,0,1])
+
     def test_runtime_actions_route_without_entity_kind_or_draft(self):
         """UI button payloads must reach A5, then read independent action state."""
         class ActionUart(FakeUart):

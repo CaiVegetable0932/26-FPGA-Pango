@@ -1,5 +1,9 @@
 # 上位机开发区
 
+## 2026-10-26 FPGA 摘要回读兼容
+
+PC 动态控制保留。AFG1 capability bit 3 为 1 时，kind 1/3/7 采用两页 schema 2 状态摘要：版本、实体编号、pending/error 和实际生效源帧保留，完整参数 body 不再回读。上位机返回 `values=null`、`body_available=false`，禁用“载入板端值”，允许提交显式完整草稿。几何、参考、仿射及显示确认回读仍完整。能力掩码隐藏 MCU 姿态/策略与运动诊断入口；旧 schema 1 位流仍可解码。
+
 2026-10-21：新增 `/algorithms` FPGA 算法控制页，复用既有 CP2102 串口锁；查询实际能力后显式提交仿射ON/OFF、参考视图、颜色/曲线/运动实体。开关改变板端处理；有效域图仅为草稿预览。视频UDP仅接收S0 RAW8，旧快照类型2/3明确拒绝。板端显示采用与外部HDMI采集身份分开，外部身份继续unverified。接口见 [AFG1](../fpga/config/integration/ENTITY_CONTROL.md)。
 
 2026-10-11：导入云端 MCU_POSE_V2 的 [字节编解码](src/mcu_pose_v2.py) 和 [互操作测试](tests/test_mcu_pose_v2.py)。对接 F4/F1 的 XYZ 归一化坐标及舵机优先融合 pitch/yaw；这是协议工具，尚未接入 Web 工作台或实现会话、运动、心跳完整客户端。后续按 [V2 同步实施计划](../output/MCU_POSE_V2云端同步实施计划.md) 开发，PC 不转发实时 MCU→FPGA 状态。

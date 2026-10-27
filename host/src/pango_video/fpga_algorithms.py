@@ -122,6 +122,9 @@ class AlgorithmControls:
                 state = read_affine(uart)
                 has_reference = bool(int.from_bytes(cap[12:16], 'little') & 4)
                 kind_mask = int.from_bytes(cap[16:20], 'little')
+                # Capability bit 3 changes only generic entity readback. PC
+                # geometry, reference, affine switching and writes stay live.
+                summary_readback = bool(int.from_bytes(cap[12:16], 'little') & 8)
                 selected_entity = None
                 queued = False
                 if action == 'affine':
@@ -161,7 +164,7 @@ class AlgorithmControls:
                     kind = data.get('kind')
                     if type(kind) is not int or kind not in ENTITY_LENGTHS or kind == 9 or not kind_mask & (1 << kind):
                         raise SessionError('当前位流不支持此实体')
-                    selected_entity = read_entity(uart, kind)
+                    selected_entity = read_entity(uart, kind, summary=summary_readback)
                     if action == 'entity_write':
                         if kind == 11:
                             raise SessionError('运动帧状态只读')
@@ -180,7 +183,7 @@ class AlgorithmControls:
                         for packet in packets:
                             uart.exchange(packet[3], packet[8:-2])
                         queued = True
-                        selected_entity = read_entity(uart, kind)
+                        selected_entity = read_entity(uart, kind, summary=summary_readback)
                 elif action in ('reset_motion', 'clear_history'):
                     # Discrete actions have no entity draft/kind input. Keep
                     # this dispatch separate from the generic entity validator.
@@ -201,7 +204,9 @@ class AlgorithmControls:
                         uart.exchange(0xA5, struct.pack('<HHI', 1, 0, txid))
                 # Availability is explicit JSON; ACK never certifies registration.
                 return dict(features={'visual_stabilization': False, 'dynamic_viewport': False,
-                                      'history_completion': False, 'history_reason': 'visual_registration_removed'},
+                                      'history_completion': False, 'history_reason': 'visual_registration_removed',
+                                      'mcu_auto_pose': bool(kind_mask & (1 << 8)),
+                                      'entity_body_readback': not summary_readback},
                             kind_mask=kind_mask & ~(1 << 4), entity=selected_entity, state=read_affine(uart), geometry=read_geometry(uart),
                             reference=read_reference(uart) if has_reference else None, queued=queued,
                             message='已校验并排队；以源帧和板端显示读回为准' if queued else '已读取板端实际状态')

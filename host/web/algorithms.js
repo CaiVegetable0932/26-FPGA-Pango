@@ -22,8 +22,10 @@
       $('affine-enable').checked = s.requested_enable;
       $('source-state').textContent = `${s.applied_enable ? 'ON' : 'OFF'} · 版本 ${s.control_version} · 源帧 ${s.source_frame_id}${s.pending ? ' · 新请求等待生效' : ''}`;
       $('display-state').textContent = s.display_known ? `${s.display_enable ? 'ON' : 'OFF'} · 版本 ${s.display_control_version} · 源帧 ${s.display_frame_id}` : '未取得板端显示描述符确认';
-      $('affine-details').textContent = `源帧选择的基准六系数（最终 M*V 见实际运动帧）：${s.coefficients.join(', ')}\n几何版本 ${s.geometry_version} · 参考版本 ${s.reference_version} · epoch ${s.source_epoch}`;
-      $('algorithm-message').textContent = `${result.message}。C4 已撤销；动态裁边与历史配准补全不可用。`;
+      // PC-only firmware applies the frozen PC matrix directly.
+      const matrixLabel = result.features?.mcu_auto_pose ? '源帧选择的基准六系数（最终矩阵见运动帧）' : '源帧采用的 PC 六系数';
+      $('affine-details').textContent = `${matrixLabel}：${s.coefficients.join(', ')}\n几何版本 ${s.geometry_version} · 参考版本 ${s.reference_version} · epoch ${s.source_epoch}`;
+      $('algorithm-message').textContent = `${result.message}。${result.features?.entity_body_readback === false ? '图像配置仅回读状态摘要；修改时请提交完整草稿。' : ''}C4 已撤销；动态裁边与历史配准补全不可用。`;
       $('reference-state').textContent = result.reference ? `参考版本 ${result.reference.version} · ${result.reference.pending ? '等待源帧生效' : '已应用'} · 源帧 ${result.reference.source_frame_id}` : '该位流未提供参考实体上传';
     } catch (error) {
       current = null;

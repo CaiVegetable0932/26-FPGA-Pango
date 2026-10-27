@@ -1,4 +1,4 @@
-"""Bound an owned PDS process and retain native convergence evidence.
+"""Supervise an owned PDS process and retain native convergence evidence.
 
 This supervisor changes no device, clocks, source bytes or timing gates. A
 timeout or convergence stall is a failed experiment, never routed signoff.
@@ -124,25 +124,29 @@ def run_supervised(command, *, cwd, log_path, timeout_seconds,
                    monitor_path, poll_seconds=30, watch_stall=False,
                    pause_path=None, stall_window=5, stall_minimum=1000,
                    stall_improvement=0.01, warmup_rounds=5,
-                   baseline_success_seconds=None):
-    """Run one bounded native phase and persist observations before returning.
+                   baseline_success_seconds=None, monitor_only=False):
+    """Run one owned native phase and persist observations before returning.
 
     Native logs are kept verbatim. The JSONL stream records all completed
     rounds, elapsed wall time and the warning/terminal state. No-log silence
-    alone never stops a job. Existing PDS jobs are never adopted or killed.
+    alone never stops a job. Explicit monitor_only disables deadline/stall
+    termination. Existing PDS jobs are never adopted or killed.
     """
-    if timeout_seconds <= 0 or poll_seconds <= 0:
+    # Explicit monitor-only mode keeps sampling stalls/silence but imposes no
+    # host deadline. User stop files, native failures and cleanup still apply.
+    if poll_seconds <= 0 or (timeout_seconds <= 0 and not monitor_only):
         raise ValueError('A positive host timeout and polling interval are required')
     if stall_window < 1 or warmup_rounds < 1 or stall_minimum < 0 or not 0 < stall_improvement < 1:
         raise ValueError('Invalid convergence policy')
     requested_timeout_seconds=timeout_seconds
-    timeout_seconds,warning_seconds=phase_budget(timeout_seconds,baseline_success_seconds)
+    timeout_seconds,warning_seconds=(None,None) if monitor_only else phase_budget(timeout_seconds,baseline_success_seconds)
     log_path, monitor_path = Path(log_path), Path(monitor_path)
     # Freeze numeric rules before launch. These are project management
     # thresholds, not vendor guarantees or a replacement for routed STA.
     policy = dict(timeout_seconds=timeout_seconds,warning_seconds=warning_seconds,
                   requested_timeout_seconds=requested_timeout_seconds,
-                  poll_seconds=poll_seconds, stall_enabled=watch_stall,
+                  poll_seconds=poll_seconds, stall_enabled=watch_stall and not monitor_only,
+                  monitor_only=monitor_only,
                   stall_window=stall_window, stall_minimum_unrouted=stall_minimum,
                   stall_minimum_improvement=stall_improvement, warmup_rounds=warmup_rounds,
                   baseline_success_seconds=baseline_success_seconds, baseline_acceleration_claim=False,
@@ -186,14 +190,15 @@ def run_supervised(command, *, cwd, log_path, timeout_seconds,
                              'COMPLETED' if exit_code == 0 else 'FAILED')
                 elif pause_path and Path(pause_path).exists():
                     state = 'PAUSED'
-                elif elapsed >= timeout_seconds:
+                elif timeout_seconds is not None and elapsed >= timeout_seconds:
                     state = 'TIMEOUT'
-                elif watch_stall and stalled(rounds, stall_window, stall_minimum,
+                elif watch_stall and not monitor_only and stalled(rounds, stall_window, stall_minimum,
                                               stall_improvement, warmup_rounds):
                     state = 'STALLED'
                 row = dict(at=datetime.now(timezone.utc).isoformat(), pid=child.pid,
                            elapsed_seconds=elapsed, status=state,
-                           warning=elapsed >= warning_seconds,
+                           warning=warning_seconds is not None and elapsed >= warning_seconds,
+                           stall_observed=watch_stall and stalled(rounds, stall_window, stall_minimum, stall_improvement, warmup_rounds),
                            timeout_seconds=timeout_seconds, rounds=rounds,
                            log_bytes=log_bytes,
                            log_idle_seconds=time.monotonic()-last_log_change,
@@ -208,7 +213,7 @@ def run_supervised(command, *, cwd, log_path, timeout_seconds,
                     return dict(status=state, returncode=child.returncode,
                                 elapsed_seconds=time.monotonic()-started,
                                 pid=child.pid, monitor=str(monitor_path), policy=policy)
-                time.sleep(min(poll_seconds, max(0.01, timeout_seconds-elapsed)))
+                time.sleep(poll_seconds if timeout_seconds is None else min(poll_seconds, max(0.01, timeout_seconds-elapsed)))
         except BaseException:
             # Reaping on interruption prevents a hidden implementation from
             # surviving an aborted driver and colliding with the next attempt.

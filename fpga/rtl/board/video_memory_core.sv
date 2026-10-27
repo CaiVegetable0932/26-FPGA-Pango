@@ -12,6 +12,9 @@ module video_memory_core #(parameter WIDTH=1920,HEIGHT=1080,STATIC_ENDPOINTS=1,S
  parameter CCM_PREVALIDATED=0,
  // Capacity-limited board profile retains manual ISP and preset tone curves.
  // Direct-core callers retain automatic loops and custom LUT by default.
+ // PC-only board profile removes MCU pose and legacy motion diagnostics.
+ // The source-owned geometry bank and job CDC remain authoritative.
+ parameter PC_ONLY_CONTROL=0,
  parameter IMAGE_AUTOMATION=1,TONE_UPLOAD=1,SUPPORT_VIEWPORT=1)(
  input clk,rst_n,processing_clk,processing_rst_n,controller_ready,input [447:0] geometry_coefficients,input [1:0] enhancement,
  // Reference is a separately specified boot view, never inferred from ON.
@@ -307,7 +310,8 @@ module video_memory_core #(parameter WIDTH=1920,HEIGHT=1080,STATIC_ENDPOINTS=1,S
   capture_meta.calibration_entity=SUPPORT_CONTROLS?capture_geometry_id:1;capture_meta.parameter_entity=SUPPORT_CONTROLS?capture_mode_entity:1;capture_meta.enhancement_stage=SUPPORT_CONTROLS?capture_mode:enhancement;
   // Capture metadata precedes asynchronous pose selection. The processing
   // result/kind11 record carries the actual selected MCU/manual pose status.
-  capture_meta.mode=SUPPORT_CONTROLS?capture_mode:enhancement;capture_meta.pose_status=1;
+  capture_meta.mode=SUPPORT_CONTROLS?capture_mode:enhancement;// PC-only has no measured pose: report disabled.
+  capture_meta.pose_status=PC_ONLY_CONTROL?3:1;
  end
  // One genuine S1 history reference is owned by the scheduler. Statistics
  // sidecars remain protected by that same slot generation until DMA drains.
@@ -466,6 +470,20 @@ module video_memory_core #(parameter WIDTH=1920,HEIGHT=1080,STATIC_ENDPOINTS=1,S
  wire [127:0] completion_job_config;wire [31:0] motion_registration_version;wire [127:0] motion_entity_versions;
  wire signed [31:0] motion_job_dx,motion_job_dy;wire [15:0] motion_job_confidence;
  wire [2303:0] motion_entity_status;wire [31:0] motion_missed;
+ generate if(PC_ONLY_CONTROL)begin: pc_only_control
+  // Scheduler holds source ownership until job acceptance/completion. Pass
+  // its frozen PC matrix directly into the existing job mailbox; no current
+  // live configuration or asynchronously received pose can alter this frame.
+  assign motion_prepared=1'b1,motion_geometry=source_geometry[geo_src_slot];
+  assign motion_pose_state=4'd3,motion_visual_state=4'd8,motion_missed=0;
+  assign motion_submit_code=8'd6,runtime_action_code=8'd6,motion_status=0;
+  assign completion_job_config=0,motion_registration_version=0,motion_entity_versions=0;
+  assign motion_job_dx=0,motion_job_dy=0,motion_job_confidence=0;
+  assign history_capture_enable=1'b0,history_clear=1'b0,history_registration_ok=1'b0;
+  assign mcu_tx_valid=0,mcu_tx_data=0,mcu_config_valid=0,mcu_config_entity=0;
+  assign mcu_config_version=0,mcu_config_crc32=0,mcu_reopen_required=0;
+  assign mcu_event_valid=0,mcu_event_payload=0,mcu_session_valid=0,mcu_mapping_valid=0,mcu_boot_id=0;
+ end else begin: legacy_motion_control
  // Discrete actions queue independently of entity uploads and execute only
  // at a source boundary. They never clear an in-flight DMA/ownership machine.
  wire runtime_motion_reset,runtime_history_clear;wire [319:0] runtime_action_status;
@@ -523,6 +541,7 @@ module video_memory_core #(parameter WIDTH=1920,HEIGHT=1080,STATIC_ENDPOINTS=1,S
    motion_frame_status[704+:32]<=current_pixel_count;motion_frame_status[120+:8]<=geo_failed?8'd1:8'd0;
   end
  end
+ end endgenerate
  wire mailbox_ready;
  assign geo_ready=mailbox_ready && tone_ready_ddr && motion_prepared;
  frame_meta_t processor_meta;wire [7:0] processor_enhancement;

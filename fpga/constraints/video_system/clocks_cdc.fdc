@@ -92,10 +92,9 @@ set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.is
 set_false_path -hold -from [get_cells -hierarchical {camera_input.isp_queue.read_gray*}] -to [get_cells -hierarchical {camera_input.isp_queue.read_meta*}]
 set_max_delay 6.0 -datapath_only -from [get_ports uart_rx] -to [get_cells -hierarchical {boot.uart.rx_meta}]
 set_false_path -hold -from [get_ports uart_rx] -to [get_cells -hierarchical {boot.uart.rx_meta}]
-# Independent asynchronous MCU RX: constrain only the first synchronizer stage.
-# RX meta->sync and all byte/protocol/pose paths remain ordinary timed paths.
-set_max_delay 6.0 -datapath_only -from [get_ports mcu_uart_rx] -to [get_cells -hierarchical {mcu_link.uart.rx_meta}]
-set_false_path -hold -from [get_ports mcu_uart_rx] -to [get_cells -hierarchical {mcu_link.uart.rx_meta}]
+# PC-only board profile removes the MCU receiver and its first synchronizer.
+# Remove only these absent endpoints; PC UART and all active CDC remain timed
+# by their existing constraints. The physical MCU RX pin is unused.
 set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {boot.configured}] -to [get_cells -hierarchical {camera_input.ready_meta}]
 set_false_path -hold -from [get_cells -hierarchical {boot.configured}] -to [get_cells -hierarchical {camera_input.ready_meta}]
 set_max_delay 6.0 -datapath_only -to [get_cells -hierarchical {processing_safety.health_meta}]

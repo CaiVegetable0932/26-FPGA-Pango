@@ -6,11 +6,9 @@
 # 6 ns datapath budget and waive only asynchronous hold at the first capture.
 set_max_delay 6.0 -datapath_only -from [get_clocks {ddrphy_sysclk}] -to [get_cells -hierarchical {core.processor.job_mailbox.processing_job*}]
 set_false_path -hold -from [get_clocks {ddrphy_sysclk}] -to [get_cells -hierarchical {core.processor.job_mailbox.processing_job*}]
-# Completed processing counters are held until the next job. Their DDR-domain
-# snapshot precedes source_done by a full cycle; status packaging is timed in
-# DDR normally. Clock startpoints also cover counters optimized to shared FFs.
-set_max_delay 6.0 -datapath_only -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.job_mailbox.source_result*}]
-set_false_path -hold -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.job_mailbox.source_result*}]
+# PC-only profile removes the motion diagnostic consumer of all three pixel
+# counters. SYN has no source_result registers or counter return paths; omit
+# only their obsolete constraints. Completion/failure handshakes below remain.
 set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.job_mailbox.request_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.request_meta}]
 set_false_path -hold -from [get_cells -hierarchical {core.processor.job_mailbox.request_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.request_meta}]
 set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.job_mailbox.free_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.free_meta}]

@@ -8,6 +8,21 @@ from pango_video.fpga_rgb_control import COEFFICIENT_NAMES, reference_entity
 
 
 class EntityTests(unittest.TestCase):
+    def test_summary_preserves_identity_without_inventing_values(self):
+        """Two frozen pages carry only the negotiated schema-2 header."""
+        record=struct.pack('<HHIIHBBQQ',2,7,8,9,0,7,0,2**60+1,2**61+3)+bytes(16)
+        class Uart:
+            def exchange(self,command,payload):
+                page=payload[2]
+                return bytes([0,command,page,24])+record[page*24:(page+1)*24]+b'AFG1'
+        status=read_entity(Uart(),7,summary=True)
+        self.assertIsNone(status['values'])
+        self.assertIsNone(status['body_hex'])
+        self.assertEqual(status['source_frame_id'],str(2**61+3))
+        self.assertTrue(status['pending'])
+        self.assertTrue(status['exposure_binding_unverified'])
+        with self.assertRaises(ValueError):read_entity(Uart(),7)
+
     def test_tone_wire_and_full_lut(self):
         tone = encode_entity(1, dict(mode=1, curve=3, lut_version=17))
         self.assertEqual(tone, bytes.fromhex('010307046090100011000000') + bytes(20))

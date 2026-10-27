@@ -125,11 +125,11 @@ def decode_entity(kind, body):
     return result
 
 
-def read_entity(uart, kind):
-    """Assemble the complete applied entity, including long LUT/pose records."""
+def read_entity(uart, kind, *, summary=False):
+    """Decode negotiated summaries without inventing unavailable body values."""
     if kind not in ENTITY_LENGTHS or kind == 9:
         raise ValueError('unsupported generic readback kind')
-    size = 32 + ENTITY_LENGTHS[kind]
+    size = 32 if summary else 32 + ENTITY_LENGTHS[kind]
     record = bytearray()
     for page in range((size + 23) // 24):
         response = uart.exchange(0xA4, struct.pack('<HBB', kind, page, 0))
@@ -137,10 +137,18 @@ def read_entity(uart, kind):
             raise ValueError('entity readback page/schema mismatch')
         record.extend(response[4:28])
     schema, returned_kind, version, entity_id, length, flags, error, epoch, frame = struct.unpack_from('<HHIIHBBQQ', record)
-    if schema != 1 or returned_kind != kind or length != ENTITY_LENGTHS[kind] or flags & ~(7 if kind == 7 else 3):
+    if schema != (2 if summary else 1) or returned_kind != kind or length != (0 if summary else ENTITY_LENGTHS[kind]) or flags & ~(7 if kind == 7 else 3):
         raise ValueError('entity record header mismatch')
     if any(record[size:]):
         raise ValueError('entity trailing page padding is nonzero')
+    # The caller supplies a complete explicit draft when writing. Summary
+    # firmware never echoes that draft as if it had been read from hardware.
+    if summary:
+        return dict(kind=kind,name=ENTITY_NAMES[kind],version=version,entity_id=entity_id,
+                    exposure_binding_unverified=bool(flags & 4) if kind==7 else None,
+                    active_valid=bool(flags & 1),pending=bool(flags & 2),error=error,
+                    source_epoch=str(epoch),source_frame_id=str(frame),values=None,body_hex=None,
+                    readback='summary',body_available=False)
     # Large u64 identities remain decimal strings in JSON/JavaScript. The
     # motion decoder also preserves the distinction between job and scanout.
     if kind == 11:

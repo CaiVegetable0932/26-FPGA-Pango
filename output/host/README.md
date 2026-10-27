@@ -1,5 +1,9 @@
 # 上位机需求与开发规划
 
+## 当前 FPGA 控制配置
+
+2026-10-26 精简版保留 PC 动态控制，撤销 MCU 自动姿态。capability bit 3 选择 schema 2 图像配置摘要回读，上位机不再从板端加载完整图像参数草稿；完整几何、参考、仿射/显示状态回读保留。接口实现见 `host/src/pango_video/fpga_entities.py` 与 `fpga/config/integration/ENTITY_CONTROL.md`。
+
 2026-10-21 当前接口：只接收S0 RAW8连续网络流；删除快照类型2/3、SnapshotSpec及双图释放流程。新增FPGA算法控制页按能力、完整实体、源帧应用和板端显示采用分层读回，接口以 [AFG1](../../fpga/config/integration/ENTITY_CONTROL.md) 为准。外部HDMI来源未验证时仍null/unverified；不得恢复旧同源快照验收要求。
 
 本目录保存上位机待实施规格。按以下顺序阅读；正式代码、配置、测试及运行产物直接写入 [host 开发区](../../host/README.md)。

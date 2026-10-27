@@ -2,8 +2,8 @@
 // Purpose: MINI video integration candidate: RAW8 S0 -> Ethernet; FPGA ISP S1
 // -> affine/lens RGB888 result -> HDMI, with shared native DDR requests.
 // PC mode/status/geometry are connected; image egress is RAW only.
-// Independent MCU UART is connected through an explicit commissioning policy;
-// timing/configuration/calibration remain separate runtime approval conditions.
+// PC-only profile: independent MCU UART is disabled; TX remains idle high.
+// PC geometry/reference updates remain frame-atomic through the existing job CDC.
 module pango_video_system(
  input clk_27m,ref_clk_p,ref_clk_n,reset_n,output status_led,
  input uart_rx,output uart_tx,
@@ -64,8 +64,8 @@ module pango_video_system(
   .runtime_apply(rt_apply),.runtime_continuous(rt_payload[30]),.runtime_quiesced(quiesced_ctrl),.runtime_exposure(rt_payload[29:10]),.runtime_gain(rt_payload[9:0]),
   .runtime_ready(rt_ready),.runtime_done(rt_done),.runtime_error(rt_error),
   .SCL(camera_scl),.SDA(camera_sda),.ready(camera_ready),.failed(camera_failed),.failure_code(),.active_version(),.active_entity());
- // CP2102 uses existing PC V1 commissioning. MCU V2 has its own physical UART;
- // kind12 changes link policy only and cannot issue MCU motion commands.
+ // CP2102 retains PC V1 commissioning and dynamic image/geometry control.
+ // MCU automatic pose and kind12 link policy are withdrawn in this profile.
  // Dedicated PC control reaches the frame parameter layer, never the pixel
  // path. Display adoption is observed through an atomic status CDC mailbox.
  // Only connected entity kinds are advertised. Reference remains a distinct
@@ -122,12 +122,13 @@ module pango_video_system(
  wire [767:0] control_status,geometry_status;wire geometry_submit_valid,geometry_submit_ready;wire [543:0] geometry_submit;wire [31:0] geometry_version,geometry_entity_id;wire mode_submit_valid,mode_submit_ready;wire [1:0] mode_submit;wire [31:0] mode_version;
  wire commissioned;wire [63:0] boot_epoch;wire [47:0] local_mac,peer_mac;
  wire [31:0] local_ip,peer_ip;wire [15:0] local_port,peer_port;
- // C4 kind4 is not advertised. Kind6 retains disabled config / history clear.
- // No kind2 custom LUT or kind5 independent viewport; gateway storage and
- // status capacity follow the same actual board feature mask.
+ // C4 kind4 and the inactive kind6 completion/history API are not advertised.
+ // No custom LUT, viewport, MCU pose/policy, motion diagnostics or disabled
+ // completion configuration. PC image/geometry/reference controls remain.
+ // Gateway storage and status capacity follow the same board feature mask.
  // The sole kind3 ingress proves coefficient rows during CRC upload. Pair
  // STREAM_CCM with the core specialization; no alternate unproved ingress.
- pc_video_boot #(.ENTITY_MASK(16'h1bca),.STREAM_CCM(1)) boot(.clk(ddr_clk),.rst_n(core_reset_n),.uart_rx(uart_rx),.uart_tx(uart_tx),
+ pc_video_boot #(.ENTITY_MASK(16'h028a),.STREAM_CCM(1),.SUMMARY_READBACK(1)) boot(.clk(ddr_clk),.rst_n(core_reset_n),.uart_rx(uart_rx),.uart_tx(uart_tx),
   .entity_submit_valid(entity_submit_valid),.entity_kind(entity_kind),.entity_length(entity_length),
   .entity_body(entity_body),.entity_submit_code(entity_submit_code),.entity_read_kind(entity_read_kind),.entity_status(entity_status),
   .configured(commissioned),.epoch(boot_epoch),.local_mac(local_mac),.peer_mac(peer_mac),
@@ -137,25 +138,20 @@ module pango_video_system(
   .runtime_action_valid(runtime_action_valid),.runtime_action(runtime_action),.runtime_action_seq(runtime_action_seq),.runtime_action_code(runtime_action_code),
   .affine_status(affine_status),.affine_submit_valid(affine_submit_valid),.affine_payload(affine_payload),.affine_sequence(affine_sequence),.affine_submit_code(affine_submit_code),
   .control_status(control_status),.mode_submit_valid(mode_submit_valid),.mode_submit_ready(mode_submit_ready),.mode_submit(mode_submit),.mode_version(mode_version));
- // Board adapter and protocol client share DDR clock/reset; no byte CDC is
- // inserted. Only asynchronous UART RX crosses into a two-flop synchronizer.
+ // Legacy core ports are retained for other module profiles. This board
+ // supplies inactive constants and instantiates no MCU adapter.
  wire mcu_enable,mcu_rx_valid,mcu_rx_error,mcu_tx_valid,mcu_tx_ready,mcu_timing_valid;
  wire [7:0] mcu_rx_data,mcu_tx_data;wire [31:0] mcu_new_session,mcu_capture_error,mcu_config_version;
  wire mcu_config_valid,mcu_config_ready,mcu_config_approved,mcu_reopen_required;
  wire [31:0] mcu_config_crc32;
  wire [2111:0] mcu_config_entity;wire mcu_event_valid,mcu_event_ready;wire [319:0] mcu_event_payload;
  wire mcu_session_valid,mcu_mapping_valid;wire [63:0] mcu_boot_id;
- mcu_link_adapter #(.CONFIG_DIGEST_ONLY(1)) mcu_link(.clk(ddr_clk),.rst_n(core_reset_n),.commissioned(commissioned),
-  .uart_rx(mcu_uart_rx),.uart_tx(mcu_uart_tx),.submit_valid(entity_submit_valid && entity_kind==12),
-  .body(entity_body[511:0]),.version(reference_version),.entity_id(reference_entity_id),
-  .submit_code(mcu_policy_code),.status(mcu_policy_status),.enable(mcu_enable),
-  .rx_valid(mcu_rx_valid),.rx_data(mcu_rx_data),.rx_error(mcu_rx_error),
-  .tx_valid(mcu_tx_valid),.tx_data(mcu_tx_data),.tx_ready(mcu_tx_ready),
-  .new_session(mcu_new_session),.timing_valid(mcu_timing_valid),.capture_error(mcu_capture_error),
-  .config_valid(mcu_config_valid),.config_entity(mcu_config_entity),.config_version(mcu_config_version),.config_crc32(mcu_config_crc32),
-  .config_ready(mcu_config_ready),.config_approved(mcu_config_approved),.reopen_required(mcu_reopen_required),
-  .session_valid(mcu_session_valid),.mapping_valid(mcu_mapping_valid),.boot_id(mcu_boot_id),
-  .event_valid(mcu_event_valid),.event_payload(mcu_event_payload),.event_ready(mcu_event_ready));
+ // No MCU protocol/session/pose hardware in this board profile. Keep the
+ // physical pins stable for the existing PCF; RX is unused and TX is idle.
+ assign mcu_uart_tx=1'b1,mcu_policy_code=8'd6,mcu_policy_status=0;
+ assign mcu_enable=0,mcu_rx_valid=0,mcu_rx_error=0,mcu_rx_data=0,mcu_tx_ready=0;
+ assign mcu_timing_valid=0,mcu_new_session=0,mcu_capture_error=0;
+ assign mcu_config_ready=0,mcu_config_approved=0,mcu_event_ready=0;
  wire capture_valid,capture_ready,capture_complete,capture_end,isp_legal,raw_legal,isp_abort,raw_abort,queues_drained;
  wire [63:0] capture_epoch,capture_id,capture_first,capture_last;
  wire [31:0] capture_errors;wire isp_valid,isp_ready,raw_valid,raw_ready;wire [7:0] isp_byte,raw_byte;
@@ -272,7 +268,7 @@ module pango_video_system(
  // is no alternate LUT writer; standalone core defaults keep full validation.
  // The physical consumer uses an all-byte configuration digest; keep the
  // full parallel entity mode available to direct-core reference consumers.
- video_memory_core #(.STATIC_ENDPOINTS(0),.SUPPORT_CONTROLS(1),.TONE_LUT_PREVALIDATED(1),.MCU_CONFIG_DIGEST_ONLY(1),.CCM_PREVALIDATED(1),.IMAGE_AUTOMATION(0),.TONE_UPLOAD(0),.SUPPORT_VIEWPORT(0)) core(.clk(ddr_clk),.rst_n(core_reset_n),.processing_clk(processing_clk),.processing_rst_n(processing_reset_n),.controller_ready(ddr_ready),.geometry_coefficients(CANDIDATE_COEFFICIENTS),.enhancement(2'd0),
+ video_memory_core #(.STATIC_ENDPOINTS(0),.SUPPORT_CONTROLS(1),.TONE_LUT_PREVALIDATED(1),.MCU_CONFIG_DIGEST_ONLY(1),.PC_ONLY_CONTROL(1),.CCM_PREVALIDATED(1),.IMAGE_AUTOMATION(0),.TONE_UPLOAD(0),.SUPPORT_VIEWPORT(0)) core(.clk(ddr_clk),.rst_n(core_reset_n),.processing_clk(processing_clk),.processing_rst_n(processing_reset_n),.controller_ready(ddr_ready),.geometry_coefficients(CANDIDATE_COEFFICIENTS),.enhancement(2'd0),
   .image_submit_valid(entity_submit_valid && image_kind_selected),.image_kind(entity_kind),
   .image_entity(entity_body),.image_version(reference_version),.image_id(reference_entity_id),
   .image_submit_code(image_submit_code),.image_read_kind(entity_read_kind),.image_status(image_status),
@@ -280,8 +276,8 @@ module pango_video_system(
   .motion_submit_valid(entity_submit_valid && motion_kind_selected),.motion_kind(entity_kind),
   .motion_entity(entity_body[1023:0]),.motion_version(reference_version),.motion_id(reference_entity_id),
   .motion_submit_code(motion_submit_code),.motion_read_kind(entity_read_kind),.motion_status(motion_status),
-  // Policy defaults disabled but remains runtime configurable in the real
-  // board netlist, so synthesis must retain the complete MCU receive path.
+  // Legacy compatibility ports are tied off; PC_ONLY_CONTROL removes
+  // the MCU receiver, time mapper, selector and pose model from this netlist.
   .mcu_enable(mcu_enable),.mcu_rx_valid(mcu_rx_valid),.mcu_rx_data(mcu_rx_data),.mcu_rx_error(mcu_rx_error),
   .mcu_tx_valid(mcu_tx_valid),.mcu_tx_data(mcu_tx_data),.mcu_tx_ready(mcu_tx_ready),.mcu_timing_valid(mcu_timing_valid),
   .mcu_capture_error(mcu_capture_error),.mcu_config_approved(mcu_config_approved),

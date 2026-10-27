@@ -45,9 +45,13 @@ def main():
     parser.add_argument('--from-placement', action='store_true',
                         help='Use the completed native placement DB as documented by installed pnr help')
     parser.add_argument('--phase-timeout-minutes', type=int, default=60,
-                        help='Positive external phase limit, independent of native action timeout')
+                        help='External phase limit; 0 is permitted only with explicit monitor-only mode')
     parser.add_argument('--pause-file', type=Path,
                         help='Stop this owned native phase when this request file appears')
+    # User-requested unlimited routing is explicit and scoped, never inferred
+    # from a long finite budget. This mode cannot generate a bitstream.
+    parser.add_argument('--monitor-only', action='store_true',
+                        help='No host deadline or stall termination; requires both limits 0 and stop-after-timing')
     parser.add_argument('--control-chain-length', type=int, default=500,
                         help='Installed official CE/RS routing chain default')
     parser.add_argument('--placement-decongestion', type=int, default=1,
@@ -95,8 +99,11 @@ def main():
     planning_help_sha256 = verified_planning_help(args.installed_pnr_help) if args.planning_before_place else None
     if not 0 <= args.pnr_timeout_minutes <= 180:
         parser.error('native action allowance must be 0..180 minutes (official 0 means no native limit)')
-    if not 1 <= args.phase_timeout_minutes <= 1440:
-        parser.error('host phase allowance must be 1..1440 minutes; unlimited waits are disabled')
+    if args.monitor_only:
+        if args.phase_timeout_minutes != 0 or args.pnr_timeout_minutes != 0 or not args.stop_after_timing:
+            parser.error('monitor-only requires both timeouts 0 and --stop-after-timing')
+    elif not 1 <= args.phase_timeout_minutes <= 1440:
+        parser.error('host phase allowance must be 1..1440 minutes outside monitor-only mode')
     if not 1 <= args.control_chain_length <= 500:
         parser.error('control routing chain length must be 1..500')
     if not 0 <= args.placement_decongestion <= 9 or args.placement_seed < 1:
@@ -204,6 +211,7 @@ def main():
         'control_chain_length': args.control_chain_length, 'dump_congestion': args.dump_congestion,
         'native_timeout_minutes': args.pnr_timeout_minutes,
         'host_timeout_minutes': args.phase_timeout_minutes,
+        'monitor_only': args.monitor_only,
         'cell_duplication': args.cell_duplication,
         'macro_placement': args.macro_placement,
         'planning_before_place': True if args.planning_before_place else None,
@@ -291,14 +299,15 @@ def main():
                 script = evidence / (phase+'.tcl')
                 script.write_text(flow, encoding='utf-8')
                 # The installed guide defines action_timeout in minutes, but
-                # external supervision also owns the full PnR wall-time bound
-                # and convergence stall policy. Keep all native files intact.
+                # external supervision owns deadline/stall policy. Explicit
+                # monitor-only keeps observations without either cutoff.
                 supervised = run_supervised(
                     [shell, '-file', str(script), '-work_dir', str(run)],
                     cwd=run, log_path=log_path,
                     timeout_seconds=args.phase_timeout_minutes*60,
                     monitor_path=evidence/(phase+'_monitor.jsonl'),
-                    watch_stall=phase == 'place_route', pause_path=args.pause_file)
+                    watch_stall=phase == 'place_route', pause_path=args.pause_file,
+                    monitor_only=args.monitor_only)
                 child = subprocess.CompletedProcess([], supervised['returncode'])
                 if supervised['status'] != 'COMPLETED':
                     result['native_runs'].append(dict(phase=phase, **supervised))

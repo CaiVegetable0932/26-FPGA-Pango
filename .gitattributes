@@ -35,3 +35,15 @@ fpga/build/full_integration_20261013/placement_timing_20261023_184642_621291/boa
 fpga/build/full_integration_20261013/placement_timing_20261023_201234_324276/board_20261023_192330_969348/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text
 fpga/build/full_integration_20261013/placement_timing_20261025_225251_633423/board_postsyn_20261025_162347_361985/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text
 fpga/build/full_integration_20261013/placement_timing_20261025_225251_633423/board_postsyn_20261025_204448_746627/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text
+
+# Frozen native inputs and test evidence are SHA-256 bound. Preserve their
+# original bytes on add/checkout, including Windows line endings.
+fpga/build/** -text
+host/build/** -text
+host/reports/pc_only_controls_20261026_131653_825603.json -text
+# These exact entrypoints are also hashed by the portable PC-only review.
+fpga/scripts/resume_video_system.py -text
+fpga/scripts/route_supervisor.py -text
+fpga/scripts/implementation_readiness.py -text
+fpga/scripts/constraint_report.py -text
+fpga/scripts/native_bitgen.py -text

@@ -20,7 +20,7 @@ class SupervisorTests(unittest.TestCase):
     def test_invalid_baseline_cannot_extend_or_disable_timeout(self):
         for value in (0,-1,float('inf'),float('nan')):
             with self.assertRaises(ValueError):phase_budget(1200,value)
-    def run_child(self, text, timeout=5, watch_stall=False, pause=False):
+    def run_child(self, text, timeout=5, watch_stall=False, pause=False, monitor_only=False):
         """Isolate evidence in the FPGA build tree, never in vendor folders."""
         root = Path(__file__).resolve().parents[1]/'build/route_optimization'
         root.mkdir(parents=True, exist_ok=True)
@@ -36,7 +36,7 @@ class SupervisorTests(unittest.TestCase):
                     [sys.executable, '-u', '-c', text], cwd=directory,
                     log_path=directory/'native.log', monitor_path=directory/'monitor.jsonl',
                     timeout_seconds=timeout, poll_seconds=0.05,
-                    watch_stall=watch_stall, pause_path=pause_file)
+                    watch_stall=watch_stall, pause_path=pause_file, monitor_only=monitor_only)
             rows = [json.loads(s) for s in (directory/'monitor.jsonl').read_text().splitlines()]
             return result, rows
 
@@ -82,6 +82,23 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(result['status'], 'PAUSED')
         self.assertIsNone(result['pid'])
         self.assertTrue(rows[-1]['launch_prevented'])
+
+    def test_monitor_only_records_stall_without_killing(self):
+        """Unlimited observation survives both a nominal deadline and a stall."""
+        content = ''.join(f'Unrouted nets 33000 at the end of iteration {i}.\n'
+                          f'route iteration {i}, CPU time elapsed 1.0 sec.\n' for i in range(1, 11))
+        result, rows = self.run_child('import time; print('+repr(content)+', flush=True); time.sleep(0.4)',
+                                     timeout=0, watch_stall=True, monitor_only=True)
+        self.assertEqual(result['status'], 'COMPLETED')
+        self.assertTrue(any(r.get('stall_observed') for r in rows))
+        self.assertIsNone(result['policy']['timeout_seconds'])
+
+    def test_monitor_only_honors_user_stop(self):
+        """No time limit never removes the owner's explicit stop mechanism."""
+        result, _ = self.run_child('import pathlib,time; time.sleep(0.1); '
+                                  'pathlib.Path("pause.json").write_text("{}"); time.sleep(60)',
+                                  timeout=0, monitor_only=True)
+        self.assertEqual(result['status'], 'PAUSED')
 
     def test_stall_stops_running_process(self):
         content = ''.join(f'Unrouted nets 33000 at the end of iteration {i}.\n'

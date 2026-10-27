@@ -1,5 +1,13 @@
 # AFG1 统一实体布局
 
+## 2026-10-26 PC 专用摘要配置
+
+当前板级 A0 capability flags 为 `0x0000000d`（新增 bit 3），kind mask 为 `0x068a`：1、3、7、9、10。kind 8 MCU 标定、12 MCU 策略、11 运动诊断及无实际历史功能的 6 不再宣告；对应上传返回 UNSUPPORTED，非法读 kind 返回 INVALID。PC V1 帧格式、上传 CRC32、重试、版本检查与帧原子应用不变。
+
+bit 3 为 1 时，通用 A4 kind 1/3/7 为两页 24 字节，合计 48 字节。前 32 字节仍按 `<HHIIHBBQQ>` 排列 schema/kind/version/entity_id/body_length/flags/error/epoch/frame；schema=2、body_length=0，后 16 字节全零。page 0 冻结，精确序号重试重放，page 1 使用同一快照，page 2 及以上拒绝。复位撤销快照所有权。缺少 body 是“不提供”，不是零参数。
+
+kind 9/10、0x90、0x95 保持原四页完整读回，包括 PC 动态控制需要的几何/参考矩阵及源帧/显示确认。旧位流没有 capability bit 3 时沿用 schema 1；新上位机显式协商后解码，不按长度猜测。下文原 MCU/运动协议保留为历史和通用模块接口，不再代表当前板级能力。
+
 2026-10-21 schema 1。本文是 PC_RGB_CONTROL.md 的实体字节布局组成部分。
 字段小端，所有保留字节为零；能力位只有实际 consumer 接通后才开放。
 字段冻结不等于算法已完成、光学校准已验证或实板验收通过。

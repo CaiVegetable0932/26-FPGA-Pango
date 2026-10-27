@@ -75,7 +75,8 @@ module tb_video_memory_core #(parameter WIDTH=35,HEIGHT=33,NETWORK_TEST=0,CONTRO
  // fixture supplies no image uploads; upstream CCM/LUT legality and retry
  // ownership are separately checked by the gateway fixtures. Generic tests
  // retain the default consumer-side checks with BOARD_MANUAL_PROFILE=0.
- video_memory_core #(.WIDTH(W),.HEIGHT(H),.STATIC_ENDPOINTS(0),.SUPPORT_CONTROLS(CONTROL_TEST),.TONE_LUT_PREVALIDATED(BOARD_MANUAL_PROFILE),.CCM_PREVALIDATED(BOARD_MANUAL_PROFILE),.IMAGE_AUTOMATION(!BOARD_MANUAL_PROFILE),.TONE_UPLOAD(!BOARD_MANUAL_PROFILE),.MCU_CONFIG_DIGEST_ONLY(BOARD_MANUAL_PROFILE),.SUPPORT_VIEWPORT(!BOARD_MANUAL_PROFILE)) dut(.clk(clk),.rst_n(rst_n),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),.controller_ready(1'b1),
+ video_memory_core #(.WIDTH(W),.HEIGHT(H),.STATIC_ENDPOINTS(0),.SUPPORT_CONTROLS(CONTROL_TEST),.TONE_LUT_PREVALIDATED(BOARD_MANUAL_PROFILE),// Match the current board PC-only control profile in full-frame proof.
+ .PC_ONLY_CONTROL(BOARD_MANUAL_PROFILE),.CCM_PREVALIDATED(BOARD_MANUAL_PROFILE),.IMAGE_AUTOMATION(!BOARD_MANUAL_PROFILE),.TONE_UPLOAD(!BOARD_MANUAL_PROFILE),.MCU_CONFIG_DIGEST_ONLY(BOARD_MANUAL_PROFILE),.SUPPORT_VIEWPORT(!BOARD_MANUAL_PROFILE)) dut(.clk(clk),.rst_n(rst_n),.processing_clk(processing_clk),.processing_rst_n(processing_rst_n),.controller_ready(1'b1),
   // Synthetic stable camera/ISP commissioning baseline. These explicit
   // inputs exercise normal image statistics without claiming optical timing.
   // Motion/MCU submission is disabled here and covered by dedicated fixtures.
