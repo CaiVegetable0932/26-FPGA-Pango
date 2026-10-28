@@ -69,6 +69,40 @@
   // video surfaces are being composited. Changed values still update normally.
   function text(id,value){const node=$(id),next=String(value);if(node.textContent!==next)node.textContent=next;}
   function toast(message,error=false){$("toast").textContent=message;$("toast").classList.toggle("error",error);$("toast").hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("toast").hidden=true,5000);}
+  // Native fullscreen admits one preview at a time. Only the containing panel
+  // changes layout: capture tracks, workers and pixel overlays keep their owners.
+  const fullscreenButtons=[...document.querySelectorAll("[data-fullscreen]")];
+  let fullscreenBusy=false,fullscreenTrigger=null;
+  function syncFullscreen(){
+    for(const button of fullscreenButtons){
+      const panel=$(button.dataset.fullscreen),active=document.fullscreenElement===panel;
+      const label=active?"退出全屏":`全屏查看${button.dataset.previewName}预览`;
+      button.disabled=fullscreenBusy||!document.fullscreenEnabled||typeof panel.requestFullscreen!=="function";
+      button.setAttribute("aria-pressed",String(active));button.setAttribute("aria-label",label);
+      button.title=active?"退出全屏（Esc）":button.disabled&&!fullscreenBusy?"当前浏览器不支持全屏":label;
+      button.querySelector("span").textContent=active?"退出全屏":"全屏";
+      button.querySelector("use").setAttribute("href",active?"#i-fullscreen-exit":"#i-fullscreen");
+    }
+    // Browser Esc and the visible exit button share the same state/focus reset.
+    if(!fullscreenBusy&&!document.fullscreenElement&&fullscreenTrigger){
+      fullscreenTrigger.focus({preventScroll:true});fullscreenTrigger=null;
+    }
+  }
+  for(const button of fullscreenButtons)button.addEventListener("click",async()=>{
+    if(fullscreenBusy)return;
+    const panel=$(button.dataset.fullscreen);fullscreenBusy=true;syncFullscreen();
+    try{
+      if(document.fullscreenElement===panel)await document.exitFullscreen();
+      else{
+        if(document.fullscreenElement)await document.exitFullscreen();
+        fullscreenTrigger=button;
+        await panel.requestFullscreen({navigationUI:"hide"});
+      }
+    }catch{
+      fullscreenTrigger=null;toast("无法进入全屏，请重新点击全屏按钮。",true);
+    }finally{fullscreenBusy=false;syncFullscreen();}
+  });
+  document.addEventListener("fullscreenchange",syncFullscreen);syncFullscreen();
   async function request(path,data,retried=false){
     // Device enumeration and graceful worker/receiver shutdown can outlast a frame request.
     const opts={cache:"no-store",signal:AbortSignal.timeout(path.startsWith("/api/board/")?25000:12000)};
@@ -84,6 +118,11 @@
   function elapsed(seconds){const s=Math.floor(seconds||0);return (Math.floor(s/60)).toString().padStart(2,"0")+":"+(s%60).toString().padStart(2,"0");}
   function count(value){return Number(value||0).toLocaleString("zh-CN");}
   function showView(view){
+    // A placeholder's settings link can navigate while enlarged; leave the
+    // fullscreen panel before its live-view ancestor becomes hidden.
+    if(view!=="live"&&document.fullscreenElement?.classList.contains("video-panel")){
+      void document.exitFullscreen().catch(()=>{});
+    }
     activeView=view;
     // A hidden view must release the HTTP stream and its bounded server slot.
     if(view!=="live")invalidatePreview();

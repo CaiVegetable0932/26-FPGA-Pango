@@ -16,6 +16,9 @@
   <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 7h5l2-3h4l2 3h5v13H3Z"/><circle cx="12" cy="13" r="4"/></symbol>
   <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+  <!-- Shared player controls keep their shape in both normal and fullscreen views. -->
+  <symbol id="i-fullscreen" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
+  <symbol id="i-fullscreen-exit" viewBox="0 0 24 24"><path d="M3 8h5V3m8 0v5h5M8 21v-5H3m13 5v-5h5"/></symbol>
 </defs></svg>
 <a href="#main" class="skip-link">跳到工作区</a>
 <aside class="sidebar">
@@ -100,7 +103,7 @@
       <!-- One display-only switch controls original and mapped pixel overlays. -->
       <div class="pixel-marker-toolbar"><button id="pixel-markers-toggle" type="button" class="button small secondary" aria-pressed="false" aria-controls="raw-pixel-markers capture-pixel-markers">显示像素标记</button><span id="pixel-markers-info" role="status">标记已隐藏 · 可观察原图像素的矫正映射</span></div>
       <div class="capture-layout">
-        <article class="panel video-panel primary-viewer">
+        <article id="raw-preview-panel" class="panel video-panel primary-viewer">
           <!-- Purpose: full-size RAW gray remains byte-exact; the reduced-size
                live preview averages Bayer cells to prevent aliasing, without
                modifying archived RAW8 or mistaking enhanced RAW8 for S0. -->
@@ -111,11 +114,13 @@
             <svg id="fpga-source-markers" class="pixel-marker-overlay" aria-label="FPGA 回读的源像素标记" hidden></svg>
             <div class="video-empty" id="video-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-camera"/></svg></div><strong>等待原始视频</strong><span>开始本机模拟，或配置板端数据来源</span><div class="signal-guide"><span>RAW8</span><span>1920 × 1080</span><span>PRAW V1</span></div></div>
             <span class="video-corner" id="video-origin">MOCK / 模拟来源</span><div class="stale-label" id="stale-label" hidden>画面已停止更新</div>
+            <!-- Fullscreen reuses this canvas and its overlays without opening another stream. -->
+            <button type="button" class="preview-fullscreen" data-fullscreen="raw-preview-panel" data-preview-name="网口 RAW8" aria-controls="raw-preview-panel" aria-label="全屏查看网口 RAW8 预览" aria-pressed="false" title="全屏查看网口 RAW8 预览"><svg class="icon" aria-hidden="true"><use href="#i-fullscreen"/></svg><span>全屏</span></button>
           </div>
           <div class="video-meta"><span id="frame-identity">尚无完整源帧</span><span><span id="receive-rate">完整接收 0.0 FPS</span> · <span id="preview-rate">显示 0.0 FPS</span></span></div>
           <div class="viewer-footer"><span id="raw-stage-note">PC 基础可视化 · 不等同于 FPGA S1</span><button id="save-current" class="button small secondary" disabled><svg class="icon"><use href="#i-camera"/></svg>保存最新完整帧</button></div>
         </article>
-        <article class="panel video-panel hdmi-panel">
+        <article id="hdmi-preview-panel" class="panel video-panel hdmi-panel">
           <div class="panel-heading"><div class="panel-title"><span class="channel-label">IN</span><h2>采集卡视频输入</h2></div><span id="capture-preview-status" class="pill neutral">未配置</span></div>
           <div class="video-surface result-surface" id="result-surface">
             <video id="capture-video" autoplay muted playsinline aria-label="所选视频采集设备的预览" hidden></video>
@@ -125,6 +130,8 @@
             <svg id="capture-pixel-markers" class="pixel-marker-overlay" aria-label="HDMI 原图或计算机矫正后的对应像素位置" hidden></svg>
             <div class="video-empty hdmi-empty" id="capture-empty"><div class="sensor-symbol"><svg class="icon"><use href="#i-monitor"/></svg></div><strong id="capture-empty-title">选择视频输入设备</strong><span id="capture-empty-detail">在连接设置中选择采集卡，无信号时也可保存配置</span><button class="button small secondary" type="button" data-view="settings">配置视频输入</button></div>
             <span id="capture-view-label" class="video-corner">HDMI 原图 / 信号未验证</span>
+            <!-- Enlarge the entire surface so the active original/corrected view stays intact. -->
+            <button type="button" class="preview-fullscreen" data-fullscreen="hdmi-preview-panel" data-preview-name="采集卡" aria-controls="hdmi-preview-panel" aria-label="全屏查看采集卡预览" aria-pressed="false" title="全屏查看采集卡预览"><svg class="icon" aria-hidden="true"><use href="#i-fullscreen"/></svg><span>全屏</span></button>
           </div>
           <!-- Negotiated input, observed preview and browser quality counters are distinct. -->
           <div class="video-meta"><span id="capture-preview-device">尚未选择设备</span><span id="capture-format">采集格式 —</span><span id="capture-preview-rate" title="每秒实际观察到的新帧回调；跳过的回调不补计，不能证明显示器或远程桌面的最终帧率">预览 0.0 FPS</span></div>
