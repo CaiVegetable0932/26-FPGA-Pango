@@ -1,0 +1,3 @@
+# Purpose: native direct startup pulse has no per-lane local_reset registers.
+# Removed obsolete instance regions; installed PDS places the IOCLKDIV/OSERDES
+# topology natively. DDR placement remains in its unchanged native FDC.

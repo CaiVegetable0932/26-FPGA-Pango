@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "checked_at": "2026-10-31T20:17:43.329141+08:00",
+  "synthesis": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261031_200204_931096",
+  "left_memory": {
+    "primitive": "GTP_RAM32X2DP",
+    "labels": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "report_lines": [
+      "| pose_control/solver/left                                                                                                                                                                  | 16 x 32                |                   |         |"
+    ]
+  },
+  "reader_dynamic_length_symbols": {
+    "dma_byte_unpack": {
+      "chunk_bytes": 0,
+      "chunk_size": 0,
+      "held_bytes": 0,
+      "valid_bytes": 0
+    },
+    "raw_dma_reader": {
+      "chunk_bytes": 0,
+      "chunk_size": 0,
+      "held_bytes": 0,
+      "valid_bytes": 0
+    }
+  },
+  "inclusive_snr_resource_rows": [
+    {
+      "name": "+ reader",
+      "LUT": 263,
+      "FF": 655,
+      "distributed_RAM": 0
+    },
+    {
+      "name": "+ unpack",
+      "LUT": 46,
+      "FF": 300,
+      "distributed_RAM": 0
+    },
+    {
+      "name": "+ reader",
+      "LUT": 1185,
+      "FF": 739,
+      "distributed_RAM": 0
+    },
+    {
+      "name": "+ solver",
+      "LUT": 2624,
+      "FF": 1821,
+      "distributed_RAM": 16
+    }
+  ],
+  "snr_row_note": "The first reader row is core/reader; the second belongs to display/reader. Do not add child unpack twice.",
+  "evidence_sha256": {
+    "synthesize\\pango_video_system_syn.vm": "171aace8423a6da46dde4899eb1bafb1453f7bac00d8e786b1f708eb4e1dd7c7",
+    "synthesize\\pango_video_system.snr": "5a6268ea97cc2ee53aa31e6ebd80e8ef66de1a2e8588eee64134b9e56e225ca4",
+    "synthesize\\apm_drm_lutram_utilization.log": "17048e9a4c21a0b8d54cb7b3a13a03f7e5c3fd14279d33e57d49f4fa789f19d1"
+  },
+  "physical_routing_verified": false
+}

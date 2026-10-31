@@ -1,0 +1,52 @@
+# Installed UCE guide printed p83: max-delay endpoints may be clocks.
+# Immutable DDR job fields (including slot-selected RAM fields) terminate ONLY
+# at the explicit mailbox snapshot. P_OFFER follows this capture, so readiness
+# and all downstream processing logic use local registers and ordinary timing.
+# Source ownership is held until synchronized completion; retain the original
+# 6 ns datapath budget and waive only asynchronous hold at the first capture.
+set_max_delay 6.0 -datapath_only -from [get_clocks {ddrphy_sysclk}] -to [get_cells -hierarchical {core.processor.job_mailbox.processing_job*}]
+set_false_path -hold -from [get_clocks {ddrphy_sysclk}] -to [get_cells -hierarchical {core.processor.job_mailbox.processing_job*}]
+# PC-only profile removes the motion diagnostic consumer of all three pixel
+# counters. SYN has no source_result registers or counter return paths; omit
+# only their obsolete constraints. Completion/failure handshakes below remain.
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.job_mailbox.request_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.request_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.job_mailbox.request_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.request_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.job_mailbox.free_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.free_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.job_mailbox.free_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.free_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.job_mailbox.response_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.response_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.job_mailbox.response_toggle}] -to [get_cells -hierarchical {core.processor.job_mailbox.response_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.job_mailbox.failed_held}] -to [get_cells -hierarchical {core.processor.job_mailbox.source_failed}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.job_mailbox.failed_held}] -to [get_cells -hierarchical {core.processor.job_mailbox.source_failed}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.refill_bridge.request_toggle}] -to [get_cells -hierarchical {core.processor.refill_bridge.request_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.refill_bridge.request_toggle}] -to [get_cells -hierarchical {core.processor.refill_bridge.request_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.refill_bridge.tile_held*}] -to [get_cells -hierarchical {core.processor.refill_bridge.memory_tile_*}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.refill_bridge.tile_held*}] -to [get_cells -hierarchical {core.processor.refill_bridge.memory_tile_*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.refill_bridge.quads.write_gray*}] -to [get_cells -hierarchical {core.processor.refill_bridge.quads.write_meta*}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.refill_bridge.quads.write_gray*}] -to [get_cells -hierarchical {core.processor.refill_bridge.quads.write_meta*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.refill_bridge.quads.read_gray*}] -to [get_cells -hierarchical {core.processor.refill_bridge.quads.read_meta*}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.refill_bridge.quads.read_gray*}] -to [get_cells -hierarchical {core.processor.refill_bridge.quads.read_meta*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.result_bridge.request_toggle}] -to [get_cells -hierarchical {core.processor.result_bridge.request_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.result_bridge.request_toggle}] -to [get_cells -hierarchical {core.processor.result_bridge.request_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.result_bridge.free_toggle}] -to [get_cells -hierarchical {core.processor.result_bridge.free_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.result_bridge.free_toggle}] -to [get_cells -hierarchical {core.processor.result_bridge.free_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.result_bridge.cancel_held}] -to [get_cells -hierarchical {core.processor.result_bridge.cancel_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.result_bridge.cancel_held}] -to [get_cells -hierarchical {core.processor.result_bridge.cancel_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.result_bridge.response_toggle}] -to [get_cells -hierarchical {core.processor.result_bridge.response_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.result_bridge.response_toggle}] -to [get_cells -hierarchical {core.processor.result_bridge.response_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.result_bridge.descriptor_held*}] -to [get_cells -hierarchical {core.processor.result_bridge.memory_req_*}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.result_bridge.descriptor_held*}] -to [get_cells -hierarchical {core.processor.result_bridge.memory_req_*}]
+# The complete write burst is held before request crosses and until completion
+# is consumed. ADS may split payload[0] into processing-clock FFs; read_q is
+# the explicit DDR first capture, with retiming disabled in RTL. Bound only
+# those asynchronous data paths. DDR RAM-read and downstream DDR paths keep
+# their ordinary setup/hold checks; no full clock-pair exception is applied.
+set_max_delay 6.0 -datapath_only -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]
+set_false_path -hold -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.processor.result_bridge.status_held*}] -to [get_cells -hierarchical {core.processor.result_bridge.done_tag* core.processor.result_bridge.error core.processor.result_bridge.cancelled}]
+set_false_path -hold -from [get_cells -hierarchical {core.processor.result_bridge.status_held*}] -to [get_cells -hierarchical {core.processor.result_bridge.done_tag* core.processor.result_bridge.error core.processor.result_bridge.cancelled}]
+
+# SOURCE_GAMMA=1 selects DDR-domain manual preset ROMs before source storage.
+# There is no curve-copy mailbox or processing-domain tone RAM in this board
+# profile. Its former six tone-only exceptions are removed with those paths;
+# source/geometry/result job and data CDC constraints above remain unchanged.
+# Legacy SOURCE_GAMMA=0 builds require their matching archived tone constraints.
