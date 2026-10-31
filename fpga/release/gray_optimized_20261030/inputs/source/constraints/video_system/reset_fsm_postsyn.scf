@@ -1,0 +1,15 @@
+# Post-synthesis timing exceptions use resolved raw object names in ADS SCF.
+# UCE p68: i: instance, t: pin; backend hierarchy / and pin separator :.
+# Only the two proven assert-only sources to five actual asynchronous C/P pins.
+# Each pair is separate so any missing source or endpoint fails native parsing.
+# No D/CE, health/lock/ready, other state machine, or whole clock domain exception.
+set_false_path -from {i:processing_safety/fault_latched} -to {t:I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[0]:P}
+set_false_path -from {i:processing_safety/fault_latched} -to {t:I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[1]:C}
+set_false_path -from {i:processing_safety/fault_latched} -to {t:I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[2]:C}
+set_false_path -from {i:processing_safety/fault_latched} -to {t:I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[3]:C}
+set_false_path -from {i:processing_safety/fault_latched} -to {t:I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[4]:C}
+set_false_path -from {i:processing_safety/memory_armed} -to {t:I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[0]:P}
+set_false_path -from {i:processing_safety/memory_armed} -to {t:I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[1]:C}
+set_false_path -from {i:processing_safety/memory_armed} -to {t:I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[2]:C}
+set_false_path -from {i:processing_safety/memory_armed} -to {t:I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[3]:C}
+set_false_path -from {i:processing_safety/memory_armed} -to {t:I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[4]:C}

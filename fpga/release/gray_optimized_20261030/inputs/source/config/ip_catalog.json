@@ -1,0 +1,104 @@
+{
+  "target": "PG2L100H-6IFBG676",
+  "pds": "2022.2-SP6.4 build146967",
+  "ips": [
+    {
+      "name": "sys_pll",
+      "model": "ip/module_ip/ipm2l_flex_pll/ipm2l_flex_pll_eval/ipm2l_pll",
+      "purpose": "125 MHz reference to 100 MHz system, 150 MHz processing, 125 MHz Ethernet",
+      "clocks": {"input_mhz": 125, "vco_mhz": 750, "outputs": [0, 1, 2], "dividers": {"0": 7.5, "1": 5, "2": 6, "7": 6}}
+    },
+    {
+      "name": "video_pll",
+      "model": "ip/module_ip/ipm2l_flex_pll/ipm2l_flex_pll_eval/ipm2l_pll",
+      "purpose": "27 MHz reference to one 371.25 MHz TMDS source; GTP_IOCLKBUF and IOCLKDIV /5 reproduce the PG2L100H native output topology",
+      "clocks": {"input_mhz": 27, "vco_mhz": 742.5, "outputs": [1], "dividers": {"1": 2, "7": 27.5}}
+    },
+    {
+      "name": "ddr3_controller",
+      "model": "ip/system_ip/ips2l_hmic_s/ips2l_hmic_eval/ips2l_hmic_s",
+      "purpose": "32-bit DDR3 controller and PHY, 1000 MT/s candidate profile, 256-bit UI",
+      "seed": "fpga/config/ip_seeds/ddr3_100h_profile.idf",
+      "params": {"USER_PINS_CON_EN": "true", "USER_FDC_PATH": "../../constraints/ddr_board_pins.fdc"},
+      "physical_validation": "unverified: MINI board pins are constrained separately; capacity and memory part require hardware confirmation"
+    },
+    {
+      "name": "raw_async_fifo",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_fifo",
+      "purpose": "RAW8 DVP clock-domain input queue",
+      "params": {
+        "FIFO_TYPE": "ASYN_FIFO", "ASYN_FIFO_EN": "true",
+        "WR_DEPTH_WIDTH": 11, "RD_DEPTH_WIDTH": 11,
+        "WR_DATA_WIDTH": 8, "RD_DATA_WIDTH": 8,
+        "FULL_WL_EN": "true", "EMPTY_WL_EN": "true",
+        "ALMOST_FULL_NUM": 2040, "ALMOST_EMPTY_NUM": 8
+      }
+    },
+    {
+      "name": "net_tx_fifo",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_fifo",
+      "purpose": "Byte packet queue, processing to Ethernet clock domain",
+      "params": {"FIFO_TYPE": "ASYN_FIFO", "ASYN_FIFO_EN": "true", "WR_DEPTH_WIDTH": 12, "RD_DEPTH_WIDTH": 12, "WR_DATA_WIDTH": 8, "RD_DATA_WIDTH": 8, "ALMOST_FULL_NUM": 4080, "ALMOST_EMPTY_NUM": 8}
+    },
+    {
+      "name": "display_fifo",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_fifo",
+      "purpose": "RGBX32 display clock crossing queue",
+      "params": {"FIFO_TYPE": "ASYN_FIFO", "ASYN_FIFO_EN": "true", "WR_DEPTH_WIDTH": 11, "RD_DEPTH_WIDTH": 11, "WR_DATA_WIDTH": 32, "RD_DATA_WIDTH": 32, "ALMOST_FULL_NUM": 2032, "ALMOST_EMPTY_NUM": 8}
+    },
+    {
+      "name": "ddr_write_fifo",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_fifo",
+      "purpose": "32-to-256-bit asynchronous DDR write packer",
+      "params": {"FIFO_TYPE": "ASYN_FIFO", "ASYN_FIFO_EN": "true", "SAMEWIDTH_EN": "false", "WR_DEPTH_WIDTH": 12, "RD_DEPTH_WIDTH": 9, "WR_DATA_WIDTH": 32, "RD_DATA_WIDTH": 256, "ALMOST_FULL_NUM": 4080, "ALMOST_EMPTY_NUM": 8}
+    },
+    {
+      "name": "ddr_read_fifo",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_fifo",
+      "purpose": "256-to-32-bit asynchronous DDR read unpacker",
+      "params": {"FIFO_TYPE": "ASYN_FIFO", "ASYN_FIFO_EN": "true", "SAMEWIDTH_EN": "false", "WR_DEPTH_WIDTH": 9, "RD_DEPTH_WIDTH": 12, "WR_DATA_WIDTH": 256, "RD_DATA_WIDTH": 32, "ALMOST_FULL_NUM": 504, "ALMOST_EMPTY_NUM": 8}
+    },
+    {
+      "name": "isp_line_ram",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_sdpram",
+      "purpose": "2048 x RGBX32 line storage; replicate for ISP windows",
+      "params": {"WR_ADDR_WIDTH": 11, "RD_ADDR_WIDTH": 11, "WR_DATA_WIDTH": 32, "RD_DATA_WIDTH": 32, "OUTPUT_REG": "true"}
+    },
+    {
+      "name": "tile_cache_ram",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_sdpram",
+      "purpose": "32768 x 32-bit tile cache data store; 128 x 16 x 16 RGBX slots",
+      "params": {"WR_ADDR_WIDTH": 15, "RD_ADDR_WIDTH": 15, "WR_DATA_WIDTH": 32, "RD_DATA_WIDTH": 32, "OUTPUT_REG": "true"}
+    },
+    {
+      "name": "parameter_ram",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_dpram",
+      "purpose": "Dual-port coefficient/LUT/control storage",
+      "params": {"A_ADDR_WIDTH": 10, "B_ADDR_WIDTH": 10, "A_DATA_WIDTH": 32, "B_DATA_WIDTH": 32, "A_OUTPUT_REG": "true", "B_OUTPUT_REG": "true"}
+    },
+    {
+      "name": "gamma_rom",
+      "model": "ip/module_ip/ipm2l_flex_ram/ipm2l_flex_ram_eval/ipm2l_rom",
+      "purpose": "Identity gamma initialization (two 256-entry pages), not calibrated ISP",
+      "params": {"ADDR_WIDTH": 9, "DATA_WIDTH": 8, "INIT_EN": "1", "INIT_FILE": "../../config/gamma_identity.hex", "INIT_FORMAT": "HEX", "OUTPUT_REG": "true"}
+    },
+    {
+      "name": "geometry_mult",
+      "model": "ip/module_ip/ipm2l_flex_apm/ipm2l_flex_apm_eval/ipm2l_mult",
+      "purpose": "Signed fixed-point 25 x 18 coordinate multiplication",
+      "params": {"ASIZE": 25, "BSIZE": 18, "A_SIGNED": 1, "B_SIGNED": 1, "INREG_EN": 1, "PIPEREG_EN_1": 1, "OUTREG_EN": 1}
+    },
+    {
+      "name": "bilinear_multadd",
+      "model": "ip/module_ip/ipm2l_flex_apm/ipm2l_flex_apm_eval/ipm2l_multadd",
+      "purpose": "Pipelined paired 18 x 9 products for interpolation",
+      "params": {"ASIZE": 18, "BSIZE": 9, "INREG_EN": 1, "PIPEREG_EN_1": 1, "OUTREG_EN": 1, "DYN_ADDSUB_OP": 0, "ADDSUB_OP": 0}
+    },
+    {
+      "name": "statistics_mac",
+      "model": "ip/module_ip/ipm2l_flex_apm/ipm2l_flex_apm_eval/ipm2l_multacc",
+      "purpose": "16 x 16 multiply with 48-bit accumulation for statistics",
+      "params": {"ASIZE": 16, "BSIZE": 16, "PSIZE": 48, "INREG_EN": 1, "PIPEREG_EN": 1, "ACC_INIT_VALUE": "48'h0", "DYN_ACC_ADDSUB_OP": 0}
+    }
+  ]
+}

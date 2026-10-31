@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "full_frame": true,
+  "network_test": false,
+  "rtl_snapshot": null,
+  "control_test": true,
+  "history_test": false,
+  "motion_test": null,
+  "hardware_tested": false,
+  "board_integrated": false,
+  "compiler": "Verilator 5.052 / GCC 13.1.0",
+  "build_jobs": 4,
+  "fixture_snapshot": null,
+  "display_test": true,
+  "board_manual_profile": true,
+  "source_gamma": true,
+  "fixed_gray": true,
+  "stop_to_update": true,
+  "projective": true,
+  "run_timeout_seconds": 2400,
+  "proof_phases": [
+    {
+      "phase": "configure",
+      "at": "2026-10-30T12:43:27.219888+00:00",
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 12.405999999988126,
+      "pid": 37424
+    },
+    {
+      "phase": "build",
+      "at": "2026-10-30T12:44:06.079722+00:00",
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 38.84399999999732,
+      "pid": 47432
+    },
+    {
+      "phase": "run",
+      "at": "2026-10-30T12:55:54.593764+00:00",
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 708.5,
+      "pid": 42088
+    }
+  ],
+  "snapshot_intact": true
+}

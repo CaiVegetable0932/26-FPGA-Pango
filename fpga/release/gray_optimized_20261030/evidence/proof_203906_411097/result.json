@@ -1,0 +1,79 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "name": "bilinear",
+      "top": "tb_gray_bilinear",
+      "parameters": {},
+      "passed": true
+    },
+    {
+      "name": "cache_8_1_2",
+      "top": "tb_rgb_tile_cache_ways",
+      "parameters": {
+        "PIXEL_BITS": 8,
+        "FILL_PIXELS": 1,
+        "WAY_BITS": 2,
+        "TILE_X_BITS": 4,
+        "TILE_Y_BITS": 4
+      },
+      "passed": true
+    },
+    {
+      "name": "cache_8_4_1",
+      "top": "tb_rgb_tile_cache_ways",
+      "parameters": {
+        "PIXEL_BITS": 8,
+        "FILL_PIXELS": 4,
+        "WAY_BITS": 1,
+        "TILE_X_BITS": 5,
+        "TILE_Y_BITS": 3
+      },
+      "passed": true
+    },
+    {
+      "name": "cache_24_1_2",
+      "top": "tb_rgb_tile_cache_ways",
+      "parameters": {
+        "PIXEL_BITS": 24,
+        "FILL_PIXELS": 1,
+        "WAY_BITS": 2,
+        "TILE_X_BITS": 4,
+        "TILE_Y_BITS": 4
+      },
+      "passed": true
+    },
+    {
+      "name": "cache_24_4_1",
+      "top": "tb_rgb_tile_cache_ways",
+      "parameters": {
+        "PIXEL_BITS": 24,
+        "FILL_PIXELS": 4,
+        "WAY_BITS": 1,
+        "TILE_X_BITS": 5,
+        "TILE_Y_BITS": 3
+      },
+      "passed": true
+    },
+    {
+      "name": "geometry_0",
+      "top": "tb_source_gamma_geometry",
+      "parameters": {
+        "GRAYSCALE_TEST": 0
+      },
+      "passed": true
+    },
+    {
+      "name": "geometry_1",
+      "top": "tb_source_gamma_geometry",
+      "parameters": {
+        "GRAYSCALE_TEST": 1
+      },
+      "passed": true
+    }
+  ],
+  "hardware_tested": false,
+  "pds_tested": false,
+  "sources_intact": true,
+  "snapshot_intact": true
+}
