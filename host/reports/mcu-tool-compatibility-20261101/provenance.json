@@ -1,0 +1,31 @@
+{
+  "host_head": "4909fd9b30a1936288dee9055e50437b03edda3d",
+  "mcu_remote_branch": "origin/codex/mcu-test-system",
+  "mcu_commit": "22452f36dae80ebac5b5386a60a2e92481862b0e",
+  "host_worktree_sha256": {
+    "host/src/mcu_pose_v2.py": "66d5545c67d0a1895bd4bf4fdd7a8b6ff4898aaaf9d6adf4dae7ba0a48d76bb6",
+    "host/src/pango_video/mcu_control.py": "ff4e8d041692d74d44b0952d56fad89a7c9e84c81a7a85d912805737959e1910",
+    "host/src/pango_video/web_server.py": "4c8e12985687608176a5a0cb8a61e4623a4bcfda452b7556268e5f1c666a99a8",
+    "host/web/app.js": "b23fce7827b9e780b70c04061c71de3c4f71981c4f0bc6550ad908f1660c8abf",
+    "host/web/index.html": "b5cce26f446e1dc24a36ac86612cf98d5f7ad210dfa89c7cffa2d98233c54820",
+    "host/tests/test_mcu_control.py": "8a4384d8c856bd17865104c82129e465cde26c58d711623c1f77ebcc440bb190",
+    "host/tests/test_mcu_pose_v2.py": "1485fc59c8badc5b2be9b12dc41387993090a951e17409f1d538c25a996959a6"
+  },
+  "reference_sha256": {
+    "mcu/config/pose_config.h": "adf9689ffc2150d05d03b19725951eb921500e6c3f5d5350e567fa77700442db",
+    "mcu/firmware/common/internal.h": "afcf9ba8caa499d9d271e1470e111202b7c85f3269ff001f145402b245ef86f8",
+    "mcu/firmware/common/pose.h": "3817c027347f3693199d255bb1ec84dcd863eb362a7700406d97b96592450607",
+    "mcu/firmware/common/wire.c": "37c118aaedacebc0f21bd4c2845aabdec6b005018df4a039e4587600ae046a82",
+    "mcu/firmware/common/wire.h": "8d72aae22ebea9fc05c4ee56f812425775bc9d0646cb6698ac5f4c57625627b6",
+    "mcu/firmware/longmenjia/Core/Inc/f4_link.h": "95b06ab23e959d3d76c76ddde2a5a01277c80dda56233ca8848444a5e0e5fd56",
+    "mcu/firmware/longmenjia/Core/Src/f4_link.c": "c2aad0f814d7f67198b526cef925861a35dfe5af070c1db6b63d22b7084e9e4e",
+    "mcu/firmware/longmenjia/tools/README.md": "7bab289c92f7de20757ba6d5c60fb38fbf2b7860e67610b6681ee842de7ff6ea",
+    "mcu/firmware/longmenjia/tools/cal3.c": "5cdfdd1da52d0ee8467867bf5b008f5bde0cde44207b0e6cb331f018da34419b",
+    "mcu/firmware/longmenjia/tools/f4_host.c": "f11610abcc720a15d9ca5595af1a9a4c6a04cdc0365666580b14485562ff5154",
+    "mcu/tests/gateway_stubs/board.h": "a480ace6f2e1b82ee848060bf913014b7d6d6eefef24b494cc3db684c3c5667b",
+    "mcu/tests/gateway_stubs/usart.h": "cc923777eb3c642d3b67f1f75cb675405754952e841cc3b11237a2a615f49a64",
+    "mcu/tests/generate_vectors.c": "614ea7f0c33c261a9c9fafce1af3f1c918f5c887976a185e19b64c7832125aeb",
+    "mcu/tests/test_gateway.c": "2af59f85d25a26172ce0499ea32d05a6806ee79d5bbe283eed4bccab744d6bb3",
+    "mcu/tests/tool/README.md": "d047c93bfda42ed85d0ec426b513e5f22a61a2e00afedf1461e9d90f14701383"
+  }
+}

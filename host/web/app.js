@@ -402,6 +402,55 @@
   $("archive-dialog").addEventListener("close",()=>{archiveKey="";});
   setInterval(()=>text("clock",new Date().toLocaleTimeString("zh-CN",{hour12:false})),1000);
 
+  // MCU feedback is cached by the backend; browser refresh never renews the
+  // lease itself. Each motion is an explicit operator action, not an input event.
+  // Only target inputs use a 3-degree grid; feedback keeps all millidegree digits.
+  let mcuPending=false,mcuClosed=false,mcuTimer=null;
+  function renderMCU(state){
+    const angles=state.angles,angle=v=>v==null?"无效 / 未就绪":`${v.toFixed(3)}°`;
+    text("mcu-feedback",state.connected?"MCU 已连接":"MCU 未连接");
+    text("mcu-current-pitch",state.connected?angle(angles?.pitch):"—");
+    text("mcu-current-yaw",state.connected?angle(angles?.yaw):"—");
+    text("mcu-state",state.connected?`反馈年龄 ${state.age_ms} ms · ${["空闲","运动中","回正中","稳定等待","保留","故障"][state.state?.motion_state]||"未知状态"}`:"等待读取真实舵机反馈");
+    // Long zero registration runs on the server; keep read/disconnect available
+    // while preventing a second zero or a competing motion from this page.
+    const zeroPending=state.zero_operation?.status==="pending";
+    for(const b of document.querySelectorAll("[data-mcu]"))b.disabled=mcuPending||!state.connected||(zeroPending&&["move","home","zero"].includes(b.dataset.mcu));
+    $("mcu-connect").disabled=mcuPending||state.connected||!$("mcu-port").value;$("mcu-port").disabled=mcuPending||state.connected;
+    if(state.error)text("mcu-message",state.error);
+    else if(state.state?.fault_code)text("mcu-message",`MCU 故障 ${state.state.fault_code}，请核对设备状态`);
+    else if(state.zero_operation)text("mcu-message",state.zero_operation.message);
+    else if(state.last_command)text("mcu-message",state.last_command.message);
+    else if(state.state)text("mcu-message",`反馈年龄 ${state.age_ms} ms · 运动状态 ${state.state.motion_state} · 故障 ${state.state.fault_code} · 指令接受不等于到位`);
+  }
+  async function mcuAction(action,data={}){
+    if(mcuPending)return;mcuPending=true;
+    try{const state=await request("/api/mcu/"+action,data);renderMCU(state);
+    }catch(error){toast(error.message,true);text("mcu-message",error.message);}
+    finally{mcuPending=false;void pollMCU();}
+  }
+  async function pollMCU(){
+    clearTimeout(mcuTimer);if(mcuClosed)return;
+    try{if(!mcuPending)renderMCU(await request("/api/mcu/status"));}catch{renderMCU({connected:false});text("mcu-message","MCU 通道暂不可用，请确认已加载最新上位机服务。");}
+    if(!mcuClosed)mcuTimer=setTimeout(pollMCU,1000);
+  }
+  $("mcu-refresh").addEventListener("click",async()=>{
+    try{const result=await request("/api/mcu/ports");$("mcu-port").replaceChildren(...result.ports.map(p=>{
+      const option=document.createElement("option");option.value=p.port;option.textContent=`${p.port} · ${p.description}`;return option;}));
+      if(!result.ports.length)text("mcu-message","未发现串口。MCU 通道已预留，接入后刷新并手动连接。");
+      void pollMCU();
+    }catch(error){toast(error.message,true);}
+  });
+  $("mcu-port").addEventListener("change",()=>void pollMCU());
+  $("mcu-connect").addEventListener("click",()=>mcuAction("connect",{port:$("mcu-port").value}));
+  for(const button of document.querySelectorAll("[data-mcu]"))button.addEventListener("click",()=>{
+    const action=button.dataset.mcu;
+    // Native step validation rejects off-grid targets without silently rounding.
+    if(action==="move"&&(!$("mcu-pitch").reportValidity()||!$("mcu-yaw").reportValidity()))return;
+    void mcuAction(action,action==="move"?{pitch:Number($("mcu-pitch").value),yaw:Number($("mcu-yaw").value)}:{});
+  });
+  window.addEventListener("pagehide",()=>{mcuClosed=true;clearTimeout(mcuTimer);});void pollMCU();
+
   // Optional WebMCP surface: the same visible actions and receiver state.
   const toolLifetime=new AbortController();
   function registerWorkbenchTools(){

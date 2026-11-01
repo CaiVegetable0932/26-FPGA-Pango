@@ -30,6 +30,38 @@ def until(predicate, seconds=4):
 
 
 class WebTests(unittest.TestCase):
+    def test_mcu_async_zero_http_lifecycle_and_token(self):
+        """Exercise the real HTTP route with a fragmented simulated MCU UART."""
+        from test_mcu_control import Device
+        device = Device()
+        device.defer_zero = True
+        self.server.mcu.factory = lambda **options: device
+        code, _, state = self.call('POST', '/api/mcu/connect', {'port': 'simulated-f4'})
+        self.assertEqual(code, 200)
+        self.assertTrue(state['connected'])
+        code, _, _ = self.call('POST', '/api/mcu/zero', {}, headers={'X-Pango-Token': ''})
+        self.assertEqual(code, 403)
+        self.assertNotIn(0x4a, [cmd for cmd, _ in device.requests])
+        code, _, state = self.call('POST', '/api/mcu/zero', {})
+        self.assertEqual(code, 200)
+        self.assertEqual(state['zero_operation']['status'], 'pending')
+        code, _, _ = self.call('POST', '/api/mcu/move', {'pitch': 3, 'yaw': 0})
+        self.assertEqual(code, 400)
+        # The final result arrives on the original transaction while the worker
+        # is renewing the lease; the next status GET must expose completion.
+        import struct
+        import mcu_pose_v2 as wire
+        control = self.server.mcu
+        with control.lock:
+            device.output.extend(wire.encode(0x80, control.zero_pending['seq'],
+                struct.pack('<QIBBH', 42, control.session, 0x4a, 0, 0) +
+                struct.pack('<Iii', 2, 0, 0)))
+        until(lambda: self.call('GET', '/api/mcu/status')[2].get('zero_operation', {}).get('status') == 'completed')
+        self.assertIn(0x4c, [cmd for cmd, _ in device.requests])
+        code, _, state = self.call('POST', '/api/mcu/disconnect', {})
+        self.assertEqual(code, 200)
+        self.assertFalse(state['connected'])
+
     def test_preview_clock_exchange_and_bounded_delivery_status(self):
         # Read-only diagnostics must share host timestamps without authorizing
         # FPGA frame identity, changing receiver state, or writing an archive.

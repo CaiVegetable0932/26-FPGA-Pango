@@ -19,6 +19,7 @@ from .calibration import CalibrationStore
 from .board_link import BoardLink
 from .board_autoload import BoardAutoLoader
 from .preview_delivery import PreviewDelivery
+from .mcu_control import MCUControl
 from .preview_socket import accept_key, read_message, write_message, Duplex, SocketProtocolError
 
 ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.html","text/html; charset=utf-8"),
@@ -68,6 +69,8 @@ class LocalServer(ThreadingHTTPServer):
         self.session = session or WebSession()
         # One coordinator owns commissioning and receiver restarts across tabs.
         self.board_link = BoardLink(self.session)
+        # Independent MCU UART and control lease.
+        self.mcu = MCUControl()
         # One opt-in background owner restores parameters without a live page.
         self.board_autoload = BoardAutoLoader(self.board_link)
         # Purpose: serialize CPU-heavy image analysis independently of live UDP reception.
@@ -96,6 +99,7 @@ class LocalServer(ThreadingHTTPServer):
     def server_close(self):
         """Revoke background serial work before releasing the HTTP listener."""
         self.board_autoload.close()
+        self.mcu.close()
         super().server_close()
 
     def process_request(self, request, address):
@@ -271,6 +275,11 @@ class Handler(BaseHTTPRequestHandler):
             if route.lstrip("/") in ASSETS and not route.startswith("//"):
                 filename, kind = ASSETS[route.lstrip("/")]
                 return self._send(200,(HOST_ROOT/"web"/filename).read_bytes(),kind)
+            if route == "/api/mcu/status":
+                return self._json(200, self.server.mcu.status())
+            if route == "/api/mcu/ports":
+                from serial.tools import list_ports
+                return self._json(200, dict(ports=[dict(port=p.device, description=p.description) for p in list_ports.comports()]))
             if route == "/api/health":
                 return self._json(200, instance_identity())
             if route == "/api/clock":
@@ -401,6 +410,19 @@ class Handler(BaseHTTPRequestHandler):
                 raise SessionError("请求必须是JSON对象")
             route = urlsplit(self.path).path
             session = self.server.session
+            # Existing origin/token validation also protects MCU motion controls.
+            if route.startswith('/api/mcu/'):
+                action = route.rsplit('/', 1)[-1]
+                allowed = {'connect': {'port'}, 'move': {'pitch', 'yaw'}, 'home': set(), 'zero': set(), 'read': set(), 'disconnect': set()}
+                if action not in allowed or set(data) != allowed[action]:
+                    raise ValueError('MCU 请求字段不正确')
+                if action == 'connect':
+                    profile = self.server.board_link.status().get('profile', {})
+                    return self._json(200, self.server.mcu.connect(data['port'], profile.get('port')))
+                if action == 'disconnect':
+                    self.server.mcu.close()
+                    return self._json(200, self.server.mcu.status())
+                return self._json(200, self.server.mcu.action(action, data))
             # Board startup is asynchronous, keeping frame/status HTTP responsive.
             if route == "/api/board/start":
                 self.server.board_autoload.resume()
