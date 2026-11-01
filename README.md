@@ -56,3 +56,10 @@ git commit -m "docs: 更新设计文档入口"
 ```
 
 默认主分支为 `main`，功能使用短期分支。首次提交是文档与管理配置基线，不代表可运行的硬件版本。已配置 GitHub 远程仓库 origin；日常推送、标签备份及换机恢复见 [GitHub 云端备份](docs/GitHub云端备份.md)。
+
+
+## DE FPGA baseline (2026-11-01)
+
+当前main的FPGA设计选择DE（PG2L100H，PDS2022.2-SP6.4）。冻结327源及匹配MAP/PLC位于`fpga/release/DE_20261031`；功能/SYN/MAP已验证，布线及真实时序尚未通过，不能烧录。不包含G/H2/Q32/DMA或boot后续候选。
+
+参见[DE main发布说明](fpga/reports/DE_main发布说明_20261101.md)。

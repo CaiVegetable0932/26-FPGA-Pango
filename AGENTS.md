@@ -1,3 +1,5 @@
+> 2026-11-01 main FPGA基线更新：用户明确选择DE发布到最新main。fpga/release/DE_20261031/inputs/source为327源权威；顶层相应源逐字节匹配，不含G/H2/Q32/DMA/boot后续候选。37592LUT/41960FF/154APM/71.5DRM/1275distRAM，SYN/MAP通过但未布通，无真实STA或可烧录位流。主机端保留main现有更新，本次未重新验证其与DE的整机联调。只发布，不自动PnR或下载。旧release文档为历史记录，最新说明优先。
+
 # 项目工作约定
 
 ## 开发内容的落点

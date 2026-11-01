@@ -1,0 +1,100 @@
+{
+  "passed": true,
+  "checked_at": "2026-10-31T20:00:36.296911+08:00",
+  "candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\DE_optimization_20261031\\candidate",
+  "candidate_manifest_sha256": "9a1e99432c9b866fb570df6f30259a4e73c3b86b6d9af521fb311c1f61fc5e78",
+  "candidate_source_count": 327,
+  "only_change_vs_BE": "rtl/control/raw_pose_solver.sv",
+  "solver_ports_unchanged": true,
+  "differential": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\pose_mount_operand_20261031\\proof_121639_363188",
+    "result_sha256": "47f2913411e9e4d4b89e1b2f1a1b3ddad1278ae20883d389480d1831aa38139b",
+    "cases": 161,
+    "added_cycles": 0,
+    "source_manifest_sha256": "c294de2409e3d2bff7b76d5e52fbb10c890a904bce199fa15d3d65da69646e6a",
+    "oracle_path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\fpga_pose_20261029\\proof_120314_211800",
+    "vector_sha256": "eafed02a3e86422878b2f26f917ef2f124b451c9c24c7e25be070aec7def731d"
+  },
+  "reset": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\verification_20261031\\D_rod_reset_162529_891630",
+    "result_sha256": "84107f4c8f44907069efa267bfd642ed112095bc3f4c1476c3e8e8719bc35e3f",
+    "unique_cases": 54
+  },
+  "video": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261031_151216_378724",
+    "result_sha256": "119ca369973986857d415afeb6237fb62c71686308f9784994d26ddae7e819da",
+    "source_manifest_sha256": "a1832d09f4f4222cb9c01e50e3e6bf5c8ca88b173f1b430e574fac1379524b3c",
+    "source_count": 94,
+    "rtl_count": 92,
+    "identical_rtl_count": 91,
+    "all_video_rtl_matches": false,
+    "unused_source_differences": [
+      "rtl/control/raw_pose_solver.sv"
+    ],
+    "unused_module_occurrences": {
+      "raw_pose_solver": [
+        [
+          "rtl/control/pc_raw_pose_control.sv",
+          3769
+        ],
+        [
+          "rtl/control/raw_pose_solver.sv",
+          30
+        ]
+      ],
+      "pc_raw_pose_control": [
+        [
+          "rtl/control/pc_raw_pose_control.sv",
+          29
+        ]
+      ]
+    },
+    "all_elaborated_video_rtl_matches": true,
+    "solver_instantiated": false,
+    "reused_exact_bytes": true,
+    "fresh_video_run": false,
+    "new_frames": 3,
+    "repeated_frames": 5,
+    "checked_pixels": 16588800,
+    "underflow": 0
+  },
+  "integration": [
+    {
+      "top": "tb_pc_raw_pose",
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\DE_optimization_20261031\\integration_200036_298911\\tb_pc_raw_pose",
+      "phases": [
+        {
+          "phase": "compile",
+          "returncode": 0
+        },
+        {
+          "phase": "run",
+          "returncode": 0
+        }
+      ],
+      "passed": true,
+      "summary": "PC_RAW_POSE_PASS serial_replies=19 raw_updates=2 invalid_result_cycles=3454 retry_bad_crc_stale_xyz_invalid_config=checked\nD:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\DE_optimization_20261031\\integration_200036_298911\\tb_pc_raw_pose\\source\\sim\\tb_pc_raw_pose.sv:118: $finish called at 1518384000 (1ps)\n",
+      "source_manifest_sha256": "1d82f49818829ffd444762b0b465a815d8888422f240667ecf2e42ff8d155b00"
+    },
+    {
+      "top": "tb_raw_pose_geometry",
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\DE_optimization_20261031\\integration_200036_298911\\tb_raw_pose_geometry",
+      "phases": [
+        {
+          "phase": "compile",
+          "returncode": 0
+        },
+        {
+          "phase": "run",
+          "returncode": 0
+        }
+      ],
+      "passed": true,
+      "summary": "RAW_POSE_GEOMETRY_CASE_PASS frame=0 curve=0 mode=0 valid=1651 invalid=694 fractional=1651 moved=1651 wrong_post=0 wrong_double=0 refills=15/15 stalls=876/1453\nRAW_POSE_GEOMETRY_CASE_PASS frame=1 curve=0 mode=1 valid=1651 invalid=694 fractional=1651 moved=1651 wrong_post=1636 wrong_double=1651 refills=15/15 stalls=867/1460\nRAW_POSE_GEOMETRY_CASE_PASS frame=2 curve=1 mode=1 valid=1651 invalid=694 fractional=1651 moved=1651 wrong_post=0 wrong_double=0 refills=15/15 stalls=873/1457\nRAW_POSE_GEOMETRY_CASE_PASS frame=3 curve=2 mode=1 valid=1651 invalid=694 fractional=1651 moved=1651 wrong_post=1636 wrong_double=1651 refills=15/15 stalls=885/1455\nRAW_POSE_GEOMETRY_PASS frames=4 pixels_per_instance=9380 compared_outputs=18760 nonzero_k1_k2_p1_p2=1\nD:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\DE_optimization_20261031\\integration_200036_298911\\tb_raw_pose_geometry\\source\\sim\\tb_raw_pose_geometry.sv:226: $finish called at 304376000 (1ps)\n",
+      "source_manifest_sha256": "b07cab54a43a1ce91313ac936780933358f4d20254fa9803cd3b9a1cacdb94e3"
+    }
+  ],
+  "hardware_tested": false,
+  "physical_signoff": false,
+  "candidate_still_intact": true
+}

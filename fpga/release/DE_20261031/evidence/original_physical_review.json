@@ -1,0 +1,138 @@
+{
+  "parent": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261031_201436_865573",
+  "scope": {
+    "id": "gray_DE_verified_pnr_20261031_203121",
+    "build": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\gray_DE_verified_pnr_20261031_203121",
+    "options": {
+      "stop_after_timing": true,
+      "monitor_only": false,
+      "from_placement": false,
+      "pnr_timeout_minutes": 90,
+      "phase_timeout_minutes": 95,
+      "placement_seed": 7,
+      "placement_decongestion": 2,
+      "mode": "normal",
+      "control_chain_length": 500,
+      "congestion_iterations": 200,
+      "dump_congestion": true,
+      "logic_optimize": "enabled",
+      "lut6d_strategy": 3,
+      "cell_duplication": "enabled",
+      "macro_placement": null,
+      "planning_before_place": true,
+      "installed_pnr_help": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\route_optimization\\placement_planning_20261021\\installed_pnr_help.log",
+      "pin_cost_increasing_speed": null,
+      "pause_file": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\gray_DE_verified_pnr_20261031_203121\\stop_requested.json"
+    },
+    "files": {
+      "sources.json": "9a1e99432c9b866fb570df6f30259a4e73c3b86b6d9af521fb311c1f61fc5e78",
+      "flow.tcl": "bdb010685014a343fc621551fd9a91f84d74c738cf5963622ea46d05d5e41bb6",
+      "flow.pds": "19a90f163ae2a6d53df9113fa2602f5ca08a0651760945a2c3af678cd6f50a40",
+      "device_map/pango_video_system_map.adf": "da77d588ac5ca93b22884eb8b4581148b475caaf7560e56309520b61cd01a333",
+      "device_map/pango_video_system.dmr": "59b4068d874dda048a98e56241215a20fb5561f975340cd3643537a73f4e4614",
+      "device_map/pango_video_system.pcf": "c2937b7c4549881d0d0d8ff61f2456e3a6cba7b6eafaa98cfda895ab89610693",
+      "synthesize/pango_video_system_syn.adf": "350ab3ff08664dcb378e9e61045ad7829f7267e949e13eb9fa2f26fb14606363",
+      "synthesize/pango_video_system.snr": "5a6268ea97cc2ee53aa31e6ebd80e8ef66de1a2e8588eee64134b9e56e225ca4",
+      "result.json": "76de49566d8a92e926fb0dbb71a4e08ee9faa1a66262103e962ff367acedba82"
+    }
+  },
+  "constraints": {
+    "constraint_check": {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261031_201436_865573\\constraint_check\\constraint_check.ccr",
+      "available": true,
+      "summary_valid": true,
+      "errors": 0,
+      "critical_warnings": 33,
+      "warnings": 0,
+      "constraint_count": 1042,
+      "diagnostic_counts": {
+        "ConstraintEditor-2002": 33
+      },
+      "diagnostics": [
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 121)] | Port mem_dq[1] has been placed at location J6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 143)] | Port mem_dq[3] has been placed at location L8, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 165)] | Port mem_dq[5] has been placed at location K7, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 187)] | Port mem_dq[7] has been placed at location J5, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 198)] | Port mem_dq[8] has been placed at location H6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 220)] | Port mem_dq[10] has been placed at location H8, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 231)] | Port mem_dq[11] has been placed at location D6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 242)] | Port mem_dq[12] has been placed at location G8, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 253)] | Port mem_dq[13] has been placed at location E6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 275)] | Port mem_dq[15] has been placed at location G6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 462)] | Port mem_dm[0] has been placed at location K6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 486)] | Port mem_dqs[0] has been placed at location J4, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 497)] | Port mem_dqs[1] has been placed at location H7, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 530)] | Port mem_dqs_n[0] has been placed at location H4, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/ddr_board_pins.fdc(line number: 541)] | Port mem_dqs_n[1] has been placed at location G7, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 108)] | Port phy_reset_n has been placed at location G25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 135)] | Port hdmi_data_p[0] has been placed at location R25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 140)] | Port hdmi_data_p[1] has been placed at location P23, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 145)] | Port hdmi_data_p[2] has been placed at location N23, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 150)] | Port hdmi_data_n[0] has been placed at location P25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 155)] | Port hdmi_data_n[1] has been placed at location P24, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 160)] | Port hdmi_data_n[2] has been placed at location N24, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 170)] | Port camera_href has been placed at location T25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 180)] | Port camera_scl has been placed at location P19, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 185)] | Port camera_sda has been placed at location R20, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 190)] | Port camera_reset_n has been placed at location T22, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 195)] | Port camera_data[0] has been placed at location M24, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 200)] | Port camera_data[1] has been placed at location R22, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 205)] | Port camera_data[2] has been placed at location K26, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 210)] | Port camera_data[3] has been placed at location K25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 215)] | Port camera_data[4] has been placed at location M25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 220)] | Port camera_data[5] has been placed at location N19, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261031_200204_931096/source/constraints/video_system/board_pins.fdc(line number: 230)] | Port camera_data[7] has been placed at location R21, whose type is share pin."
+      ],
+      "requires_review": true,
+      "sha256": "d2bb9ba2d278d938f35e65dad06ec8cce401229d65e70ac12bd9820160f3099a"
+    },
+    "verified_logs": [
+      {
+        "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261031_201436_865573\\console.log",
+        "sha256": "93b774bdfd5de6b7d79af762a534ec4874a16c66e21acb5bd25625c79db5261e"
+      }
+    ],
+    "postsyn_constraint_gate": {
+      "required": true,
+      "consumed": true,
+      "command_count": 10,
+      "scf_path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261031_201436_865573\\source\\constraints\\video_system\\reset_fsm_postsyn.scf",
+      "scf_sha256": "d42f6175bc1ff60df52b1636e95a6375c90a5e2b7adec8b61c17bd5c2565295e",
+      "dmr_path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261031_201436_865573\\device_map\\pango_video_system.dmr",
+      "dmr_sha256": "59b4068d874dda048a98e56241215a20fb5561f975340cd3643537a73f4e4614",
+      "physical_timing_signed_off": false
+    },
+    "no_known_unmatched_timing_paths": true,
+    "physical_timing_signed_off": false
+  },
+  "mapped": {
+    "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261031_201436_865573\\device_map\\pango_video_system.dmr",
+    "report_sha256": "59b4068d874dda048a98e56241215a20fb5561f975340cd3643537a73f4e4614",
+    "device_lut_capacity": 66600,
+    "strict_limit_exclusive": 66601,
+    "total_lut": 37592,
+    "utilization_percent": 56.44444444444444,
+    "within_device_capacity": true,
+    "artificial_lut_limit_enabled": false,
+    "below_70_percent": true,
+    "needed_reduction_for_strict_limit": 0,
+    "evidence_stage": "native MAP, before placement/routing"
+  },
+  "planning_help_sha256": "3f45291a3ffc71b84230737a9790669bfeb578153726437425f129006c9cfecc",
+  "native_review": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\DE_optimization_20261031\\native_review.json",
+  "proof_sha256": "394c0479b99905369ef3644e598293a386fe2b2b7993d5f9120b990638e8d7d0",
+  "hardware_files_matched": 310,
+  "scripts": {
+    "resume_video_system.py": "654ab85ba06e769c1bff2639447a6b8ca1ebb7b67117db389f5269b1fbde52f7",
+    "route_supervisor.py": "6546653fed0a4d12d651d11958700c0d882a65867f33f5189bcf304c8a0ce8d6",
+    "implementation_readiness.py": "f03cdfa56760126c80936fd7d01b1a373657eae27c6eebf061ddfb1a23ccbac0",
+    "constraint_report.py": "059eed6ce8af6cdb142300282c7a269354f5113be03b86c525552c19d7fb1eba",
+    "native_bitgen.py": "84e33e6c591bd03071d41f18bcf0f39e154a53e56e74c77a496829b7b31d335a",
+    "launch_verified_de_route.py": "095c878c1a081551a521c667748a01b8c7c5379d7ebc8d164aaadfdf272365bd"
+  },
+  "selection": "DE is validated for a physical trial; improved routability is not yet proven.",
+  "user_instruction": "启动验证",
+  "native_launched": false,
+  "bitstream_allowed": false,
+  "residual_timing": "DDR hold requires routed min/max STA; no timing relaxation applied."
+}

@@ -1,0 +1,15 @@
+{
+  "map_loaded_exact_two_commands": true,
+  "only_exact_commands_added": true,
+  "no_downstream_paused_sync_exception": true,
+  "no_STA3015": true,
+  "reported_bad_first_hop_min_paths": [],
+  "commands": [
+    "set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.ready_sync camera_input.active}] -to [get_cells -hierarchical {camera_input.paused_meta}]",
+    "set_false_path -hold -from [get_cells -hierarchical {camera_input.ready_sync camera_input.active}] -to [get_cells -hierarchical {camera_input.paused_meta}]"
+  ],
+  "report_limit": "Synthesis reported paths only; not routed STA signoff",
+  "dmr_sha256": "59b4068d874dda048a98e56241215a20fb5561f975340cd3643537a73f4e4614",
+  "snr_sha256": "5a6268ea97cc2ee53aa31e6ebd80e8ef66de1a2e8588eee64134b9e56e225ca4",
+  "passed": true
+}

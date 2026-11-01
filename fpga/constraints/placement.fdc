@@ -1,8 +1,3 @@
-# Native UCE PAP_REGION coordinates beside the HDMI IOL pairs. Main's shared
-# native I/O clock tree fixes the parallel/serial phase; local reset routing
-# retains full recovery/removal checks without timing exceptions.
-define_global_attribute {PAP_REGION} {hdmi_reset_d0(3,4,61,63)[CLMA,CLMS];hdmi_reset_d1(3,4,65,67)[CLMA,CLMS];hdmi_reset_d2(3,4,69,71)[CLMA,CLMS];hdmi_reset_ck(3,4,73,75)[CLMA,CLMS];}
-define_attribute {i:u_hdmi_tx.g_data_lanes[0].u_data_lane.lane_reset} {PAP_REGION} {hdmi_reset_d0}
-define_attribute {i:u_hdmi_tx.g_data_lanes[1].u_data_lane.lane_reset} {PAP_REGION} {hdmi_reset_d1}
-define_attribute {i:u_hdmi_tx.g_data_lanes[2].u_data_lane.lane_reset} {PAP_REGION} {hdmi_reset_d2}
-define_attribute {i:u_hdmi_tx.u_clock_lane.lane_reset} {PAP_REGION} {hdmi_reset_ck}
+# Purpose: native direct startup pulse has no per-lane local_reset registers.
+# Removed obsolete instance regions; installed PDS places the IOCLKDIV/OSERDES
+# topology natively. DDR placement remains in its unchanged native FDC.
