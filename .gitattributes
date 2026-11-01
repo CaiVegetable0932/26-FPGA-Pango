@@ -1,0 +1,189 @@
+# Normalize text in Git, while preserving binary files automatically.
+* text=auto
+.gitattributes text eol=lf
+.gitignore text eol=lf
+*.md text eol=lf
+*.v text eol=lf
+*.vh text eol=lf
+*.sv text eol=lf
+*.svh text eol=lf
+*.vhd text eol=lf
+*.vhdl text eol=lf
+*.tcl text eol=lf
+*.sdc text eol=lf
+*.fdc text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.pdf binary
+*.xlsx binary
+*.docx binary
+*.png binary
+*.jpg binary
+*.zip binary
+*.rar binary
+*.exe binary
+*.bit binary
+*.bin binary
+*.sbit binary
+fpga/build/full_integration_20261013/placement_timing_20261023_184642_621291/board_20261023_180615_764649/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text
+fpga/build/full_integration_20261013/placement_timing_20261023_201234_324276/board_20261023_192330_969348/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text
+fpga/build/full_integration_20261013/placement_timing_20261025_225251_633423/board_postsyn_20261025_162347_361985/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text
+fpga/build/full_integration_20261013/placement_timing_20261025_225251_633423/board_postsyn_20261025_204448_746627/report_timing/rtr.db filter=lfs diff=lfs merge=lfs -text
+
+# Frozen native inputs and test evidence are SHA-256 bound. Preserve their
+# original bytes on add/checkout, including Windows line endings.
+fpga/build/** -text
+host/build/** -text
+host/reports/pc_only_controls_20261026_131653_825603.json -text
+# These exact entrypoints are also hashed by the portable PC-only review.
+fpga/scripts/resume_video_system.py -text
+fpga/scripts/route_supervisor.py -text
+fpga/scripts/implementation_readiness.py -text
+fpga/scripts/constraint_report.py -text
+fpga/scripts/native_bitgen.py -text
+
+# Preserve exact reviewed input bytes for the source-Gamma candidate.
+"fpga/constraints/ddr_board_pins.fdc" -text
+"fpga/constraints/ddr_native.fdc" -text
+"fpga/constraints/routing.rcf" -text
+"fpga/constraints/video_system/board_pins.fdc" -text
+"fpga/constraints/video_system/clocks_cdc.fdc" -text
+"fpga/constraints/video_system/processing_cdc.fdc" -text
+"fpga/constraints/video_system/reset_fsm_postsyn.scf" -text
+"fpga/model/image_adaptation.py" -text
+"fpga/rtl/board/pango_video_system.sv" -text
+"fpga/rtl/board/video_memory_core.sv" -text
+"fpga/rtl/control/frame_runtime_actions.sv" -text
+"fpga/rtl/control/mcu_readonly_client.sv" -text
+"fpga/rtl/control/parameter_entity_guard.sv" -text
+"fpga/rtl/control/pc_reference_upload.sv" -text
+"fpga/rtl/control/pc_video_boot.sv" -text
+"fpga/rtl/control/pose_affine_model.sv" -text
+"fpga/rtl/control/pose_frame_selector.sv" -text
+"fpga/rtl/control/uart_v2_parser.sv" -text
+"fpga/rtl/geometry/affine_ray_stepper.sv" -text
+"fpga/rtl/geometry/geometry_frame_processor.sv" -text
+"fpga/rtl/geometry/geometry_frame_processor_external_refill.sv" -text
+"fpga/rtl/geometry/geometry_processing_domain.sv" -text
+"fpga/rtl/geometry/geometry_processing_domain_external_refill.sv" -text
+"fpga/rtl/geometry/geometry_rgb_pipeline.sv" -text
+"fpga/rtl/geometry/lens_inverse_map.sv" -text
+"fpga/rtl/geometry/rgb_enhance.sv" -text
+"fpga/rtl/geometry/rgb_tile_cache.sv" -text
+"fpga/rtl/geometry/signed_mult32_pipe.sv" -text
+"fpga/rtl/geometry/signed_mult40_unsigned40_pipe.sv" -text
+"fpga/rtl/geometry/tone_entity_control.sv" -text
+"fpga/rtl/input/camera_brightness_control.sv" -text
+"fpga/rtl/input/camera_frame_cdc.sv" -text
+"fpga/rtl/input/dvp_clock_watchdog.v" -text
+"fpga/rtl/input/dvp_frame_receiver.v" -text
+"fpga/rtl/input/dvp_raw8_fanout.v" -text
+"fpga/rtl/input/ov5640_group_exposure.sv" -text
+"fpga/rtl/input/ov5640_integrated_startup.v" -text
+"fpga/rtl/input/ov5640_raw8_mode.v" -text
+"fpga/rtl/input/ov5640_reference_profile.v" -text
+"fpga/rtl/input/ov5640_register_service.v" -text
+"fpga/rtl/isp/isp_colour_control.sv" -text
+"fpga/rtl/isp/rgb_frame_statistics.sv" -text
+"fpga/rtl/memory/ddr_native_dma.v" -text
+"fpga/rtl/memory/dma_pixel_pack.v" -text
+"fpga/rtl/memory/frame_manager.sv" -text
+"fpga/rtl/memory/frame_manager_layout.vh" -text
+"fpga/rtl/memory/frame_manager_pkg.sv" -text
+"fpga/rtl/memory/frame_memory_fabric.sv" -text
+"fpga/rtl/memory/frame_writer_buffer.sv" -text
+"fpga/rtl/memory/geometry_tile_refill.sv" -text
+"fpga/rtl/mini_camera_diag/vendor/camera/data_init.v" -text
+"fpga/rtl/network/mini_phy_startup.v" -text
+"fpga/rtl/network/raw_frame_tx.sv" -text
+"fpga/rtl/network/raw_network_service.sv" -text
+"fpga/rtl/stabilization/motion_config_bank.sv" -text
+"fpga/rtl/stabilization/motion_trajectory.sv" -text
+"fpga/rtl/stabilization/s1_motion_estimator.sv" -text
+"fpga/rtl/stabilization/source_motion_controller.sv" -text
+"fpga/rtl/video/hdmi_rgb888_tx.v" -text
+"fpga/scripts/sim_camera_apply_cdc.py" -text
+"fpga/sim/ov5640_sccb_model.sv" -text
+"fpga/sim/tb_camera_apply_cdc.sv" -text
+"fpga/sim/tb_image_entities.sv" -text
+"fpga/sim/tb_image_manual_profile.sv" -text
+"fpga/sim/tb_isp_geometry.sv" -text
+"fpga/sim/tb_ov5640_integrated_startup.sv" -text
+"fpga/sim/tb_pc_runtime_control.sv" -text
+"fpga/sim/tb_pc_tone_gateway.sv" -text
+"fpga/sim/tb_video_memory_core.sv" -text
+"fpga/sim/video_core_display_fixture.sv" -text
+"host/reports/fpga_rgb_vectors_20261028_153113_909217.json" -text
+"host/reports/fpga_rgb_vectors_20261028_153113_909217_companions/companion_snapshot_manifest.json" -text
+"host/reports/fpga_rgb_vectors_20261028_153113_909217_companions/host/src/pango_video/fpga_rgb_control.py" -text
+"host/reports/fpga_rgb_vectors_20261028_153113_909217_companions/host/src/pango_video/protocol.py" -text
+"host/reports/fpga_rgb_vectors_20261028_153113_909217_companions/host/src/pango_video/storage.py" -text
+"host/reports/pc_only_controls_20261028_152417_068176.json" -text
+"host/reports/rgb33-calibration-20261010/pinhole_k1_k2_p1_p2.json" -text
+"host/src/pango_video/fpga_algorithms.py" -text
+"host/src/pango_video/fpga_entities.py" -text
+"host/src/pango_video/fpga_rgb_control.py" -text
+"host/src/pango_video/image_entities.py" -text
+"host/src/pango_video/motion_status.py" -text
+"host/src/pango_video/protocol.py" -text
+"host/src/pango_video/storage.py" -text
+"host/src/pango_video/web_launcher.py" -text
+"host/src/pango_video/web_server.py" -text
+"host/src/pango_video/web_session.py" -text
+"host/tests/test_algorithm_entities.py" -text
+"host/tests/test_fpga_algorithms.py" -text
+"host/web/algorithms.js" -text
+
+# PC pose evidence keeps exact tested bytes across Git round trips.
+"host/config/pose_projective.example.json" -text
+"host/src/pango_video/pose_projective.py" -text
+"host/tests/test_pose_projective.py" -text
+"host/scripts/verify_pose_host.py" -text
+"host/src/pango_video/affine_draft.py" -text
+"host/web/algorithms.html" -text
+
+# FPGA raw-pose host codecs retain the exact tested bytes.
+"host/src/pango_video/raw_pose.py" -text
+"host/tests/test_raw_pose.py" -text
+
+# Raw-pose RTL and regression inputs are bound to frozen native/test bytes.
+"fpga/rtl/control/pose_sincos.sv" -text
+"fpga/rtl/control/raw_pose_solver.sv" -text
+"fpga/rtl/control/pc_raw_pose_control.sv" -text
+"fpga/sim/tb_raw_pose_solver.sv" -text
+"fpga/sim/tb_pc_raw_pose.sv" -text
+"fpga/sim/tb_raw_pose_match.sv" -text
+"fpga/sim/tb_raw_pose_geometry.sv" -text
+"fpga/sim/tb_camera_validation_pipeline.sv" -text
+"fpga/sim/tb_pc_camera_validation.sv" -text
+"fpga/scripts/verify_raw_pose.py" -text
+"fpga/scripts/verify_raw_pose_geometry.py" -text
+"fpga/scripts/review_raw_pose.py" -text
+"fpga/scripts/verify_pc_only_control.py" -text
+
+# GH2 portable release: preserve all manifest-bound bytes during checkout.
+fpga/release/gray_GH2_20261101/** -text
+fpga/release/packages/gray_GH2_portable_20261101.zip* -text
+fpga/scripts/portable_gh2.py -text
+fpga/scripts/resume_portable_gh2.py -text
+fpga/scripts/portable_gh2_readiness.py -text
+fpga/scripts/implementation_readiness.py -text
+fpga/scripts/constraint_report.py -text
+fpga/scripts/route_supervisor.py -text
+fpga/constraints/video_system/processing_cdc.fdc -text
+fpga/rtl/control/frame_parameter_bank.sv -text
+fpga/rtl/control/raw_pose_solver.sv -text
+fpga/rtl/memory/dma_write_cdc.sv -text
+fpga/reports/GH2*20261101.md -text
+fpga/reports/PG2L100H_PDS2025_TMDS兼容性定位_20261101.md -text
+
+# All 310 delivered hardware files retain the frozen candidate bytes.
+fpga/rtl/** -text
+fpga/ip/** -text
+fpga/constraints/** -text

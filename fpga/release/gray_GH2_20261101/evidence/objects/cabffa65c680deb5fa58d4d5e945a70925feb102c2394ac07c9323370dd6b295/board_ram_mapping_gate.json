@@ -1,0 +1,146 @@
+{
+  "passed": true,
+  "board_instance": "core/processor/result_bridge",
+  "leaf_module": "dma_write_cdc",
+  "ram_count": 4,
+  "parameters": [
+    {
+      "cell": "payload_0",
+      "ports": {
+        "RAM_MODE": "\"SIMPLE_DUAL_PORT\"",
+        "DATA_WIDTH_A": "72",
+        "DATA_WIDTH_B": "72",
+        "DOA_REG": "0",
+        "DOB_REG": "0",
+        "CLKA": "client_clk",
+        "CLKB": "memory_clk",
+        "CEA": "1'b1",
+        "CEB": "payload_read_enable",
+        "WEA": "N47",
+        "WEB": "1'b0",
+        "ADDRA": "{1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, client_count[3], client_count[2], client_count[1], client_count[0], 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}",
+        "ADDRB": "{1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, payload_read_address[3], payload_read_address[2], payload_read_address[1], payload_read_address[0], 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}",
+        "DOA": "{memory_w_data[3], memory_w_data[2], memory_w_data[1], memory_w_data[0], memory_w_strb[31], memory_w_strb[30], memory_w_strb[29], memory_w_strb[28], memory_w_strb[27], memory_w_strb[26], memory_w_strb[25], memory_w_strb[24], memory_w_strb[23], memory_w_strb[22], memory_w_strb[21], memory_w_strb[20], memory_w_strb[19], memory_w_strb[18], memory_w_strb[17], memory_w_strb[16], memory_w_strb[15], memory_w_strb[14], memory_w_strb[13], memory_w_strb[12], memory_w_strb[11], memory_w_strb[10], memory_w_strb[9], memory_w_strb[8], memory_w_strb[7], memory_w_strb[6], memory_w_strb[5], memory_w_strb[4], memory_w_strb[3], memory_w_strb[2], memory_w_strb[1], memory_w_strb[0]}",
+        "DOB": "{memory_w_data[39], memory_w_data[38], memory_w_data[37], memory_w_data[36], memory_w_data[35], memory_w_data[34], memory_w_data[33], memory_w_data[32], memory_w_data[31], memory_w_data[30], memory_w_data[29], memory_w_data[28], memory_w_data[27], memory_w_data[26], memory_w_data[25], memory_w_data[24], memory_w_data[23], memory_w_data[22], memory_w_data[21], memory_w_data[20], memory_w_data[19], memory_w_data[18], memory_w_data[17], memory_w_data[16], memory_w_data[15], memory_w_data[14], memory_w_data[13], memory_w_data[12], memory_w_data[11], memory_w_data[10], memory_w_data[9], memory_w_data[8], memory_w_data[7], memory_w_data[6], memory_w_data[5], memory_w_data[4]}"
+      }
+    },
+    {
+      "cell": "payload_1",
+      "ports": {
+        "RAM_MODE": "\"SIMPLE_DUAL_PORT\"",
+        "DATA_WIDTH_A": "72",
+        "DATA_WIDTH_B": "72",
+        "DOA_REG": "0",
+        "DOB_REG": "0",
+        "CLKA": "client_clk",
+        "CLKB": "memory_clk",
+        "CEA": "1'b1",
+        "CEB": "payload_read_enable",
+        "WEA": "N47",
+        "WEB": "1'b0",
+        "ADDRA": "{1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, client_count[3], client_count[2], client_count[1], client_count[0], 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}",
+        "ADDRB": "{1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, payload_read_address[3], payload_read_address[2], payload_read_address[1], payload_read_address[0], 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}",
+        "DOA": "{memory_w_data[75], memory_w_data[74], memory_w_data[73], memory_w_data[72], memory_w_data[71], memory_w_data[70], memory_w_data[69], memory_w_data[68], memory_w_data[67], memory_w_data[66], memory_w_data[65], memory_w_data[64], memory_w_data[63], memory_w_data[62], memory_w_data[61], memory_w_data[60], memory_w_data[59], memory_w_data[58], memory_w_data[57], memory_w_data[56], memory_w_data[55], memory_w_data[54], memory_w_data[53], memory_w_data[52], memory_w_data[51], memory_w_data[50], memory_w_data[49], memory_w_data[48], memory_w_data[47], memory_w_data[46], memory_w_data[45], memory_w_data[44], memory_w_data[43], memory_w_data[42], memory_w_data[41], memory_w_data[40]}",
+        "DOB": "{memory_w_data[111], memory_w_data[110], memory_w_data[109], memory_w_data[108], memory_w_data[107], memory_w_data[106], memory_w_data[105], memory_w_data[104], memory_w_data[103], memory_w_data[102], memory_w_data[101], memory_w_data[100], memory_w_data[99], memory_w_data[98], memory_w_data[97], memory_w_data[96], memory_w_data[95], memory_w_data[94], memory_w_data[93], memory_w_data[92], memory_w_data[91], memory_w_data[90], memory_w_data[89], memory_w_data[88], memory_w_data[87], memory_w_data[86], memory_w_data[85], memory_w_data[84], memory_w_data[83], memory_w_data[82], memory_w_data[81], memory_w_data[80], memory_w_data[79], memory_w_data[78], memory_w_data[77], memory_w_data[76]}"
+      }
+    },
+    {
+      "cell": "payload_2",
+      "ports": {
+        "RAM_MODE": "\"SIMPLE_DUAL_PORT\"",
+        "DATA_WIDTH_A": "72",
+        "DATA_WIDTH_B": "72",
+        "DOA_REG": "0",
+        "DOB_REG": "0",
+        "CLKA": "client_clk",
+        "CLKB": "memory_clk",
+        "CEA": "1'b1",
+        "CEB": "payload_read_enable",
+        "WEA": "N47",
+        "WEB": "1'b0",
+        "ADDRA": "{1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, client_count[3], client_count[2], client_count[1], client_count[0], 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}",
+        "ADDRB": "{1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, payload_read_address[3], payload_read_address[2], payload_read_address[1], payload_read_address[0], 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}",
+        "DOA": "{memory_w_data[147], memory_w_data[146], memory_w_data[145], memory_w_data[144], memory_w_data[143], memory_w_data[142], memory_w_data[141], memory_w_data[140], memory_w_data[139], memory_w_data[138], memory_w_data[137], memory_w_data[136], memory_w_data[135], memory_w_data[134], memory_w_data[133], memory_w_data[132], memory_w_data[131], memory_w_data[130], memory_w_data[129], memory_w_data[128], memory_w_data[127], memory_w_data[126], memory_w_data[125], memory_w_data[124], memory_w_data[123], memory_w_data[122], memory_w_data[121], memory_w_data[120], memory_w_data[119], memory_w_data[118], memory_w_data[117], memory_w_data[116], memory_w_data[115], memory_w_data[114], memory_w_data[113], memory_w_data[112]}",
+        "DOB": "{memory_w_data[183], memory_w_data[182], memory_w_data[181], memory_w_data[180], memory_w_data[179], memory_w_data[178], memory_w_data[177], memory_w_data[176], memory_w_data[175], memory_w_data[174], memory_w_data[173], memory_w_data[172], memory_w_data[171], memory_w_data[170], memory_w_data[169], memory_w_data[168], memory_w_data[167], memory_w_data[166], memory_w_data[165], memory_w_data[164], memory_w_data[163], memory_w_data[162], memory_w_data[161], memory_w_data[160], memory_w_data[159], memory_w_data[158], memory_w_data[157], memory_w_data[156], memory_w_data[155], memory_w_data[154], memory_w_data[153], memory_w_data[152], memory_w_data[151], memory_w_data[150], memory_w_data[149], memory_w_data[148]}"
+      }
+    },
+    {
+      "cell": "payload_3",
+      "ports": {
+        "RAM_MODE": "\"SIMPLE_DUAL_PORT\"",
+        "DATA_WIDTH_A": "72",
+        "DATA_WIDTH_B": "72",
+        "DOA_REG": "0",
+        "DOB_REG": "0",
+        "CLKA": "client_clk",
+        "CLKB": "memory_clk",
+        "CEA": "1'b1",
+        "CEB": "payload_read_enable",
+        "WEA": "N47",
+        "WEB": "1'b0",
+        "ADDRA": "{1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, client_count[3], client_count[2], client_count[1], client_count[0], 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}",
+        "ADDRB": "{1'b1, 1'b0, 1'b0, 1'b0, 1'b0, 1'b0, payload_read_address[3], payload_read_address[2], payload_read_address[1], payload_read_address[0], 1'b1, 1'b1, 1'b1, 1'b1, 1'b1, 1'b1}",
+        "DOA": "{memory_w_data[219], memory_w_data[218], memory_w_data[217], memory_w_data[216], memory_w_data[215], memory_w_data[214], memory_w_data[213], memory_w_data[212], memory_w_data[211], memory_w_data[210], memory_w_data[209], memory_w_data[208], memory_w_data[207], memory_w_data[206], memory_w_data[205], memory_w_data[204], memory_w_data[203], memory_w_data[202], memory_w_data[201], memory_w_data[200], memory_w_data[199], memory_w_data[198], memory_w_data[197], memory_w_data[196], memory_w_data[195], memory_w_data[194], memory_w_data[193], memory_w_data[192], memory_w_data[191], memory_w_data[190], memory_w_data[189], memory_w_data[188], memory_w_data[187], memory_w_data[186], memory_w_data[185], memory_w_data[184]}",
+        "DOB": "{memory_w_data[255], memory_w_data[254], memory_w_data[253], memory_w_data[252], memory_w_data[251], memory_w_data[250], memory_w_data[249], memory_w_data[248], memory_w_data[247], memory_w_data[246], memory_w_data[245], memory_w_data[244], memory_w_data[243], memory_w_data[242], memory_w_data[241], memory_w_data[240], memory_w_data[239], memory_w_data[238], memory_w_data[237], memory_w_data[236], memory_w_data[235], memory_w_data[234], memory_w_data[233], memory_w_data[232], memory_w_data[231], memory_w_data[230], memory_w_data[229], memory_w_data[228], memory_w_data[227], memory_w_data[226], memory_w_data[225], memory_w_data[224], memory_w_data[223], memory_w_data[222], memory_w_data[221], memory_w_data[220]}"
+      }
+    }
+  ],
+  "read_ce_truth": {
+    "passed": true,
+    "states": {
+      "mstate[0]": 0,
+      "mstate[1]": 1,
+      "mstate[2]": 2
+    },
+    "values_for_codes_0_to_7": [
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "expected": [
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "code_meaning": {
+      "2": "M_LOAD",
+      "3": "M_SEND"
+    },
+    "cone": {
+      "payload_read_enable": {
+        "cell": "N290_3",
+        "type": "GTP_LUT6D",
+        "init": "64'b0000000000000000111111110000000000000000000000000000000000000110",
+        "inputs": [
+          "request_sync",
+          "response_toggle",
+          "mstate[0]",
+          "mstate[1]",
+          "mstate[2]",
+          "1'b1"
+        ]
+      }
+    },
+    "limitation": "Requires original binary mstate bit identity; recoded or unknown forms stop before MAP."
+  },
+  "resolved_write_clock": "processing_clk",
+  "resolved_read_clock": "ddr_clk",
+  "data_strobe_output_bits": 288,
+  "no_fabric_payload_or_read_q": true,
+  "limitation": "SYN structural mapping proof, not MAP/PnR timing or physical collision signoff",
+  "vm": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401\\synthesize\\pango_video_system_syn.vm",
+  "vm_sha256": "6d49e138c9ef4679c6d2c9c75c069423bed1ca4773d0d2111d7aa711ddff11d9",
+  "status": "BOARD_RAM_AND_STATE_SEMANTICS_VERIFIED",
+  "independent_fsm_review_sha256": "aee1fc9c3c62e8b669cc0badcae0b4d900e91a8fd0af033b26ab2896e93f8885",
+  "physical_signoff": false
+}

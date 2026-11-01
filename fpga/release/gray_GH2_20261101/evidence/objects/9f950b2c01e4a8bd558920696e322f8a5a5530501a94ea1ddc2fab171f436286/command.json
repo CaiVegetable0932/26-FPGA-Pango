@@ -1,0 +1,23 @@
+[
+  "C:\\Users\\ROG\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+  "-B",
+  "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\scripts\\sim_video_verilator.py",
+  "--rtl-snapshot",
+  "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\candidate\\source",
+  "--fixture-snapshot",
+  "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261031_151216_378724\\source",
+  "--full-frame",
+  "--board-manual-profile",
+  "--source-gamma",
+  "--projective",
+  "--fixed-gray",
+  "--control-test",
+  "--display-test",
+  "--stop-to-update",
+  "--build-jobs",
+  "2",
+  "--run-timeout-seconds",
+  "2400",
+  "--pause-file",
+  "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\full_video\\stop_requested.json"
+]

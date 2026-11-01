@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "source_parent": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\DE_optimization_20261031\\candidate",
+  "source_changes": [
+    "rtl/control/frame_parameter_bank.sv"
+  ],
+  "native_started": false,
+  "physical_signoff": false,
+  "hardware_tested": false,
+  "affected_integrations": [
+    {
+      "top": "tb_reference_canonical_bank",
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\G_integration\\tb_reference_canonical_bank",
+      "passed": true,
+      "sources_sha256": "0d80d77fadcb5b968430cf886c9a06be4ee2334229499b911a8b3df383c93fbe",
+      "summary": "REFERENCE_CANONICAL_BANK_PASS malformed=9 valid_commits=2\r\nD:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\G_integration\\tb_reference_canonical_bank\\source\\sim\\tb_reference_canonical_bank.sv:71: $finish called at 3888000 (1ps)"
+    },
+    {
+      "top": "tb_pc_raw_pose",
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\G_integration\\tb_pc_raw_pose",
+      "passed": true,
+      "sources_sha256": "0efab148c909559730624eba6ffd0719d922dc8afe6cee5c43737fd1172394ca",
+      "summary": "PC_RAW_POSE_PASS serial_replies=19 raw_updates=2 invalid_result_cycles=3454 retry_bad_crc_stale_xyz_invalid_config=checked\r\nD:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\G_integration\\tb_pc_raw_pose\\source\\sim\\tb_pc_raw_pose.sv:118: $finish called at 1518384000 (1ps)"
+    }
+  ],
+  "unit_proof": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\proof_211314_112467",
+  "candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\G_integration\\candidate",
+  "candidate_manifest_sha256": "be0f5d7e12b9b47d9011816e6ae9edd101b1640172460839802486a04b93d22a",
+  "source_count": 327,
+  "unit_result_sha256": "e13d7ac70f9dd5fd02254b02e3e8659f15eeed05ce26a7ec2d9fcef0b3fb9e96",
+  "full_video": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261031_213226_828962",
+    "fresh_run": true,
+    "result_sha256": "d76ecb96fe48cc9994cf5f8bd1f8ed497fec4241dbaf3da99187099f6bf762b4",
+    "sources_sha256": "bd3a2267f0575d9b8048aa309331266787bf59dc714a37b078e8cdc7bc0a8186",
+    "rtl_matched": 92,
+    "new_frames": 3,
+    "repeated_frames": 5,
+    "checked_pixels": 16588800,
+    "underflow": 0
+  },
+  "solver_note": "DE solver RTL unchanged; bank consumer tested through real UART fixture; no unrelated solver differential rerun.",
+  "checked_at": "2026-10-31T21:41:19.737518+08:00"
+}

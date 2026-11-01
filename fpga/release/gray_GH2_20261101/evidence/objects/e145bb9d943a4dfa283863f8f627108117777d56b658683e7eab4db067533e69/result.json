@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "full_frame": true,
+  "network_test": false,
+  "rtl_snapshot": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\candidate\\source",
+  "control_test": true,
+  "history_test": false,
+  "motion_test": null,
+  "hardware_tested": false,
+  "board_integrated": false,
+  "compiler": "Verilator 5.052 / GCC 13.1.0",
+  "build_jobs": 2,
+  "fixture_snapshot": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261031_151216_378724\\source",
+  "display_test": true,
+  "board_manual_profile": true,
+  "source_gamma": true,
+  "fixed_gray": true,
+  "stop_to_update": true,
+  "projective": true,
+  "run_timeout_seconds": 2400,
+  "proof_phases": [
+    {
+      "phase": "configure",
+      "at": "2026-11-01T02:18:14.949670+00:00",
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 16.84299999999348,
+      "pid": 48560
+    },
+    {
+      "phase": "build",
+      "at": "2026-11-01T02:19:58.565499+00:00",
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 103.60999999998603,
+      "pid": 27024
+    },
+    {
+      "phase": "run",
+      "at": "2026-11-01T02:29:40.294426+00:00",
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 581.7340000000258,
+      "pid": 61844
+    }
+  ],
+  "snapshot_intact": true
+}

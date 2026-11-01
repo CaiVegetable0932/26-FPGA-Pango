@@ -1,0 +1,143 @@
+# Internal timing candidate. Camera 100 MHz is a conservative analysis
+# budget, not measured PCLK or external electrical signoff.
+create_clock -name clk_27m -period 37.037037 [get_ports clk_27m]
+create_clock -name camera_pclk_budget -period 10.0 [get_ports camera_pclk]
+create_clock -name rgmii_rx_clk -period 8.0 [get_ports rgmii_rxc]
+create_generated_clock -name serial_clk -source [get_ports clk_27m] -multiply_by 55 -divide_by 4 [get_pins {u_video_pll.u_gpll/CLKOUT1}]
+create_generated_clock -name pixel_clk [get_pins {u_hdmi_pixel_div/CLKDIVOUT}]
+# Global business clock inherits the real divider waveform. Data from global
+# encoders to regional OSERDES remains a related clock path, never false-pathed.
+create_generated_clock -name pixel_logic_clk -source [get_pins {u_hdmi_pixel_div/CLKDIVOUT}] -divide_by 1 [get_pins {u_pixel_global/CLKOUT}]
+set_false_path -from [get_ports reset_n]
+# One-time divider/OSERDES startup pulse; no pixel data exception.
+set_false_path -from [get_cells -hierarchical {u_video_start.divider_reset_n}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {u_video_start.start_count*}] -to [get_cells -hierarchical {u_video_start.pixel_ready_meta}]
+set_false_path -hold -from [get_cells -hierarchical {u_video_start.start_count*}] -to [get_cells -hierarchical {u_video_start.pixel_ready_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {u_video_start.rs_ref.stages*}] -to [get_cells -hierarchical {u_video_start.pixel_ready_meta u_video_start.pixel_stages*}]
+set_false_path -hold -from [get_cells -hierarchical {u_video_start.rs_ref.stages*}] -to [get_cells -hierarchical {u_video_start.pixel_ready_meta u_video_start.pixel_stages*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.fabric.dma.fault core.fabric.logic_fault}] -to [get_cells -hierarchical {processing_safety.fault_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.fabric.dma.fault core.fabric.logic_fault}] -to [get_cells -hierarchical {processing_safety.fault_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {core.scheduler.processed_frames*}] -to [get_cells -hierarchical {activity_meta}]
+set_false_path -hold -from [get_cells -hierarchical {core.scheduler.processed_frames*}] -to [get_cells -hierarchical {activity_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display.reader.running display.reader.full*}] -to [get_cells -hierarchical {urgent_meta}]
+set_false_path -hold -from [get_cells -hierarchical {display.reader.running display.reader.full*}] -to [get_cells -hierarchical {urgent_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.start_toggle}] -to [get_cells -hierarchical {camera_input.start_meta}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.start_toggle}] -to [get_cells -hierarchical {camera_input.start_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.end_toggle}] -to [get_cells -hierarchical {camera_input.end_meta}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.end_toggle}] -to [get_cells -hierarchical {camera_input.end_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.acknowledge}] -to [get_cells -hierarchical {camera_input.ack_meta}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.acknowledge}] -to [get_cells -hierarchical {camera_input.ack_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.raw_bad}] -to [get_cells -hierarchical {camera_input.raw_bad_meta}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.raw_bad}] -to [get_cells -hierarchical {camera_input.raw_bad_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.isp_bad}] -to [get_cells -hierarchical {camera_input.isp_bad_meta}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.isp_bad}] -to [get_cells -hierarchical {camera_input.isp_bad_meta}]
+# Only the registered SCCB-ready level participates in this synchronizer;
+# matching the entire startup hierarchy also selected unrelated table LUT pins.
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_init.ready}] -to [get_cells -hierarchical {camera_input.ready_meta}]
+set_false_path -hold -from [get_cells -hierarchical {camera_init.ready}] -to [get_cells -hierarchical {camera_input.ready_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {boot.epoch*}] -to [get_cells -hierarchical {camera_input.epoch_local*}]
+set_false_path -hold -from [get_cells -hierarchical {boot.epoch*}] -to [get_cells -hierarchical {camera_input.epoch_local*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.start_held*}] -to [get_cells -hierarchical {camera_input.start_local*}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.start_held*}] -to [get_cells -hierarchical {camera_input.start_local*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.end_held*}] -to [get_cells -hierarchical {camera_input.end_local*}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.end_held*}] -to [get_cells -hierarchical {camera_input.end_local*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_context.offer_toggle}] -to [get_cells -hierarchical {display_context.offer_meta}]
+set_false_path -hold -from [get_cells -hierarchical {display_context.offer_toggle}] -to [get_cells -hierarchical {display_context.offer_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_context.offer_ack}] -to [get_cells -hierarchical {display_context.offer_ack_meta}]
+set_false_path -hold -from [get_cells -hierarchical {display_context.offer_ack}] -to [get_cells -hierarchical {display_context.offer_ack_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_context.release_toggle}] -to [get_cells -hierarchical {display_context.release_meta}]
+set_false_path -hold -from [get_cells -hierarchical {display_context.release_toggle}] -to [get_cells -hierarchical {display_context.release_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_context.release_ack}] -to [get_cells -hierarchical {display_context.release_ack_meta}]
+set_false_path -hold -from [get_cells -hierarchical {display_context.release_ack}] -to [get_cells -hierarchical {display_context.release_ack_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_context.offer_held*}] -to [get_cells -hierarchical {display_context.offer_local*}]
+set_false_path -hold -from [get_cells -hierarchical {display_context.offer_held*}] -to [get_cells -hierarchical {display_context.offer_local*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_context.release_held*}] -to [get_cells -hierarchical {display_context.memory_release_*}]
+set_false_path -hold -from [get_cells -hierarchical {display_context.release_held*}] -to [get_cells -hierarchical {display_context.memory_release_*}]
+# Atomic board scanout identity readback uses the same bounded held-bus
+# handshake as the existing frame context. Only first-stage crossings receive
+# exceptions; ordinary pixel/DDR register paths retain their native clocks.
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {displayed_status_cdc.request_toggle}] -to [get_cells -hierarchical {displayed_status_cdc.req_meta}]
+set_false_path -hold -from [get_cells -hierarchical {displayed_status_cdc.request_toggle}] -to [get_cells -hierarchical {displayed_status_cdc.req_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {displayed_status_cdc.ack_toggle}] -to [get_cells -hierarchical {displayed_status_cdc.ack_meta}]
+set_false_path -hold -from [get_cells -hierarchical {displayed_status_cdc.ack_toggle}] -to [get_cells -hierarchical {displayed_status_cdc.ack_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {displayed_status_cdc.held*}] -to [get_cells -hierarchical {displayed_status_cdc.snapshot*}]
+set_false_path -hold -from [get_cells -hierarchical {displayed_status_cdc.held*}] -to [get_cells -hierarchical {displayed_status_cdc.snapshot*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_dma.request_toggle}] -to [get_cells -hierarchical {display_dma.request_meta}]
+set_false_path -hold -from [get_cells -hierarchical {display_dma.request_toggle}] -to [get_cells -hierarchical {display_dma.request_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_dma.free_toggle}] -to [get_cells -hierarchical {display_dma.free_meta}]
+set_false_path -hold -from [get_cells -hierarchical {display_dma.free_toggle}] -to [get_cells -hierarchical {display_dma.free_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_dma.cancel_held}] -to [get_cells -hierarchical {display_dma.cancel_meta}]
+set_false_path -hold -from [get_cells -hierarchical {display_dma.cancel_held}] -to [get_cells -hierarchical {display_dma.cancel_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_dma.response_toggle}] -to [get_cells -hierarchical {display_dma.response_meta}]
+set_false_path -hold -from [get_cells -hierarchical {display_dma.response_toggle}] -to [get_cells -hierarchical {display_dma.response_meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_dma.descriptor_held*}] -to [get_cells -hierarchical {display_dma.memory_req_*}]
+set_false_path -hold -from [get_cells -hierarchical {display_dma.descriptor_held*}] -to [get_cells -hierarchical {display_dma.memory_req_*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {display_dma.status_held*}] -to [get_cells -hierarchical {display_dma.done_tag* display_dma.error display_dma.cancelled display_dma.read_count*}]
+set_false_path -hold -from [get_cells -hierarchical {display_dma.status_held*}] -to [get_cells -hierarchical {display_dma.done_tag* display_dma.error display_dma.cancelled display_dma.read_count*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {rx_bridge.published*}] -to [get_cells -hierarchical {rx_bridge.publish_meta*}]
+set_false_path -hold -from [get_cells -hierarchical {rx_bridge.published*}] -to [get_cells -hierarchical {rx_bridge.publish_meta*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {rx_bridge.acknowledged*}] -to [get_cells -hierarchical {rx_bridge.ack_meta*}]
+set_false_path -hold -from [get_cells -hierarchical {rx_bridge.acknowledged*}] -to [get_cells -hierarchical {rx_bridge.ack_meta*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {rx_bridge.lengths*}] -to [get_cells -hierarchical {rx_bridge.read_length*}]
+set_false_path -hold -from [get_cells -hierarchical {rx_bridge.lengths*}] -to [get_cells -hierarchical {rx_bridge.read_length*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {watchdog.activity*}] -to [get_cells -hierarchical {watchdog.meta}]
+set_false_path -hold -from [get_cells -hierarchical {watchdog.activity*}] -to [get_cells -hierarchical {watchdog.meta}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.raw_queue.write_gray*}] -to [get_cells -hierarchical {camera_input.raw_queue.write_meta*}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.raw_queue.write_gray*}] -to [get_cells -hierarchical {camera_input.raw_queue.write_meta*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.raw_queue.read_gray*}] -to [get_cells -hierarchical {camera_input.raw_queue.read_meta*}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.raw_queue.read_gray*}] -to [get_cells -hierarchical {camera_input.raw_queue.read_meta*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.isp_queue.write_gray*}] -to [get_cells -hierarchical {camera_input.isp_queue.write_meta*}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.isp_queue.write_gray*}] -to [get_cells -hierarchical {camera_input.isp_queue.write_meta*}]
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.isp_queue.read_gray*}] -to [get_cells -hierarchical {camera_input.isp_queue.read_meta*}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.isp_queue.read_gray*}] -to [get_cells -hierarchical {camera_input.isp_queue.read_meta*}]
+set_max_delay 6.0 -datapath_only -from [get_ports uart_rx] -to [get_cells -hierarchical {boot.uart.rx_meta}]
+set_false_path -hold -from [get_ports uart_rx] -to [get_cells -hierarchical {boot.uart.rx_meta}]
+# PC-only board profile removes the MCU receiver and its first synchronizer.
+# Remove only these absent endpoints; PC UART and all active CDC remain timed
+# by their existing constraints. The physical MCU RX pin is unused.
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {boot.configured}] -to [get_cells -hierarchical {camera_input.ready_meta}]
+set_false_path -hold -from [get_cells -hierarchical {boot.configured}] -to [get_cells -hierarchical {camera_input.ready_meta}]
+set_max_delay 6.0 -datapath_only -to [get_cells -hierarchical {processing_safety.health_meta}]
+set_false_path -hold -to [get_cells -hierarchical {processing_safety.health_meta}]
+
+# Asynchronous reset assertion into synchronous release chains; only named
+# reset-request source registers to these chains, never inter-stage data.
+set_false_path -from [get_cells -hierarchical {processing_safety.fault_latched processing_safety.memory_armed I_ips_ddr_top.u_ddrphy_top.ddrphy_dfi.dfi_init_complete}] -to [get_cells -hierarchical {rs_processing.stages* rs_camera_control.stages* rs_core.stages* rs_camera.stages* rs_pixel.stages* rs_rx.stages* phy_io.rs_tx_io.stages* phy_io.rs_rx_io.stages* I_ips_ddr_top.u_ddrc_rstn_sync.sig_async_r*}]
+
+# Cold-fault sources are monotonic 0->1 until external reset: for fixed health,
+# joint_reset_n = external_reset_n & video_lock & !fault_latched &
+# (!memory_armed | health) can only stay or assert low for either transition.
+# Their 1->0 reset transitions are masked by external_reset_n=0. Therefore
+# these two sources cannot RELEASE the native phase-adjust async clear.
+# Restrict the first exception to that module's elaborated C pins; never
+# exempt data/enable/clock paths, health/lock/ready sources or the whole IP.
+# UCE installed guide printed pp86/106 permits get_pins endpoints. Proof and
+# production 7-case reset regression: reset_removal_review_20261023_190203_079224.
+# New native CCR must verify the pins match; this is not a claim that the old
+# placement report's 19 failing physical endpoints have been enumerated.
+set_false_path -from [get_cells -hierarchical {processing_safety.fault_latched processing_safety.memory_armed}] -to [get_pins -hierarchical {I_ips_ddr_top.u_ddrphy_top.u_ips2l_ddrphy_rst_clk_phase_adj.*/C}]
+# ADS recodes the three elaborated FSM bits into five post-synthesis FFs.
+# A frontend cell endpoint selects D, not asynchronous C/P, and loses this
+# intended exception. The exact two-source/five-C/P supplement is therefore
+# registered as reset_fsm_postsyn.scf and consumed only by MAP. It preserves
+# all clocks and other exceptions; do not broaden this to the FSM data pins.
+# Installed UCE p10 and User Guide p208-209, plus native positive/negative
+# MAP probes under mcu_link_20261023/post_syn_reset_overlay, define this flow.
+
+# sys_pll OUT1 uses the existing 125MHz differential reference. The global
+# buffer inherits its exact waveform; no clock domain is broadly false-pathed.
+create_generated_clock -name processing_pll_clk -source [get_ports ref_clk_p] -multiply_by 6 -divide_by 5 [get_pins {u_processing_pll.u_gpll/CLKOUT1}]
+create_generated_clock -name processing_clk -source [get_pins {u_processing_pll.u_gpll/CLKOUT1}] -divide_by 1 [get_pins {u_processing_global/CLKOUT}]
+
+# Fixed-gray board has no runtime camera policy/mailbox consumer. The generic
+# camera input still preserves paused_meta/paused_sync even when its quiesced
+# output is unused. Bound only this PCLK-to-DDR first synchronizer hop; the
+# paused_meta -> paused_sync DDR path retains ordinary setup/hold analysis.
+# User Guide 2022.2-SP6.4 printed p202 defines -datapath_only CDC max bounds;
+# the explicit hold exception follows the other first-hop pairs in this file.
+set_max_delay 6.0 -datapath_only -from [get_cells -hierarchical {camera_input.ready_sync camera_input.active}] -to [get_cells -hierarchical {camera_input.paused_meta}]
+set_false_path -hold -from [get_cells -hierarchical {camera_input.ready_sync camera_input.active}] -to [get_cells -hierarchical {camera_input.paused_meta}]
+# Retired policy/mailbox endpoint exceptions remain removed. Commissioning
+# still crosses DDR to PCLK through ready_meta; retain its first-hop bound.
+set_max_delay 6.0 -datapath_only -from [get_clocks {ddrphy_sysclk}] -to [get_cells -hierarchical {camera_input.ready_meta}]
+set_false_path -hold -from [get_clocks {ddrphy_sysclk}] -to [get_cells -hierarchical {camera_input.ready_meta}]

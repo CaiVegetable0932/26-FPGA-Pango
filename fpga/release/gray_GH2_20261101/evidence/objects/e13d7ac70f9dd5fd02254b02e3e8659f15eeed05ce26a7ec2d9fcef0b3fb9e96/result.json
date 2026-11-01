@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "native_started": false,
+  "live_rtl_modified": false,
+  "tests": [
+    "PARAMETER_CE_PASS WIDTH=512 checks=40024 accepts=6845 commits=1588 rejects=5246 stalls=3248 resets=81\r\nD:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\proof_211314_112467\\source\\tb_parameter_ce.sv:109: $finish called at 200130000 (1ps)",
+    "PARAMETER_CE_PASS WIDTH=544 checks=40024 accepts=6750 commits=1588 rejects=5148 stalls=3156 resets=81\r\nD:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\proof_211314_112467\\source\\tb_parameter_ce.sv:109: $finish called at 200130000 (1ps)"
+  ],
+  "inputs_intact": true
+}

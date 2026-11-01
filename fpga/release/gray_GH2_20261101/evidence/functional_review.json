@@ -1,0 +1,140 @@
+{
+  "candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\candidate",
+  "candidate_manifest_sha256": "65f8ad8e8fa86b5169c15d3ec3b0549a6ba938ce0544099515c1d3f1d564333f",
+  "source_count": 327,
+  "changes_vs_DE": [
+    "rtl/control/frame_parameter_bank.sv",
+    "rtl/memory/dma_write_cdc.sv",
+    "constraints/video_system/processing_cdc.fdc"
+  ],
+  "parent_proofs": {
+    "G": {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\G_integration\\functional_review.json",
+      "sha256": "761f81cade1e6b79403ec69e19a5aa7b0afd508d9b9b513591d47185058c53af",
+      "sources_sha256": "be0f5d7e12b9b47d9011816e6ae9edd101b1640172460839802486a04b93d22a"
+    },
+    "H2": {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\functional_review.json",
+      "sha256": "6cb2e70814cbd07e7fc1b140035c1f251abf8e4ea88b33a9fd58670d828c566f",
+      "sources_sha256": "9f25508ac4ad4bff29c1d30cc1a42121b92431024dec325e6b3cb6d1d7cda80f",
+      "unit_cases": 538,
+      "unit_beats": 3199,
+      "immediate_reuses": 180,
+      "constraint_adaptation": {
+        "removed_commands": [
+          "set_max_delay 6.0 -datapath_only -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]",
+          "set_false_path -hold -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]"
+        ],
+        "processing_cdc_sha256": "378c5af5fd8dc75f9c9ee1f6969c3b8716649459d715b2d35b8b150ba79fa78f",
+        "no_new_or_broadened_commands": true,
+        "full_board_topology_gate_required": true
+      }
+    }
+  },
+  "reused_unit_proofs": {
+    "G": {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\proof_211314_112467",
+      "exact_bank_bytes": true,
+      "rerun": false
+    },
+    "H2": {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\proof_224708_192296",
+      "exact_bridge_bytes": true,
+      "rerun": false
+    }
+  },
+  "reused_consumers": [
+    {
+      "top": "tb_reference_canonical_bank",
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\G_integration\\tb_reference_canonical_bank",
+      "rtl_matched": [
+        "rtl/control/affine_reference_guard.sv",
+        "rtl/control/frame_parameter_bank.sv"
+      ],
+      "sources_sha256": "0d80d77fadcb5b968430cf886c9a06be4ee2334229499b911a8b3df383c93fbe",
+      "reused": true,
+      "rerun": false
+    },
+    {
+      "top": "tb_pc_raw_pose",
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\G_integration\\tb_pc_raw_pose",
+      "rtl_matched": [
+        "rtl/control/pose_sincos.sv",
+        "rtl/control/raw_pose_solver.sv",
+        "rtl/control/pc_raw_pose_control.sv",
+        "rtl/control/frame_parameter_bank.sv",
+        "rtl/control/parameter_entity_guard.sv",
+        "rtl/control/pc_video_boot.sv",
+        "rtl/control/pc_reference_upload.sv",
+        "rtl/control/uart_8n1.sv",
+        "rtl/control/uart_v2_parser.sv",
+        "rtl/geometry/signed_mult32_pipe.sv"
+      ],
+      "sources_sha256": "0efab148c909559730624eba6ffd0719d922dc8afe6cee5c43737fd1172394ca",
+      "reused": true,
+      "rerun": false
+    }
+  ],
+  "constraint_adaptation": {
+    "removed_commands": [
+      "set_max_delay 6.0 -datapath_only -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]",
+      "set_false_path -hold -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]"
+    ],
+    "processing_cdc_sha256": "378c5af5fd8dc75f9c9ee1f6969c3b8716649459d715b2d35b8b150ba79fa78f",
+    "no_new_or_broadened_commands": true,
+    "full_board_topology_gate_required": true
+  },
+  "full_video": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261101_101757_763943",
+    "fresh_run": true,
+    "source_count": 94,
+    "new_frames": 3,
+    "repeated_frames": 5,
+    "checked_pixels": 16588800,
+    "underflow": 0,
+    "old_frame_and_drain_passed": true,
+    "actual_configuration": {
+      "command_sha256": "9f950b2c01e4a8bd558920696e322f8a5a5530501a94ea1ddc2fab171f436286",
+      "cmake_sha256": "18cd9b184c71da6ba9c862aac5c85615b74c6ce0a09af8a4b4947314164139fe",
+      "top": "tb_video_memory_core",
+      "parameters": {
+        "WIDTH": "1920",
+        "HEIGHT": "1080",
+        "CONTROL_TEST": "1",
+        "DISPLAY_TEST": "1",
+        "BOARD_MANUAL_PROFILE": "1",
+        "STOP_TO_UPDATE": "1",
+        "PROJECTIVE": "1",
+        "GRAYSCALE_FIXED": "1",
+        "SOURCE_GAMMA": "1"
+      },
+      "source_membership_verified": true
+    },
+    "result_sha256": "e145bb9d943a4dfa283863f8f627108117777d56b658683e7eab4db067533e69",
+    "sources_sha256": "ce1efbb4d5217a5613add430cdde6e5679d8e7437ec65871cd0ae699c7f8f030"
+  },
+  "bound_evidence": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\candidate\\sources.json": "65f8ad8e8fa86b5169c15d3ec3b0549a6ba938ce0544099515c1d3f1d564333f",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\G_integration\\functional_review.json": "761f81cade1e6b79403ec69e19a5aa7b0afd508d9b9b513591d47185058c53af",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\functional_review.json": "6cb2e70814cbd07e7fc1b140035c1f251abf8e4ea88b33a9fd58670d828c566f",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\G_integration\\netlist_review.json": "9ca70a7d1580dd163b4a1412a9e8a90b54c60c55de247504cdccee656ab6994d",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\final_review_20261101\\final_review.json": "4d69aed2cc930a1c17f6deb9420048c8e4b1d79ac5883df2186b53735bf63910",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\proof_211314_112467\\result.json": "e13d7ac70f9dd5fd02254b02e3e8659f15eeed05ce26a7ec2d9fcef0b3fb9e96",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\parameter_ce_20261031\\proof_211314_112467\\sources.json": "7b6f9f6f3251709314ad6e0846389c5e4c2350b7b77c41c9d6a0f0d1af1ed488",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\proof_224708_192296\\result.json": "fd785c3bfdc082b02e504bfef66840ee6055c66d661d079c0778d395ac41b03f",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\proof_224708_192296\\sources.json": "2a96eb8f9c4aa686d9c44b1a8d501bbc798046ea6de40e7f6fd9d1d61e4da8e7",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261101_101757_763943\\result.json": "e145bb9d943a4dfa283863f8f627108117777d56b658683e7eab4db067533e69",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261101_101757_763943\\sources.json": "ce1efbb4d5217a5613add430cdde6e5679d8e7437ec65871cd0ae699c7f8f030",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261101_101757_763943\\run.log": "5f925edc51138f03a0ce1b7a0b648d355f5b1816ac4a83a77636c553e77e37d7",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261101_101757_763943\\CMakeLists.txt": "18cd9b184c71da6ba9c862aac5c85615b74c6ce0a09af8a4b4947314164139fe",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\full_video\\command.json": "9f950b2c01e4a8bd558920696e322f8a5a5530501a94ea1ddc2fab171f436286",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\full_video\\state.json": "a684c2f2e66a2510d42456d9d4d12cd682ae40f9182dac2970539f40f4716f08"
+  },
+  "solver_note": "DE solver bytes unchanged; exact G UART consumer dependencies reused. Full-video top does not instantiate the UART solver.",
+  "native_board_RAM_FSM_and_CE_gate_required": true,
+  "physical_signoff": false,
+  "promoted": false,
+  "routing_started": false,
+  "passed": true,
+  "checked_at": "2026-11-01T10:30:19.544221+08:00"
+}

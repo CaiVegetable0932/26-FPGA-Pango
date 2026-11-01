@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "adaptation": {
+    "removed_commands": [
+      "set_max_delay 6.0 -datapath_only -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]",
+      "set_false_path -hold -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]"
+    ],
+    "processing_cdc_sha256": "378c5af5fd8dc75f9c9ee1f6969c3b8716649459d715b2d35b8b150ba79fa78f",
+    "no_new_or_broadened_commands": true,
+    "full_board_topology_gate_required": true
+  },
+  "all_remaining_processing_commands_loaded": true,
+  "no_new_ram_module_or_clock_exceptions": true,
+  "board_ram_gate_sha256": "cabffa65c680deb5fa58d4d5e945a70925feb102c2394ac07c9323370dd6b295",
+  "dmr_sha256": "e8c8198f55e7d65985746b2871473eb937ba012bac820cc1eed5d2ae5fc5aa13",
+  "normal_RAM_address_CE_and_consumer_timing_retained": true,
+  "physical_signoff": false
+}

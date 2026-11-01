@@ -1,0 +1,156 @@
+{
+  "passed": true,
+  "source": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\experiments\\write_cdc_owned_read_20261031",
+  "output": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\proof_224708_192296",
+  "scenarios": [
+    {
+      "suite": "unit",
+      "client_half": 3.333,
+      "memory_half": 4,
+      "memory_phase": 0.7,
+      "phases": [
+        {
+          "stage": "compile",
+          "returncode": 0
+        },
+        {
+          "stage": "run",
+          "returncode": 0
+        }
+      ],
+      "summary": "DMA_WRITE_CAPTURE_PASS cases=71 requests=71 beats=536 errors=5 cancels=4 stalls=151 first_stalls=35\r\nH2_OWNERSHIP_PASS write_edges=652 read_edges=757 disabled_edges=2238 ack_reuse=0 collect_checks=1307\r\nH_DIFF_PASS client=3597 memory=2995 valid_payload=687\r\ntb_write_single_read.sv:254: $finish called at 24440700 (1ps)\r\n"
+    },
+    {
+      "suite": "unit",
+      "client_half": 4,
+      "memory_half": 3.333,
+      "memory_phase": 1.1,
+      "phases": [
+        {
+          "stage": "compile",
+          "returncode": 0
+        },
+        {
+          "stage": "run",
+          "returncode": 0
+        }
+      ],
+      "summary": "DMA_WRITE_CAPTURE_PASS cases=71 requests=71 beats=536 errors=5 cancels=4 stalls=100 first_stalls=20\r\nH2_OWNERSHIP_PASS write_edges=652 read_edges=707 disabled_edges=2963 ack_reuse=0 collect_checks=1307\r\nH_DIFF_PASS client=3057 memory=3670 valid_payload=636\r\ntb_write_single_read.sv:254: $finish called at 24998600 (1ps)\r\n"
+    },
+    {
+      "suite": "unit",
+      "client_half": 2.7,
+      "memory_half": 6.1,
+      "memory_phase": 0.3,
+      "phases": [
+        {
+          "stage": "compile",
+          "returncode": 0
+        },
+        {
+          "stage": "run",
+          "returncode": 0
+        }
+      ],
+      "summary": "DMA_WRITE_CAPTURE_PASS cases=71 requests=71 beats=536 errors=5 cancels=4 stalls=103 first_stalls=35\r\nH2_OWNERSHIP_PASS write_edges=652 read_edges=709 disabled_edges=1472 ack_reuse=0 collect_checks=1307\r\nH_DIFF_PASS client=4937 memory=2181 valid_payload=639\r\ntb_write_single_read.sv:254: $finish called at 27145300 (1ps)\r\n"
+    },
+    {
+      "suite": "unit",
+      "client_half": 6.1,
+      "memory_half": 2.7,
+      "memory_phase": 2.1,
+      "phases": [
+        {
+          "stage": "compile",
+          "returncode": 0
+        },
+        {
+          "stage": "run",
+          "returncode": 0
+        }
+      ],
+      "summary": "DMA_WRITE_CAPTURE_PASS cases=71 requests=71 beats=536 errors=5 cancels=4 stalls=110 first_stalls=30\r\nH2_OWNERSHIP_PASS write_edges=652 read_edges=717 disabled_edges=5077 ack_reuse=0 collect_checks=1307\r\nH_DIFF_PASS client=2566 memory=5794 valid_payload=646\r\ntb_write_single_read.sv:254: $finish called at 31970100 (1ps)\r\n"
+    },
+    {
+      "suite": "unit",
+      "client_half": 4,
+      "memory_half": 4,
+      "memory_phase": 0.37,
+      "phases": [
+        {
+          "stage": "compile",
+          "returncode": 0
+        },
+        {
+          "stage": "run",
+          "returncode": 0
+        }
+      ],
+      "summary": "DMA_WRITE_CAPTURE_PASS cases=71 requests=71 beats=536 errors=5 cancels=4 stalls=133 first_stalls=41\r\nH2_OWNERSHIP_PASS write_edges=652 read_edges=739 disabled_edges=2570 ack_reuse=0 collect_checks=1307\r\nH_DIFF_PASS client=3309 memory=3309 valid_payload=669\r\ntb_write_single_read.sv:254: $finish called at 26992370 (1ps)\r\n"
+    },
+    {
+      "suite": "edge",
+      "client_half": 0.7,
+      "memory_half": 6.1,
+      "memory_phase": 0.3,
+      "phases": [
+        {
+          "stage": "compile",
+          "returncode": 0
+        },
+        {
+          "stage": "run",
+          "returncode": 0
+        }
+      ],
+      "summary": "H_EDGE_PASS cases=61 requests=61 beats=173 reuse_while_ack=60 zero_normal=4 zero_error=4 last_with_done=16\r\nH2_OWNERSHIP_PASS write_edges=205 read_edges=234 disabled_edges=406 ack_reuse=167 collect_checks=410\r\nH_DIFF_PASS client=5581 memory=640 valid_payload=173\r\ntb_write_edge_cases.sv:241: $finish called at 7851200 (1ps)\r\n"
+    },
+    {
+      "suite": "edge",
+      "client_half": 1.1,
+      "memory_half": 7.3,
+      "memory_phase": 0.7,
+      "phases": [
+        {
+          "stage": "compile",
+          "returncode": 0
+        },
+        {
+          "stage": "run",
+          "returncode": 0
+        }
+      ],
+      "summary": "H_EDGE_PASS cases=61 requests=61 beats=173 reuse_while_ack=60 zero_normal=4 zero_error=4 last_with_done=16\r\nH2_OWNERSHIP_PASS write_edges=205 read_edges=234 disabled_edges=453 ack_reuse=168 collect_checks=410\r\nH_DIFF_PASS client=4563 memory=687 valid_payload=173\r\ntb_write_edge_cases.sv:241: $finish called at 10084800 (1ps)\r\n"
+    },
+    {
+      "suite": "edge",
+      "client_half": 1.7,
+      "memory_half": 8.1,
+      "memory_phase": 1.1,
+      "phases": [
+        {
+          "stage": "compile",
+          "returncode": 0
+        },
+        {
+          "stage": "run",
+          "returncode": 0
+        }
+      ],
+      "summary": "H_EDGE_PASS cases=61 requests=61 beats=173 reuse_while_ack=60 zero_normal=4 zero_error=4 last_with_done=16\r\nH2_OWNERSHIP_PASS write_edges=205 read_edges=234 disabled_edges=485 ack_reuse=127 collect_checks=410\r\nH_DIFF_PASS client=3431 memory=719 valid_payload=173\r\ntb_write_edge_cases.sv:241: $finish called at 11733400 (1ps)\r\n"
+    }
+  ],
+  "native_started": false,
+  "live_modified": false,
+  "h1_evidence_modified": false,
+  "coverage": [
+    "same_538_cases_as_H1",
+    "no_reads_during_client_collection",
+    "source_write_never_overlaps_read_enable",
+    "disabled_read_result_stable",
+    "immediate_one_beat_reuse_while_memory_ack",
+    "m_load_zero_beat_normal_and_error_completion",
+    "last_beat_same_edge_completion"
+  ],
+  "inputs_intact": true
+}

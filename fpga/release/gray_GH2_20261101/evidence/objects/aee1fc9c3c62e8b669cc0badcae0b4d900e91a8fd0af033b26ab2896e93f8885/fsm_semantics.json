@@ -1,0 +1,381 @@
+{
+  "passed": true,
+  "vm_sha256": "6d49e138c9ef4679c6d2c9c75c069423bed1ca4773d0d2111d7aa711ddff11d9",
+  "leaf_module": "dma_write_cdc",
+  "assignments": 2097152,
+  "checked_assignments": 1721344,
+  "semantics": "All legal FSM states and binary inputs; SEND requires 1..16 beats and index<length; reset checked for every code",
+  "parent_predicates": {
+    "passed": true,
+    "guards": [
+      {
+        "leaf_port": "N254",
+        "net": "top/core:fabric/N3992",
+        "true_only_in_codes": [
+          2,
+          3,
+          4
+        ],
+        "requires_cancel_zero": false,
+        "assignments": 128,
+        "unconstrained_parent_inputs": [
+          "top/core/fabric:state[3][0]",
+          "top/core/fabric:state[3][1]",
+          "top/core/fabric:state[3][2]"
+        ],
+        "leaf_boundaries": {
+          "top/core/fabric:state[3][2]": {
+            "reason": "parent_FF_Q",
+            "cell": "state[3][2]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric:state[3][1]": {
+            "reason": "parent_FF_Q",
+            "cell": "state[3][1]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric:state[3][0]": {
+            "reason": "parent_FF_Q",
+            "cell": "state[3][0]",
+            "primitive": "GTP_DFF_CE"
+          }
+        },
+        "cone": {
+          "top/core:fabric/N3992": {
+            "cell": {
+              "type": "GTP_LUT6",
+              "name": "N3992_3",
+              "ports": {
+                "INIT": "64'b0000000000000000000000000000000000000000000000000001110000000000",
+                "Z": "N3992",
+                "I0": "\\core/processor/result_bridge/mstate [0]",
+                "I1": "\\core/processor/result_bridge/mstate [1]",
+                "I2": "\\core/processor/result_bridge/mstate [2]",
+                "I3": "\\state[3] [2]",
+                "I4": "\\state[3] [1]",
+                "I5": "\\state[3] [0]"
+              }
+            },
+            "output_port": "Z",
+            "lut_width": 6
+          }
+        }
+      },
+      {
+        "leaf_port": "N588",
+        "net": "top/core:fabric/N3905",
+        "true_only_in_codes": [
+          1
+        ],
+        "requires_cancel_zero": false,
+        "assignments": 2048,
+        "unconstrained_parent_inputs": [
+          "top/core/fabric:state[1][0]",
+          "top/core/fabric:state[1][1]",
+          "top/core/fabric:state[1][2]",
+          "top/core/fabric:state[3][0]",
+          "top/core/fabric:state[3][1]",
+          "top/core/fabric:state[3][2]",
+          "top:core/fabric/N3215"
+        ],
+        "leaf_boundaries": {
+          "top/core/fabric:state[3][2]": {
+            "reason": "parent_FF_Q",
+            "cell": "state[3][2]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric:state[3][1]": {
+            "reason": "parent_FF_Q",
+            "cell": "state[3][1]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric:state[3][0]": {
+            "reason": "parent_FF_Q",
+            "cell": "state[3][0]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric:state[1][2]": {
+            "reason": "parent_FF_Q",
+            "cell": "state[1][2]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric:state[1][1]": {
+            "reason": "parent_FF_Q",
+            "cell": "state[1][1]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric:state[1][0]": {
+            "reason": "parent_FF_Q",
+            "cell": "state[1][0]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top:core/fabric/N3215": {
+            "reason": "declared_parent_input",
+            "local_net": "N3215"
+          }
+        },
+        "cone": {
+          "top/core:fabric/N3905": {
+            "cell": {
+              "type": "GTP_LUT6D",
+              "name": "N2920",
+              "ports": {
+                "INIT": "64'b0000000000000011000000000000000010101010101010100000000000000000",
+                "Z": "req_ready[1]",
+                "Z5": "N3905",
+                "I0": "_N225468",
+                "I1": "\\state[1] [2]",
+                "I2": "\\state[1] [1]",
+                "I3": "\\state[1] [0]",
+                "I4": "N3215",
+                "I5": "1'b1"
+              }
+            },
+            "output_port": "Z5",
+            "lut_width": 5
+          },
+          "top/core/fabric:_N225468": {
+            "cell": {
+              "type": "GTP_LUT6",
+              "name": "N3905_3",
+              "ports": {
+                "INIT": "64'b0000000000000000000000000000000000000000000000000000000000000010",
+                "Z": "_N225468",
+                "I0": "\\core/processor/result_bridge/mstate [0]",
+                "I1": "\\core/processor/result_bridge/mstate [1]",
+                "I2": "\\core/processor/result_bridge/mstate [2]",
+                "I3": "\\state[3] [2]",
+                "I4": "\\state[3] [1]",
+                "I5": "\\state[3] [0]"
+              }
+            },
+            "output_port": "Z",
+            "lut_width": 6
+          }
+        }
+      },
+      {
+        "leaf_port": "core/fabric/dma/N490_3",
+        "net": "top/core:fabric/dma/N490_3",
+        "true_only_in_codes": [
+          3
+        ],
+        "requires_cancel_zero": true,
+        "assignments": 1048576,
+        "unconstrained_parent_inputs": [
+          "top/core/fabric/dma:beats[3][0]",
+          "top/core/fabric/dma:beats[3][1]",
+          "top/core/fabric/dma:beats[3][2]",
+          "top/core/fabric/dma:beats[3][3]",
+          "top/core/fabric/dma:beats[3][4]",
+          "top/core/fabric/dma:done[3]",
+          "top/core/fabric/dma:is_write[3]",
+          "top/core/fabric/dma:loaded[3][0]",
+          "top/core/fabric/dma:loaded[3][1]",
+          "top/core/fabric/dma:loaded[3][2]",
+          "top/core/fabric/dma:loaded[3][3]",
+          "top/core/fabric/dma:loaded[3][4]",
+          "top/core/fabric:N3976",
+          "top/core/fabric:N3980",
+          "top/core/fabric:dma_aborted[3]_floating",
+          "top/core:fabric_dma/pending[3]_floating"
+        ],
+        "leaf_boundaries": {
+          "top/core/fabric/dma:is_write[3]": {
+            "reason": "parent_FF_Q",
+            "cell": "is_write[3]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric:dma_aborted[3]_floating": {
+            "reason": "parent_FF_Q",
+            "cell": "aborted[3]",
+            "primitive": "GTP_DFF_C"
+          },
+          "top/core:fabric_dma/pending[3]_floating": {
+            "reason": "parent_FF_Q",
+            "cell": "pending[3]",
+            "primitive": "GTP_DFF_C"
+          },
+          "top/core/fabric/dma:done[3]": {
+            "reason": "parent_FF_Q",
+            "cell": "done[3]",
+            "primitive": "GTP_DFF_C"
+          },
+          "top/core/fabric:N3980": {
+            "reason": "declared_parent_input",
+            "local_net": "N1524"
+          },
+          "top/core/fabric:N3976": {
+            "reason": "declared_parent_input",
+            "local_net": "N479"
+          },
+          "top/core/fabric/dma:beats[3][3]": {
+            "reason": "parent_FF_Q",
+            "cell": "beats[3][3]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric/dma:beats[3][4]": {
+            "reason": "parent_FF_Q",
+            "cell": "beats[3][4]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric/dma:loaded[3][3]": {
+            "reason": "parent_FF_Q",
+            "cell": "loaded[3][3]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric/dma:loaded[3][4]": {
+            "reason": "parent_FF_Q",
+            "cell": "loaded[3][4]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric/dma:beats[3][0]": {
+            "reason": "parent_FF_Q",
+            "cell": "beats[3][0]",
+            "primitive": "GTP_DFF_PE"
+          },
+          "top/core/fabric/dma:beats[3][1]": {
+            "reason": "parent_FF_Q",
+            "cell": "beats[3][1]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric/dma:beats[3][2]": {
+            "reason": "parent_FF_Q",
+            "cell": "beats[3][2]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric/dma:loaded[3][0]": {
+            "reason": "parent_FF_Q",
+            "cell": "loaded[3][0]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric/dma:loaded[3][1]": {
+            "reason": "parent_FF_Q",
+            "cell": "loaded[3][1]",
+            "primitive": "GTP_DFF_CE"
+          },
+          "top/core/fabric/dma:loaded[3][2]": {
+            "reason": "parent_FF_Q",
+            "cell": "loaded[3][2]",
+            "primitive": "GTP_DFF_CE"
+          }
+        },
+        "cone": {
+          "top/core:fabric/dma/N490_3": {
+            "cell": {
+              "type": "GTP_LUT6",
+              "name": "N490_5_copy_3",
+              "ports": {
+                "INIT": "64'b0010000000000000000000000000000000000000000000000000000000000000",
+                "Z": "N490_3",
+                "I0": "is_write[3]",
+                "I1": "\\core/processor/result_bridge/cancel_sync",
+                "I2": "\\core/processor/result_bridge/payload_read_enable",
+                "I3": "\\core/processor/result_bridge/mstate [0]",
+                "I4": "_N186056",
+                "I5": "N846"
+              }
+            },
+            "output_port": "Z",
+            "lut_width": 6
+          },
+          "top/core/fabric/dma:_N186056": {
+            "cell": {
+              "type": "GTP_LUT6D",
+              "name": "N854_0",
+              "ports": {
+                "INIT": "64'b0000010000000100000001000000010011111111111111110000000011001100",
+                "Z": "_N186056",
+                "Z5": "_N212599",
+                "I0": "aborted[3]",
+                "I1": "pending[3]",
+                "I2": "done[3]",
+                "I3": "N1524",
+                "I4": "N479",
+                "I5": "1'b1"
+              }
+            },
+            "output_port": "Z",
+            "lut_width": 6
+          },
+          "top/core/fabric/dma:N846": {
+            "cell": {
+              "type": "GTP_LUT5",
+              "name": "N846_mux4_13",
+              "ports": {
+                "INIT": "32'b10001100111011110000100011001110",
+                "Z": "N846",
+                "I0": "\\beats[3] [3]",
+                "I1": "\\beats[3] [4]",
+                "I2": "\\loaded[3] [3]",
+                "I3": "\\loaded[3] [4]",
+                "I4": "_N94186"
+              }
+            },
+            "output_port": "Z",
+            "lut_width": 5
+          },
+          "top/core/fabric/dma:_N94186": {
+            "cell": {
+              "type": "GTP_LUT6",
+              "name": "N846_mux4_11",
+              "ports": {
+                "INIT": "64'b0000000010000000110000001110000011110000111110001111110011111110",
+                "Z": "_N94186",
+                "I0": "\\beats[3] [0]",
+                "I1": "\\beats[3] [1]",
+                "I2": "\\beats[3] [2]",
+                "I3": "\\loaded[3] [0]",
+                "I4": "\\loaded[3] [1]",
+                "I5": "\\loaded[3] [2]"
+              }
+            },
+            "output_port": "Z",
+            "lut_width": 6
+          }
+        }
+      }
+    ],
+    "hierarchy_connections": [
+      {
+        "leaf_port": "N254",
+        "resolved_net": "top/core:fabric/N3992",
+        "parent_context": "top/core/fabric",
+        "parent_local_net": "N3992"
+      },
+      {
+        "leaf_port": "N588",
+        "resolved_net": "top/core:fabric/N3905",
+        "parent_context": "top/core/fabric",
+        "parent_local_net": "N3905"
+      },
+      {
+        "leaf_port": "core/fabric/dma/N490_3",
+        "resolved_net": "top/core:fabric/dma/N490_3",
+        "parent_context": "top/core/fabric/dma",
+        "parent_local_net": "N490_3"
+      }
+    ],
+    "bridge_state_aliases": {
+      "top/core:processor/result_bridge/mstate[0]": 0,
+      "top/core:processor/result_bridge/mstate[1]": 1,
+      "top/core:processor/result_bridge/mstate[2]": 2
+    },
+    "reset_inverter": {
+      "net": "top:N240_0",
+      "cell": {
+        "type": "GTP_INV",
+        "name": "N240_0_vname",
+        "ports": {
+          "Z": "N240_0",
+          "I": "core_reset_n"
+        }
+      }
+    },
+    "algorithm": "Trace all local combinational drivers; only declared parent inputs and FF Q may be free leaves.",
+    "limitation": "Conservative guard/state-code proof, not complete DDR arbiter equivalence or routed STA."
+  },
+  "scope": "State-code and ownership-control proof; parent arbiter events are conservative free inputs, not full arbiter equivalence",
+  "original_state_encoding_verified": true,
+  "physical_signoff": false
+}

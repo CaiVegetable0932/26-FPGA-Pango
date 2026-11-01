@@ -1,0 +1,1975 @@
+{
+  "status": "H2_FUNCTIONAL_SYN_MAP_AND_NETLIST_REVIEW_COMPLETE_PRE_ROUTE",
+  "checked_at": "2026-11-01T10:10:21.161059+08:00",
+  "source_count": 327,
+  "candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\H2_candidate",
+  "synthesis": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_092202_938635",
+  "mapping": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_100252_983428",
+  "candidate_sha256": "9f25508ac4ad4bff29c1d30cc1a42121b92431024dec325e6b3cb6d1d7cda80f",
+  "functional": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\functional_review.json",
+    "sha256": "6cb2e70814cbd07e7fc1b140035c1f251abf8e4ea88b33a9fd58670d828c566f",
+    "sources_sha256": "9f25508ac4ad4bff29c1d30cc1a42121b92431024dec325e6b3cb6d1d7cda80f",
+    "unit_cases": 538,
+    "unit_beats": 3199,
+    "immediate_reuses": 180,
+    "constraint_adaptation": {
+      "removed_commands": [
+        "set_max_delay 6.0 -datapath_only -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]",
+        "set_false_path -hold -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]"
+      ],
+      "processing_cdc_sha256": "378c5af5fd8dc75f9c9ee1f6969c3b8716649459d715b2d35b8b150ba79fa78f",
+      "no_new_or_broadened_commands": true,
+      "full_board_topology_gate_required": true
+    }
+  },
+  "bound_evidence": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\H2_candidate\\sources.json": "9f25508ac4ad4bff29c1d30cc1a42121b92431024dec325e6b3cb6d1d7cda80f",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\functional_review.json": "6cb2e70814cbd07e7fc1b140035c1f251abf8e4ea88b33a9fd58670d828c566f",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_092202_938635\\result.json": "af1e6f0193e84f0f8fa9eb2633afd6085ec0787be5a68056a5fd11857f0c1bce",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_092202_938635\\synthesize\\pango_video_system_syn.vm": "2d23992ae046ce886ace5b7b34e69b74bfd7138115ea8106ae55adfc1331622b",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\post_syn_review\\topology_review.json": "26beeba2b40d327022537669bd3e0004cbb258b5a08a824f02c2da0c00797bf6",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\post_syn_review\\fsm_semantics_review.json": "d80268aa26bd481194f9d3ce215fdf0c2e05d3bb06823eab482ad76925efd29c",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\post_syn_review\\parent_guard_negative_tests.json": "8fbaf3b3b7ded98a736c9575142d6427db0fc42852a4e0c935e66219f01777b5"
+  },
+  "evidence_sha256": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_092202_938635\\result.json": "af1e6f0193e84f0f8fa9eb2633afd6085ec0787be5a68056a5fd11857f0c1bce",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_100252_983428\\result.json": "e1f1a13b4c96f67657e69fe2b641e7fae972ff7cdd036d66a58317c43e8c9663",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_100252_983428\\sources.json": "9f25508ac4ad4bff29c1d30cc1a42121b92431024dec325e6b3cb6d1d7cda80f",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_092202_938635\\synthesize\\pango_video_system_syn.vm": "2d23992ae046ce886ace5b7b34e69b74bfd7138115ea8106ae55adfc1331622b",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_092202_938635\\synthesize\\pango_video_system_syn.adf": "da7a1018d03d516da1a6b63224a4be5c307fa691b2755465feff8743461d475a",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_092202_938635\\synthesize\\pango_video_system.snr": "6caa2eac7159de1cc74b1a4e7dedbdf5bfa33719af9e516236014dd85cee559a",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_100252_983428\\device_map\\pango_video_system_map.adf": "22a7f103a6b93539c78a6e2dbe68ea1c21906dbaec69405d161574130e9f0c70",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_100252_983428\\device_map\\pango_video_system.dmr": "ad988d0602d1b49a7ceca8e410eaf8b8e8819bd962ca27adf0820c7bb38a1a3e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_100252_983428\\constraint_check\\constraint_check.ccr": "0e5288a9e55dc4a7ebe63cfcb927ad7cae015f45d3d42c8b2377b7993af1177d",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_100252_983428\\native_monitor.jsonl": "8ca3bfb355057ad6ff8c9326f5347e6b17eb68207809bc1ba48842289a3d58aa",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\map_launch_exit.json": "2e1a486c24f55ec27b96519d40ce13cad4426d33eea6868394f28336052388b2",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\map_continuation_20261101\\review.json": "910b86f77c5641716bad2b48676a3434a0951fb75f04ba98449a5a73ce29a7c5",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\map_continuation_20261101\\board_ram_mapping_gate.json": "2e15d093b44f6743f178eb37879a57f74a98c18d73ab20ed0ed54696e82c39e7",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\map_continuation_20261101\\bridge_cdc_review.json": "ef59138d77ae00a0d0f969bf154ef21ac2f78195f6a7e09f24173733cd4ca215",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\map_continuation_20261101\\cdc_constraint_review.json": "18b73a4a03db431bf642c82f972d7f6461bf310e852e9b0e4a0344dc5f8efd13",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\final_review_20261101\\diagnostic_comparison.json": "24f1f1ca7955bbac9d1efaa9979638958f08f5117e9ea9466686663c51cb69af",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\final_review_20261101\\process_exit_evidence.json": "748055ffbee4ca364e8d758d4d773c8a3713afc7e7144f6f97aa99d4c39c4a05",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\scripts\\finalize_h2_validation.py": "80706e82181a22dcdb2158c94cbcf0de8358d86e33559cb1914c7d1e6b9651eb"
+  },
+  "terminal": {
+    "exit": {
+      "returncode": 0,
+      "ended_at": "2026-11-01T10:06:58.4272203+08:00",
+      "wrapper_pid": 62764
+    },
+    "native": {
+      "status": "COMPLETED",
+      "returncode": 0,
+      "elapsed_seconds": 240.57800000000861,
+      "pid": 61492,
+      "monitor": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_100252_983428\\native_monitor.jsonl",
+      "policy": {
+        "timeout_seconds": 900,
+        "warning_seconds": 720.0,
+        "requested_timeout_seconds": 900,
+        "poll_seconds": 30,
+        "stall_enabled": false,
+        "monitor_only": false,
+        "stall_window": 5,
+        "stall_minimum_unrouted": 1000,
+        "stall_minimum_improvement": 0.01,
+        "warmup_rounds": 5,
+        "baseline_success_seconds": null,
+        "baseline_acceleration_claim": false,
+        "no_log_investigation_seconds": 600
+      }
+    },
+    "process_evidence": {
+      "checked_at": "2026-11-01T10:08:49.9902399+08:00",
+      "query_succeeded": true,
+      "query_scope": "PDS exact executable names, installation path, and recorded wrapper/native IDs; visible CIM",
+      "processes": [],
+      "native_phase_lock_exists": false
+    }
+  },
+  "resources": {
+    "LUT": 37211.0,
+    "FF": 41377.0,
+    "APM": 154.0,
+    "DRM": 75.5,
+    "Distributed RAM": 1131.0
+  },
+  "DE_resources": {
+    "LUT": 37592.0,
+    "FF": 41960.0,
+    "APM": 154.0,
+    "DRM": 71.5,
+    "Distributed RAM": 1275.0
+  },
+  "delta_vs_DE": {
+    "LUT": -381.0,
+    "FF": -583.0,
+    "APM": 0.0,
+    "DRM": 4.0,
+    "Distributed RAM": -144.0
+  },
+  "constraints": {
+    "ccr_errors": 0,
+    "ccr_existing_share_pin": 33,
+    "ccr_new": 0,
+    "consumed_postsyn_scf": 10,
+    "postsyn_scf_identical_to_DE": true,
+    "processing_commands_loaded": 30,
+    "adaptation": {
+      "removed_commands": [
+        "set_max_delay 6.0 -datapath_only -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]",
+        "set_false_path -hold -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]"
+      ],
+      "processing_cdc_sha256": "378c5af5fd8dc75f9c9ee1f6969c3b8716649459d715b2d35b8b150ba79fa78f",
+      "no_new_or_broadened_commands": true,
+      "full_board_topology_gate_required": true
+    },
+    "camera_first_hop_verified": true,
+    "no_new_broad_exceptions": true
+  },
+  "timing": {
+    "DE": {
+      "summary": {
+        "estimated_setup_ns": {
+          "rst_clk": 4.9,
+          "ddrphy_sysclk": 0.094,
+          "clk_27m": 31.561,
+          "camera_pclk_budget": 4.173,
+          "rgmii_rx_clk": 5.362,
+          "serial_clk": 0.484,
+          "pixel_logic_clk": 5.921,
+          "processing_clk": 0.79
+        },
+        "reported_violating_paths": [
+          {
+            "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_dcp_top/mcdq_dcp_out/o_rlast/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/DI (GTP_RAM32X1DP)",
+            "kind": "min (slow corner)",
+            "slack_ns": -0.006
+          },
+          {
+            "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/u_ips2l_distributed_fifo_ctr/SYN_CTRL.waddr_msb/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/WADDR[4] (GTP_RAM32X1DP)",
+            "kind": "min (slow corner)",
+            "slack_ns": -0.006
+          },
+          {
+            "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_wdatapath/ips_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/u_ips2l_distributed_fifo_ctr/SYN_CTRL.waddr_msb/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_wdatapath/ips_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/WADDR[3] (GTP_RAM32X2DP)",
+            "kind": "min (slow corner)",
+            "slack_ns": -0.006
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/ddrphy_control_path_adj/phy_cke_r[1]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_cke/DI[0] (GTP_OSERDES_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -1.138
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/ddrphy_control_path_adj/phy_odt_r[2]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_odt/DI[0] (GTP_OSERDES_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -1.138
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_dfi/phy_odt_d[0]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_odt/DI[3] (GTP_OSERDES_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -1.108
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[0]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[0] (GTP_DDC_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -2.374
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[1]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[1] (GTP_DDC_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -2.374
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[2]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[2] (GTP_DDC_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -2.374
+          },
+          {
+            "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[0]/P (GTP_DFF_P)",
+            "kind": "min (slow corner)",
+            "slack_ns": -4.059
+          },
+          {
+            "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[1]/C (GTP_DFF_C)",
+            "kind": "min (slow corner)",
+            "slack_ns": -4.059
+          },
+          {
+            "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[2]/C (GTP_DFF_C)",
+            "kind": "min (slow corner)",
+            "slack_ns": -4.059
+          }
+        ],
+        "routed_signoff": false,
+        "reported_paths_only": true
+      },
+      "clocks": [
+        "ref_clk",
+        "rst_clk",
+        "ddrphy_sysclk",
+        "phy_dq_clk_0",
+        "phy_dq_sysclk_0",
+        "phy_dq_clk_1",
+        "phy_dq_sysclk_1",
+        "processing_pll_clk",
+        "processing_clk",
+        "clk_27m",
+        "serial_clk",
+        "pixel_clk",
+        "pixel_logic_clk",
+        "camera_pclk_budget",
+        "rgmii_rx_clk"
+      ],
+      "tables": {
+        "Setup Summary(Slow Corner)": [
+          {
+            "clocks": [
+              "rst_clk",
+              "rst_clk"
+            ],
+            "worst_ns": 4.9,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 225
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 0.094,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 64506
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_1",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 3.294,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 260
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_0",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 4.63,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 4.903,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 291
+          },
+          {
+            "clocks": [
+              "processing_clk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 4.742,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 379
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 4.93,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 266
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 5.019,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 14
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "phy_dq_sysclk_0"
+            ],
+            "worst_ns": 5.787,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 196
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "phy_dq_sysclk_1"
+            ],
+            "worst_ns": 5.997,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 420
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "clk_27m"
+            ],
+            "worst_ns": 4.94,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 3
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "clk_27m"
+            ],
+            "worst_ns": 31.561,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 823
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "clk_27m"
+            ],
+            "worst_ns": 5.224,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 4.84,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 94
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 4.173,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1815
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 4.816,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk",
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 5.362,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 107
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 5.194,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 2
+          },
+          {
+            "clocks": [
+              "serial_clk",
+              "serial_clk"
+            ],
+            "worst_ns": 0.484,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 8
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_clk"
+            ],
+            "worst_ns": 11.279,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 30
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 5.921,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 3340
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 4.71,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 208
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 4.874,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1
+          },
+          {
+            "clocks": [
+              "processing_clk",
+              "processing_clk"
+            ],
+            "worst_ns": 0.79,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 23313
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "processing_clk"
+            ],
+            "worst_ns": 5.064,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 621
+          }
+        ],
+        "Hold Summary(Slow Corner)": [
+          {
+            "clocks": [
+              "rst_clk",
+              "rst_clk"
+            ],
+            "worst_ns": 0.507,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 225
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": -0.006,
+            "total_ns": -0.594,
+            "failing_endpoints": 99,
+            "endpoints": 64506
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_1",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 2.149,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 260
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_0",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 1.83,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "phy_dq_sysclk_0"
+            ],
+            "worst_ns": -1.138,
+            "total_ns": -96.717,
+            "failing_endpoints": 196,
+            "endpoints": 196
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "phy_dq_sysclk_1"
+            ],
+            "worst_ns": -2.374,
+            "total_ns": -362.336,
+            "failing_endpoints": 420,
+            "endpoints": 420
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "clk_27m"
+            ],
+            "worst_ns": 0.619,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 823
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 0.619,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1815
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk",
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 0.619,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 107
+          },
+          {
+            "clocks": [
+              "serial_clk",
+              "serial_clk"
+            ],
+            "worst_ns": 1.809,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 8
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_clk"
+            ],
+            "worst_ns": 1.544,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 30
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 0.619,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 3340
+          },
+          {
+            "clocks": [
+              "processing_clk",
+              "processing_clk"
+            ],
+            "worst_ns": 0.324,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 23313
+          }
+        ],
+        "Recovery Summary(Slow Corner)": [
+          {
+            "clocks": [
+              "rst_clk",
+              "rst_clk"
+            ],
+            "worst_ns": 6.816,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 161
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 1.625,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 24874
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 3.485,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 5
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "clk_27m"
+            ],
+            "worst_ns": 5.152,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 479
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 8.411,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1006
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk",
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 6.968,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 45
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 11.663,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1346
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 5.122,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 3
+          },
+          {
+            "clocks": [
+              "processing_clk",
+              "processing_clk"
+            ],
+            "worst_ns": 3.896,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1343
+          }
+        ],
+        "Removal Summary(Slow Corner)": [
+          {
+            "clocks": [
+              "rst_clk",
+              "rst_clk"
+            ],
+            "worst_ns": 0.864,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 161
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 0.374,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 24874
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": -4.059,
+            "total_ns": -20.295,
+            "failing_endpoints": 5,
+            "endpoints": 5
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "clk_27m"
+            ],
+            "worst_ns": 0.704,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 478
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 1.395,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1006
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk",
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 0.838,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 45
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 1.112,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1346
+          },
+          {
+            "clocks": [
+              "processing_clk",
+              "processing_clk"
+            ],
+            "worst_ns": 1.487,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1343
+          }
+        ],
+        "Minimum Pulse Width Summary(Slow Corner)": [
+          {
+            "clocks": [
+              "rst_clk"
+            ],
+            "worst_ns": 3.8,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 163
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 2.4,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 32719
+          },
+          {
+            "clocks": [
+              "phy_dq_clk_0"
+            ],
+            "worst_ns": 0.035,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 35
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_0"
+            ],
+            "worst_ns": 1.85,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 35
+          },
+          {
+            "clocks": [
+              "phy_dq_clk_1"
+            ],
+            "worst_ns": 0.035,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 84
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_1"
+            ],
+            "worst_ns": 2.4,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 88
+          },
+          {
+            "clocks": [
+              "clk_27m"
+            ],
+            "worst_ns": 18.318,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 491
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 4.04,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1013
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 2.4,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 57
+          },
+          {
+            "clocks": [
+              "serial_clk"
+            ],
+            "worst_ns": 0.93,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 16
+          },
+          {
+            "clocks": [
+              "pixel_clk"
+            ],
+            "worst_ns": 3.787,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 8
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 4.427,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1762
+          },
+          {
+            "clocks": [
+              "processing_clk"
+            ],
+            "worst_ns": 2.373,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 7351
+          }
+        ],
+        "Setup Summary(Fast Corner)": [],
+        "Hold Summary(Fast Corner)": [],
+        "Recovery Summary(Fast Corner)": [],
+        "Removal Summary(Fast Corner)": [],
+        "Minimum Pulse Width Summary(Fast Corner)": []
+      },
+      "mode": "single corner synthesis estimates",
+      "fast_corner_populated": false
+    },
+    "H2": {
+      "summary": {
+        "estimated_setup_ns": {
+          "rst_clk": 4.9,
+          "ddrphy_sysclk": 0.083,
+          "clk_27m": 32.011,
+          "camera_pclk_budget": 4.719,
+          "rgmii_rx_clk": 5.362,
+          "serial_clk": 0.484,
+          "pixel_logic_clk": 5.921,
+          "processing_clk": 0.79
+        },
+        "reported_violating_paths": [
+          {
+            "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_dcp_top/mcdq_dcp_out/o_rlast/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/DI (GTP_RAM32X1DP)",
+            "kind": "min (slow corner)",
+            "slack_ns": -0.006
+          },
+          {
+            "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/u_ips2l_distributed_fifo_ctr/SYN_CTRL.waddr_msb/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/WADDR[4] (GTP_RAM32X1DP)",
+            "kind": "min (slow corner)",
+            "slack_ns": -0.006
+          },
+          {
+            "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_wdatapath/ips_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/u_ips2l_distributed_fifo_ctr/SYN_CTRL.waddr_msb/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_wdatapath/ips_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/WADDR[3] (GTP_RAM32X2DP)",
+            "kind": "min (slow corner)",
+            "slack_ns": -0.006
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/ddrphy_control_path_adj/phy_cke_r[1]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_cke/DI[0] (GTP_OSERDES_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -1.123
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/ddrphy_control_path_adj/phy_odt_r[2]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_odt/DI[0] (GTP_OSERDES_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -1.123
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_dfi/phy_odt_d[0]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_odt/DI[3] (GTP_OSERDES_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -1.093
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[0]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[0] (GTP_DDC_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -2.359
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[1]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[1] (GTP_DDC_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -2.359
+          },
+          {
+            "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[2]/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[2] (GTP_DDC_E2)",
+            "kind": "min (slow corner)",
+            "slack_ns": -2.359
+          },
+          {
+            "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[0]/P (GTP_DFF_P)",
+            "kind": "min (slow corner)",
+            "slack_ns": -4.074
+          },
+          {
+            "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[1]/C (GTP_DFF_C)",
+            "kind": "min (slow corner)",
+            "slack_ns": -4.074
+          },
+          {
+            "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+            "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[2]/C (GTP_DFF_C)",
+            "kind": "min (slow corner)",
+            "slack_ns": -4.074
+          }
+        ],
+        "routed_signoff": false,
+        "reported_paths_only": true
+      },
+      "clocks": [
+        "ref_clk",
+        "rst_clk",
+        "ddrphy_sysclk",
+        "phy_dq_clk_0",
+        "phy_dq_sysclk_0",
+        "phy_dq_clk_1",
+        "phy_dq_sysclk_1",
+        "processing_pll_clk",
+        "processing_clk",
+        "clk_27m",
+        "serial_clk",
+        "pixel_clk",
+        "pixel_logic_clk",
+        "camera_pclk_budget",
+        "rgmii_rx_clk"
+      ],
+      "tables": {
+        "Setup Summary(Slow Corner)": [
+          {
+            "clocks": [
+              "rst_clk",
+              "rst_clk"
+            ],
+            "worst_ns": 4.9,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 225
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 0.083,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 63953
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_1",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 3.309,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 260
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_0",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 4.645,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 4.903,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 291
+          },
+          {
+            "clocks": [
+              "processing_clk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 5.047,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 91
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 4.93,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 266
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 5.019,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 14
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "phy_dq_sysclk_0"
+            ],
+            "worst_ns": 5.772,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 196
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "phy_dq_sysclk_1"
+            ],
+            "worst_ns": 5.982,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 420
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "clk_27m"
+            ],
+            "worst_ns": 32.011,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 823
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "clk_27m"
+            ],
+            "worst_ns": 4.942,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 3
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "clk_27m"
+            ],
+            "worst_ns": 5.224,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 4.861,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 94
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 4.719,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1815
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 4.821,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk",
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 5.362,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 107
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 5.194,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 2
+          },
+          {
+            "clocks": [
+              "serial_clk",
+              "serial_clk"
+            ],
+            "worst_ns": 0.484,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 8
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_clk"
+            ],
+            "worst_ns": 11.279,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 30
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 5.921,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 3340
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 4.71,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 208
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 4.874,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1
+          },
+          {
+            "clocks": [
+              "processing_clk",
+              "processing_clk"
+            ],
+            "worst_ns": 0.79,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 22021
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "processing_clk"
+            ],
+            "worst_ns": 5.064,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 621
+          }
+        ],
+        "Hold Summary(Slow Corner)": [
+          {
+            "clocks": [
+              "rst_clk",
+              "rst_clk"
+            ],
+            "worst_ns": 0.507,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 225
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": -0.006,
+            "total_ns": -0.402,
+            "failing_endpoints": 67,
+            "endpoints": 63953
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_1",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 2.134,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 260
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_0",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 1.815,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "phy_dq_sysclk_0"
+            ],
+            "worst_ns": -1.123,
+            "total_ns": -93.682,
+            "failing_endpoints": 196,
+            "endpoints": 196
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "phy_dq_sysclk_1"
+            ],
+            "worst_ns": -2.359,
+            "total_ns": -356.156,
+            "failing_endpoints": 420,
+            "endpoints": 420
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "clk_27m"
+            ],
+            "worst_ns": 0.619,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 823
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 0.619,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1815
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk",
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 0.619,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 107
+          },
+          {
+            "clocks": [
+              "serial_clk",
+              "serial_clk"
+            ],
+            "worst_ns": 1.809,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 8
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_clk"
+            ],
+            "worst_ns": 1.544,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 30
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 0.619,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 3340
+          },
+          {
+            "clocks": [
+              "processing_clk",
+              "processing_clk"
+            ],
+            "worst_ns": 0.324,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 22021
+          }
+        ],
+        "Recovery Summary(Slow Corner)": [
+          {
+            "clocks": [
+              "rst_clk",
+              "rst_clk"
+            ],
+            "worst_ns": 6.816,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 161
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 1.625,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 24876
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 3.5,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 5
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "clk_27m"
+            ],
+            "worst_ns": 5.152,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 479
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 8.411,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1006
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk",
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 6.968,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 45
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 11.663,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1346
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 5.122,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 3
+          },
+          {
+            "clocks": [
+              "processing_clk",
+              "processing_clk"
+            ],
+            "worst_ns": 3.9,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1335
+          }
+        ],
+        "Removal Summary(Slow Corner)": [
+          {
+            "clocks": [
+              "rst_clk",
+              "rst_clk"
+            ],
+            "worst_ns": 0.864,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 161
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 0.374,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 24876
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": -4.074,
+            "total_ns": -20.37,
+            "failing_endpoints": 5,
+            "endpoints": 5
+          },
+          {
+            "clocks": [
+              "clk_27m",
+              "clk_27m"
+            ],
+            "worst_ns": 0.704,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 478
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget",
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 1.395,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1006
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk",
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 0.838,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 45
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk",
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 1.112,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1346
+          },
+          {
+            "clocks": [
+              "processing_clk",
+              "processing_clk"
+            ],
+            "worst_ns": 1.483,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1335
+          }
+        ],
+        "Minimum Pulse Width Summary(Slow Corner)": [
+          {
+            "clocks": [
+              "rst_clk"
+            ],
+            "worst_ns": 3.8,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 163
+          },
+          {
+            "clocks": [
+              "ddrphy_sysclk"
+            ],
+            "worst_ns": 2.4,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 32436
+          },
+          {
+            "clocks": [
+              "phy_dq_clk_0"
+            ],
+            "worst_ns": 0.035,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 35
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_0"
+            ],
+            "worst_ns": 1.85,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 35
+          },
+          {
+            "clocks": [
+              "phy_dq_clk_1"
+            ],
+            "worst_ns": 0.035,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 84
+          },
+          {
+            "clocks": [
+              "phy_dq_sysclk_1"
+            ],
+            "worst_ns": 2.4,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 88
+          },
+          {
+            "clocks": [
+              "clk_27m"
+            ],
+            "worst_ns": 18.318,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 491
+          },
+          {
+            "clocks": [
+              "camera_pclk_budget"
+            ],
+            "worst_ns": 4.04,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1013
+          },
+          {
+            "clocks": [
+              "rgmii_rx_clk"
+            ],
+            "worst_ns": 2.4,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 57
+          },
+          {
+            "clocks": [
+              "serial_clk"
+            ],
+            "worst_ns": 0.93,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 16
+          },
+          {
+            "clocks": [
+              "pixel_clk"
+            ],
+            "worst_ns": 3.787,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 8
+          },
+          {
+            "clocks": [
+              "pixel_logic_clk"
+            ],
+            "worst_ns": 4.427,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 1762
+          },
+          {
+            "clocks": [
+              "processing_clk"
+            ],
+            "worst_ns": 2.373,
+            "total_ns": 0.0,
+            "failing_endpoints": 0,
+            "endpoints": 6915
+          }
+        ],
+        "Setup Summary(Fast Corner)": [],
+        "Hold Summary(Fast Corner)": [],
+        "Recovery Summary(Fast Corner)": [],
+        "Removal Summary(Fast Corner)": [],
+        "Minimum Pulse Width Summary(Fast Corner)": []
+      },
+      "mode": "single corner synthesis estimates",
+      "fast_corner_populated": false
+    }
+  },
+  "diagnostics": {
+    "syn_DE_counts": {
+      "ConstraintEditor-2002": 33,
+      "uncoded": 6368,
+      "Public-4008": 8632,
+      "syn_maxfan": 842,
+      "Timing-4086": 53,
+      "Timing-4087": 94
+    },
+    "syn_H2_counts": {
+      "ConstraintEditor-2002": 33,
+      "uncoded": 6368,
+      "Public-4008": 8632,
+      "syn_maxfan": 862,
+      "Timing-4086": 53,
+      "Timing-4087": 94
+    },
+    "synthesis_added": {
+      "W: Public-4008: Instance 'core/fabric/frames/banks[2].pool/token_owner[0][1]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.": 1,
+      "W: Public-4008: Instance 'core/fabric/frames/banks[2].pool/token_owner[1][1]' of 'bmsWIDEDFFRSE' unit is dangling and will be cleaned.": 1,
+      "W: syn_maxfan of lutcarry core/N362.eq_63 is more than 64 on net core/N367, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry core/N379.eq_63 is more than 64 on net core/N384, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry core/scheduler/capture_src_gen[31:0]_1_2 is more than 64 on net core/response [2846], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry core/fabric/frames/banks[2].pool/N1444[0]_2_1 is more than 64 on net core/response [8622], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry core/fabric/frames/banks[2].pool/N1444[1]_2 is more than 64 on net core/response [8623], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry _N212332_1_inv is more than 64 on net core/fabric/frames/banks[2].pool/N804, but wasn't replicated.": 4,
+      "W: syn_maxfan of lutcarry core/fabric/frames/banks[0].pool/N401 is more than 64 on net core/fabric/frames/banks[0].pool/N408, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry core/fabric/frames/banks[0].pool/N625_3 is more than 64 on net core/fabric/frames/banks[0].pool/N625, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry core/fabric/frames/banks[1].pool/N401 is more than 64 on net core/fabric/frames/banks[1].pool/N408, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry core/fabric/frames/banks[2].pool/N1184_1 is more than 64 on net core/fabric/frames/banks[1].pool/N1581, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry core/processor/processor/geometry/u_cache/N2000_4 is more than 64 on net core/processor/processor/geometry/u_cache/N6202, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry core/processor/processor/writer/writer/N632_0 is more than 64 on net core/processor/processor/writer/writer/pack/take_beat, but wasn't replicated.": 2,
+      "W: Public-4008: Instance 'core/fabric/dma/beat_index_copy[1]' of 'GTP_DFF_CE' unit is dangling and will be cleaned.": 1,
+      "W: Public-4008: Instance 'core/fabric/dma/owner_copy[2]' of 'GTP_DFF_CE' unit is dangling and will be cleaned.": 1,
+      "W: syn_maxfan of lutcarry _N212332_1_inv_1 is more than 64 on net _N98046, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N116_506 is more than 64 on net supported, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N221.eq_7 is more than 64 on net _N213615, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N223.eq_3 is more than 64 on net _N213614, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N140_23[3]_1 is more than 64 on net _N185897, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N31_0 is more than 64 on net _N185773, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N379.eq_63 is more than 64 on net N384, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N362.eq_63 is more than 64 on net N367, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N625_3 is more than 64 on net N625, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N401 is more than 64 on net N408, but wasn't replicated.": 4,
+      "W: syn_maxfan of lutcarry N1444[1]_2 is more than 64 on net rsp[2845], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N1444[0]_2_1 is more than 64 on net rsp[2844], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N1103_4 is more than 64 on net _N187693, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N1103_2 is more than 64 on net _N186358, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N2000_4 is more than 64 on net N6202, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N632_0 is more than 64 on net pack/take_beat, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N632 is more than 64 on net N632, but wasn't replicated.": 2,
+      "W: prevent name conflict by renaming net core/fabric/frames/banks[2].pool/N804_co to core/fabric/frames/banks[2].pool/N804_co_rnmt": 1
+    },
+    "synthesis_removed": {
+      "W: syn_maxfan of lutcarry boot/upload/N9_71[0]_1 is more than 64 on net boot/upload/write_byte [0], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry boot/upload/N9_71[1]_1 is more than 64 on net boot/upload/write_byte [1], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry boot/upload/N9_71[2]_1 is more than 64 on net boot/upload/write_byte [2], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry boot/upload/N9_71[3]_1 is more than 64 on net boot/upload/write_byte [3], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry boot/upload/N9_71[4]_1 is more than 64 on net boot/upload/write_byte [4], but wasn't replicated.": 2,
+      "W: Public-4008: Instance 'camera_input/receiver/open_frame_copy' of 'GTP_DFF_CE' unit is dangling and will be cleaned.": 1,
+      "W: Public-4008: Instance 'core/fabric/dma/owner_copy[1]' of 'GTP_DFF_CE' unit is dangling and will be cleaned.": 1,
+      "W: Public-4008: Instance 'core/network/raw/packets/wp_copy[4]' of 'GTP_DFF_CE' unit is dangling and will be cleaned.": 1,
+      "W: Public-4008: Instance 'core/network/raw/packets/wp_copy[5]' of 'GTP_DFF_CE' unit is dangling and will be cleaned.": 1,
+      "W: syn_maxfan of lutcarry N221.eq_7 is more than 64 on net _N213693, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N223.eq_3 is more than 64 on net _N213692, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N140_23[3]_1 is more than 64 on net _N185790, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N9_71[4]_1 is more than 64 on net write_byte[4], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N9_71[3]_1 is more than 64 on net write_byte[3], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N9_71[2]_1 is more than 64 on net write_byte[2], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N9_71[1]_1 is more than 64 on net write_byte[1], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N9_71[0]_1 is more than 64 on net write_byte[0], but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N2120_1 is more than 64 on net N2120, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N2120_2 is more than 64 on net _N220782, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N22.eq_7 is more than 64 on net N301, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N1103_4 is more than 64 on net _N187557, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N1103_2 is more than 64 on net _N186198, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N65_0 is more than 64 on net packets/N18, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N0.eq_4 is more than 64 on net empty, but wasn't replicated.": 2,
+      "W: syn_maxfan of lutcarry N31_0 is more than 64 on net _N185645, but wasn't replicated.": 2,
+      "W: prevent name conflict by renaming net core/fabric/frames/banks[2].pool/N802 to core/fabric/frames/banks[2].pool/N802_rnmt": 1
+    },
+    "map_counts": {
+      "Public-4008": 13,
+      "DeviceMap-4011": 8
+    },
+    "map_added": {},
+    "map_removed": {},
+    "unconstrained_port_diagnostics_identical": true,
+    "unconstrained_diagnostics": {
+      "W: Timing-4086: Port 'camera_scl' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'camera_scl' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'camera_sda' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'camera_sda' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[0]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[0]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[1]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[1]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[2]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[2]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[3]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[3]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[4]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[4]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[5]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[5]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[6]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[6]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[7]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[7]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[8]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[8]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[9]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[9]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[10]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[10]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[11]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[11]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[12]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[12]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[13]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[13]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[14]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[14]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[15]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[15]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[16]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[16]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[17]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[17]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[18]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[18]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[19]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[19]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[20]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[20]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[21]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[21]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[22]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[22]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[23]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[23]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[24]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[24]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[25]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[25]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[26]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[26]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[27]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[27]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[28]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[28]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[29]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[29]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[30]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[30]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'mem_dq[31]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'mem_dq[31]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dqs[0]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dqs[1]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dqs[2]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dqs[3]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dqs_n[0]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dqs_n[1]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dqs_n[2]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dqs_n[3]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'phy_mdio' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4087: Port 'phy_mdio' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'camera_reset_n' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'hdmi_clk_n' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'hdmi_clk_p' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'hdmi_data_n[0]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'hdmi_data_n[1]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'hdmi_data_n[2]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'hdmi_data_p[0]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'hdmi_data_p[1]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'hdmi_data_p[2]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mcu_uart_tx' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[0]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[1]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[2]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[3]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[4]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[5]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[6]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[7]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[8]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[9]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[10]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[11]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[12]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[13]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_a[14]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_ba[0]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_ba[1]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_ba[2]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_cas_n' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_ck' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_ck_n' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_cke' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_cs_n' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dm[0]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dm[1]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dm[2]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_dm[3]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_odt' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_ras_n' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_rst_n' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'mem_we_n' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'phy_mdc' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'phy_reset_n' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'rgmii_tx_ctl' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'rgmii_txc' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'rgmii_txd[0]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'rgmii_txd[1]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'rgmii_txd[2]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'rgmii_txd[3]' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'status_led' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4087: Port 'uart_tx' is not constrained, it is treated as combinational output.": 1,
+      "W: Timing-4086: Port 'camera_data[0]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'camera_data[1]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'camera_data[2]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'camera_data[3]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'camera_data[4]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'camera_data[5]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'camera_data[6]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'camera_data[7]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'camera_href' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'camera_vsync' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'ref_clk_n' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'reset_n' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'rgmii_rx_ctl' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'rgmii_rxd[0]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'rgmii_rxd[1]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'rgmii_rxd[2]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'rgmii_rxd[3]' is not constrained, it is treated as combinational input.": 1,
+      "W: Timing-4086: Port 'uart_rx' is not constrained, it is treated as combinational input.": 1
+    },
+    "limitation": "Counts include repeated synthesis passes; renamed internal nets are not necessarily new physical risks."
+  },
+  "ordinary_RAM_timing": "Write data/address/enable, read address/enable and RAM-to-DDR consumers retain ordinary constraints; physical setup/hold unverified.",
+  "source_isolation": {
+    "live_hardware_checked": 310,
+    "live_differences_vs_DE": [],
+    "DE_package_sha256": "faa660291636078e76e18fb3cd152cf11495793627a2bbd18cc8b5e8bbf49b83"
+  },
+  "limitations": [
+    "No placement/routing or real min/max STA; all timing here is synthesis estimation.",
+    "Existing 53 input and 94 output unconstrained-port diagnostics remain; external interface timing is not signed off.",
+    "DDR hold violations remain; post-SYN reset SCF consumption does not constitute routed timing proof.",
+    "New synthesis syn_maxfan net diagnostics retained for review; no guarantee global fanout or route convergence improved.",
+    "G is an independent candidate, not combined or validated with H2."
+  ],
+  "physical_signoff": false,
+  "promoted": false,
+  "routing_started": false,
+  "bitstream_generated": false
+}

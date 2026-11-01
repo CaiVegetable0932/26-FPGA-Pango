@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "vm_sha256": "6d49e138c9ef4679c6d2c9c75c069423bed1ca4773d0d2111d7aa711ddff11d9",
+  "negative_case_count": 5,
+  "all_negative_cases_rejected": true,
+  "cases": [
+    {
+      "case": "intermediate_decoder_INIT_adds_IDLE",
+      "rejected": true,
+      "error_type": "AssertionError",
+      "reason": "('predicate violates state guard', 'N588', 0)",
+      "mutated_modules_sha256": {
+        "frame_memory_fabric": "4897e062f5db8d2b8394416f3797b6c81dca196476f20f5c1a9dec84a905b463"
+      }
+    },
+    {
+      "case": "cross_parent_mstate_bit_swap",
+      "rejected": true,
+      "error_type": "AssertionError",
+      "reason": "('predicate violates state guard', 'N254', 1)",
+      "mutated_modules_sha256": {
+        "video_memory_core": "dc0bb88b4479a67eedf0ae9f20f474c0063bb072fa8ab6f09b32b519da8b4d46"
+      }
+    },
+    {
+      "case": "bridge_ready_guard_connected_to_completion_guard",
+      "rejected": true,
+      "error_type": "AssertionError",
+      "reason": "('predicate violates state guard', 'N588', 2)",
+      "mutated_modules_sha256": {
+        "geometry_processing_domain_external_refill": "dbe7d0789f47c3a1f8f95d555667c74fd47a5799fcec1ddf1b91a646b2fc2f6c"
+      }
+    },
+    {
+      "case": "read_CE_constant_zero_INIT",
+      "rejected": true,
+      "error_type": "ValueError",
+      "reason": "Read CEB does not equal M_LOAD or M_SEND in actual LUT truth table",
+      "mutated_modules_sha256": {
+        "dma_write_cdc": "df13083207066a1d464158204658bf17ac2bbc5bd9739a131d0764b32424fc81"
+      }
+    },
+    {
+      "case": "FSM_state_bit1_D_stuck_zero",
+      "rejected": true,
+      "error_type": "ValueError",
+      "reason": "State mismatch bit 1: {'cancel_sync': 0, 'free_sync': 0, 'memory_done': 0, 'memory_req_beats[0]': 0, 'memory_req_beats[1]': 0, 'memory_req_beats[2]': 0, 'memory_req_beats[3]': 0, 'memory_req_beats[4]': 0, 'memory_req_ready': 1, 'memory_rst_n': 1, 'memory_w_ready': 0, 'mstate[0]': 1, 'mstate[1]': 0, 'mstate[2]': 0, 'read_index[0]': 0, 'read_index[1]': 0, 'read_index[2]': 0, 'read_index[3]': 0, 'read_index[4]': 0, 'request_sync': 0, 'response_toggle': 0}",
+      "mutated_modules_sha256": {
+        "dma_write_cdc": "38457e2051b1790967bb0d21d594a5b615223ae00ffa6e4d93e399dbb24f6eef"
+      }
+    }
+  ],
+  "positive_case": {
+    "name": "internal_decoder_rename_only",
+    "passed": true
+  },
+  "original_VM_written": false,
+  "physical_signoff": false
+}

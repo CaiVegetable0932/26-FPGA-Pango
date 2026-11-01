@@ -1,0 +1,395 @@
+{
+  "syn": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401",
+  "source_count": 327,
+  "sources_intact": true,
+  "synthesis_resources": {
+    "LUT": 37330.0,
+    "FF": 41393.0,
+    "DRM": 75.5,
+    "APM": 154.0
+  },
+  "direct_entity_cells": {
+    "dma_pixel_pack_unq6": {
+      "GTP_LUT6": 134,
+      "GTP_LUT6D": 16,
+      "GTP_LUT3": 6,
+      "GTP_LUT2": 3,
+      "GTP_LUT5": 190,
+      "GTP_LUT4": 37,
+      "GTP_LUT6CARRY": 2,
+      "GTP_DFF_C": 315
+    },
+    "dma_pixel_pack": {
+      "GTP_LUT4": 27,
+      "GTP_LUT6": 158,
+      "GTP_LUT3": 3,
+      "GTP_LUT6D": 8,
+      "GTP_LUT2": 4,
+      "GTP_LUT6CARRY": 2,
+      "GTP_LUT5": 183,
+      "GTP_DFF_C": 315
+    },
+    "dma_pixel_pack_unq8": {
+      "GTP_LUT4": 6,
+      "GTP_LUT6D": 3,
+      "GTP_LUT3": 1,
+      "GTP_LUT6": 292,
+      "GTP_LUT2": 1,
+      "GTP_LUT5": 34,
+      "GTP_DFF_C": 296
+    },
+    "dma_byte_unpack": {
+      "GTP_LUT6": 11,
+      "GTP_LUT3": 2,
+      "GTP_LUT5": 3,
+      "GTP_LUT6D": 2,
+      "GTP_LUT2": 1,
+      "GTP_LUT6CARRY": 27,
+      "GTP_DFF_C": 4,
+      "GTP_DFF_E": 256,
+      "GTP_DFF_CE": 28
+    },
+    "raw_dma_reader": {
+      "GTP_LUT6CARRY": 96,
+      "GTP_LUT4": 11,
+      "GTP_LUT6": 90,
+      "GTP_LUT3": 3,
+      "GTP_MUX2LUT7": 32,
+      "GTP_LUT6D": 10,
+      "GTP_LUT5": 10,
+      "GTP_LUT2": 1,
+      "GTP_DFF_C": 5,
+      "GTP_DFF_CE": 343
+    },
+    "raw_pose_solver": {
+      "GTP_LUT6CARRY": 768,
+      "GTP_LUT6": 562,
+      "GTP_LUT6D": 105,
+      "GTP_LUT5": 547,
+      "GTP_MUX2LUT7": 133,
+      "GTP_LUT2": 4,
+      "GTP_LUT4": 125,
+      "GTP_LUT3": 7,
+      "GTP_DFF_E": 1593,
+      "GTP_DFF_CE": 57,
+      "GTP_DFF_C": 3,
+      "GTP_RAM32X2DP": 16
+    }
+  },
+  "processing_timing_summary_lines": [
+    "     processing_clk       6.6667       {0.0000 3.3330}     Generated (processing_pll_clk)    6915           0  {u_processing_global/CLKOUT}                                                             ",
+    " processing_clk            150.0000 MHz    170.0799 MHz         6.6667         5.8796          0.787",
+    " processing_clk         ddrphy_sysclk                5.047       0.000              0             91",
+    " processing_clk         processing_clk               0.787       0.000              0          22021",
+    " processing_clk         processing_clk               0.324       0.000              0          22021",
+    " processing_clk         processing_clk               3.900       0.000              0           1335",
+    " processing_clk         processing_clk               1.483       0.000              0           1335",
+    " processing_clk                                      2.373       0.000              0           6915"
+  ],
+  "synthesis_report_sha256": "524a6fe6ee218c3d6ce87291a1a7bac8932434749c4c378bf0d75f542848712d",
+  "routed_timing_verified": false,
+  "mapping": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_124125_148426",
+  "constraints": {
+    "constraint_check": {
+      "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_124125_148426\\constraint_check\\constraint_check.ccr",
+      "available": true,
+      "summary_valid": true,
+      "errors": 0,
+      "critical_warnings": 33,
+      "warnings": 0,
+      "constraint_count": 1040,
+      "diagnostic_counts": {
+        "ConstraintEditor-2002": 33
+      },
+      "diagnostics": [
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 121)] | Port mem_dq[1] has been placed at location J6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 143)] | Port mem_dq[3] has been placed at location L8, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 165)] | Port mem_dq[5] has been placed at location K7, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 187)] | Port mem_dq[7] has been placed at location J5, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 198)] | Port mem_dq[8] has been placed at location H6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 220)] | Port mem_dq[10] has been placed at location H8, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 231)] | Port mem_dq[11] has been placed at location D6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 242)] | Port mem_dq[12] has been placed at location G8, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 253)] | Port mem_dq[13] has been placed at location E6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 275)] | Port mem_dq[15] has been placed at location G6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 462)] | Port mem_dm[0] has been placed at location K6, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 486)] | Port mem_dqs[0] has been placed at location J4, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 497)] | Port mem_dqs[1] has been placed at location H7, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 530)] | Port mem_dqs_n[0] has been placed at location H4, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/ddr_board_pins.fdc(line number: 541)] | Port mem_dqs_n[1] has been placed at location G7, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 108)] | Port phy_reset_n has been placed at location G25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 135)] | Port hdmi_data_p[0] has been placed at location R25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 140)] | Port hdmi_data_p[1] has been placed at location P23, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 145)] | Port hdmi_data_p[2] has been placed at location N23, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 150)] | Port hdmi_data_n[0] has been placed at location P25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 155)] | Port hdmi_data_n[1] has been placed at location P24, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 160)] | Port hdmi_data_n[2] has been placed at location N24, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 170)] | Port camera_href has been placed at location T25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 180)] | Port camera_scl has been placed at location P19, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 185)] | Port camera_sda has been placed at location R20, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 190)] | Port camera_reset_n has been placed at location T22, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 195)] | Port camera_data[0] has been placed at location M24, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 200)] | Port camera_data[1] has been placed at location R22, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 205)] | Port camera_data[2] has been placed at location K26, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 210)] | Port camera_data[3] has been placed at location K25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 215)] | Port camera_data[4] has been placed at location M25, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 220)] | Port camera_data[5] has been placed at location N19, whose type is share pin.",
+        "C: ConstraintEditor-2002: [D:/XDU/concept/26-FPGA-Pango/fpga/build/full_integration_20261013/board_20261101_103105_502401/source/constraints/video_system/board_pins.fdc(line number: 230)] | Port camera_data[7] has been placed at location R21, whose type is share pin."
+      ],
+      "requires_review": true,
+      "sha256": "5c7e0efa541eed23d9f2b7bf67c8752c110d34abf1e9a8b6e182eb8c8c320ab8"
+    },
+    "verified_logs": [
+      {
+        "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_124125_148426\\console.log",
+        "sha256": "e0627fd148fa76b431146b9806ea94784e96df88a24e58e37e0a4e766d72ced1"
+      }
+    ],
+    "postsyn_constraint_gate": {
+      "required": true,
+      "consumed": true,
+      "command_count": 10,
+      "scf_path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_124125_148426\\source\\constraints\\video_system\\reset_fsm_postsyn.scf",
+      "scf_sha256": "d42f6175bc1ff60df52b1636e95a6375c90a5e2b7adec8b61c17bd5c2565295e",
+      "dmr_path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_124125_148426\\device_map\\pango_video_system.dmr",
+      "dmr_sha256": "e8c8198f55e7d65985746b2871473eb937ba012bac820cc1eed5d2ae5fc5aa13",
+      "physical_timing_signed_off": false
+    },
+    "no_known_unmatched_timing_paths": true,
+    "physical_timing_signed_off": false
+  },
+  "mapped_lut_gate": {
+    "report": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_124125_148426\\device_map\\pango_video_system.dmr",
+    "report_sha256": "e8c8198f55e7d65985746b2871473eb937ba012bac820cc1eed5d2ae5fc5aa13",
+    "device_lut_capacity": 66600,
+    "strict_limit_exclusive": 66601,
+    "total_lut": 37334,
+    "utilization_percent": 56.05705705705706,
+    "within_device_capacity": true,
+    "artificial_lut_limit_enabled": false,
+    "below_70_percent": true,
+    "needed_reduction_for_strict_limit": 0,
+    "evidence_stage": "native MAP, before placement/routing"
+  },
+  "mapping_resources": {
+    "LUT": 37334.0,
+    "FF": 41380.0,
+    "APM": 154.0,
+    "DRM": 75.5,
+    "Distributed RAM": 1131.0
+  },
+  "status": "GH2_MAP_COMPLETE_INDEPENDENT_REVIEW_REQUIRED",
+  "functional": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\functional_review.json",
+    "sha256": "b2b3e35a78c0532e479799a5d4bbf165d4f588234012b566b76ab17bb775390e",
+    "sources_sha256": "65f8ad8e8fa86b5169c15d3ec3b0549a6ba938ce0544099515c1d3f1d564333f",
+    "source_count": 327,
+    "combined_full_video_fresh": true,
+    "parent_unit_proofs_reused": true
+  },
+  "timing": {
+    "estimated_setup_ns": {
+      "rst_clk": 4.9,
+      "ddrphy_sysclk": 0.094,
+      "clk_27m": 32.313,
+      "camera_pclk_budget": 4.23,
+      "rgmii_rx_clk": 5.362,
+      "serial_clk": 0.484,
+      "pixel_logic_clk": 5.921,
+      "processing_clk": 0.787
+    },
+    "reported_violating_paths": [
+      {
+        "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_dcp_top/mcdq_dcp_out/o_rlast/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/DI (GTP_RAM32X1DP)",
+        "kind": "min (slow corner)",
+        "slack_ns": -0.006
+      },
+      {
+        "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/u_ips2l_distributed_fifo_ctr/SYN_CTRL.waddr_msb/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/WADDR[4] (GTP_RAM32X1DP)",
+        "kind": "min (slow corner)",
+        "slack_ns": -0.006
+      },
+      {
+        "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_wdatapath/ips_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/u_ips2l_distributed_fifo_ctr/SYN_CTRL.waddr_msb/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_wdatapath/ips_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/WADDR[3] (GTP_RAM32X2DP)",
+        "kind": "min (slow corner)",
+        "slack_ns": -0.006
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/ddrphy_control_path_adj/phy_cke_r[1]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_cke/DI[0] (GTP_OSERDES_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -1.123
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/ddrphy_control_path_adj/phy_odt_r[2]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_odt/DI[0] (GTP_OSERDES_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -1.123
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_dfi/phy_odt_d[0]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_odt/DI[3] (GTP_OSERDES_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -1.093
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[0]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[0] (GTP_DDC_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -2.359
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[1]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[1] (GTP_DDC_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -2.359
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[2]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[2] (GTP_DDC_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -2.359
+      },
+      {
+        "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[0]/P (GTP_DFF_P)",
+        "kind": "min (slow corner)",
+        "slack_ns": -4.074
+      },
+      {
+        "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[1]/C (GTP_DFF_C)",
+        "kind": "min (slow corner)",
+        "slack_ns": -4.074
+      },
+      {
+        "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[2]/C (GTP_DFF_C)",
+        "kind": "min (slow corner)",
+        "slack_ns": -4.074
+      }
+    ],
+    "routed_signoff": false,
+    "reported_paths_only": true
+  },
+  "baseline_DE_timing": {
+    "estimated_setup_ns": {
+      "rst_clk": 4.9,
+      "ddrphy_sysclk": 0.094,
+      "clk_27m": 31.561,
+      "camera_pclk_budget": 4.173,
+      "rgmii_rx_clk": 5.362,
+      "serial_clk": 0.484,
+      "pixel_logic_clk": 5.921,
+      "processing_clk": 0.79
+    },
+    "reported_violating_paths": [
+      {
+        "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_dcp_top/mcdq_dcp_out/o_rlast/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/DI (GTP_RAM32X1DP)",
+        "kind": "min (slow corner)",
+        "slack_ns": -0.006
+      },
+      {
+        "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/u_ips2l_distributed_fifo_ctr/SYN_CTRL.waddr_msb/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_rdatapath/mcdq_prefetch_fifo/ips2l_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/WADDR[4] (GTP_RAM32X1DP)",
+        "kind": "min (slow corner)",
+        "slack_ns": -0.006
+      },
+      {
+        "start": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_wdatapath/ips_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/u_ips2l_distributed_fifo_ctr/SYN_CTRL.waddr_msb/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ips_ddrc_top/mcdq_wdatapath/ips_distributed_fifo/u_ips2l_distributed_fifo_distributed_fifo_v1_0/ips2l_distributed_sdpram_distributed_fifo_v1_0/mem/WADDR[3] (GTP_RAM32X2DP)",
+        "kind": "min (slow corner)",
+        "slack_ns": -0.006
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/ddrphy_control_path_adj/phy_cke_r[1]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_cke/DI[0] (GTP_OSERDES_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -1.138
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/ddrphy_control_path_adj/phy_odt_r[2]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_odt/DI[0] (GTP_OSERDES_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -1.138
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_dfi/phy_odt_d[0]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/u_oserdes_odt/DI[3] (GTP_OSERDES_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -1.108
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[0]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[0] (GTP_DDC_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -2.374
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[1]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[1] (GTP_DDC_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -2.374
+      },
+      {
+        "start": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/ddrphy_data_slice_dqs_gate_cal/ddrphy_dqs_gate_coarse_cal/dqs_gate_ctrl_pos[2]/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/ddrphy_slice_top/i_dqs_group[0].ddrphy_data_slice/u_ddc_dq/DQS_GATE_CTRL[2] (GTP_DDC_E2)",
+        "kind": "min (slow corner)",
+        "slack_ns": -2.374
+      },
+      {
+        "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[0]/P (GTP_DFF_P)",
+        "kind": "min (slow corner)",
+        "slack_ns": -4.059
+      },
+      {
+        "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[1]/C (GTP_DFF_C)",
+        "kind": "min (slow corner)",
+        "slack_ns": -4.059
+      },
+      {
+        "start": "processing_safety/fault_latched/CLK (GTP_DFF_C)",
+        "end": "I_ips_ddr_top/u_ddrphy_top/u_ips2l_ddrphy_rst_clk_phase_adj/cpd_state_reg[2]/C (GTP_DFF_C)",
+        "kind": "min (slow corner)",
+        "slack_ns": -4.059
+      }
+    ],
+    "routed_signoff": false,
+    "reported_paths_only": true
+  },
+  "baseline_DE_resources": {
+    "LUT": 37592,
+    "FF": 41960,
+    "APM": 154,
+    "DRM": 71.5,
+    "Distributed RAM": 1275
+  },
+  "delta_vs_DE": {
+    "LUT": -258.0,
+    "FF": -580.0,
+    "APM": 0.0,
+    "DRM": 4.0,
+    "Distributed RAM": -144.0
+  },
+  "estimated_setup_delta_vs_DE": {
+    "rst_clk": 0.0,
+    "ddrphy_sysclk": 0.0,
+    "clk_27m": 0.7520000000000024,
+    "camera_pclk_budget": 0.057000000000000384,
+    "rgmii_rx_clk": 0.0,
+    "serial_clk": 0.0,
+    "pixel_logic_clk": 0.0,
+    "processing_clk": -0.0030000000000000027
+  },
+  "actual_netlist_review": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\post_syn_review_20261101\\review.json",
+  "physical_signoff": false,
+  "routing_started": false,
+  "promoted": false,
+  "bitstream_generated": false
+}

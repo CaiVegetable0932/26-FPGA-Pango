@@ -1,0 +1,22 @@
+{
+  "status": "NEEDS_REVIEW",
+  "passed": false,
+  "synthesis": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401",
+  "candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\candidate",
+  "checked_at": "2026-11-01T10:59:15.901764+08:00",
+  "physical_signoff": false,
+  "scripts_sha256": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\scripts\\review_gh2_netlist.py": "d3478986ea47e880cb05d6037413d2c857f7f02ac53bd2c2192ed92cc1f376ea",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\post_syn_review\\gate_lut6d_review.py": "40ad773d447c32584e43cc42a7f22b76ef2e67521844129aeb04c8a65c59e721",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\scripts\\review_g_netlist.py": "c04e9383283db3c79b538b929e209054a21e90b67eee0e2cecdfe9b513d03ab3",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\scripts\\gate_h2_read_port.py": "81b81fe54bf1272ba2af941f9eaf0486b5c679100f63d4dc01e5fb3dd71a8790",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\scripts\\audit_h2_fsm_semantics.py": "2493e90671fd160d0a68f4d23b5f3565aac9c3326064fd61d857b0d08731fc4f",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\scripts\\audit_h2_parent_guards.py": "3fe9247f107b06bf08f53622d5ecc1f2fc332f61d243cf93bc4e74903405a5b2"
+  },
+  "vm_sha256": "6d49e138c9ef4679c6d2c9c75c069423bed1ca4773d0d2111d7aa711ddff11d9",
+  "sources_sha256": "65f8ad8e8fa86b5169c15d3ec3b0549a6ba938ce0544099515c1d3f1d564333f",
+  "synthesis_result_sha256": "2232a138132ede166b2147b750a4c65cf58c4ea9e0349a07085afb4ccd0bed75",
+  "error_type": "AssertionError",
+  "error": "('N3905', 0)",
+  "next_action": "Inspect exact GH2 VM and stopped SYN. Never re-SYN or broaden constraints solely to bypass this gate."
+}

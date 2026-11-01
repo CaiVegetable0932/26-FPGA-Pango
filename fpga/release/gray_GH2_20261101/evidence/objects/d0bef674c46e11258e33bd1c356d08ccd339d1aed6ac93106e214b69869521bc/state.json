@@ -1,0 +1,34 @@
+{
+  "status": "SYN_GATE_NEEDS_REVIEW",
+  "driver_pid": 15384,
+  "candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\candidate",
+  "source_count": 327,
+  "sources_sha256": "65f8ad8e8fa86b5169c15d3ec3b0549a6ba938ce0544099515c1d3f1d564333f",
+  "functional": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\functional_review.json",
+    "sha256": "b2b3e35a78c0532e479799a5d4bbf165d4f588234012b566b76ab17bb775390e",
+    "sources_sha256": "65f8ad8e8fa86b5169c15d3ec3b0549a6ba938ce0544099515c1d3f1d564333f",
+    "source_count": 327,
+    "combined_full_video_fresh": true,
+    "parent_unit_proofs_reused": true
+  },
+  "routing_started": false,
+  "promoted": false,
+  "bitstream_generated": false,
+  "updated_at": "2026-11-01T10:59:18.583426+08:00",
+  "active_wrapper_pid": null,
+  "synthesis": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401",
+  "synthesis_wrapper_exit": 0,
+  "completed_artifacts_sha256": {
+    "synthesis": {
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401\\result.json": "2232a138132ede166b2147b750a4c65cf58c4ea9e0349a07085afb4ccd0bed75",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401\\sources.json": "65f8ad8e8fa86b5169c15d3ec3b0549a6ba938ce0544099515c1d3f1d564333f",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401\\synthesize\\pango_video_system_syn.adf": "2a2384defad6a84ca3b274e1e9b5ccbf73eb2841f220814b79c47d663ed2e0dc",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401\\synthesize\\pango_video_system_syn.vm": "6d49e138c9ef4679c6d2c9c75c069423bed1ca4773d0d2111d7aa711ddff11d9",
+      "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401\\synthesize\\pango_video_system.snr": "524a6fe6ee218c3d6ce87291a1a7bac8932434749c4c378bf0d75f542848712d"
+    }
+  },
+  "synthesis_result_sha256": "2232a138132ede166b2147b750a4c65cf58c4ea9e0349a07085afb4ccd0bed75",
+  "netlist_review": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\native\\netlist_review\\review.json",
+  "error": "New GH2 actual-board RAM/FSM/CE gate needs review; no MAP started"
+}

@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-01T09:21:04.708670+08:00",
+  "candidate": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\H2_candidate",
+  "candidate_manifest_sha256": "9f25508ac4ad4bff29c1d30cc1a42121b92431024dec325e6b3cb6d1d7cda80f",
+  "changes_vs_DE": [
+    "constraints/video_system/processing_cdc.fdc",
+    "rtl/memory/dma_write_cdc.sv"
+  ],
+  "source_count": 327,
+  "live_modified": false,
+  "h1_evidence_modified": false,
+  "physical_signoff": false,
+  "native_started": false,
+  "unit_proof": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\write_cdc_owned_read_20261031\\proof_224708_192296",
+    "result_sha256": "fd785c3bfdc082b02e504bfef66840ee6055c66d661d079c0778d395ac41b03f",
+    "sources_sha256": "2a96eb8f9c4aa686d9c44b1a8d501bbc798046ea6de40e7f6fd9d1d61e4da8e7",
+    "cases": 538,
+    "beats": 3199,
+    "ownership_assertions": true,
+    "immediate_word0_reuses": 180
+  },
+  "constraint_adaptation": {
+    "removed_commands": [
+      "set_max_delay 6.0 -datapath_only -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]",
+      "set_false_path -hold -from [get_clocks {processing_clk}] -to [get_cells -hierarchical {core.processor.result_bridge.read_q*}]"
+    ],
+    "full_board_topology_gate_required": true
+  },
+  "full_video": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\verilator_20261031_224825_336708",
+    "result_sha256": "818dc855313b496b0ae4e158e0e2820ff7966efe8e3b70da6e48dd73985cca18",
+    "sources_sha256": "87a7bd0120931f474ef9dfd4a335b371662b897602c1f3e1961082b1a8bd48c5",
+    "fresh_run": true,
+    "source_count": 94,
+    "all_rtl_matches": true,
+    "new_frames": 3,
+    "repeated_frames": 5,
+    "checked_pixels": 16588800,
+    "underflow": 0
+  }
+}

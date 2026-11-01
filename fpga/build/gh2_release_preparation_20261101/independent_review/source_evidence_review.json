@@ -1,0 +1,64 @@
+{
+  "status": "GH2_PREPACKAGE_SOURCE_EVIDENCE_VERIFIED",
+  "passed": true,
+  "checked_at": "2026-11-01T12:55:36.554261+08:00",
+  "source_count": 327,
+  "changed_from_DE": [
+    "constraints/video_system/processing_cdc.fdc",
+    "rtl/control/frame_parameter_bank.sv",
+    "rtl/memory/dma_write_cdc.sv"
+  ],
+  "source_manifest_sha256": "65f8ad8e8fa86b5169c15d3ec3b0549a6ba938ce0544099515c1d3f1d564333f",
+  "functional": {
+    "path": "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\functional_review.json",
+    "sha256": "b2b3e35a78c0532e479799a5d4bbf165d4f588234012b566b76ab17bb775390e",
+    "sources_sha256": "65f8ad8e8fa86b5169c15d3ec3b0549a6ba938ce0544099515c1d3f1d564333f",
+    "source_count": 327,
+    "combined_full_video_fresh": true,
+    "parent_unit_proofs_reused": true
+  },
+  "resources": {
+    "LUT": 37334,
+    "FF": 41380,
+    "APM": 154,
+    "DRM": 75.5,
+    "Distributed RAM": 1131
+  },
+  "final_evidence_binding_count": 70,
+  "evidence_drift": [],
+  "exact_artifacts_sha256": {
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\final_review_20261101\\final_review.json": "66e8059e0244d2878dd58f945935e1c217684ab8e56f361e13151feec3c180be",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\candidate\\sources.json": "65f8ad8e8fa86b5169c15d3ec3b0549a6ba938ce0544099515c1d3f1d564333f",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\gh2_integration_20261101\\functional_review.json": "b2b3e35a78c0532e479799a5d4bbf165d4f588234012b566b76ab17bb775390e",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401\\synthesize\\pango_video_system_syn.adf": "2a2384defad6a84ca3b274e1e9b5ccbf73eb2841f220814b79c47d663ed2e0dc",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_20261101_103105_502401\\synthesize\\pango_video_system_syn.vm": "6d49e138c9ef4679c6d2c9c75c069423bed1ca4773d0d2111d7aa711ddff11d9",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_124125_148426\\device_map\\pango_video_system_map.adf": "ed57025f121c21140e04df1ba4fa06e298bdc3065e23a5376c6ae97219fa9e3d",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_124125_148426\\device_map\\pango_video_system.pcf": "54aba0f6a0fa7eef993622ae074bd02a02aaacd786c0549d9d0cfcf45a31901a",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_124125_148426\\device_map\\pango_video_system.dmr": "e8c8198f55e7d65985746b2871473eb937ba012bac820cc1eed5d2ae5fc5aa13",
+    "D:\\XDU\\concept\\26-FPGA-Pango\\fpga\\build\\full_integration_20261013\\board_postsyn_20261101_124125_148426\\result.json": "c51eff735017d98fc69e2896fd1d1004be7cb042e822a1db408c2ea3c2c97ce8"
+  },
+  "source_SYN_MAP_identical": true,
+  "native_SYN_MAP_exit_zero": true,
+  "new_layout_from_MAP_required": true,
+  "placement_checkpoint_present": false,
+  "routed_database_present": false,
+  "post_SYN_SCF_count": 10,
+  "CCR_existing_share_pin_count": 33,
+  "no_new_broad_CDC_exceptions": true,
+  "ordinary_RAM_and_DDR_setup_hold_retained": true,
+  "estimated_setup_ns": {
+    "rst_clk": 4.9,
+    "ddrphy_sysclk": 0.094,
+    "clk_27m": 32.313,
+    "camera_pclk_budget": 4.23,
+    "rgmii_rx_clk": 5.362,
+    "serial_clk": 0.484,
+    "pixel_logic_clk": 5.921,
+    "processing_clk": 0.787
+  },
+  "timing_limitation": "Synthesis estimates only; DDR/OSERDES/DQS hold and external IO timing remain unsigned.",
+  "package_integrity_verified": false,
+  "cloud_commit_verified": false,
+  "physical_signoff": false,
+  "native_started_by_this_review": false
+}
