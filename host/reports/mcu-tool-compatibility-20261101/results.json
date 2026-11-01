@@ -1,0 +1,38 @@
+{
+  "mcu_commit": "22452f36dae80ebac5b5386a60a2e92481862b0e",
+  "hardware_tested": false,
+  "cases": {
+    "basic": {
+      "compatible": true,
+      "checks": [
+        "handshake",
+        "state",
+        "move",
+        "home"
+      ]
+    },
+    "zero_timeout": {
+      "reproduced": true,
+      "error": "MCU 应答超时；请检查独立 F4 串口及固件版本",
+      "host_timeout_seconds": 0.401,
+      "firmware_completed_after_5s_with_heartbeat": true
+    },
+    "event_overflow": {
+      "reproduced": true,
+      "motions": 33,
+      "events": 66,
+      "fault": 9,
+      "ack": 0
+    },
+    "query_busy_disconnect": {
+      "reproduced": true,
+      "connected": false,
+      "error": "MCU 拒绝：BUSY，detail=0"
+    },
+    "event_boundary": {
+      "reproduced": true,
+      "first_overflow_event": 65,
+      "fault": 9
+    }
+  }
+}

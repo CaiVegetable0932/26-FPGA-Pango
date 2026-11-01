@@ -1,0 +1,63 @@
+{
+  "hardware_acceptance": "not_performed",
+  "mcu_unittests": {
+    "passed": true,
+    "tests": 13
+  },
+  "web_integration": {
+    "passed": true,
+    "tests": 32
+  },
+  "ui_controller": {
+    "passed": true
+  },
+  "javascript_syntax": {
+    "passed": true
+  },
+  "firmware_regressions": {
+    "hardware_tested": false,
+    "mcu_commit": "22452f36dae80ebac5b5386a60a2e92481862b0e",
+    "cases": {
+      "async_zero": {
+        "passed": true,
+        "zero": "completed",
+        "heartbeats": 28,
+        "elapsed_board_seconds": 5.6,
+        "fault": 0
+      },
+      "continuous_motion": {
+        "passed": true,
+        "motions": 100,
+        "events": 200,
+        "ack": 200,
+        "fault": 0
+      },
+      "query_busy": {
+        "passed": true,
+        "coalesced": true,
+        "busy_keeps_connection": true
+      },
+      "old_event_replay": {
+        "passed": true,
+        "old_events_drained": 20,
+        "new_motion": 2,
+        "ack": 22
+      },
+      "firmware_queue_boundary": {
+        "passed": true,
+        "unacked_overflow_still_enforced": true
+      }
+    }
+  },
+  "source_sha256": {
+    "host/src/mcu_pose_v2.py": "66d5545c67d0a1895bd4bf4fdd7a8b6ff4898aaaf9d6adf4dae7ba0a48d76bb6",
+    "host/src/pango_video/mcu_control.py": "0865a9b9640908aef55a3c5f94ce4cf82a4f1e249065e890ae31f8fed94faed6",
+    "host/src/pango_video/web_server.py": "4c8e12985687608176a5a0cb8a61e4623a4bcfda452b7556268e5f1c666a99a8",
+    "host/web/app.js": "47d71527263e11a2e280fab684beaa370d5e8e2f09a3be6ef892b9ab7cd4e333",
+    "host/web/index.html": "b5cce26f446e1dc24a36ac86612cf98d5f7ad210dfa89c7cffa2d98233c54820",
+    "host/tests/test_mcu_control.py": "2db28f82315d96a060e65951d074ae3c5e8eb63520f4620846f307ac3f4a2220",
+    "host/tests/test_mcu_pose_v2.py": "1485fc59c8badc5b2be9b12dc41387993090a951e17409f1d538c25a996959a6",
+    "host/tests/test_mcu_ui.cjs": "b898219ffac00d33dae60e2a9454ff4a15da69d26e3f8a930b5562b16aedccb1",
+    "host/tests/test_webui.py": "6d3626596fef72cfc727b41ccba252f1becaf2be23ab56714111872d931dd6a2"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "hardware_tested": false,
+  "mcu_commit": "22452f36dae80ebac5b5386a60a2e92481862b0e",
+  "cases": {
+    "async_zero": {
+      "passed": true,
+      "zero": "completed",
+      "heartbeats": 28,
+      "elapsed_board_seconds": 5.6,
+      "fault": 0
+    },
+    "continuous_motion": {
+      "passed": true,
+      "motions": 100,
+      "events": 200,
+      "ack": 200,
+      "fault": 0
+    },
+    "query_busy": {
+      "passed": true,
+      "coalesced": true,
+      "busy_keeps_connection": true
+    },
+    "old_event_replay": {
+      "passed": true,
+      "old_events_drained": 20,
+      "new_motion": 2,
+      "ack": 22
+    },
+    "firmware_queue_boundary": {
+      "passed": true,
+      "unacked_overflow_still_enforced": true
+    }
+  }
+}

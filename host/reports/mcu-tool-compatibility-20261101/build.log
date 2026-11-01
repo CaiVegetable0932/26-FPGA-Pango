@@ -1,0 +1,7 @@
+In file included from gateway_bridge.c:4:
+reference/mcu/firmware/longmenjia/Core/Src/f4_link.c:207:12: warning: ‘f1_feedback_fresh’ defined but not used [-Wunused-function]
+  207 | static int f1_feedback_fresh(uint64_t now)
+      |            ^~~~~~~~~~~~~~~~~
+reference/mcu/firmware/longmenjia/Core/Src/f4_link.c:41:17: warning: ‘links_pinmask_get’ defined but not used [-Wunused-function]
+   41 | static uint32_t links_pinmask_get(void) { return F4_PinMask; }
+      |                 ^~~~~~~~~~~~~~~~~
