@@ -188,6 +188,9 @@ class LauncherEntryTests(unittest.TestCase):
                 shutil.copy2(HOST_ROOT / "scripts" / name, root / "scripts" / name)
             for source in (HOST_ROOT / "src/pango_video").glob("*.py"):
                 shutil.copy2(source, root / "src/pango_video" / source.name)
+            # Include top-level protocol modules required by the relocated MCU UI.
+            for source in (HOST_ROOT / "src").glob("*.py"):
+                shutil.copy2(source, root / "src" / source.name)
             shutil.copy2(HOST_ROOT / "config/receiver.mock.json", root / "config/receiver.mock.json")
             shutil.copytree(HOST_ROOT / "web", root / "web")
             # Inject Ctrl+C through Python so the check also works without a Windows console.

@@ -1,6 +1,6 @@
 # MCU 设备端开发区
 
-这里开发云台、电机、光照控制等设备端固件。当前仅建立目录骨架，不预设尚未确认的 MCU 型号、SDK、引脚或构建工具。
+这里开发云台、电机、光照控制等设备端固件。F4 龙门架工程位于 `firmware/longmenjia`，F1 云台工程位于 `firmware/yuntai`；原 `stm32`、`yuntai` 目录已移走，源码、依赖、参考资料和历史构建记录全部保留。
 
 | 目录 | 内容 |
 | --- | --- |
@@ -21,4 +21,16 @@
 
 主视频采用OV5640直接输入PG2L100H，S0 RAW8经板载千兆网到PC，FPGA结果经HDMI回采，见[跨端回传方案](../output/OV5640_RAW8千兆网与HDMI双路回传方案.md)。MCU不转发像素，不参与实时畸变矫正；继续负责光照、云台、电机和设备端反馈。
 
-融合IMU按已选方向使用独立UART到FPGA，型号与协议待确认；PC控制口、IMU口和MCU口分开配置。用于证明FPGA独立处理的板载旁路/矫正按键应直接作用于FPGA逻辑，不绕经PC或依赖MCU中转。MCU设备动作、实际照度和时戳仍需与对应测试运行关联。
+F1 直接用两只舵机的位置反馈生成 pitch/yaw（2026-10-20 起不再使用 MPU6050 姿态融合），再经 F4 独立双向 UART 回传 FPGA。PC 经 F4 下发运动，FPGA 仅查询、同步和接收状态。用于证明 FPGA 独立处理的板载旁路/矫正按键直接作用于 FPGA 逻辑。参见 [接口补充](../output/MCU_POSE_V2接口实现补充.md)、[板卡配置](config/board_interfaces.md) 和 [软件验证记录](reports/MCU_POSE_V2软件验证.md)。
+
+在本目录运行：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1 -Board yuntai -Configuration Release
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1 -Board longmenjia -Configuration Release
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test.ps1
+```
+
+构建输出归 `build/f1`、`build/f4`，脚本仍接受 `-Board f1/f4` 别名；原产物作为历史文件保留，不证明新版已上板。新增全系统紧急 STOP 接口已取消，原驱动的 `stop n` 和本地故障处理保留。原同名交接文档保留于本目录，权威设计同步放在 `output/`。源码、依赖、配置、测试与构建结果按仓库规则提交；临时 PDF 阅读工具和重复的临时输出按用户授权忽略。
+
+旧[串口修改方案](../output/MCU对接现有FPGA串口的修改方案.md)及[链路示意图](../output/MCU对FPGA通信方案.png)已归档到 `output/`。配置实体见 `config/machine_config.json`；每个构建目录的 `manifest.json` 记录配置、源码与固件 SHA-256。运行时行程、零位与偏置通过 GET_CONFIG 按启动代次和配置版本另行保存。

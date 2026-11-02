@@ -1,3 +1,10 @@
-# Only exclude these two directories at the repository root.
+# Project reference directories at the repository root.
 /reference/
 /PDS/
+
+# Temporary MCU tooling and redundant scratch outputs authorized on 2026-10-11.
+/mcu/build/tooling/
+/mcu/build/TDK_Register_Map_unavailable.html
+/mcu/build/test_gateway.exe
+/mcu/build/test_pose.exe
+/mcu/build/test_wire.exe

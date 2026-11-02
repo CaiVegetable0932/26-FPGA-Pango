@@ -1,0 +1,521 @@
+{
+    "hardware_verified":  false,
+    "schema_version":  1,
+    "configuration_and_sources":  [
+                                      {
+                                          "sha256":  "fb39c7f04d62a83cbeb8cfe1c1f944615203ebbf07fcad6ca27e44a8cd02f1e6",
+                                          "path":  "config/board_interfaces.md"
+                                      },
+                                      {
+                                          "sha256":  "294c9b99ea9de41d224313826566e88491b2c74fd2df20eae80e045b0e713293",
+                                          "path":  "config/machine_config.json"
+                                      },
+                                      {
+                                          "sha256":  "ac55e9f9f40373e1968ebc144caf2876299e16545be85413a0043a5d63046e03",
+                                          "path":  "config/pose_config.h"
+                                      },
+                                      {
+                                          "sha256":  "097bfd2fe99c55beaf58a18099b0e72d6318b8937e452eb73fa776796c90f08f",
+                                          "path":  "firmware/common/board.c"
+                                      },
+                                      {
+                                          "sha256":  "9be1e561d6c2b309720376af760b26ae5fefb697bfd8c9e179039a7df481ecda",
+                                          "path":  "firmware/common/board.h"
+                                      },
+                                      {
+                                          "sha256":  "d7c612032c8300e886b5794fa6c81286eec58f412d0ba29d397dab08a0d345ac",
+                                          "path":  "firmware/common/internal.h"
+                                      },
+                                      {
+                                          "sha256":  "a5bddc6e71de4e3e0ca7fd583a4cf20ca8420a093b02f73c2fc6fa967cad2d57",
+                                          "path":  "firmware/common/pose.c"
+                                      },
+                                      {
+                                          "sha256":  "3817c027347f3693199d255bb1ec84dcd863eb362a7700406d97b96592450607",
+                                          "path":  "firmware/common/pose.h"
+                                      },
+                                      {
+                                          "sha256":  "37c118aaedacebc0f21bd4c2845aabdec6b005018df4a039e4587600ae046a82",
+                                          "path":  "firmware/common/wire.c"
+                                      },
+                                      {
+                                          "sha256":  "8d72aae22ebea9fc05c4ee56f812425775bc9d0646cb6698ac5f4c57625627b6",
+                                          "path":  "firmware/common/wire.h"
+                                      },
+                                      {
+                                          "sha256":  "c92da0a3e0d6d78ceb3d4e9a162ca0d6d469591e4341e20c580dbdce0bcd7ffe",
+                                          "path":  "firmware/longmenjia/.settings/bundles.store.json"
+                                      },
+                                      {
+                                          "sha256":  "c797971d9ffbce58280c89914c636a09e9473b71a40094bb40fa6501be12e47d",
+                                          "path":  "firmware/longmenjia/.settings/bundles-lock.store.json"
+                                      },
+                                      {
+                                          "sha256":  "c8efb838d8c387b4a9494045f6eb9658aa959705e65fc8354ee99c57ccd81bcb",
+                                          "path":  "firmware/longmenjia/.settings/ide.store.json"
+                                      },
+                                      {
+                                          "sha256":  "1d40a921a6f28b9ac3dfcd2613d0a666dd3d9a9a7f6f626028132db735fe020f",
+                                          "path":  "firmware/longmenjia/.vscode/c_cpp_properties.json"
+                                      },
+                                      {
+                                          "sha256":  "74cb62981fe3e81d149475f00d4012915197be7b3d000f729ab8fcb8745903ea",
+                                          "path":  "firmware/longmenjia/.vscode/settings.json"
+                                      },
+                                      {
+                                          "sha256":  "2daa0a42985a6f5a51350e88e810c8c4762726cabf749fe2cfd819d9f8ebd95d",
+                                          "path":  "firmware/longmenjia/cmake/gcc-arm-none-eabi.cmake"
+                                      },
+                                      {
+                                          "sha256":  "8ab93ad157343e2fff570f55639347cc24c6714e5c1a4cfe8e909275b23aba91",
+                                          "path":  "firmware/longmenjia/cmake/starm-clang.cmake"
+                                      },
+                                      {
+                                          "sha256":  "6b62efd2f9ef132d2990728c7661e54848c81316df2bfaac44ee93290b6cea7c",
+                                          "path":  "firmware/longmenjia/cmake/stm32cubemx/CMakeLists.txt"
+                                      },
+                                      {
+                                          "sha256":  "374f7bb998991939123bcd34d01dd9c601d2d4d34a6f3c7b36065c6f38466ee5",
+                                          "path":  "firmware/longmenjia/CMakeLists.txt"
+                                      },
+                                      {
+                                          "sha256":  "195a8831f0bfb9d728f4fd7f8b623f0ed25a7b67938b7469011a9e85acf10e8b",
+                                          "path":  "firmware/longmenjia/CMakePresets.json"
+                                      },
+                                      {
+                                          "sha256":  "ddc0318755d54db6647135296e4d0c7dd911ecb642a2a880c3bac636982737e1",
+                                          "path":  "firmware/longmenjia/Core/Inc/d36a_motor.h"
+                                      },
+                                      {
+                                          "sha256":  "95b06ab23e959d3d76c76ddde2a5a01277c80dda56233ca8848444a5e0e5fd56",
+                                          "path":  "firmware/longmenjia/Core/Inc/f4_link.h"
+                                      },
+                                      {
+                                          "sha256":  "e2d62f964a0b7f238384ed6a20a181d09df9647240a268dc547acf5b35099f74",
+                                          "path":  "firmware/longmenjia/Core/Inc/gpio.h"
+                                      },
+                                      {
+                                          "sha256":  "358735c836c01870133c3e9fdac78d6063302ab5cfffa6ecd5b7ba3db6e589b1",
+                                          "path":  "firmware/longmenjia/Core/Inc/main.h"
+                                      },
+                                      {
+                                          "sha256":  "16f020e929c2a1f7b29c086066ca3ceb6a8cae3232a4f45723b0ad97a68e84d1",
+                                          "path":  "firmware/longmenjia/Core/Inc/stm32f4xx_hal_conf.h"
+                                      },
+                                      {
+                                          "sha256":  "b4dd6ef8da3958e0ef02c3e9c2d6a9e4002b5155dc1f4402584fcfcea9d8cbf4",
+                                          "path":  "firmware/longmenjia/Core/Inc/stm32f4xx_it.h"
+                                      },
+                                      {
+                                          "sha256":  "d8f08409f32416fd4817965cf801dfc3435dd37b241edd6e56c5575a711bc6ca",
+                                          "path":  "firmware/longmenjia/Core/Inc/tim.h"
+                                      },
+                                      {
+                                          "sha256":  "78784d338f47353240878255027d1af2e9f97479d3022e41624ae178c700fdbd",
+                                          "path":  "firmware/longmenjia/Core/Inc/usart.h"
+                                      },
+                                      {
+                                          "sha256":  "2033e78b577f8138f2a28679190aac97506900af9505a0cd0da13eda3d8b8d8a",
+                                          "path":  "firmware/longmenjia/Core/Src/d36a_motor.c"
+                                      },
+                                      {
+                                          "sha256":  "a607a2797a74387af4b830d05dcd7f3fc114ae3be6e38a527bfbaa270d32f995",
+                                          "path":  "firmware/longmenjia/Core/Src/extra_uart.c"
+                                      },
+                                      {
+                                          "sha256":  "7f9ab3e404e798448bdbe1633074e79faf728b4675372c3eedcfe54f0ae230f9",
+                                          "path":  "firmware/longmenjia/Core/Src/f4_link.c"
+                                      },
+                                      {
+                                          "sha256":  "e180f3a8643d9663a6e9c781f27dfd4a40c97f2309cc58d0b4653381b9569b07",
+                                          "path":  "firmware/longmenjia/Core/Src/gpio.c"
+                                      },
+                                      {
+                                          "sha256":  "34164b89f203a265d791725c41cf85b6a5c449a9ddc5ab32919b1df96d912b6a",
+                                          "path":  "firmware/longmenjia/Core/Src/main.c"
+                                      },
+                                      {
+                                          "sha256":  "3217d99dc7006dc46ac384717641fe84386f05fc71db0a3340fa0eae810bc1b7",
+                                          "path":  "firmware/longmenjia/Core/Src/stm32f4xx_hal_msp.c"
+                                      },
+                                      {
+                                          "sha256":  "e437962d43478485889c5c2c963166f8a9c5794971c304232621f5af95996ce0",
+                                          "path":  "firmware/longmenjia/Core/Src/stm32f4xx_it.c"
+                                      },
+                                      {
+                                          "sha256":  "03c06c72eafb44b499814cf9234aba57dd830f345d9b8779b5d7090e78517600",
+                                          "path":  "firmware/longmenjia/Core/Src/syscalls.c"
+                                      },
+                                      {
+                                          "sha256":  "ad20f7b1fa1e7c73330727747222cf2ffa3245ebf035230ee9a157545e79df95",
+                                          "path":  "firmware/longmenjia/Core/Src/sysmem.c"
+                                      },
+                                      {
+                                          "sha256":  "a31929eab936ac98db060c18917118acf79dc96e1f03ed4b57d614535dd06d70",
+                                          "path":  "firmware/longmenjia/Core/Src/system_stm32f4xx.c"
+                                      },
+                                      {
+                                          "sha256":  "5b4cabd3ff019798050e3364051a1cffde8c5d9716c0d0f269980dfab0523f4f",
+                                          "path":  "firmware/longmenjia/Core/Src/tim.c"
+                                      },
+                                      {
+                                          "sha256":  "8d41f2aa7f330b282fd8dd1c4eac6e86984a58eaf725fbc2e932721b8adce2d6",
+                                          "path":  "firmware/longmenjia/Core/Src/usart.c"
+                                      },
+                                      {
+                                          "sha256":  "bd21220ea8b6858c2d727cca1d2a5f1077f8a81717acdac583a1e9165d858160",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+                                      },
+                                      {
+                                          "sha256":  "a19edea6b2f4df2ab3c567782c4d313a52319c4303bd56ad7dd1d0e077014657",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"
+                                      },
+                                      {
+                                          "sha256":  "02c067d5a135f540c03215dc834b1e60a97bbd4e55bfd3994b0c82a15ea3012a",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+                                      },
+                                      {
+                                          "sha256":  "2e336a64f60a9c0eaf5a08e2c4845d94da86c3fd84d219d0d0c9f530e63bc9c3",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/cachel1_armv7.h"
+                                      },
+                                      {
+                                          "sha256":  "5bc0d7ed8e36e9bcb868c4042fff350c702eca305df4162fb00384789e35ee1c",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/cmsis_armcc.h"
+                                      },
+                                      {
+                                          "sha256":  "d5da2b48204f0d0cf1ff38ffccb527e5706cd0a091ff0a331eb41d6596c33fe5",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/cmsis_armclang.h"
+                                      },
+                                      {
+                                          "sha256":  "3e8ffb284f4f155de3ea93841cca853b41d5e812b53e52c64c3d4a67b7f1ec7c",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/cmsis_armclang_ltm.h"
+                                      },
+                                      {
+                                          "sha256":  "b51963d271c1571ca3463654c76aa7ea50c4eac5d0a2710df10414ac64d9e0f8",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/cmsis_compiler.h"
+                                      },
+                                      {
+                                          "sha256":  "43bfd1fe69fbbc2ca70aaf7d43cc3e20f16e0c7f66e1bdef9b51af6dc14b2617",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/cmsis_gcc.h"
+                                      },
+                                      {
+                                          "sha256":  "2d255c8429e507e52cb603f2970bed4cc4a6cdcc3eb7fc7997385abad7364837",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/cmsis_iccarm.h"
+                                      },
+                                      {
+                                          "sha256":  "184c19fd3ee73632edf35a0b4d49cd48be75fbf49e6ccb19d9db05fa83bea4b3",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/cmsis_version.h"
+                                      },
+                                      {
+                                          "sha256":  "a40954bccbf202bd65ee721ea688122561e005c9f9f9d18e082280c5b897d0e4",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_armv81mml.h"
+                                      },
+                                      {
+                                          "sha256":  "458b1e6788079ded52adc7d06383701c865ca97b67c5e7a0a44884194f91a842",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_armv8mbl.h"
+                                      },
+                                      {
+                                          "sha256":  "5a68204fa31cda7d04d41c9ceaf3f4b1217908f59366f757ee778181c7cc8cb9",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_armv8mml.h"
+                                      },
+                                      {
+                                          "sha256":  "ac13cb645f108666a0e57c93467872660d6bc860a839f840dc870b7a5863b4bf",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm0.h"
+                                      },
+                                      {
+                                          "sha256":  "a09fa9c6b8b21d1920bce15b98aa56182b027e9278cca0b154812bac2aea3cfa",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm0plus.h"
+                                      },
+                                      {
+                                          "sha256":  "944bf0c4f940eef30a632cd99d5dcfe8270e8a8431eb98c0f081bcf4f61f728e",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm1.h"
+                                      },
+                                      {
+                                          "sha256":  "77822e9738885394ec52fca6f617452b823a0b55e2664ee225e65576cf0e8f2d",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm23.h"
+                                      },
+                                      {
+                                          "sha256":  "c9937781259a8897adf514445441c68570087d6a72a558d8a4afe75cdb62dbd2",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm3.h"
+                                      },
+                                      {
+                                          "sha256":  "225c47c36230edaa314f1e7a45b38279f6ab4d58faeb132226db35f7007d58aa",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm33.h"
+                                      },
+                                      {
+                                          "sha256":  "206b427589981b78169c1d9b73e898e4e8de4efbd76fd0c2df7df81d645b9fa2",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm35p.h"
+                                      },
+                                      {
+                                          "sha256":  "f5b63d52dd1557b15ca414cb59c264f595a7b5669db2a5878dffe22f4caedc8c",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm4.h"
+                                      },
+                                      {
+                                          "sha256":  "5707f716cf03f7e80151108ae94601fcfdf362dd2d830876040213318f6dee3a",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm55.h"
+                                      },
+                                      {
+                                          "sha256":  "e974d0a91752487d0154457cd422c37667328e9ddb7ba4fa2fed479a63577f63",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm7.h"
+                                      },
+                                      {
+                                          "sha256":  "75bc123889f0f5ca33c4d16b6cbdd580a3572663c899fadb2c8e28f6a5e6fead",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_cm85.h"
+                                      },
+                                      {
+                                          "sha256":  "c81377a69a4ea8ecaead42194f2ce8ab59bd4ee7bd638e423f5b1f5ec283d154",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_sc000.h"
+                                      },
+                                      {
+                                          "sha256":  "73dd461c12c7d3a693840df3084fd8f85122095c6f21fa3d779b0f3eceaebad5",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_sc300.h"
+                                      },
+                                      {
+                                          "sha256":  "92d8661f2947d00da91653d04794cde0593fdaafb3438842a0477775716aafc5",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/core_starmc1.h"
+                                      },
+                                      {
+                                          "sha256":  "29206b52ee02290ed6f5a5415ebd4187de802cf176d9b3cb844390d8e5571372",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/mpu_armv7.h"
+                                      },
+                                      {
+                                          "sha256":  "2c7d22a344cedcc1e35380d1f76f0e6c55da5e3101e6a41fd85497d1841fe8c9",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/mpu_armv8.h"
+                                      },
+                                      {
+                                          "sha256":  "d76f5cc0c59a59e035115f700b8e8d95b7b98ecb99a2924e885f82a94903d984",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/pac_armv81.h"
+                                      },
+                                      {
+                                          "sha256":  "cea8c105c5f41ba831fe4d9e8e39758068cd4c414383348dc2835d6be447cca0",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/pmu_armv8.h"
+                                      },
+                                      {
+                                          "sha256":  "45565c8cb04c653aabaf3cceddfc848b6a0de28c20d4f7e3d475a992c7eee788",
+                                          "path":  "firmware/longmenjia/Drivers/CMSIS/Include/tz_context.h"
+                                      },
+                                      {
+                                          "sha256":  "8c2d2feb90e8ed88fe5756f3f1616a2b67aa1cd0858da8b130ed69607688c8c0",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h"
+                                      },
+                                      {
+                                          "sha256":  "6942f40453fee331e026179cfac4c0f24ffe6313fedcb68af9c3382f702dbaf5",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+                                      },
+                                      {
+                                          "sha256":  "d96dba22903abda49d66cad29ac0c49357e6a27cf9cb03dfd8c6db71b61a7fca",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h"
+                                      },
+                                      {
+                                          "sha256":  "c8eb3f7b393f8c5a0c32e16ccfa101c83ddb59e96bd42239b8a5c5d4da83e97f",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+                                      },
+                                      {
+                                          "sha256":  "71c38dfd65c5415b388375147e5317c7ac018b39893d6fd0ac1c897f4313329c",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+                                      },
+                                      {
+                                          "sha256":  "3ee15423d73ac394de39e7b65821775966389b13749ff0849894548ab6968676",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h"
+                                      },
+                                      {
+                                          "sha256":  "61e8f76bdb45dedf38fef592504e10418ca410952c7a209cd271b45ac835833a",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_exti.h"
+                                      },
+                                      {
+                                          "sha256":  "10be06c6e06fcf4eb11e236641948aed861898fea235c606ae221fa72bc46638",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h"
+                                      },
+                                      {
+                                          "sha256":  "7c206f5dbed3c147a6f090ab808933132a1b06b8339623ad7174fd0a222e981c",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h"
+                                      },
+                                      {
+                                          "sha256":  "f18a6eabc99f56483566f9231ca33c780afa98bc93929e60bb419b5e544eee2a",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h"
+                                      },
+                                      {
+                                          "sha256":  "0b40fc83363b64d3c7396a202be7a914ceaa7735ab0fa81d566ed320102b23fb",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+                                      },
+                                      {
+                                          "sha256":  "4091beefc5bf8b250f376d400f43ca028ef7378e1c7ba5c9eb5de64ec74231c0",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h"
+                                      },
+                                      {
+                                          "sha256":  "d6f6abc4af3d5a1ca59d886f5a9154e44f257a43af77c7f18173f160825ed6b5",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h"
+                                      },
+                                      {
+                                          "sha256":  "1794b88c5e080858c0205a2e94340c0250ac9171b3a3f01cad6d050005a1b09d",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h"
+                                      },
+                                      {
+                                          "sha256":  "eb6911d964b1cf8a83993b19c8feb9845e8793d7c0e5d643390b53207c8b078e",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
+                                      },
+                                      {
+                                          "sha256":  "49f0c8068524e1de248738530cff3bbe630dc4784b6e8b5568fbc7e1a154f772",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h"
+                                      },
+                                      {
+                                          "sha256":  "63f00354e2a5e8d3a8d211fc736517273e12b99a1eb782aa7a2670cb1264a16d",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h"
+                                      },
+                                      {
+                                          "sha256":  "aa6695d64677e8a7b46d719da3d81049290f42383c17e76271605bc68143fd1e",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h"
+                                      },
+                                      {
+                                          "sha256":  "42528bc9caa6e2fe96b7e6d7b3fcdf35d8d85ae38d33195a233e18a072f157a1",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+                                      },
+                                      {
+                                          "sha256":  "95a518139f74d14a4477519b5172675347990e9fa637bd3948c69bd475bd7c88",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_bus.h"
+                                      },
+                                      {
+                                          "sha256":  "d8b268ca207e51864d1a71ce14fff316c57d09e62a04d0c28310b4a1008e6f17",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_cortex.h"
+                                      },
+                                      {
+                                          "sha256":  "39e89050700e16304e04643e29c162b6aaa9f3bfe53880cd78c255ce46104e82",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_dma.h"
+                                      },
+                                      {
+                                          "sha256":  "6da580d41ebdcfd7349e29666a2e561c8e2c2e01f6e7ef29dfec6ebf6ae237df",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_exti.h"
+                                      },
+                                      {
+                                          "sha256":  "e46857f5f9a5f5a2d13ca2d6925dc9e66dfa7fc56a2cc72e54b891bdb88e2f16",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h"
+                                      },
+                                      {
+                                          "sha256":  "229af558bfeef8bb88d2224277b083c3b927c5c2612991fdeba00dad56255abc",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_pwr.h"
+                                      },
+                                      {
+                                          "sha256":  "605960f2e8e57a702b912475f9c154bb58711b58c8f2ff27dd4e75b5d767dc4e",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rcc.h"
+                                      },
+                                      {
+                                          "sha256":  "d634a419a55e99b4a641fecc055e1f602d8a418bd7d822cf2f812a0965ac9a3e",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_system.h"
+                                      },
+                                      {
+                                          "sha256":  "0d7eb3fd74100ee33cf592c6edb2e340d85ac320364702a6cc1d0e9d22da66d2",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_tim.h"
+                                      },
+                                      {
+                                          "sha256":  "982c4448c49ddc7c6c71bd788e5354f05e96aca5e98edd0626f8ffcaefc65e79",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usart.h"
+                                      },
+                                      {
+                                          "sha256":  "535cb625cfcd461d6054549bf04d25ef939ec5754f77731a5f9fd92728280ded",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_utils.h"
+                                      },
+                                      {
+                                          "sha256":  "97e715cda2a34bd564b59ce4ba9b16bd29651f8f229161105aaec666d76ea91a",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c"
+                                      },
+                                      {
+                                          "sha256":  "9aaa0f19137d700616bec01a5a806786c24e3f3386120365c5d2addaa4055505",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c"
+                                      },
+                                      {
+                                          "sha256":  "a345a1b1fe0221c827d5ad21d5a0f5387296bc2c075e06e5b8539c23da5678e4",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c"
+                                      },
+                                      {
+                                          "sha256":  "90cafb5a5b17a46b478770ef4abdc9a641cb395419abbb80f288138a63d44582",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c"
+                                      },
+                                      {
+                                          "sha256":  "f56651f86e5d89e8bba3bcb331353e00f291db15c902927a205d81bbe8951e6d",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c"
+                                      },
+                                      {
+                                          "sha256":  "8bf12eeb6e6cfc12a17587ed6d761724e0835a4a3dc0f6b14a8d1ca068bcb55b",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c"
+                                      },
+                                      {
+                                          "sha256":  "51a70deb9b19dd43f6f202430fae052f2deb26c39232c09c79230c8d8a61f773",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c"
+                                      },
+                                      {
+                                          "sha256":  "d3b426e8cb9d617f9064d2b0cea2a1d02b7bb6a74cba3f094779d6e922e477e3",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c"
+                                      },
+                                      {
+                                          "sha256":  "408908b15477b6ce2b0b9703caabcb053293d98f2f109d6e6940e076a6a3902b",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c"
+                                      },
+                                      {
+                                          "sha256":  "d779468a95df34421bf6c8417136a79aa910753381a644afa9ed10b185ae18b5",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c"
+                                      },
+                                      {
+                                          "sha256":  "4409dddc0d2019f918d0ddebecf659f06d4de3f9aa28566621a16ea47203331f",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c"
+                                      },
+                                      {
+                                          "sha256":  "f3ac468e2f415adb74281107c0dec1448008950b64a7bb11c14cbe3ee1a936de",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c"
+                                      },
+                                      {
+                                          "sha256":  "526324811fa113c3eadfa84cd24ea5e607ad8e8bf003a2085456c04b734ca25e",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c"
+                                      },
+                                      {
+                                          "sha256":  "a7dea3b10a771a380915007b9ece123654c6bd2a40f611102220df9bfdd143e4",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c"
+                                      },
+                                      {
+                                          "sha256":  "4471b582d56545fbd48725401249b4a2a728ccc0d933b3f1a02e2b09dda8d8fa",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c"
+                                      },
+                                      {
+                                          "sha256":  "a74ed3a9a13a4fcbaada9e6f88f7d4fcabe2a75852a6ce4c09f8d4314a2e851a",
+                                          "path":  "firmware/longmenjia/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c"
+                                      },
+                                      {
+                                          "sha256":  "470726a2871907e553a214977df6fb8e52d7d188e7d7acb4adcbafd29f947a09",
+                                          "path":  "firmware/longmenjia/FPGA.ioc"
+                                      },
+                                      {
+                                          "sha256":  "430f14fd00db0f7aa88f354aee54064efb582ddc4cc264fb8e435dc7d7a2f53d",
+                                          "path":  "firmware/longmenjia/startup_stm32f407xx.s"
+                                      },
+                                      {
+                                          "sha256":  "947343daf7ac4518c47fe9138c78fa013241c7ce1804986244e0f77a7fcffaed",
+                                          "path":  "firmware/longmenjia/STM32F407XX_FLASH.ld"
+                                      },
+                                      {
+                                          "sha256":  "9c0af697814960f803a709afb143856098ed9e8670ace703a21551e9d7b4f959",
+                                          "path":  "scripts/build.ps1"
+                                      }
+                                  ],
+    "generated_utc":  "2026-10-11T09:17:45.6597253Z",
+    "configuration":  "Release",
+    "images":  [
+                   {
+                       "path":  "FPGA.elf",
+                       "sha256":  "04106675776dbbe1353a4012695cc2254b96e8e2b1fb7e244643e5ebe646650b",
+                       "bytes":  266272
+                   },
+                   {
+                       "path":  "FPGA.hex",
+                       "sha256":  "953bee578414fd20e9779386ce00798b66808e39474ea4c075f26d6bc13045c6",
+                       "bytes":  100620
+                   },
+                   {
+                       "path":  "FPGA.bin",
+                       "sha256":  "0782ba0adf17131a7a53f9491249c4da4ff8f9046e15c00943a84457dacf91cc",
+                       "bytes":  35752
+                   }
+               ],
+    "protocol_profile":  "MCU_POSE_V2",
+    "firmware_project":  "longmenjia",
+    "board":  "f4",
+    "compiler":  "arm-none-eabi-gcc.exe (GNU Tools for STM32 14.3.rel1.20251027-0700) 14.3.1 20250623"
+}

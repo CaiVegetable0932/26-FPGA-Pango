@@ -1,0 +1,13 @@
+# F1 gimbal driver bench sequence (servo-only firmware, no MPU)
+# expected pitch/yaw raw: +20 deg -> 2184 / 2708 ; -20 deg -> 1578 / 2102 (tolerance +-12)
+info
+status
+ready
+sleep 2000
+go 20 20
+sleep 5000
+go -20 -20
+sleep 3000
+ready
+status
+quit
