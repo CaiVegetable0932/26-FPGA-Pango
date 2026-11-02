@@ -14,10 +14,15 @@
 #define GIMBAL_POSITION_MAX                4095U
 #define GIMBAL_ANGLE_SCALE_MDEG            (GIMBAL_TRAVEL_DEGREES * 1000U)
 #define GIMBAL_CENTER_PITCH_MDEG           124022L
-#define GIMBAL_CENTER_YAW_MDEG             158571L
+/* 2026-11-02：yaw 中心 2405 -> 2354。实测该机 yaw 舵机稳定停在 raw=2353~2354
+ * （目视正对零位、无机械限位），而固件按 2405 当中心，偏差 51 计数 > 容差 32，
+ * 使 servo_centered() 永不成立：/home 永远判不到位，F4 侧 15 s 超时锁存 fault=8。
+ * 角度沿用 raw*270/4095 换算：270*2354/4095 = 155208 mdeg。
+ * 必须与 firmware/common/pose.c 的 center[] 同步修改，否则两处判据会打架。 */
+#define GIMBAL_CENTER_YAW_MDEG             155208L
 #define GIMBAL_ALLOWED_OFFSET_MDEG         60000L
 #define GIMBAL_CENTER_PITCH_RAW            1881U
-#define GIMBAL_CENTER_YAW_RAW              2405U
+#define GIMBAL_CENTER_YAW_RAW              2354U
 #define GIMBAL_MOVE_TIME_MS                2000U
 #define GIMBAL_SETTLE_TIME_MS              1000U
 /* Arrival tolerance in raw counts. The bus servos repeat to roughly +-20

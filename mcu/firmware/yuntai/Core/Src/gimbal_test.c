@@ -286,7 +286,7 @@ static void StartCentering(void)
         }
     }
     if (Busy()) {
-        Reply("[开始回正] 两个舵机已核验，正在回到正对角度 pitch=124.022°(raw=1881)、yaw=158.571°(raw=2405)。\r\n");
+        Reply("[开始回正] 两个舵机已核验，正在回到正对角度 pitch=124.022°(raw=1881)、yaw=155.208°(raw=2354)。\r\n");
     }
 }
 
@@ -534,7 +534,7 @@ void Gimbal_Test_Init(Usart_DataTypeDef *servoBus)
     gimbalReady = 0U;
     failed=0U;
     Host_Console_Write("[启动完成] pitch=ID1，yaw=ID2；发送ready核验并回正。\r\n");
-    Host_Console_Write("[标定参数] 270°舵机；正对角度 pitch=124.022°（raw=1881），yaw=158.571°（raw=2405）；go范围为正对角度±60°。\r\n");
+    Host_Console_Write("[标定参数] 270°舵机；正对角度 pitch=124.022°（raw=1881），yaw=155.208°（raw=2354）；go范围为正对角度±60°。\r\n");
 }
 
 void Gimbal_Test_Poll(void)

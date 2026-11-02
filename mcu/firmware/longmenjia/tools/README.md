@@ -64,7 +64,7 @@ gcc -O2 -Wall -Wextra -o f4_host.exe f4_host.c
 /state             看 valid=0x03、motion=IDLE、fault=0
 /move 2 2 5        小范围低速试探方向
 /move 0 0 5        回零
-/gimbal            raw 应接近 1881 / 2405，确认 F1 链路
+/gimbal            raw 应接近 1881 / 2354，确认 F1 链路
 /home              云台回正（mask=0x18），至少等 5 s
 /posezero          姿态零位，约 5 s 后出结果（无即时回应是正常的）
 /gimbal            确认 zero_valid=1

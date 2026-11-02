@@ -969,7 +969,7 @@ static void print_generic(const uint8_t *p, uint16_t n)
         fmt_mdeg((int32_t)rd32(data + 24), r2, sizeof(r2));
         fmt_mdeg((int32_t)rd32(data + 4), f1, sizeof(f1));
         fmt_mdeg((int32_t)rd32(data + 8), f2, sizeof(f2));
-        out_line("              raw pitch/yaw = %u / %u   (中心应为 1881 / 2405)",
+        out_line("              raw pitch/yaw = %u / %u   (中心应为 1881 / 2354)",
                  (unsigned)rd16(data), (unsigned)rd16(data + 2));
         out_line("              绝对角 %s / %s 度   相对角 %s / %s 度",
                  a1, a2, r1, r2);
@@ -1259,7 +1259,7 @@ static void help(void)
     out_line("  /state            二进制 STATE（96 B，含 valid/flags/fault）");
     out_line("  /config           配置实体（看各轴 limit 是否为 0）");
     out_line("  /counters         CRC/超时/溢出计数");
-    out_line("  /gimbal           云台 raw 与角度（确认 1881/2405）");
+    out_line("  /gimbal           云台 raw 与角度（确认 1881/2354）");
     out_line("  /confirm [mask]   人工零位确认，mask 默认 0x03");
     out_line("  /move x y [rpm]   MOVE_ABS mask=0x03，rpm 默认 10");
     out_line("  /movez z [rpm]    MOVE_ABS mask=0x04（轴 3 必须先 set）");
@@ -1457,7 +1457,7 @@ static void meta_command(char *line)
     if (!strcmp(cmd, "injectf1")) {
         /* 注入一帧伪造的 F1_STATE，验证 F4 的 USART2 接收通路是否真的能收字节。
          * 用法：模块 TXD 同时接到 PD9 和 PA3（一根跳线），把真实 F1 的线从 PA3 拔掉，
-         * 然后 /injectf1 0x1234。若 /gimbal 立刻返回 raw=1881/2405，说明 F4 收得到。 */
+         * 然后 /injectf1 0x1234。若 /gimbal 立刻返回 raw=1881/2354，说明 F4 收得到。 */
         uint32_t boot;
         if (parse_u32(arg, &boot) || !boot) {
             out_line("用法：/injectf1 <boot_id，非 0，如 0x1234>");
@@ -1471,7 +1471,7 @@ static void meta_command(char *line)
         payload[14] = 1;   /* home_confirmed */
         payload[15] = 1;   /* angle_source */
         wr16(payload + 56, 1881);
-        wr16(payload + 58, 2405);
+        wr16(payload + 58, 2354);
         uint8_t frame[WIRE_MAX_FRAME];
         size_t len = wire_build(frame, 0xA1, 0, payload, 128);
 
@@ -1479,7 +1479,7 @@ static void meta_command(char *line)
         int rc = ser_write(&g_ser, frame, len);
         if (!rc) FlushFileBuffers(g_ser.h);   /* 等这一帧真正发完再返回，避免被后续改波特率截断 */
         mtx_unlock(&g_tx_lock);
-        out_line("注入伪 F1_STATE：boot=%u, 128 B, phase=IDLE, zero_valid=1, raw=1881/2405 %s",
+        out_line("注入伪 F1_STATE：boot=%u, 128 B, phase=IDLE, zero_valid=1, raw=1881/2354 %s",
                  (unsigned)boot, rc ? "发送失败" : "已发送");
         if (rc) return;
         sleep_ms(15);

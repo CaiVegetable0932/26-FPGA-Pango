@@ -27,7 +27,7 @@
     "home_timeout_ms": 15000,
     "axes": [
       {"name": "pitch", "servo_id": 1, "center_raw": 1881, "relative_range_mdeg": [-60000, 60000]},
-      {"name": "yaw", "servo_id": 2, "center_raw": 2405, "relative_range_mdeg": [-60000, 60000]}
+      {"name": "yaw", "servo_id": 2, "center_raw": 2354, "relative_range_mdeg": [-60000, 60000]}
     ],
     "imu": {
       "device": "MPU6050",

@@ -5,7 +5,13 @@
 #include <string.h>
 
 #define RAD_TO_DEG 57.2957795131f
-static const uint16_t center[2]={1881,2405};
+/* Servo-only centering reference in raw counts. 2026-11-02: yaw 2405 -> 2354.
+ * This machine's yaw servo rests at raw 2353~2354 at the visual zero with no
+ * mechanical stop; the old 2405 constant made servo_centered() unreachable, so
+ * pose_calibrate() never confirmed a home and F4 latched fault=8 on its 15 s
+ * timeout. Keep in sync with GIMBAL_CENTER_*_RAW in firmware/yuntai. */
+static const uint16_t center[2]={1881,2354};
+
 /* Servo-only zeroing tolerance in raw counts. Must match
  * GIMBAL_POSITION_TOLERANCE (firmware/yuntai/Core/Inc/gimbal_test.h): the bus
  * servos repeat to ~+-20 counts, and measured settling was as far as 31 counts,
