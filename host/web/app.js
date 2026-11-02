@@ -404,24 +404,49 @@
 
   // MCU feedback is cached by the backend; browser refresh never renews the
   // lease itself. Each motion is an explicit operator action, not an input event.
-  // Only target inputs use a 3-degree grid; feedback keeps all millidegree digits.
-  let mcuPending=false,mcuClosed=false,mcuTimer=null;
+  // Gantry targets are 0..100% of travel; gimbal targets may be any 0.1° value,
+  // but one command must change an axis by at least 3° or the servo ignores it
+  // while the firmware still reports completion. The backend enforces the same
+  // rule against live feedback; this page only saves the operator a round trip.
+  const mcuStepMdeg=3000;
+  let mcuPending=false,mcuClosed=false,mcuTimer=null,mcuState=null;
   function renderMCU(state){
-    const angles=state.angles,angle=v=>v==null?"无效 / 未就绪":`${v.toFixed(3)}°`;
+    mcuState=state;
+    const angles=state.angles,xyz=state.state?.xyz_normalized_micro||[];
+    const angle=v=>v==null?"无效 / 未就绪":`${v.toFixed(3)}°`;
+    const travel=v=>v==null?"无效 / 未就绪":`${(v/1e6).toFixed(2)}%`;
     text("mcu-feedback",state.connected?"MCU 已连接":"MCU 未连接");
+    text("mcu-current-x",state.connected?travel(xyz[0]):"—");
+    // Firmware logical axis 2 is the dual-motor gantry (site Z) and axis 3 the
+    // cantilever extension (site Y); the labels keep the site naming.
+    text("mcu-current-y",state.connected?travel(xyz[2]):"—");
+    text("mcu-current-z",state.connected?travel(xyz[1]):"—");
     text("mcu-current-pitch",state.connected?angle(angles?.pitch):"—");
     text("mcu-current-yaw",state.connected?angle(angles?.yaw):"—");
     text("mcu-state",state.connected?`反馈年龄 ${state.age_ms} ms · ${["空闲","运动中","回正中","稳定等待","保留","故障"][state.state?.motion_state]||"未知状态"}`:"等待读取真实舵机反馈");
-    // Long zero registration runs on the server; keep read/disconnect available
-    // while preventing a second zero or a competing motion from this page.
+    // Long zero registration runs on the server; only the emergency stop stays
+    // reachable while another action or the zero final reply is pending.
     const zeroPending=state.zero_operation?.status==="pending";
-    for(const b of document.querySelectorAll("[data-mcu]"))b.disabled=mcuPending||!state.connected||(zeroPending&&["move","home","zero"].includes(b.dataset.mcu));
+    for(const b of document.querySelectorAll("[data-mcu]")){
+      const action=b.dataset.mcu;
+      const blocked=zeroPending&&["move","gantry","home","zero","confirm"].includes(action);
+      b.disabled=!state.connected||blocked||(mcuPending&&action!=="stop");
+    }
     $("mcu-connect").disabled=mcuPending||state.connected||!$("mcu-port").value;$("mcu-port").disabled=mcuPending||state.connected;
     if(state.error)text("mcu-message",state.error);
     else if(state.state?.fault_code)text("mcu-message",`MCU 故障 ${state.state.fault_code}，请核对设备状态`);
     else if(state.zero_operation)text("mcu-message",state.zero_operation.message);
     else if(state.last_command)text("mcu-message",state.last_command.message);
+    else if(state.last_notice)text("mcu-message",`MCU 通知：${state.last_notice.text}`);
     else if(state.state)text("mcu-message",`反馈年龄 ${state.age_ms} ms · 运动状态 ${state.state.motion_state} · 故障 ${state.state.fault_code} · 指令接受不等于到位`);
+  }
+  // Compare a target with live feedback in whole millidegrees so the 3° gate
+  // stays exact and never depends on float representation.
+  function mcuGap(field){
+    const axis=field==="mcu-pitch"?"pitch":"yaw";
+    const target=Number($(field).value),current=mcuState?.angles?.[axis];
+    if(!Number.isFinite(target)||current==null)return null;
+    return Math.abs(Math.round(target*1000)-Math.round(current*1000));
   }
   async function mcuAction(action,data={}){
     if(mcuPending)return;mcuPending=true;
@@ -443,11 +468,22 @@
   });
   $("mcu-port").addEventListener("change",()=>void pollMCU());
   $("mcu-connect").addEventListener("click",()=>mcuAction("connect",{port:$("mcu-port").value}));
+  const mcuPayload={
+    gantry:()=>({x:Number($("mcu-x").value),y:Number($("mcu-y").value),z:Number($("mcu-z").value),rpm:Number($("mcu-rpm").value)}),
+    move:()=>({pitch:Number($("mcu-pitch").value),yaw:Number($("mcu-yaw").value)})
+  };
   for(const button of document.querySelectorAll("[data-mcu]"))button.addEventListener("click",()=>{
     const action=button.dataset.mcu;
-    // Native step validation rejects off-grid targets without silently rounding.
-    if(action==="move"&&(!$("mcu-pitch").reportValidity()||!$("mcu-yaw").reportValidity()))return;
-    void mcuAction(action,action==="move"?{pitch:Number($("mcu-pitch").value),yaw:Number($("mcu-yaw").value)}:{});
+    // Native range validation rejects out-of-range input without rounding it.
+    const fields=action==="gantry"?["mcu-x","mcu-y","mcu-z","mcu-rpm"]:action==="move"?["mcu-pitch","mcu-yaw"]:[];
+    for(const field of fields)if(!$(field).reportValidity())return;
+    if(action==="move")for(const field of ["mcu-pitch","mcu-yaw"]){
+      const axis=field==="mcu-pitch"?"pitch":"yaw",gap=mcuGap(field);
+      const message=gap===null?`${axis} 当前角度反馈不可用，请先读取有效反馈`
+        :gap<mcuStepMdeg?`${axis} 单次变化 ${(gap/1000).toFixed(3)}° 小于 3°，舵机会吞掉该指令`:null;
+      if(message){toast(message,true);text("mcu-message",message);return;}
+    }
+    void mcuAction(action,(mcuPayload[action]||(()=>({})))());
   });
   window.addEventListener("pagehide",()=>{mcuClosed=true;clearTimeout(mcuTimer);});void pollMCU();
 

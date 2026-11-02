@@ -305,6 +305,15 @@ h2 {
 .button.secondary:hover:not(:disabled) {
   background:#f6f9fb
 }
+/* Emergency stop stays visually distinct from ordinary secondary actions. */
+.button.danger {
+  color:#fff;
+  background:var(--red);
+  box-shadow:0 2px 3px #b3424214
+}
+.button.danger:hover:not(:disabled) {
+  background:#9c3838
+}
 .button.small {
   font-size:12px;
   min-height:32px;

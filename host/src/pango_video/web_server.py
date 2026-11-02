@@ -413,7 +413,13 @@ class Handler(BaseHTTPRequestHandler):
             # Existing origin/token validation also protects MCU motion controls.
             if route.startswith('/api/mcu/'):
                 action = route.rsplit('/', 1)[-1]
-                allowed = {'connect': {'port'}, 'move': {'pitch', 'yaw'}, 'home': set(), 'zero': set(), 'read': set(), 'disconnect': set()}
+                # Purpose: pin the exact accepted fields per action so a typo or an
+                # injected extra key cannot silently change a motion request.
+                allowed = {'connect': {'port'}, 'move': {'pitch', 'yaw'},
+                           'gantry': {'x', 'y', 'z', 'rpm'},
+                           'confirm': set(), 'stop': set(), 'home': set(),
+                           'zero': set(), 'read': set(), 'disconnect': set()}
+
                 if action not in allowed or set(data) != allowed[action]:
                     raise ValueError('MCU 请求字段不正确')
                 if action == 'connect':

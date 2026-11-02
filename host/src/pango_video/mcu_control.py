@@ -2,6 +2,10 @@
 
 Serial transactions are serialized with the control lease worker. A connection
 never homes or moves automatically; invalid angles remain null in snapshots.
+
+Manual control covers gantry XYZ, gimbal pitch/yaw and axis-3 stop. Axis-3
+calibration stays in the field tool (`mcu/firmware/longmenjia/tools`), so the
+legacy text channel here is deliberately limited to the emergency stop.
 """
 import copy
 import math
@@ -38,6 +42,8 @@ class MCUControl:
         self.event_received = 0
         self.event_acked = 0
         self.own_motions = set()
+        # Bounded NOTICE history: only the emergency stop consumes it today.
+        self.notices = []
 
     def status(self):
         """Return cached feedback only; no HTTP status request takes the UART."""
@@ -46,6 +52,7 @@ class MCUControl:
             result['age_ms'] = round((time.monotonic() - result.pop('_received', time.monotonic())) * 1000)
             if result['age_ms'] > 1000:
                 result['angles'] = None
+            result['recent_notices'] = [dict(item) for item in self.notices[-5:]]
             return result
 
     def _packet(self, cmd, extra=b'', raw=False):
@@ -112,6 +119,20 @@ class MCUControl:
                     event=event, message='MCU 已报告运动完成；请核对实际反馈角度' if success else
                     f'MCU 运动未完成：事件 {kind}，结果 {result}，故障 {fault}')
 
+    def _notice(self, body):
+        """Keep asynchronous LEGACY text that belongs to this session.
+
+        NOTICE replies use the firmware's latest motion id as their sequence,
+        so they must never be matched against the request sequence.
+        """
+        message = wire.notice(body)
+        if (message['boot_id'], message['session_id']) != (self.boot, self.session):
+            return
+        self.notices.append(dict(id=len(self.notices) + 1, text=message['text'],
+                                 received_ms=round(time.monotonic() * 1000)))
+        del self.notices[:-20]
+        self.snapshot['last_notice'] = self.notices[-1]
+
     def _zero_reply(self, seq, body):
         """Route the delayed final zero response independently of current seq."""
         pending = self.zero_pending
@@ -149,6 +170,9 @@ class MCUControl:
                 for kind, reply_seq, body in self._frames():
                     if kind == 0x90:
                         self._event(body)
+                        continue
+                    if kind == 0x91:
+                        self._notice(body)
                         continue
                     if kind != 0x80:
                         continue
@@ -318,6 +342,122 @@ class MCUControl:
         self.serial = None
         self.snapshot.update(connected=False, angles=None, error=error)
 
+    def _next_motion(self):
+        """Allocate one motion id and claim its event before any write."""
+        if self.motion >= 0xffffffff:
+            raise ValueError('运动编号耗尽')
+        self.motion += 1
+        self.own_motions.add(self.motion)
+        self.snapshot['last_command'] = dict(motion_id=self.motion, status='pending',
+                                             message='等待 MCU 接受指令')
+        return self.motion
+
+    def _gimbal_targets(self, data):
+        """Validate ±60° gimbal targets and require a ≥3° net change per axis.
+
+        The bus servos ignore a single command whose net change is below their
+        dead zone (measured floor ≈2.3°, see firmware/longmenjia/WIRING_CHECK.md)
+        while the firmware still reports MOTION_DONE. Comparing against fresh
+        feedback is the only reliable gate, so a missing or stale reading blocks
+        the command instead of guessing a position.
+        """
+        received = self.snapshot.get('_received')
+        fresh = received is not None and time.monotonic() - received <= 1.0
+        current = self.snapshot.get('angles') or {}
+        targets = []
+        for key in ('pitch', 'yaw'):
+            value = data.get(key)
+            if type(value) not in (int, float) or not math.isfinite(value) or not -60 <= value <= 60:
+                raise ValueError('pitch/yaw 必须为 -60° 到 +60° 的有限数值')
+            target = int(round(value * 1000))
+            if not fresh or current.get(key) is None:
+                raise ValueError(f'{key} 当前角度反馈不可用，请先读取有效反馈再下发')
+            delta = abs(target - int(round(current[key] * 1000)))
+            if delta < 3000:
+                raise ValueError(f'{key} 单次变化 {delta / 1000:.3f}° 小于 3°；'
+                                 '低于舵机死区会被吞掉，请把目标改为至少相差 3°')
+            targets.append(target)
+        return targets
+
+    def _gantry_targets(self, data):
+        """Validate 0..100% site coordinates and return firmware axis order.
+
+        Firmware logical axes are 1/2/3 = site X / site Z (dual-motor gantry) /
+        site Y (cantilever extension); the operator-facing order stays X/Y/Z.
+        """
+        micro = []
+        for key in ('x', 'y', 'z'):
+            value = data.get(key)
+            if type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= 100:
+                raise ValueError('龙门架 x/y/z 必须为 0..100 的行程百分比')
+            micro.append(int(round(value * 1_000_000)))
+        rpm = data.get('rpm')
+        if type(rpm) is not int or not 1 <= rpm <= 60:
+            raise ValueError('速度必须为 1..60 RPM 的整数')
+        x, y, z = micro
+        return x, z, y, rpm
+
+    def _submit_motion(self, cmd, body, label):
+        """Send one absolute motion; acceptance must never read as arrival."""
+        motion = struct.unpack_from('<I', body)[0]
+        try:
+            response, result = self._request(cmd, body)
+        except Exception:
+            self.own_motions.discard(motion)
+            self.snapshot['last_command'] = dict(motion_id=motion, status='unknown',
+                message='未确认运动指令结果，请核对 MCU 状态')
+            raise
+        if len(response) != 4 or struct.unpack('<I', response)[0] != motion:
+            raise ValueError('运动应答编号不匹配')
+        if self.snapshot['last_command']['status'] == 'pending':
+            self.snapshot['last_command'] = dict(motion_id=motion, result=result,
+                status='accepted',
+                message=f'{label}指令已接受；请观察实际反馈，接受不代表到位')
+
+    def _submit_confirm(self):
+        """Declare the current physical position as the X/Y/Z zero (0x51)."""
+        response, _ = self._request(0x51, wire.confirm_body(wire.GANTRY_MASK))
+        if len(response) != 4:
+            raise ValueError('零点确认应答格式错误')
+        config = struct.unpack('<I', response)[0]
+        self.snapshot['manual_zero'] = dict(config_version=config,
+            message='已把当前位置声明为三轴零点；随后需回正并登记姿态零位')
+
+    def _submit_stop(self):
+        """Stop axis 3 through the only firmware path and report its text.
+
+        `stop 3` exists only as LEGACY text. A lost reply is retried with the
+        same sequence number, so STALE means the firmware already consumed it:
+        the stop most likely applied and the lease must not be dropped.
+        """
+        self._next_motion()
+        try:
+            response, _ = self._request(0x50, wire.legacy_body(self.motion, 'stop 3'))
+        except MCURejected as error:
+            if error.result == 10:
+                self.snapshot['last_command'] = dict(motion_id=self.motion, status='unknown',
+                    message='急停回执丢失（STALE），请核对设备是否已停止')
+                return
+            self._stop_fallback(error)
+            return
+        except Exception as error:
+            self._stop_fallback(error)
+            return
+        text = response.decode('ascii', 'replace').strip()
+        self.snapshot['last_command'] = dict(motion_id=self.motion, status='completed',
+            message=f'急停 stop 3 已下发；MCU 回执：{text or "（空）"}')
+
+    def _stop_fallback(self, error):
+        """Stop lease renewal when an explicit stop cannot be confirmed.
+
+        Dropping the heartbeats lets the firmware's 1 s control lease expire and
+        stop every axis, which is the documented fallback for this board.
+        """
+        self._disconnect(f'急停未获确认（{error}）；已停止续租，MCU 将在 1 秒租约到期后全轴停止')
+        self.stop.set()
+        self.snapshot['last_command'] = dict(motion_id=getattr(self, 'motion', 0), status='unknown',
+            message='急停未获确认，已改用停止续租兜底')
+
     def action(self, action, data):
         """Submit explicit relative-zero absolute targets, never auto-home on errors."""
         with self.lock:
@@ -333,44 +473,30 @@ class MCUControl:
                 self.zero_pending = dict(seq=seq, packet=packet, started=time.monotonic(), sent=time.monotonic())
                 self.snapshot['zero_operation'] = dict(status='pending',
                     message='姿态零位登记中，约需 5 秒；正在等待 MCU 最终结果')
-            elif action in ('move', 'home'):
+            elif action == 'stop':
+                # The emergency stop must stay reachable in every state, including
+                # a pending zero registration and a latched fault; the firmware
+                # accepts `stop 3` without the motion interlock.
+                self._submit_stop()
+            elif action in ('move', 'home', 'gantry', 'confirm'):
                 if self.zero_pending:
                     raise ValueError('姿态零位正在登记，请等待最终结果')
                 self.snapshot.pop('zero_operation', None)
                 if action == 'move':
-                    values = []
-                    for key in ('pitch', 'yaw'):
-                        value = data.get(key)
-                        if type(value) not in (int, float) or not math.isfinite(value) or not -60 <= value <= 60:
-                            raise ValueError('pitch/yaw 必须为 -60° 到 +60° 的有限数值')
-                        # Validate before encoding: never silently snap an operator's
-                        # target, and never apply this command grid to real feedback.
-                        if value % 3 != 0:
-                            raise ValueError('pitch/yaw 目标角度必须为 3° 的整数倍（-60° 到 +60°）')
-                        values.append(int(value) * 1000)
-                if self.motion >= 0xffffffff:
-                    raise ValueError('运动编号耗尽')
-                self.motion += 1
-                extra = struct.pack('<IB3x', self.motion, 0x18)
-                if action == 'move':
-                    extra += struct.pack('<5i4H', 0, 0, 0, *values, 0, 0, 0, 0)
-                # Register ownership before RX so an immediate terminal event
-                # cannot be mistaken for historical replay during the ACK wait.
-                self.own_motions.add(self.motion)
-                self.snapshot['last_command'] = dict(motion_id=self.motion, status='pending',
-                    message='等待 MCU 接受指令')
-                try:
-                    response, result = self._request(0x46 if action == 'move' else 0x48, extra)
-                except Exception:
-                    self.own_motions.discard(self.motion)
-                    self.snapshot['last_command'] = dict(motion_id=self.motion, status='unknown',
-                        message='未确认运动指令结果，请核对 MCU 状态')
-                    raise
-                if len(response) != 4 or struct.unpack('<I', response)[0] != self.motion:
-                    raise ValueError('运动应答编号不匹配')
-                if self.snapshot['last_command']['status'] == 'pending':
-                    self.snapshot['last_command'] = dict(motion_id=self.motion, result=result,
-                        status='accepted', message='指令已接受；请观察实际反馈角度，接受不代表到位')
+                    pitch, yaw = self._gimbal_targets(data)
+                    body = wire.move_body(self._next_motion(), wire.GIMBAL_MASK,
+                                          (0, 0, 0, pitch, yaw))
+                    self._submit_motion(0x46, body, '云台定位')
+                elif action == 'gantry':
+                    x, z, y, rpm = self._gantry_targets(data)
+                    body = wire.move_body(self._next_motion(), wire.GANTRY_MASK,
+                                          (x, z, y, 0, 0), (rpm, rpm, rpm, 0))
+                    self._submit_motion(0x46, body, '龙门架定位')
+                elif action == 'home':
+                    self._submit_motion(0x48, wire.home_body(self._next_motion()),
+                                        '云台回正')
+                elif action == 'confirm':
+                    self._submit_confirm()
             else:
                 raise ValueError('未知 MCU 操作')
         return self.status()

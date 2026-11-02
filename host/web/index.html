@@ -90,16 +90,19 @@
         <p id="fpga-control-status" role="status">尚未查询 FPGA；需要已启动链路及支持显示控制的新固件。</p>
         <p>网口只叠加 FPGA 回读的源像素位置；HDMI 已由板端绘制。参数确认不等于图像精度验收，源帧配对仍未验证。</p>
       </article>
-      <!-- Explicit MCU controls use a 3-degree target grid on a separate UART;
-           measured feedback retains the original millidegree resolution. -->
+      <!-- Manual MCU control on one reserved UART: gantry X/Y/Z as 0..100% of
+           travel, gimbal pitch/yaw as ±60° absolute targets. A single gimbal
+           command must change an axis by ≥3°; the gate is enforced by the
+           backend against live feedback, never by input rounding. -->
       <article class="panel board-startup" aria-labelledby="mcu-title">
-        <div class="panel-heading"><h2 id="mcu-title">MCU 云台角度</h2><span id="mcu-feedback" class="pill neutral">MCU 未连接</span>
-        </div><div class="board-fields" aria-live="polite"><div>当前 pitch（俯仰）<strong id="mcu-current-pitch">—</strong></div><div>当前 yaw（偏航）<strong id="mcu-current-yaw">—</strong></div><div id="mcu-state">等待读取真实舵机反馈</div></div>
-        <div class="board-fields"><label>独立 F4 串口<select id="mcu-port"><option value="">请刷新串口</option></select></label><label>目标 pitch（°，步长 3°）<input id="mcu-pitch" required type="number" min="-60" max="60" step="3" value="0"></label><label>目标 yaw（°，步长 3°）<input id="mcu-yaw" required type="number" min="-60" max="60" step="3" value="0"></label></div>
-        <p>目标角度按 3° 步进（…−6、−3、0、3、6…）；实际反馈保留原始毫度精度，不按 3° 取整。</p>
-        <div class="board-actions"><button id="mcu-refresh" class="button secondary" type="button">刷新串口</button><button id="mcu-connect" disabled class="button secondary" type="button">连接 MCU</button><button data-mcu="read" disabled class="button secondary" type="button">读取角度</button><button data-mcu="move" disabled class="button primary" type="button">下发目标角度</button><button data-mcu="home" disabled class="button secondary" type="button">云台回正</button><button data-mcu="zero" disabled class="button secondary" type="button">登记姿态零位</button><button data-mcu="disconnect" disabled class="button secondary" type="button">断开 MCU</button></div>
-        <p id="mcu-message" role="status">相对零位的绝对目标角（±60°），舵机反馈。回正稳定 5 秒后登记零位；断开后停止续租。</p>
+        <div class="panel-heading"><h2 id="mcu-title">MCU 龙门架与云台</h2><span id="mcu-feedback" class="pill neutral">MCU 未连接</span>
+        </div><div class="board-fields" aria-live="polite"><div>当前位置 X<strong id="mcu-current-x">—</strong></div><div>当前位置 Y（伸缩）<strong id="mcu-current-y">—</strong></div><div>当前位置 Z（双电机）<strong id="mcu-current-z">—</strong></div><div>当前 pitch（俯仰）<strong id="mcu-current-pitch">—</strong></div><div>当前 yaw（偏航）<strong id="mcu-current-yaw">—</strong></div><div id="mcu-state">等待读取真实舵机反馈</div></div>
+        <div class="board-fields"><label>独立 F4 串口<select id="mcu-port"><option value="">请刷新串口</option></select></label><label>目标 X（行程 %）<input id="mcu-x" required type="number" min="0" max="100" step="0.1" value="0"></label><label>目标 Y 伸缩（行程 %）<input id="mcu-y" required type="number" min="0" max="100" step="0.1" value="0"></label><label>目标 Z 双电机（行程 %）<input id="mcu-z" required type="number" min="0" max="100" step="0.1" value="0"></label><label>速度（RPM）<input id="mcu-rpm" required type="number" min="1" max="60" step="1" value="10"></label><label>目标 pitch（°，±60）<input id="mcu-pitch" required type="number" min="-60" max="60" step="0.1" value="0"></label><label>目标 yaw（°，±60）<input id="mcu-yaw" required type="number" min="-60" max="60" step="0.1" value="0"></label></div>
+        <p>坐标按行程百分比下发（固件定点 ×1e6）；云台角度是相对零位的绝对角，<strong>单次变化必须 ≥3°</strong>——低于舵机死区的指令会被吞掉，但固件仍会回报完成。</p>
+        <div class="board-actions"><button id="mcu-refresh" class="button secondary" type="button">刷新串口</button><button id="mcu-connect" disabled class="button secondary" type="button">连接 MCU</button><button data-mcu="read" disabled class="button secondary" type="button">读取状态</button><button data-mcu="gantry" disabled class="button primary" type="button">下发龙门架坐标</button><button data-mcu="move" disabled class="button primary" type="button">下发云台角度</button><button data-mcu="confirm" disabled class="button secondary" type="button">零点确认</button><button data-mcu="home" disabled class="button secondary" type="button">云台回正</button><button data-mcu="zero" disabled class="button secondary" type="button">登记姿态零位</button><button data-mcu="stop" disabled class="button danger" type="button">急停（轴 3）</button><button data-mcu="disconnect" disabled class="button secondary" type="button">断开 MCU</button></div>
+        <p id="mcu-message" role="status">复位或人工搬动机构后按 零点确认 → 云台回正 → 登记姿态零位 恢复；急停失败会主动停止续租兜底。</p>
       </article>
+
       <div class="session-toolbar">
         <div class="session-label"><span id="source-pill" class="pill mock">本机模拟</span><span class="status-dot" id="session-dot"></span><strong id="session-state">未开始采集</strong></div>
         <div class="toolbar-actions"><label class="archive-policy">自动归档<select id="archive-every" aria-label="自动归档策略"><option value="0">关闭</option><option value="30">每 30 个完整帧</option><option value="1">每个完整帧</option></select></label><button id="stop" class="button secondary" disabled><span class="stop-shape"></span>停止</button><button id="start" class="button primary"><span class="play-shape"></span><span id="start-label">开始模拟</span></button></div>

@@ -18,6 +18,7 @@ class Device:
         self.packets = []
         self.defer_zero = False
         self.busy_status = False
+        self.ignore_legacy = False
 
     def write(self, packet):
         cmd, seq, payload = wire.decode(packet)
@@ -40,6 +41,14 @@ class Device:
             struct.pack_into('<I', data, 80, 7)
         elif cmd in (0x46, 0x48):
             data = payload[12:16]
+        elif cmd == 0x50:
+            # LEGACY replies carry the gateway's ASCII text; dropping the reply
+            # exercises the stop fallback path.
+            if self.ignore_legacy:
+                return
+            data = b'ok ' + bytes(payload[16:])
+        elif cmd == 0x51:
+            data = struct.pack('<I', 3)
         elif cmd == 0x4a:
             if self.defer_zero:
                 return
@@ -82,21 +91,100 @@ class MCUChecks(unittest.TestCase):
         self.control.action('home', {})
         self.assertEqual((self.device.requests[-1][0], len(self.device.requests[-1][1])), (0x48, 20))
 
-    def test_three_degree_targets_preserve_fine_feedback(self):
-        """Check every allowed target on the wire, then read non-grid feedback."""
-        for target in range(-60, 61, 3):
-            self.control.action('move', dict(pitch=target, yaw=-target))
-            payload = self.device.requests[-1][1]
-            self.assertEqual(struct.unpack_from('<ii', payload, 32), (target * 1000, -target * 1000))
+    def test_fine_targets_keep_feedback_resolution(self):
+        """Any 0.1° target is valid when it changes an axis by at least 3°."""
+        self.control.action('move', dict(pitch=4.234, yaw=-8.678))
+        payload = self.device.requests[-1][1]
+        self.assertEqual(struct.unpack_from('<ii', payload, 32), (4234, -8678))
         state = self.control.action('read', {})
         self.assertEqual(state['angles'], dict(pitch=1.234, yaw=-5.678))
         self.assertEqual((state['state']['pitch_mdeg'], state['state']['yaw_mdeg']), (1234, -5678))
 
+    def test_gimbal_step_gate_uses_live_feedback(self):
+        """Below-3° moves are rejected exactly, in whole millidegrees."""
+        for pitch, yaw, accepted in ((4.133, 6, False), (4.234, 6, True),
+                                     (6, -2.679, False), (6, -2.678, True)):
+            before = len(self.device.requests)
+            if accepted:
+                self.control.action('move', dict(pitch=pitch, yaw=yaw))
+                self.assertEqual(len(self.device.requests), before + 1)
+            else:
+                with self.assertRaisesRegex(ValueError, '小于 3°'):
+                    self.control.action('move', dict(pitch=pitch, yaw=yaw))
+                self.assertEqual(len(self.device.requests), before)
+
+    def test_gimbal_rejects_when_feedback_is_stale(self):
+        """A missing or expired reading cannot prove the step, so it must block."""
+        received = self.control.snapshot['_received']
+        with patch('pango_video.mcu_control.time.monotonic', return_value=received + 2):
+            with self.assertRaisesRegex(ValueError, '反馈不可用'):
+                self.control.action('move', dict(pitch=6, yaw=-9))
+
+    def test_gantry_uses_firmware_axis_order(self):
+        """Site X/Y/Z map to firmware axes 1/2/3, i.e. X then site Z then site Y."""
+        self.control.action('gantry', dict(x=20, y=30, z=40, rpm=12))
+        cmd, payload = self.device.requests[-1]
+        self.assertEqual((cmd, len(payload)), (0x46, 48))
+        self.assertEqual(payload[16:20], b'\x07\0\0\0')
+        self.assertEqual(struct.unpack_from('<5i', payload, 20),
+                         (20_000_000, 40_000_000, 30_000_000, 0, 0))
+        self.assertEqual(struct.unpack_from('<3H', payload, 40), (12, 12, 12))
+
+    def test_gantry_range_is_validated_before_any_write(self):
+        count = len(self.device.requests)
+        for data in (dict(x=101, y=0, z=0, rpm=10), dict(x=0, y=-1, z=0, rpm=10),
+                     dict(x=0, y=0, z=0, rpm=0), dict(x=0, y=0, z=0, rpm=61),
+                     dict(x=0, y=0, z=0, rpm=10.5), dict(x=0, y=0, rpm=10)):
+            with self.assertRaises(ValueError):
+                self.control.action('gantry', data)
+        self.assertEqual(len(self.device.requests), count)
+
+    def test_confirm_zero_declares_current_position(self):
+        state = self.control.action('confirm', {})
+        cmd, payload = self.device.requests[-1]
+        self.assertEqual((cmd, len(payload)), (0x51, 16))
+        self.assertEqual(payload[12:16], b'\x07\0\0\0')
+        self.assertEqual(state['manual_zero']['config_version'], 3)
+
+    def test_stop_axis_three_uses_legacy_text(self):
+        state = self.control.action('stop', {})
+        cmd, payload = self.device.requests[-1]
+        self.assertEqual((cmd, len(payload)), (0x50, 16 + len(b'stop 3')))
+        self.assertEqual(payload[16:], b'stop 3')
+        self.assertEqual(state['last_command']['status'], 'completed')
+        self.assertIn('stop 3', state['last_command']['message'])
+
+    def test_stop_remains_available_during_zero(self):
+        """The emergency stop must not inherit the zero-registration lock."""
+        self.control.action('zero', {})
+        self.assertTrue(self.control.zero_pending)
+        state = self.control.action('stop', {})
+        self.assertEqual(state['last_command']['status'], 'completed')
+        self.assertIn(0x50, [cmd for cmd, _ in self.device.requests])
+
+    def test_unconfirmed_stop_drops_the_lease(self):
+        """Without a reply, stopping heartbeats is the documented fallback."""
+        self.device.ignore_legacy = True
+        state = self.control.action('stop', {})
+        self.assertFalse(state['connected'])
+        self.assertIn('停止续租', state['error'])
+        self.assertTrue(self.control.stop.is_set())
+
+    def test_notice_is_scoped_to_this_session(self):
+        body = struct.pack('<QI', 42, self.control.session) + b'ok stop 3 '
+        self.device.output.extend(wire.encode(0x91, 0, body))
+        self.device.output.extend(wire.encode(0x91, 0,
+            struct.pack('<QI', 42, self.control.session ^ 1) + b'foreign'))
+        self.control.query_after = 0
+        state = self.control.action('read', {})
+        self.assertEqual([item['text'] for item in state['recent_notices']], ['ok stop 3'])
+
     def test_invalid_and_rejected_targets_never_report_success(self):
         count = len(self.device.requests)
-        # Reject off-grid inputs on either axis before serial writes or motion IDs.
+        # Out-of-range or non-numeric targets are rejected before serial writes
+        # or motion ids; the 3° step gate has its own coverage.
         motion = self.control.motion
-        for value in (61, float('nan'), True, '1', 1, -2, 12.345, 3.0001, -0.001):
+        for value in (61, -61, float('nan'), float('inf'), True, '1', None):
             for axis in ('pitch', 'yaw'):
                 with self.assertRaises(ValueError):
                     self.control.action('move', dict(dict(pitch=0, yaw=0), **{axis:value}))
@@ -104,7 +192,7 @@ class MCUChecks(unittest.TestCase):
         self.assertEqual(self.control.motion, motion)
         self.device.reject = True
         with self.assertRaisesRegex(ValueError, 'NOT_READY'):
-            self.control.action('move', dict(pitch=3, yaw=6))
+            self.control.action('move', dict(pitch=6, yaw=9))
 
     def test_wrong_context_is_rejected(self):
         self.device.bad_context = True
@@ -165,7 +253,7 @@ class MCUChecks(unittest.TestCase):
         return wire.encode(0x90, event_id, body)
 
     def test_events_are_validated_deduplicated_and_acknowledged(self):
-        self.control.action('move', dict(pitch=3, yaw=-3))
+        self.control.action('move', dict(pitch=6, yaw=-9))
         motion = self.control.motion
         event = self.event(5, motion)
         self.device.output.extend(self.event(4, motion, session=self.control.session ^ 1))
@@ -179,7 +267,7 @@ class MCUChecks(unittest.TestCase):
         self.assertEqual(struct.unpack_from('<I', ack[0], 12)[0], 5)
 
     def test_old_and_failed_events_do_not_report_new_motion_success(self):
-        self.control.action('move', dict(pitch=3, yaw=-3))
+        self.control.action('move', dict(pitch=6, yaw=-9))
         motion = self.control.motion
         self.device.output.extend(self.event(8, motion - 1))
         self.control._poll_once()
