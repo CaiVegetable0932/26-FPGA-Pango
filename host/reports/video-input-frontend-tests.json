@@ -1,7 +1,7 @@
 {
-  "utc": "2026-10-02T10:03:34.355Z",
-  "node": "v24.14.0",
-  "tests_run": 18,
+  "utc": "2026-11-04T06:16:38.047Z",
+  "node": "v22.23.3",
+  "tests_run": 20,
   "passed": true,
   "test_environment": "Node.js MediaDevices, MediaStreamTrack and DOM fixtures",
   "browser_ui_qa": "not_performed",
@@ -69,6 +69,14 @@
       "passed": true
     },
     {
+      "name": "Explicit 720p compatibility choice persists without changing device",
+      "passed": true
+    },
+    {
+      "name": "Presentation FPS expires to zero without new frames",
+      "passed": true
+    },
+    {
       "name": "Transient busy capture retries the same exact device",
       "passed": true
     },
@@ -82,8 +90,9 @@
     }
   ],
   "source_sha256": {
-    "web/video-input.js": "198fcfad5610cbd0036e71e832fd10c487fbb75ada958edeaeb2f4216908f65f",
-    "web/video-input-ui.js": "f1405ab8578c2aecc6e194b88306814eec24a1f57e4e6cf780a9f933226c4e07",
-    "tests/test_video_input.cjs": "f128c3c68ad0a3964e1f51b440cb5e18f7a841f8f1a0488898fa5021ab4e6332"
+    "web/video-input.js": "889a9827d74419e91bb65d9928fab381f75159692b61f28bd005b5e9b9a0358e",
+    "web/video-input-ui.js": "c09a2c8eb99d1da76844a098dee8bba0efb0903465a0ff6afa468fcf0eb15575",
+    "web/preview-rate.js": "b37064bc745404fd91d06e344c0152e1766e4c6e98dc3151f1d660573251ebe0",
+    "tests/test_video_input.cjs": "1c4c7c7e8a5c487d11b9385febbbaf3328aebd61022ab59ec0ef85b18630bccd"
   }
 }

@@ -20,6 +20,7 @@ from .board_link import BoardLink
 from .board_autoload import BoardAutoLoader
 from .preview_delivery import PreviewDelivery
 from .mcu_control import MCUControl
+from .system_metrics import SystemMetrics
 from .preview_socket import accept_key, read_message, write_message, Duplex, SocketProtocolError
 
 ASSETS = {"":("index.html","text/html; charset=utf-8"), "index.html":("index.html","text/html; charset=utf-8"),
@@ -77,6 +78,7 @@ class LocalServer(ThreadingHTTPServer):
         self.calibration = CalibrationStore(self.session.root)
         self.calibration_slot = threading.BoundedSemaphore(1)
         self.preview_delivery = PreviewDelivery()
+        self.system_metrics = SystemMetrics()
         self.token = secrets.token_urlsafe(32)
         self._slots = threading.BoundedSemaphore(16)
         super().__init__(("127.0.0.1",port), Handler)
@@ -282,6 +284,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(200, dict(ports=[dict(port=p.device, description=p.description) for p in list_ports.comports()]))
             if route == "/api/health":
                 return self._json(200, instance_identity())
+            if route == "/api/system":
+                # Whole-host CPU counters are read-only and shared across tabs.
+                return self._json(200, self.server.system_metrics.status())
             if route == "/api/clock":
                 return self._json(200, dict(clock="host_monotonic_ms", received_ms=request_ms,
                                           sent_ms=time.monotonic_ns()/1_000_000))
@@ -423,8 +428,10 @@ class Handler(BaseHTTPRequestHandler):
                 if action not in allowed or set(data) != allowed[action]:
                     raise ValueError('MCU 请求字段不正确')
                 if action == 'connect':
-                    profile = self.server.board_link.status().get('profile', {})
-                    return self._json(200, self.server.mcu.connect(data['port'], profile.get('port')))
+                    # USB reconnects can assign the FPGA's old tty name to the
+                    # MCU; reserve the actual saved CP2102 identity, not that name.
+                    reserved = self.server.board_link.reserved_port()
+                    return self._json(200, self.server.mcu.connect(data['port'], reserved))
                 if action == 'disconnect':
                     self.server.mcu.close()
                     return self._json(200, self.server.mcu.status())

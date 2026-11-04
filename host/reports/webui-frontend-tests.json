@@ -1,8 +1,8 @@
 {
-  "utc": "2026-10-01T06:45:55.077Z",
-  "node": "v24.14.0",
-  "platform": "win32",
-  "tests_run": 11,
+  "utc": "2026-11-04T06:16:36.456Z",
+  "node": "v22.23.3",
+  "platform": "linux",
+  "tests_run": 13,
   "passed": true,
   "browser_ui_qa": "not_performed",
   "results": [
@@ -35,6 +35,14 @@
       "passed": true
     },
     {
+      "name": "Contiguous RGB888 preview preserves channels across odd-width rows",
+      "passed": true
+    },
+    {
+      "name": "Compact GRAY8 display maps bytes exactly without a second Bayer filter",
+      "passed": true
+    },
+    {
       "name": "Corrupt lengths, strides, dimensions, formats, and Bayer are rejected",
       "passed": true
     },
@@ -52,10 +60,11 @@
     }
   ],
   "source_sha256": {
-    "web/pixels.js": "5f34b4f6aa15c14e32e5f30fc469875554d0ea3f7972902a7abc165e02fdad88",
-    "web/preview-worker.js": "0c572146a4fb362c9bc0b338a35a777c9d2c4437f10685b9c7aab5b837af5015",
-    "web/app.js": "7c89bafe0fcc3f1d218031095489e4f0eb39d829d629608fc2921d3fb4180510",
-    "web/index.html": "1908176ef3c50b69e5fb3d3767699d88a2acb3abb02b9b23b2f545a1cfa1df76",
-    "web/app.css": "aff5fbc924c57b257932bdd57559e88f329f12a785e0a1d240e1a93cf28356ec"
+    "web/pixels.js": "6504f6a88db509fc4825e343b8eaab73508b76d91d87c642e5ff9dd1b4b42314",
+    "web/preview-renderer.js": "fee70d0b077c6e6f149bb1c9d3d9894b0e6a814ab46556d931f202ac0ae756b9",
+    "web/preview-worker.js": "05702ee8a07bdb0cae19326cf6aef75299099670aea8fef1e421aa6776fb1971",
+    "web/app.js": "38bd87b6b992f9a3ac3f0be4facfe5e6d44651d0775ac251c178f795b4542bc6",
+    "web/index.html": "20fd65bfd2a67450681d74b169b4c93151ec7bf3ac1f6a265efd2678f883c717",
+    "web/app.css": "4c926322216e97693b7508f51a380edc5c662ff4713ae337d340674497ff1e9f"
   }
 }

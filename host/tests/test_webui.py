@@ -30,6 +30,27 @@ def until(predicate, seconds=4):
 
 
 class WebTests(unittest.TestCase):
+    def test_mcu_connect_after_fpga_uart_renumber(self):
+        """The live FPGA port stays protected while its old name can serve MCU."""
+        from test_mcu_control import Device
+        device = Device()
+        opened = []
+        def factory(**options):
+            opened.append(options['port'])
+            return device
+        self.server.mcu.factory = factory
+        self.server.board_link.profile = dict(port='/dev/ttyUSB0', serial_number='0001')
+        self.server.board_link.ports = lambda: [dict(port='/dev/ttyUSB1', serial='0001')]
+        code, _, state = self.call('POST', '/api/mcu/connect', {'port': '/dev/ttyUSB1'})
+        self.assertEqual(code, 400)
+        self.assertIn('不能占用 FPGA', state['error'])
+        self.assertEqual(opened, [])
+        code, _, state = self.call('POST', '/api/mcu/connect', {'port': '/dev/ttyUSB0'})
+        self.assertEqual(code, 200)
+        self.assertTrue(state['connected'])
+        self.assertEqual(opened, ['/dev/ttyUSB0'])
+        self.call('POST', '/api/mcu/disconnect', {})
+
     def test_mcu_async_zero_http_lifecycle_and_token(self):
         """Exercise the real HTTP route with a fragmented simulated MCU UART."""
         from test_mcu_control import Device

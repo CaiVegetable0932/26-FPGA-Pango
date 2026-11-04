@@ -154,6 +154,21 @@ class BoardLink:
             value.update(phase="ready", message="网口已收到完整视频帧；可预览、保存和标定")
         return value
 
+    def reserved_port(self):
+        """Resolve FPGA UART ownership by USB identity after port renumbering."""
+        with self.lock:
+            profile = dict(self.profile)
+        serial = profile.get("serial_number")
+        if not serial:
+            # Legacy profiles have no stable identity; retain their port guard.
+            return profile.get("port")
+        matches = [p for p in self.ports() if p.get("serial") == serial]
+        if len(matches) > 1:
+            raise SessionError("FPGA CP2102 身份不唯一，请重新选择板卡串口")
+        # An absent FPGA cannot own a recycled ttyUSB number. Enumeration errors
+        # propagate instead of bypassing protection when identity is unknown.
+        return matches[0]["port"] if matches else None
+
     def devices(self):
         result = dict(interfaces=[], ports=[], errors=[])
         for key, fn in (("interfaces", self.inventory), ("ports", self.ports)):

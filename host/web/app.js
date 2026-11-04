@@ -21,7 +21,20 @@
   window.pangoPreviewDiagnostics=()=>previewDiagnostics.snapshot(workerPull?
     {...workerQueue,scope:"last_observed_worker_state",sampleAgeMs:performance.now()-workerQueueAt}:
     {executing:Number(workerBusy),pending:Number(!!pendingPreview),scope:"main_thread"});
-  let clockTimer=null,longTaskObserver=null;
+  let clockTimer=null,longTaskObserver=null,hostMetricsTimer=null;
+  async function pollHostMetrics(){
+    // Query the service host, not browser CPU. Hidden tabs avoid extra polling,
+    // and unavailable readings clear the old percentage rather than displaying 0%.
+    if(!document.hidden){
+      let value=null;
+      try{value=(await request("/api/system")).cpu_percent;}catch{}
+      const valid=Number.isFinite(value)&&value>=0&&value<=100;
+      text("host-cpu-value",valid?`${value.toFixed(1)}%`:"—");
+      $("host-cpu-bar").hidden=!valid;
+      if(valid)$("host-cpu-bar").value=value;
+    }
+    if(!closed)hostMetricsTimer=setTimeout(pollHostMetrics,1000);
+  }
   async function syncPreviewClock(){
     try{for(let i=0;i<3;i++){
       const sent=performance.now(),value=await request("/api/clock");
@@ -63,7 +76,8 @@
   const boardAutoload=window.PangoBoardAutoload.create({request});
   let recordsLastRefresh=0;
   const archiveWorker=new Worker("/preview-worker.js");
-  const worker=new Worker("/preview-worker.js"), title={live:"实时采集",records:"采集记录",settings:"连接设置"};
+  // Board setup is a separate view; live keeps its preview lifecycle and MCU state.
+  const worker=new Worker("/preview-worker.js"), title={live:"采集与控制",board:"板卡设置",records:"采集记录",settings:"连接设置"};
   worker.postMessage({type:"init-live",bitmap:!!bitmapContext,pull:workerPull});
   // Repeated stage/status labels should not invalidate layout while both
   // video surfaces are being composited. Changed values still update normally.
@@ -409,7 +423,7 @@
   // while the firmware still reports completion. The backend enforces the same
   // rule against live feedback; this page only saves the operator a round trip.
   const mcuStepMdeg=3000;
-  let mcuPending=false,mcuClosed=false,mcuTimer=null,mcuState=null;
+  let mcuPending=0,mcuClosed=false,mcuTimer=null,mcuState=null,mcuQueued=null;
   function renderMCU(state){
     mcuState=state;
     const angles=state.angles,xyz=state.state?.xyz_normalized_micro||[];
@@ -448,12 +462,43 @@
     if(!Number.isFinite(target)||current==null)return null;
     return Math.abs(Math.round(target*1000)-Math.round(current*1000));
   }
-  async function mcuAction(action,data={}){
-    if(mcuPending)return;mcuPending=true;
-    try{const state=await request("/api/mcu/"+action,data);renderMCU(state);
-    }catch(error){toast(error.message,true);text("mcu-message",error.message);}
-    finally{mcuPending=false;void pollMCU();}
+  // Only explicit coordinate/angle dispatches wait three seconds. A monotonic
+  // deadline prevents an early timer from sending; cancel/stop/pagehide revoke
+  // the pending promise before any motion request reaches the service.
+  function cancelMCUSend(message="已取消待发指令"){
+    const queued=mcuQueued;if(!queued)return;
+    mcuQueued=null;clearTimeout(queued.timer);queued.resolve(false);
+    $("mcu-cancel-send").hidden=true;text("mcu-dispatch-status",message);
   }
+  function waitMCUSend(action){
+    return new Promise(resolve=>{
+      const queued={resolve,deadline:performance.now()+3000,timer:null};mcuQueued=queued;
+      $("mcu-cancel-send").hidden=false;
+      const tick=()=>{
+        if(mcuQueued!==queued)return;
+        const remaining=queued.deadline-performance.now();
+        if(remaining<=0){mcuQueued=null;$("mcu-cancel-send").hidden=true;resolve(true);return;}
+        text("mcu-dispatch-status",`${action==="gantry"?"龙门架坐标":"云台角度"}将在 ${Math.ceil(remaining/1000)} 秒后下发`);
+        queued.timer=setTimeout(tick,Math.min(100,remaining));
+      };tick();
+    });
+  }
+  async function mcuAction(action,data={}){
+    if(mcuPending&&action!=="stop"&&action!=="disconnect")return;
+    if(action==="stop"||action==="disconnect")cancelMCUSend("待发指令已取消");
+    const delayed=action==="gantry"||action==="move",payload={...data};
+    mcuPending++;if(mcuState)renderMCU(mcuState);
+    try{
+      if(delayed&&!(await waitMCUSend(action)))return;
+      if(mcuClosed)return;
+      if(delayed)text("mcu-dispatch-status","3 秒等待结束，正在下发…");
+      const state=await request("/api/mcu/"+action,payload);renderMCU(state);
+      if(delayed)text("mcu-dispatch-status","指令已下发");
+    }catch(error){toast(error.message,true);text("mcu-message",error.message);
+      if(delayed)text("mcu-dispatch-status",`下发失败：${error.message}`);
+    }finally{mcuPending--;if(!mcuClosed)void pollMCU();}
+  }
+  $("mcu-cancel-send").addEventListener("click",()=>cancelMCUSend());
   async function pollMCU(){
     clearTimeout(mcuTimer);if(mcuClosed)return;
     try{if(!mcuPending)renderMCU(await request("/api/mcu/status"));}catch{renderMCU({connected:false});text("mcu-message","MCU 通道暂不可用，请确认已加载最新上位机服务。");}
@@ -485,7 +530,7 @@
     }
     void mcuAction(action,(mcuPayload[action]||(()=>({})))());
   });
-  window.addEventListener("pagehide",()=>{mcuClosed=true;clearTimeout(mcuTimer);});void pollMCU();
+  window.addEventListener("pagehide",()=>{mcuClosed=true;cancelMCUSend("页面已关闭，待发指令已取消");clearTimeout(mcuTimer);});void pollMCU();
 
   // Optional WebMCP surface: the same visible actions and receiver state.
   const toolLifetime=new AbortController();
@@ -508,8 +553,8 @@
       }},{signal:toolLifetime.signal})).catch(error=>console.warn("WebMCP registration unavailable",name,error));}catch(error){console.warn("WebMCP registration unavailable",name,error);}
     }
   }
-  window.addEventListener("pagehide",()=>{closed=true;streamAbort?.abort();surfaceResize.disconnect();boardUI.destroy();boardGeometry.destroy();boardAutoload.destroy();videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);clearTimeout(clockTimer);longTaskObserver?.disconnect();clearInterval(previewRateTimer);worker.terminate();archiveWorker.terminate();});
+  window.addEventListener("pagehide",()=>{closed=true;streamAbort?.abort();surfaceResize.disconnect();boardUI.destroy();boardGeometry.destroy();boardAutoload.destroy();videoInputUI.destroy();toolLifetime.abort();clearTimeout(frameTimer);clearTimeout(statusTimer);clearTimeout(clockTimer);clearTimeout(hostMetricsTimer);longTaskObserver?.disconnect();clearInterval(previewRateTimer);worker.terminate();archiveWorker.terminate();});
 
   window.addEventListener("pageshow",event=>{if(event.persisted)location.reload();});
-  init().then(()=>{registerWorkbenchTools();poll();framePoll();void syncPreviewClock();void boardUI.init();void boardGeometry.init();void boardAutoload.init();});
+  init().then(()=>{registerWorkbenchTools();poll();framePoll();void pollHostMetrics();void syncPreviewClock();void boardUI.init();void boardGeometry.init();void boardAutoload.init();});
 })();

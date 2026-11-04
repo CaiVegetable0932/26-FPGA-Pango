@@ -81,7 +81,8 @@
       // Intentionally no hdmi(), close(), getUserMedia() or page reload here.
     });
     $("board-stop").addEventListener("click",async()=>{try{render(await request("/api/board/stop",{}));video.close();}catch(e){toast(e.message,true);}});
-    const note=document.querySelector(".control-note");if(note)note.textContent="UART 启动与状态见上方板卡一键连接";
+    // Link statistics stay in the workspace; commissioning now has its own tab.
+    const note=document.querySelector(".control-note");if(note)note.textContent="UART 启动与状态见“板卡设置”";
     return {async init(){try{const state=await refresh();let resume=false;try{resume=localStorage.getItem("pango.capture.resume")==="1";}catch{}if(state.profile.auto_start||resume)void hdmi();}catch(e){toast(e.message,true);}void poll();},destroy(){ended=true;clearTimeout(timer);}};
   }
   root.PangoBoardLink={create};

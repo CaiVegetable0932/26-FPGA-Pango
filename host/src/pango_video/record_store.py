@@ -91,6 +91,10 @@ def archives(root, limit=None):
     data = Path(root)/"data"
     records = []
     for run in _children(data):
+        # Keep historical video evidence outside RAW runs; never treat its folder
+        # as a RAW run that the legacy record-deletion API could remove wholesale.
+        if run.name == "recordings":
+            continue
         for folder in _children(run):
             key = folder.relative_to(data).as_posix()
             record = dict(key=key, run_id=run.name, frame_id=None, source_mode="unknown",
@@ -113,7 +117,8 @@ def archives(root, limit=None):
 def runs(root, limit=None):
     root = Path(root)
     reports_dir = root/"reports"
-    names = {p.name for base in (root/"data", reports_dir) for p in _children(base)}
+    # Historical "recordings" data remains outside RAW run ownership.
+    names = {p.name for base in (root/"data", reports_dir) for p in _children(base) if p.name != "recordings"}
     records = []
     for name in names:
         report_dir = safe_child(reports_dir, name)

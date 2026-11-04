@@ -93,6 +93,21 @@ class BoardLinkTests(unittest.TestCase):
         self.assertFalse(self.link.thread.is_alive())
         return self.link.status()
 
+    def test_reserved_uart_follows_identity_and_handles_absence(self):
+        """Recycled tty names must not reserve a different adapter for the FPGA."""
+        self.link.profile = dict(port="/dev/ttyUSB0", serial_number="0001")
+        ports = [dict(port="/dev/ttyUSB1", serial="0001")]
+        self.link.ports = lambda: ports
+        self.assertEqual(self.link.reserved_port(), "/dev/ttyUSB1")
+        ports.clear()
+        self.assertIsNone(self.link.reserved_port())
+        ports.extend([dict(port="/dev/ttyUSB1", serial="0001"),
+                      dict(port="/dev/ttyUSB2", serial="0001")])
+        with self.assertRaisesRegex(SessionError, "身份不唯一"):
+            self.link.reserved_port()
+        self.link.profile.pop("serial_number")
+        self.assertEqual(self.link.reserved_port(), "/dev/ttyUSB0")
+
     def test_cold_boot_order_and_fresh_epoch(self):
         result = self.run_link()
         self.assertEqual(result["phase"], "ready")

@@ -1,0 +1,548 @@
+{
+  "mcu": {
+    "connected": true,
+    "port": "/dev/ttyUSB0",
+    "device_id": "15481296949421416",
+    "boot_id": "127",
+    "angles": {
+      "pitch": 0.264,
+      "yaw": 0.527
+    },
+    "error": null,
+    "last_event": {
+      "event_id": 105,
+      "motion_id": 55,
+      "type": 4,
+      "result": 0,
+      "config_version": 23,
+      "fault_code": 0,
+      "mask": 24,
+      "motion_state": 0
+    },
+    "state": {
+      "boot_id": 127,
+      "session_id": 122314288,
+      "config_version": 23,
+      "sample_seq": 1003630,
+      "status_flags": 2143,
+      "xyz_normalized_micro": [
+        5299539,
+        0,
+        0
+      ],
+      "pitch_mdeg": 264,
+      "yaw_mdeg": 527,
+      "imu_tick_us": 0,
+      "xyz_tick_us": 5087483354,
+      "servo_tick_us": 5087468168,
+      "motion_id": 55,
+      "latest_event_id": 105,
+      "xyz_source": 21,
+      "angle_source": 5,
+      "motion_state": 0,
+      "pose_quality": 3,
+      "fault_code": 0,
+      "pose_representation": "gimbal_pitch_yaw",
+      "q_wc": null
+    },
+    "last_command": {
+      "motion_id": 55,
+      "result": 1,
+      "status": "completed",
+      "message": "MCU 已报告运动完成；请核对实际反馈角度",
+      "event": {
+        "event_id": 105,
+        "motion_id": 55,
+        "type": 4,
+        "result": 0,
+        "config_version": 23,
+        "fault_code": 0,
+        "mask": 24,
+        "motion_state": 0
+      }
+    },
+    "age_ms": 163,
+    "recent_notices": []
+  },
+  "receiver": {
+    "state": "listening",
+    "signal": "live",
+    "running": true,
+    "config": {
+      "device_id": "PG2L100H-MINI-CAM1",
+      "source_mode": "hardware_unverified",
+      "bind_ip": "192.168.80.2",
+      "port": 50000,
+      "peer_ip": "192.168.80.3",
+      "peer_port": 50001,
+      "stream_epoch": "11696025384111474583",
+      "width": 1920,
+      "height": 1080,
+      "bayer_code": 4,
+      "receive_buffer_bytes": 8388608
+    },
+    "run_id": "web-hardware_unverified-20261103T125458Z-252309b3",
+    "started_utc": "2026-11-03T12:54:58.367318+00:00",
+    "elapsed_seconds": 1070.8141699520002,
+    "frame": {
+      "run_id": "web-hardware_unverified-20261103T125458Z-252309b3",
+      "source_mode": "hardware_unverified",
+      "frame_id": "145448",
+      "stream_epoch": "11696025384111474583",
+      "descriptor_id": 1213089106,
+      "param_version": 2,
+      "width": 1920,
+      "height": 1080,
+      "row_stride": 1920,
+      "frame_bytes": 2073600,
+      "pixel_format": "RAW8",
+      "bayer_code": 4,
+      "packet_count": 1482,
+      "key": "web-hardware_unverified-20261103T125458Z-252309b3:11696025384111474583:145448:1:1213089106",
+      "source_stage": "fpga_enhanced_raw8",
+      "transport_complete": true,
+      "measurement_ready": false,
+      "host_timing": {
+        "clock": "host_monotonic_ms",
+        "first_receive_ms": 6071762.217789,
+        "complete_ms": 6071780.359201,
+        "assembly_ms": 18.141412
+      }
+    },
+    "frame_age_ms": 33.916009,
+    "complete_fps": 30.7,
+    "payload_mb_s": 63.669,
+    "packets_s": 44836.6,
+    "saved_frames": 0,
+    "pending_saves": 0,
+    "error": null,
+    "manual_saves_enqueued": 0,
+    "manual_saves_rejected": 0,
+    "metrics": {
+      "bind": [
+        "192.168.80.2",
+        50000
+      ],
+      "peer": [
+        "192.168.80.3",
+        50001
+      ],
+      "counters": {
+        "datagrams_received": 47572427,
+        "udp_payload_bytes_received": 69607519128,
+        "live_frames_complete": 32070,
+        "preview_frames_replaced": 0
+      },
+      "backend": {
+        "receive_batch_size": 256,
+        "native_batch_parser": true,
+        "native_parser_status": {
+          "enabled": true,
+          "reason": "verified",
+          "machine": "aarch64",
+          "abi": 1,
+          "source_sha256": "50b569520c5fc68b7ae964453716fa86a5f89e5d63d8475113b09245429575ec",
+          "binary_sha256": "61cc1c166fd46f7c9bdf40b74a8ea8e82f305586eaabbbba89ff7ec419670926"
+        }
+      },
+      "socket_receive_buffer_requested": 8388608,
+      "socket_receive_buffer_reported": 16777216,
+      "assembly": {
+        "counters": {
+          "datagrams": 47572427,
+          "live_frames_observed": 32123,
+          "packets_accepted_unique": 47572427,
+          "live_frames_complete": 32070,
+          "live_bytes_complete": 66500352000,
+          "frames_failed_timeout": 50,
+          "frames_failed_capacity": 3
+        },
+        "active_frames": 0,
+        "buffer_bytes": 0,
+        "stream_epoch": "11696025384111474583",
+        "live_first_id": "113323",
+        "live_highwater": "145448",
+        "live_unobserved_ids_in_span": 3
+      },
+      "preview_queue": {
+        "frames": 0,
+        "payload_bytes": 0,
+        "max_frames": 2,
+        "max_bytes": 16777216
+      },
+      "archive_queue": {
+        "frames": 0,
+        "payload_bytes": 0,
+        "max_frames": 4,
+        "max_bytes": 16777216
+      }
+    },
+    "history": [
+      {
+        "second": 1010.9,
+        "fps": 30.61
+      },
+      {
+        "second": 1011.9,
+        "fps": 29.77
+      },
+      {
+        "second": 1012.9,
+        "fps": 29.75
+      },
+      {
+        "second": 1014.0,
+        "fps": 30.51
+      },
+      {
+        "second": 1015.0,
+        "fps": 29.82
+      },
+      {
+        "second": 1016.0,
+        "fps": 29.54
+      },
+      {
+        "second": 1017.0,
+        "fps": 30.66
+      },
+      {
+        "second": 1018.0,
+        "fps": 29.87
+      },
+      {
+        "second": 1019.0,
+        "fps": 29.83
+      },
+      {
+        "second": 1020.0,
+        "fps": 29.61
+      },
+      {
+        "second": 1021.0,
+        "fps": 30.63
+      },
+      {
+        "second": 1022.0,
+        "fps": 29.57
+      },
+      {
+        "second": 1023.1,
+        "fps": 30.5
+      },
+      {
+        "second": 1024.1,
+        "fps": 29.51
+      },
+      {
+        "second": 1025.1,
+        "fps": 30.33
+      },
+      {
+        "second": 1026.1,
+        "fps": 29.64
+      },
+      {
+        "second": 1027.1,
+        "fps": 30.49
+      },
+      {
+        "second": 1028.1,
+        "fps": 29.86
+      },
+      {
+        "second": 1029.1,
+        "fps": 29.67
+      },
+      {
+        "second": 1030.2,
+        "fps": 30.5
+      },
+      {
+        "second": 1031.2,
+        "fps": 29.84
+      },
+      {
+        "second": 1032.2,
+        "fps": 29.98
+      },
+      {
+        "second": 1033.2,
+        "fps": 29.64
+      },
+      {
+        "second": 1034.2,
+        "fps": 30.54
+      },
+      {
+        "second": 1035.2,
+        "fps": 29.36
+      },
+      {
+        "second": 1036.2,
+        "fps": 30.64
+      },
+      {
+        "second": 1037.2,
+        "fps": 29.85
+      },
+      {
+        "second": 1038.2,
+        "fps": 29.62
+      },
+      {
+        "second": 1039.2,
+        "fps": 29.87
+      },
+      {
+        "second": 1040.3,
+        "fps": 30.67
+      },
+      {
+        "second": 1041.3,
+        "fps": 29.84
+      },
+      {
+        "second": 1042.3,
+        "fps": 29.96
+      },
+      {
+        "second": 1043.3,
+        "fps": 29.7
+      },
+      {
+        "second": 1044.3,
+        "fps": 30.48
+      },
+      {
+        "second": 1045.3,
+        "fps": 29.81
+      },
+      {
+        "second": 1046.3,
+        "fps": 29.55
+      },
+      {
+        "second": 1047.3,
+        "fps": 30.63
+      },
+      {
+        "second": 1048.3,
+        "fps": 29.67
+      },
+      {
+        "second": 1049.3,
+        "fps": 30.65
+      },
+      {
+        "second": 1050.4,
+        "fps": 29.71
+      },
+      {
+        "second": 1051.4,
+        "fps": 29.71
+      },
+      {
+        "second": 1052.4,
+        "fps": 29.78
+      },
+      {
+        "second": 1053.4,
+        "fps": 30.83
+      },
+      {
+        "second": 1054.4,
+        "fps": 29.63
+      },
+      {
+        "second": 1055.4,
+        "fps": 29.9
+      },
+      {
+        "second": 1056.4,
+        "fps": 29.92
+      },
+      {
+        "second": 1057.4,
+        "fps": 30.54
+      },
+      {
+        "second": 1058.4,
+        "fps": 28.98
+      },
+      {
+        "second": 1059.4,
+        "fps": 30.45
+      },
+      {
+        "second": 1060.4,
+        "fps": 29.6
+      },
+      {
+        "second": 1061.4,
+        "fps": 30.93
+      },
+      {
+        "second": 1062.5,
+        "fps": 29.58
+      },
+      {
+        "second": 1063.5,
+        "fps": 29.66
+      },
+      {
+        "second": 1064.5,
+        "fps": 30.5
+      },
+      {
+        "second": 1065.5,
+        "fps": 29.88
+      },
+      {
+        "second": 1066.5,
+        "fps": 29.93
+      },
+      {
+        "second": 1067.5,
+        "fps": 29.53
+      },
+      {
+        "second": 1068.5,
+        "fps": 30.97
+      },
+      {
+        "second": 1069.5,
+        "fps": 29.54
+      },
+      {
+        "second": 1070.5,
+        "fps": 29.7
+      }
+    ],
+    "events": [
+      {
+        "time": "2026-11-03T12:54:58.367438+00:00",
+        "kind": "info",
+        "message": "接收端已就绪，等待来源数据"
+      },
+      {
+        "time": "2026-11-03T12:54:58.632273+00:00",
+        "kind": "warning",
+        "message": "新增1张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:27.943052+00:00",
+        "kind": "warning",
+        "message": "新增3张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:28.202471+00:00",
+        "kind": "warning",
+        "message": "新增4张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:29.245729+00:00",
+        "kind": "warning",
+        "message": "新增1张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:29.500275+00:00",
+        "kind": "warning",
+        "message": "新增3张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:29.750459+00:00",
+        "kind": "warning",
+        "message": "新增1张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:30.001856+00:00",
+        "kind": "warning",
+        "message": "新增1张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:30.260340+00:00",
+        "kind": "warning",
+        "message": "新增3张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:37.485453+00:00",
+        "kind": "warning",
+        "message": "新增2张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:37.737014+00:00",
+        "kind": "warning",
+        "message": "新增2张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:38.246545+00:00",
+        "kind": "warning",
+        "message": "新增1张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:38.512075+00:00",
+        "kind": "warning",
+        "message": "新增1张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:38.767425+00:00",
+        "kind": "warning",
+        "message": "新增1张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:45.392857+00:00",
+        "kind": "warning",
+        "message": "新增3张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:45.646111+00:00",
+        "kind": "warning",
+        "message": "新增3张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:45.897325+00:00",
+        "kind": "warning",
+        "message": "新增4张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:46.184252+00:00",
+        "kind": "warning",
+        "message": "新增4张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:46.436583+00:00",
+        "kind": "warning",
+        "message": "新增4张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:46.686940+00:00",
+        "kind": "warning",
+        "message": "新增4张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:46.945087+00:00",
+        "kind": "warning",
+        "message": "新增4张组帧失败，请检查链路"
+      },
+      {
+        "time": "2026-11-03T12:55:47.195505+00:00",
+        "kind": "warning",
+        "message": "新增3张组帧失败，请检查链路"
+      }
+    ],
+    "hdmi": {
+      "available": false,
+      "available_scope": "python_raw_capture",
+      "preview_backend": "browser_media_devices",
+      "preview_state": "not_reported",
+      "source_frame_id": null,
+      "pairing_status": "unverified"
+    },
+    "controls": {
+      "uart_available": false,
+      "snapshot_request_available": false
+    },
+    "hardware_acceptance": "not_performed"
+  }
+}

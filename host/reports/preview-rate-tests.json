@@ -1,0 +1,39 @@
+{
+  "tests_run": 8,
+  "passed": true,
+  "hardware_acceptance": "not_performed",
+  "results": [
+    {
+      "name": "Missed callbacks are not backfilled from compositor totals",
+      "passed": true
+    },
+    {
+      "name": "Repeated media timestamps do not create observed new frames",
+      "passed": true
+    },
+    {
+      "name": "A burst with a 30 FPS average still exposes its long update gap",
+      "passed": true
+    },
+    {
+      "name": "Decoder counter rollback resets history without negative or huge rates",
+      "passed": true
+    },
+    {
+      "name": "Browser meter separates observed updates from playback-quality totals",
+      "passed": true
+    },
+    {
+      "name": "Source replacement, hidden and paused previews cannot carry old counts",
+      "passed": true
+    },
+    {
+      "name": "Without frame callbacks the UI cannot mistake quality totals for preview FPS",
+      "passed": true
+    },
+    {
+      "name": "All frames flagged dropped cannot claim zero decoded FPS over real callbacks",
+      "passed": true
+    }
+  ]
+}

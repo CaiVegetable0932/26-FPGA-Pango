@@ -25,84 +25,30 @@
   <a class="brand" href="/" aria-label="Pango Vision首页"><span class="brand-mark">P</span><span>PANGO<span class="brand-sub">VISION WORKBENCH</span></span></a>
   <div class="nav-label">实验工作区</div>
   <nav aria-label="主导航">
-    <button class="nav-button active" data-view="live" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg>实时采集</button>
+    <button class="nav-button active" data-view="live" aria-current="page"><svg class="icon"><use href="#i-grid"/></svg>采集与控制</button>
+    <button class="nav-button" data-view="board"><svg class="icon"><use href="#i-tune"/></svg>板卡设置</button>
     <button class="nav-button" data-view="records"><svg class="icon"><use href="#i-folder"/></svg>采集记录<span id="nav-saved" class="nav-count">0</span></button>
     <button class="nav-button" data-view="settings"><svg class="icon"><use href="#i-tune"/></svg>连接设置</button>
     <!-- Purpose: keep calibration in the same local workbench without presenting it as FPGA correction. -->
     <a class="nav-button" href="/calibration"><svg class="icon"><use href="#i-camera"/></svg>图像标定</a>
   </nav>
   <div class="sidebar-note"><span class="small-dot"></span>本机工作台<span id="server-health">正在连接服务</span></div>
-  <div class="platform-card"><span class="eyebrow">PROJECT PLATFORM</span><strong>PG2L100H</strong><span>单路 OV5640 · RAW8</span><div class="platform-rule"></div><small>目标 1920 × 1080 / 30 FPS</small></div>
+  <div class="platform-card"><span class="eyebrow">PROJECT PLATFORM</span><strong>PG2L100H</strong><span>单路 OV5640 · RAW8</span><div class="platform-rule"></div><small>目标 1920 × 1080 / 30 FPS</small>
+    <!-- CPU is measured on the host running this service, across all cores. -->
+    <div class="host-cpu" title="当前主机全部 CPU 的总体占用率，每秒更新">
+      <div class="host-cpu-label"><span>主机 CPU 占用</span><b id="host-cpu-value">—</b></div>
+      <progress id="host-cpu-bar" max="100" value="0" aria-label="主机 CPU 占用率" hidden></progress>
+    </div>
+  </div>
 </aside>
 <div class="shell">
-  <header class="topbar"><div class="breadcrumb">上位机 <span>/</span> <strong id="breadcrumb-view">实时采集</strong></div><div class="topbar-right"><span class="local-tag">LOCAL</span><span id="clock">--:--:--</span></div></header>
+  <header class="topbar"><div class="breadcrumb">上位机 <span>/</span> <strong id="breadcrumb-view">采集与控制</strong></div><div class="topbar-right"><span class="local-tag">LOCAL</span><span id="clock">--:--:--</span></div></header>
   <main id="main">
     <div id="connection-alert" class="alert" role="alert" hidden>本地服务未响应。请确认服务正在运行。<button id="reconnect">重新连接</button></div>
     <section id="view-live" class="view">
-      <div class="page-heading"><div><div class="eyebrow page-kicker">CAPTURE WORKSPACE</div><h1>视频采集工作台</h1><p>查看源帧，检查链路，保留原始证据。</p></div><button class="button secondary" data-view="settings"><svg class="icon"><use href="#i-tune"/></svg>连接设置</button></div>
-      <!-- One saved physical setup drives UART commissioning and UDP reception. -->
-      <article class="panel board-startup" aria-labelledby="board-title">
-        <div class="panel-heading"><h2 id="board-title">板卡上电 → 一键连接</h2><button id="board-refresh" class="button secondary">刷新设备</button></div>
-        <div class="board-fields">
-          <label>板卡 USB-UART / CP2102<select id="board-port"><option value="">请刷新设备</option></select></label>
-          <label>连接板卡的以太网卡<select id="board-interface"><option value="">请刷新设备</option></select></label>
-          <label>FPGA IPv4<input id="board-source-ip" value="169.254.81.187" inputmode="decimal"></label>
-          <label>FPGA MAC<input id="board-source-mac" value="02:00:00:00:00:01"></label>
-          <label>PC 接收端口<input id="board-peer-port" type="number" value="50000" min="1" max="65535"></label>
-          <label>FPGA 发送端口<input id="board-source-port" type="number" value="50001" min="1" max="65535"></label>
-        </div>
-        <!-- Ethernet recovery restores the default link without touching HDMI. -->
-        <div class="board-actions"><label><input id="board-auto" type="checkbox" checked>下次启动 host 自动连接</label><button id="board-start" class="button primary">启动 / 重连板卡链路</button><button id="board-reset-ethernet" type="button" class="button secondary" title="恢复默认网口参数并重启 RAW8 接收，保留 HDMI 预览">以太网恢复默认并重连</button><button id="board-stop" class="button secondary">停止板卡接收</button><a href="/calibration" class="button secondary">进入标定</a></div>
-        <p id="board-message" role="status">首次选择直连板卡的网卡和串口；本机 IP/MAC 将从该网卡读取。</p>
-        <p id="board-diagnostics"></p>
-      </article>
-      <!-- Physical view/parameters use the live UART session, independently of PC reference rendering. -->
-      <!-- Opt-in settings are persisted by the service; no browser uptime is required. -->
-      <article class="panel board-startup" aria-labelledby="autoload-title">
-        <div class="panel-heading"><h2 id="autoload-title">上电自动恢复 FPGA 矫正</h2></div>
-        <div class="board-fields">
-          <label><input id="autoload-enabled" type="checkbox">后台检测上电并自动下发参数</label>
-          <label>参数文件（host 内相对路径）<input id="autoload-preset" value="config/calibration/fpga-fisheye-rgb33-20261010.json" maxlength="256"></label>
-          <label>启动 HDMI 模式<select id="autoload-mode"><option value="corrected">FPGA 矫正图</option><option value="original">同 ISP 原图</option></select></label>
-          <label>面内旋转（度）<input id="autoload-rotation" type="number" value="0" min="-360" max="360"></label>
-          <label><input id="autoload-enhance" type="checkbox" checked>板端增强</label>
-          <label><input id="autoload-markers" type="checkbox">恢复板端像素标记</label>
-          <label>标记直径（源像素）<input id="autoload-diameter" type="number" value="10" min="4" max="32"></label>
-        </div>
-        <div class="board-actions"><button id="autoload-save" type="button" class="button primary">保存自动恢复设置</button><button id="autoload-load" type="button" class="button secondary">填入已保存恢复文件供审校</button></div>
-        <p id="autoload-status" role="status">默认不自动写入 FPGA。首次先完成一次板卡连接配置，再启用并保存。</p>
-        <p>只使用现有 UART 接口，不烧录。手动改参/显示优先至本次板卡重启；停止接收会暂停自动恢复。参数和显示回读不等于图像精度验收。</p>
-      </article>
-      <article class="panel board-startup" aria-labelledby="fpga-geometry-title">
-        <div class="panel-heading"><h2 id="fpga-geometry-title">FPGA 几何与显示控制</h2><button id="fpga-refresh" type="button" class="button secondary">回读板端状态</button></div>
-        <div class="board-fields">
-          <label>预览处理来源<select id="geometry-display-owner"><option value="fpga">FPGA HDMI（板端标记）</option><option value="software">计算机软件参考</option></select></label>
-          <label>板端 HDMI 模式<select id="fpga-view-mode"><option value="corrected">灰度 ISP + 几何矫正</option><option value="original">灰度 ISP 原图（非 RAW S0）</option></select></label>
-          <label><input id="fpga-markers" type="checkbox">板端显示像素标记</label>
-          <label>标记直径（源像素）<input id="fpga-marker-diameter" type="number" value="10" min="4" max="32"></label>
-        </div>
-        <div class="board-actions"><button id="fpga-view-apply" type="button" class="button primary">应用板端显示</button></div>
-        <details><summary>FPGA 几何参数（上传后按帧生效）</summary>
-          <label for="fpga-parameters">鱼眼参数 JSON</label><textarea id="fpga-parameters" rows="10" cols="70" spellcheck="false"></textarea>
-          <div class="board-fields"><label>旋转角（度）<input id="fpga-rotation" type="number" value="0" min="-360" max="360"></label><label><input id="fpga-enhance" type="checkbox" checked>板端增强</label></div>
-          <div class="board-actions"><button id="fpga-parameters-load" type="button" class="button secondary">填入标定页保存参数</button><button id="fpga-parameters-apply" type="button" class="button primary">上传并验证 FPGA 参数</button></div>
-        </details>
-        <p id="fpga-control-status" role="status">尚未查询 FPGA；需要已启动链路及支持显示控制的新固件。</p>
-        <p>网口只叠加 FPGA 回读的源像素位置；HDMI 已由板端绘制。参数确认不等于图像精度验收，源帧配对仍未验证。</p>
-      </article>
-      <!-- Manual MCU control on one reserved UART: gantry X/Y/Z as 0..100% of
-           travel, gimbal pitch/yaw as ±60° absolute targets. A single gimbal
-           command must change an axis by ≥3°; the gate is enforced by the
-           backend against live feedback, never by input rounding. -->
-      <article class="panel board-startup" aria-labelledby="mcu-title">
-        <div class="panel-heading"><h2 id="mcu-title">MCU 龙门架与云台</h2><span id="mcu-feedback" class="pill neutral">MCU 未连接</span>
-        </div><div class="board-fields" aria-live="polite"><div>当前位置 X<strong id="mcu-current-x">—</strong></div><div>当前位置 Y（伸缩）<strong id="mcu-current-y">—</strong></div><div>当前位置 Z（双电机）<strong id="mcu-current-z">—</strong></div><div>当前 pitch（俯仰）<strong id="mcu-current-pitch">—</strong></div><div>当前 yaw（偏航）<strong id="mcu-current-yaw">—</strong></div><div id="mcu-state">等待读取真实舵机反馈</div></div>
-        <div class="board-fields"><label>独立 F4 串口<select id="mcu-port"><option value="">请刷新串口</option></select></label><label>目标 X（行程 %）<input id="mcu-x" required type="number" min="0" max="100" step="0.1" value="0"></label><label>目标 Y 伸缩（行程 %）<input id="mcu-y" required type="number" min="0" max="100" step="0.1" value="0"></label><label>目标 Z 双电机（行程 %）<input id="mcu-z" required type="number" min="0" max="100" step="0.1" value="0"></label><label>速度（RPM）<input id="mcu-rpm" required type="number" min="1" max="60" step="1" value="10"></label><label>目标 pitch（°，±60）<input id="mcu-pitch" required type="number" min="-60" max="60" step="0.1" value="0"></label><label>目标 yaw（°，±60）<input id="mcu-yaw" required type="number" min="-60" max="60" step="0.1" value="0"></label></div>
-        <p>坐标按行程百分比下发（固件定点 ×1e6）；云台角度是相对零位的绝对角，<strong>单次变化必须 ≥3°</strong>——低于舵机死区的指令会被吞掉，但固件仍会回报完成。</p>
-        <div class="board-actions"><button id="mcu-refresh" class="button secondary" type="button">刷新串口</button><button id="mcu-connect" disabled class="button secondary" type="button">连接 MCU</button><button data-mcu="read" disabled class="button secondary" type="button">读取状态</button><button data-mcu="gantry" disabled class="button primary" type="button">下发龙门架坐标</button><button data-mcu="move" disabled class="button primary" type="button">下发云台角度</button><button data-mcu="confirm" disabled class="button secondary" type="button">零点确认</button><button data-mcu="home" disabled class="button secondary" type="button">云台回正</button><button data-mcu="zero" disabled class="button secondary" type="button">登记姿态零位</button><button data-mcu="stop" disabled class="button danger" type="button">急停（轴 3）</button><button data-mcu="disconnect" disabled class="button secondary" type="button">断开 MCU</button></div>
-        <p id="mcu-message" role="status">复位或人工搬动机构后按 零点确认 → 云台回正 → 登记姿态零位 恢复；急停失败会主动停止续租兜底。</p>
-      </article>
-
+      <div class="page-heading"><div><div class="eyebrow page-kicker">CAPTURE WORKSPACE</div><h1>采集与控制工作区</h1><p>查看当前采集状态与双路视频，在下方控制龙门架与云台。</p></div><button class="button secondary" data-view="board"><svg class="icon"><use href="#i-tune"/></svg>板卡设置</button></div>
+      <!-- Show capture status and both video streams first; keep manual MCU
+           controls below the previews in DOM order on desktop and mobile. -->
       <div class="session-toolbar">
         <div class="session-label"><span id="source-pill" class="pill mock">本机模拟</span><span class="status-dot" id="session-dot"></span><strong id="session-state">未开始采集</strong></div>
         <div class="toolbar-actions"><label class="archive-policy">自动归档<select id="archive-every" aria-label="自动归档策略"><option value="0">关闭</option><option value="30">每 30 个完整帧</option><option value="1">每个完整帧</option></select></label><button id="stop" class="button secondary" disabled><span class="stop-shape"></span>停止</button><button id="start" class="button primary"><span class="play-shape"></span><span id="start-label">开始模拟</span></button></div>
@@ -153,11 +99,81 @@
           <div class="viewer-footer"><span>源帧配对未验证</span><div class="capture-preview-actions"><button id="capture-correction-toggle" type="button" class="button small secondary" aria-pressed="false" aria-controls="capture-corrected" title="使用标定页面的手动鱼眼参数进行 PC 软件矫正，只切换显示">计算机矫正</button><button id="capture-preview-open" type="button" class="button small secondary" disabled>打开预览</button><button id="capture-preview-close" type="button" class="button small secondary" disabled>关闭</button></div></div>
         </article>
       </div>
+      <!-- Manual MCU control on one reserved UART: gantry X/Y/Z as 0..100% of
+           travel, gimbal pitch/yaw as ±60° absolute targets. A single gimbal
+           command must change an axis by ≥3°; the gate is enforced by the
+           backend against live feedback, never by input rounding. -->
+      <article class="panel board-startup" aria-labelledby="mcu-title">
+        <div class="panel-heading"><h2 id="mcu-title">MCU 龙门架与云台</h2><span id="mcu-feedback" class="pill neutral">MCU 未连接</span>
+        </div><div class="board-fields" aria-live="polite"><div>当前位置 X<strong id="mcu-current-x">—</strong></div><div>当前位置 Y（伸缩）<strong id="mcu-current-y">—</strong></div><div>当前位置 Z（双电机）<strong id="mcu-current-z">—</strong></div><div>当前 pitch（俯仰）<strong id="mcu-current-pitch">—</strong></div><div>当前 yaw（偏航）<strong id="mcu-current-yaw">—</strong></div><div id="mcu-state">等待读取真实舵机反馈</div></div>
+        <div class="board-fields"><label>独立 F4 串口<select id="mcu-port"><option value="">请刷新串口</option></select></label><label>目标 X（行程 %）<input id="mcu-x" required type="number" min="0" max="100" step="0.1" value="0"></label><label>目标 Y 伸缩（行程 %）<input id="mcu-y" required type="number" min="0" max="100" step="0.1" value="0"></label><label>目标 Z 双电机（行程 %）<input id="mcu-z" required type="number" min="0" max="100" step="0.1" value="0"></label><label>速度（RPM）<input id="mcu-rpm" required type="number" min="1" max="60" step="1" value="10"></label><label>目标 pitch（°，±60）<input id="mcu-pitch" required type="number" min="-60" max="60" step="0.1" value="0"></label><label>目标 yaw（°，±60）<input id="mcu-yaw" required type="number" min="-60" max="60" step="0.1" value="0"></label></div>
+        <p>坐标按行程百分比下发（固件定点 ×1e6）；云台角度是相对零位的绝对角，<strong>单次变化必须 ≥3°</strong>——低于舵机死区的指令会被吞掉，但固件仍会回报完成。</p>
+        <div class="board-actions"><button id="mcu-refresh" class="button secondary" type="button">刷新串口</button><button id="mcu-connect" disabled class="button secondary" type="button">连接 MCU</button><button data-mcu="read" disabled class="button secondary" type="button">读取状态</button><button data-mcu="gantry" disabled class="button primary" type="button">下发龙门架坐标</button><button data-mcu="move" disabled class="button primary" type="button">下发云台角度</button><button data-mcu="confirm" disabled class="button secondary" type="button">零点确认</button><button data-mcu="home" disabled class="button secondary" type="button">云台回正</button><button data-mcu="zero" disabled class="button secondary" type="button">登记姿态零位</button><button data-mcu="stop" disabled class="button danger" type="button">急停（轴 3）</button><button data-mcu="disconnect" disabled class="button secondary" type="button">断开 MCU</button></div>
+        <!-- Delay only motion targets; emergency stop cancels the pending target immediately. -->
+        <div class="board-actions"><span id="mcu-dispatch-status" role="status">龙门架坐标和云台角度在点击后 3 秒下发</span><button id="mcu-cancel-send" type="button" class="button secondary" hidden>取消待发指令</button></div>
+        <p id="mcu-message" role="status">复位或人工搬动机构后按 零点确认 → 云台回正 → 登记姿态零位 恢复；急停失败会主动停止续租兜底。</p>
+      </article>
+
       <div class="connection-row"><article class="panel connection-panel"><div class="panel-heading"><h2>当前连接</h2><span id="transport-pill" class="pill neutral">待启动</span></div><dl class="connection-facts"><div><dt>设备标识</dt><dd id="device-id">—</dd></div><div><dt>接收地址</dt><dd id="bind-address">—</dd></div><div><dt>来源地址</dt><dd id="peer-address">—</dd></div><div><dt>源代次</dt><dd id="epoch">—</dd></div><div><dt>运行时长</dt><dd id="elapsed">00:00</dd></div></dl><div class="control-note"><span class="status-dot"></span>UART 板端控制 · HDMI 源帧配对未验证</div></article></div>
       <div class="bottom-layout">
         <article class="panel"><div class="panel-heading"><h2>链路与缓冲</h2><span class="muted-label">实时统计</span></div><div class="flow"><div><span class="flow-number">01</span><strong id="source-node">模拟发送器</strong><small>源帧身份</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">02</span><strong>UDP 接收</strong><small id="packet-total">— 个数据报</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">03</span><strong>完整帧重组</strong><small id="buffer-usage">— MiB 在途</small></div><svg class="icon"><use href="#i-arrow"/></svg><div><span class="flow-number">04</span><strong>预览 / 归档</strong><small id="saved-total">0 张已保存</small></div></div><div class="counter-strip"><span>重复包 <b id="duplicate-count">0</b></span><span>乱序包 <b id="reorder-count">0</b></span><span>未见源帧 <b id="missing-count">0</b></span><span>旧预览替换 <b id="preview-drops">0</b></span><span>归档拒绝 <b id="archive-drops">0</b></span><span id="receive-backend">接收后端待启动</span></div></article>
         <article class="panel events-panel"><div class="panel-heading"><h2>运行事件</h2><span class="muted-label">最近 5 条</span></div><ul id="event-list" class="event-list"><li class="empty-row">启动采集后显示运行事件</li></ul></article>
       </div>
+    </section>
+    <!-- Board commissioning keeps its existing DOM and background coordinator;
+         switching views never recreates a control or resets a device session. -->
+    <section id="view-board" class="view" hidden>
+      <div class="page-heading"><div><div class="eyebrow page-kicker">BOARD SETUP</div><h1>板卡设置</h1><p>连接板卡，配置上电恢复与 FPGA 几何显示参数。</p></div><button class="button secondary" data-view="live"><svg class="icon"><use href="#i-monitor"/></svg>进入采集与控制</button></div>
+      <!-- One saved physical setup drives UART commissioning and UDP reception. -->
+      <article class="panel board-startup" aria-labelledby="board-title">
+        <div class="panel-heading"><h2 id="board-title">板卡上电 → 一键连接</h2><button id="board-refresh" class="button secondary">刷新设备</button></div>
+        <div class="board-fields">
+          <label>板卡 USB-UART / CP2102<select id="board-port"><option value="">请刷新设备</option></select></label>
+          <label>连接板卡的以太网卡<select id="board-interface"><option value="">请刷新设备</option></select></label>
+          <label>FPGA IPv4<input id="board-source-ip" value="169.254.81.187" inputmode="decimal"></label>
+          <label>FPGA MAC<input id="board-source-mac" value="02:00:00:00:00:01"></label>
+          <label>PC 接收端口<input id="board-peer-port" type="number" value="50000" min="1" max="65535"></label>
+          <label>FPGA 发送端口<input id="board-source-port" type="number" value="50001" min="1" max="65535"></label>
+        </div>
+        <!-- Ethernet recovery restores the default link without touching HDMI. -->
+        <div class="board-actions"><label><input id="board-auto" type="checkbox" checked>下次启动 host 自动连接</label><button id="board-start" class="button primary">启动 / 重连板卡链路</button><button id="board-reset-ethernet" type="button" class="button secondary" title="恢复默认网口参数并重启 RAW8 接收，保留 HDMI 预览">以太网恢复默认并重连</button><button id="board-stop" class="button secondary">停止板卡接收</button><a href="/calibration" class="button secondary">进入标定</a></div>
+        <p id="board-message" role="status">首次选择直连板卡的网卡和串口；本机 IP/MAC 将从该网卡读取。</p>
+        <p id="board-diagnostics"></p>
+      </article>
+      <!-- Physical view/parameters use the live UART session, independently of PC reference rendering. -->
+      <!-- Opt-in settings are persisted by the service; no browser uptime is required. -->
+      <article class="panel board-startup" aria-labelledby="autoload-title">
+        <div class="panel-heading"><h2 id="autoload-title">上电自动恢复 FPGA 矫正</h2></div>
+        <div class="board-fields">
+          <label><input id="autoload-enabled" type="checkbox">后台检测上电并自动下发参数</label>
+          <label>参数文件（host 内相对路径）<input id="autoload-preset" value="config/calibration/fpga-fisheye-rgb33-20261010.json" maxlength="256"></label>
+          <label>启动 HDMI 模式<select id="autoload-mode"><option value="corrected">FPGA 矫正图</option><option value="original">同 ISP 原图</option></select></label>
+          <label>面内旋转（度）<input id="autoload-rotation" type="number" value="0" min="-360" max="360"></label>
+          <label><input id="autoload-enhance" type="checkbox" checked>板端增强</label>
+          <label><input id="autoload-markers" type="checkbox">恢复板端像素标记</label>
+          <label>标记直径（源像素）<input id="autoload-diameter" type="number" value="10" min="4" max="32"></label>
+        </div>
+        <div class="board-actions"><button id="autoload-save" type="button" class="button primary">保存自动恢复设置</button><button id="autoload-load" type="button" class="button secondary">填入已保存恢复文件供审校</button></div>
+        <p id="autoload-status" role="status">默认不自动写入 FPGA。首次先完成一次板卡连接配置，再启用并保存。</p>
+        <p>只使用现有 UART 接口，不烧录。手动改参/显示优先至本次板卡重启；停止接收会暂停自动恢复。参数和显示回读不等于图像精度验收。</p>
+      </article>
+      <article class="panel board-startup" aria-labelledby="fpga-geometry-title">
+        <div class="panel-heading"><h2 id="fpga-geometry-title">FPGA 几何与显示控制</h2><button id="fpga-refresh" type="button" class="button secondary">回读板端状态</button></div>
+        <div class="board-fields">
+          <label>预览处理来源<select id="geometry-display-owner"><option value="fpga">FPGA HDMI（板端标记）</option><option value="software">计算机软件参考</option></select></label>
+          <label>板端 HDMI 模式<select id="fpga-view-mode"><option value="corrected">灰度 ISP + 几何矫正</option><option value="original">灰度 ISP 原图（非 RAW S0）</option></select></label>
+          <label><input id="fpga-markers" type="checkbox">板端显示像素标记</label>
+          <label>标记直径（源像素）<input id="fpga-marker-diameter" type="number" value="10" min="4" max="32"></label>
+        </div>
+        <div class="board-actions"><button id="fpga-view-apply" type="button" class="button primary">应用板端显示</button></div>
+        <details><summary>FPGA 几何参数（上传后按帧生效）</summary>
+          <label for="fpga-parameters">鱼眼参数 JSON</label><textarea id="fpga-parameters" rows="10" cols="70" spellcheck="false"></textarea>
+          <div class="board-fields"><label>旋转角（度）<input id="fpga-rotation" type="number" value="0" min="-360" max="360"></label><label><input id="fpga-enhance" type="checkbox" checked>板端增强</label></div>
+          <div class="board-actions"><button id="fpga-parameters-load" type="button" class="button secondary">填入标定页保存参数</button><button id="fpga-parameters-apply" type="button" class="button primary">上传并验证 FPGA 参数</button></div>
+        </details>
+        <p id="fpga-control-status" role="status">尚未查询 FPGA；需要已启动链路及支持显示控制的新固件。</p>
+        <p>网口只叠加 FPGA 回读的源像素位置；HDMI 已由板端绘制。参数确认不等于图像精度验收，源帧配对仍未验证。</p>
+      </article>
     </section>
     <section id="view-records" class="view" hidden>
       <div class="page-heading"><div><div class="eyebrow page-kicker">CAPTURE EVIDENCE</div><h1>采集记录</h1><p>查看全部原始图像、运行记录与生成报告。</p></div><button id="refresh-records" class="button secondary">刷新记录</button></div>
